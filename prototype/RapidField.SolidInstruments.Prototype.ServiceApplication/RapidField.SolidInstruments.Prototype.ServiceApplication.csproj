@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>RapidField</Authors>
+        <Company>RapidField</Company>
+        <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
+        <Product>Solid Instruments</Product>
+        <Description>This project serves as a sample service application that employs the Solid Instruments messaging and dependency injection abstractions.</Description>
+        <Version>$(BuildVersion)</Version>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netcoreapp2.1\RapidField.SolidInstruments.Prototype.ServiceApplication.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netcoreapp2.1\RapidField.SolidInstruments.Prototype.ServiceApplication.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="appsettings.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="appsettings.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.AzureServiceBus\RapidField.SolidInstruments.Messaging.AzureServiceBus.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Prototype.Contracts\RapidField.SolidInstruments.Prototype.Contracts.csproj" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Prototype.DatabaseModel\RapidField.SolidInstruments.Prototype.DatabaseModel.csproj" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Prototype.Domain\RapidField.SolidInstruments.Prototype.Domain.csproj" />
+    </ItemGroup>
+</Project>

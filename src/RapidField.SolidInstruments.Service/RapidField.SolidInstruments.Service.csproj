@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>RapidField</Authors>
+        <Company>RapidField</Company>
+        <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
+        <Product>Solid Instruments</Product>
+        <Description>The RapidField.SolidInstruments.Service library exposes types that simplify service design. Refer to the project documentation for more information.</Description>
+        <Version>$(BuildVersion)</Version>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageProjectUrl>https://www.rapidfield.com/solid-instruments</PackageProjectUrl>
+        <PackageIconUrl>https://www.rapidfield.com/wp-content/uploads/2018/12/Icon.Service.128w.png</PackageIconUrl>
+        <PackageTags>service;orchestration</PackageTags>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Service.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\RapidField.SolidInstruments.Service.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" Version="$(BuildVersion)" />
+    </ItemGroup>
+</Project>

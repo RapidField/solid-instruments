@@ -1,0 +1,43 @@
+﻿@*
+    Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+*@
+
+@using RapidField.SolidInstruments.Prototype.WebApplication.Models.FibonacciSequence
+@model IndexModel
+@{
+    ViewData["Title"] = "Fibonacci sequence generator";
+}
+
+<div class="col-lg-12">
+    <h1>
+        Fibonacci sequence generator
+    </h1>
+    <h4 class="margin-vertical-md">
+        This demo uses an in-memory database to persist calculated Fibonacci numbers.
+    </h4>
+    <hr />
+    <p>
+        <span class="glyphicon glyphicon-info-sign"></span> <strong>Types employed by this demonstration:</strong>
+    </p>
+    <ul class="list-inline list-group">
+        <li class="list-group-item-info margin-all-xs padding-all-sm">InversionOfControl.DotNetNative.<strong>DotNetNativeDependencyModule</strong></li>
+        <li class="list-group-item-info margin-all-xs padding-all-sm">DataAccess.EntityFramework.<strong>ConfiguredContext</strong></li>
+        <li class="list-group-item-info margin-all-xs padding-all-sm">Mathematics.Sequences.<strong>FibonacciSequence</strong></li>
+    </ul>
+    <hr />
+    <div class="center-block text-center">
+    </div>
+    <ul class="list-inline list-group">
+        @foreach (var term in Model.Terms)
+        {
+            <li class="list-group-item margin-all-sm padding-horizontal-md">
+                @term.ToString("n0")
+            </li>
+        }
+        <li class="list-group-item margin-all-sm padding-horizontal-md">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            @Html.ActionLink("Generate next term", "Index", "FibonacciSequence")
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </li>
+    </ul>
+</div>
