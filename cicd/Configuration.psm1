@@ -2,6 +2,7 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This variable informs the package version for CI/CD builds. Release branches should be named using this value.
 $BuildVersion = "1.0.23-preview"
 
 $Configuration = [PSCustomObject]@{
