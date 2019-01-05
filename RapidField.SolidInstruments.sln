@@ -98,7 +98,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.AzureServiceBus", "src\RapidField.SolidInstruments.Messaging.AzureServiceBus\RapidField.SolidInstruments.Messaging.AzureServiceBus.csproj", "{FCFCA29A-2909-462D-AEAB-F067654236EC}"
 EndProject
+<<<<<<< HEAD
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}"
+=======
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}"
+>>>>>>> 9377714... Organizational changes in preparation for v1.0.23-preview release.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.InversionOfControl.DotNetNative", "src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj", "{C08FA672-FAC1-4A6C-AEAA-C12417DBB25D}"
 EndProject
@@ -106,6 +110,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests", "test\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.csproj", "{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}"
 EndProject
+<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.DatabaseModel", "example\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj", "{3EED0CA7-B5E5-4388-9256-A6B21E82F663}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.WebApplication", "example\RapidField.SolidInstruments.Example.WebApplication\RapidField.SolidInstruments.Example.WebApplication.csproj", "{5043307D-17D2-4053-8022-8C26A26896E9}"
@@ -115,6 +120,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain", "example\RapidField.SolidInstruments.Example.Domain\RapidField.SolidInstruments.Example.Domain.csproj", "{7654E174-427D-44AA-AFB7-4EA67DA80759}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Contracts", "example\RapidField.SolidInstruments.Example.Contracts\RapidField.SolidInstruments.Example.Contracts.csproj", "{7B0530D3-32DD-4C98-BB7F-CC924079E82D}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.DatabaseModel", "examples\RapidField.SolidInstruments.Prototype.DatabaseModel\RapidField.SolidInstruments.Prototype.DatabaseModel.csproj", "{3EED0CA7-B5E5-4388-9256-A6B21E82F663}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.WebApplication", "examples\RapidField.SolidInstruments.Prototype.WebApplication\RapidField.SolidInstruments.Prototype.WebApplication.csproj", "{5043307D-17D2-4053-8022-8C26A26896E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.ServiceApplication", "examples\RapidField.SolidInstruments.Prototype.ServiceApplication\RapidField.SolidInstruments.Prototype.ServiceApplication.csproj", "{3636378B-E643-475C-A023-A38836674B67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.Domain", "examples\RapidField.SolidInstruments.Prototype.Domain\RapidField.SolidInstruments.Prototype.Domain.csproj", "{7654E174-427D-44AA-AFB7-4EA67DA80759}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.Contracts", "examples\RapidField.SolidInstruments.Prototype.Contracts\RapidField.SolidInstruments.Prototype.Contracts.csproj", "{7B0530D3-32DD-4C98-BB7F-CC924079E82D}"
+>>>>>>> 9377714... Organizational changes in preparation for v1.0.23-preview release.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Service", "src\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj", "{330FB74B-5D75-4B02-8ABA-B03EE296FA48}"
 EndProject
