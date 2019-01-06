@@ -10,7 +10,7 @@ $Configuration = [PSCustomObject]@{
         PackageDeploymentUri = "C:\LocalPackageSource"
     }
     Production = [PSCustomObject]@{
-        PackageDeploymentUri = "C:\LocalPackageSource"
+        PackageDeploymentUri = "TBD"
     }
 }
 
