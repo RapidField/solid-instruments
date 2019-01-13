@@ -2,8 +2,8 @@
 name: Defect report
 about: Create an issue for an observed defect.
 title: ''
-labels: ''
-assignees: ''
+labels: defect, under review
+assignees: adamjstone
 
 ---
 

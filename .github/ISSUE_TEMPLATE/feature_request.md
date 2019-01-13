@@ -2,8 +2,8 @@
 name: Feature request
 about: Suggest a new feature.
 title: ''
-labels: ''
-assignees: ''
+labels: enhancement, under review
+assignees: adamjstone
 
 ---
 
