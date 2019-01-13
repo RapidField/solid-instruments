@@ -1,6 +1,6 @@
 ---
 name: Defect report
-about: Create an issue for a defect
+about: Create an issue for an observed defect.
 title: ''
 labels: ''
 assignees: ''
@@ -8,22 +8,27 @@ assignees: ''
 ---
 
 **Description**
-A clear and concise description of the defect.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+{ConciseDefectSummary}
+
+**Reproduction steps**
+
+1. Modify and run the {TestName} test such that {FailureConditions}.
+2. Execute the test.
+
+**Observed behavior**
+
+Observe that {FailureObservations}.
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+{ClearDescriptionOfExpectedResults}
 
-**Additional context**
-Add any other context about the problem here.
+**System information**
+
+* Processor architecture: 
+* Operating system: 
+
+**Additional information**
+
+{OptionalContextualDetails}
