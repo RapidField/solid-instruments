@@ -9,26 +9,26 @@ assignees: ''
 
 **Description**
 
-{ConciseDefectSummary}
+Summarize the defect with a prudent level of detail.
 
 **Reproduction steps**
 
-1. Modify and run the {TestName} test such that {FailureConditions}.
+1. Modify the RapidField.TestProject.ClassName.ExampleTest test by setting parameter x equal to -1.
 2. Execute the test.
 
 **Observed behavior**
 
-Observe that {FailureObservations}.
+Describe the behavior observed by reproducing the steps above.
 
 **Expected behavior**
 
-{ClearDescriptionOfExpectedResults}
+Describe what should have happened.
 
 **System information**
 
-* Processor architecture: 
-* Operating system: 
+* Processor architecture: x64
+* Operating system: Windows 10
 
 **Additional information**
 
-{OptionalContextualDetails}
+Append additional information here as appropriate. This is optional.
