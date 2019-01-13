@@ -17,3 +17,7 @@ State the specific requirements for acceptance of the new feature.
 
 1. The new feature should...
 2. It should also...
+
+**Additional information**
+
+Append additional information here as appropriate. This is optional.
