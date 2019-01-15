@@ -1,6 +1,8 @@
 ## Description
 
-This pull request addresses issue #XXXX. Here is an overview of the changes that were made.
+This pull request addresses issue #
+
+Here is an overview of the changes that were made.
 
 - 
 - 
