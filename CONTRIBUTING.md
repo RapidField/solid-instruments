@@ -23,6 +23,10 @@ By contributing to Solid Instruments you assert and agree that:
 
 Release versioning is controlled by the variable "BuildVersion" variable in the [Configuration.psm1](cicd/Configuration.psm1) file. Please do not submit pull requests that modify the build version. The Solid Instruments team manages release versioning.
 
+## Code of conduct
+
+Please review our simple [code of conduct](CODE_OF_CONDUCT.md) before contributing.
+
 - - -
 <br />
 
