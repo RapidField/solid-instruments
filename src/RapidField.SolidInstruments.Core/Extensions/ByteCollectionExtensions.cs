@@ -236,6 +236,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
+<<<<<<< HEAD
         private static Byte[] ComputeOneHundredTwentyEightBitHashBuffer(this IEnumerable<Byte> target)
         {
             var rawHash = target.ComputeTwoHundredFiftySixBitHashBuffer();
@@ -259,11 +260,25 @@ namespace RapidField.SolidInstruments.Core.Extensions
             Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt32(rawHash, 0) ^ BitConverter.ToInt32(rawHash, 8)), 0, foldedHash, 0, 4);
             Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt32(rawHash, 4) ^ BitConverter.ToInt32(rawHash, 12)), 0, foldedHash, 4, 4);
             return foldedHash;
+=======
+        private static Byte[] ComputeOneHundredTwentyEightBitHash(this IEnumerable<Byte> target)
+        {
+            if (target.Any())
+            {
+                using (var checksumAlgorithm = MD5.Create())
+                {
+                    return checksumAlgorithm.ComputeHash(target.ToArray());
+                }
+            }
+
+            return EmptyCollectionOneHundredTwentyEightBitHash;
+>>>>>>> adaee1f... Replacing static hash algorithm with instance.
         }
 
         /// <summary>
         /// Computes a 32-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
+<<<<<<< HEAD
         /// <param name="target">
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
@@ -306,5 +321,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
             0xa5, 0xac, 0xc6, 0x56, 0x96, 0x65, 0xa5, 0x35, 0x5a, 0x6c, 0x53, 0xa9, 0xca, 0xac, 0x9a, 0x35,
             0xc6, 0x93, 0x53, 0x5a, 0x56, 0x69, 0x65, 0x39, 0xca, 0x93, 0x6c, 0x96, 0xa9, 0x9a, 0x69, 0x39
         };
+=======
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Byte[] EmptyCollectionOneHundredTwentyEightBitHash = { 0x9a, 0x69, 0x39, 0xc6, 0xac, 0x93, 0x56, 0x96, 0x65, 0xa5, 0x35, 0x5a, 0x6c, 0x53, 0xa9, 0xca };
+>>>>>>> adaee1f... Replacing static hash algorithm with instance.
     }
 }
