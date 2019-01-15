@@ -240,26 +240,23 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
-        private static Byte[] ComputeOneHundredTwentyEightBitHash(this IEnumerable<Byte> target) => target.Any() ? ChecksumAlgorithm.ComputeHash(target.ToArray()) : EmptyCollectionOneHundredTwentyEightBitHash;
+        private static Byte[] ComputeOneHundredTwentyEightBitHash(this IEnumerable<Byte> target)
+        {
+            if (target.Any())
+            {
+                using (var checksumAlgorithm = MD5.Create())
+                {
+                    return checksumAlgorithm.ComputeHash(target.ToArray());
+                }
+            }
 
-        /// <summary>
-        /// Gets a hash algorithm that is used to calculate 128-bit checksum hashes.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [ThreadStatic]
-        private static readonly HashAlgorithm ChecksumAlgorithm = MD5.Create();
+            return EmptyCollectionOneHundredTwentyEightBitHash;
+        }
 
         /// <summary>
         /// Represents the binary 128-bit hash for an empty collection.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Byte[] EmptyCollectionOneHundredTwentyEightBitHash = { 0x9a, 0x69, 0x39, 0xc6, 0xac, 0x93, 0x56, 0x96, 0x65, 0xa5, 0x35, 0x5a, 0x6c, 0x53, 0xa9, 0xca };
-
-        /// <summary>
-        /// Represents a finalizer for static members of the <see cref="ByteCollectionExtensions" /> class.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [ThreadStatic]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(ChecksumAlgorithm.Dispose);
     }
 }
