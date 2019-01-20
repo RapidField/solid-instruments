@@ -16,6 +16,8 @@ Clearly describe the problem that you are facing which the requested feature sol
 State the work to be done and specify requirements for acceptance of the new feature.
 
 1. 
+2. 
+3. 
 
 **Additional information**
 
