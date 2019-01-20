@@ -13,8 +13,9 @@ Summarize the defect with a prudent level of detail.
 
 **Reproduction steps**
 
-1. Modify the RapidField.TestProject.ClassName.ExampleTest test by setting parameter x equal to -1.
-2. Execute the test.
+1. 
+2. 
+3. 
 
 **Observed behavior**
 
