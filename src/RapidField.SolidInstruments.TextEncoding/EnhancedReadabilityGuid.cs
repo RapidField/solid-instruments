@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         }
 
         /// <summary>
-        /// Facilitates implicit <see cref="EnhancedReadabilityGuid" /> to <see cref="Guid" /> array casting.
+        /// Facilitates implicit <see cref="EnhancedReadabilityGuid" /> to <see cref="Guid" /> casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
