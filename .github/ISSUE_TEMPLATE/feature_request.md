@@ -7,16 +7,15 @@ assignees: adamjstone
 
 ---
 
-**Problem statement**
+**Overview**
 
 Clearly describe the problem that you are facing which the requested feature solves.
 
-**Acceptance criteria**
+**Statement of work**
 
-State the specific requirements for acceptance of the new feature.
+State the work to be done and specify requirements for acceptance of the new feature.
 
-1. The new feature should...
-2. It should also...
+1. 
 
 **Additional information**
 
