@@ -9,27 +9,29 @@ assignees: adamjstone
 
 **Overview**
 
-Summarize the defect with a prudent level of detail.
+...
 
 **Reproduction steps**
+
+Follow the instructions below, in order, to reproduce the observed behavior.
 
 1. 
 2. 
 3. 
 
-**Observed behavior**
+**Observed (defective) behavior**
 
-Describe the behavior observed by reproducing the steps above.
+...
 
-**Expected behavior**
+**Expected (correct) behavior**
 
-Describe what should have happened.
+...
 
 **System information**
 
-* Processor architecture: x64
-* Operating system: Windows 10
+* Processor architecture: 
+* Operating system: 
 
 **Additional information**
 
-Append additional information here as appropriate. This is optional.
+...
