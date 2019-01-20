@@ -9,14 +9,16 @@ assignees: adamjstone
 
 **Overview**
 
-Clearly describe the problem that you are facing which the requested feature solves.
+...
 
 **Statement of work**
 
-State the work to be done and specify requirements for acceptance of the new feature.
+The following list describes the work to be done and defines acceptance criteria for the feature.
 
 1. 
+2. 
+3. 
 
 **Additional information**
 
-Append additional information here as appropriate. This is optional.
+...

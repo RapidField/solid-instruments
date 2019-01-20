@@ -9,26 +9,29 @@ assignees: adamjstone
 
 **Overview**
 
-Summarize the defect with a prudent level of detail.
+...
 
 **Reproduction steps**
 
-1. Modify the RapidField.TestProject.ClassName.ExampleTest test by setting parameter x equal to -1.
-2. Execute the test.
+Follow the instructions below, in order, to reproduce the observed behavior.
 
-**Observed behavior**
+1. 
+2. 
+3. 
 
-Describe the behavior observed by reproducing the steps above.
+**Observed (defective) behavior**
 
-**Expected behavior**
+...
 
-Describe what should have happened.
+**Expected (correct) behavior**
+
+...
 
 **System information**
 
-* Processor architecture: x64
-* Operating system: Windows 10
+* Processor architecture: 
+* Operating system: 
 
 **Additional information**
 
-Append additional information here as appropriate. This is optional.
+...
