@@ -28,7 +28,6 @@ namespace RapidField.SolidInstruments.Collections.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="action" /> is <see langword="null" />.
         /// </exception>
-
         public static void TraverseDown<T>(this ITreeNode<T> target, Action<ITreeNode<T>> action) => target.TraverseDown(action, (node) => true);
 
         /// <summary>
