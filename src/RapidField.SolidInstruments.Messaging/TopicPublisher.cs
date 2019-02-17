@@ -23,14 +23,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="client">
-        /// A client that facilitates message publishing operations.
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific message publishing operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="client" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        public TopicPublisher(ICommandMediator mediator, IMessagePublishingClient client)
-            : base(mediator, client, MessagingEntityType.Topic)
+        public TopicPublisher(ICommandMediator mediator, IMessagePublishingFacade facade)
+            : base(mediator, facade, MessagingEntityType.Topic)
         {
             return;
         }

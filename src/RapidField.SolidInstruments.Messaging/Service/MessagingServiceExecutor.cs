@@ -210,8 +210,8 @@ namespace RapidField.SolidInstruments.Messaging.Service
             {
                 using (var dependencyScope = CreateDependencyScope())
                 {
-                    var messagePublishingClient = dependencyScope.Resolve<IMessagePublishingClient>();
-                    await scheduleItem.PublishHeartbeatMessageAsync(messagePublishingClient).ConfigureAwait(false);
+                    var messagePublishingFacade = dependencyScope.Resolve<IMessagePublishingFacade>();
+                    await scheduleItem.PublishHeartbeatMessageAsync(messagePublishingFacade).ConfigureAwait(false);
                 }
             }
             catch (MessagePublishingException)

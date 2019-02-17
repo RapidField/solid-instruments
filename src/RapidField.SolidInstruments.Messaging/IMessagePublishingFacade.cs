@@ -8,9 +8,26 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates publishing operations for a message bus.
+    /// Facilitates implementation-specific publishing operations for a message bus.
     /// </summary>
-    public interface IMessagePublishingClient : IMessagingClient
+    /// <typeparam name="TSender">
+    /// The type of the implementation-specific send client.
+    /// </typeparam>
+    /// <typeparam name="TReceiver">
+    /// The type of the implementation-specific receive client.
+    /// </typeparam>
+    /// <typeparam name="TAdaptedMessage">
+    /// The type of implementation-specific adapted messages.
+    /// </typeparam>
+    public interface IMessagePublishingFacade<TSender, TReceiver, TAdaptedMessage> : IMessagePublishingFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TAdaptedMessage : class
+    {
+    }
+
+    /// <summary>
+    /// Facilitates implementation-specific publishing operations for a message bus.
+    /// </summary>
+    public interface IMessagePublishingFacade : IMessagingFacade
     {
         /// <summary>
         /// Asynchronously publishes the specified message to a bus.
@@ -40,34 +57,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
-            where TMessage : class, IMessage;
-
-        /// <summary>
-        /// Asynchronously publishes the specified request message to a bus and waits for the correlated response message.
-        /// </summary>
-        /// <typeparam name="TRequestMessage">
-        /// The type of the request message.
-        /// </typeparam>
-        /// <typeparam name="TResponseMessage">
-        /// The type of the response message.
-        /// </typeparam>
-        /// <param name="requestMessage">
-        /// The request message to publish.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation and containing the correlated response message.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="requestMessage" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="requestMessage" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        Task<TResponseMessage> RequestAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
-            where TRequestMessage : class, IRequestMessage<TResponseMessage>
-            where TResponseMessage : class, IResponseMessage;
+            where TMessage : class, IMessageBase;
     }
 }

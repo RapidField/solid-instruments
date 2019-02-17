@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
 
             SupportedMessageTypesReference.Add(requestMessageType);
-            RootDependencyScope.Resolve<IMessageSubscriptionClient>().RegisterHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
+            RootDependencyScope.Resolve<IMessageSubscriptionFacade>().RegisterHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
 
             SupportedMessageTypesReference.Add(messageType);
-            RootDependencyScope.Resolve<IMessageSubscriptionClient>().RegisterHandler<TMessage>((message) => HandleMessage(message), entityType);
+            RootDependencyScope.Resolve<IMessageSubscriptionFacade>().RegisterHandler<TMessage>((message) => HandleMessage(message), entityType);
         }
 
         /// <summary>

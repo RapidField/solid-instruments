@@ -28,22 +28,22 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="client">
-        /// A client that facilitates message publishing operations.
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific message publishing operations.
         /// </param>
         /// <param name="entityType">
         /// The targeted entity type.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="client" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
-        protected MessagePublisher(ICommandMediator mediator, IMessagePublishingClient client, MessagingEntityType entityType)
+        protected MessagePublisher(ICommandMediator mediator, IMessagePublishingFacade facade, MessagingEntityType entityType)
             : base(mediator, MessageHandlerRole.Publisher, entityType)
         {
-            Client = client.RejectIf().IsNull(nameof(client)).TargetArgument;
+            Facade = facade.RejectIf().IsNull(nameof(facade)).TargetArgument;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that ensures thread safety for the operation.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => controlToken.AttachTask(Client.PublishAsync(command, EntityType));
+        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => controlToken.AttachTask(Facade.PublishAsync(command, EntityType));
 
         /// <summary>
         /// Gets the type of the message that the current <see cref="MessagePublisher{TMessage}" /> publishes.
@@ -75,14 +75,14 @@ namespace RapidField.SolidInstruments.Messaging
         public Type MessageType => typeof(TMessage);
 
         /// <summary>
-        /// Represents a client that facilitates message publishing operations.
+        /// Represents an appliance that facilitates implementation-specific message publishing operations.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IMessagePublishingClient Client;
+        private readonly IMessagePublishingFacade Facade;
     }
 
     /// <summary>
-    /// Publishes messages.
+    /// Publishes request messages.
     /// </summary>
     /// <remarks>
     /// <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" /> is the default implementation of
@@ -104,16 +104,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="client">
-        /// A client that facilitates message publishing operations.
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific request message publishing operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="client" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        protected MessagePublisher(ICommandMediator mediator, IMessagePublishingClient client)
-            : base(mediator, MessageHandlerRole.Publisher, MessagePublishingClient.RequestMessageEntityType)
+        protected MessagePublisher(ICommandMediator mediator, IMessageRequestingFacade facade)
+            : base(mediator, MessageHandlerRole.Publisher, Message.RequestEntityType)
         {
-            Client = client.RejectIf().IsNull(nameof(client)).TargetArgument;
+            Facade = facade.RejectIf().IsNull(nameof(facade)).TargetArgument;
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </returns>
         protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
         {
-            using (var publishTask = Client.RequestAsync<TRequestMessage, TResponseMessage>(command))
+            using (var publishTask = Facade.RequestAsync<TRequestMessage, TResponseMessage>(command))
             {
                 publishTask.Wait();
                 return publishTask.Result;
@@ -156,9 +156,9 @@ namespace RapidField.SolidInstruments.Messaging
         public Type MessageType => typeof(TRequestMessage);
 
         /// <summary>
-        /// Represents a client that facilitates message publishing operations.
+        /// Represents an appliance that facilitates implementation-specific message publishing operations.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IMessagePublishingClient Client;
+        private readonly IMessageRequestingFacade Facade;
     }
 }

@@ -192,6 +192,18 @@ namespace RapidField.SolidInstruments.Messaging
         public virtual Type ResultType => Nix.Type;
 
         /// <summary>
+        /// Represents the entity type that is used for publishing and subscribing to request messages.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const MessagingEntityType RequestEntityType = MessagingEntityType.Queue;
+
+        /// <summary>
+        /// Represents the entity type that is used for publishing and subscribing to response messages.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const MessagingEntityType ResponseEntityType = MessagingEntityType.Topic;
+
+        /// <summary>
         /// Represents a unique identifier that is assigned to related messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

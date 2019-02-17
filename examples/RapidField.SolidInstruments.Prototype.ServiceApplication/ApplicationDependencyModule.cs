@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -10,6 +11,7 @@ using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.AzureServiceBus;
 using System;
+using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
 
 namespace RapidField.SolidInstruments.Prototype.ServiceApplication
 {
@@ -61,9 +63,11 @@ namespace RapidField.SolidInstruments.Prototype.ServiceApplication
                 return new ServiceBusConnection(serviceBusConnectionString);
             });
 
-            // Register the messaging clients.
-            configurator.AddSingleton<IMessagePublishingClient, AzureServiceBusPublishingClient>();
-            configurator.AddSingleton<IMessageSubscriptionClient, AzureServiceBusSubscriptionClient>();
+            // Register messaging types.
+            configurator.AddScoped<IMessageAdapter<AzureServiceBusMessage>, AzureServiceBusMessageAdapter>();
+            configurator.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>();
+            configurator.AddSingleton<IMessagePublishingFacade, AzureServiceBusPublishingFacade>();
+            configurator.AddSingleton<IMessageSubscriptionFacade, AzureServiceBusSubscriptionFacade>();
         }
     }
 }

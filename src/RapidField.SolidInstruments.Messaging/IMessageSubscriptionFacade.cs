@@ -3,13 +3,52 @@
 // =================================================================================================================================
 
 using System;
+using System.Collections.Generic;
 
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates subscription operations for a message bus.
+    /// Facilitates implementation-specific subscription operations for a message bus.
     /// </summary>
-    public interface IMessageSubscriptionClient : IMessagingClient
+    /// <typeparam name="TSender">
+    /// The type of the implementation-specific send client.
+    /// </typeparam>
+    /// <typeparam name="TReceiver">
+    /// The type of the implementation-specific receive client.
+    /// </typeparam>
+    /// <typeparam name="TAdaptedMessage">
+    /// The type of implementation-specific adapted messages.
+    /// </typeparam>
+    /// <typeparam name="TPublishingFacade">
+    /// The type of the implementation-specific messaging facade that is used to publish request messages.
+    /// </typeparam>
+    public interface IMessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TAdaptedMessage : class
+        where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
+    {
+    }
+
+    /// <summary>
+    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// </summary>
+    /// <typeparam name="TSender">
+    /// The type of the implementation-specific send client.
+    /// </typeparam>
+    /// <typeparam name="TReceiver">
+    /// The type of the implementation-specific receive client.
+    /// </typeparam>
+    /// <typeparam name="TAdaptedMessage">
+    /// The type of implementation-specific adapted messages.
+    /// </typeparam>
+    public interface IMessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage> : IMessageSubscriptionFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TAdaptedMessage : class
+    {
+    }
+
+    /// <summary>
+    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// </summary>
+    public interface IMessageSubscriptionFacade : IMessagingFacade
     {
         /// <summary>
         /// Registers the specified message handler with the bus.
@@ -62,5 +101,14 @@ namespace RapidField.SolidInstruments.Messaging
         void RegisterHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
+
+        /// <summary>
+        /// Gets the collection of message types for which the current <see cref="IMessageSubscriptionFacade" /> has one or more
+        /// registered handlers.
+        /// </summary>
+        IEnumerable<Type> SubscribedMessageTypes
+        {
+            get;
+        }
     }
 }
