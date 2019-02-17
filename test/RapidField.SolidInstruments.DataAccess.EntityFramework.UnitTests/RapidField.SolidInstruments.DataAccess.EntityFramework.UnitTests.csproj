@@ -23,7 +23,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\examples\RapidField.SolidInstruments.Prototype.DatabaseModel\RapidField.SolidInstruments.Prototype.DatabaseModel.csproj" />
+        <ProjectReference Include="..\..\example\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.EntityFramework\RapidField.SolidInstruments.DataAccess.EntityFramework.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.Autofac\RapidField.SolidInstruments.InversionOfControl.Autofac.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />

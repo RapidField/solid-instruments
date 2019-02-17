@@ -39,7 +39,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Serialization\RapidField.SolidInstruments.Serialization.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.SignalProcessing\RapidField.SolidInstruments.SignalProcessing.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
-        <ProjectReference Include="..\RapidField.SolidInstruments.Prototype.DatabaseModel\RapidField.SolidInstruments.Prototype.DatabaseModel.csproj" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Update="Views\FibonacciSequence\Index.cshtml">
