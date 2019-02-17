@@ -169,8 +169,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="requestMessage" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="requestMessage" />.
+        /// <exception cref="MessageRequestingException">
+        /// An exception was raised while attempting to process <paramref name="requestMessage" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Messaging
                     }
                     catch (Exception exception)
                     {
-                        throw new MessagePublishingException(typeof(TRequestMessage), exception);
+                        throw new MessageRequestingException(typeof(TRequestMessage), exception);
                     }
 
                     return PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage, controlToken).ContinueWith((publishTask) =>
@@ -204,22 +204,18 @@ namespace RapidField.SolidInstruments.Messaging
 
                             if (responseMessage is null)
                             {
-                                throw new MessageSubscriptionException("The response message is invalid.");
+                                throw new MessageSubscriptionException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
                             }
 
                             return responseMessage;
                         }
-                        catch (MessagePublishingException)
+                        catch (MessageRequestingException)
                         {
                             throw;
                         }
-                        catch (MessageSubscriptionException exception)
+                        catch (Exception exception)
                         {
-                            throw new MessagePublishingException(typeof(TRequestMessage), exception);
-                        }
-                        catch (TimeoutException exception)
-                        {
-                            throw new MessagePublishingException(typeof(TRequestMessage), exception);
+                            throw new MessageRequestingException(typeof(TRequestMessage), exception);
                         }
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 }

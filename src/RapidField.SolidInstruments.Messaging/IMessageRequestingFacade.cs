@@ -72,8 +72,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="requestMessage" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="requestMessage" />.
+        /// <exception cref="MessageRequestingException">
+        /// An exception was raised while attempting to process <paramref name="requestMessage" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.

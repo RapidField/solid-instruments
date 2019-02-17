@@ -35,6 +35,28 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AzureServiceBusSubscriptionFacade" /> class.
+        /// </summary>
+        /// <param name="publishingFacade">
+        /// An implementation-specific messaging facade that is used to publish response messages.
+        /// </param>
+        /// <param name="exceptionHandlingBehavior">
+        /// The behavior of the facade when handling an exception that is raised by a receiver. The default value is
+        /// <see cref="ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage" />.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="publishingFacade" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
+        /// </exception>
+        public AzureServiceBusSubscriptionFacade(AzureServiceBusPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
+            : base(publishingFacade, exceptionHandlingBehavior)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="AzureServiceBusSubscriptionFacade" />.
         /// </summary>
         /// <param name="disposing">
@@ -56,7 +78,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// </param>
         protected sealed override void RegisterHandler(Action<AzureServiceBusMessage> messageHandler, IReceiverClient receiveClient, ConcurrencyControlToken controlToken)
         {
-            var messageHandlerFunction = new Func<AzureServiceBusMessage, CancellationToken, Task>(async (message, cancellationToken) =>
+            var messageHandlerFunction = new Func<AzureServiceBusMessage, CancellationToken, Task>((message, cancellationToken) =>
             {
                 var lockToken = message.SystemProperties?.LockToken;
 
@@ -73,11 +95,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     messageHandler(message);
-                    await receiveClient.CompleteAsync(lockToken).ConfigureAwait(false);
+                    return receiveClient.CompleteAsync(lockToken);
                 }
                 catch
                 {
-                    await receiveClient.AbandonAsync(lockToken).ConfigureAwait(false);
+                    receiveClient.AbandonAsync(lockToken).Wait();
                     throw;
                 }
             });
@@ -86,7 +108,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         }
 
         /// <summary>
-        /// Handles an exception that is raised by a message receive client.
+        /// Asynchronously handles an exception that was raised by a message receive client.
         /// </summary>
         /// <param name="exceptionReceivedArguments">
         /// Contextual information about the raised exception.
@@ -98,35 +120,16 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while trying to publish an <see cref="ExceptionRaisedMessage" />.
         /// </exception>
         [DebuggerHidden]
-        private Task HandleReceiverException(ExceptionReceivedEventArgs exceptionReceivedArguments)
-        {
-            var receivedException = exceptionReceivedArguments.Exception;
-
-            try
-            {
-                var exceptionRaisedMessage = MessageAdapter.ConvertForward(new ExceptionRaisedMessage(receivedException));
-                var sendClient = ClientFactory.GetMessageSender<ExceptionRaisedMessage>(ExceptionRaisedMessageEntityType);
-                return sendClient.SendAsync(exceptionRaisedMessage);
-            }
-            catch (Exception exception)
-            {
-                throw new AggregateException("An exception was raised while trying to publish an ExceptionRaisedMessage.", exception, receivedException);
-            }
-        }
+        private Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => HandleReceiverExceptionAsync(exceptionReceivedArguments.Exception);
 
         /// <summary>
         /// Gets options that specify how receive clients handle messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverException)
+        private MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverExceptionAsync)
         {
-            AutoComplete = false
+            AutoComplete = false,
+            MaxConcurrentCalls = Environment.ProcessorCount
         };
-
-        /// <summary>
-        /// Represents the entity type that is used to publish new instances of <see cref="ExceptionRaisedMessage" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const MessagingEntityType ExceptionRaisedMessageEntityType = MessagingEntityType.Topic;
     }
 }
