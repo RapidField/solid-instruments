@@ -267,12 +267,14 @@ namespace RapidField.SolidInstruments.Messaging
                 using (var controlToken = StateControl.Enter())
                 {
                     RejectIfDisposed();
-                    TryAddSubscribedMessageType<TMessage>(controlToken);
 
-                    if (TryAddSubscribedMessageType<TMessage>(controlToken) == false && ResponseMessageInterfaceType.IsAssignableFrom(typeof(TMessage)))
+                    if (TryAddSubscribedMessageType<TMessage>(controlToken) == false)
                     {
-                        // Disallow registration of duplicate response handlers.
-                        return;
+                        if (ResponseMessageInterfaceType.IsAssignableFrom(typeof(TMessage)))
+                        {
+                            // Disallow registration of duplicate response handlers.
+                            return;
+                        }
                     }
 
                     var receiveClient = ClientFactory.GetMessageReceiver<TMessage>(entityType);

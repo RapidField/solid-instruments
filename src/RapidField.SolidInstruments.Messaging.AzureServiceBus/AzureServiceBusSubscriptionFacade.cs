@@ -128,8 +128,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverExceptionAsync)
         {
-            AutoComplete = false,
-            MaxConcurrentCalls = Environment.ProcessorCount
+            AutoComplete = false
         };
     }
 }

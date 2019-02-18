@@ -49,8 +49,8 @@ namespace RapidField.SolidInstruments.Prototype.ServiceApplication
             // Register the configuration.
             configurator.AddSingleton(applicationConfiguration);
 
-            // Register the Azure Service Bus connection.
-            configurator.AddSingleton((serviceProvider) =>
+            // Register the service bus connection.
+            configurator.AddScoped((serviceProvider) =>
             {
                 var configuration = serviceProvider.GetService<IConfiguration>();
                 var serviceBusConnectionString = configuration.GetConnectionString("SolidInstrumentsServiceBusDev");
@@ -64,10 +64,16 @@ namespace RapidField.SolidInstruments.Prototype.ServiceApplication
             });
 
             // Register messaging types.
-            configurator.AddScoped<IMessageAdapter<AzureServiceBusMessage>, AzureServiceBusMessageAdapter>();
-            configurator.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>();
-            configurator.AddSingleton<IMessagePublishingFacade, AzureServiceBusPublishingFacade>();
-            configurator.AddSingleton<IMessageSubscriptionFacade, AzureServiceBusSubscriptionFacade>();
+            configurator.AddScoped<AzureServiceBusMessageAdapter>();
+            configurator.AddScoped<IMessageAdapter<AzureServiceBusMessage>, AzureServiceBusMessageAdapter>((serviceProvider) => serviceProvider.GetService<AzureServiceBusMessageAdapter>());
+            configurator.AddScoped<AzureServiceBusClientFactory>();
+            configurator.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>((serviceProvider) => serviceProvider.GetService<AzureServiceBusClientFactory>());
+            configurator.AddScoped<AzureServiceBusPublishingFacade>();
+            configurator.AddScoped<IMessagePublishingFacade, AzureServiceBusPublishingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusPublishingFacade>());
+            configurator.AddSingleton<AzureServiceBusSubscriptionFacade>();
+            configurator.AddSingleton<IMessageSubscriptionFacade, AzureServiceBusSubscriptionFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusSubscriptionFacade>());
+            configurator.AddSingleton<AzureServiceBusRequestingFacade>();
+            configurator.AddSingleton<IMessageRequestingFacade, AzureServiceBusRequestingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusRequestingFacade>());
         }
     }
 }

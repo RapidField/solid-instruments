@@ -142,10 +142,10 @@ namespace RapidField.SolidInstruments.Messaging
         /// </returns>
         protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
         {
-            using (var publishTask = Facade.RequestAsync<TRequestMessage, TResponseMessage>(command))
+            using (var requestTask = Facade.RequestAsync<TRequestMessage, TResponseMessage>(command))
             {
-                publishTask.Wait();
-                return publishTask.Result;
+                requestTask.Wait();
+                return requestTask.Result;
             }
         }
 

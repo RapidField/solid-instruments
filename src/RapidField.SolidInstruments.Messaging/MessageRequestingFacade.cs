@@ -78,13 +78,10 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="requestMessage">
         /// The request message to publish.
         /// </param>
-        /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
-        /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage, ConcurrencyControlToken controlToken) => PublishingFacade.PublishAsync(requestMessage, Message.RequestEntityType);
+        protected sealed override Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => PublishingFacade.PublishAsync(requestMessage, Message.RequestEntityType);
 
         /// <summary>
         /// Registers the specified response handler with a bus.
@@ -183,45 +180,45 @@ namespace RapidField.SolidInstruments.Messaging
 
             using (var controlToken = StateControl.Enter())
             {
-                if (TryAddOutstandingRequest<TRequestMessage, TResponseMessage>(requestMessage, requestMessageIdentifier))
+                if (TryAddOutstandingRequest<TRequestMessage, TResponseMessage>(requestMessage, requestMessageIdentifier) == false)
                 {
-                    try
-                    {
-                        RegisterResponseHandler<TResponseMessage>(HandleResponseMessage, controlToken);
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new MessageRequestingException(typeof(TRequestMessage), exception);
-                    }
+                    throw new InvalidOperationException("The request was not processed because it is a duplicate.");
+                }
 
-                    return PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage, controlToken).ContinueWith((publishTask) =>
-                    {
-                        RejectIfDisposed();
-
-                        try
-                        {
-                            var responseMessage = WaitForResponse(requestMessageIdentifier) as TResponseMessage;
-
-                            if (responseMessage is null)
-                            {
-                                throw new MessageSubscriptionException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
-                            }
-
-                            return responseMessage;
-                        }
-                        catch (MessageRequestingException)
-                        {
-                            throw;
-                        }
-                        catch (Exception exception)
-                        {
-                            throw new MessageRequestingException(typeof(TRequestMessage), exception);
-                        }
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                try
+                {
+                    RegisterResponseHandler<TResponseMessage>(HandleResponseMessage, controlToken);
+                }
+                catch (Exception exception)
+                {
+                    throw new MessageRequestingException(typeof(TRequestMessage), exception);
                 }
             }
 
-            throw new InvalidOperationException("The request was not processed because it is a duplicate.");
+            return PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage).ContinueWith((publishTask) =>
+            {
+                RejectIfDisposed();
+
+                try
+                {
+                    var responseMessage = WaitForResponse(requestMessageIdentifier) as TResponseMessage;
+
+                    if (responseMessage is null)
+                    {
+                        throw new MessageSubscriptionException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
+                    }
+
+                    return responseMessage;
+                }
+                catch (MessageRequestingException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    throw new MessageRequestingException(typeof(TRequestMessage), exception);
+                }
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         /// <summary>
@@ -245,13 +242,10 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="requestMessage">
         /// The request message to publish.
         /// </param>
-        /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
-        /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected abstract Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage, ConcurrencyControlToken controlToken)
+        protected abstract Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
@@ -282,20 +276,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="responseMessage" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// The internal state of the requesting facade is corrupt.
-        /// </exception>
         [DebuggerHidden]
         private void HandleResponseMessage<TResponseMessage>(TResponseMessage responseMessage)
-            where TResponseMessage : class, IResponseMessage
-        {
-            if (TryAddUnprocessedResponse(responseMessage.RejectIf().IsNull(nameof(responseMessage)).TargetArgument, responseMessage.RequestMessageIdentifier))
-            {
-                return;
-            }
-
-            throw new InvalidOperationException("The response message could not be processed because the internal state of the requesting facade is corrupt.");
-        }
+            where TResponseMessage : class, IResponseMessage => TryAddUnprocessedResponse(responseMessage.RejectIf().IsNull(nameof(responseMessage)).TargetArgument);
 
         /// <summary>
         /// Attempts to add the specified request to a list of outstanding requests as a thread safe operation.
@@ -326,28 +309,17 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="responseMessage">
         /// The unprocessed response message.
         /// </param>
-        /// <param name="requestMessageIdentifier">
-        /// An identifier for the associated request message.
-        /// </param>
         /// <returns>
         /// <see langword="true" /> if the response was added, otherwise <see langword="false" />.
         /// </returns>
-        /// <exception cref="InvalidOperationException">
-        /// The internal state of the requesting facade is corrupt.
-        /// </exception>
         [DebuggerHidden]
-        private Boolean TryAddUnprocessedResponse(IResponseMessage responseMessage, Guid requestMessageIdentifier)
+        private Boolean TryAddUnprocessedResponse(IResponseMessage responseMessage)
         {
-            if (OutstandingRequests.ContainsKey(requestMessageIdentifier))
+            if (OutstandingRequests.TryRemove(responseMessage.RequestMessageIdentifier, out var requestMessage))
             {
-                if (UnprocessedResponses.TryAdd(requestMessageIdentifier, responseMessage))
+                if (UnprocessedResponses.TryAdd(responseMessage.RequestMessageIdentifier, responseMessage))
                 {
-                    if (OutstandingRequests.TryRemove(requestMessageIdentifier, out var requestMessage))
-                    {
-                        return true;
-                    }
-
-                    throw new InvalidOperationException("A request operation caused the message requesting facade to enter a corrupt state.");
+                    return true;
                 }
             }
 
@@ -434,7 +406,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents the polling interval that is used when waiting for a response message.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan ResponseMessagePollingInterval = TimeSpan.FromMilliseconds(2);
+        private static readonly TimeSpan ResponseMessagePollingInterval = TimeSpan.FromMilliseconds(3);
 
         /// <summary>
         /// Represents a lazily-initialized collection of outstanding requests that key pending response messages.

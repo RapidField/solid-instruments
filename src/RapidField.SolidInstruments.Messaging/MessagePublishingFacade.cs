@@ -74,7 +74,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
+        public async Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.Messaging
                     RejectIfDisposed();
                     var sendClient = ClientFactory.GetMessageSender<TMessage>(entityType);
                     var adaptedMessage = MessageAdapter.ConvertForward(message) as TAdaptedMessage;
-                    return PublishAsync(adaptedMessage, sendClient, controlToken);
+                    await PublishAsync(adaptedMessage, sendClient, controlToken).ConfigureAwait(false);
                 }
             }
             catch (MessagePublishingException)

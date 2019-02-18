@@ -47,7 +47,9 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
             // Register queue publishers.
             configurator.AddTransient<ICommandHandler<ApplicationStartingMessage>, QueuePublisher<ApplicationStartingMessage>>();
             configurator.AddTransient<ICommandHandler<ApplicationStoppingMessage>, QueuePublisher<ApplicationStoppingMessage>>();
-            configurator.AddTransient<ICommandHandler<ExceptionRaisedMessage>, QueuePublisher<ExceptionRaisedMessage>>();
+
+            // Register topic publishers.
+            configurator.AddTransient<ICommandHandler<ExceptionRaisedMessage>, TopicPublisher<ExceptionRaisedMessage>>();
 
             // Register request publishers.
             configurator.AddTransient<ICommandHandler<PingRequestMessage>, RequestPublisher<PingRequestMessage, PingResponseMessage>>();
