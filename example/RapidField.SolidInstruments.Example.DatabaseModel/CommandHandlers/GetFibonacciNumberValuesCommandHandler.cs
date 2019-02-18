@@ -5,20 +5,20 @@
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.DataAccess;
+using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
 using RapidField.SolidInstruments.ObjectComposition;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Commands;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.CommandHandlers
+namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
 {
     /// <summary>
-    /// Processes a command that gets all of the Fibonacci number values from the Prototype database.
+    /// Processes a command that gets all of the Fibonacci number values from the Example database.
     /// </summary>
-    public sealed class GetFibonacciNumberValuesCommandHandler : PrototypeCommandHandler<GetFibonacciNumberValuesCommand, IEnumerable<Int64>>
+    public sealed class GetFibonacciNumberValuesCommandHandler : ExampleCommandHandler<GetFibonacciNumberValuesCommand, IEnumerable<Int64>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetFibonacciNumberValuesCommandHandler" /> class.
@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel.CommandHandlers
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        public GetFibonacciNumberValuesCommandHandler(ICommandMediator mediator, PrototypeRepositoryFactory repositoryFactory)
+        public GetFibonacciNumberValuesCommandHandler(ICommandMediator mediator, ExampleRepositoryFactory repositoryFactory)
             : base(mediator, repositoryFactory)
         {
             return;

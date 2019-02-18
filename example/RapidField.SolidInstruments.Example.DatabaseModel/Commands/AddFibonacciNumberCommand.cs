@@ -6,7 +6,7 @@ using RapidField.SolidInstruments.DataAccess;
 using System;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Commands
+namespace RapidField.SolidInstruments.Example.DatabaseModel.Commands
 {
     /// <summary>
     /// Represents a data access command that adds a specified numeric value to the Fibonacci series.

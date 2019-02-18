@@ -4,7 +4,7 @@
 
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.Contracts.Models
+namespace RapidField.SolidInstruments.Example.Contracts.Models
 {
     /// <summary>
     /// Represents an integer number.

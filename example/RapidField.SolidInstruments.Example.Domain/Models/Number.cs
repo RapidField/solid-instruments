@@ -3,11 +3,11 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Prototype.Contracts.Models;
+using RapidField.SolidInstruments.Example.Contracts.Models;
 using System;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.Domain.Models
+namespace RapidField.SolidInstruments.Example.Domain.Models
 {
     /// <summary>
     /// Represents an integer number.

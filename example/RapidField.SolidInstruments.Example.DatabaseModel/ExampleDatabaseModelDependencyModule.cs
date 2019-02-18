@@ -5,21 +5,21 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers;
+using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
+using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.CommandHandlers;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Commands;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
-    /// Encapsulates configuration for Prototype database model dependencies.
+    /// Encapsulates configuration for Example database model dependencies.
     /// </summary>
-    public sealed class PrototypeDatabaseModelDependencyModule : DotNetNativeDependencyModule
+    public sealed class ExampleDatabaseModelDependencyModule : DotNetNativeDependencyModule
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeDatabaseModelDependencyModule" /> class.
+        /// Initializes a new instance of the <see cref="ExampleDatabaseModelDependencyModule" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeDatabaseModelDependencyModule(IConfiguration applicationConfiguration)
+        public ExampleDatabaseModelDependencyModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             return;
@@ -45,11 +45,11 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register unit-of-work types.
-            configurator.AddScoped<PrototypeSqlServerContext>();
-            configurator.AddScoped<PrototypeInMemoryContext>();
-            configurator.AddScoped<PrototypeContext, PrototypeInMemoryContext>(provider => new PrototypeInMemoryContext(provider.GetService<IConfiguration>(), "Prototype"));
-            configurator.AddScoped<PrototypeTransaction>();
-            configurator.AddScoped<PrototypeRepositoryFactory>();
+            configurator.AddScoped<ExampleSqlServerContext>();
+            configurator.AddScoped<ExampleInMemoryContext>();
+            configurator.AddScoped<ExampleContext, ExampleInMemoryContext>(provider => new ExampleInMemoryContext(provider.GetService<IConfiguration>(), "Example"));
+            configurator.AddScoped<ExampleTransaction>();
+            configurator.AddScoped<ExampleRepositoryFactory>();
 
             // Register repositories.
             configurator.AddScoped<NumberRepository>();

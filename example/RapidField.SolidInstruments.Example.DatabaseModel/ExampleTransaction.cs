@@ -6,15 +6,15 @@ using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using System;
 using System.Data;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
     /// Represents a prototypical, in-memory database transaction.
     /// </summary>
-    public sealed class PrototypeTransaction : EntityFrameworkTransaction<PrototypeContext>
+    public sealed class ExampleTransaction : EntityFrameworkTransaction<ExampleContext>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeTransaction" /> class.
+        /// Initializes a new instance of the <see cref="ExampleTransaction" /> class.
         /// </summary>
         /// <param name="context">
         /// The database session for the transaction.
@@ -25,14 +25,14 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="context" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeTransaction(PrototypeContext context)
+        public ExampleTransaction(ExampleContext context)
             : base(context)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeTransaction" /> class.
+        /// Initializes a new instance of the <see cref="ExampleTransaction" /> class.
         /// </summary>
         /// <param name="context">
         /// The database session for the transaction.
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="context" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeTransaction(PrototypeContext context, IsolationLevel isolationLevel)
+        public ExampleTransaction(ExampleContext context, IsolationLevel isolationLevel)
             : base(context, isolationLevel)
         {
             return;

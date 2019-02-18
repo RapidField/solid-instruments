@@ -5,7 +5,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-## Prototype contracts
+## Example contracts
 
 This project exposes sample contracts that are used to demonstrate Solid Instruments messaging constructs. Refer to [the project root documentation](../../README.md) for more information.
 

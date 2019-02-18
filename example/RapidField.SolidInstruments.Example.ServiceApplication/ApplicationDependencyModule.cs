@@ -13,7 +13,7 @@ using RapidField.SolidInstruments.Messaging.AzureServiceBus;
 using System;
 using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
 
-namespace RapidField.SolidInstruments.Prototype.ServiceApplication
+namespace RapidField.SolidInstruments.Example.ServiceApplication
 {
     /// <summary>
     /// Encapsulates container configuration for application dependencies.

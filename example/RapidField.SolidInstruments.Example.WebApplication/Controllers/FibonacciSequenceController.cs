@@ -5,14 +5,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Example.DatabaseModel;
+using RapidField.SolidInstruments.Example.WebApplication.Models.FibonacciSequence;
 using RapidField.SolidInstruments.Mathematics.Sequences;
-using RapidField.SolidInstruments.Prototype.DatabaseModel;
-using RapidField.SolidInstruments.Prototype.WebApplication.Models.FibonacciSequence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
+namespace RapidField.SolidInstruments.Example.WebApplication.Controllers
 {
     /// <summary>
     /// Processes requests for the path ~/FibonacciSequence
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var fibonacciNumberValues = new List<Int64>(Mediator.Process(PrototypeCommands.GetFibonacciNumberValues()));
+            var fibonacciNumberValues = new List<Int64>(Mediator.Process(ExampleCommands.GetFibonacciNumberValues()));
             var fibonacciSequence = FibonacciSequence.Classic;
 
             if (fibonacciNumberValues.Any())
@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
                     }
 
                     fibonacciNumberValues.Add(value);
-                    Mediator.Process(PrototypeCommands.AddFibonacciNumber(value));
+                    Mediator.Process(ExampleCommands.AddFibonacciNumber(value));
                     break;
                 }
             }
@@ -74,7 +74,7 @@ namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
                 {
                     var value = (Int64)term;
                     fibonacciNumberValues.Add(value);
-                    Mediator.Process(PrototypeCommands.AddFibonacciNumber(value));
+                    Mediator.Process(ExampleCommands.AddFibonacciNumber(value));
                 }
             }
 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication
+namespace RapidField.SolidInstruments.Example.WebApplication
 {
     /// <summary>
     /// Houses application configuration information and mechanics.

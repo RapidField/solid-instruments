@@ -6,7 +6,7 @@ using RapidField.SolidInstruments.Messaging;
 using System;
 using System.Runtime.Serialization;
 
-namespace RapidField.SolidInstruments.Prototype.Contracts.Messages
+namespace RapidField.SolidInstruments.Example.Contracts.Messages
 {
     /// <summary>
     /// Represents a response message.

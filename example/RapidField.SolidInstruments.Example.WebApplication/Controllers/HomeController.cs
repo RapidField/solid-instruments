@@ -5,11 +5,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Command;
-using RapidField.SolidInstruments.Prototype.WebApplication.Models;
-using RapidField.SolidInstruments.Prototype.WebApplication.Models.Home;
+using RapidField.SolidInstruments.Example.WebApplication.Models;
+using RapidField.SolidInstruments.Example.WebApplication.Models.Home;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
+namespace RapidField.SolidInstruments.Example.WebApplication.Controllers
 {
     /// <summary>
     /// Processes requests for the path ~/

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication.Models.FibonacciSequence
+namespace RapidField.SolidInstruments.Example.WebApplication.Models.FibonacciSequence
 {
     /// <summary>
     /// Represents a view model for the path ~/FibonacciSequence

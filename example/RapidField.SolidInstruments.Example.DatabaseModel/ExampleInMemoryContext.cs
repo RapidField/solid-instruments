@@ -7,21 +7,21 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
 using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
     /// Represents a connection to a prototypical, in-memory database.
     /// </summary>
-    public sealed class PrototypeInMemoryContext : PrototypeContext
+    public sealed class ExampleInMemoryContext : ExampleContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeInMemoryContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleInMemoryContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -37,20 +37,20 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="databaseName" /> is
         /// <see langword="null" />.
         /// </exception>
-        public PrototypeInMemoryContext(IConfiguration applicationConfiguration, String databaseName)
+        public ExampleInMemoryContext(IConfiguration applicationConfiguration, String databaseName)
             : base(applicationConfiguration, ContextDatabaseType.InMemory, databaseName.RejectIf().IsNullOrEmpty(nameof(databaseName)))
         {
             return;
         }
 
         /// <summary>
-        /// Populates the current <see cref="PrototypeInMemoryContext" /> with test data.
+        /// Populates the current <see cref="ExampleInMemoryContext" /> with test data.
         /// </summary>
         /// <returns>
-        /// The current <see cref="PrototypeInMemoryContext" /> with test data.
+        /// The current <see cref="ExampleInMemoryContext" /> with test data.
         /// </returns>
         [DebuggerHidden]
-        internal PrototypeInMemoryContext WithTestData()
+        internal ExampleInMemoryContext WithTestData()
         {
             var fibonacciNumberSeriesValues = new Int64[] { 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 

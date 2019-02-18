@@ -5,29 +5,29 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.Service;
-using RapidField.SolidInstruments.Prototype.Contracts.Messages;
 using RapidField.SolidInstruments.Service;
 using System;
 using System.IO;
 using System.Threading;
 
-namespace RapidField.SolidInstruments.Prototype.ServiceApplication
+namespace RapidField.SolidInstruments.Example.ServiceApplication
 {
     /// <summary>
-    /// Prepares for and performs execution of the Prototype messaging service.
+    /// Prepares for and performs execution of the Example messaging service.
     /// </summary>
-    internal sealed class PrototypeMessagingServiceExecutor : MessagingServiceExecutor<ApplicationDependencyPackage, ServiceCollection, DotNetNativeDependencyEngine>
+    internal sealed class ExampleMessagingServiceExecutor : MessagingServiceExecutor<ApplicationDependencyPackage, ServiceCollection, DotNetNativeDependencyEngine>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeMessagingServiceExecutor" /> class.
+        /// Initializes a new instance of the <see cref="ExampleMessagingServiceExecutor" /> class.
         /// </summary>
-        public PrototypeMessagingServiceExecutor()
-            : base("Prototype Messaging Service")
+        public ExampleMessagingServiceExecutor()
+            : base("Example Messaging Service")
         {
             return;
         }
@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.Prototype.ServiceApplication
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="PrototypeMessagingServiceExecutor" />.
+        /// Releases all resources consumed by the current <see cref="ExampleMessagingServiceExecutor" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

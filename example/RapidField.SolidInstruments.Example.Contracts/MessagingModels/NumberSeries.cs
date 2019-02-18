@@ -4,12 +4,12 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Prototype.Contracts.Models;
+using RapidField.SolidInstruments.Example.Contracts.Models;
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace RapidField.SolidInstruments.Prototype.Contracts.MessagingModels
+namespace RapidField.SolidInstruments.Example.Contracts.MessagingModels
 {
     /// <summary>
     /// Represents a sequential series of integer numbers.

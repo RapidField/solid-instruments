@@ -4,16 +4,16 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.DataAccess;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Commands;
+using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
 using System;
 using System.Collections.Generic;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
-    /// Exposes a collection of data access commands for the Prototype database.
+    /// Exposes a collection of data access commands for the Example database.
     /// </summary>
-    public static class PrototypeCommands
+    public static class ExampleCommands
     {
         /// <summary>
         /// Creates a data access command that adds a specified numeric value to the Fibonacci series.

@@ -3,13 +3,13 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Prototype.Contracts.Models;
+using RapidField.SolidInstruments.Example.Contracts.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Entities
+namespace RapidField.SolidInstruments.Example.DatabaseModel.Entities
 {
     /// <summary>
     /// Represents an integer number belonging to a specific number series.

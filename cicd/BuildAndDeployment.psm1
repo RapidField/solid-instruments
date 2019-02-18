@@ -6,11 +6,11 @@ $ArtifactsDirectoryName = "artifacts"
 $ConfigurationModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Configuration.psm1"
 $ConfigurationTypeLocal = "Local"
 $ConfigurationTypeProduction = "Production"
+$ExampleDirectoryName = "example"
+$ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication"
+$ExampleServiceApplicationTargetFramework = "netcoreapp2.1"
 $ProjectRootDirectory = (Get-Item $PSScriptRoot).Parent.FullName
-$PrototypeDirectoryName = "prototype"
-$PrototypeServiceApplicationNamespace = "RapidField.SolidInstruments.Prototype.ServiceApplication"
-$PrototypeServiceApplicationTargetFramework = "netcoreapp2.1"
-$PrototypeWebApplicationNamespace = "RapidField.SolidInstruments.Prototype.WebApplication"
+$ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication"
 $SolutionConfigurationDebug = "Debug"
 $SolutionConfigurationRelease = "Release"
 $SolutionFileName = "RapidField.SolidInstruments.sln"
@@ -175,46 +175,46 @@ function RestoreDependencies {
 # Start
 # =================================================================================================================================
 
-function StartPrototypeServiceApplication {
+function StartExampleServiceApplication {
     Param (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Starting the prototype service application using $SolutionConfiguration configuration."
-    $BinaryFilePath = Join-Path -Path $ProjectRootDirectory -ChildPath "$PrototypeDirectoryName\$PrototypeServiceApplicationNamespace\bin\$SolutionConfiguration\$PrototypeServiceApplicationTargetFramework\$PrototypeServiceApplicationNamespace.dll"
+    Write-Host -ForegroundColor DarkCyan "Starting the example service application using $SolutionConfiguration configuration."
+    $BinaryFilePath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ExampleDirectoryName\$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$ExampleServiceApplicationTargetFramework\$ExampleServiceApplicationNamespace.dll"
     Write-Host -ForegroundColor DarkCyan "Using binary path: $BinaryFilePath"
     Start-Process -FilePath "dotnet" -ArgumentList "$BinaryFilePath" -WindowStyle Minimized
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n"
 }
 
-function StartPrototypeServiceApplicationDebug {
-    StartPrototypeServiceApplication -SolutionConfiguration $SolutionConfigurationDebug
+function StartExampleServiceApplicationDebug {
+    StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationDebug
 }
 
-function StartPrototypeServiceApplicationRelease {
-    StartPrototypeServiceApplication -SolutionConfiguration $SolutionConfigurationRelease
+function StartExampleServiceApplicationRelease {
+    StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationRelease
 }
 
-function StartPrototypeWebApplication {
+function StartExampleWebApplication {
     Param (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Starting the prototype web application using $SolutionConfiguration configuration."
-    $ProjectFilePath = Join-Path -Path $ProjectRootDirectory -ChildPath "$PrototypeDirectoryName\$PrototypeWebApplicationNamespace\$PrototypeWebApplicationNamespace.csproj"
+    Write-Host -ForegroundColor DarkCyan "Starting the example web application using $SolutionConfiguration configuration."
+    $ProjectFilePath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ExampleDirectoryName\$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj"
     Write-Host -ForegroundColor DarkCyan "Using project path: $ProjectFilePath"
     Start-Process -FilePath "dotnet" -ArgumentList "run --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -WindowStyle Minimized
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n"
 }
 
-function StartPrototypeWebApplicationDebug {
-    StartPrototypeWebApplication -SolutionConfiguration $SolutionConfigurationDebug
+function StartExampleWebApplicationDebug {
+    StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationDebug
 }
 
-function StartPrototypeWebApplicationRelease {
-    StartPrototypeWebApplication -SolutionConfiguration $SolutionConfigurationRelease
+function StartExampleWebApplicationRelease {
+    StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationRelease
 }
 
 # Stop

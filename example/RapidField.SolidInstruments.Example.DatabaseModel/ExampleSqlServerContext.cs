@@ -8,15 +8,15 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
     /// Represents a connection to a prototypical, SQL Server database.
     /// </summary>
-    public sealed class PrototypeSqlServerContext : PrototypeContext
+    public sealed class ExampleSqlServerContext : ExampleContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeSqlServerContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleSqlServerContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeSqlServerContext(IConfiguration applicationConfiguration)
+        public ExampleSqlServerContext(IConfiguration applicationConfiguration)
             : base(applicationConfiguration, ContextDatabaseType.SQLServer, QueryTrackingBehavior.TrackAll)
         {
             return;

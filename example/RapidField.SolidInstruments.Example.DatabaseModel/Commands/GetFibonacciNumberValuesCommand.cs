@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Commands
+namespace RapidField.SolidInstruments.Example.DatabaseModel.Commands
 {
     /// <summary>
     /// Represents a data access command that returns the numeric values for the Fibonacci series.

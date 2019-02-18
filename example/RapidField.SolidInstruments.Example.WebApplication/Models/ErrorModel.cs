@@ -5,7 +5,7 @@
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication.Models
+namespace RapidField.SolidInstruments.Example.WebApplication.Models
 {
     /// <summary>
     /// Represents a view model for the path ~/Error

@@ -4,23 +4,23 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RapidField.SolidInstruments.Example.Contracts.Messages;
+using RapidField.SolidInstruments.Example.Domain.MessageSubscribers;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.Service;
-using RapidField.SolidInstruments.Prototype.Contracts.Messages;
-using RapidField.SolidInstruments.Prototype.Domain.MessageSubscribers;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.Domain
+namespace RapidField.SolidInstruments.Example.Domain
 {
     /// <summary>
-    /// Encapsulates configuration for Prototype domain dependencies.
+    /// Encapsulates configuration for Example domain dependencies.
     /// </summary>
-    public sealed class PrototypeDomainDependencyModule : DotNetNativeDependencyModule
+    public sealed class ExampleDomainDependencyModule : DotNetNativeDependencyModule
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeDomainDependencyModule" /> class.
+        /// Initializes a new instance of the <see cref="ExampleDomainDependencyModule" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.Prototype.Domain
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeDomainDependencyModule(IConfiguration applicationConfiguration)
+        public ExampleDomainDependencyModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             return;

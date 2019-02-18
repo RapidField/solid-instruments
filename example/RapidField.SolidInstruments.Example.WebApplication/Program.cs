@@ -6,7 +6,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication
+namespace RapidField.SolidInstruments.Example.WebApplication
 {
     /// <summary>
     /// Houses the entry point for the application.

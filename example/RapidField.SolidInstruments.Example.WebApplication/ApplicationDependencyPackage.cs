@@ -4,12 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RapidField.SolidInstruments.Example.DatabaseModel;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Prototype.DatabaseModel;
 using System.Collections.Generic;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication
+namespace RapidField.SolidInstruments.Example.WebApplication
 {
     /// <summary>
     /// Encapsulates container configuration for the application.
@@ -37,8 +37,8 @@ namespace RapidField.SolidInstruments.Prototype.WebApplication
         protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
         {
             new ApplicationDependencyModule(applicationConfiguration),
-            new PrototypeDatabaseModelDependencyModule(applicationConfiguration),
-            new PrototypeContractsDependencyModule(applicationConfiguration)
+            new ExampleDatabaseModelDependencyModule(applicationConfiguration),
+            new ExampleContractsDependencyModule(applicationConfiguration)
         };
     }
 }

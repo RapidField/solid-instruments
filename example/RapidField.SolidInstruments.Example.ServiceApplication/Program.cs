@@ -4,7 +4,7 @@
 
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.ServiceApplication
+namespace RapidField.SolidInstruments.Example.ServiceApplication
 {
     /// <summary>
     /// Houses the entry point for the application.
@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Prototype.ServiceApplication
         /// </param>
         public static void Main(String[] args)
         {
-            using (var serviceExecutor = new PrototypeMessagingServiceExecutor())
+            using (var serviceExecutor = new ExampleMessagingServiceExecutor())
             {
                 serviceExecutor.Execute();
             }

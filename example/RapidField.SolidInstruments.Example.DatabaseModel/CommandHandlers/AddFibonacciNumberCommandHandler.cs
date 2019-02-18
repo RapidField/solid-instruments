@@ -5,19 +5,19 @@
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.DataAccess;
+using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
 using RapidField.SolidInstruments.ObjectComposition;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Commands;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories;
 using System;
 using System.Linq;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.CommandHandlers
+namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
 {
     /// <summary>
-    /// Processes a command that adds a Fibonacci number to the Prototype database.
+    /// Processes a command that adds a Fibonacci number to the Example database.
     /// </summary>
-    public sealed class AddFibonacciNumberCommandHandler : PrototypeCommandHandler<AddFibonacciNumberCommand>
+    public sealed class AddFibonacciNumberCommandHandler : ExampleCommandHandler<AddFibonacciNumberCommand>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddFibonacciNumberCommandHandler" /> class.
@@ -32,7 +32,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel.CommandHandlers
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        public AddFibonacciNumberCommandHandler(ICommandMediator mediator, PrototypeRepositoryFactory repositoryFactory)
+        public AddFibonacciNumberCommandHandler(ICommandMediator mediator, ExampleRepositoryFactory repositoryFactory)
             : base(mediator, repositoryFactory)
         {
             return;

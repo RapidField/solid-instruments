@@ -5,7 +5,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-## Prototype service application
+## Example service application
 
 This project serves as a sample service application that employs the Solid Instruments messaging and dependency injection abstractions. Refer to [the project root documentation](../../README.md) for more information.
 

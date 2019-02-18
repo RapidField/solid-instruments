@@ -5,21 +5,21 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
-using RapidField.SolidInstruments.Prototype.Contracts.Messages;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
-    /// Encapsulates configuration for Prototype contracts dependencies.
+    /// Encapsulates configuration for Example contracts dependencies.
     /// </summary>
-    public sealed class PrototypeContractsDependencyModule : DotNetNativeDependencyModule
+    public sealed class ExampleContractsDependencyModule : DotNetNativeDependencyModule
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContractsDependencyModule" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContractsDependencyModule" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeContractsDependencyModule(IConfiguration applicationConfiguration)
+        public ExampleContractsDependencyModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             return;

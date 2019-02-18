@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel
+namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
     /// <summary>
     /// Represents a connection to a prototypical database.
     /// </summary>
-    public class PrototypeContext : ConfiguredContext
+    public class ExampleContext : ConfiguredContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -25,14 +25,14 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public PrototypeContext(IConfiguration applicationConfiguration)
+        public ExampleContext(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -46,14 +46,14 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
         /// </exception>
-        public PrototypeContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType)
+        public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType)
             : base(applicationConfiguration, databaseType)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -76,14 +76,14 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
         /// </exception>
-        public PrototypeContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName)
+        public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName)
             : base(applicationConfiguration, databaseType, databaseName)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -100,14 +100,14 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
         /// </exception>
-        public PrototypeContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, QueryTrackingBehavior trackingBehavior)
+        public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, QueryTrackingBehavior trackingBehavior)
             : base(applicationConfiguration, databaseType, trackingBehavior)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PrototypeContext" /> class.
+        /// Initializes a new instance of the <see cref="ExampleContext" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
         /// </exception>
-        public PrototypeContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName, QueryTrackingBehavior trackingBehavior)
+        public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName, QueryTrackingBehavior trackingBehavior)
             : base(applicationConfiguration, databaseType, databaseName, trackingBehavior)
         {
             return;

@@ -4,13 +4,13 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.Service;
-using RapidField.SolidInstruments.Prototype.Contracts.Messages;
 using System;
 using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Prototype.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
 {
     /// <summary>
     /// Subscribes to and processes <see cref="HeartbeatMessage" /> instances.

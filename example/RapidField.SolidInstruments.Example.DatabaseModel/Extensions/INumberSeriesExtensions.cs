@@ -2,10 +2,10 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Prototype.Contracts.Models;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.Contracts.Models;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Extensions
+namespace RapidField.SolidInstruments.Example.DatabaseModel.Extensions
 {
     /// <summary>
     /// Extends the <see cref="INumberSeries" /> interface with type conversion features.
@@ -21,6 +21,6 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Extensions
         /// <returns>
         /// The converted object.
         /// </returns>
-        public static NumberSeries ToPrototypeDatabaseEntity(this INumberSeries target) => new NumberSeries(target);
+        public static NumberSeries ToExampleDatabaseEntity(this INumberSeries target) => new NumberSeries(target);
     }
 }

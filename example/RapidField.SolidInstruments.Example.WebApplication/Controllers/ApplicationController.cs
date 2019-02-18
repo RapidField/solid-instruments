@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication.Controllers
+namespace RapidField.SolidInstruments.Example.WebApplication.Controllers
 {
     /// <summary>
     /// Represents a base controller for the application.

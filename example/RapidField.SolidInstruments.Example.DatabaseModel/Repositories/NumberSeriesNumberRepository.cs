@@ -3,16 +3,16 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
-using RapidField.SolidInstruments.Prototype.DatabaseModel.Entities;
+using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
 using System;
 using System.Linq;
 
-namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories
+namespace RapidField.SolidInstruments.Example.DatabaseModel.Repositories
 {
     /// <summary>
     /// Represents a repository for the <see cref="NumberSeriesNumber" /> entity type.
     /// </summary>
-    public sealed class NumberSeriesNumberRepository : EntityFrameworkRepository<NumberSeriesNumber, PrototypeContext>
+    public sealed class NumberSeriesNumberRepository : EntityFrameworkRepository<NumberSeriesNumber, ExampleContext>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberSeriesNumberRepository" /> class.
@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.Prototype.DatabaseModel.Repositories
         /// <exception cref="ArgumentNullException">
         /// <paramref name="context" /> is <see langword="null" />.
         /// </exception>
-        public NumberSeriesNumberRepository(PrototypeContext context)
+        public NumberSeriesNumberRepository(ExampleContext context)
             : base(context)
         {
             return;

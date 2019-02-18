@@ -4,11 +4,11 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.Messaging;
-using RapidField.SolidInstruments.Prototype.Contracts.Messages;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
 {
     /// <summary>
     /// Subscribes to and processes <see cref="PingRequestMessage" /> instances.

@@ -5,7 +5,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-## Prototype domain
+## Example domain
 
 This project houses sample domain machinery that utilizes Solid Instruments data access and messaging constructs. Refer to [the project root documentation](../../README.md) for more information.
 

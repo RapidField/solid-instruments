@@ -19,7 +19,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
-        "RapidField.SolidInstruments.Prototype.WebApplication": {
+        "RapidField.SolidInstruments.Example.WebApplication": {
             "commandName": "Project",
             "launchBrowser": true,
             "environmentVariables": {

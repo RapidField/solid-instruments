@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 
-namespace RapidField.SolidInstruments.Prototype.WebApplication
+namespace RapidField.SolidInstruments.Example.WebApplication
 {
     /// <summary>
     /// Encapsulates container configuration for application dependencies.

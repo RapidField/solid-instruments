@@ -8,7 +8,7 @@ using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
-namespace RapidField.SolidInstruments.Prototype.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
 {
     /// <summary>
     /// Subscribes to and processes <see cref="ApplicationStoppingMessage" /> instances.
