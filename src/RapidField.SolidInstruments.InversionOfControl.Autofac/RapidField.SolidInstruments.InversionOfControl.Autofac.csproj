@@ -34,7 +34,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="4.8.1" />
+        <PackageReference Include="Autofac" Version="4.9.1" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     </ItemGroup>

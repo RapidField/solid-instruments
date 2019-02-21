@@ -17,7 +17,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="4.8.1" />
+        <PackageReference Include="Autofac" Version="4.9.1" />
         <PackageReference Include="FluentAssertions" Version="5.5.3" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
         <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
