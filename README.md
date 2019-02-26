@@ -6,6 +6,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 - - -
 
 [![CodeFactor](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/badge)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Build status](https://ci.appveyor.com/api/projects/status/0djwhtesii54shrb/branch/master?svg=true)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
 
 ## About the project
 
