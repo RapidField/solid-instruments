@@ -28,38 +28,38 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TPublishingFacade">
     /// The type of the implementation-specific messaging facade that is used to publish request and response messages.
     /// </typeparam>
-    /// <typeparam name="TSubscriptionFacade">
+    /// <typeparam name="TSubscribingFacade">
     /// The type of the implementation-specific messaging facade that subscribes to request messages.
     /// </typeparam>
     /// <remarks>
-    /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade}" /> is the
+    /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" /> is the
     /// default implementation of
-    /// <see cref="IMessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade}" />.
+    /// <see cref="IMessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" />.
     /// </remarks>
-    public abstract class MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade> : MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade>
+    public abstract class MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade> : MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade>
         where TAdaptedMessage : class
         where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
-        where TSubscriptionFacade : MessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade>
+        where TSubscribingFacade : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
         /// </summary>
-        /// <param name="subscriptionFacade">
+        /// <param name="subscribingFacade">
         /// An implementation-specific messaging facade that subscribes to request messages.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="subscriptionFacade" /> is <see langword="null" />.
+        /// <paramref name="subscribingFacade" /> is <see langword="null" />.
         /// </exception>
-        protected MessageRequestingFacade(TSubscriptionFacade subscriptionFacade)
-            : base(subscriptionFacade.RejectIf().IsNull(nameof(subscriptionFacade)).TargetArgument.ClientFactory, subscriptionFacade.MessageAdapter)
+        protected MessageRequestingFacade(TSubscribingFacade subscribingFacade)
+            : base(subscribingFacade.RejectIf().IsNull(nameof(subscribingFacade)).TargetArgument.ClientFactory, subscribingFacade.MessageAdapter)
         {
-            PublishingFacade = subscriptionFacade.PublishingFacade;
-            SubscriptionFacade = subscriptionFacade;
+            PublishingFacade = subscribingFacade.PublishingFacade;
+            SubscribingFacade = subscribingFacade;
         }
 
         /// <summary>
         /// Releases all resources consumed by the current
-        /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade}" />.
+        /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that ensures thread safety for the operation.
         /// </param>
-        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken) => SubscriptionFacade.RegisterHandler(responseHandler, Message.ResponseEntityType);
+        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken) => SubscribingFacade.RegisterTopicMessageHandler(responseHandler);
 
         /// <summary>
         /// Represents an implementation-specific messaging facade that is used to publish request and response messages.
@@ -107,7 +107,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents an implementation-specific messaging facade that subscribes to request messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly TSubscriptionFacade SubscriptionFacade;
+        private readonly TSubscribingFacade SubscribingFacade;
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                     if (responseMessage is null)
                     {
-                        throw new MessageSubscriptionException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
+                        throw new MessageSubscribingException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
                     }
 
                     return responseMessage;

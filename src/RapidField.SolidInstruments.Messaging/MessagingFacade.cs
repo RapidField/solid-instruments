@@ -59,6 +59,11 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Gets the unique identifier for the current <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
+        /// </summary>
+        public Guid Identifier => LazyIdentifier.Value;
+
+        /// <summary>
         /// Represents an appliance that creates and manages implementation-specific messaging clients.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -69,5 +74,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly IMessageAdapter<TAdaptedMessage> MessageAdapter;
+
+        /// <summary>
+        /// Represents the lazily-initialized unique identifier for the current
+        /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Lazy<Guid> LazyIdentifier = new Lazy<Guid>(() => Guid.NewGuid(), LazyThreadSafetyMode.ExecutionAndPublication);
     }
 }

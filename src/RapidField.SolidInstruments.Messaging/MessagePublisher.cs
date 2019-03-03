@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging
 {
@@ -67,7 +68,25 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that ensures thread safety for the operation.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => controlToken.AttachTask(Facade.PublishAsync(command, EntityType));
+        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        {
+            switch (EntityType)
+            {
+                case MessagingEntityType.Queue:
+
+                    controlToken.AttachTask(Facade.PublishToQueueAsync(command));
+                    break;
+
+                case MessagingEntityType.Topic:
+
+                    controlToken.AttachTask(Facade.PublishToTopicAsync(command));
+                    break;
+
+                default:
+
+                    throw new InvalidOperationException($"The specified messaging entity type, {EntityType}, is not supported.");
+            }
+        }
 
         /// <summary>
         /// Gets the type of the message that the current <see cref="MessagePublisher{TMessage}" /> publishes.

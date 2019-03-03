@@ -22,43 +22,115 @@ namespace RapidField.SolidInstruments.Messaging
         where TAdaptedMessage : class
     {
         /// <summary>
-        /// Gets a shared, managed, implementation-specific message receiver.
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined queue.
         /// </summary>
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="entityType">
-        /// The type of the entity.
-        /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
-        /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetMessageReceiver<TMessage>(MessagingEntityType entityType)
+        TReceiver GetQueueReceiver<TMessage>()
             where TMessage : class;
 
         /// <summary>
-        /// Gets a shared, managed, implementation-specific message sender.
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined queue.
         /// </summary>
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="entityType">
-        /// The type of the entity.
+        /// <returns>
+        /// The managed, implementation-specific message sender.
+        /// </returns>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TSender GetQueueSender<TMessage>()
+            where TMessage : class;
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a typed-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TReceiver GetTopicReceiver<TMessage>()
+            where TMessage : class;
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, which is appended to the path.
+        /// </param>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TReceiver GetTopicReceiver<TMessage>(Guid receiverIdentifier)
+            where TMessage : class;
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message sender.
+        /// </returns>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TSender GetTopicSender<TMessage>()
+            where TMessage : class;
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, which is appended to the path.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
+        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
@@ -66,7 +138,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetMessageSender<TMessage>(MessagingEntityType entityType)
+        TSender GetTopicSender<TMessage>(Guid receiverIdentifier)
             where TMessage : class;
     }
 }

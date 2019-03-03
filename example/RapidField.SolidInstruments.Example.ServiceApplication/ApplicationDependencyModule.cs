@@ -70,8 +70,8 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
             configurator.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>((serviceProvider) => serviceProvider.GetService<AzureServiceBusClientFactory>());
             configurator.AddScoped<AzureServiceBusPublishingFacade>();
             configurator.AddScoped<IMessagePublishingFacade, AzureServiceBusPublishingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusPublishingFacade>());
-            configurator.AddSingleton<AzureServiceBusSubscriptionFacade>();
-            configurator.AddSingleton<IMessageSubscriptionFacade, AzureServiceBusSubscriptionFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusSubscriptionFacade>());
+            configurator.AddSingleton<AzureServiceBusSubscribingFacade>();
+            configurator.AddSingleton<IMessageSubscribingFacade, AzureServiceBusSubscribingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusSubscribingFacade>());
             configurator.AddSingleton<AzureServiceBusRequestingFacade>();
             configurator.AddSingleton<IMessageRequestingFacade, AzureServiceBusRequestingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusRequestingFacade>());
         }

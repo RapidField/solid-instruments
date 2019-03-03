@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// Facilitates implementation-specific subscribing operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -29,16 +29,16 @@ namespace RapidField.SolidInstruments.Messaging
     /// The type of the implementation-specific messaging facade that is used to publish response messages.
     /// </typeparam>
     /// <remarks>
-    /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> is the default
-    /// implementation of <see cref="IMessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
+    /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> is the default implementation
+    /// of <see cref="IMessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
     /// </remarks>
-    public abstract class MessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : MessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage>
+    public abstract class MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
         where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> class.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> class.
         /// </summary>
         /// <param name="publishingFacade">
         /// An implementation-specific messaging facade that is used to publish response messages.
@@ -46,7 +46,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="publishingFacade" /> is <see langword="null" />.
         /// </exception>
-        protected MessageSubscriptionFacade(TPublishingFacade publishingFacade)
+        protected MessageSubscribingFacade(TPublishingFacade publishingFacade)
             : base(publishingFacade.RejectIf().IsNull(nameof(publishingFacade)).TargetArgument.ClientFactory, publishingFacade.MessageAdapter)
         {
             PublishingFacade = publishingFacade;
@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Messaging
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> class.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> class.
         /// </summary>
         /// <param name="publishingFacade">
         /// An implementation-specific messaging facade that is used to publish response messages.
@@ -69,14 +69,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
         /// </exception>
-        protected MessageSubscriptionFacade(TPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
+        protected MessageSubscribingFacade(TPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
             : base(publishingFacade.RejectIf().IsNull(nameof(publishingFacade)).TargetArgument.ClientFactory, publishingFacade.MessageAdapter, exceptionHandlingBehavior)
         {
             PublishingFacade = publishingFacade;
         }
 
         /// <summary>
-        /// Registers the specified message handler with the bus.
+        /// Registers the specified request message handler with the bus.
         /// </summary>
         /// <typeparam name="TRequestMessage">
         /// The type of the request message.
@@ -90,13 +90,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="requestMessageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while attempting to register <paramref name="requestMessageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public sealed override void RegisterHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
+        public sealed override void RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
         {
             requestMessageHandler = requestMessageHandler.RejectIf().IsNull(nameof(requestMessageHandler)).TargetArgument;
 
@@ -112,19 +112,38 @@ namespace RapidField.SolidInstruments.Messaging
                         return;
                     }
 
-                    var requestReceiveClient = ClientFactory.GetMessageReceiver<TRequestMessage>(Message.RequestEntityType);
+                    var requestEntityType = Message.RequestEntityType;
+                    var requestReceiveClient = default(TReceiver);
+
+                    switch (requestEntityType)
+                    {
+                        case MessagingEntityType.Queue:
+
+                            requestReceiveClient = ClientFactory.GetQueueReceiver<TRequestMessage>();
+                            break;
+
+                        case MessagingEntityType.Topic:
+
+                            requestReceiveClient = ClientFactory.GetTopicReceiver<TRequestMessage>();
+                            break;
+
+                        default:
+
+                            throw new InvalidOperationException($"The specified messaging entity type, {requestEntityType}, is not supported.");
+                    }
+
                     var messageHandler = new Action<TAdaptedMessage>((adaptedRequestMessage) =>
                     {
                         RejectIfDisposed();
                         var requestMessage = MessageAdapter.ConvertReverse<TRequestMessage>(adaptedRequestMessage);
                         var responseMessage = requestMessageHandler(requestMessage);
-                        PublishingFacade.PublishAsync(responseMessage, Message.ResponseEntityType).Wait();
+                        PublishingFacade.PublishAsync(responseMessage, Message.ResponseEntityType);
                     });
 
-                    RegisterHandler(messageHandler, requestReceiveClient, controlToken);
+                    RegisterMessageHandler(messageHandler, requestReceiveClient, controlToken);
                 }
             }
-            catch (MessageSubscriptionException)
+            catch (MessageSubscribingException)
             {
                 throw;
             }
@@ -134,13 +153,13 @@ namespace RapidField.SolidInstruments.Messaging
             }
             catch (Exception exception)
             {
-                throw new MessageSubscriptionException(typeof(TRequestMessage), exception);
+                throw new MessageSubscribingException(typeof(TRequestMessage), exception);
             }
         }
 
         /// <summary>
         /// Releases all resources consumed by the current
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -169,7 +188,7 @@ namespace RapidField.SolidInstruments.Messaging
     }
 
     /// <summary>
-    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// Facilitates implementation-specific subscribing operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -181,14 +200,14 @@ namespace RapidField.SolidInstruments.Messaging
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
     /// <remarks>
-    /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" /> is the default implementation of
-    /// <see cref="IMessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" />.
+    /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> is the default implementation of
+    /// <see cref="IMessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" />.
     /// </remarks>
-    public abstract class MessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage> : MessagingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage>
+    public abstract class MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage> : MessagingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
+        /// Initializes a new instance of the <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
         /// </summary>
         /// <param name="clientFactory">
         /// An appliance that creates manages implementation-specific messaging clients.
@@ -200,14 +219,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="clientFactory" /> is <see langword="null" /> -or- <paramref name="messageAdapter" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected MessageSubscriptionFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter)
+        protected MessageSubscribingFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter)
             : this(clientFactory, messageAdapter, DefaultExceptionHandlingBehavior)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
+        /// Initializes a new instance of the <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
         /// </summary>
         /// <param name="clientFactory">
         /// An appliance that creates manages implementation-specific messaging clients.
@@ -226,11 +245,78 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
         /// </exception>
-        protected MessageSubscriptionFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
+        protected MessageSubscribingFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
             : base(clientFactory, messageAdapter)
         {
             ExceptionHandlingBehavior = exceptionHandlingBehavior.RejectIf().IsEqualToValue(ReceiverExceptionHandlingBehavior.Unspecified, nameof(exceptionHandlingBehavior));
         }
+
+        /// <summary>
+        /// Registers the specified queue message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler)
+            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, MessagingEntityType.Queue);
+
+        /// <summary>
+        /// Registers the specified request message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TRequestMessage">
+        /// The type of the request message.
+        /// </typeparam>
+        /// <typeparam name="TResponseMessage">
+        /// The type of the response message.
+        /// </typeparam>
+        /// <param name="requestMessageHandler">
+        /// A function that handles a request message.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="requestMessageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="requestMessageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public abstract void RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
+            where TRequestMessage : class, IRequestMessage<TResponseMessage>
+            where TResponseMessage : class, IResponseMessage;
+
+        /// <summary>
+        /// Registers the specified topic message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
+            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, MessagingEntityType.Topic);
 
         /// <summary>
         /// Registers the specified message handler with the bus.
@@ -247,20 +333,17 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
-        /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void RegisterHandler<TMessage>(Action<TMessage> messageHandler, MessagingEntityType entityType)
+        [DebuggerHidden]
+        internal void RegisterMessageHandler<TMessage>(Action<TMessage> messageHandler, MessagingEntityType entityType)
             where TMessage : class, IMessage
         {
             messageHandler = messageHandler.RejectIf().IsNull(nameof(messageHandler)).TargetArgument;
-            entityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)).TargetArgument;
 
             try
             {
@@ -277,7 +360,25 @@ namespace RapidField.SolidInstruments.Messaging
                         }
                     }
 
-                    var receiveClient = ClientFactory.GetMessageReceiver<TMessage>(entityType);
+                    var receiveClient = default(TReceiver);
+
+                    switch (entityType)
+                    {
+                        case MessagingEntityType.Queue:
+
+                            receiveClient = ClientFactory.GetQueueReceiver<TMessage>();
+                            break;
+
+                        case MessagingEntityType.Topic:
+
+                            receiveClient = ClientFactory.GetTopicReceiver<TMessage>();
+                            break;
+
+                        default:
+
+                            throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
+                    }
+
                     var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
                     {
                         RejectIfDisposed();
@@ -285,10 +386,10 @@ namespace RapidField.SolidInstruments.Messaging
                         messageHandler(message);
                     });
 
-                    RegisterHandler(adaptedMessageHandler, receiveClient, controlToken);
+                    RegisterMessageHandler(adaptedMessageHandler, receiveClient, controlToken);
                 }
             }
-            catch (MessageSubscriptionException)
+            catch (MessageSubscribingException)
             {
                 throw;
             }
@@ -298,34 +399,9 @@ namespace RapidField.SolidInstruments.Messaging
             }
             catch (Exception exception)
             {
-                throw new MessageSubscriptionException(typeof(TMessage), exception);
+                throw new MessageSubscribingException(typeof(TMessage), exception);
             }
         }
-
-        /// <summary>
-        /// Registers the specified message handler with the bus.
-        /// </summary>
-        /// <typeparam name="TRequestMessage">
-        /// The type of the request message.
-        /// </typeparam>
-        /// <typeparam name="TResponseMessage">
-        /// The type of the response message.
-        /// </typeparam>
-        /// <param name="requestMessageHandler">
-        /// A function that handles a request message.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="requestMessageHandler" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="MessageSubscriptionException">
-        /// An exception was raised while attempting to register <paramref name="requestMessageHandler" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public abstract void RegisterHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
-            where TRequestMessage : class, IRequestMessage<TResponseMessage>
-            where TResponseMessage : class, IResponseMessage;
 
         /// <summary>
         /// Attempts to add the specified message type to the collection of subscribed message types.
@@ -356,7 +432,7 @@ namespace RapidField.SolidInstruments.Messaging
 
         /// <summary>
         /// Releases all resources consumed by the current
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" />.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -437,11 +513,11 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that ensures thread safety for the operation.
         /// </param>
-        protected abstract void RegisterHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, ConcurrencyControlToken controlToken);
+        protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, ConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Gets the collection of message types for which the current
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
         /// </summary>
         public IEnumerable<Type> SubscribedMessageTypes => SubscribedMessageTypeList.ToArray();
 
@@ -471,7 +547,7 @@ namespace RapidField.SolidInstruments.Messaging
 
         /// <summary>
         /// Represents the collection of message types for which the current
-        /// <see cref="MessageSubscriptionFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
+        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly IList<Type> SubscribedMessageTypeList = new List<Type>();

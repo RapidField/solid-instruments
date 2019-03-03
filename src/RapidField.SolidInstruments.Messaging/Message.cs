@@ -195,13 +195,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents the entity type that is used for publishing and subscribing to request messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const MessagingEntityType RequestEntityType = MessagingEntityType.Queue;
+        internal static MessagingEntityType RequestEntityType = MessagingEntityType.Queue;
 
         /// <summary>
         /// Represents the entity type that is used for publishing and subscribing to response messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const MessagingEntityType ResponseEntityType = MessagingEntityType.Topic;
+        internal static MessagingEntityType ResponseEntityType = MessagingEntityType.Topic;
 
         /// <summary>
         /// Represents a unique identifier that is assigned to related messages.

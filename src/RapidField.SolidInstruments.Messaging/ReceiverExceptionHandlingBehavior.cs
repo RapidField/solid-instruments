@@ -8,7 +8,7 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Defines the behavior of an <see cref="IMessageSubscriptionFacade" /> when handling an exception that is raised by a receiver.
+    /// Defines the behavior of an <see cref="IMessageSubscribingFacade" /> when handling an exception that is raised by a receiver.
     /// </summary>
     public enum ReceiverExceptionHandlingBehavior : Int32
     {

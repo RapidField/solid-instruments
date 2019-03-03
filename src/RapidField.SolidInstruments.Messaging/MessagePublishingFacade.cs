@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging
@@ -48,6 +49,54 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
+        /// Asynchronously publishes the specified message to a queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task PublishToQueueAsync<TMessage>(TMessage message)
+            where TMessage : class, IMessageBase => PublishAsync(message, MessagingEntityType.Queue);
+
+        /// <summary>
+        /// Asynchronously publishes the specified message to a topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task PublishToTopicAsync<TMessage>(TMessage message)
+            where TMessage : class, IMessageBase => PublishAsync(message, MessagingEntityType.Topic);
+
+        /// <summary>
         /// Asynchronously publishes the specified message to a bus.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -74,7 +123,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public async Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
+        [DebuggerHidden]
+        internal Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
@@ -85,9 +135,27 @@ namespace RapidField.SolidInstruments.Messaging
                 using (var controlToken = StateControl.Enter())
                 {
                     RejectIfDisposed();
-                    var sendClient = ClientFactory.GetMessageSender<TMessage>(entityType);
+                    var sendClient = default(TSender);
+
+                    switch (entityType)
+                    {
+                        case MessagingEntityType.Queue:
+
+                            sendClient = ClientFactory.GetQueueSender<TMessage>();
+                            break;
+
+                        case MessagingEntityType.Topic:
+
+                            sendClient = ClientFactory.GetTopicSender<TMessage>();
+                            break;
+
+                        default:
+
+                            throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
+                    }
+
                     var adaptedMessage = MessageAdapter.ConvertForward(message) as TAdaptedMessage;
-                    await PublishAsync(adaptedMessage, sendClient, controlToken).ConfigureAwait(false);
+                    return PublishAsync(adaptedMessage, sendClient, controlToken);
                 }
             }
             catch (MessagePublishingException)

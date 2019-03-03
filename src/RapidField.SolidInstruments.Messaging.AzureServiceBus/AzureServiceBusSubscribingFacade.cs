@@ -15,12 +15,12 @@ using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
 namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 {
     /// <summary>
-    /// Facilitates subscription operations for Azure Service Bus queues.
+    /// Facilitates subscribing operations for Azure Service Bus queues.
     /// </summary>
-    public sealed class AzureServiceBusSubscriptionFacade : MessageSubscriptionFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusPublishingFacade>
+    public sealed class AzureServiceBusSubscribingFacade : MessageSubscribingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusPublishingFacade>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusSubscriptionFacade" /> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusSubscribingFacade" /> class.
         /// </summary>
         /// <param name="publishingFacade">
         /// An implementation-specific messaging facade that is used to publish response messages.
@@ -28,14 +28,14 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <exception cref="ArgumentNullException">
         /// <paramref name="publishingFacade" /> is <see langword="null" />.
         /// </exception>
-        public AzureServiceBusSubscriptionFacade(AzureServiceBusPublishingFacade publishingFacade)
+        public AzureServiceBusSubscribingFacade(AzureServiceBusPublishingFacade publishingFacade)
             : base(publishingFacade)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusSubscriptionFacade" /> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusSubscribingFacade" /> class.
         /// </summary>
         /// <param name="publishingFacade">
         /// An implementation-specific messaging facade that is used to publish response messages.
@@ -50,14 +50,14 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
         /// </exception>
-        public AzureServiceBusSubscriptionFacade(AzureServiceBusPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
+        public AzureServiceBusSubscribingFacade(AzureServiceBusPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
             : base(publishingFacade, exceptionHandlingBehavior)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="AzureServiceBusSubscriptionFacade" />.
+        /// Releases all resources consumed by the current <see cref="AzureServiceBusSubscribingFacade" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -76,7 +76,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <param name="controlToken">
         /// A token that ensures thread safety for the operation.
         /// </param>
-        protected sealed override void RegisterHandler(Action<AzureServiceBusMessage> messageHandler, IReceiverClient receiveClient, ConcurrencyControlToken controlToken)
+        protected sealed override void RegisterMessageHandler(Action<AzureServiceBusMessage> messageHandler, IReceiverClient receiveClient, ConcurrencyControlToken controlToken)
         {
             var messageHandlerFunction = new Func<AzureServiceBusMessage, CancellationToken, Task>((message, cancellationToken) =>
             {
@@ -84,11 +84,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 
                 if (lockToken is null)
                 {
-                    throw new MessageSubscriptionException("The message cannot be processed because the lock token is invalid.");
+                    throw new MessageSubscribingException("The message cannot be processed because the lock token is invalid.");
                 }
                 else if (receiveClient.IsClosedOrClosing)
                 {
-                    throw new MessageSubscriptionException("The message cannot be processed because the receive client is unavailable.");
+                    throw new MessageSubscribingException("The message cannot be processed because the receive client is unavailable.");
                 }
 
                 try

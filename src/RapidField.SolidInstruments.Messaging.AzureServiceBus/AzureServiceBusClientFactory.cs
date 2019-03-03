@@ -38,26 +38,32 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
+        /// <param name="connection">
+        /// A connection that governs interaction with messaging entities.
+        /// </param>
         /// <param name="entityType">
         /// The type of the entity.
         /// </param>
-        /// <param name="connection">
-        /// A connection that governs interaction with messaging entities.
+        /// <param name="entityPath">
+        /// The unique path for the entity.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
         /// </param>
         /// <returns>
         /// A new implementation-specific client that facilitates receive operations.
         /// </returns>
-        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(MessagingEntityType entityType, ServiceBusConnection connection)
+        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName)
         {
             switch (entityType)
             {
                 case MessagingEntityType.Queue:
 
-                    return CreateQueueClient<TMessage>(connection);
+                    return CreateQueueClient<TMessage>(connection, entityPath);
 
                 case MessagingEntityType.Topic:
 
-                    return CreateSubscriptionClient<TMessage>(connection);
+                    return CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName);
 
                 default:
 
@@ -71,26 +77,29 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
+        /// <param name="connection">
+        /// A connection that governs interaction with messaging entities.
+        /// </param>
         /// <param name="entityType">
         /// The type of the entity.
         /// </param>
-        /// <param name="connection">
-        /// A connection that governs interaction with messaging entities.
+        /// <param name="entityPath">
+        /// The unique path for the entity.
         /// </param>
         /// <returns>
         /// A new implementation-specific client that facilitates send operations.
         /// </returns>
-        protected sealed override ISenderClient CreateMessageSender<TMessage>(MessagingEntityType entityType, ServiceBusConnection connection)
+        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath)
         {
             switch (entityType)
             {
                 case MessagingEntityType.Queue:
 
-                    return CreateQueueClient<TMessage>(connection);
+                    return CreateQueueClient<TMessage>(connection, entityPath);
 
                 case MessagingEntityType.Topic:
 
-                    return CreateTopicClient<TMessage>(connection);
+                    return CreateTopicClient<TMessage>(connection, entityPath);
 
                 default:
 
@@ -115,6 +124,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <param name="connection">
         /// A connection that governs interaction with messaging entities.
         /// </param>
+        /// <param name="queuePath">
+        /// The unique path for the queue.
+        /// </param>
         /// <returns>
         /// A new <see cref="IQueueClient" />.
         /// </returns>
@@ -122,10 +134,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection)
+        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection, String queuePath)
             where TMessage : class
         {
-            var queuePath = GetQueuePath<TMessage>();
             EnsureQueueExistanceAsync(queuePath).Wait();
             return new QueueClient(connection, queuePath, ReceiveBehavior, RetryBehavior);
         }
@@ -139,6 +150,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <param name="connection">
         /// A connection that governs interaction with messaging entities.
         /// </param>
+        /// <param name="topicPath">
+        /// A unique path for the topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// A name for the subscription.
+        /// </param>
         /// <returns>
         /// A new <see cref="ISubscriptionClient" />.
         /// </returns>
@@ -146,11 +163,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection)
+        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection, String topicPath, String subscriptionName)
             where TMessage : class
         {
-            var topicPath = GetTopicPath<TMessage>();
-            var subscriptionName = GetSubscriptionName<TMessage>();
             EnsureSubscriptionExistanceAsync(topicPath, subscriptionName).Wait();
             return new SubscriptionClient(connection, topicPath, subscriptionName, ReceiveBehavior, RetryBehavior);
         }
@@ -164,6 +179,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <param name="connection">
         /// A connection that governs interaction with messaging entities.
         /// </param>
+        /// <param name="topicPath">
+        /// A unique path for the topic.
+        /// </param>
         /// <returns>
         /// A new <see cref="ITopicClient" />.
         /// </returns>
@@ -171,10 +189,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection)
+        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection, String topicPath)
             where TMessage : class
         {
-            var topicPath = GetTopicPath<TMessage>();
             EnsureTopicExistanceAsync(topicPath).Wait();
             return new TopicClient(connection, topicPath, RetryBehavior);
         }

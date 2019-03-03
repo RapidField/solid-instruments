@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// Facilitates implementation-specific subscribing operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -22,14 +22,14 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TPublishingFacade">
     /// The type of the implementation-specific messaging facade that is used to publish request messages.
     /// </typeparam>
-    public interface IMessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
         where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
     {
     }
 
     /// <summary>
-    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// Facilitates implementation-specific subscribing operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -40,18 +40,18 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    public interface IMessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage> : IMessageSubscriptionFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage> : IMessageSubscribingFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
     {
     }
 
     /// <summary>
-    /// Facilitates implementation-specific subscription operations for a message bus.
+    /// Facilitates implementation-specific subscribing operations for a message bus.
     /// </summary>
-    public interface IMessageSubscriptionFacade : IMessagingFacade
+    public interface IMessageSubscribingFacade : IMessagingFacade
     {
         /// <summary>
-        /// Registers the specified message handler with the bus.
+        /// Registers the specified queue message handler with the bus.
         /// </summary>
         /// <typeparam name="TMessage">
         /// The type of the message.
@@ -59,26 +59,20 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="messageHandler">
         /// An action that handles a message.
         /// </param>
-        /// <param name="entityType">
-        /// The targeted entity type.
-        /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
-        /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterHandler<TMessage>(Action<TMessage> messageHandler, MessagingEntityType entityType)
+        void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler)
             where TMessage : class, IMessage;
 
         /// <summary>
-        /// Registers the specified message handler with the bus.
+        /// Registers the specified request message handler with the bus.
         /// </summary>
         /// <typeparam name="TRequestMessage">
         /// The type of the request message.
@@ -92,18 +86,39 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="requestMessageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while attempting to register <paramref name="requestMessageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
+        void RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
         /// <summary>
-        /// Gets the collection of message types for which the current <see cref="IMessageSubscriptionFacade" /> has one or more
+        /// Registers the specified topic message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
+            where TMessage : class, IMessage;
+
+        /// <summary>
+        /// Gets the collection of message types for which the current <see cref="IMessageSubscribingFacade" /> has one or more
         /// registered handlers.
         /// </summary>
         IEnumerable<Type> SubscribedMessageTypes

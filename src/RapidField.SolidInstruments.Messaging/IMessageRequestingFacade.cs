@@ -22,13 +22,13 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TPublishingFacade">
     /// The type of the implementation-specific messaging facade that is used to publish request messages.
     /// </typeparam>
-    /// <typeparam name="TSubscriptionFacade">
+    /// <typeparam name="TSubscribingFacade">
     /// The type of the implementation-specific messaging facade that subscribes to request messages.
     /// </typeparam>
-    public interface IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscriptionFacade> : IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade> : IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
         where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
-        where TSubscriptionFacade : MessageSubscriptionFacade<TSender, TReceiver, TAdaptedMessage>
+        where TSubscribingFacade : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage>
     {
     }
 

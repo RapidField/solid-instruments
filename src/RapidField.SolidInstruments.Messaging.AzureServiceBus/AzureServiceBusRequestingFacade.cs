@@ -11,19 +11,19 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
     /// <summary>
     /// Facilitates requesting operations for Azure Service Bus.
     /// </summary>
-    public sealed class AzureServiceBusRequestingFacade : MessageRequestingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusPublishingFacade, AzureServiceBusSubscriptionFacade>
+    public sealed class AzureServiceBusRequestingFacade : MessageRequestingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusPublishingFacade, AzureServiceBusSubscribingFacade>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureServiceBusRequestingFacade" /> class.
         /// </summary>
-        /// <param name="subscriptionFacade">
+        /// <param name="subscribingFacade">
         /// An implementation-specific messaging facade that subscribes to request messages.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="subscriptionFacade" /> is <see langword="null" />.
+        /// <paramref name="subscribingFacade" /> is <see langword="null" />.
         /// </exception>
-        public AzureServiceBusRequestingFacade(AzureServiceBusSubscriptionFacade subscriptionFacade)
-            : base(subscriptionFacade)
+        public AzureServiceBusRequestingFacade(AzureServiceBusSubscribingFacade subscribingFacade)
+            : base(subscribingFacade)
         {
             return;
         }

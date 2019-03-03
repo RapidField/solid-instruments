@@ -4,10 +4,11 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.TextEncoding;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Messaging
@@ -51,6 +52,278 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TReceiver GetQueueReceiver<TMessage>()
+            where TMessage : class => GetMessageReceiver<TMessage>(MessagingEntityType.Queue, null);
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message sender.
+        /// </returns>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TSender GetQueueSender<TMessage>()
+            where TMessage : class => GetMessageSender<TMessage>(MessagingEntityType.Queue, null);
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a typed-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TReceiver GetTopicReceiver<TMessage>()
+            where TMessage : class => GetMessageReceiver<TMessage>(MessagingEntityType.Topic, null);
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, which is appended to the path.
+        /// </param>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TReceiver GetTopicReceiver<TMessage>(Guid receiverIdentifier)
+            where TMessage : class => GetMessageReceiver<TMessage>(MessagingEntityType.Topic, receiverIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(receiverIdentifier)));
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <returns>
+        /// The managed, implementation-specific message sender.
+        /// </returns>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TSender GetTopicSender<TMessage>()
+            where TMessage : class => GetMessageSender<TMessage>(MessagingEntityType.Topic, null);
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, which is appended to the path.
+        /// </param>
+        /// <returns>
+        /// The managed, implementation-specific message sender.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public TSender GetTopicSender<TMessage>(Guid receiverIdentifier)
+            where TMessage : class => GetMessageSender<TMessage>(MessagingEntityType.Topic, receiverIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(receiverIdentifier)));
+
+        /// <summary>
+        /// Creates a new implementation-specific client that facilitates receive operations.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="connection">
+        /// A connection that governs interaction with messaging entities.
+        /// </param>
+        /// <param name="entityType">
+        /// The type of the entity.
+        /// </param>
+        /// <param name="entityPath">
+        /// The unique path for the entity.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// A new implementation-specific client that facilitates receive operations.
+        /// </returns>
+        protected abstract TReceiver CreateMessageReceiver<TMessage>(TConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName)
+            where TMessage : class;
+
+        /// <summary>
+        /// Creates a new implementation-specific client that facilitates send operations.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="connection">
+        /// A connection that governs interaction with messaging entities.
+        /// </param>
+        /// <param name="entityType">
+        /// The type of the entity.
+        /// </param>
+        /// <param name="entityPath">
+        /// The unique path for the entity.
+        /// </param>
+        /// <returns>
+        /// A new implementation-specific client that facilitates send operations.
+        /// </returns>
+        protected abstract TSender CreateMessageSender<TMessage>(TConnection connection, MessagingEntityType entityType, String entityPath)
+            where TMessage : class;
+
+        /// <summary>
+        /// Releases all resources consumed by the current
+        /// <see cref="MessagingClientFactory{TSender, TReceiver, TConnection, TWrappedMessage}" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Returns an entity path for the specified entity type and message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="entityType">
+        /// The type of the entity.
+        /// </param>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the receiver, or <see langword="null" /> to omit an identifier.
+        /// </param>
+        /// <returns>
+        /// An entity path for the specified entity type and message type combination.
+        /// </returns>
+        [DebuggerHidden]
+        private String GetEntityPath<TMessage>(MessagingEntityType entityType, Guid? receiverIdentifier)
+            where TMessage : class
+        {
+            switch (entityType)
+            {
+                case MessagingEntityType.Queue:
+
+                    return GetQueuePath<TMessage>();
+
+                case MessagingEntityType.Topic:
+
+                    return receiverIdentifier.HasValue ? GetTopicPath<TMessage>(receiverIdentifier.Value) : GetTopicPath<TMessage>();
+
+                default:
+
+                    throw new InvalidOperationException($"The specified entity type, {entityType}, is not supported.");
+            }
+        }
+
+        /// <summary>
+        /// Returns an entity path for the specified message type.
+        /// </summary>
+        /// <param name="pathPrefix">
+        /// A lower-case alphabetic path prefix, or <see langword="null" /> to omit a prefix.
+        /// </param>
+        /// <param name="messageType">
+        /// The type of the message.
+        /// </param>
+        /// <returns>
+        /// An entity path for the specified message type.
+        /// </returns>
+        [DebuggerHidden]
+        private String GetEntityPath(String pathPrefix, Type messageType) => GetEntityPath(pathPrefix, messageType, null);
+
+        /// <summary>
+        /// Returns an entity path for the specified message type.
+        /// </summary>
+        /// <param name="pathPrefix">
+        /// A lower-case alphabetic path prefix, or <see langword="null" /> to omit a prefix.
+        /// </param>
+        /// <param name="messageType">
+        /// The type of the message.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path.
+        /// </param>
+        /// <returns>
+        /// An entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        [DebuggerHidden]
+        private String GetEntityPath(String pathPrefix, Type messageType, params String[] pathTokens)
+        {
+            var messageTypeName = messageType.Name.ToLower();
+            var rootPath = pathPrefix.IsNullOrEmpty() ? messageTypeName : $"{pathPrefix}{EntityPathDelimitingCharacter}{messageTypeName}";
+
+            if (pathTokens.IsNullOrEmpty())
+            {
+                return rootPath;
+            }
+
+            var pathBuilder = new StringBuilder(rootPath);
+
+            foreach (var pathToken in pathTokens)
+            {
+                if (pathToken.IsNullOrEmpty())
+                {
+                    throw new ArgumentException("One of the specified tokens is null or empty.", nameof(pathTokens));
+                }
+                else if (pathToken.MatchesRegularExpression(FullyAlphanumericRegularExpression) == false)
+                {
+                    throw new ArgumentException("One of the specified tokens contains non-alphanumeric characters.", nameof(pathTokens));
+                }
+
+                pathBuilder.Append($"{EntityPathDelimitingCharacter}{pathToken.ToLower()}");
+            }
+
+            return pathBuilder.ToString();
+        }
+
+        /// <summary>
         /// Gets a shared, managed, implementation-specific message receiver.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -59,22 +332,26 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="entityType">
         /// The type of the entity.
         /// </param>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, or <see langword="null" /> to omit a receiver from the path.
+        /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
-        /// <exception cref="MessageSubscriptionException">
+        /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public TReceiver GetMessageReceiver<TMessage>(MessagingEntityType entityType)
+        [DebuggerHidden]
+        private TReceiver GetMessageReceiver<TMessage>(MessagingEntityType entityType, Guid? receiverIdentifier)
             where TMessage : class
         {
-            var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)));
+            var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)), receiverIdentifier);
 
             using (var controlToken = StateControl.Enter())
             {
@@ -87,11 +364,12 @@ namespace RapidField.SolidInstruments.Messaging
 
                 try
                 {
-                    receiver = CreateMessageReceiver<TMessage>(entityType, Connection);
+                    var subscriptionName = $"{EntityPathSubscriptionPrefix}{EntityPathDelimitingCharacter}{entityPath}";
+                    receiver = CreateMessageReceiver<TMessage>(Connection, entityType, entityPath, subscriptionName);
                 }
                 catch (Exception exception)
                 {
-                    throw new MessageSubscriptionException(typeof(TMessage), exception);
+                    throw new MessageSubscribingException(typeof(TMessage), exception);
                 }
 
                 MessageReceivers.Add(entityPath, receiver);
@@ -108,6 +386,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="entityType">
         /// The type of the entity.
         /// </param>
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the message receiver, or <see langword="null" /> to omit a receiver from the path.
+        /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
@@ -120,10 +401,11 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public TSender GetMessageSender<TMessage>(MessagingEntityType entityType)
+        [DebuggerHidden]
+        private TSender GetMessageSender<TMessage>(MessagingEntityType entityType, Guid? receiverIdentifier)
             where TMessage : class
         {
-            var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)));
+            var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)), receiverIdentifier);
 
             using (var controlToken = StateControl.Enter())
             {
@@ -136,7 +418,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 try
                 {
-                    sender = CreateMessageSender<TMessage>(entityType, Connection);
+                    sender = CreateMessageSender<TMessage>(Connection, entityType, entityPath);
                 }
                 catch (Exception exception)
                 {
@@ -149,51 +431,6 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Creates a new implementation-specific client that facilitates receive operations.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message that the client handles.
-        /// </typeparam>
-        /// <param name="entityType">
-        /// The type of the entity.
-        /// </param>
-        /// <param name="connection">
-        /// A connection that governs interaction with messaging entities.
-        /// </param>
-        /// <returns>
-        /// A new implementation-specific client that facilitates receive operations.
-        /// </returns>
-        protected abstract TReceiver CreateMessageReceiver<TMessage>(MessagingEntityType entityType, TConnection connection)
-            where TMessage : class;
-
-        /// <summary>
-        /// Creates a new implementation-specific client that facilitates send operations.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message that the client handles.
-        /// </typeparam>
-        /// <param name="entityType">
-        /// The type of the entity.
-        /// </param>
-        /// <param name="connection">
-        /// A connection that governs interaction with messaging entities.
-        /// </param>
-        /// <returns>
-        /// A new implementation-specific client that facilitates send operations.
-        /// </returns>
-        protected abstract TSender CreateMessageSender<TMessage>(MessagingEntityType entityType, TConnection connection)
-            where TMessage : class;
-
-        /// <summary>
-        /// Releases all resources consumed by the current
-        /// <see cref="MessagingClientFactory{TSender, TReceiver, TConnection, TWrappedMessage}" />.
-        /// </summary>
-        /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
-        /// </param>
-        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
-
-        /// <summary>
         /// Returns a queue entity path for the specified message type.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -202,20 +439,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A queue entity path for the specified message type.
         /// </returns>
-        protected virtual String GetQueuePath<TMessage>()
-             where TMessage : class => $"Queue-{typeof(TMessage).Name}";
-
-        /// <summary>
-        /// Returns a subscription name for the specified message type.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message.
-        /// </typeparam>
-        /// <returns>
-        /// A subscription name for the specified message type.
-        /// </returns>
-        protected virtual String GetSubscriptionName<TMessage>()
-             where TMessage : class => $"Subscription-{EnhancedReadabilityGuid.New().ToString()}";
+        [DebuggerHidden]
+        private String GetQueuePath<TMessage>()
+             where TMessage : class => GetEntityPath(EntityPathQueuePrefix, typeof(TMessage));
 
         /// <summary>
         /// Returns a topic entity path for the specified message type.
@@ -226,40 +452,64 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A topic entity path for the specified message type.
         /// </returns>
-        protected virtual String GetTopicPath<TMessage>()
-             where TMessage : class => $"Topic-{typeof(TMessage).Name}";
+        [DebuggerHidden]
+        private String GetTopicPath<TMessage>()
+             where TMessage : class => GetTopicPath<TMessage>(pathTokens: null);
 
         /// <summary>
-        /// Returns an entity path for the specified entity type and message type combination.
+        /// Returns a topic entity path for the specified message type.
         /// </summary>
         /// <typeparam name="TMessage">
         /// The type of the message.
         /// </typeparam>
-        /// <param name="entityType">
-        /// The type of the entity.
+        /// <param name="receiverIdentifier">
+        /// A unique identifier for the receiver, or <see langword="null" /> to omit an identifier.
         /// </param>
         /// <returns>
-        /// An entity path for the specified entity type and message type combination.
+        /// A topic entity path for the specified message type.
         /// </returns>
         [DebuggerHidden]
-        private String GetEntityPath<TMessage>(MessagingEntityType entityType)
-            where TMessage : class
-        {
-            switch (entityType)
-            {
-                case MessagingEntityType.Queue:
+        private String GetTopicPath<TMessage>(Guid receiverIdentifier)
+             where TMessage : class => GetTopicPath<TMessage>(receiverIdentifier.ToSerializedString());
 
-                    return GetQueuePath<TMessage>();
+        /// <summary>
+        /// Returns a topic entity path for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path.
+        /// </param>
+        /// <returns>
+        /// A topic entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        [DebuggerHidden]
+        private String GetTopicPath<TMessage>(params String[] pathTokens)
+             where TMessage : class => GetEntityPath(EntityPathTopicPrefix, typeof(TMessage), pathTokens);
 
-                case MessagingEntityType.Topic:
+        /// <summary>
+        /// Gets a character that is used to separate tokens within an entity path.
+        /// </summary>
+        protected virtual Char EntityPathDelimitingCharacter => '.';
 
-                    return GetTopicPath<TMessage>();
+        /// <summary>
+        /// Gets an entity path prefix for queues.
+        /// </summary>
+        protected virtual String EntityPathQueuePrefix => "queue";
 
-                default:
+        /// <summary>
+        /// Gets an entity path prefix for subscriptions.
+        /// </summary>
+        protected virtual String EntityPathSubscriptionPrefix => "subscription";
 
-                    throw new InvalidOperationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+        /// <summary>
+        /// Gets an entity path prefix for topics.
+        /// </summary>
+        protected virtual String EntityPathTopicPrefix => "topic";
 
         /// <summary>
         /// Gets a collection of message receivers that are keyed by entity path.
@@ -272,6 +522,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private IDictionary<String, TSender> MessageSenders => LazyMessageSenders.Value;
+
+        /// <summary>
+        /// Represents a regular expression that matches fully alphanumeric strings.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String FullyAlphanumericRegularExpression = "^[a-zA-Z0-9]*$";
 
         /// <summary>
         /// Represents a connection that governs interaction with messaging entities.
