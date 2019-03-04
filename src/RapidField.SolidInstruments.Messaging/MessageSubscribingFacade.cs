@@ -124,7 +124,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                         case MessagingEntityType.Topic:
 
-                            requestReceiveClient = ClientFactory.GetTopicReceiver<TRequestMessage>();
+                            requestReceiveClient = ClientFactory.GetTopicReceiver<TRequestMessage>(Identifier);
                             break;
 
                         default:
@@ -371,7 +371,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                         case MessagingEntityType.Topic:
 
-                            receiveClient = ClientFactory.GetTopicReceiver<TMessage>();
+                            receiveClient = ClientFactory.GetTopicReceiver<TMessage>(Identifier);
                             break;
 
                         default:

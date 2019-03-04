@@ -7,7 +7,6 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging
 {

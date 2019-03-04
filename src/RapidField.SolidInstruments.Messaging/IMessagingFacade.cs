@@ -40,9 +40,9 @@ namespace RapidField.SolidInstruments.Messaging
     public interface IMessagingFacade : IDisposable
     {
         /// <summary>
-        /// Gets the unique identifier for the current <see cref="IMessagingFacade" />.
+        /// Gets the unique textual identifier for the current <see cref="IMessagingFacade" />.
         /// </summary>
-        Guid Identifier
+        String Identifier
         {
             get;
         }

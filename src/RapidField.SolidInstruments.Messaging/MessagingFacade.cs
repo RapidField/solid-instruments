@@ -5,6 +5,8 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
+using RapidField.SolidInstruments.TextEncoding;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -47,6 +49,7 @@ namespace RapidField.SolidInstruments.Messaging
             : base(ConcurrencyControlMode.SingleThreadLock, Timeout.InfiniteTimeSpan)
         {
             ClientFactory = clientFactory.RejectIf().IsNull(nameof(clientFactory)).TargetArgument;
+            LazyIdentifier = new Lazy<String>(InitializeIdentifier, LazyThreadSafetyMode.ExecutionAndPublication);
             MessageAdapter = messageAdapter.RejectIf().IsNull(nameof(messageAdapter)).TargetArgument;
         }
 
@@ -59,9 +62,18 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Initializes the unique textual identifier for the current
+        /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
+        /// </summary>
+        /// <returns>
+        /// A unique textual identifier.
+        /// </returns>
+        protected virtual String InitializeIdentifier() => new String(new ZBase32Encoding().GetChars(Guid.NewGuid().ToByteArray().ComputeThirtyTwoBitHash().ToByteArray()));
+
+        /// <summary>
         /// Gets the unique identifier for the current <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
         /// </summary>
-        public Guid Identifier => LazyIdentifier.Value;
+        public String Identifier => LazyIdentifier.Value;
 
         /// <summary>
         /// Represents an appliance that creates and manages implementation-specific messaging clients.
@@ -80,6 +92,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<Guid> LazyIdentifier = new Lazy<Guid>(() => Guid.NewGuid(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<String> LazyIdentifier;
     }
 }

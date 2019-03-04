@@ -2,7 +2,9 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
+using System.Collections.Generic;
 
 namespace RapidField.SolidInstruments.Messaging
 {
@@ -40,6 +42,28 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class;
 
         /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens.
+        /// </param>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TReceiver GetQueueReceiver<TMessage>(IEnumerable<String> pathTokens)
+            where TMessage : class;
+
+        /// <summary>
         /// Gets a shared, managed, implementation-specific message sender for a type-defined queue.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -58,21 +82,25 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class;
 
         /// <summary>
-        /// Gets a shared, managed, implementation-specific message receiver for a typed-defined topic.
+        /// Gets a shared, managed, implementation-specific message sender for a type-defined queue.
         /// </summary>
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens.
+        /// </param>
         /// <returns>
-        /// The managed, implementation-specific message receiver.
+        /// The managed, implementation-specific message sender.
         /// </returns>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetTopicReceiver<TMessage>()
+        TSender GetQueueSender<TMessage>(IEnumerable<String> pathTokens)
             where TMessage : class;
 
         /// <summary>
@@ -82,13 +110,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// The type of the message that the client handles.
         /// </typeparam>
         /// <param name="receiverIdentifier">
-        /// A unique identifier for the message receiver, which is appended to the path.
+        /// A unique textual identifier for the message receiver.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
@@ -96,7 +127,38 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetTopicReceiver<TMessage>(Guid receiverIdentifier)
+        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier)
+            where TMessage : class;
+
+        /// <summary>
+        /// Gets a shared, managed, implementation-specific message receiver for a type-defined topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message that the client handles.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique textual identifier for the message receiver.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens.
+        /// </param>
+        /// <returns>
+        /// The managed, implementation-specific message receiver.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while creating the client.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathTokens)
             where TMessage : class;
 
         /// <summary>
@@ -123,22 +185,20 @@ namespace RapidField.SolidInstruments.Messaging
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="receiverIdentifier">
-        /// A unique identifier for the message receiver, which is appended to the path.
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="receiverIdentifier" /> is equal to <see cref="Guid.Empty" />.
-        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetTopicSender<TMessage>(Guid receiverIdentifier)
+        TSender GetTopicSender<TMessage>(IEnumerable<String> pathTokens)
             where TMessage : class;
     }
 }
