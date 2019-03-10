@@ -95,6 +95,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             CorrelationIdentifierField = null;
             IdentifierField = null;
+            ProcessingInformationField = null;
         }
 
         /// <summary>
@@ -110,6 +111,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             CorrelationIdentifierField = correlationIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(correlationIdentifier));
             IdentifierField = null;
+            ProcessingInformationField = null;
         }
 
         /// <summary>
@@ -129,6 +131,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             CorrelationIdentifierField = correlationIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(correlationIdentifier));
             IdentifierField = identifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(identifier));
+            ProcessingInformationField = null;
         }
 
         /// <summary>
@@ -176,13 +179,21 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not processing of the current <see cref="Message" /> is finalized.
+        /// Gets or sets instructions and contextual information relating to processing for the current <see cref="Message" />.
         /// </summary>
         [DataMember]
-        public Boolean IsProcessed
+        public MessageProcessingInformation ProcessingInformation
         {
-            get;
-            set;
+            get
+            {
+                if (ProcessingInformationField is null)
+                {
+                    ProcessingInformationField = new MessageProcessingInformation();
+                }
+
+                return ProcessingInformationField;
+            }
+            set => ProcessingInformationField = value;
         }
 
         /// <summary>
@@ -216,5 +227,12 @@ namespace RapidField.SolidInstruments.Messaging
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [IgnoreDataMember]
         private Guid? IdentifierField;
+
+        /// <summary>
+        /// Represents instructions and contextual information relating to processing for the current <see cref="Message" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [IgnoreDataMember]
+        private MessageProcessingInformation ProcessingInformationField;
     }
 }

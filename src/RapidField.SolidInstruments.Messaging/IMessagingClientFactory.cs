@@ -49,11 +49,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -89,11 +92,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -141,13 +147,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
@@ -187,11 +196,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>

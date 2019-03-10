@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging
@@ -54,6 +55,37 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class, IMessageBase;
 
         /// <summary>
+        /// Asynchronously publishes the specified message to a queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Task PublishToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessageBase;
+
+        /// <summary>
         /// Asynchronously publishes the specified message to a topic.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -75,6 +107,37 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         Task PublishToTopicAsync<TMessage>(TMessage message)
+            where TMessage : class, IMessageBase;
+
+        /// <summary>
+        /// Asynchronously publishes the specified message to a topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Task PublishToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
             where TMessage : class, IMessageBase;
     }
 }

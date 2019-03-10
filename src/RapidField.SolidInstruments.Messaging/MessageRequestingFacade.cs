@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => PublishingFacade.PublishAsync(requestMessage, Message.RequestEntityType);
+        protected sealed override Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => PublishingFacade.PublishAsync(requestMessage, null, Message.RequestEntityType);
 
         /// <summary>
         /// Registers the specified response handler with a bus.

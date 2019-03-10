@@ -77,11 +77,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -117,11 +120,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -169,13 +175,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
@@ -215,11 +224,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -293,11 +305,15 @@ namespace RapidField.SolidInstruments.Messaging
         /// The type of the entity.
         /// </param>
         /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path.
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// An entity path for the specified entity type and message type combination.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         [DebuggerHidden]
         private String GetEntityPath<TMessage>(MessagingEntityType entityType, IEnumerable<String> pathTokens)
             where TMessage : class
@@ -329,7 +345,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// An entity path for the specified message type.
@@ -341,8 +357,9 @@ namespace RapidField.SolidInstruments.Messaging
         private String GetEntityPath(String pathPrefix, Type messageType, IEnumerable<String> pathTokens)
         {
             var messageTypeName = messageType.Name.ToLower();
+            var processedPathPrefix = pathPrefix.IsNullOrEmpty() ? String.Empty : $"{pathPrefix}{EntityPathDelimitingCharacter}";
             var processedMessageTypeName = messageTypeName.EndsWith(TrimmedMessageTypeNamePostfix) ? messageTypeName.Substring(0, (messageTypeName.Length - TrimmedMessageTypeNamePostfix.Length)) : messageTypeName;
-            var rootPath = pathPrefix.IsNullOrEmpty() ? processedMessageTypeName : $"{pathPrefix}{EntityPathDelimitingCharacter}{processedMessageTypeName}";
+            var rootPath = $"{processedPathPrefix}{processedMessageTypeName}";
 
             if (pathTokens.IsNullOrEmpty())
             {
@@ -382,11 +399,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessageSubscribingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -410,7 +430,8 @@ namespace RapidField.SolidInstruments.Messaging
 
                 try
                 {
-                    var subscriptionName = receiverIdentifier.IsNullOrEmpty() ? null : $"{SubscriptionNamePrefix}{EntityPathDelimitingCharacter}{receiverIdentifier}";
+                    var processedSubscriptionNamePrefix = SubscriptionNamePrefix.IsNullOrEmpty() ? String.Empty : $"{SubscriptionNamePrefix}{EntityPathDelimitingCharacter}";
+                    var subscriptionName = receiverIdentifier.IsNullOrEmpty() ? null : $"{processedSubscriptionNamePrefix}{entityPath}{EntityPathDelimitingCharacter}{receiverIdentifier}";
                     receiver = CreateMessageReceiver<TMessage>(Connection, entityType, entityPath, subscriptionName);
                 }
                 catch (Exception exception)
@@ -434,11 +455,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while creating the client.
         /// </exception>
@@ -482,7 +506,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// A queue entity path for the specified message type.
@@ -502,7 +526,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </typeparam>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens.
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// A topic entity path for the specified message type.
@@ -517,22 +541,22 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets a character that is used to separate tokens within an entity path.
         /// </summary>
-        protected virtual Char EntityPathDelimitingCharacter => '.';
+        protected virtual Char EntityPathDelimitingCharacter => '-';
 
         /// <summary>
         /// Gets an entity path prefix for queues.
         /// </summary>
-        protected virtual String EntityPathQueuePrefix => "que";
+        protected virtual String EntityPathQueuePrefix => null;
 
         /// <summary>
         /// Gets an entity path prefix for topics.
         /// </summary>
-        protected virtual String EntityPathTopicPrefix => "top";
+        protected virtual String EntityPathTopicPrefix => null;
 
         /// <summary>
         /// Gets a name prefix for subscriptions.
         /// </summary>
-        protected virtual String SubscriptionNamePrefix => "sub";
+        protected virtual String SubscriptionNamePrefix => null;
 
         /// <summary>
         /// Gets a collection of message receivers that are keyed by entity path.

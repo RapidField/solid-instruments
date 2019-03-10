@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -70,7 +71,38 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         public Task PublishToQueueAsync<TMessage>(TMessage message)
-            where TMessage : class, IMessageBase => PublishAsync(message, MessagingEntityType.Queue);
+            where TMessage : class, IMessageBase => PublishToQueueAsync(message, null);
+
+        /// <summary>
+        /// Asynchronously publishes the specified message to a queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task PublishToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessageBase => PublishAsync(message, pathTokens, MessagingEntityType.Queue);
 
         /// <summary>
         /// Asynchronously publishes the specified message to a topic.
@@ -94,7 +126,38 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         public Task PublishToTopicAsync<TMessage>(TMessage message)
-            where TMessage : class, IMessageBase => PublishAsync(message, MessagingEntityType.Topic);
+            where TMessage : class, IMessageBase => PublishToTopicAsync(message, null);
+
+        /// <summary>
+        /// Asynchronously publishes the specified message to a topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to publish.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to publish.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagePublishingException">
+        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task PublishToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessageBase => PublishAsync(message, pathTokens, MessagingEntityType.Topic);
 
         /// <summary>
         /// Asynchronously publishes the specified message to a bus.
@@ -105,12 +168,19 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="message">
         /// The message to publish.
         /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
         /// <param name="entityType">
         /// The targeted entity type.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
@@ -124,51 +194,51 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        internal Task PublishAsync<TMessage>(TMessage message, MessagingEntityType entityType)
+        internal Task PublishAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
             entityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType));
 
-            try
+            using (var controlToken = StateControl.Enter())
             {
-                using (var controlToken = StateControl.Enter())
+                RejectIfDisposed();
+                var sendClient = default(TSender);
+
+                switch (entityType)
                 {
-                    RejectIfDisposed();
-                    var sendClient = default(TSender);
+                    case MessagingEntityType.Queue:
 
-                    switch (entityType)
-                    {
-                        case MessagingEntityType.Queue:
+                        sendClient = ClientFactory.GetQueueSender<TMessage>(pathTokens);
+                        break;
 
-                            sendClient = ClientFactory.GetQueueSender<TMessage>();
-                            break;
+                    case MessagingEntityType.Topic:
 
-                        case MessagingEntityType.Topic:
+                        sendClient = ClientFactory.GetTopicSender<TMessage>(pathTokens);
+                        break;
 
-                            sendClient = ClientFactory.GetTopicSender<TMessage>();
-                            break;
+                    default:
 
-                        default:
+                        throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
+                }
 
-                            throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
-                    }
-
+                try
+                {
                     var adaptedMessage = MessageAdapter.ConvertForward(message) as TAdaptedMessage;
                     return PublishAsync(adaptedMessage, sendClient, controlToken);
                 }
-            }
-            catch (MessagePublishingException)
-            {
-                throw;
-            }
-            catch (ObjectDisposedException)
-            {
-                throw;
-            }
-            catch (Exception exception)
-            {
-                throw new MessagePublishingException(typeof(TMessage), exception);
+                catch (MessagePublishingException)
+                {
+                    throw;
+                }
+                catch (ObjectDisposedException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    throw new MessagePublishingException(typeof(TMessage), exception);
+                }
             }
         }
 

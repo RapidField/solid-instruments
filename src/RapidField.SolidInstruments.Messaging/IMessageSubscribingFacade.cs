@@ -72,6 +72,34 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class, IMessage;
 
         /// <summary>
+        /// Registers the specified queue message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessage;
+
+        /// <summary>
         /// Registers the specified request message handler with the bus.
         /// </summary>
         /// <typeparam name="TRequestMessage">
@@ -115,6 +143,34 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
+            where TMessage : class, IMessage;
+
+        /// <summary>
+        /// Registers the specified topic message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathTokens)
             where TMessage : class, IMessage;
 
         /// <summary>

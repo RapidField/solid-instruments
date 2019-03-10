@@ -137,7 +137,7 @@ namespace RapidField.SolidInstruments.Messaging
                         RejectIfDisposed();
                         var requestMessage = MessageAdapter.ConvertReverse<TRequestMessage>(adaptedRequestMessage);
                         var responseMessage = requestMessageHandler(requestMessage);
-                        PublishingFacade.PublishAsync(responseMessage, Message.ResponseEntityType);
+                        PublishingFacade.PublishAsync(responseMessage, null, Message.ResponseEntityType);
                     });
 
                     RegisterMessageHandler(messageHandler, requestReceiveClient, controlToken);
@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PublishReceiverExceptionAsync(ExceptionRaisedMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType) => PublishingFacade.PublishAsync(exceptionRaisedMessage, messagingEntityType);
+        protected sealed override Task PublishReceiverExceptionAsync(ExceptionRaisedMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType) => PublishingFacade.PublishAsync(exceptionRaisedMessage, null, messagingEntityType);
 
         /// <summary>
         /// Represents an implementation-specific messaging facade that is used to publish response messages.
@@ -270,7 +270,35 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         public void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler)
-            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, MessagingEntityType.Queue);
+            where TMessage : class, IMessage => RegisterQueueMessageHandler(messageHandler, null);
+
+        /// <summary>
+        /// Registers the specified queue message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, pathTokens, MessagingEntityType.Queue);
 
         /// <summary>
         /// Registers the specified request message handler with the bus.
@@ -316,7 +344,35 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
-            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, MessagingEntityType.Topic);
+            where TMessage : class, IMessage => RegisterTopicMessageHandler(messageHandler, null);
+
+        /// <summary>
+        /// Registers the specified topic message handler with the bus.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageHandler" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageSubscribingException">
+        /// An exception was raised while attempting to register <paramref name="messageHandler" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, pathTokens, MessagingEntityType.Topic);
 
         /// <summary>
         /// Registers the specified message handler with the bus.
@@ -327,9 +383,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="messageHandler">
         /// An action that handles a message.
         /// </param>
+        /// <param name="pathTokens">
+        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
+        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// </param>
         /// <param name="entityType">
         /// The targeted entity type.
         /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
@@ -340,66 +403,66 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        internal void RegisterMessageHandler<TMessage>(Action<TMessage> messageHandler, MessagingEntityType entityType)
+        internal void RegisterMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathTokens, MessagingEntityType entityType)
             where TMessage : class, IMessage
         {
             messageHandler = messageHandler.RejectIf().IsNull(nameof(messageHandler)).TargetArgument;
 
-            try
+            using (var controlToken = StateControl.Enter())
             {
-                using (var controlToken = StateControl.Enter())
+                RejectIfDisposed();
+
+                if (TryAddSubscribedMessageType<TMessage>(controlToken) == false)
+                {
+                    if (ResponseMessageInterfaceType.IsAssignableFrom(typeof(TMessage)))
+                    {
+                        // Disallow registration of duplicate response handlers.
+                        return;
+                    }
+                }
+
+                var receiveClient = default(TReceiver);
+
+                switch (entityType)
+                {
+                    case MessagingEntityType.Queue:
+
+                        receiveClient = ClientFactory.GetQueueReceiver<TMessage>(pathTokens);
+                        break;
+
+                    case MessagingEntityType.Topic:
+
+                        receiveClient = ClientFactory.GetTopicReceiver<TMessage>(Identifier, pathTokens);
+                        break;
+
+                    default:
+
+                        throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
+                }
+
+                var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
                 {
                     RejectIfDisposed();
+                    var message = MessageAdapter.ConvertReverse<TMessage>(adaptedMessage);
+                    messageHandler(message);
+                });
 
-                    if (TryAddSubscribedMessageType<TMessage>(controlToken) == false)
-                    {
-                        if (ResponseMessageInterfaceType.IsAssignableFrom(typeof(TMessage)))
-                        {
-                            // Disallow registration of duplicate response handlers.
-                            return;
-                        }
-                    }
-
-                    var receiveClient = default(TReceiver);
-
-                    switch (entityType)
-                    {
-                        case MessagingEntityType.Queue:
-
-                            receiveClient = ClientFactory.GetQueueReceiver<TMessage>();
-                            break;
-
-                        case MessagingEntityType.Topic:
-
-                            receiveClient = ClientFactory.GetTopicReceiver<TMessage>(Identifier);
-                            break;
-
-                        default:
-
-                            throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
-                    }
-
-                    var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
-                    {
-                        RejectIfDisposed();
-                        var message = MessageAdapter.ConvertReverse<TMessage>(adaptedMessage);
-                        messageHandler(message);
-                    });
-
+                try
+                {
                     RegisterMessageHandler(adaptedMessageHandler, receiveClient, controlToken);
                 }
-            }
-            catch (MessageSubscribingException)
-            {
-                throw;
-            }
-            catch (ObjectDisposedException)
-            {
-                throw;
-            }
-            catch (Exception exception)
-            {
-                throw new MessageSubscribingException(typeof(TMessage), exception);
+                catch (MessageSubscribingException)
+                {
+                    throw;
+                }
+                catch (ObjectDisposedException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    throw new MessageSubscribingException(typeof(TMessage), exception);
+                }
             }
         }
 
