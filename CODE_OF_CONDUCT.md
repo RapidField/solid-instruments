@@ -22,3 +22,7 @@ involved parties. Otherwise, reasonable comprimises should be made.
 
 When contributors cannot reach an agreement, they should ask for
 advice from more senior members of the team.
+
+## Contributing
+
+Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
