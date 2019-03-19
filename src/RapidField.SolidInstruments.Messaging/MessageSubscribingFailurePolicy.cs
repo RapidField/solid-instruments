@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageSubscribingFailurePolicy" /> class.
         /// </summary>
         public MessageSubscribingFailurePolicy()
-            : this(DefaultRetryPolicy)
+            : this(MessageSubscribingRetryPolicy.Default)
         {
             return;
         }
@@ -142,12 +142,5 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const MessageSubscribingSecondaryFailureBehavior DefaultSecondaryFailureBehavior = MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue;
-
-        /// <summary>
-        /// Represents the default information that defines retry behavior that is employed before employing secondary failure
-        /// behavior.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly MessageSubscribingRetryPolicy DefaultRetryPolicy = MessageSubscribingRetryPolicy.Default;
     }
 }

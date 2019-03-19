@@ -35,28 +35,6 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusSubscribingFacade" /> class.
-        /// </summary>
-        /// <param name="publishingFacade">
-        /// An implementation-specific messaging facade that is used to publish response messages.
-        /// </param>
-        /// <param name="exceptionHandlingBehavior">
-        /// The behavior of the facade when handling an exception that is raised by a receiver. The default value is
-        /// <see cref="ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage" />.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="publishingFacade" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
-        /// </exception>
-        public AzureServiceBusSubscribingFacade(AzureServiceBusPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
-            : base(publishingFacade, exceptionHandlingBehavior)
-        {
-            return;
-        }
-
-        /// <summary>
         /// Releases all resources consumed by the current <see cref="AzureServiceBusSubscribingFacade" />.
         /// </summary>
         /// <param name="disposing">
@@ -80,27 +58,28 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         {
             var messageHandlerFunction = new Func<AzureServiceBusMessage, CancellationToken, Task>((message, cancellationToken) =>
             {
-                var lockToken = message.SystemProperties?.LockToken;
-
-                if (lockToken is null)
-                {
-                    throw new MessageSubscribingException("The message cannot be processed because the lock token is invalid.");
-                }
-                else if (receiveClient.IsClosedOrClosing)
-                {
-                    throw new MessageSubscribingException("The message cannot be processed because the receive client is unavailable.");
-                }
+                var lockToken = (String)null;
 
                 try
                 {
+                    lockToken = message.SystemProperties?.LockToken;
+
+                    if (lockToken is null)
+                    {
+                        throw new MessageSubscribingException("The message cannot be processed because the lock token is invalid.");
+                    }
+                    else if (receiveClient.IsClosedOrClosing)
+                    {
+                        throw new MessageSubscribingException("The message cannot be processed because the receive client is unavailable.");
+                    }
+
                     cancellationToken.ThrowIfCancellationRequested();
                     messageHandler(message);
                     return receiveClient.CompleteAsync(lockToken);
                 }
                 catch
                 {
-                    receiveClient.AbandonAsync(lockToken).Wait();
-                    throw;
+                    return receiveClient.AbandonAsync(lockToken);
                 }
             });
 
@@ -120,13 +99,13 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while trying to publish an <see cref="ExceptionRaisedMessage" />.
         /// </exception>
         [DebuggerHidden]
-        private Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => HandleReceiverExceptionAsync(exceptionReceivedArguments.Exception);
+        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask;
 
         /// <summary>
         /// Gets options that specify how receive clients handle messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverExceptionAsync)
+        private static MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverExceptionAsync)
         {
             AutoComplete = false
         };

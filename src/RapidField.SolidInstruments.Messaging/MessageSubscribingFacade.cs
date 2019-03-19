@@ -4,6 +4,9 @@
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.EventAuthoring;
+using RapidField.SolidInstruments.Mathematics.Extensions;
+using RapidField.SolidInstruments.Mathematics.Sequences;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Collections.Generic;
@@ -48,29 +51,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         protected MessageSubscribingFacade(TPublishingFacade publishingFacade)
             : base(publishingFacade.RejectIf().IsNull(nameof(publishingFacade)).TargetArgument.ClientFactory, publishingFacade.MessageAdapter)
-        {
-            PublishingFacade = publishingFacade;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> class.
-        /// </summary>
-        /// <param name="publishingFacade">
-        /// An implementation-specific messaging facade that is used to publish response messages.
-        /// </param>
-        /// <param name="exceptionHandlingBehavior">
-        /// The behavior of the facade when handling an exception that is raised by a receiver. The default value is
-        /// <see cref="ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage" />.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="publishingFacade" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
-        /// </exception>
-        protected MessageSubscribingFacade(TPublishingFacade publishingFacade, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
-            : base(publishingFacade.RejectIf().IsNull(nameof(publishingFacade)).TargetArgument.ClientFactory, publishingFacade.MessageAdapter, exceptionHandlingBehavior)
         {
             PublishingFacade = publishingFacade;
         }
@@ -134,10 +114,30 @@ namespace RapidField.SolidInstruments.Messaging
 
                     var messageHandler = new Action<TAdaptedMessage>((adaptedRequestMessage) =>
                     {
-                        RejectIfDisposed();
-                        var requestMessage = MessageAdapter.ConvertReverse<TRequestMessage>(adaptedRequestMessage);
-                        var responseMessage = requestMessageHandler(requestMessage);
-                        PublishingFacade.PublishAsync(responseMessage, null, Message.ResponseEntityType);
+                        try
+                        {
+                            RejectIfDisposed();
+                            var requestMessage = MessageAdapter.ConvertReverse<TRequestMessage>(adaptedRequestMessage);
+
+                            if (requestMessage.ProcessingInformation is null)
+                            {
+                                requestMessage.ProcessingInformation = new MessageProcessingInformation(DefaultFailurePolicy);
+                            }
+                            else if (requestMessage.ProcessingInformation.FailurePolicy is null)
+                            {
+                                requestMessage.ProcessingInformation.FailurePolicy = DefaultFailurePolicy;
+                            }
+
+                            HandleMessageAsync((message) =>
+                            {
+                                var responseMessage = requestMessageHandler(message);
+                                PublishingFacade.PublishAsync(responseMessage, null, Message.ResponseEntityType).Wait();
+                            }, requestMessage).Wait();
+                        }
+                        catch (Exception exception)
+                        {
+                            throw new MessageSubscribingException(typeof(TRequestMessage), exception);
+                        }
                     });
 
                     RegisterMessageHandler(messageHandler, requestReceiveClient, controlToken);
@@ -220,35 +220,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see langword="null" />.
         /// </exception>
         protected MessageSubscribingFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter)
-            : this(clientFactory, messageAdapter, DefaultExceptionHandlingBehavior)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
-        /// </summary>
-        /// <param name="clientFactory">
-        /// An appliance that creates manages implementation-specific messaging clients.
-        /// </param>
-        /// <param name="messageAdapter">
-        /// An appliance that facilitates implementation-specific message conversion.
-        /// </param>
-        /// <param name="exceptionHandlingBehavior">
-        /// The behavior of the facade when handling an exception that is raised by a receiver. The default value is
-        /// <see cref="ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage" />.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="clientFactory" /> is <see langword="null" /> -or- <paramref name="messageAdapter" /> is
-        /// <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="exceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Unspecified" />.
-        /// </exception>
-        protected MessageSubscribingFacade(IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> clientFactory, IMessageAdapter<TAdaptedMessage> messageAdapter, ReceiverExceptionHandlingBehavior exceptionHandlingBehavior)
             : base(clientFactory, messageAdapter)
         {
-            ExceptionHandlingBehavior = exceptionHandlingBehavior.RejectIf().IsEqualToValue(ReceiverExceptionHandlingBehavior.Unspecified, nameof(exceptionHandlingBehavior));
+            return;
         }
 
         /// <summary>
@@ -375,6 +349,43 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, pathTokens, MessagingEntityType.Topic);
 
         /// <summary>
+        /// Asynchronously performs the specified action for the specified message and, upon failure, applies the execution policy.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="message">
+        /// A message to handle.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        [DebuggerHidden]
+        internal Task HandleMessageAsync<TMessage>(Action<TMessage> messageHandler, TMessage message)
+            where TMessage : IMessageBase
+        {
+            var attemptStartTimeStamp = DateTime.UtcNow;
+            var raisedException = (Exception)null;
+
+            try
+            {
+                messageHandler(message);
+                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(DateTime.UtcNow, attemptStartTimeStamp));
+                return Task.CompletedTask;
+            }
+            catch (Exception exception)
+            {
+                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(DateTime.UtcNow, attemptStartTimeStamp, exception));
+                raisedException = exception;
+            }
+
+            return ExecuteFailurePolicyAsync(messageHandler, message, raisedException);
+        }
+
+        /// <summary>
         /// Registers the specified message handler with the bus.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -442,9 +453,26 @@ namespace RapidField.SolidInstruments.Messaging
 
                 var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
                 {
-                    RejectIfDisposed();
-                    var message = MessageAdapter.ConvertReverse<TMessage>(adaptedMessage);
-                    messageHandler(message);
+                    try
+                    {
+                        RejectIfDisposed();
+                        var message = MessageAdapter.ConvertReverse<TMessage>(adaptedMessage);
+
+                        if (message.ProcessingInformation is null)
+                        {
+                            message.ProcessingInformation = new MessageProcessingInformation(DefaultFailurePolicy);
+                        }
+                        else if (message.ProcessingInformation.FailurePolicy is null)
+                        {
+                            message.ProcessingInformation.FailurePolicy = DefaultFailurePolicy;
+                        }
+
+                        HandleMessageAsync(messageHandler, message).Wait();
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new MessageSubscribingException(typeof(TMessage), exception);
+                    }
                 });
 
                 try
@@ -503,54 +531,6 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Asynchronously handles an exception that was raised by a message receive client.
-        /// </summary>
-        /// <param name="receiverException">
-        /// An exception that was raised by a message receive client.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="AggregateException">
-        /// An exception was raised while trying to publish an <see cref="ExceptionRaisedMessage" /> -or-
-        /// <see cref="ExceptionHandlingBehavior" /> is equal to <see cref="ReceiverExceptionHandlingBehavior.Propagate" />.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="receiverException" /> is <see langword="null" />.
-        /// </exception>
-        protected Task HandleReceiverExceptionAsync(Exception receiverException)
-        {
-            receiverException = receiverException.RejectIf().IsNull(nameof(receiverException));
-
-            switch (ExceptionHandlingBehavior)
-            {
-                case ReceiverExceptionHandlingBehavior.Propagate:
-
-                    throw new AggregateException("A message receiver raised an exception.", receiverException);
-
-                case ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage:
-
-                    try
-                    {
-                        var exceptionRaisedMessage = new ExceptionRaisedMessage(receiverException);
-                        return PublishReceiverExceptionAsync(exceptionRaisedMessage, ExceptionRaisedMessageEntityType);
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new AggregateException($"An exception was raised while trying to publish a {typeof(ExceptionRaisedMessage).FullName}.", exception, receiverException);
-                    }
-
-                case ReceiverExceptionHandlingBehavior.Suppress:
-
-                    return Task.CompletedTask;
-
-                default:
-
-                    throw new InvalidOperationException($"The specified exception handling behavior, {ExceptionHandlingBehavior}, is not supported.");
-            }
-        }
-
-        /// <summary>
         /// Asynchronously publishes the specified <see cref="ExceptionRaisedMessage" /> instance.
         /// </summary>
         /// <param name="exceptionRaisedMessage">
@@ -579,34 +559,143 @@ namespace RapidField.SolidInstruments.Messaging
         protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, ConcurrencyControlToken controlToken);
 
         /// <summary>
+        /// Asynchronously executes the failure policy prescribed by the specified message.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="messageHandler">
+        /// An action that handles a message.
+        /// </param>
+        /// <param name="message">
+        /// A message that could not be processed.
+        /// </param>
+        /// <param name="raisedException">
+        /// An exception that was raised while attempting to process the message.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        [DebuggerHidden]
+        private Task ExecuteFailurePolicyAsync<TMessage>(Action<TMessage> messageHandler, TMessage message, Exception raisedException)
+            where TMessage : IMessageBase
+        {
+            var processingInformation = message?.ProcessingInformation;
+
+            if (processingInformation is null)
+            {
+                return Task.CompletedTask;
+            }
+
+            var attemptCount = processingInformation.AttemptCount.AbsoluteValue();
+            var failurePolicy = processingInformation?.FailurePolicy ?? DefaultFailurePolicy;
+            var retryPolicy = failurePolicy?.RetryPolicy ?? DefaultFailurePolicy.RetryPolicy;
+            var failurePolicyTasks = new List<Task>();
+
+            if (failurePolicy.PublishExceptionRaisedMessage)
+            {
+                failurePolicyTasks.Add(PublishReceiverExceptionAsync(raisedException, message.CorrelationIdentifier));
+            }
+
+            if (retryPolicy.RetryCount >= attemptCount)
+            {
+                var baseDelayDurationInSeconds = retryPolicy.BaseDelayDurationInSeconds.AbsoluteValue();
+                var calculatedDelayDurationInSeconds = default(Int32);
+
+                switch (retryPolicy.DurationScale)
+                {
+                    case MessageSubscribingRetryDurationScale.Fibonacci:
+
+                        calculatedDelayDurationInSeconds = (Int32)new FibonacciSequence(0, baseDelayDurationInSeconds).ToArray(attemptCount, 1).First();
+                        break;
+
+                    case MessageSubscribingRetryDurationScale.Linear:
+
+                        calculatedDelayDurationInSeconds = baseDelayDurationInSeconds * processingInformation.AttemptCount;
+                        break;
+
+                    default:
+
+                        throw new InvalidOperationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.");
+                }
+
+                failurePolicyTasks.Add(Task.Delay(TimeSpan.FromSeconds(calculatedDelayDurationInSeconds)));
+                failurePolicyTasks.Add(HandleMessageAsync(messageHandler, message));
+            }
+            else
+            {
+                switch (failurePolicy.SecondaryFailureBehavior)
+                {
+                    case MessageSubscribingSecondaryFailureBehavior.Discard:
+
+                        // TODO
+                        break;
+
+                    case MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue:
+
+                        // TODO
+                        break;
+
+                    default:
+
+                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
+                }
+            }
+
+            if (failurePolicyTasks.Any())
+            {
+                return Task.WhenAll(failurePolicyTasks.ToArray());
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Asynchronously publishes a new <see cref="ExceptionRaisedMessage" /> instance for the specified exception.
+        /// </summary>
+        /// <param name="raisedException">
+        /// An exception for which to publish a new message.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A correlation identifier for the message that could not be processed.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        [DebuggerHidden]
+        private Task PublishReceiverExceptionAsync(Exception raisedException, Guid correlationIdentifier)
+        {
+            var exceptionRaisedMessage = new ExceptionRaisedMessage(raisedException, ExceptionRaisedMessageEventVerbosity, correlationIdentifier);
+            return PublishReceiverExceptionAsync(exceptionRaisedMessage, ExceptionRaisedMessageEntityType);
+        }
+
+        /// <summary>
         /// Gets the collection of message types for which the current
         /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
         /// </summary>
         public IEnumerable<Type> SubscribedMessageTypes => SubscribedMessageTypeList.ToArray();
 
         /// <summary>
-        /// Represents the default behavior of the facade when handling an exception that is raised by a receiver.
+        /// Gets the entity type that is used to publish new instances of <see cref="ExceptionRaisedMessage" />.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const ReceiverExceptionHandlingBehavior DefaultExceptionHandlingBehavior = ReceiverExceptionHandlingBehavior.PublishExceptionRaisedMessage;
+        protected virtual MessagingEntityType ExceptionRaisedMessageEntityType => MessagingEntityType.Topic;
 
         /// <summary>
-        /// Represents the entity type that is used to publish new instances of <see cref="ExceptionRaisedMessage" />.
+        /// Gets the event verbosity level that is used when publishing new instances of <see cref="ExceptionRaisedMessage" />.
+        /// </summary>
+        protected virtual ApplicationEventVerbosity ExceptionRaisedMessageEventVerbosity => ApplicationEventVerbosity.Normal;
+
+        /// <summary>
+        /// Represents the default instructions that guide failure behavior for the subscriber.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const MessagingEntityType ExceptionRaisedMessageEntityType = MessagingEntityType.Topic;
+        internal static readonly MessageSubscribingFailurePolicy DefaultFailurePolicy = MessageSubscribingFailurePolicy.Default;
 
         /// <summary>
         /// Represents the <see cref="IResponseMessage" /> type.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Type ResponseMessageInterfaceType = typeof(IResponseMessage);
-
-        /// <summary>
-        /// Represents the behavior of the facade when handling an exception that is raised by a receiver.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ReceiverExceptionHandlingBehavior ExceptionHandlingBehavior;
 
         /// <summary>
         /// Represents the collection of message types for which the current

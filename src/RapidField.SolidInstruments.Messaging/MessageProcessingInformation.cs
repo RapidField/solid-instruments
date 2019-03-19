@@ -4,7 +4,9 @@
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Messaging
@@ -19,7 +21,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
         /// </summary>
         public MessageProcessingInformation()
-            : this(DefaultFailurePolicy)
+            : this(MessageSubscribingFailurePolicy.Default)
         {
             return;
         }
@@ -36,9 +38,25 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public MessageProcessingInformation(MessageSubscribingFailurePolicy failurePolicy)
         {
+            AttemptResults = new Collection<MessageProcessingAttemptResult>();
             FailurePolicy = failurePolicy.RejectIf().IsNull(nameof(failurePolicy));
-            IsSuccessfullyProcessed = false;
-            ProcessAttemptCount = 0;
+        }
+
+        /// <summary>
+        /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not yet
+        /// been attempted.
+        /// </summary>
+        [IgnoreDataMember]
+        public Int32 AttemptCount => AttemptResults.Count();
+
+        /// <summary>
+        /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if processing
+        /// has not yet been attempted.
+        /// </summary>
+        [DataMember]
+        public Collection<MessageProcessingAttemptResult> AttemptResults
+        {
+            get;
         }
 
         /// <summary>
@@ -52,30 +70,9 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the associated message has been processed successfully.
+        /// Gets a value indicating whether or not the associated message has been processed successfully.
         /// </summary>
-        [DataMember]
-        public Boolean IsSuccessfullyProcessed
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the number of times that processing has been attempted for the associated message, or zero if processing has
-        /// not yet been attempted.
-        /// </summary>
-        [DataMember]
-        public Int32 ProcessAttemptCount
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Represents the default instructions that guide failure behavior for the subscriber.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly MessageSubscribingFailurePolicy DefaultFailurePolicy = MessageSubscribingFailurePolicy.Default;
+        [IgnoreDataMember]
+        public Boolean IsSuccessfullyProcessed => AttemptResults.Any() ? AttemptResults.Last().WasSuccessful : false;
     }
 }
