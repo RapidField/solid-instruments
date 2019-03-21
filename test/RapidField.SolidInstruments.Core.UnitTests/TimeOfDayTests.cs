@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var resultTwo = targetTwo.CompareTo(targetThree) == -1;
             var resultThree = targetTwo < targetOne;
             var resultFour = targetThree > targetOne;
-            var resultFive = targetFour == targetThree;
+            var resultFive = targetFour != targetThree;
             var resultSix = targetTwo >= targetOne;
 
             // Assert.
