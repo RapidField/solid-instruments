@@ -68,9 +68,9 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void CompareTo_ShouldReturnValidResult()
         {
             // Arrange.
-            var targetOne = new TimeOfDay(TimeZoneInfo.Local, 4, 30, 0, 0);
-            var targetTwo = new TimeOfDay(TimeZoneInfo.Local, 4, 30);
-            var targetThree = new TimeOfDay(TimeZoneInfo.Local, 4, 30, 0, 1);
+            var targetOne = new TimeOfDay(TimeZoneInfo.Utc, 4, 30, 0, 0);
+            var targetTwo = new TimeOfDay(TimeZoneInfo.Utc, 4, 30);
+            var targetThree = new TimeOfDay(TimeZoneInfo.Utc, 4, 30, 0, 1);
             var targetFour = new TimeOfDay(TimeZoneInfo.Utc, 4, 30, 0, 1);
 
             // Act.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var resultTwo = targetTwo.CompareTo(targetThree) == -1;
             var resultThree = targetTwo < targetOne;
             var resultFour = targetThree > targetOne;
-            var resultFive = targetFour <= targetThree;
+            var resultFive = targetFour == targetThree;
             var resultSix = targetTwo >= targetOne;
 
             // Assert.
