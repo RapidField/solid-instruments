@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
         {
             // Arrange. Arrange.
             var correlationIdentifier = Guid.Parse("4aaadf09-0a66-41dc-bfc8-f8520f4aeaf8");
-            var dateRange = new DateTimeRange(DateTime.UtcNow, DateTime.UtcNow.AddDays(1));
+            var dateRange = new DateTimeRange(TimeStamp.Current, TimeStamp.Current.AddDays(1));
             var target = new SimulatedRequestMessage(correlationIdentifier, dateRange);
             var identifier = target.Identifier;
             var resultType = target.ResultType;

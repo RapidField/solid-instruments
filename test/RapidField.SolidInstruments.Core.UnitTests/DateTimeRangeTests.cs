@@ -438,7 +438,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void Parse_ShouldRaiseArgumentOutOfRangeException_ForOutOfRangeDateTimeRangeString()
         {
             // Arrange.
-            var end = DateTime.UtcNow;
+            var end = TimeStamp.Current;
             var start = end.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
@@ -457,7 +457,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void Parse_ShouldRaiseFormatException_ForInvalidFormatDateTimeRangeString()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity.ToString()}";
@@ -476,7 +476,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void Parse_ShouldReturnValidResult_ForValidDateTimeRangeString_WithoutSpacing()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity.ToString()}";
@@ -493,7 +493,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void Parse_ShouldReturnValidResult_ForValidDateTimeRangeString_WithSpacing()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
@@ -573,7 +573,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void TryParse_ShouldProduceDesiredResults_ForValidDateTimeRangeString_WithoutSpacing()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity.ToString()}";
@@ -591,7 +591,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void TryParse_ShouldProduceDesiredResults_ForValidDateTimeRangeString_WithSpacing()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
@@ -624,7 +624,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void TryParse_ShouldReturnFalse_ForInvalidFormatDateTimeRangeString()
         {
             // Arrange.
-            var start = DateTime.UtcNow;
+            var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity.ToString()}";
@@ -657,7 +657,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public void TryParse_ShouldReturnFalse_ForOutOfRangeDateTimeRangeString()
         {
             // Arrange.
-            var end = DateTime.UtcNow;
+            var end = TimeStamp.Current;
             var start = end.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
             var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";

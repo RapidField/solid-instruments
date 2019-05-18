@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
@@ -19,7 +20,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageProcessingAttemptResult" /> class.
         /// </summary>
         public MessageProcessingAttemptResult()
-            : this(DateTime.UtcNow)
+            : this(TimeStamp.Current)
         {
             return;
         }
@@ -29,7 +30,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         /// <param name="attemptEndTimeStamp">
         /// The date and time when the associated attempt ended, successfully or otherwise. The default value is
-        /// <see cref="DateTime.UtcNow" />.
+        /// <see cref="TimeStamp.Current" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="attemptEndTimeStamp" /> is equal to the default <see cref="DateTime" /> value.
@@ -45,7 +46,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         /// <param name="attemptEndTimeStamp">
         /// The date and time when the associated attempt ended, successfully or otherwise. The default value is
-        /// <see cref="DateTime.UtcNow" />.
+        /// <see cref="TimeStamp.Current" />.
         /// </param>
         /// <param name="attemptStartTimeStamp">
         /// The date and time when the associated attempt began, or <see langword="null" /> if the start date and time were not
@@ -65,7 +66,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         /// <param name="attemptEndTimeStamp">
         /// The date and time when the associated attempt ended, successfully or otherwise. The default value is
-        /// <see cref="DateTime.UtcNow" />.
+        /// <see cref="TimeStamp.Current" />.
         /// </param>
         /// <param name="attemptStartTimeStamp">
         /// The date and time when the associated attempt began, or <see langword="null" /> if the start date and time were not
@@ -89,7 +90,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         /// <param name="attemptEndTimeStamp">
         /// The date and time when the associated attempt ended, successfully or otherwise. The default value is
-        /// <see cref="DateTime.UtcNow" />.
+        /// <see cref="TimeStamp.Current" />.
         /// </param>
         /// <param name="attemptStartTimeStamp">
         /// The date and time when the associated attempt began, or <see langword="null" /> if the start date and time were not

@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.EventAuthoring;
@@ -367,18 +368,18 @@ namespace RapidField.SolidInstruments.Messaging
         internal Task HandleMessageAsync<TMessage>(Action<TMessage> messageHandler, TMessage message)
             where TMessage : IMessageBase
         {
-            var attemptStartTimeStamp = DateTime.UtcNow;
+            var attemptStartTimeStamp = TimeStamp.Current;
             var raisedException = (Exception)null;
 
             try
             {
                 messageHandler(message);
-                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(DateTime.UtcNow, attemptStartTimeStamp));
+                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(TimeStamp.Current, attemptStartTimeStamp));
                 return Task.CompletedTask;
             }
             catch (Exception exception)
             {
-                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(DateTime.UtcNow, attemptStartTimeStamp, exception));
+                message.ProcessingInformation.AttemptResults.Add(new MessageProcessingAttemptResult(TimeStamp.Current, attemptStartTimeStamp, exception));
                 raisedException = exception;
             }
 

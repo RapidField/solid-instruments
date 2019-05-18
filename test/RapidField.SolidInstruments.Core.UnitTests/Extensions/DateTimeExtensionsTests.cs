@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisDay_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisDay();
@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisHour_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisHour();
@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisMillisecond_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisMillisecond();
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisMinute_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisMinute();
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisMonth_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisMonth();
@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisSecond_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisSecond();
@@ -130,7 +130,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void BeginningOfThisYear_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.BeginningOfThisYear();
@@ -215,7 +215,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void MidpointOfThisDay_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.MidpointOfThisDay();
@@ -234,7 +234,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void MidpointOfThisHour_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.MidpointOfThisHour();
@@ -253,7 +253,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void MidpointOfThisMillisecond_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.MidpointOfThisMillisecond();
@@ -266,7 +266,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void MidpointOfThisMinute_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.MidpointOfThisMinute();
@@ -311,7 +311,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void MidpointOfThisSecond_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
 
             // Act.
             var result = target.MidpointOfThisSecond();
@@ -348,7 +348,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void ToByteArray_ShouldReturnValidResult_WhenKindIsEncoded()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
             var derivativeOne = new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, target.Millisecond, DateTimeKind.Local);
             var derivativeTwo = new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, target.Millisecond, DateTimeKind.Unspecified);
             var encodeKind = true;
@@ -381,7 +381,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void ToByteArray_ShouldReturnValidResult_WhenKindIsNotEncoded()
         {
             // Arrange.
-            var target = DateTime.UtcNow;
+            var target = TimeStamp.Current;
             var derivativeOne = new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, target.Millisecond, DateTimeKind.Local);
             var derivativeTwo = new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, target.Millisecond, DateTimeKind.Unspecified);
             var encodeKind = false;

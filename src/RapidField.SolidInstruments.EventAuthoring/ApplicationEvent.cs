@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
@@ -132,7 +133,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <paramref name="verbosity" /> is equal to <see cref="ApplicationEventVerbosity.Unspecified" />.
         /// </exception>
         public ApplicationEvent(ApplicationEventCategory category, ApplicationEventVerbosity verbosity, String description, String environmentName, String userInformation)
-            : this(category, verbosity, description, environmentName, userInformation, DateTime.UtcNow)
+            : this(category, verbosity, description, environmentName, userInformation, TimeStamp.Current)
         {
             return;
         }
@@ -157,7 +158,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// Information about a user whose action(s) caused the event. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="occurrenceDateTime">
-        /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="DateTime.UtcNow" />.
+        /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="category" /> is equal to <see cref="ApplicationEventCategory.Unspecified" /> -or-

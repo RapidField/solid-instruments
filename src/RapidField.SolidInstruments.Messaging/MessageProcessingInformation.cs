@@ -57,6 +57,7 @@ namespace RapidField.SolidInstruments.Messaging
         public Collection<MessageProcessingAttemptResult> AttemptResults
         {
             get;
+            private set;
         }
 
         /// <summary>
