@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                 default:
 
-                    throw new InvalidOperationException($"The specified cipher mode, {Mode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
             }
         }
 
@@ -134,7 +134,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                 default:
 
-                    throw new InvalidOperationException($"The specified cipher mode, {Mode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
             }
         }
 

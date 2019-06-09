@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
@@ -124,7 +125,7 @@ namespace RapidField.SolidInstruments.Serialization
 
                 default:
 
-                    throw new InvalidOperationException($"The specified serialization format, {Format}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified serialization format, {Format}, is not supported.");
             }
         }
 
@@ -169,7 +170,7 @@ namespace RapidField.SolidInstruments.Serialization
 
                 default:
 
-                    throw new InvalidOperationException($"The specified serialization format, {format}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.");
             }
         }
 
@@ -589,7 +590,7 @@ namespace RapidField.SolidInstruments.Serialization
 
                 default:
 
-                    throw new InvalidOperationException($"The specified serialization format, {format}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.");
             }
         }
 

@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Core
 
                 default:
 
-                    throw new InvalidOperationException($"The specified date time kind, {Kind}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified date time kind, {Kind}, is not supported.");
             }
         }
 

@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl;
 using System;
@@ -129,7 +130,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
 
                 default:
 
-                    throw new InvalidOperationException($"The specified entity type, {entityType}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
             }
         }
 

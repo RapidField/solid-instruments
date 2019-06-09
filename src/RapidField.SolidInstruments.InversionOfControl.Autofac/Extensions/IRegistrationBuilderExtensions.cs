@@ -4,6 +4,7 @@
 
 using Autofac.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Diagnostics;
 
@@ -52,7 +53,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions
 
                 default:
 
-                    throw new InvalidOperationException($"The specified service lifetime, {lifetime}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified service lifetime, {lifetime}, is not supported.");
             }
         }
     }

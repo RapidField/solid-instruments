@@ -330,7 +330,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 default:
 
-                    throw new InvalidOperationException($"The specified entity type, {entityType}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
             }
         }
 

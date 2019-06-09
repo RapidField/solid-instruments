@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                         default:
 
-                            throw new InvalidOperationException($"The specified messaging entity type, {requestEntityType}, is not supported.");
+                            throw new UnsupportedSpecificationException($"The specified messaging entity type, {requestEntityType}, is not supported.");
                     }
 
                     var messageHandler = new Action<TAdaptedMessage>((adaptedRequestMessage) =>
@@ -449,7 +449,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                     default:
 
-                        throw new InvalidOperationException($"The specified messaging entity type, {entityType}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.");
                 }
 
                 var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
@@ -617,7 +617,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                     default:
 
-                        throw new InvalidOperationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.");
                 }
 
                 failurePolicyTasks.Add(Task.Delay(TimeSpan.FromSeconds(calculatedDelayDurationInSeconds)));
@@ -630,16 +630,16 @@ namespace RapidField.SolidInstruments.Messaging
                     case MessageSubscribingSecondaryFailureBehavior.Discard:
 
                         // TODO
-                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
 
                     case MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue:
 
                         // TODO
-                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
 
                     default:
 
-                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
                 }
             }
 

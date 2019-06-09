@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                     default:
 
-                        throw new InvalidOperationException($"The specified channel status, {Status}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
                 }
 
                 if (OutputLengthIsFixed && (index < 0 || index >= OutputLength))
@@ -139,7 +139,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                         default:
 
-                            throw new InvalidOperationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
+                            throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
                     }
                 }
 
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 default:
 
-                    throw new InvalidOperationException($"The specified channel status, {Status}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
             }
 
             if (OutputLengthIsFixed && (index < 0 || index >= OutputLength))
@@ -222,7 +222,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                     default:
 
-                        throw new InvalidOperationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
                 }
             }
 
@@ -321,7 +321,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 default:
 
-                    throw new InvalidOperationException($"The specified channel status, {Status}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
             }
 
             if (OutputLengthIsFixed)
@@ -355,7 +355,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                         default:
 
-                            throw new InvalidOperationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
+                            throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
                     }
                 }
             }
@@ -464,7 +464,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                     default:
 
-                        throw new InvalidOperationException($"The specified channel status, {Status}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
                 }
             }
         }

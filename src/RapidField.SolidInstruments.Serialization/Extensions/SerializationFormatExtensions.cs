@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Diagnostics;
@@ -62,7 +63,7 @@ namespace RapidField.SolidInstruments.Serialization.Extensions
 
                 default:
 
-                    throw new InvalidOperationException($"The specified serialization type, {target}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified serialization type, {target}, is not supported.");
             }
         }
 

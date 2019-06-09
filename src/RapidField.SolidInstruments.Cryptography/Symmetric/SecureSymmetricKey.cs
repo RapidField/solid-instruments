@@ -326,7 +326,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                                 default:
 
-                                    throw new InvalidOperationException($"The specified key derivation mode, {DerivationMode}, is not supported.");
+                                    throw new UnsupportedSpecificationException($"The specified key derivation mode, {DerivationMode}, is not supported.");
                             }
 
                             // Copy out the key bits.

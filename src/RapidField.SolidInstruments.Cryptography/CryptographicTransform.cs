@@ -355,7 +355,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
                     default:
 
-                        throw new InvalidOperationException($"The specified encryption direction, {encryptionDirection}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified encryption direction, {encryptionDirection}, is not supported.");
                 }
 
                 var currentBlockLength = currentBlock.Length;

@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
 
                 default:
 
-                    throw new InvalidOperationException($"The specified interpolation mode, {interpolationMode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified interpolation mode, {interpolationMode}, is not supported.");
             }
         }
 

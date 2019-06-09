@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Collections;
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Serialization;
@@ -380,7 +381,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                         default:
 
-                            throw new InvalidOperationException($"The specified cipher mode, {cipher.Mode}, is not supported.");
+                            throw new UnsupportedSpecificationException($"The specified cipher mode, {cipher.Mode}, is not supported.");
                     }
                 }
             }

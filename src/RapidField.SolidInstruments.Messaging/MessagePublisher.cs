@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
@@ -83,7 +84,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 default:
 
-                    throw new InvalidOperationException($"The specified messaging entity type, {EntityType}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.");
             }
         }
 
