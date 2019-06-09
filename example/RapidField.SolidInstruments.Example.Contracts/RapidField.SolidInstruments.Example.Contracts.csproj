@@ -11,6 +11,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Description>This project exposes sample contracts that are used to demonstrate Solid Instruments messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Example.Contracts.xml</DocumentationFile>

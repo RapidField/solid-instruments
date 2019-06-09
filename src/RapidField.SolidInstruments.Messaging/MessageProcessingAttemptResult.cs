@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public MessageProcessingAttemptResult(DateTime attemptEndTimeStamp, DateTime? attemptStartTimeStamp, String exceptionStackTrace)
         {
-            AttemptEndTimeStamp = attemptEndTimeStamp.RejectIf().IsEqualToValue(default(DateTime), nameof(attemptEndTimeStamp));
+            AttemptEndTimeStamp = attemptEndTimeStamp.RejectIf().IsEqualToValue(default, nameof(attemptEndTimeStamp));
             AttemptStartTimeStamp = attemptStartTimeStamp;
             ExceptionStackTrace = exceptionStackTrace.IsNullOrEmpty() ? null : exceptionStackTrace;
         }

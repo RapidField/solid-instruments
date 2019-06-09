@@ -400,7 +400,7 @@ namespace RapidField.SolidInstruments.Collections
                 throw new InvalidOperationException("The tree structure has become corrupt.");
             }
 
-            Value = default(T);
+            Value = default;
         }
     }
 }

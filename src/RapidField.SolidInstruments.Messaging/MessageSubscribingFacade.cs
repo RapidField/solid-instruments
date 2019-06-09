@@ -630,12 +630,12 @@ namespace RapidField.SolidInstruments.Messaging
                     case MessageSubscribingSecondaryFailureBehavior.Discard:
 
                         // TODO
-                        break;
+                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
 
                     case MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue:
 
                         // TODO
-                        break;
+                        throw new InvalidOperationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
 
                     default:
 

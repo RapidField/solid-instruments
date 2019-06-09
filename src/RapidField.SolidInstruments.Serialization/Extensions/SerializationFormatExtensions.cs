@@ -44,6 +44,14 @@ namespace RapidField.SolidInstruments.Serialization.Extensions
 
                     return MimeMediaTypeForBinary;
 
+                case SerializationFormat.CompressedJson:
+
+                    return MimeMediaTypeForBinary;
+
+                case SerializationFormat.CompressedXml:
+
+                    return MimeMediaTypeForBinary;
+
                 case SerializationFormat.Json:
 
                     return MimeMediaTypeForJson;

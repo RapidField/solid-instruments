@@ -5,17 +5,18 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Text;
 
 namespace RapidField.SolidInstruments.Serialization.UnitTests
 {
     [TestClass]
-    public class BinaryBase64SerializerTests
+    public class UnicodeSerializerTests
     {
         [TestMethod]
         public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
         {
             // Arrange.
-            var target = new BinaryBase64Serializer();
+            var target = new UnicodeSerializer();
             var buffer = (Byte[])null;
 
             // Act.
@@ -32,8 +33,8 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         public void Serialize_ShouldBeReversible()
         {
             // Arrange.
-            var target = new BinaryBase64Serializer();
-            var serializationTarget = "YW55IGNhcm5hbCBwbGVhc3VyZS4=";
+            var target = new UnicodeSerializer();
+            var serializationTarget = "aZ09`ಮ";
 
             // Act.
             var serializeResult = target.Serialize(serializationTarget);
@@ -47,7 +48,7 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         public void Serialize_ShouldRaiseArgumentNullException_ForNullObjArgument()
         {
             // Arrange.
-            var target = new BinaryBase64Serializer();
+            var target = new UnicodeSerializer();
             var serializationTarget = (String)null;
 
             // Act.
@@ -64,14 +65,14 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         public void Serialize_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = new BinaryBase64Serializer();
-            var serializationTarget = "YW55IGNhcm5hbCBwbGVhc3VyZS4=";
+            var target = new UnicodeSerializer();
+            var obserializationTargetj = "aZ09`ಮ";
 
             // Act.
-            var result = target.Serialize(serializationTarget);
+            var result = target.Serialize(obserializationTargetj);
 
             // Assert.
-            result.Should().BeEquivalentTo(Convert.FromBase64String(serializationTarget));
+            result.Should().BeEquivalentTo(Encoding.Unicode.GetBytes(obserializationTargetj));
         }
     }
 }

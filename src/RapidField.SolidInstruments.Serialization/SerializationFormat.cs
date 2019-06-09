@@ -3,32 +3,50 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
     /// Specifies a format to use for serialization and deserialization.
     /// </summary>
+    [DataContract]
     public enum SerializationFormat : Int32
     {
         /// <summary>
         /// The serialization format is not specified.
         /// </summary>
+        [EnumMember]
         Unspecified = 0,
 
         /// <summary>
-        /// Specifies binary serialization.
+        /// Specifies no serialization format or, in some contexts, the default format.
         /// </summary>
+        [EnumMember]
         Binary = 1,
 
         /// <summary>
-        /// Specifies JSON serialization.
+        /// Specifies the compressed JSON serialization format.
         /// </summary>
-        Json = 2,
+        [EnumMember]
+        CompressedJson = 2,
 
         /// <summary>
-        /// Specifies XML serialization.
+        /// Specifies the compressed XML serialization format.
         /// </summary>
-        Xml = 3
+        [EnumMember]
+        CompressedXml = 3,
+
+        /// <summary>
+        /// Specifies the JSON serialization format.
+        /// </summary>
+        [EnumMember]
+        Json = 4,
+
+        /// <summary>
+        /// Specifies the XML serialization format.
+        /// </summary>
+        [EnumMember]
+        Xml = 5
     }
 }

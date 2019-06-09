@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents a configurable, thread-safe utility for capturing the current date and time.
+    /// Represents a configurable utility for capturing the current date and time.
     /// </summary>
     public sealed class TimeStamp : Instrument
     {
@@ -72,22 +72,19 @@ namespace RapidField.SolidInstruments.Core
         [DebuggerHidden]
         private DateTime Produce()
         {
-            using (var controlToken = StateControl.Enter())
+            switch (Kind)
             {
-                switch (Kind)
-                {
-                    case DateTimeKind.Local:
+                case DateTimeKind.Local:
 
-                        return DateTime.Now;
+                    return DateTime.Now;
 
-                    case DateTimeKind.Utc:
+                case DateTimeKind.Utc:
 
-                        return DateTime.UtcNow;
+                    return DateTime.UtcNow;
 
-                    default:
+                default:
 
-                        throw new InvalidOperationException($"The specified date time kind, {Kind}, is not supported.");
-                }
+                    throw new InvalidOperationException($"The specified date time kind, {Kind}, is not supported.");
             }
         }
 

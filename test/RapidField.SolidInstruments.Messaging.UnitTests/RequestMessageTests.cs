@@ -24,6 +24,26 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
         }
 
         [TestMethod]
+        public void ShouldBeSerializable_UsingCompressedJsonFormat()
+        {
+            // Arrange.
+            var format = SerializationFormat.CompressedJson;
+
+            // Assert.
+            ShouldBeSerializable(format);
+        }
+
+        [TestMethod]
+        public void ShouldBeSerializable_UsingCompressedXmlFormat()
+        {
+            // Arrange.
+            var format = SerializationFormat.CompressedXml;
+
+            // Assert.
+            ShouldBeSerializable(format);
+        }
+
+        [TestMethod]
         public void ShouldBeSerializable_UsingJsonFormat()
         {
             // Arrange.
@@ -45,7 +65,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
 
         private static void ShouldBeSerializable(SerializationFormat format)
         {
-            // Arrange. Arrange.
+            // Arrange.
             var correlationIdentifier = Guid.Parse("4aaadf09-0a66-41dc-bfc8-f8520f4aeaf8");
             var dateRange = new DateTimeRange(TimeStamp.Current, TimeStamp.Current.AddDays(1));
             var target = new SimulatedRequestMessage(correlationIdentifier, dateRange);

@@ -78,11 +78,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
             switch (Mode)
             {
-                case CipherMode.CBC:
+                case CryptographicTransform.CipherModeCbc:
 
                     return DecryptInCbcMode(ciphertext, privateKey);
 
-                case CipherMode.ECB:
+                case CryptographicTransform.CipherModeEcb:
 
                     return DecryptInEcbMode(ciphertext, privateKey);
 
@@ -124,11 +124,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
             switch (Mode)
             {
-                case CipherMode.CBC:
+                case CryptographicTransform.CipherModeCbc:
 
                     return EncryptInCbcMode(plaintext, privateKey, initializationVector);
 
-                case CipherMode.ECB:
+                case CryptographicTransform.CipherModeEcb:
 
                     return EncryptInEcbMode(plaintext, privateKey);
 

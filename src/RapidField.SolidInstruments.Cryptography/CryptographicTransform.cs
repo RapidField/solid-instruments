@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -157,7 +158,7 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private static Byte[] ConditionallyApplyPadding(Byte[] block, Int32 blockSizeInBytes, PaddingMode paddingMode)
         {
-            if (paddingMode == PaddingMode.None)
+            if (paddingMode == PaddingModeNone)
             {
                 return block;
             }
@@ -173,7 +174,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
             switch (paddingMode)
             {
-                case PaddingMode.Zeros:
+                case PaddingModeZeros:
 
                     while (blockAsByteList.Count < (blockSizeInBytes - 1))
                     {
@@ -183,7 +184,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     blockAsByteList.Add(Convert.ToByte(paddingLengthInBytes));
                     break;
 
-                case PaddingMode.PKCS7:
+                case PaddingModePcks7:
 
                     while (blockAsByteList.Count < blockSizeInBytes)
                     {
@@ -224,7 +225,7 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private static Byte[] ConditionallyRemovePadding(Byte[] block, Int32 blockSizeInBytes, PaddingMode paddingMode)
         {
-            if (paddingMode == PaddingMode.None || block.Length != blockSizeInBytes)
+            if (paddingMode == PaddingModeNone || block.Length != blockSizeInBytes)
             {
                 return block;
             }
@@ -242,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
             switch (paddingMode)
             {
-                case PaddingMode.Zeros:
+                case PaddingModeZeros:
 
                     for (var i = startPosition; i >= 0; i--)
                     {
@@ -261,7 +262,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
                     break;
 
-                case PaddingMode.PKCS7:
+                case PaddingModePcks7:
 
                     for (var i = startPosition; i >= 0; i--)
                     {
@@ -425,5 +426,39 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             get;
         }
+
+#pragma warning disable SecurityIntelliSenseCS
+
+        /// <summary>
+        /// Represents the <see cref="CipherMode.CBC" /> cipher mode.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const CipherMode CipherModeCbc = CipherMode.CBC;
+
+        /// <summary>
+        /// Represents the <see cref="CipherMode.ECB" /> cipher mode.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const CipherMode CipherModeEcb = CipherMode.ECB;
+
+        /// <summary>
+        /// Represents the <see cref="PaddingMode.None" /> padding mode.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const PaddingMode PaddingModeNone = PaddingMode.None;
+
+        /// <summary>
+        /// Represents the <see cref="PaddingMode.PKCS7" /> padding mode.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const PaddingMode PaddingModePcks7 = PaddingMode.PKCS7;
+
+        /// <summary>
+        /// Represents the <see cref="PaddingMode.Zeros" /> padding mode.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const PaddingMode PaddingModeZeros = PaddingMode.Zeros;
+
+#pragma warning restore SecurityIntelliSenseCS
     }
 }

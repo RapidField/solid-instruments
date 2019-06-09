@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             {
                 case HashingAlgorithmSpecification.Unspecified:
 
-                    return default(Int32);
+                    return default;
 
                 case HashingAlgorithmSpecification.Md5:
 

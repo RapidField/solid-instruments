@@ -11,6 +11,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Description>This project serves as a sample service application that employs the Solid Instruments messaging and dependency injection abstractions.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netcoreapp2.2</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -5,19 +5,19 @@
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Performs binary serialization and deserialization for a given type.
+    /// Performs compressed XML serialization and deserialization for a given type.
     /// </summary>
     /// <typeparam name="T">
     /// The type of the serializable object.
     /// </typeparam>
-    public class BinarySerializer<T> : DynamicSerializer<T>
+    public sealed class CompressedXmlSerializer<T> : DynamicSerializer<T>
         where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinarySerializer{T}" /> class.
+        /// Initializes a new instance of the <see cref="CompressedXmlSerializer{T}" /> class.
         /// </summary>
-        public BinarySerializer()
-            : base(SerializationFormat.Binary)
+        public CompressedXmlSerializer()
+            : base(SerializationFormat.Xml)
         {
             return;
         }

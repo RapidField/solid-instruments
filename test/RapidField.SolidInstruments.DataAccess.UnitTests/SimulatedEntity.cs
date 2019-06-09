@@ -73,11 +73,11 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// </returns>
         public static Boolean operator ==(SimulatedEntity<TValue> a, SimulatedEntity<TValue> b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// </returns>
         public Boolean Equals(SimulatedEntity<TValue> other)
         {
-            if ((Object)other is null)
+            if (other is null)
             {
                 return false;
             }

@@ -7,7 +7,7 @@ using System;
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Performs binary, JSON or XML serialization and deserialization for a given type.
+    /// Performs serialization and deserialization for a given type.
     /// </summary>
     /// <typeparam name="T">
     /// The type of the serializable object.
@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Serialization
         where T : class
     {
         /// <summary>
-        /// Converts the specified binary, JSON or XML buffer to its typed equivalent.
+        /// Converts the specified buffer to its typed equivalent.
         /// </summary>
         /// <param name="buffer">
         /// A serialized object.
@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Serialization
         T Deserialize(Byte[] buffer);
 
         /// <summary>
-        /// Converts the specified object to a serialized binary, JSON or XML buffer.
+        /// Converts the specified object to a serialized buffer.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.

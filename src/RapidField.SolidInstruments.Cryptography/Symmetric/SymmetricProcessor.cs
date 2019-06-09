@@ -358,7 +358,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     switch (cipher.Mode)
                     {
-                        case CipherMode.CBC:
+                        case CryptographicTransform.CipherModeCbc:
 
                             using (var processedInitializationVector = new PinnedBuffer(cipher.BlockSizeInBytes, true))
                             {
@@ -374,7 +374,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 return cipher.Encrypt(pinnedPlaintext, key, processedInitializationVector);
                             }
 
-                        case CipherMode.ECB:
+                        case CryptographicTransform.CipherModeEcb:
 
                             return cipher.Encrypt(pinnedPlaintext, key, null);
 

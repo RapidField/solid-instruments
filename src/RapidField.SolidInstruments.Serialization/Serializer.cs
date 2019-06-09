@@ -2,20 +2,22 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using System.Text;
-
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Performs UTF-16 string-to-binary serialization and deserialization.
+    /// Performs serialization and deserialization for a given type.
     /// </summary>
-    public sealed class BinaryUnicodeSerializer : BinaryStringSerializer
+    /// <typeparam name="T">
+    /// The type of the serializable object.
+    /// </typeparam>
+    public class Serializer<T> : DynamicSerializer<T>
+        where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryUnicodeSerializer" /> class.
+        /// Initializes a new instance of the <see cref="Serializer{T}" /> class.
         /// </summary>
-        public BinaryUnicodeSerializer()
-            : base(Encoding.Unicode)
+        public Serializer()
+            : base(SerializationFormat.Binary)
         {
             return;
         }

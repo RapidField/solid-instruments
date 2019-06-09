@@ -11,22 +11,22 @@ using System.Text;
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Supports string-to-binary serialization and deserialization.
+    /// Supports text encoding and decoding in place of a serializer.
     /// </summary>
-    public abstract class BinaryStringSerializer : BinarySerializer<String>
+    public abstract class TextEncodingSerializer : Serializer<String>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryStringSerializer" /> class.
+        /// Initializes a new instance of the <see cref="TextEncodingSerializer" /> class.
         /// </summary>
         [DebuggerHidden]
-        internal BinaryStringSerializer()
+        internal TextEncodingSerializer()
             : base()
         {
             CharacterEncoding = null;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryStringSerializer" /> class.
+        /// Initializes a new instance of the <see cref="TextEncodingSerializer" /> class.
         /// </summary>
         /// <param name="characterEncoding">
         /// The character encoding that is used for serialization and deserialization.
@@ -34,17 +34,20 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="ArgumentNullException">
         /// <paramref name="characterEncoding" /> is <see langword="null" />.
         /// </exception>
-        protected BinaryStringSerializer(Encoding characterEncoding)
+        protected TextEncodingSerializer(Encoding characterEncoding)
             : base()
         {
             CharacterEncoding = characterEncoding.RejectIf().IsNull(nameof(characterEncoding));
         }
 
         /// <summary>
-        /// Converts the specified binary buffer to its typed equivalent.
+        /// Converts the specified buffer to its typed equivalent.
         /// </summary>
         /// <param name="buffer">
         /// A serialized object.
+        /// </param>
+        /// <param name="format">
+        /// The format to use for deserialization.
         /// </param>
         /// <returns>
         /// The deserialized object.
@@ -52,11 +55,11 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="SerializationException">
         /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected sealed override String DeserializeFromBinary(Byte[] buffer)
+        protected override String Deserialize(Byte[] buffer, SerializationFormat format)
         {
             try
             {
-                return DeserializeFromBinary(buffer, CharacterEncoding);
+                return Deserialize(buffer, CharacterEncoding);
             }
             catch (Exception exception)
             {
@@ -65,7 +68,34 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified binary buffer to its typed equivalent.
+        /// Converts the specified object to a buffer.
+        /// </summary>
+        /// <param name="target">
+        /// An object to be serialized.
+        /// </param>
+        /// <param name="format">
+        /// The format to use for serialization.
+        /// </param>
+        /// <returns>
+        /// The serialized buffer.
+        /// </returns>
+        /// <exception cref="SerializationException">
+        /// <paramref name="target" /> is invalid or an error occurred during serialization.
+        /// </exception>
+        protected override Byte[] Serialize(String target, SerializationFormat format)
+        {
+            try
+            {
+                return Serialize(target, CharacterEncoding);
+            }
+            catch (Exception exception)
+            {
+                throw new SerializationException("An error occurred during serialization. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Converts the specified buffer to its typed equivalent.
         /// </summary>
         /// <param name="buffer">
         /// A serialized object.
@@ -85,34 +115,11 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="DecoderFallbackException">
         /// A fallback occurred.
         /// </exception>
-        protected virtual String DeserializeFromBinary(Byte[] buffer, Encoding characterEncoding) => characterEncoding.GetString(buffer);
+        [DebuggerHidden]
+        private static String Deserialize(Byte[] buffer, Encoding characterEncoding) => characterEncoding.GetString(buffer);
 
         /// <summary>
-        /// Converts the specified object to a binary buffer.
-        /// </summary>
-        /// <param name="target">
-        /// An object to be serialized.
-        /// </param>
-        /// <returns>
-        /// The serialized buffer.
-        /// </returns>
-        /// <exception cref="SerializationException">
-        /// <paramref name="target" /> is invalid or an error occurred during serialization.
-        /// </exception>
-        protected sealed override Byte[] SerializeToBinary(String target)
-        {
-            try
-            {
-                return SerializeToBinary(target, CharacterEncoding);
-            }
-            catch (Exception exception)
-            {
-                throw new SerializationException("An error occurred during serialization. See inner exception.", exception);
-            }
-        }
-
-        /// <summary>
-        /// Converts the specified object to a binary buffer.
+        /// Converts the specified object to a buffer.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
@@ -129,7 +136,8 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="EncoderFallbackException">
         /// A fallback occurred.
         /// </exception>
-        protected virtual Byte[] SerializeToBinary(String target, Encoding characterEncoding) => characterEncoding.GetBytes(target);
+        [DebuggerHidden]
+        private static Byte[] Serialize(String target, Encoding characterEncoding) => characterEncoding.GetBytes(target);
 
         /// <summary>
         /// Represents the character encoding that is used for serialization and deserialization.

@@ -630,13 +630,13 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <paramref name="array" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="characterLengthFloor" /> is less than one or the <paramref name="characterLengthFloor" /> argument is
+        /// <paramref name="characterLengthFloor" /> is less than zero or the <paramref name="characterLengthFloor" /> argument is
         /// greater than the <paramref name="characterLengthCeiling" />.
         /// </exception>
         public static void FillStringArray(this RandomNumberGenerator target, String[] array, Int32 characterLengthFloor, Int32 characterLengthCeiling, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl)
         {
             array.RejectIf().IsNull(nameof(array));
-            characterLengthFloor.RejectIf().IsLessThan(1, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
+            characterLengthFloor.RejectIf().IsLessThan(0, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
 
             if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
             {
@@ -1311,12 +1311,12 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// The specified arguments do not permit any character types.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="characterLengthFloor" /> is less than one or the <paramref name="characterLengthFloor" /> argument is
+        /// <paramref name="characterLengthFloor" /> is less than zero or the <paramref name="characterLengthFloor" /> argument is
         /// greater than the <paramref name="characterLengthCeiling" />.
         /// </exception>
         public static String GetString(this RandomNumberGenerator target, Int32 characterLengthFloor, Int32 characterLengthCeiling, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl)
         {
-            characterLengthFloor.RejectIf().IsLessThan(1, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
+            characterLengthFloor.RejectIf().IsLessThan(0, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
 
             if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
             {

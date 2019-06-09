@@ -11,18 +11,20 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Description>Solid Instruments, licensed by RapidField LLC, is a multi-purpose API collection for .NET Core and .NET Framework.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netcoreapp2.2</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="5.6.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+        <PackageReference Include="FluentAssertions" Version="5.7.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
         <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
         <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
     </ItemGroup>
 </Project>

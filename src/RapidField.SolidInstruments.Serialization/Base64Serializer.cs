@@ -2,31 +2,33 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Stands in place of a serializer when the input and output are both binary arrays.
+    /// Performs Base64 encoding and decoding in place of a serializer.
     /// </summary>
-    public class BinaryPassThroughSerializer : DynamicSerializer<Byte[]>
+    public sealed class Base64Serializer : TextEncodingSerializer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryPassThroughSerializer" /> class.
+        /// Initializes a new instance of the <see cref="Base64Serializer" /> class.
         /// </summary>
-        public BinaryPassThroughSerializer()
-            : base(SerializationFormat.Binary)
+        public Base64Serializer()
+            : base()
         {
             return;
         }
 
         /// <summary>
-        /// Converts the specified binary buffer to its typed equivalent.
+        /// Converts the specified buffer to its typed equivalent.
         /// </summary>
         /// <param name="buffer">
         /// A serialized object.
+        /// </param>
+        /// <param name="format">
+        /// The format to use for deserialization.
         /// </param>
         /// <returns>
         /// The deserialized object.
@@ -34,11 +36,11 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="SerializationException">
         /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected override Byte[] DeserializeFromBinary(Byte[] buffer)
+        protected sealed override String Deserialize(Byte[] buffer, SerializationFormat format)
         {
             try
             {
-                return buffer.RejectIf().IsNull(nameof(buffer));
+                return Convert.ToBase64String(buffer);
             }
             catch (Exception exception)
             {
@@ -47,10 +49,13 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified object to a binary buffer.
+        /// Converts the specified object to a buffer.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
+        /// </param>
+        /// <param name="format">
+        /// The format to use for serialization.
         /// </param>
         /// <returns>
         /// The serialized buffer.
@@ -58,11 +63,11 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
         /// </exception>
-        protected override Byte[] SerializeToBinary(Byte[] target)
+        protected sealed override Byte[] Serialize(String target, SerializationFormat format)
         {
             try
             {
-                return target.RejectIf().IsNull(nameof(target));
+                return Convert.FromBase64String(target);
             }
             catch (Exception exception)
             {

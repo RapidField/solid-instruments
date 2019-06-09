@@ -11,6 +11,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Description>The RapidField.SolidInstruments.DataAccess.EntityFramework library provides Entity Framework implementations of the Solid Instruments data access abstractions. Refer to the project documentation for more information.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -34,13 +35,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="2.0.0-preview1-final" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>

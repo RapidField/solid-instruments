@@ -63,6 +63,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
         /// Represents the padding setting for the cipher.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const PaddingMode PaddingModeSetting = PaddingMode.PKCS7;
+        private const PaddingMode PaddingModeSetting = CryptographicTransform.PaddingModePcks7;
     }
 }

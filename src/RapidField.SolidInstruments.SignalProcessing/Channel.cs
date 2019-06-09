@@ -417,7 +417,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// A discrete unit that represents a silent or empty signal.
         /// </returns>
-        public virtual T ReadSilence() => default(T);
+        public virtual T ReadSilence() => default;
 
         /// <summary>
         /// Returns a discrete unit that represents a silent or empty signal.

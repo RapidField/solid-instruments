@@ -9,13 +9,13 @@ using System;
 namespace RapidField.SolidInstruments.Serialization.UnitTests
 {
     [TestClass]
-    public class BinaryPassThroughSerializerTests
+    public class Base64SerializerTests
     {
         [TestMethod]
         public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
         {
             // Arrange.
-            var target = new BinaryPassThroughSerializer();
+            var target = new Base64Serializer();
             var buffer = (Byte[])null;
 
             // Act.
@@ -29,27 +29,26 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         }
 
         [TestMethod]
-        public void Deserialize_ShouldReturnBufferArgument_ForNonNullBufferArgument()
+        public void Serialize_ShouldBeReversible()
         {
             // Arrange.
-            var target = new BinaryPassThroughSerializer();
-            var buffer = new Byte[] { 0x03 };
+            var target = new Base64Serializer();
+            var serializationTarget = "YW55IGNhcm5hbCBwbGVhc3VyZS4=";
 
             // Act.
-            var result = target.Deserialize(buffer);
+            var serializeResult = target.Serialize(serializationTarget);
+            var deserializeResult = target.Deserialize(serializeResult);
 
             // Assert.
-            result.Should().NotBeNull();
-            result.Length.Should().Be(buffer.Length);
-            result[0].Should().Be(buffer[0]);
+            deserializeResult.Should().BeEquivalentTo(serializationTarget);
         }
 
         [TestMethod]
         public void Serialize_ShouldRaiseArgumentNullException_ForNullObjArgument()
         {
             // Arrange.
-            var target = new BinaryPassThroughSerializer();
-            var serializationTarget = (Byte[])null;
+            var target = new Base64Serializer();
+            var serializationTarget = (String)null;
 
             // Act.
             var action = new Action(() =>
@@ -62,19 +61,17 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         }
 
         [TestMethod]
-        public void Serialize_ShouldReturnObjArgument_ForNonNullObjArgument()
+        public void Serialize_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = new BinaryPassThroughSerializer();
-            var serializationTarget = new Byte[] { 0x03 };
+            var target = new Base64Serializer();
+            var serializationTarget = "YW55IGNhcm5hbCBwbGVhc3VyZS4=";
 
             // Act.
             var result = target.Serialize(serializationTarget);
 
             // Assert.
-            result.Should().NotBeNull();
-            result.Length.Should().Be(serializationTarget.Length);
-            result[0].Should().Be(serializationTarget[0]);
+            result.Should().BeEquivalentTo(Convert.FromBase64String(serializationTarget));
         }
     }
 }

@@ -704,10 +704,10 @@ namespace RapidField.SolidInstruments.Core
             else if (input.IsNullOrEmpty())
             {
                 zone = null;
-                hour = default(Int32);
-                minute = default(Int32);
-                second = default(Int32);
-                millisecond = default(Int32);
+                hour = default;
+                minute = default;
+                second = default;
+                millisecond = default;
                 return false;
             }
 
@@ -721,10 +721,10 @@ namespace RapidField.SolidInstruments.Core
                 }
 
                 zone = null;
-                hour = default(Int32);
-                minute = default(Int32);
-                second = default(Int32);
-                millisecond = default(Int32);
+                hour = default;
+                minute = default;
+                second = default;
+                millisecond = default;
                 return false;
             }
 
@@ -743,10 +743,10 @@ namespace RapidField.SolidInstruments.Core
                 }
 
                 zone = null;
-                hour = default(Int32);
-                minute = default(Int32);
-                second = default(Int32);
-                millisecond = default(Int32);
+                hour = default;
+                minute = default;
+                second = default;
+                millisecond = default;
                 return false;
             }
 
@@ -762,10 +762,10 @@ namespace RapidField.SolidInstruments.Core
                 }
 
                 zone = null;
-                hour = default(Int32);
-                minute = default(Int32);
-                second = default(Int32);
-                millisecond = default(Int32);
+                hour = default;
+                minute = default;
+                second = default;
+                millisecond = default;
                 return false;
             }
 
@@ -784,37 +784,37 @@ namespace RapidField.SolidInstruments.Core
                 else if (Int32.TryParse(hourString, out hour) == false)
                 {
                     zone = null;
-                    hour = default(Int32);
-                    minute = default(Int32);
-                    second = default(Int32);
-                    millisecond = default(Int32);
+                    hour = default;
+                    minute = default;
+                    second = default;
+                    millisecond = default;
                     return false;
                 }
                 else if (Int32.TryParse(minuteString, out minute) == false)
                 {
                     zone = null;
-                    hour = default(Int32);
-                    minute = default(Int32);
-                    second = default(Int32);
-                    millisecond = default(Int32);
+                    hour = default;
+                    minute = default;
+                    second = default;
+                    millisecond = default;
                     return false;
                 }
                 else if (Int32.TryParse(secondString, out second) == false)
                 {
                     zone = null;
-                    hour = default(Int32);
-                    minute = default(Int32);
-                    second = default(Int32);
-                    millisecond = default(Int32);
+                    hour = default;
+                    minute = default;
+                    second = default;
+                    millisecond = default;
                     return false;
                 }
                 else if (Int32.TryParse(millisecondString, out millisecond) == false)
                 {
                     zone = null;
-                    hour = default(Int32);
-                    minute = default(Int32);
-                    second = default(Int32);
-                    millisecond = default(Int32);
+                    hour = default;
+                    minute = default;
+                    second = default;
+                    millisecond = default;
                     return false;
                 }
 

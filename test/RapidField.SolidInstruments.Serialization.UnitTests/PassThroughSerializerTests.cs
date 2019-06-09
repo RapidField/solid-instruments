@@ -5,18 +5,17 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Text;
 
 namespace RapidField.SolidInstruments.Serialization.UnitTests
 {
     [TestClass]
-    public class BinaryUnicodeSerializerTests
+    public class PassThroughSerializerTests
     {
         [TestMethod]
         public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
         {
             // Arrange.
-            var target = new BinaryUnicodeSerializer();
+            var target = new PassThroughSerializer();
             var buffer = (Byte[])null;
 
             // Act.
@@ -30,26 +29,27 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         }
 
         [TestMethod]
-        public void Serialize_ShouldBeReversible()
+        public void Deserialize_ShouldReturnBufferArgument_ForNonNullBufferArgument()
         {
             // Arrange.
-            var target = new BinaryUnicodeSerializer();
-            var serializationTarget = "aZ09`ಮ";
+            var target = new PassThroughSerializer();
+            var buffer = new Byte[] { 0x03 };
 
             // Act.
-            var serializeResult = target.Serialize(serializationTarget);
-            var deserializeResult = target.Deserialize(serializeResult);
+            var result = target.Deserialize(buffer);
 
             // Assert.
-            deserializeResult.Should().BeEquivalentTo(serializationTarget);
+            result.Should().NotBeNull();
+            result.Length.Should().Be(buffer.Length);
+            result[0].Should().Be(buffer[0]);
         }
 
         [TestMethod]
         public void Serialize_ShouldRaiseArgumentNullException_ForNullObjArgument()
         {
             // Arrange.
-            var target = new BinaryUnicodeSerializer();
-            var serializationTarget = (String)null;
+            var target = new PassThroughSerializer();
+            var serializationTarget = (Byte[])null;
 
             // Act.
             var action = new Action(() =>
@@ -62,17 +62,19 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         }
 
         [TestMethod]
-        public void Serialize_ShouldReturnValidResult()
+        public void Serialize_ShouldReturnObjArgument_ForNonNullObjArgument()
         {
             // Arrange.
-            var target = new BinaryUnicodeSerializer();
-            var obserializationTargetj = "aZ09`ಮ";
+            var target = new PassThroughSerializer();
+            var serializationTarget = new Byte[] { 0x03 };
 
             // Act.
-            var result = target.Serialize(obserializationTargetj);
+            var result = target.Serialize(serializationTarget);
 
             // Assert.
-            result.Should().BeEquivalentTo(Encoding.Unicode.GetBytes(obserializationTargetj));
+            result.Should().NotBeNull();
+            result.Length.Should().Be(serializationTarget.Length);
+            result[0].Should().Be(serializationTarget[0]);
         }
     }
 }
