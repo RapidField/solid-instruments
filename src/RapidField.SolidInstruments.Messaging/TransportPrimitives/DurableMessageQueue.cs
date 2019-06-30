@@ -4,12 +4,15 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
@@ -25,6 +28,47 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="persistenceProxy">
+        /// An object that manages thread-safe persistence for the queue.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal DurableMessageQueue(IDurableMessageQueuePersistenceProxy persistenceProxy)
+            : this(Guid.NewGuid(), persistenceProxy)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
+        /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
+        /// <param name="persistenceProxy">
+        /// An object that manages thread-safe persistence for the queue.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal DurableMessageQueue(Guid identifier, IDurableMessageQueuePersistenceProxy persistenceProxy)
+            : this(identifier, $"{identifier.ToSerializedString()}", persistenceProxy)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
+        /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -37,9 +81,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy)
-            : this(path, persistenceProxy, DurableMessageQueueOperationalState.Ready)
+        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy)
+            : this(identifier, path, persistenceProxy, DurableMessageQueueOperationalState.Ready)
         {
             return;
         }
@@ -47,6 +94,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -63,11 +113,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="operationalState" /> is equal to <see cref="DurableMessageQueueOperationalState.Unspecified" />.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState)
-            : this(path, persistenceProxy, operationalState, DefaultMessageBodySerializationFormat)
+        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState)
+            : this(identifier, path, persistenceProxy, operationalState, DefaultMessageBodySerializationFormat)
         {
             return;
         }
@@ -75,6 +126,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -95,12 +149,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="operationalState" /> is equal to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
-        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
+        /// is equal to <see cref="SerializationFormat.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat)
-            : this(path, persistenceProxy, operationalState, messageBodySerializationFormat, DefaultMessageLockExpirationThreshold)
+        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat)
+            : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, DefaultMessageLockExpirationThreshold)
         {
             return;
         }
@@ -108,6 +163,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -132,13 +190,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="operationalState" /> is equal to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
-        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
-        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
+        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
+        /// less than eight seconds.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold)
-            : this(path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, DefaultEnqueueTimeoutThreshold)
+        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold)
+            : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, DefaultEnqueueTimeoutThreshold)
         {
             return;
         }
@@ -146,6 +205,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -174,14 +236,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="operationalState" /> is equal to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
-        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
-        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds -or-
-        /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
+        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
+        /// less than eight seconds -or- <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
-            : this(path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold, Array.Empty<DurableMessage>(), new Dictionary<DurableMessageLockToken, DurableMessage>())
+        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
+            : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold, Array.Empty<DurableMessage>(), new Dictionary<DurableMessageLockToken, DurableMessage>())
         {
             return;
         }
@@ -189,6 +251,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueue" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// A unique identifier for the queue.
+        /// </param>
         /// <param name="path">
         /// The unique textual path that identifies the queue.
         /// </param>
@@ -225,16 +290,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         ///  <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="operationalState" /> is equal to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
-        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
-        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds -or-
-        /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
+        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
+        /// less than eight seconds -or- <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
-        private DurableMessageQueue(String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold, IEnumerable<DurableMessage> messages, IDictionary<DurableMessageLockToken, DurableMessage> lockedMessages)
+        private DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold, IEnumerable<DurableMessage> messages, IDictionary<DurableMessageLockToken, DurableMessage> lockedMessages)
             : base()
         {
             EnqueueTimeoutThreshold = enqueueTimeoutThreshold.RejectIf().IsLessThan(EnqueueTimeoutThresholdFloor, nameof(enqueueTimeoutThreshold));
+            Identifier = identifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(identifier));
             LockedMessages = new ConcurrentDictionary<DurableMessageLockToken, DurableMessage>(lockedMessages.RejectIf().IsNull(nameof(lockedMessages)).TargetArgument);
             Messages = new ConcurrentQueue<DurableMessage>(messages.RejectIf().IsNull(nameof(messages)).TargetArgument);
             MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
@@ -269,32 +335,16 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public async Task AbandonAsync(DurableMessageLockToken lockToken)
+        public Task ConveyFailureAsync(DurableMessageLockToken lockToken)
         {
             RejectIfDisposed();
 
             if (LockedMessages.TryRemove(lockToken.RejectIf().IsNull(nameof(lockToken)), out var message))
             {
-                await RequeueAsync(message).ConfigureAwait(false);
-                return;
+                return RequeueAsync(message);
             }
 
             throw new ArgumentException("The specified lock token does not reference an existing locked message in the queue.", nameof(lockToken));
-        }
-
-        /// <summary>
-        /// Produces a serializable persistence snapshot of the current <see cref="DurableMessageQueue" /> in a thread-safe manner.
-        /// </summary>
-        /// <returns>
-        /// A serializable persistence snapshot of the current <see cref="DurableMessageQueue" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public DurableMessageQueueSnapshot CaptureSnapshot()
-        {
-            RejectIfDisposed();
-            throw new NotImplementedException(); // TODO
         }
 
         /// <summary>
@@ -318,14 +368,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public async Task CompleteAsync(DurableMessageLockToken lockToken)
+        public Task ConveySuccessAsync(DurableMessageLockToken lockToken)
         {
             RejectIfDisposed();
 
             if (LockedMessages.TryRemove(lockToken.RejectIf().IsNull(nameof(lockToken)), out _))
             {
-                await PersistSnapshotAsync().ConfigureAwait(false);
-                return;
+                return PersistSnapshotAsync();
             }
 
             throw new ArgumentException("The specified lock token does not reference an existing locked message in the queue.", nameof(lockToken));
@@ -408,11 +457,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public async Task EnqueueAsync(IMessageBase message)
+        public Task EnqueueAsync(IMessageBase message)
         {
             var lockToken = new DurableMessageLockToken(Guid.NewGuid(), message.RejectIf().IsNull(nameof(message)).TargetArgument.Identifier);
             var durableMessage = new DurableMessage(message, lockToken, MessageBodySerializationFormat);
-            await EnqueueAsync(durableMessage).ConfigureAwait(false);
+            return EnqueueAsync(durableMessage);
         }
 
         /// <summary>
@@ -422,6 +471,152 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A string representation of the current <see cref="DurableMessageQueue" />.
         /// </returns>
         public sealed override String ToString() => Path;
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />, or to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
+        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        public Boolean TryDisableDequeues()
+        {
+            switch (OperationalState)
+            {
+                case DurableMessageQueueOperationalState.DequeueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Paused;
+                    return true;
+
+                case DurableMessageQueueOperationalState.EnqueueOnly:
+
+                    return true;
+
+                case DurableMessageQueueOperationalState.Paused:
+
+                    return true;
+
+                case DurableMessageQueueOperationalState.Ready:
+
+                    OperationalState = DurableMessageQueueOperationalState.EnqueueOnly;
+                    return true;
+
+                default:
+
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />, or to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
+        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        public Boolean TryDisableEnqueues()
+        {
+            switch (OperationalState)
+            {
+                case DurableMessageQueueOperationalState.DequeueOnly:
+
+                    return true;
+
+                case DurableMessageQueueOperationalState.EnqueueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Paused;
+                    return true;
+
+                case DurableMessageQueueOperationalState.Paused:
+
+                    return true;
+
+                case DurableMessageQueueOperationalState.Ready:
+
+                    OperationalState = DurableMessageQueueOperationalState.DequeueOnly;
+                    return true;
+
+                default:
+
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        public Boolean TryPause()
+        {
+            switch (OperationalState)
+            {
+                case DurableMessageQueueOperationalState.DequeueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Paused;
+                    return true;
+
+                case DurableMessageQueueOperationalState.EnqueueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Paused;
+                    return true;
+
+                case DurableMessageQueueOperationalState.Paused:
+
+                    return true;
+
+                case DurableMessageQueueOperationalState.Ready:
+
+                    OperationalState = DurableMessageQueueOperationalState.Paused;
+                    return true;
+
+                default:
+
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.Ready" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        public Boolean TryResume()
+        {
+            switch (OperationalState)
+            {
+                case DurableMessageQueueOperationalState.DequeueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Ready;
+                    return true;
+
+                case DurableMessageQueueOperationalState.EnqueueOnly:
+
+                    OperationalState = DurableMessageQueueOperationalState.Ready;
+                    return true;
+
+                case DurableMessageQueueOperationalState.Paused:
+
+                    OperationalState = DurableMessageQueueOperationalState.Ready;
+                    return true;
+
+                case DurableMessageQueueOperationalState.Ready:
+
+                    return true;
+
+                default:
+
+                    return false;
+            }
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DurableMessageQueue" />.
@@ -445,6 +640,42 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Produces a serializable persistence snapshot of the current <see cref="DurableMessageQueue" /> in a thread-safe manner.
+        /// </summary>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <returns>
+        /// A serializable persistence snapshot of the current <see cref="DurableMessageQueue" />.
+        /// </returns>
+        [DebuggerHidden]
+        private DurableMessageQueueSnapshot CaptureSnapshot(ConcurrencyControlToken controlToken) => new DurableMessageQueueSnapshot(this);
+
+        /// <summary>
+        /// Asynchronously produces a serializable persistence snapshot of the current <see cref="IDurableMessageQueue" /> in a
+        /// thread-safe manner.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing a serializable persistence snapshot of the current
+        /// <see cref="IDurableMessageQueue" />.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        private Task<DurableMessageQueueSnapshot> CaptureSnapshotAsync()
+        {
+            RejectIfDisposed();
+
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                var snapshot = CaptureSnapshot(controlToken);
+                return Task.FromResult(snapshot);
+            }
+        }
+
+        /// <summary>
         /// Asynchronously enqueues the specified message.
         /// </summary>
         /// <param name="message">
@@ -463,14 +694,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task EnqueueAsync(DurableMessage message)
+        private Task EnqueueAsync(DurableMessage message)
         {
-            RejectIfDisposed();
-
             if (TryEnqueue(message))
             {
-                await PersistSnapshotAsync().ConfigureAwait(false);
-                return;
+                return PersistSnapshotAsync();
             }
 
             var stopwatch = new Stopwatch();
@@ -480,13 +708,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 while (stopwatch.Elapsed < EnqueueTimeoutThreshold)
                 {
-                    await Task.Delay(EnqueueDelayDuration).ConfigureAwait(false);
                     RejectIfDisposed();
+                    Thread.Sleep(EnqueueDelayDuration);
 
                     if (TryEnqueue(message))
                     {
-                        await PersistSnapshotAsync().ConfigureAwait(false);
-                        return;
+                        return PersistSnapshotAsync();
                     }
                 }
             }
@@ -513,11 +740,32 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         [DebuggerHidden]
         private async Task PersistSnapshotAsync()
         {
+            RejectIfDisposed();
+
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
-                await PersistenceProxy.PersistSnapshotAsync().ConfigureAwait(false);
+                await PersistSnapshotAsync(controlToken).ConfigureAwait(false);
             }
+        }
+
+        /// <summary>
+        /// Asynchronously persists a thread-safe snapshot of the current <see cref="DurableMessageQueue" />.
+        /// </summary>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="DurableMessageQueuePersistenceException">
+        /// An exception was raised while attempting to persist the snapshot.
+        /// </exception>
+        [DebuggerHidden]
+        private Task PersistSnapshotAsync(ConcurrencyControlToken controlToken)
+        {
+            var snapshot = CaptureSnapshot(controlToken);
+            return PersistenceProxy.PersistSnapshotAsync(snapshot);
         }
 
         /// <summary>
@@ -542,11 +790,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task RequeueAsync(DurableMessage message)
+        private Task RequeueAsync(DurableMessage message)
         {
             var lockToken = new DurableMessageLockToken(Guid.NewGuid(), message.RejectIf().IsNull(nameof(message)).TargetArgument.Identifier);
             message.LockToken = lockToken;
-            await EnqueueAsync(message).ConfigureAwait(false);
+            return EnqueueAsync(message);
         }
 
         /// <summary>
@@ -638,9 +886,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Gets a unique identifier for the current <see cref="DurableMessageQueue" />.
+        /// </summary>
+        public Guid Identifier
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not the current <see cref="DurableMessageQueue" /> is empty.
         /// </summary>
-        public Boolean IsEmpty => Messages.IsEmpty;
+        public Boolean IsEmpty => Depth == 0;
 
         /// <summary>
         /// Gets the format that is used to serialize enqueued message bodies.
@@ -676,8 +932,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public String Path
         {
             get;
-            private set;
+            internal set;
         }
+
+        /// <summary>
+        /// Represents the underlying first-in first-out collection that contains messages that are locked for processing.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal readonly ConcurrentDictionary<DurableMessageLockToken, DurableMessage> LockedMessages;
+
+        /// <summary>
+        /// Represents the underlying first-in first-out collection that contains enqueued messages.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal readonly ConcurrentQueue<DurableMessage> Messages;
 
         /// <summary>
         /// Represents the default format that is used to serialize enqueued message bodies.
@@ -689,7 +957,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Represents the default length of time to wait for a message to be enqueued before raising an exception.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan DefaultEnqueueTimeoutThreshold = TimeSpan.FromSeconds(8);
+        private static readonly TimeSpan DefaultEnqueueTimeoutThreshold = TimeSpan.FromSeconds(11);
 
         /// <summary>
         /// Represents the default length of time that a locked message is held before abandoning the associated token and making the
@@ -717,18 +985,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly TimeSpan MessageLockExpirationThresholdFloor = TimeSpan.FromSeconds(8);
-
-        /// <summary>
-        /// Represents the underlying first-in first-out collection that contains messages that are locked for processing.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<DurableMessageLockToken, DurableMessage> LockedMessages;
-
-        /// <summary>
-        /// Represents the underlying first-in first-out collection that contains enqueued messages.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentQueue<DurableMessage> Messages;
 
         /// <summary>
         /// Represents an object that manages thread-safe persistence for the queue.

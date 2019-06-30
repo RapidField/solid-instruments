@@ -2,6 +2,7 @@ aa
 aaaaaaaa
 accomodate
 api
+apidoc
 astextplain
 atm
 Autofac
@@ -46,6 +47,7 @@ deserialized
 Deserializes
 Destructors
 di
+docfx
 dotnet
 dsp
 durations
@@ -77,6 +79,7 @@ ioc
 js
 json
 ly
+markdig
 mcg
 mensiversary
 Merkle

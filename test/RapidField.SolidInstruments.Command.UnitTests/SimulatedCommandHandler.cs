@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Command.UnitTests
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected sealed override void Process(SimulatedCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => command.IsProcessed = true;
     }

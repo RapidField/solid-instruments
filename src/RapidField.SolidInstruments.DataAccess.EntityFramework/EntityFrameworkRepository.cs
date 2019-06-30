@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entity to add.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Add(TEntity entity, ConcurrencyControlToken controlToken) => Set.Add(entity);
 
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entities to add.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void AddRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.AddRange(entities);
 
@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Returns all entities from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// All entities within the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// An expression to test each entity for a condition.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if any entities matching the specified predicate exist in the current
@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entity to evaluate.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the specified entity exists in the current
@@ -139,7 +139,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Returns the number of entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The number of entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -154,7 +154,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// An expression to test each entity for a condition.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The number of entities matching the specified predicate in the current
@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// An expression to test each entity for a condition.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// All entities matching the specified predicate within the current
@@ -193,7 +193,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entity to remove.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Remove(TEntity entity, ConcurrencyControlToken controlToken) => Set.Remove(entity);
 
@@ -204,7 +204,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entities to remove.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void RemoveRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.RemoveRange(entities);
 
@@ -215,7 +215,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entity to update.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Update(TEntity entity, ConcurrencyControlToken controlToken) => Set.Update(entity);
 
@@ -226,7 +226,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The entities to update.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void UpdateRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.UpdateRange(entities);
 

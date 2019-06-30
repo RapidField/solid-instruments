@@ -502,7 +502,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The type of the subscribed message.
         /// </typeparam>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the specified message type was added; <see langword="false" /> if it was already present.
@@ -555,7 +555,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// An implementation-specific receive client.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, ConcurrencyControlToken controlToken);
 

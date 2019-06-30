@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The result that is emitted when processing the command.

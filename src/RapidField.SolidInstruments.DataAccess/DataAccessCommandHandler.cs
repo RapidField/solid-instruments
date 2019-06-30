@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected sealed override void Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
         {
@@ -132,7 +132,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken);
 
@@ -228,7 +228,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The result that is emitted when processing the command.
@@ -276,7 +276,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The result that is emitted when processing the command.

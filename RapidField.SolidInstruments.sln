@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 		.gitignore = .gitignore
 		CodeMaid.config = CodeMaid.config
 		CONTRIBUTING.md = CONTRIBUTING.md
+		docfx.json = docfx.json
 		en-US_User.dic = en-US_User.dic
 		en_US.aff = en_US.aff
 		en_US.dic = en_US.dic
@@ -115,7 +116,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.RabbitMq", "src\RapidField.SolidInstruments.Messaging.RabbitMq\RapidField.SolidInstruments.Messaging.RabbitMq.csproj", "{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Messaging.InMemory", "src\RapidField.SolidInstruments.Messaging.InMemory\RapidField.SolidInstruments.Messaging.InMemory.csproj", "{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.InMemory", "src\RapidField.SolidInstruments.Messaging.InMemory\RapidField.SolidInstruments.Messaging.InMemory.csproj", "{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{64B9EC77-F607-45D7-AF6D-8AF68A365572}"
+	ProjectSection(SolutionItems) = preProject
+		doc\.gitignore = doc\.gitignore
+		doc\index.md = doc\index.md
+		doc\toc.yml = doc\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{FF64BD87-5A3C-498F-9A5A-8DD712C28925}"
+	ProjectSection(SolutionItems) = preProject
+		doc\api\.gitignore = doc\api\.gitignore
+		doc\api\index.md = doc\api\index.md
+		doc\api\toc.yml = doc\api\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{1F65CC6C-6473-4975-B273-42F3FF37A596}"
+	ProjectSection(SolutionItems) = preProject
+		doc\articles\intro.md = doc\articles\intro.md
+		doc\articles\toc.yml = doc\articles\toc.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -333,6 +354,8 @@ Global
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{FF64BD87-5A3C-498F-9A5A-8DD712C28925} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{1F65CC6C-6473-4975-B273-42F3FF37A596} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

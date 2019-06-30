@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The result that is emitted when processing the command.

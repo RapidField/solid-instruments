@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An implementation-specific receive client.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.

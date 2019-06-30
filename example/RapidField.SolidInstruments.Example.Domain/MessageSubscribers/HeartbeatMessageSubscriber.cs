@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Process(HeartbeatMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
         {

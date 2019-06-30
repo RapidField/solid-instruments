@@ -39,18 +39,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task AbandonAsync(DurableMessageLockToken lockToken);
-
-        /// <summary>
-        /// Produces a serializable persistence snapshot of the current <see cref="IDurableMessageQueue" /> in a thread-safe manner.
-        /// </summary>
-        /// <returns>
-        /// A serializable persistence snapshot of the current <see cref="IDurableMessageQueue" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        DurableMessageQueueSnapshot CaptureSnapshot();
+        Task ConveyFailureAsync(DurableMessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously notifies the queue that a locked message was processed successfully and can be destroyed permanently.
@@ -73,7 +62,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task CompleteAsync(DurableMessageLockToken lockToken);
+        Task ConveySuccessAsync(DurableMessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously and non-destructively returns the next available messages from the queue, if any, up to the specified
@@ -124,6 +113,46 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         Task EnqueueAsync(IMessageBase message);
 
         /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />, or to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
+        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        Boolean TryDisableDequeues();
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />, or to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
+        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        Boolean TryDisableEnqueues();
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.Paused" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        Boolean TryPause();
+
+        /// <summary>
+        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
+        /// <see cref="DurableMessageQueueOperationalState.Ready" />.
+        /// </summary>
+        /// <returns>
+        /// True if the operational state was successfully set, otherwise false.
+        /// </returns>
+        Boolean TryResume();
+
+        /// <summary>
         /// Gets the number of messages in the current <see cref="IDurableMessageQueue" />.
         /// </summary>
         Int32 Depth
@@ -135,6 +164,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets the maximum length of time to wait for a message to be enqueued before raising an exception.
         /// </summary>
         TimeSpan EnqueueTimeoutThreshold
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a unique identifier for the current <see cref="IDurableMessageQueue" />.
+        /// </summary>
+        Guid Identifier
         {
             get;
         }

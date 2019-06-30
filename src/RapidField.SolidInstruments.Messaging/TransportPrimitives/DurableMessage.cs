@@ -193,19 +193,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public MessageProcessingInformation ProcessingInformation => Body.ProcessingInformation;
 
         /// <summary>
-        /// Gets or sets the serialized message body.
-        /// </summary>
-        /// <exception cref="SerializationException">
-        /// An error occurred during serialization or deserialization.
-        /// </exception>
-        [DataMember(Name = "Body", Order = 3)]
-        public String SerializedBody
-        {
-            get => SerializeBody();
-            set => DeserializeBody(value);
-        }
-
-        /// <summary>
         /// Gets or sets an exclusive lock token for the current message, which can be used to complete or abandon processing, or
         /// <see langword="null" /> if the message is not locked.
         /// </summary>
@@ -214,6 +201,19 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the serialized message body.
+        /// </summary>
+        /// <exception cref="SerializationException">
+        /// An error occurred during serialization or deserialization.
+        /// </exception>
+        [DataMember(Name = "Body", Order = 3)]
+        internal String SerializedBody
+        {
+            get => SerializeBody();
+            set => DeserializeBody(value);
         }
 
         /// <summary>

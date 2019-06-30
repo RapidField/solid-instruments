@@ -40,8 +40,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\RapidField.SolidInstruments.EventAuthoring\RapidField.SolidInstruments.EventAuthoring.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Mathematics\RapidField.SolidInstruments.Mathematics.csproj" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.ObjectComposition\RapidField.SolidInstruments.ObjectComposition.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Serialization\RapidField.SolidInstruments.Serialization.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="TransportPrimitives\Persistence\" />
     </ItemGroup>
 </Project>

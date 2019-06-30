@@ -1,0 +1,7 @@
+# DocFX entries
+/**/DROP/
+/**/TEMP/
+/**/packages/
+/**/bin/
+/**/obj/
+_site

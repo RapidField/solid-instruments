@@ -6,9 +6,12 @@ $ArtifactsDirectoryName = "artifacts"
 $ConfigurationModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Configuration.psm1"
 $ConfigurationTypeLocal = "Local"
 $ConfigurationTypeProduction = "Production"
+$DocumentationDirectoryName = "doc"
+$DocumentationWebsiteDirectoryName = "_DocumentationWebsite"
 $ExampleDirectoryName = "example"
 $ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication"
 $ExampleServiceApplicationTargetFramework = "netcoreapp2.1"
+$ObjectsDirectoryName = "obj"
 $ProjectRootDirectory = (Get-Item $PSScriptRoot).Parent.FullName
 $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication"
 $SolutionConfigurationDebug = "Debug"
@@ -44,6 +47,8 @@ function Build {
         New-Item -ItemType Directory -Path $ArtifactsDirectoryPath -Force
     }
 
+    BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration
+
     Get-ChildItem -Path $SourceDirectoryPath -Directory | ForEach-Object {
         $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration"
 
@@ -53,6 +58,13 @@ function Build {
         }
     }
 
+    $DocumentationWebsiteDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName"
+
+    If (Test-Path $DocumentationWebsiteDirectoryPath) {
+        Get-Item -Path $DocumentationWebsiteDirectoryPath | Copy-Item -Destination $ArtifactsDirectoryPath -Force -Recurse
+    }
+
+    CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished building. <<<`n"
 }
 
@@ -62,6 +74,19 @@ function BuildDebug {
 
 function BuildRelease {
     Build -SolutionConfiguration $SolutionConfigurationRelease
+}
+
+function BuildWebDocumentation {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
+        Write-Host -ForegroundColor DarkCyan "Building documentation website."
+        docfx metadata --loglevel "Error"
+        docfx build --loglevel "Error"
+    }
 }
 
 # Clean
@@ -104,6 +129,7 @@ function Clean {
         Remove-Item -Path $ArtifactsDirectoryPath -Recurse -Confirm:$false -Force
     }
 
+    CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished cleaning. <<<`n"
 }
 
@@ -113,6 +139,31 @@ function CleanDebug {
 
 function CleanRelease {
     Clean -SolutionConfiguration $SolutionConfigurationRelease
+}
+
+function CleanWebDocumentation {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
+        Write-Host -ForegroundColor DarkCyan "Cleaning documentation website."
+
+        $ObjectsDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ObjectsDirectoryName"
+
+        If (Test-Path $ObjectsDirectoryPath) {
+            Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath."
+            Remove-Item -Path $ObjectsDirectoryPath -Recurse -Confirm:$false -Force
+        }
+
+        $DocumentationWebsiteDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName"
+
+        If (Test-Path $DocumentationWebsiteDirectoryPath) {
+            Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DocumentationWebsiteDirectoryPath."
+            Remove-Item -Path $DocumentationWebsiteDirectoryPath -Recurse -Confirm:$false -Force
+        }
+    }
 }
 
 # Deploy
