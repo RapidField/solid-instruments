@@ -44,7 +44,7 @@ function Build {
     $ArtifactsDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ArtifactsDirectoryName\$SolutionConfiguration"
 
     If (-not (Test-Path $ArtifactsDirectoryPath)) {
-        New-Item -ItemType Directory -Path $ArtifactsDirectoryPath -Force
+        New-Item -ItemType Directory -Path $ArtifactsDirectoryPath -Force | Out-Null
     }
 
     BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration
@@ -54,14 +54,14 @@ function Build {
 
         If (Test-Path $ProjectOutputPath) {
             Write-Host -ForegroundColor DarkCyan "Copying artifacts from $ProjectOutputPath."
-            Get-ChildItem -Path $ProjectOutputPath -File | Copy-Item -Container -Destination $ArtifactsDirectoryPath -Force
+            Get-ChildItem -Path $ProjectOutputPath -File | Copy-Item -Container -Destination $ArtifactsDirectoryPath -Force | Out-Null
         }
     }
 
     $DocumentationWebsiteDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName"
 
     If (Test-Path $DocumentationWebsiteDirectoryPath) {
-        Get-Item -Path $DocumentationWebsiteDirectoryPath | Copy-Item -Destination $ArtifactsDirectoryPath -Force -Recurse
+        Get-Item -Path $DocumentationWebsiteDirectoryPath | Copy-Item -Destination $ArtifactsDirectoryPath -Force -Recurse | Out-Null
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration
@@ -83,9 +83,13 @@ function BuildWebDocumentation {
     )
 
     If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
-        Write-Host -ForegroundColor DarkCyan "Building documentation website."
+        cd $DocumentationDirectoryName
+        Write-Host -ForegroundColor DarkCyan "`nCompiling documentation metadata."
         docfx metadata --loglevel "Error"
+        Write-Host -ForegroundColor DarkCyan "`nBuilding documentation website."
         docfx build --loglevel "Error"
+        Write-Host -ForegroundColor DarkCyan "`n"
+        cd ..
     }
 }
 
@@ -150,7 +154,7 @@ function CleanWebDocumentation {
     If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
         Write-Host -ForegroundColor DarkCyan "Cleaning documentation website."
 
-        $ObjectsDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ObjectsDirectoryName"
+        $ObjectsDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$DocumentationDirectoryName\$ObjectsDirectoryName"
 
         If (Test-Path $ObjectsDirectoryPath) {
             Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath."
