@@ -16,7 +16,7 @@ The *RapidField.SolidInstruments.Cryptography* library exposes advanced security
 
 ### Bounded random value generation
 
-The cryptography library exposes numerous extension methods
+The cryptography library exposes numerous random value generation extension methods.
 
 ```csharp
 var floor = new DateTime(1000, 1, 1, 1, 1, 1, DateTimeKind.Utc);

@@ -1,5 +1,5 @@
 ---
-uid: RapidField.SolidInstruments.Command
+uid: RapidField.SolidInstruments.Core.Extensions
 summary: *content
 ---
 
@@ -7,11 +7,11 @@ summary: *content
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-Exposes implementations of the command and mediator patterns.
+Exposes general-purpose extensions.
 
 <br />
 
-![Command label](../images/Label.Command.300w.png)
+![Core label](../images/Label.Core.300w.png)
 - - -
 
 ### Getting Started
@@ -21,11 +21,11 @@ Solid Instruments is available via NuGet. The following commands, executed via t
 ###### .NET Core CLI
 
 ```shell
-dotnet add package RapidField.SolidInstruments.Command
+dotnet add package RapidField.SolidInstruments.Core
 ```
 
 ###### NuGet Package Manager
 
 ```shell
-Install-Package RapidField.SolidInstruments.Command
+Install-Package RapidField.SolidInstruments.Core
 ```

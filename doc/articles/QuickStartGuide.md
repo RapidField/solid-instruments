@@ -2,6 +2,6 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-# Introduction
+# Quick Start Guide
 
-Lorem ipsum.
+Getting started with Solid Instruments is easy.

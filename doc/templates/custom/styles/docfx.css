@@ -6,8 +6,7 @@ body {
     height: 100%;
 }
 
-button,
-a {
+button, a {
     color: #a05e31;
     cursor: pointer;
 }
@@ -26,6 +25,23 @@ a {
         cursor: default;
         color: #000000;
     }
+
+    a.linkbutton {
+        background-color: #fff;
+        border: 2px solid #000;
+        border-radius: 4px;
+        color: #a05e31;
+        display: inline-block;
+        font-size: 20px;
+        margin-right: 16px;
+        padding: 12px;
+    }
+
+        a.linkbutton:hover,
+        a.linkbutton:focus {
+            background-color: #000;
+            color: #fff;
+        }
 
 h1, h2, h3, h4, h5, h6, .text-break {
     word-wrap: break-word;
@@ -209,6 +225,12 @@ header {
     border-bottom: 1px solid #ccc;
 }
 
+article > p, article div.markdown > p {
+    font-size: 16px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+}
+
 article h1, article h2 {
     margin-top: 32px;
     margin-bottom: 16px;
@@ -225,7 +247,7 @@ article h4 {
     padding: 6px 0 6px 6px;
 }
 
-article h5 {
+article h5, h6 {
     margin-top: 16px;
 }
 
@@ -396,10 +418,7 @@ article section {
 /* Search results display*/
 #search-results {
     max-width: 960px !important;
-    margin-top: 120px;
-    margin-bottom: 115px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 120px, auto, 115px, auto;
     line-height: 1.8;
     display: none;
 }

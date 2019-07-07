@@ -8,3 +8,24 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 -->
 
 Provides Entity Framework implementations of the Solid Instruments data access abstractions.
+
+<br />
+
+![Data Access label](../images/Label.DataAccess.300w.png)
+- - -
+
+### Getting Started
+
+Solid Instruments is available via NuGet. The following commands, executed via the .NET Core CLI or the Package Manager Console, will download and install the library and all of its dependencies.
+
+###### .NET Core CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.DataAccess.EntityFramework
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.DataAccess.EntityFramework
+```

@@ -9,34 +9,55 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Provides a variety of intuitive mathematics APIs.
 
+<br />
+
+![Mathematics label](../images/Label.Mathematics.300w.png)
+- - -
+
+### Getting Started
+
+Solid Instruments is available via NuGet. The following commands, executed via the .NET Core CLI or the Package Manager Console, will download and install the library and all of its dependencies.
+
+###### .NET Core CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Mathematics
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Mathematics
+```
+
 ### Namespaces
 
 #### [RapidField.SolidInstruments.Mathematics.Data](RapidField.SolidInstruments.Mathematics.Data.html)
 
-<section><p>
+<section>
 Exposes data set collection types.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Mathematics.Extensions](RapidField.SolidInstruments.Mathematics.Extensions.html)
 
-<section><p>
+<section>
 Exposes extensions that support mathematics features.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Mathematics.Physics](RapidField.SolidInstruments.Mathematics.Physics.html)
 
-<section><p>
+<section>
 Exposes a variety of physics APIs.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Mathematics.Sequences](RapidField.SolidInstruments.Mathematics.Sequences.html)
 
-<section><p>
+<section>
 Exposes a variety of calculated sequence types.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Mathematics.Statistics](RapidField.SolidInstruments.Mathematics.Statistics.html)
 
-<section><p>
+<section>
 Exposes types that are useful for statistical workloads.
-</p></section>
+</section>

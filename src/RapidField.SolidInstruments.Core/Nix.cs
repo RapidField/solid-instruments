@@ -373,15 +373,13 @@ namespace RapidField.SolidInstruments.Core
         private readonly Byte Value;
 
         /// <summary>
-        /// Represents a thread-static <see cref="Nix" /> instance.
+        /// Represents a static <see cref="Nix" /> instance.
         /// </summary>
-        [ThreadStatic]
         public static readonly Nix Instance = new Nix(0x00);
 
         /// <summary>
-        /// Represents a thread-static reference to the <see cref="Nix" /> type.
+        /// Represents a static reference to the <see cref="Nix" /> type.
         /// </summary>
-        [ThreadStatic]
         public static readonly Type Type = typeof(Nix);
     }
 }

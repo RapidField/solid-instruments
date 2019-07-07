@@ -2,11 +2,15 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-# Stable, secure, high-performance software.
+# Stable, secure, high-performance .NET API suite
 
-Solid Instruments, licensed by [RapidField](https://www.rapidfield.com), is an advanced, multi-purpose API suite for .NET Core and .NET Framework. Solid Instruments helps you rapidly overcome design challenges and deliver stable, secure, high-performance software.
+Solid Instruments is a free, open-source, multi-purpose .NET Core tool set. It was created to help professional software engineers quickly overcome common design challenges and deliver highly-resilient, strongly-secured and readily-maintainable products.
 
-### .NET API suite
+<a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>
+<a class="linkbutton" href="https://www.nuget.org/users/account/LogOn?returnUrl=%2Fpackages">NuGet Packages</a>
+<a class="linkbutton" href="https://www.github.com/RapidField/solid-instruments">GitHub Repository</a>
+
+### Features
 - - -
 
 [![Collections label](images/Label.Collections.300w.png)](api/RapidField.SolidInstruments.Collections.html)
@@ -23,24 +27,3 @@ Solid Instruments, licensed by [RapidField](https://www.rapidfield.com), is an a
 [![Service label](images/Label.Service.300w.png)](api/RapidField.SolidInstruments.Service.html)
 [![Signal Processing label](images/Label.SignalProcessing.300w.png)](api/RapidField.SolidInstruments.SignalProcessing.html)
 [![Text Encoding label](images/Label.TextEncoding.300w.png)](api/RapidField.SolidInstruments.TextEncoding.html)
-
-### Get started
-- - -
-
-#### [Learn more](articles/Introduction.md)
-
-<section><p>
-Read the introduction.
-</p></section>
-
-#### [Download](https://www.nuget.org/users/account/LogOn?returnUrl=%2Fpackages)
-
-<section><p>
-Get the NuGet packages.
-</p></section>
-
-#### [Contribute](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md)
-
-<section><p>
-Solid Instruments is on GitHub.
-</p></section>

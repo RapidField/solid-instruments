@@ -9,22 +9,43 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Exposes advanced security mechanics.
 
+<br />
+
+![Cryptography label](../images/Label.Cryptography.300w.png)
+- - -
+
+### Getting Started
+
+Solid Instruments is available via NuGet. The following commands, executed via the .NET Core CLI or the Package Manager Console, will download and install the library and all of its dependencies.
+
+###### .NET Core CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Cryptography
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Cryptography
+```
+
 ### Namespaces
 
 #### [RapidField.SolidInstruments.Cryptography.Extensions](RapidField.SolidInstruments.Cryptography.Extensions.html)
 
-<section><p>
-Exposes extensions that support advanced securiy mechanics.
-</p></section>
+<section>
+Exposes extensions that support advanced security mechanics.
+</section>
 
 #### [RapidField.SolidInstruments.Cryptography.Hashing](RapidField.SolidInstruments.Cryptography.Hashing.html)
 
-<section><p>
+<section>
 Provides abstractions for common hashing functions.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Cryptography.Symmetric](RapidField.SolidInstruments.Cryptography.Symmetric.html)
 
-<section><p>
+<section>
 Provides abstractions for common symmetric-key encryption algorithms.
-</p></section>
+</section>

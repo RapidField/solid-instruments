@@ -134,7 +134,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{FF64BD87-5A3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{1F65CC6C-6473-4975-B273-42F3FF37A596}"
 	ProjectSection(SolutionItems) = preProject
-		doc\articles\Introduction.md = doc\articles\Introduction.md
+		doc\articles\QuickStartGuide.md = doc\articles\QuickStartGuide.md
 		doc\articles\toc.yml = doc\articles\toc.yml
 	EndProjectSection
 EndProject
@@ -164,23 +164,43 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.Collections.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Collections.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Collections.md = doc\namespaces\RapidField.SolidInstruments.Collections.md
 		doc\namespaces\RapidField.SolidInstruments.Command.md = doc\namespaces\RapidField.SolidInstruments.Command.md
+		doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md = doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md
+		doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md = doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md
+		doc\namespaces\RapidField.SolidInstruments.Core.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Core.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Core.md = doc\namespaces\RapidField.SolidInstruments.Core.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Hashing.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Hashing.md
 		doc\namespaces\RapidField.SolidInstruments.Cryptography.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.md
+		doc\namespaces\RapidField.SolidInstruments.EventAuthoring.Extensions.md = doc\namespaces\RapidField.SolidInstruments.EventAuthoring.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.EventAuthoring.md = doc\namespaces\RapidField.SolidInstruments.EventAuthoring.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Data.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Data.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Mathematics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Physics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Physics.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Sequences.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Sequences.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Statistics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Statistics.md
 		doc\namespaces\RapidField.SolidInstruments.Messaging.AzureServiceBus.md = doc\namespaces\RapidField.SolidInstruments.Messaging.AzureServiceBus.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.EventMessages.md = doc\namespaces\RapidField.SolidInstruments.Messaging.EventMessages.md
 		doc\namespaces\RapidField.SolidInstruments.Messaging.InMemory.md = doc\namespaces\RapidField.SolidInstruments.Messaging.InMemory.md
 		doc\namespaces\RapidField.SolidInstruments.Messaging.md = doc\namespaces\RapidField.SolidInstruments.Messaging.md
 		doc\namespaces\RapidField.SolidInstruments.Messaging.RabbitMq.md = doc\namespaces\RapidField.SolidInstruments.Messaging.RabbitMq.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.Service.md = doc\namespaces\RapidField.SolidInstruments.Messaging.Service.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.TransportPrimitives.md = doc\namespaces\RapidField.SolidInstruments.Messaging.TransportPrimitives.md
 		doc\namespaces\RapidField.SolidInstruments.ObjectComposition.md = doc\namespaces\RapidField.SolidInstruments.ObjectComposition.md
+		doc\namespaces\RapidField.SolidInstruments.Serialization.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Serialization.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Serialization.md = doc\namespaces\RapidField.SolidInstruments.Serialization.md
 		doc\namespaces\RapidField.SolidInstruments.Service.md = doc\namespaces\RapidField.SolidInstruments.Service.md
 		doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md = doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md
+		doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.TextEncoding.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.md
 	EndProjectSection
 EndProject

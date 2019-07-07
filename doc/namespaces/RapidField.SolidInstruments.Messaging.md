@@ -9,22 +9,43 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Exposes abstractions for messaging constructs.
 
+<br />
+
+![Messaging label](../images/Label.Messaging.300w.png)
+- - -
+
+### Getting Started
+
+Solid Instruments is available via NuGet. The following commands, executed via the .NET Core CLI or the Package Manager Console, will download and install the library and all of its dependencies.
+
+###### .NET Core CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging
+```
+
 ### Namespaces
 
 #### [RapidField.SolidInstruments.Messaging.EventMessages](RapidField.SolidInstruments.Messaging.EventMessages.html)
 
-<section><p>
+<section>
 Exposes various event message types.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Messaging.Service](RapidField.SolidInstruments.Messaging.Service.html)
 
-<section><p>
+<section>
 Provides types that support messaging service applications.
-</p></section>
+</section>
 
 #### [RapidField.SolidInstruments.Messaging.TransportPrimitives](RapidField.SolidInstruments.Messaging.TransportPrimitives.html)
 
-<section><p>
+<section>
 Contains primitive types that can be used to create custom messaging systems.
-</p></section>
+</section>
