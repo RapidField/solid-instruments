@@ -6,9 +6,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Solid Instruments is a free, open-source, multi-purpose .NET Core tool set. It was created to help professional software engineers quickly overcome common design challenges and deliver highly-resilient, strongly-secured and readily-maintainable products.
 
+<span class="linkbuttongroup">
 <a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>
 <a class="linkbutton" href="https://www.nuget.org">NuGet Packages</a>
 <a class="linkbutton" href="https://www.github.com/RapidField/solid-instruments">GitHub Repository</a>
+</span>
 
 ### Features
 - - -
