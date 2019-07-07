@@ -1,4 +1,4 @@
-- name: Articles
+- name: Guide
   href: articles/
   homepage: articles/QuickStartGuide.md
 - name: API Reference

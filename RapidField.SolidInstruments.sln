@@ -264,6 +264,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layout", "layout", "{D0DCD4
 		doc\templates\custom\layout\_master.tmpl = doc\templates\custom\layout\_master.tmpl
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenotes", "{2A50AF0B-0547-4A8C-AA69-2F8777940FE7}"
+	ProjectSection(SolutionItems) = preProject
+		doc\articles\releasenotes\v1.0.23.md = doc\articles\releasenotes\v1.0.23.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -490,6 +495,7 @@ Global
 		{502AF17D-FB52-4DD5-8B82-D943B42453DD} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
 		{31F22F5A-728C-4144-BDFE-9B7FD5A181CD} = {40906A44-DB6F-43B9-9A29-B00C84D59CDC}
 		{D0DCD47C-22DE-4D5C-A46C-9A92CB15E9D3} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
+		{2A50AF0B-0547-4A8C-AA69-2F8777940FE7} = {1F65CC6C-6473-4975-B273-42F3FF37A596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

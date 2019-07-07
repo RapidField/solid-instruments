@@ -16,9 +16,9 @@ Exposes extensions that support mathematics features.
 
 ### Getting Started
 
-Solid Instruments is available via NuGet. The following commands, executed via the .NET Core CLI or the Package Manager Console, will download and install the library and all of its dependencies.
+This library is available via NuGet. Use one of the commands below to download and install the library and all of its dependencies.
 
-###### .NET Core CLI
+###### .NET CLI
 
 ```shell
 dotnet add package RapidField.SolidInstruments.Mathematics
