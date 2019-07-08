@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		cicd.ps1 = cicd.ps1
+		Build.bat = Build.bat
 		CodeMaid.config = CodeMaid.config
 		CONTRIBUTING.md = CONTRIBUTING.md
 		en-US_User.dic = en-US_User.dic
@@ -85,6 +85,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cicd", "cicd", "{265B737A-1
 		cicd\BuildAndDeployment.psm1 = cicd\BuildAndDeployment.psm1
 		cicd\Configuration.psm1 = cicd\Configuration.psm1
 		cicd\DevelopmentTools.psm1 = cicd\DevelopmentTools.psm1
+		cicd\ExecuteCicdBuild.ps1 = cicd\ExecuteCicdBuild.ps1
 		cicd\ResetEnvironment.ps1 = cicd\ResetEnvironment.ps1
 	EndProjectSection
 EndProject
