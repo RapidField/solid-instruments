@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		cicd.ps1 = cicd.ps1
 		CodeMaid.config = CodeMaid.config
 		CONTRIBUTING.md = CONTRIBUTING.md
 		en-US_User.dic = en-US_User.dic
@@ -129,13 +130,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{FF64BD87-5A3
 	ProjectSection(SolutionItems) = preProject
 		doc\api\.gitignore = doc\api\.gitignore
 		doc\api\index.md = doc\api\index.md
-		doc\api\toc.yml = doc\api\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{1F65CC6C-6473-4975-B273-42F3FF37A596}"
 	ProjectSection(SolutionItems) = preProject
 		doc\articles\QuickStartGuide.md = doc\articles\QuickStartGuide.md
-		doc\articles\toc.yml = doc\articles\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{3A97001A-5B3F-401E-8B13-3FB80F3B86AB}"
@@ -266,7 +265,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layout", "layout", "{D0DCD4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenotes", "{B027F798-DEC4-4399-9959-697D10C8C9D4}"
 	ProjectSection(SolutionItems) = preProject
-		doc\releasenotes\toc.yml = doc\releasenotes\toc.yml
 		doc\releasenotes\v1.0.23.md = doc\releasenotes\v1.0.23.md
 	EndProjectSection
 EndProject

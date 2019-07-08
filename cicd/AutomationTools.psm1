@@ -15,6 +15,10 @@ function GetDocFxInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("docfx") })
 }
 
+function GetLeanifyInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("leanify") })
+}
+
 function GetPsakeInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("psake") })
 }
@@ -25,8 +29,9 @@ function GetPsakeInstallationStatus {
 function InstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Installing all automation tools."
     InstallChocolatey
-    InstallPsake
     InstallDocFx
+    InstallLeanify
+    InstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n"
 }
 
@@ -52,6 +57,17 @@ function InstallDocFx {
     Write-Host -ForegroundColor DarkCyan "Installing DocFX."
     choco install docfx -y --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n"
+}
+
+function InstallLeanify {
+    If (GetLeanifyInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Leanify is already installed."
+        return
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing Leanify."
+    choco install leanify --confirm
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Leanify. <<<`n"
 }
 
 function InstallPsake {
@@ -82,6 +98,13 @@ function RestoreDocFx {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring DocFX. <<<`n"
 }
 
+function RestoreLeanify {
+    Write-Host -ForegroundColor DarkCyan "Restoring Leanify."
+    UninstallDocFx
+    InstallDocFx
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Leanify. <<<`n"
+}
+
 function RestorePsake {
     Write-Host -ForegroundColor DarkCyan "Restoring psake."
     UninstallPsake
@@ -95,15 +118,24 @@ function RestorePsake {
 function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools."
     UninstallDocFx
+    UninstallLeanify
     UninstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n"
 }
 
 function UninstallDocFx {
-    If (GetPsakeInstallationStatus) {
+    If (GetDocFxInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX."
         choco uninstall docfx -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n"
+    }
+}
+
+function UninstallLeanify {
+    If (GetLeanifyInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling Leanify."
+        choco uninstall leanify -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Leanify. <<<`n"
     }
 }
 

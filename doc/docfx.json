@@ -8,12 +8,10 @@
             {
                 "files": [
                     "toc.yml",
-                    "*.md",
+                    "index.md",
                     "api/**.yml",
                     "api/index.md",
-                    "articles/**/toc.yml",
                     "articles/**.md",
-                    "releasenotes/**/toc.yml",
                     "releasenotes/**.md"
                 ]
             }
@@ -64,8 +62,9 @@
             "src": [
                 {
                     "files": [
-                        "../src/**/**.csproj"
-                    ]
+                        "**/**.csproj"
+                    ],
+                    "src": "../src"
                 }
             ]
         }

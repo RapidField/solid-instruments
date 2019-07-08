@@ -85,7 +85,7 @@ function BuildWebDocumentation {
     If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
         cd $DocumentationDirectoryName
         Write-Host -ForegroundColor DarkCyan "`nCompiling documentation metadata."
-        docfx metadata --loglevel "Error"
+        docfx metadata
         Write-Host -ForegroundColor DarkCyan "`nBuilding documentation website."
         docfx build --loglevel "Error"
         Write-Host -ForegroundColor DarkCyan "`n"
