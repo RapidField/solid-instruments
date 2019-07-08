@@ -94,7 +94,7 @@ function RestorePsake {
 
 function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools."
-    UninstallDoxFx
+    UninstallDocFx
     UninstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n"
 }

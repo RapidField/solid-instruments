@@ -12,7 +12,9 @@
                     "api/**.yml",
                     "api/index.md",
                     "articles/**/toc.yml",
-                    "articles/**.md"
+                    "articles/**.md",
+                    "releasenotes/**/toc.yml",
+                    "releasenotes/**.md"
                 ]
             }
         ],
