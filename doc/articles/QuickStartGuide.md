@@ -4,17 +4,17 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Quick Start Guide
 
-Getting started with Solid Instruments is easy. This guide will help you incorporate the .NET libraries and begin using them right away.
+Getting started with Solid Instruments is easy. This guide will help you incorporate the libraries and begin using them right away.
 
 ### About
 
-Solid Instruments is a collection of .NET libraries that expose APIs which make it easier to develop stable, secure, high-performance software. There are tons of features. Think of it as a really big tool kit, or an extension to the standard features of .NET.
+Solid Instruments is a collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that expose APIs which make it easier to develop stable, secure, high-performance software. Solid Instruments isn't a framework. Think of it as a really big tool kit.
 
-Solid Instruments is highly modular. Most of the component APIs are designed to be used both with and without other Solid Instruments APIs. The primitive features of the [Core](../api/RapidField.SolidInstruments.Core.html) library are heavily used by and, therefore, integrated with the other libraries. Broadly speaking, however, the high-level feature sets are presented and served a la carte.
+Solid Instruments is highly modular. Most of its component APIs are designed to be used both with and without other Solid Instruments APIs. The primitive features of the [Core](../api/RapidField.SolidInstruments.Core.html) library are heavily used by and, therefore, integrated with other Solid Instruments libraries. Broadly scoped features, on the other hand, are presented and served a la carte.
 
 ### Get Started
 
-Solid Instruments is available via NuGet. Choose the feature below that you want to import and execute the listed command using the .NET CLI or the NuGet Package Manager console to download and install the associated library.
+Solid Instruments is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Choose the library below that you want to import, then execute one of the associated commands using the [.NET CLI](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) or the [NuGet Package Manager console](https://docs.microsoft.com/en-us/nuget/tools/package-manager-console) to download and install it.
 
 <br />
 

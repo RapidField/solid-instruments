@@ -16,7 +16,7 @@ Provides Azure Service Bus implementations of the Solid Instruments messaging ab
 
 ### Getting Started
 
-This library is available via NuGet. Use one of the commands below to download and install the library and all of its dependencies.
+This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
 ###### .NET CLI
 
