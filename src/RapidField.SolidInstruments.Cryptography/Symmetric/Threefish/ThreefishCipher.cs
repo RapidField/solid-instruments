@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Threefish
         /// Represents the padding setting for the cipher.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const PaddingMode PaddingModeSetting = PaddingMode.PKCS7;
+        private const PaddingMode PaddingModeSetting = CryptographicTransform.PaddingModePcks7;
 
         /// <summary>
         /// Represents the first 64-bit tweak word.

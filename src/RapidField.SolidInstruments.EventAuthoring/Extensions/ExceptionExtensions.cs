@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.EventAuthoring.Extensions
@@ -82,7 +83,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="verbosity" /> is equal to <see cref="ApplicationEventVerbosity.Unspecified" />.
         /// </exception>
-        public static ApplicationEvent ComposeReportableEvent(this Exception target, ApplicationEventVerbosity verbosity, String environmentName, String userInformation) => target.ComposeReportableEvent(verbosity, environmentName, userInformation, DateTime.UtcNow);
+        public static ApplicationEvent ComposeReportableEvent(this Exception target, ApplicationEventVerbosity verbosity, String environmentName, String userInformation) => target.ComposeReportableEvent(verbosity, environmentName, userInformation, TimeStamp.Current);
 
         /// <summary>
         /// Compose a reportable application event for the current <see cref="Exception" />.
@@ -102,7 +103,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// </param>
         /// <param name="occurrenceDateTime">
         /// A <see cref="DateTime" /> that indicates when the exception was raised. The default value is
-        /// <see cref="DateTime.UtcNow" />.
+        /// <see cref="TimeStamp.Current" />.
         /// </param>
         /// <returns>
         /// A reportable <see cref="ApplicationEvent" /> representing the current <see cref="Exception" />.

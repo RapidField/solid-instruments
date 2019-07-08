@@ -93,7 +93,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.AzureServiceBus", "src\RapidField.SolidInstruments.Messaging.AzureServiceBus\RapidField.SolidInstruments.Messaging.AzureServiceBus.csproj", "{FCFCA29A-2909-462D-AEAB-F067654236EC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.InversionOfControl.DotNetNative", "src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj", "{C08FA672-FAC1-4A6C-AEAA-C12417DBB25D}"
 EndProject
@@ -101,17 +101,173 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests", "test\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.csproj", "{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.DatabaseModel", "examples\RapidField.SolidInstruments.Prototype.DatabaseModel\RapidField.SolidInstruments.Prototype.DatabaseModel.csproj", "{3EED0CA7-B5E5-4388-9256-A6B21E82F663}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.DatabaseModel", "example\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj", "{3EED0CA7-B5E5-4388-9256-A6B21E82F663}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.WebApplication", "examples\RapidField.SolidInstruments.Prototype.WebApplication\RapidField.SolidInstruments.Prototype.WebApplication.csproj", "{5043307D-17D2-4053-8022-8C26A26896E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.WebApplication", "example\RapidField.SolidInstruments.Example.WebApplication\RapidField.SolidInstruments.Example.WebApplication.csproj", "{5043307D-17D2-4053-8022-8C26A26896E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.ServiceApplication", "examples\RapidField.SolidInstruments.Prototype.ServiceApplication\RapidField.SolidInstruments.Prototype.ServiceApplication.csproj", "{3636378B-E643-475C-A023-A38836674B67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.ServiceApplication", "example\RapidField.SolidInstruments.Example.ServiceApplication\RapidField.SolidInstruments.Example.ServiceApplication.csproj", "{3636378B-E643-475C-A023-A38836674B67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.Domain", "examples\RapidField.SolidInstruments.Prototype.Domain\RapidField.SolidInstruments.Prototype.Domain.csproj", "{7654E174-427D-44AA-AFB7-4EA67DA80759}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain", "example\RapidField.SolidInstruments.Example.Domain\RapidField.SolidInstruments.Example.Domain.csproj", "{7654E174-427D-44AA-AFB7-4EA67DA80759}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Prototype.Contracts", "examples\RapidField.SolidInstruments.Prototype.Contracts\RapidField.SolidInstruments.Prototype.Contracts.csproj", "{7B0530D3-32DD-4C98-BB7F-CC924079E82D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Contracts", "example\RapidField.SolidInstruments.Example.Contracts\RapidField.SolidInstruments.Example.Contracts.csproj", "{7B0530D3-32DD-4C98-BB7F-CC924079E82D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Service", "src\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj", "{330FB74B-5D75-4B02-8ABA-B03EE296FA48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.RabbitMq", "src\RapidField.SolidInstruments.Messaging.RabbitMq\RapidField.SolidInstruments.Messaging.RabbitMq.csproj", "{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.InMemory", "src\RapidField.SolidInstruments.Messaging.InMemory\RapidField.SolidInstruments.Messaging.InMemory.csproj", "{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{64B9EC77-F607-45D7-AF6D-8AF68A365572}"
+	ProjectSection(SolutionItems) = preProject
+		doc\.gitignore = doc\.gitignore
+		doc\docfx.json = doc\docfx.json
+		doc\index.md = doc\index.md
+		doc\toc.yml = doc\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{FF64BD87-5A3C-498F-9A5A-8DD712C28925}"
+	ProjectSection(SolutionItems) = preProject
+		doc\api\.gitignore = doc\api\.gitignore
+		doc\api\index.md = doc\api\index.md
+		doc\api\toc.yml = doc\api\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{1F65CC6C-6473-4975-B273-42F3FF37A596}"
+	ProjectSection(SolutionItems) = preProject
+		doc\articles\QuickStartGuide.md = doc\articles\QuickStartGuide.md
+		doc\articles\toc.yml = doc\articles\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{3A97001A-5B3F-401E-8B13-3FB80F3B86AB}"
+	ProjectSection(SolutionItems) = preProject
+		doc\images\favicon.ico = doc\images\favicon.ico
+		doc\images\Label.Collections.300w.png = doc\images\Label.Collections.300w.png
+		doc\images\Label.Command.300w.png = doc\images\Label.Command.300w.png
+		doc\images\Label.Core.300w.png = doc\images\Label.Core.300w.png
+		doc\images\Label.Cryptography.300w.png = doc\images\Label.Cryptography.300w.png
+		doc\images\Label.DataAccess.300w.png = doc\images\Label.DataAccess.300w.png
+		doc\images\Label.EventAuthoring.300w.png = doc\images\Label.EventAuthoring.300w.png
+		doc\images\Label.InversionOfControl.300w.png = doc\images\Label.InversionOfControl.300w.png
+		doc\images\Label.Mathematics.300w.png = doc\images\Label.Mathematics.300w.png
+		doc\images\Label.Messaging.300w.png = doc\images\Label.Messaging.300w.png
+		doc\images\Label.ObjectComposition.300w.png = doc\images\Label.ObjectComposition.300w.png
+		doc\images\Label.Serialization.300w.png = doc\images\Label.Serialization.300w.png
+		doc\images\Label.Service.300w.png = doc\images\Label.Service.300w.png
+		doc\images\Label.SignalProcessing.300w.png = doc\images\Label.SignalProcessing.300w.png
+		doc\images\Label.TextEncoding.300w.png = doc\images\Label.TextEncoding.300w.png
+		doc\images\RapidField.Logo.Color.White.Transparent.227w.png = doc\images\RapidField.Logo.Color.White.Transparent.227w.png
+		doc\images\SolidInstruments.Logo.Color.Black.Transparent.500w.png = doc\images\SolidInstruments.Logo.Color.Black.Transparent.500w.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", "{A60D77E2-E0A4-4102-ACB3-3743D60986E7}"
+	ProjectSection(SolutionItems) = preProject
+		doc\namespaces\RapidField.SolidInstruments.Collections.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Collections.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Collections.md = doc\namespaces\RapidField.SolidInstruments.Collections.md
+		doc\namespaces\RapidField.SolidInstruments.Command.md = doc\namespaces\RapidField.SolidInstruments.Command.md
+		doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md = doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md
+		doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md = doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md
+		doc\namespaces\RapidField.SolidInstruments.Core.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Core.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Core.md = doc\namespaces\RapidField.SolidInstruments.Core.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Hashing.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Hashing.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.md
+		doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.md
+		doc\namespaces\RapidField.SolidInstruments.EventAuthoring.Extensions.md = doc\namespaces\RapidField.SolidInstruments.EventAuthoring.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.EventAuthoring.md = doc\namespaces\RapidField.SolidInstruments.EventAuthoring.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.DotNetNative.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Extensions.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.InversionOfControl.md = doc\namespaces\RapidField.SolidInstruments.InversionOfControl.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Data.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Data.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Physics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Physics.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Sequences.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Sequences.md
+		doc\namespaces\RapidField.SolidInstruments.Mathematics.Statistics.md = doc\namespaces\RapidField.SolidInstruments.Mathematics.Statistics.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.AzureServiceBus.md = doc\namespaces\RapidField.SolidInstruments.Messaging.AzureServiceBus.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.EventMessages.md = doc\namespaces\RapidField.SolidInstruments.Messaging.EventMessages.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.InMemory.md = doc\namespaces\RapidField.SolidInstruments.Messaging.InMemory.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.md = doc\namespaces\RapidField.SolidInstruments.Messaging.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.RabbitMq.md = doc\namespaces\RapidField.SolidInstruments.Messaging.RabbitMq.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.Service.md = doc\namespaces\RapidField.SolidInstruments.Messaging.Service.md
+		doc\namespaces\RapidField.SolidInstruments.Messaging.TransportPrimitives.md = doc\namespaces\RapidField.SolidInstruments.Messaging.TransportPrimitives.md
+		doc\namespaces\RapidField.SolidInstruments.ObjectComposition.md = doc\namespaces\RapidField.SolidInstruments.ObjectComposition.md
+		doc\namespaces\RapidField.SolidInstruments.Serialization.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Serialization.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Serialization.md = doc\namespaces\RapidField.SolidInstruments.Serialization.md
+		doc\namespaces\RapidField.SolidInstruments.Service.md = doc\namespaces\RapidField.SolidInstruments.Service.md
+		doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md = doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md
+		doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.TextEncoding.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{5D1D074E-456F-4CA1-A4C5-45074EDCFDA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "custom", "custom", "{D086BDF4-E322-40C5-B2A4-F53322C361F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "partials", "partials", "{40906A44-DB6F-43B9-9A29-B00C84D59CDC}"
+	ProjectSection(SolutionItems) = preProject
+		doc\templates\custom\partials\_affix.liquid = doc\templates\custom\partials\_affix.liquid
+		doc\templates\custom\partials\_breadcrumb.liquid = doc\templates\custom\partials\_breadcrumb.liquid
+		doc\templates\custom\partials\_footer.liquid = doc\templates\custom\partials\_footer.liquid
+		doc\templates\custom\partials\_head.liquid = doc\templates\custom\partials\_head.liquid
+		doc\templates\custom\partials\_logo.liquid = doc\templates\custom\partials\_logo.liquid
+		doc\templates\custom\partials\_navbar.liquid = doc\templates\custom\partials\_navbar.liquid
+		doc\templates\custom\partials\_productlogo.liquid = doc\templates\custom\partials\_productlogo.liquid
+		doc\templates\custom\partials\_scripts.liquid = doc\templates\custom\partials\_scripts.liquid
+		doc\templates\custom\partials\_toc.liquid = doc\templates\custom\partials\_toc.liquid
+		doc\templates\custom\partials\affix.tmpl.partial = doc\templates\custom\partials\affix.tmpl.partial
+		doc\templates\custom\partials\breadcrumb.tmpl.partial = doc\templates\custom\partials\breadcrumb.tmpl.partial
+		doc\templates\custom\partials\class.header.tmpl.partial = doc\templates\custom\partials\class.header.tmpl.partial
+		doc\templates\custom\partials\class.tmpl.partial = doc\templates\custom\partials\class.tmpl.partial
+		doc\templates\custom\partials\classSubtitle.tmpl.partial = doc\templates\custom\partials\classSubtitle.tmpl.partial
+		doc\templates\custom\partials\customMREFContent.tmpl.partial = doc\templates\custom\partials\customMREFContent.tmpl.partial
+		doc\templates\custom\partials\dd-li.tmpl.partial = doc\templates\custom\partials\dd-li.tmpl.partial
+		doc\templates\custom\partials\enum.tmpl.partial = doc\templates\custom\partials\enum.tmpl.partial
+		doc\templates\custom\partials\footer.tmpl.partial = doc\templates\custom\partials\footer.tmpl.partial
+		doc\templates\custom\partials\head.tmpl.partial = doc\templates\custom\partials\head.tmpl.partial
+		doc\templates\custom\partials\li.tmpl.partial = doc\templates\custom\partials\li.tmpl.partial
+		doc\templates\custom\partials\logo.tmpl.partial = doc\templates\custom\partials\logo.tmpl.partial
+		doc\templates\custom\partials\namespace.tmpl.partial = doc\templates\custom\partials\namespace.tmpl.partial
+		doc\templates\custom\partials\namespaceSubtitle.tmpl.partial = doc\templates\custom\partials\namespaceSubtitle.tmpl.partial
+		doc\templates\custom\partials\navbar.tmpl.partial = doc\templates\custom\partials\navbar.tmpl.partial
+		doc\templates\custom\partials\productlogo.tmpl.partial = doc\templates\custom\partials\productlogo.tmpl.partial
+		doc\templates\custom\partials\rest.child.tmpl.partial = doc\templates\custom\partials\rest.child.tmpl.partial
+		doc\templates\custom\partials\rest.tmpl.partial = doc\templates\custom\partials\rest.tmpl.partial
+		doc\templates\custom\partials\scripts.tmpl.partial = doc\templates\custom\partials\scripts.tmpl.partial
+		doc\templates\custom\partials\searchResults.tmpl.partial = doc\templates\custom\partials\searchResults.tmpl.partial
+		doc\templates\custom\partials\title.tmpl.partial = doc\templates\custom\partials\title.tmpl.partial
+		doc\templates\custom\partials\toc.tmpl.partial = doc\templates\custom\partials\toc.tmpl.partial
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "styles", "styles", "{502AF17D-FB52-4DD5-8B82-D943B42453DD}"
+	ProjectSection(SolutionItems) = preProject
+		doc\templates\custom\styles\docfx.css = doc\templates\custom\styles\docfx.css
+		doc\templates\custom\styles\docfx.js = doc\templates\custom\styles\docfx.js
+		doc\templates\custom\styles\main.css = doc\templates\custom\styles\main.css
+		doc\templates\custom\styles\main.js = doc\templates\custom\styles\main.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "uref", "uref", "{31F22F5A-728C-4144-BDFE-9B7FD5A181CD}"
+	ProjectSection(SolutionItems) = preProject
+		doc\templates\custom\partials\uref\class.header.tmpl.partial = doc\templates\custom\partials\uref\class.header.tmpl.partial
+		doc\templates\custom\partials\uref\class.tmpl.partial = doc\templates\custom\partials\uref\class.tmpl.partial
+		doc\templates\custom\partials\uref\enum.tmpl.partial = doc\templates\custom\partials\uref\enum.tmpl.partial
+		doc\templates\custom\partials\uref\parameters.tmpl.partial = doc\templates\custom\partials\uref\parameters.tmpl.partial
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layout", "layout", "{D0DCD47C-22DE-4D5C-A46C-9A92CB15E9D3}"
+	ProjectSection(SolutionItems) = preProject
+		doc\templates\custom\layout\_master.tmpl = doc\templates\custom\layout\_master.tmpl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenotes", "{2A50AF0B-0547-4A8C-AA69-2F8777940FE7}"
+	ProjectSection(SolutionItems) = preProject
+		doc\articles\releasenotes\v1.0.23.md = doc\articles\releasenotes\v1.0.23.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,6 +431,14 @@ Global
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -319,6 +483,19 @@ Global
 		{7654E174-427D-44AA-AFB7-4EA67DA80759} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{7B0530D3-32DD-4C98-BB7F-CC924079E82D} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{FF64BD87-5A3C-498F-9A5A-8DD712C28925} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{1F65CC6C-6473-4975-B273-42F3FF37A596} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{3A97001A-5B3F-401E-8B13-3FB80F3B86AB} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{A60D77E2-E0A4-4102-ACB3-3743D60986E7} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{5D1D074E-456F-4CA1-A4C5-45074EDCFDA8} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{D086BDF4-E322-40C5-B2A4-F53322C361F3} = {5D1D074E-456F-4CA1-A4C5-45074EDCFDA8}
+		{40906A44-DB6F-43B9-9A29-B00C84D59CDC} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
+		{502AF17D-FB52-4DD5-8B82-D943B42453DD} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
+		{31F22F5A-728C-4144-BDFE-9B7FD5A181CD} = {40906A44-DB6F-43B9-9A29-B00C84D59CDC}
+		{D0DCD47C-22DE-4D5C-A46C-9A92CB15E9D3} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
+		{2A50AF0B-0547-4A8C-AA69-2F8777940FE7} = {1F65CC6C-6473-4975-B273-42F3FF37A596}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

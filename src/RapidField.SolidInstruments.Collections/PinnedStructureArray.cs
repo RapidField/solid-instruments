@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator T[] (PinnedStructureArray<T> target) => target.Field;
+        public static implicit operator T[](PinnedStructureArray<T> target) => target.Field;
 
         /// <summary>
         /// Returns an enumerator that iterates through the elements of the current <see cref="PinnedStructureArray{T}" />.

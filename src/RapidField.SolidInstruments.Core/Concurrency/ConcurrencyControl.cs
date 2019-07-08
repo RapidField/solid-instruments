@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
 
                 default:
 
-                    throw new InvalidOperationException($"The specified concurrency control mode, {mode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified concurrency control mode, {mode}, is not supported.");
             }
         }
 

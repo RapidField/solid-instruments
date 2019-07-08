@@ -8,9 +8,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![CodeFactor](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/badge)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 [![Build status](https://ci.appveyor.com/api/projects/status/0djwhtesii54shrb/branch/master?svg=true)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
 
-## About the project
+## About
 
-Solid Instruments, licensed by [RapidField](https://www.rapidfield.com), is an advanced, multi-purpose API suite for .NET Core and .NET Framework. Solid Instruments helps you rapidly overcome design challenges and deliver stable, secure, high-performance software.
+Solid Instruments, licensed by [RapidField](https://www.rapidfield.com), is an advanced, multi-purpose .NET API suite. Solid Instruments helps you rapidly overcome design challenges and deliver stable, secure, high-performance software.
 
 ## Contributing
 

@@ -8,8 +8,8 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// An exception that is raised when an empty, non-null data reference is passed to a method that does not accept it as a valid
-    /// argument.
+    /// Represents an exception that is raised when an empty, non-null data reference is passed to a method that does not accept it
+    /// as a valid argument.
     /// </summary>
     public sealed class ArgumentEmptyException : ArgumentException
     {

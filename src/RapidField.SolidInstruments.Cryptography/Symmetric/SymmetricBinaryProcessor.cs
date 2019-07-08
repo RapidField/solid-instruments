@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
         public SymmetricBinaryProcessor(RandomNumberGenerator randomnessProvider)
-            : base(randomnessProvider, new BinaryPassThroughSerializer())
+            : base(randomnessProvider, new PassThroughSerializer())
         {
             return;
         }

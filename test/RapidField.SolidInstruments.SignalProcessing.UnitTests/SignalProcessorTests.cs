@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.SignalProcessing.UnitTests
 
             // Assert.
             result.ChannelReadIndex.Should().Be(index);
-            result.Value.Should().Be(default(Int32));
+            result.Value.Should().Be(default);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.SignalProcessing.UnitTests
 
             // Assert.
             result.UnitOfOutput.ChannelReadIndex.Should().Be(index);
-            result.UnitOfOutput.Value.Should().Be(default(Int32));
+            result.UnitOfOutput.Value.Should().Be(default);
             result.LookBehindRange.Should().HaveCount(0);
             result.LookAheadRange.Should().HaveCount(0);
         }

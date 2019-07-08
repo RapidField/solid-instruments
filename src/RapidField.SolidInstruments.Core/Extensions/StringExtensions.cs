@@ -1357,7 +1357,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
             }
             else
             {
-                result = default(Object);
+                result = default;
 
                 if (raiseExceptionOnFail)
                 {

@@ -91,12 +91,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
 
             switch (Mode)
             {
-                case CipherMode.CBC:
+                case CipherModeCbc:
 
                     blockWords.CopyTo(buffer, 0);
                     break;
 
-                case CipherMode.ECB:
+                case CipherModeEcb:
 
                     break;
 
@@ -141,13 +141,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
 
                 switch (Mode)
                 {
-                    case CipherMode.CBC:
+                    case CipherModeCbc:
 
                         blockWords[i] ^= InitializationVector[i];
                         InitializationVector[i] = buffer[i];
                         break;
 
-                    case CipherMode.ECB:
+                    case CipherModeEcb:
 
                         break;
 
@@ -196,12 +196,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
 
                 switch (Mode)
                 {
-                    case CipherMode.CBC:
+                    case CipherModeCbc:
 
                         blockWords[i] ^= InitializationVector[i];
                         break;
 
-                    case CipherMode.ECB:
+                    case CipherModeEcb:
 
                         break;
 
@@ -243,12 +243,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
 
                 switch (Mode)
                 {
-                    case CipherMode.CBC:
+                    case CipherModeCbc:
 
                         InitializationVector[i] = blockWords[i];
                         break;
 
-                    case CipherMode.ECB:
+                    case CipherModeEcb:
 
                         break;
 

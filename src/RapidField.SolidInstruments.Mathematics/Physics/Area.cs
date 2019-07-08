@@ -346,7 +346,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                 return value;
             }
 
-            return default(Area);
+            return default;
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                 return true;
             }
 
-            result = default(Area);
+            result = default;
             return false;
         }
 
@@ -484,7 +484,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             }
             else if (input.IsNullOrEmpty())
             {
-                result = default(Area);
+                result = default;
                 return false;
             }
 
@@ -497,7 +497,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                     throw new FormatException(ParseFormatExceptionMessageTemplate.ApplyFormat(input));
                 }
 
-                result = default(Area);
+                result = default;
                 return false;
             }
 
@@ -535,7 +535,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                     }
                     else
                     {
-                        result = default(Area);
+                        result = default;
                         return false;
                     }
                 }
@@ -616,7 +616,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                             throw new FormatException(ParseFormatExceptionMessageTemplate.ApplyFormat(input));
                         }
 
-                        result = default(Area);
+                        result = default;
                         return false;
                 }
             }

@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Data
 
             // Assert.
             result.Should().BeFalse();
-            yAxisValue.Should().Be(default(Decimal));
+            yAxisValue.Should().Be(default);
         }
 
         [TestMethod]

@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         }
 
         /// <summary>
-        /// Facilitates implicit <see cref="EnhancedReadabilityGuid" /> to <see cref="Guid" /> array casting.
+        /// Facilitates implicit <see cref="EnhancedReadabilityGuid" /> to <see cref="Guid" /> casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
@@ -185,7 +185,7 @@ namespace RapidField.SolidInstruments.TextEncoding
                 return new EnhancedReadabilityGuid(value);
             }
 
-            return default(EnhancedReadabilityGuid);
+            return default;
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace RapidField.SolidInstruments.TextEncoding
                 return true;
             }
 
-            result = default(EnhancedReadabilityGuid);
+            result = default;
             return false;
         }
 
@@ -344,7 +344,7 @@ namespace RapidField.SolidInstruments.TextEncoding
             }
             else if (input.IsNullOrEmpty())
             {
-                value = default(Guid);
+                value = default;
                 return false;
             }
 
@@ -371,7 +371,7 @@ namespace RapidField.SolidInstruments.TextEncoding
                         continue;
                     }
 
-                    value = default(Guid);
+                    value = default;
                     return false;
                 }
 
@@ -379,7 +379,7 @@ namespace RapidField.SolidInstruments.TextEncoding
                 return true;
             }
 
-            value = default(Guid);
+            value = default;
             return false;
         }
 

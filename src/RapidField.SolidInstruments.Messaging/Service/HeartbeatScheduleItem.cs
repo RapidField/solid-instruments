@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Diagnostics;
@@ -143,11 +144,11 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// </returns>
         public static Boolean operator ==(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -270,21 +271,21 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Asynchronously publishes a single heartbeat message with characteristics defined by the current
         /// <see cref="IHeartbeatScheduleItem" />.
         /// </summary>
-        /// <param name="messagePublishingClient">
-        /// A client that is used to publish the message.
+        /// <param name="messagePublishingFacade">
+        /// An appliance that facilitates message publishing operations.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="messagePublishingClient" /> is null.
+        /// <paramref name="messagePublishingFacade" /> is null.
         /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while attempting to publish the heartbeat message.
         /// </exception>
-        public async Task PublishHeartbeatMessageAsync(IMessagePublishingClient messagePublishingClient)
+        public Task PublishHeartbeatMessageAsync(IMessagePublishingFacade messagePublishingFacade)
         {
-            messagePublishingClient = messagePublishingClient.RejectIf().IsNull(nameof(messagePublishingClient)).TargetArgument;
+            messagePublishingFacade = messagePublishingFacade.RejectIf().IsNull(nameof(messagePublishingFacade)).TargetArgument;
 
             try
             {
@@ -294,7 +295,20 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     Label = Label
                 };
 
-                await messagePublishingClient.PublishAsync(message, EntityType).ConfigureAwait(false);
+                switch (EntityType)
+                {
+                    case MessagingEntityType.Queue:
+
+                        return messagePublishingFacade.PublishToQueueAsync(message);
+
+                    case MessagingEntityType.Topic:
+
+                        return messagePublishingFacade.PublishToTopicAsync(message);
+
+                    default:
+
+                        throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.");
+                }
             }
             catch (MessagePublishingException)
             {

@@ -48,6 +48,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Threefish
         /// Represents the encryption mode for the cipher.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const CipherMode ModeSetting = CipherMode.CBC;
+        private const CipherMode ModeSetting = CryptographicTransform.CipherModeCbc;
     }
 }

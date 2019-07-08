@@ -42,24 +42,6 @@ namespace RapidField.SolidInstruments.Messaging.Service
             where TResponseMessage : class, IResponseMessage;
 
         /// <summary>
-        /// Adds support for the specified message type.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message for which support is added.
-        /// </typeparam>
-        /// <param name="entityType">
-        /// The targeted entity type.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// <typeparamref name="TMessage" /> was already added.
-        /// </exception>
-        void AddSubscriber<TMessage>(MessagingEntityType entityType)
-            where TMessage : class, IMessage;
-
-        /// <summary>
         /// Adds support for the specified topic message type.
         /// </summary>
         /// <typeparam name="TMessage">

@@ -176,7 +176,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
 
                     default:
 
-                        throw new InvalidOperationException($"The specified database type, {DatabaseType}, is not supported.");
+                        throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.");
                 }
             }
             finally

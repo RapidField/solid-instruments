@@ -49,16 +49,12 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Computes a fast 32-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
+        /// Computes a 32-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
         /// <param name="target">
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
-        public static Int32 ComputeThirtyTwoBitHash(this IEnumerable<Byte> target)
-        {
-            var hash = target.ComputeOneHundredTwentyEightBitHash();
-            return ((BitConverter.ToInt32(hash, 0) ^ BitConverter.ToInt32(hash, 8)) ^ (BitConverter.ToInt32(hash, 4) ^ BitConverter.ToInt32(hash, 12)));
-        }
+        public static Int32 ComputeThirtyTwoBitHash(this IEnumerable<Byte> target) => BitConverter.ToInt32(target.ComputeThirtyTwoBitHashBuffer(), 0);
 
         /// <summary>
         /// Decompresses the current compressed <see cref="Byte" /> array.
@@ -103,7 +99,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A new <see cref="Guid" /> that uniquely identifies the contents of the current <see cref="IEnumerable{Byte}" />.
         /// </returns>
-        public static Guid GenerateChecksumIdentity(this IEnumerable<Byte> target) => new Guid(target.ComputeOneHundredTwentyEightBitHash());
+        public static Guid GenerateChecksumIdentity(this IEnumerable<Byte> target) => new Guid(target.ComputeOneHundredTwentyEightBitHashBuffer());
 
         /// <summary>
         /// Performs a circular shift on the bits in the current <see cref="Byte" /> array.
@@ -234,32 +230,81 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Computes a fast 128-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
+        /// Computes a 128-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
         /// <param name="target">
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
-        private static Byte[] ComputeOneHundredTwentyEightBitHash(this IEnumerable<Byte> target) => target.Any() ? ChecksumAlgorithm.ComputeHash(target.ToArray()) : EmptyCollectionOneHundredTwentyEightBitHash;
+        private static Byte[] ComputeOneHundredTwentyEightBitHashBuffer(this IEnumerable<Byte> target)
+        {
+            var rawHash = target.ComputeTwoHundredFiftySixBitHashBuffer();
+            var foldedHash = new Byte[16];
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt64(rawHash, 0) ^ BitConverter.ToInt64(rawHash, 16)), 0, foldedHash, 0, 8);
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt64(rawHash, 8) ^ BitConverter.ToInt64(rawHash, 24)), 0, foldedHash, 8, 8);
+            return foldedHash;
+        }
 
         /// <summary>
-        /// Gets a hash algorithm that is used to calculate 128-bit checksum hashes.
+        /// Computes a 64-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [ThreadStatic]
-        private static readonly HashAlgorithm ChecksumAlgorithm = MD5.Create();
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{Byte}" />.
+        /// </param>
+        [DebuggerHidden]
+        private static Byte[] ComputeSixtyFourBitHashBuffer(this IEnumerable<Byte> target)
+        {
+            var rawHash = target.ComputeOneHundredTwentyEightBitHashBuffer();
+            var foldedHash = new Byte[8];
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt32(rawHash, 0) ^ BitConverter.ToInt32(rawHash, 8)), 0, foldedHash, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt32(rawHash, 4) ^ BitConverter.ToInt32(rawHash, 12)), 0, foldedHash, 4, 4);
+            return foldedHash;
+        }
+
+        /// <summary>
+        /// Computes a 32-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{Byte}" />.
+        /// </param>
+        [DebuggerHidden]
+        private static Byte[] ComputeThirtyTwoBitHashBuffer(this IEnumerable<Byte> target)
+        {
+            var rawHash = target.ComputeSixtyFourBitHashBuffer();
+            var foldedHash = new Byte[4];
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt16(rawHash, 0) ^ BitConverter.ToInt16(rawHash, 4)), 0, foldedHash, 0, 2);
+            Buffer.BlockCopy(BitConverter.GetBytes(BitConverter.ToInt16(rawHash, 2) ^ BitConverter.ToInt16(rawHash, 6)), 0, foldedHash, 2, 2);
+            return foldedHash;
+        }
+
+        /// <summary>
+        /// Computes a 256-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{Byte}" />.
+        /// </param>
+        [DebuggerHidden]
+        private static Byte[] ComputeTwoHundredFiftySixBitHashBuffer(this IEnumerable<Byte> target)
+        {
+            if (target.Any())
+            {
+                using (var checksumAlgorithm = SHA256.Create())
+                {
+                    return checksumAlgorithm.ComputeHash(target.ToArray());
+                }
+            }
+
+            return EmptyCollectionTwoHundredFiftySixBitHash;
+        }
 
         /// <summary>
         /// Represents the binary 128-bit hash for an empty collection.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Byte[] EmptyCollectionOneHundredTwentyEightBitHash = { 0x9a, 0x69, 0x39, 0xc6, 0xac, 0x93, 0x56, 0x96, 0x65, 0xa5, 0x35, 0x5a, 0x6c, 0x53, 0xa9, 0xca };
-
-        /// <summary>
-        /// Represents a finalizer for static members of the <see cref="ByteCollectionExtensions" /> class.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [ThreadStatic]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(ChecksumAlgorithm.Dispose);
+        private static readonly Byte[] EmptyCollectionTwoHundredFiftySixBitHash =
+        {
+            0xa5, 0xac, 0xc6, 0x56, 0x96, 0x65, 0xa5, 0x35, 0x5a, 0x6c, 0x53, 0xa9, 0xca, 0xac, 0x9a, 0x35,
+            0xc6, 0x93, 0x53, 0x5a, 0x56, 0x69, 0x65, 0x39, 0xca, 0x93, 0x6c, 0x96, 0xa9, 0x9a, 0x69, 0x39
+        };
     }
 }

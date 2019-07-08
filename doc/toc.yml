@@ -1,0 +1,6 @@
+- name: Quick Start Guide
+  href: articles/
+  homepage: articles/QuickStartGuide.md
+- name: API Reference
+  href: api/
+  homepage: api/index.md

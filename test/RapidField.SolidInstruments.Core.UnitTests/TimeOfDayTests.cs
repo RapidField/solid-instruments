@@ -199,6 +199,26 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         }
 
         [TestMethod]
+        public void ShouldBeSerializable_UsingCompressedJsonFormat()
+        {
+            // Arrange.
+            var format = SerializationFormat.CompressedJson;
+
+            // Assert.
+            ShouldBeSerializable(format);
+        }
+
+        [TestMethod]
+        public void ShouldBeSerializable_UsingCompressedXmlFormat()
+        {
+            // Arrange.
+            var format = SerializationFormat.CompressedXml;
+
+            // Assert.
+            ShouldBeSerializable(format);
+        }
+
+        [TestMethod]
         public void ShouldBeSerializable_UsingJsonFormat()
         {
             // Arrange.

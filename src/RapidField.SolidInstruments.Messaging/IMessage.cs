@@ -4,7 +4,6 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core;
-using System;
 
 namespace RapidField.SolidInstruments.Messaging
 {
@@ -21,24 +20,7 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TResult">
     /// The type of the result that is produced by handling the message.
     /// </typeparam>
-    public interface IMessage<out TResult> : ICommand<TResult>
+    public interface IMessage<out TResult> : IMessageBase, ICommand<TResult>
     {
-        /// <summary>
-        /// Gets or sets a unique identifier that is assigned to related messages.
-        /// </summary>
-        Guid CorrelationIdentifier
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a unique identifier for the message.
-        /// </summary>
-        Guid Identifier
-        {
-            get;
-            set;
-        }
     }
 }

@@ -164,7 +164,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
                 default:
 
-                    return default(Int32);
+                    return default;
             }
         }
 

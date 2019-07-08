@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         protected MessageSubscriber(ICommandMediator mediator)
-            : base(mediator, MessageHandlerRole.Subscriber, MessagePublishingClient.RequestMessageEntityType)
+            : base(mediator, MessageHandlerRole.Subscriber, Message.RequestEntityType)
         {
             return;
         }

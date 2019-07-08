@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Serialization
     /// <typeparam name="T">
     /// The type of the serializable object.
     /// </typeparam>
-    public class XmlSerializer<T> : DynamicSerializer<T>
+    public sealed class XmlSerializer<T> : DynamicSerializer<T>
         where T : class
     {
         /// <summary>

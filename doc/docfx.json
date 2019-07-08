@@ -1,0 +1,71 @@
+// =================================================================================================================================
+// Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+// =================================================================================================================================
+
+{
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "toc.yml",
+                    "*.md",
+                    "api/**.yml",
+                    "api/index.md",
+                    "articles/**/toc.yml",
+                    "articles/**.md"
+                ]
+            }
+        ],
+        "dest": "_DocumentationWebsite",
+        "globalMetadata": {
+            "_appFaviconPath": "images/favicon.ico",
+            "_appFooter": "&copy; 2019 RapidField",
+            "_appLogoPath": "images/RapidField.Logo.Color.White.Transparent.227w.png",
+            "_appTitle": "Solid Instruments",
+            "_disableBreadcrumb": true,
+            "_disableContribution": true,
+            "_disableToc": true,
+            "_enableNewTab": true,
+            "_enableSearch": false
+        },
+        "markdownEngineName": "markdig",
+        "noLangKeyword": false,
+        "overwrite": [
+            {
+                "files": [
+                    "namespaces/**.md"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_DocumentationWebsite/**"
+                ]
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "images/**"
+                ]
+            }
+        ],
+        "template": [
+            "default",
+            "templates/custom"
+        ],
+        "xrefService": [
+            "https://xref.docs.microsoft.com/query?uid={uid}"
+        ]
+    },
+    "metadata": [
+        {
+            "dest": "api",
+            "src": [
+                {
+                    "files": [
+                        "../src/**/**.csproj"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
 
                 default:
 
-                    yAxisValue = default(TYAxis);
+                    yAxisValue = default;
                     return false;
             }
         }
