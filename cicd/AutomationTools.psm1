@@ -3,6 +3,10 @@
 # =================================================================================================================================
 
 $ChoclateyInstallScriptUri = "https://chocolatey.org/install.ps1"
+$ChoclateyPackageNameForDocFx = "docfx"
+$ChoclateyPackageNameForLeanify = "leanify"
+$ChoclateyPackageNameForNodeJs = "nodejs.install"
+$ChoclateyPackageNameForPsake = "psake"
 
 # Get
 # =================================================================================================================================
@@ -12,15 +16,19 @@ function GetChocolateyInstallationStatus {
 }
 
 function GetDocFxInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("docfx") })
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") })
 }
 
 function GetLeanifyInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("leanify") })
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") })
+}
+
+function GetNodeJsInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") })
 }
 
 function GetPsakeInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("psake") })
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") })
 }
 
 # Install
@@ -28,10 +36,16 @@ function GetPsakeInstallationStatus {
 
 function InstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Installing all automation tools."
+
+    # Install package managers.
     InstallChocolatey
+    InstallNodeJs
+
+    # Install automation tools.
     InstallDocFx
     InstallLeanify
     InstallPsake
+
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n"
 }
 
@@ -55,7 +69,7 @@ function InstallDocFx {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing DocFX."
-    choco install docfx -y --confirm
+    choco install $ChoclateyPackageNameForDocFx -y --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n"
 }
 
@@ -66,8 +80,19 @@ function InstallLeanify {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Leanify."
-    choco install leanify --confirm
+    choco install $ChoclateyPackageNameForLeanify --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Leanify. <<<`n"
+}
+
+function InstallNodeJs {
+    If (GetLeanifyInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Node.js is already installed."
+        return
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing Node.js."
+    choco install $ChoclateyPackageNameForNodeJs --confirm
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n"
 }
 
 function InstallPsake {
@@ -77,7 +102,7 @@ function InstallPsake {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing psake."
-    choco install psake --confirm
+    choco install $ChoclateyPackageNameForPsake --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing psake. <<<`n"
 }
 
@@ -126,7 +151,7 @@ function UninstallAllAutomationTools {
 function UninstallDocFx {
     If (GetDocFxInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX."
-        choco uninstall docfx -y --confirm
+        choco uninstall $ChoclateyPackageNameForDocFx -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n"
     }
 }
@@ -134,15 +159,23 @@ function UninstallDocFx {
 function UninstallLeanify {
     If (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Leanify."
-        choco uninstall leanify -y --confirm
+        choco uninstall $ChoclateyPackageNameForLeanify -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Leanify. <<<`n"
+    }
+}
+
+function UninstallNodeJs {
+    If (GetLeanifyInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js."
+        choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n"
     }
 }
 
 function UninstallPsake {
     If (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling psake."
-        choco uninstall psake --confirm
+        choco uninstall $ChoclateyPackageNameForPsake --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling psake. <<<`n"
     }
 }
