@@ -7,6 +7,7 @@ $ChoclateyPackageNameForDocFx = "docfx"
 $ChoclateyPackageNameForLeanify = "leanify"
 $ChoclateyPackageNameForNodeJs = "nodejs.install"
 $ChoclateyPackageNameForPsake = "psake"
+$NpmPackageNameForHtmlMinifier = "html-minifier"
 
 # Get
 # =================================================================================================================================
@@ -43,6 +44,7 @@ function InstallAllAutomationTools {
 
     # Install automation tools.
     InstallDocFx
+    InstallHtmlMinifier
     InstallLeanify
     InstallPsake
 
@@ -71,6 +73,12 @@ function InstallDocFx {
     Write-Host -ForegroundColor DarkCyan "Installing DocFX."
     choco install $ChoclateyPackageNameForDocFx -y --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n"
+}
+
+function InstallHtmlMinifier {
+    Write-Host -ForegroundColor DarkCyan "Installing HTMLMinifier."
+    npm install $NpmPackageNameForHtmlMinifier -g --loglevel error
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing HTMLMinifier. <<<`n"
 }
 
 function InstallLeanify {
@@ -123,6 +131,13 @@ function RestoreDocFx {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring DocFX. <<<`n"
 }
 
+function RestoreHtmlMinifier {
+    Write-Host -ForegroundColor DarkCyan "Restoring HTMLMinifier."
+    UninstallDocFx
+    InstallDocFx
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring HTMLMinifier. <<<`n"
+}
+
 function RestoreLeanify {
     Write-Host -ForegroundColor DarkCyan "Restoring Leanify."
     UninstallDocFx
@@ -143,6 +158,7 @@ function RestorePsake {
 function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools."
     UninstallDocFx
+    UninstallHtmlMinifier
     UninstallLeanify
     UninstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n"
@@ -154,6 +170,12 @@ function UninstallDocFx {
         choco uninstall $ChoclateyPackageNameForDocFx -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n"
     }
+}
+
+function UninstallHtmlMinifier {
+    Write-Host -ForegroundColor DarkCyan "Uninstalling HTMLMinifier."
+    npm uninstall $NpmPackageNameForHtmlMinifier -g --loglevel error
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling HTMLMinifier. <<<`n"
 }
 
 function UninstallLeanify {
