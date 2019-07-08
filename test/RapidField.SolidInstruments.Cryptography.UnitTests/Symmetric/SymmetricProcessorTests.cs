@@ -572,7 +572,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var binarySerializer = new BinaryPassThroughSerializer();
+                var binarySerializer = new PassThroughSerializer();
                 var target = new SymmetricProcessor<Byte[]>(randomnessProvider, binarySerializer);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
 
@@ -628,7 +628,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var binarySerializer = new BinaryPassThroughSerializer();
+                var binarySerializer = new PassThroughSerializer();
                 var target = new SymmetricProcessor<Byte[]>(randomnessProvider, binarySerializer);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
 

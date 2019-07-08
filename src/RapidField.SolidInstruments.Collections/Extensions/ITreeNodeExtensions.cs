@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
 
             if (predicate(target) == false)
             {
-                return default(TResult);
+                return default;
             }
 
             var results = new List<TResult>();
@@ -246,10 +246,10 @@ namespace RapidField.SolidInstruments.Collections.Extensions
 
             if (predicate(target) == false)
             {
-                return default(TResult);
+                return default;
             }
 
-            return function(target, (target.IsRoot ? default(TResult) : target.Parent.TraverseUp(function, predicate)));
+            return function(target, (target.IsRoot ? default : target.Parent.TraverseUp(function, predicate)));
         }
     }
 }

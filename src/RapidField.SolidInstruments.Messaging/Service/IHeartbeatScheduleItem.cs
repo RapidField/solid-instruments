@@ -16,19 +16,19 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Asynchronously publishes a single heartbeat message with characteristics defined by the current
         /// <see cref="IHeartbeatScheduleItem" />.
         /// </summary>
-        /// <param name="messagePublishingClient">
-        /// A client that is used to publish the message.
+        /// <param name="messagePublishingFacade">
+        /// An appliance that facilitates message publishing operations.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="messagePublishingClient" /> is null.
+        /// <paramref name="messagePublishingFacade" /> is null.
         /// </exception>
         /// <exception cref="MessagePublishingException">
         /// An exception was raised while attempting to publish the heartbeat message.
         /// </exception>
-        Task PublishHeartbeatMessageAsync(IMessagePublishingClient messagePublishingClient);
+        Task PublishHeartbeatMessageAsync(IMessagePublishingFacade messagePublishingFacade);
 
         /// <summary>
         /// Gets the messaging entity type that is used when publishing the message.

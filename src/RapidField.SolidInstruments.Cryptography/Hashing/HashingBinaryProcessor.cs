@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
         public HashingBinaryProcessor(RandomNumberGenerator randomnessProvider)
-            : base(randomnessProvider, new BinaryPassThroughSerializer())
+            : base(randomnessProvider, new PassThroughSerializer())
         {
             return;
         }

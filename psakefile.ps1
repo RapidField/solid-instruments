@@ -40,12 +40,12 @@ Task Restore-Dependencies -Alias rd { RestoreDependencies }
 # Start
 # =================================================================================================================================
 
-Task Start-All-Debug -Alias sad -Depends Stop-All, Start-PrototypeServiceApplication-Debug, Start-PrototypeWebApplication-Debug
-Task Start-All-Release -Alias sar -Depends Stop-All, Start-PrototypeServiceApplication-Release, Start-PrototypeWebApplication-Release
-Task Start-PrototypeServiceApplication-Debug -Alias spsad -Depends Build-Debug { StartPrototypeServiceApplicationDebug }
-Task Start-PrototypeServiceApplication-Release -Alias spsar -Depends Build-Release { StartPrototypeServiceApplicationRelease }
-Task Start-PrototypeWebApplication-Debug -Alias spwad -Depends Build-Debug { StartPrototypeWebApplicationDebug }
-Task Start-PrototypeWebApplication-Release -Alias spwar -Depends Build-Release { StartPrototypeWebApplicationRelease }
+Task Start-All-Debug -Alias sad -Depends Stop-All, Start-ExampleServiceApplication-Debug, Start-ExampleWebApplication-Debug
+Task Start-All-Release -Alias sar -Depends Stop-All, Start-ExampleServiceApplication-Release, Start-ExampleWebApplication-Release
+Task Start-ExampleServiceApplication-Debug -Alias spsad -Depends Build-Debug { StartExampleServiceApplicationDebug }
+Task Start-ExampleServiceApplication-Release -Alias spsar -Depends Build-Release { StartExampleServiceApplicationRelease }
+Task Start-ExampleWebApplication-Debug -Alias spwad -Depends Build-Debug { StartExampleWebApplicationDebug }
+Task Start-ExampleWebApplication-Release -Alias spwar -Depends Build-Release { StartExampleWebApplicationRelease }
 
 # Start
 # =================================================================================================================================

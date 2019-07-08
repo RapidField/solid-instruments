@@ -184,7 +184,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A boolean representation of the current <see cref="Nix" />.
         /// </returns>
-        public Boolean ToBoolean(IFormatProvider provider) => default(Boolean);
+        public Boolean ToBoolean(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent 8-bit integer representation.
@@ -195,7 +195,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// An 8-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public Byte ToByte(IFormatProvider provider) => default(Byte);
+        public Byte ToByte(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent character representation.
@@ -206,7 +206,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A character representation of the current <see cref="Nix" />.
         /// </returns>
-        public Char ToChar(IFormatProvider provider) => default(Char);
+        public Char ToChar(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent date-time representation.
@@ -217,7 +217,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A date-time representation of the current <see cref="Nix" />.
         /// </returns>
-        public DateTime ToDateTime(IFormatProvider provider) => default(DateTime);
+        public DateTime ToDateTime(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent decimal number representation.
@@ -228,7 +228,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A decimal number representation of the current <see cref="Nix" />.
         /// </returns>
-        public Decimal ToDecimal(IFormatProvider provider) => default(Decimal);
+        public Decimal ToDecimal(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent double-precision floating point number
@@ -240,7 +240,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A double-precision floating point number representation of the current <see cref="Nix" />.
         /// </returns>
-        public Double ToDouble(IFormatProvider provider) => default(Double);
+        public Double ToDouble(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent 16-bit integer representation.
@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A 16-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public Int16 ToInt16(IFormatProvider provider) => default(Int16);
+        public Int16 ToInt16(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent 32-bit integer representation.
@@ -262,7 +262,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A 32-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public Int32 ToInt32(IFormatProvider provider) => default(Int32);
+        public Int32 ToInt32(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent 64-bit integer representation.
@@ -273,7 +273,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A 64-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public Int64 ToInt64(IFormatProvider provider) => default(Int64);
+        public Int64 ToInt64(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent signed 8-bit integer representation.
@@ -284,7 +284,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A signed 8-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public SByte ToSByte(IFormatProvider provider) => default(SByte);
+        public SByte ToSByte(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent single-precision floating point number
@@ -296,7 +296,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A single-precision floating point number representation of the current <see cref="Nix" />.
         /// </returns>
-        public Single ToSingle(IFormatProvider provider) => default(Single);
+        public Single ToSingle(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent string representation.
@@ -341,7 +341,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// An unsigned 16-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public UInt16 ToUInt16(IFormatProvider provider) => default(UInt16);
+        public UInt16 ToUInt16(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent unsigned 32-bit integer representation.
@@ -352,7 +352,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// An unsigned 32-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public UInt32 ToUInt32(IFormatProvider provider) => default(UInt32);
+        public UInt32 ToUInt32(IFormatProvider provider) => default;
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to its equivalent unsigned 64-bit integer representation.
@@ -363,7 +363,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// An unsigned 64-bit integer representation of the current <see cref="Nix" />.
         /// </returns>
-        public UInt64 ToUInt64(IFormatProvider provider) => default(UInt64);
+        public UInt64 ToUInt64(IFormatProvider provider) => default;
 
         /// <summary>
         /// Represents an ignored value.
@@ -373,15 +373,13 @@ namespace RapidField.SolidInstruments.Core
         private readonly Byte Value;
 
         /// <summary>
-        /// Represents a thread-static <see cref="Nix" /> instance.
+        /// Represents a static <see cref="Nix" /> instance.
         /// </summary>
-        [ThreadStatic]
         public static readonly Nix Instance = new Nix(0x00);
 
         /// <summary>
-        /// Represents a thread-static reference to the <see cref="Nix" /> type.
+        /// Represents a static reference to the <see cref="Nix" /> type.
         /// </summary>
-        [ThreadStatic]
         public static readonly Type Type = typeof(Nix);
     }
 }

@@ -11,6 +11,10 @@ function GetChocolateyInstallationStatus {
     return (Get-Command "choco.exe" -ErrorAction SilentlyContinue)
 }
 
+function GetDocFxInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("docfx") })
+}
+
 function GetPsakeInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("psake") })
 }
@@ -22,6 +26,7 @@ function InstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Installing all automation tools."
     InstallChocolatey
     InstallPsake
+    InstallDocFx
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n"
 }
 
@@ -36,6 +41,17 @@ function InstallChocolatey {
     Set-ExecutionPolicy Bypass -Scope Process -Force;
     iex ((New-Object System.Net.WebClient).DownloadString($ChoclateyInstallScriptUri))
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Chocolatey. <<<`n"
+}
+
+function InstallDocFx {
+    If (GetDocFxInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "DocFX is already installed."
+        return
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing DocFX."
+    choco install docfx -y --confirm
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n"
 }
 
 function InstallPsake {
@@ -59,6 +75,13 @@ function RestoreAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring all automation tools. <<<`n"
 }
 
+function RestoreDocFx {
+    Write-Host -ForegroundColor DarkCyan "Restoring DocFX."
+    UninstallDocFx
+    InstallDocFx
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring DocFX. <<<`n"
+}
+
 function RestorePsake {
     Write-Host -ForegroundColor DarkCyan "Restoring psake."
     UninstallPsake
@@ -71,8 +94,17 @@ function RestorePsake {
 
 function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools."
+    UninstallDoxFx
     UninstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n"
+}
+
+function UninstallDocFx {
+    If (GetPsakeInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX."
+        choco uninstall docfx -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n"
+    }
 }
 
 function UninstallPsake {

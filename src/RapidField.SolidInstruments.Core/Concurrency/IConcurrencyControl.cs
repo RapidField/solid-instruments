@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     public interface IConcurrencyControl : IDisposable
     {
         /// <summary>
-        /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
+        /// Informs the control that a thread is entering a block of code or that it is beginning to consume a resource.
         /// </summary>
         /// <exception cref="ConcurrencyControlOperationException">
         /// The operation timed out or the <see cref="IConcurrencyControl" /> is in an invalid state.

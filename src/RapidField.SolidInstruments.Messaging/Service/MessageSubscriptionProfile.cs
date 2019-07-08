@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl;
 using System;
@@ -72,8 +73,20 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
 
             SupportedMessageTypesReference.Add(requestMessageType);
-            RootDependencyScope.Resolve<IMessageSubscriptionClient>().RegisterHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
+            RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
         }
+
+        /// <summary>
+        /// Adds support for the specified topic message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message for which support is added.
+        /// </typeparam>
+        /// <exception cref="InvalidOperationException">
+        /// <typeparamref name="TMessage" /> was already added.
+        /// </exception>
+        public void AddTopicSubscriber<TMessage>()
+            where TMessage : class, IMessage => AddSubscriber<TMessage>(MessagingEntityType.Topic);
 
         /// <summary>
         /// Adds support for the specified message type.
@@ -90,7 +103,8 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        public void AddSubscriber<TMessage>(MessagingEntityType entityType)
+        [DebuggerHidden]
+        private void AddSubscriber<TMessage>(MessagingEntityType entityType)
             where TMessage : class, IMessage
         {
             var messageType = typeof(TMessage);
@@ -101,20 +115,24 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
 
             SupportedMessageTypesReference.Add(messageType);
-            RootDependencyScope.Resolve<IMessageSubscriptionClient>().RegisterHandler<TMessage>((message) => HandleMessage(message), entityType);
-        }
 
-        /// <summary>
-        /// Adds support for the specified topic message type.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message for which support is added.
-        /// </typeparam>
-        /// <exception cref="InvalidOperationException">
-        /// <typeparamref name="TMessage" /> was already added.
-        /// </exception>
-        public void AddTopicSubscriber<TMessage>()
-            where TMessage : class, IMessage => AddSubscriber<TMessage>(MessagingEntityType.Topic);
+            switch (entityType)
+            {
+                case MessagingEntityType.Queue:
+
+                    RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterQueueMessageHandler<TMessage>((message) => HandleMessage(message));
+                    break;
+
+                case MessagingEntityType.Topic:
+
+                    RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterTopicMessageHandler<TMessage>((message) => HandleMessage(message));
+                    break;
+
+                default:
+
+                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
+            }
+        }
 
         /// <summary>
         /// Handles the specified message.
@@ -139,13 +157,13 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     }
                 }
             }
-            catch (MessageSubscriptionException)
+            catch (MessageSubscribingException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new MessageSubscriptionException(typeof(TMessage), exception);
+                throw new MessageSubscribingException(typeof(TMessage), exception);
             }
         }
 
@@ -176,13 +194,13 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     }
                 }
             }
-            catch (MessageSubscriptionException)
+            catch (MessageSubscribingException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new MessageSubscriptionException(typeof(TRequestMessage), exception);
+                throw new MessageSubscribingException(typeof(TRequestMessage), exception);
             }
         }
 

@@ -48,6 +48,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric.Twofish
         /// Represents the encryption mode for the cipher.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const CipherMode ModeSetting = CipherMode.ECB;
+        private const CipherMode ModeSetting = CryptographicTransform.CipherModeEcb;
     }
 }

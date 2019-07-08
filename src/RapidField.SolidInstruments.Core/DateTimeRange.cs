@@ -399,8 +399,8 @@ namespace RapidField.SolidInstruments.Core
             }
             else if (input.IsNullOrEmpty())
             {
-                start = default(DateTime);
-                end = default(DateTime);
+                start = default;
+                end = default;
                 granularity = DateTimeRangeGranularity.Unspecified;
                 return false;
             }
@@ -417,8 +417,8 @@ namespace RapidField.SolidInstruments.Core
                     }
                     else
                     {
-                        start = default(DateTime);
-                        end = default(DateTime);
+                        start = default;
+                        end = default;
                         granularity = DateTimeRangeGranularity.Unspecified;
                         return false;
                     }
@@ -432,15 +432,15 @@ namespace RapidField.SolidInstruments.Core
                 }
                 else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[0], out start) == false)
                 {
-                    start = default(DateTime);
-                    end = default(DateTime);
+                    start = default;
+                    end = default;
                     granularity = DateTimeRangeGranularity.Unspecified;
                     return false;
                 }
                 else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[1], out end) == false)
                 {
-                    start = default(DateTime);
-                    end = default(DateTime);
+                    start = default;
+                    end = default;
                     granularity = DateTimeRangeGranularity.Unspecified;
                     return false;
                 }

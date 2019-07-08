@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             var result = (DateTime)target.GetDefaultValue();
 
             // Assert.
-            result.Should().Be(default(DateTime));
+            result.Should().Be(default);
         }
 
         [TestMethod]

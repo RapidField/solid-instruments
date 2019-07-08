@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             {
                 case SymmetricAlgorithmSpecification.Unspecified:
 
-                    return default(Int32);
+                    return default;
 
                 case SymmetricAlgorithmSpecification.Aes128Cbc:
 

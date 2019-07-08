@@ -22,7 +22,8 @@ namespace RapidField.SolidInstruments.Core
         protected Instrument()
             : this(DefaultStateControlMode)
         {
-            return;
+            IsDisposed = false;
+            IsDisposing = false;
         }
 
         /// <summary>
@@ -65,28 +66,33 @@ namespace RapidField.SolidInstruments.Core
             LazyStateControl = new Lazy<IConcurrencyControl>(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+#pragma warning disable CA1063
+
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Instrument" />.
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Raises a new <see cref="ObjectDisposedException" /> if the current <see cref="Instrument" /> is disposed.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public void RejectIfDisposed()
-        {
-            if (IsDisposed)
+            if (IsDisposedOrDisposing)
             {
-                throw new ObjectDisposedException(ToString());
+                return;
+            }
+
+            IsDisposing = true;
+
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            finally
+            {
+                IsDisposed = true;
+                IsDisposing = false;
             }
         }
+
+#pragma warning restore CA1063
 
         /// <summary>
         /// Initializes a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.
@@ -109,14 +115,52 @@ namespace RapidField.SolidInstruments.Core
             {
                 LazyStateControl.Dispose();
             }
+        }
 
-            IsDisposed = true;
+        /// <summary>
+        /// Raises a new <see cref="ObjectDisposedException" /> if the current <see cref="Instrument" /> is disposed or is currently
+        /// in the process of being disposed.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected void RejectIfDisposed()
+        {
+            if (IsDisposedOrDisposing)
+            {
+                throw new ObjectDisposedException(ToString());
+            }
         }
 
         /// <summary>
         /// Gets a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.
         /// </summary>
         protected internal IConcurrencyControl StateControl => LazyStateControl.Value;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="Instrument" /> has been disposed.
+        /// </summary>
+        protected Boolean IsDisposed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="Instrument" /> has been disposed or is currently in the
+        /// process of being disposed.
+        /// </summary>
+        protected Boolean IsDisposedOrDisposing => (IsDisposed || IsDisposing);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="Instrument" /> is currently in the process of being
+        /// disposed.
+        /// </summary>
+        protected Boolean IsDisposing
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Represents the default concurrency control mode that is used to manage state.
@@ -150,11 +194,5 @@ namespace RapidField.SolidInstruments.Core
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<IConcurrencyControl> LazyStateControl;
-
-        /// <summary>
-        /// Represents a value indicating whether or not the current <see cref="Instrument" /> has been disposed.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Boolean IsDisposed = false;
     }
 }

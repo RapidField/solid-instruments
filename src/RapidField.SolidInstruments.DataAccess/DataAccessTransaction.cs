@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Initiates the current <see cref="DataAccessTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void Begin(ConcurrencyControlToken controlToken);
 
@@ -209,7 +209,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Asynchronously initiates the current <see cref="DataAccessTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
@@ -220,7 +220,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Commits all changes made within the scope of the current <see cref="DataAccessTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void Commit(ConcurrencyControlToken controlToken);
 
@@ -228,7 +228,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Asynchronously commits all changes made within the scope of the current <see cref="DataAccessTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
@@ -260,7 +260,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Rejects all changes made within the scope of the current <see cref="DataAccessTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void Reject(ConcurrencyControlToken controlToken);
 
@@ -271,7 +271,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract Task RejectAsync(ConcurrencyControlToken controlToken);
 

@@ -23,14 +23,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="client">
-        /// A client that facilitates message publishing operations.
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific message publishing operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="client" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        public QueuePublisher(ICommandMediator mediator, IMessagePublishingClient client)
-            : base(mediator, client, MessagingEntityType.Queue)
+        public QueuePublisher(ICommandMediator mediator, IMessagePublishingFacade facade)
+            : base(mediator, facade, MessagingEntityType.Queue)
         {
             return;
         }
@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
         /// </param>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
     }

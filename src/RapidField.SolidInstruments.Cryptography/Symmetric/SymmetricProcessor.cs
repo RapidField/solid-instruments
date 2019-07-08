@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Collections;
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Serialization;
@@ -358,7 +359,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     switch (cipher.Mode)
                     {
-                        case CipherMode.CBC:
+                        case CryptographicTransform.CipherModeCbc:
 
                             using (var processedInitializationVector = new PinnedBuffer(cipher.BlockSizeInBytes, true))
                             {
@@ -374,13 +375,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 return cipher.Encrypt(pinnedPlaintext, key, processedInitializationVector);
                             }
 
-                        case CipherMode.ECB:
+                        case CryptographicTransform.CipherModeEcb:
 
                             return cipher.Encrypt(pinnedPlaintext, key, null);
 
                         default:
 
-                            throw new InvalidOperationException($"The specified cipher mode, {cipher.Mode}, is not supported.");
+                            throw new UnsupportedSpecificationException($"The specified cipher mode, {cipher.Mode}, is not supported.");
                     }
                 }
             }

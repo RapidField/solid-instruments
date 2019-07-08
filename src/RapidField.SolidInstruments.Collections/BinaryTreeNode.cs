@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Initializes a new instance of the <see cref="BinaryTreeNode{T}" /> class.
         /// </summary>
         public BinaryTreeNode()
-            : this(default(T))
+            : this(default)
         {
             return;
         }

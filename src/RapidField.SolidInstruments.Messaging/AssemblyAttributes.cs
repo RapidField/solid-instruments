@@ -6,4 +6,6 @@ using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.AzureServiceBus")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.InMemory")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.RabbitMq")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.UnitTests")]

@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// Initiates the current <see cref="SimulatedTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Begin(ConcurrencyControlToken controlToken)
         {
@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// Asynchronously initiates the current <see cref="SimulatedTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// Commits all changes made within the scope of the current <see cref="SimulatedTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Commit(ConcurrencyControlToken controlToken)
         {
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// Asynchronously commits all changes made within the scope of the current <see cref="SimulatedTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// Rejects all changes made within the scope of the current <see cref="SimulatedTransaction" />.
         /// </summary>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void Reject(ConcurrencyControlToken controlToken)
         {
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <param name="controlToken">
-        /// A token that ensures thread safety for the operation.
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override Task RejectAsync(ConcurrencyControlToken controlToken) => Task.CompletedTask;
     }

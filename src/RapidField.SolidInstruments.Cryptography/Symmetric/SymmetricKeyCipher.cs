@@ -78,17 +78,17 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
             switch (Mode)
             {
-                case CipherMode.CBC:
+                case CryptographicTransform.CipherModeCbc:
 
                     return DecryptInCbcMode(ciphertext, privateKey);
 
-                case CipherMode.ECB:
+                case CryptographicTransform.CipherModeEcb:
 
                     return DecryptInEcbMode(ciphertext, privateKey);
 
                 default:
 
-                    throw new InvalidOperationException($"The specified cipher mode, {Mode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
             }
         }
 
@@ -124,17 +124,17 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
             switch (Mode)
             {
-                case CipherMode.CBC:
+                case CryptographicTransform.CipherModeCbc:
 
                     return EncryptInCbcMode(plaintext, privateKey, initializationVector);
 
-                case CipherMode.ECB:
+                case CryptographicTransform.CipherModeEcb:
 
                     return EncryptInEcbMode(plaintext, privateKey);
 
                 default:
 
-                    throw new InvalidOperationException($"The specified cipher mode, {Mode}, is not supported.");
+                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
             }
         }
 
