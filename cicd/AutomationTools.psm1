@@ -2,22 +2,29 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+$ChoclateyCommandName = "choco"
 $ChoclateyInstallScriptUri = "https://chocolatey.org/install.ps1"
 $ChoclateyPackageNameForDocFx = "docfx"
 $ChoclateyPackageNameForLeanify = "leanify"
-$ChoclateyPackageNameForNodeJs = "nodejs.install"
+$ChoclateyPackageNameForNodeJs = "nodejs"
 $ChoclateyPackageNameForPsake = "psake"
+$HtmlMinifierCommandName = "html-minifier"
+$NpmCommandName = "npm"
 $NpmPackageNameForHtmlMinifier = "html-minifier"
 
 # Get
 # =================================================================================================================================
 
 function GetChocolateyInstallationStatus {
-    return (Get-Command "choco.exe" -ErrorAction SilentlyContinue)
+    return (Get-Command $ChoclateyCommandName -ErrorAction SilentlyContinue)
 }
 
 function GetDocFxInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") })
+}
+
+function GetHtmlMinifierInstallationStatus {
+    return (Get-Command $HtmlMinifierCommandName -ErrorAction SilentlyContinue)
 }
 
 function GetLeanifyInstallationStatus {
@@ -37,17 +44,11 @@ function GetPsakeInstallationStatus {
 
 function InstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Installing all automation tools."
-
-    # Install package managers.
-    InstallChocolatey
-    InstallNodeJs
-
-    # Install automation tools.
+    InstallPackageManagers
     InstallDocFx
     InstallHtmlMinifier
     InstallLeanify
     InstallPsake
-
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n"
 }
 
@@ -76,8 +77,14 @@ function InstallDocFx {
 }
 
 function InstallHtmlMinifier {
+    If (GetHtmlMinifierInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "HTMLMinifier is already installed."
+        return
+    }
+
     Write-Host -ForegroundColor DarkCyan "Installing HTMLMinifier."
     npm install $NpmPackageNameForHtmlMinifier -g --loglevel error
+    MakeCommandPathAvailableAll -Command $HtmlMinifierCommandName
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing HTMLMinifier. <<<`n"
 }
 
@@ -93,14 +100,22 @@ function InstallLeanify {
 }
 
 function InstallNodeJs {
-    If (GetLeanifyInstallationStatus) {
+    If (GetNodeJsInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Node.js is already installed."
         return
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Node.js."
     choco install $ChoclateyPackageNameForNodeJs --confirm
+    MakeCommandPathAvailableAll -Command $NpmCommandName
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n"
+}
+
+function InstallPackageManagers {
+    Write-Host -ForegroundColor DarkCyan "Installing package managers."
+    InstallChocolatey
+    InstallNodeJs
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing package managers. <<<`n"
 }
 
 function InstallPsake {
@@ -114,11 +129,78 @@ function InstallPsake {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing psake. <<<`n"
 }
 
+# Make
+# =================================================================================================================================
+
+function MakeCommandPathAvailable {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $Command,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [String] $EnvironmentTarget
+    )
+
+    Get-Command "$Command" | ForEach-Object {
+        $CommandDirectoryPath = Split-Path $_.Source
+        $PathVariable = [System.Environment]::GetEnvironmentVariable("Path", $EnvironmentTarget)
+
+        If ($PathVariable -like "*$CommandDirectoryPath*") {
+            Write-Host -ForegroundColor DarkCyan "Command path already available for $EnvironmentTarget target: $CommandDirectoryPath"
+            return
+        }
+
+        $PathVariable = $PathVariable + ";$CommandDirectoryPath"
+        [System.Environment]::SetEnvironmentVariable("Path", "$PathVariable", $EnvironmentTarget)
+        call Update-SessionEnvironment
+        Write-Host -ForegroundColor DarkCyan "Added command path for $EnvironmentTarget target: $CommandDirectoryPath"
+        return
+    }
+}
+
+function MakeCommandPathAvailableAll {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $Command
+    )
+
+    MakeCommandPathAvailableMachine -Command $Command
+    MakeCommandPathAvailableProcess -Command $Command
+    MakeCommandPathAvailableUser -Command $Command
+}
+
+function MakeCommandPathAvailableMachine {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $Command
+    )
+
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Machine"
+}
+
+function MakeCommandPathAvailableProcess {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $Command
+    )
+
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Process"
+}
+
+function MakeCommandPathAvailableUser {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $Command
+    )
+
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "User"
+}
+
 # Restore
 # =================================================================================================================================
 
 function RestoreAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Restoring all automation tools."
+    InstallPackageManagers
     UninstallAllAutomationTools
     InstallAllAutomationTools
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring all automation tools. <<<`n"
@@ -133,16 +215,23 @@ function RestoreDocFx {
 
 function RestoreHtmlMinifier {
     Write-Host -ForegroundColor DarkCyan "Restoring HTMLMinifier."
-    UninstallDocFx
-    InstallDocFx
+    UninstallHtmlMinifier
+    InstallHtmlMinifier
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring HTMLMinifier. <<<`n"
 }
 
 function RestoreLeanify {
     Write-Host -ForegroundColor DarkCyan "Restoring Leanify."
-    UninstallDocFx
-    InstallDocFx
+    UninstallLeanify
+    InstallLeanify
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Leanify. <<<`n"
+}
+
+function RestoreNodeJs {
+    Write-Host -ForegroundColor DarkCyan "Restoring Node.js."
+    UninstallNodeJs
+    InstallNodeJs
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Node.js. <<<`n"
 }
 
 function RestorePsake {
@@ -187,7 +276,7 @@ function UninstallLeanify {
 }
 
 function UninstallNodeJs {
-    If (GetLeanifyInstallationStatus) {
+    If (GetNodeJsInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js."
         choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n"

@@ -2,15 +2,6 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-Write-Host -ForegroundColor Cyan $("`nStarting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date))
-
-# Establish automation tools.
-cd $PSScriptRoot
-.\ResetEnvironment.ps1
-
-# Execute the build.
-cd $PSScriptRoot
-cd ..
-psake Test-All
-
-Write-Host -ForegroundColor Cyan $("`nFinished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date))
+# This script is intended to be used in containerized build environments. Successful execution requires administrative privilege on
+# the host. Automation tools are installed during the process.
+.\cicd\ExecuteCicdBuild.ps1

@@ -83,13 +83,23 @@ function BuildWebDocumentation {
     )
 
     If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
+        Write-Host -ForegroundColor DarkCyan "`nCompiling web documentation metadata."
         cd $DocumentationDirectoryName
-        Write-Host -ForegroundColor DarkCyan "`nCompiling documentation metadata."
         docfx metadata
-        Write-Host -ForegroundColor DarkCyan "`nBuilding documentation website."
+
+        Write-Host -ForegroundColor DarkCyan "`nCompiling documentation website."
         docfx build --loglevel "Error"
-        Write-Host -ForegroundColor DarkCyan "`n"
+
+        Write-Host -ForegroundColor DarkCyan "`nMinifying documentation website."
+
+        Get-ChildItem ".\$DocumentationWebsiteDirectoryName" -Include *.html, *.css -Recurse | ForEach-Object {
+            $ThisFilePath = $_.FullName
+            Write-Host -ForegroundColor DarkCyan "Minifying file: $ThisFilePath"
+            html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath"
+        }
+
         cd ..
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished building web documentation. <<<`n"
     }
 }
 
@@ -187,6 +197,7 @@ function Deploy {
             $ArtifactFilePath = $ArtifactFile.FullName
 
             If ($ArtifactFilePath.EndsWith(".nupkg")) {
+                Write-Host -ForegroundColor DarkCyan "Deploying $ArtifactFilePath"
                 dotnet nuget push $ArtifactFilePath --source $PackageDeploymentUri
             }
         }
