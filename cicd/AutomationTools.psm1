@@ -151,7 +151,7 @@ function MakeCommandPathAvailable {
 
         $PathVariable = $PathVariable + ";$CommandDirectoryPath"
         [System.Environment]::SetEnvironmentVariable("Path", "$PathVariable", $EnvironmentTarget)
-        call Update-SessionEnvironment
+        RefreshSession
         Write-Host -ForegroundColor DarkCyan "Added command path for $EnvironmentTarget target: $CommandDirectoryPath"
         return
     }
@@ -193,6 +193,14 @@ function MakeCommandPathAvailableUser {
     )
 
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "User"
+}
+
+# Refresh
+# =================================================================================================================================
+
+function RefreshSession {
+    Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
+    Update-SessionEnvironment
 }
 
 # Restore
