@@ -1,4 +1,9 @@
 version: 1.0.23-preview1.{build}
+artifacts:
+- path: artifacts\Release
+  name: ReleaseArtifacts
+- path: artifacts\Release\_DocumentationWebsite
+  name: DocumentationWebsite
 build_script:
 - ps: .\Build.ps1
 deploy:
@@ -8,7 +13,7 @@ deploy:
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
   password:
     secure: YIUFDGQnnNvw72yX/Cp+c5HPUIDs2Jj38TqF2vjL5YGhjMFKr8JOyU6UkztYLgq9Rd+eRBN8KF8KENcIMSOTUg==
-  artifact: artifacts\Release\_DocumentationWebsite
+  artifact: DocumentationWebsite
   active_mode: false
   on:
     branch: master
