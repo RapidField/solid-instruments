@@ -14,7 +14,7 @@ Defines a simple pattern for producing and representing reportable application e
 ![Event Authoring label](../images/Label.EventAuthoring.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.EventAuthoring
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.EventAuthoring.Extensions](RapidField.SolidInstruments.EventAuthoring.Extensions.html)
+#### [RapidField.SolidInstruments.EventAuthoring.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Extensions.html)
 
 <section>
 Exposes extensions that support event authoring features.

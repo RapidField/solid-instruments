@@ -3,7 +3,6 @@
 # =================================================================================================================================
 
 $ArtifactsDirectoryName = "artifacts"
-$ConfigurationModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Configuration.psm1"
 $ConfigurationTypeLocal = "Local"
 $ConfigurationTypeProduction = "Production"
 $DocumentationDirectoryName = "doc"
@@ -20,7 +19,7 @@ $SolutionFileName = "RapidField.SolidInstruments.sln"
 $SolutionPath = Join-Path -Path $ProjectRootDirectory -ChildPath $SolutionFileName
 $SourceDirectoryName = "src"
 
-Import-Module $ConfigurationModulePath
+Import-Module "powershell-yaml" -Force
 
 # Build
 # =================================================================================================================================
@@ -180,48 +179,17 @@ function CleanWebDocumentation {
     }
 }
 
-# Deploy
+# Get
 # =================================================================================================================================
 
-function Deploy {
-    Param (
-        [Parameter(Mandatory = $true, Position = 0)]
-        [String] $PackageDeploymentUri
-    )
-
-    Write-Host -ForegroundColor DarkCyan "Deploying artifacts to $PackageDeploymentUri."
-    $ArtifactsDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$ArtifactsDirectoryName\$SolutionConfigurationRelease"
-
-    If (Test-Path $ArtifactsDirectoryPath) {
-        ForEach ($ArtifactFile In (Get-ChildItem -Path $ArtifactsDirectoryPath -File)) {
-            $ArtifactFilePath = $ArtifactFile.FullName
-
-            If ($ArtifactFilePath.EndsWith(".nupkg")) {
-                Write-Host -ForegroundColor DarkCyan "Deploying $ArtifactFilePath"
-                dotnet nuget push $ArtifactFilePath --source $PackageDeploymentUri
-            }
-        }
-    }
-    Else {
-        Write-Host -ForegroundColor DarkCyan "No artifacts exist. Suppressing deployment."
-    }
-
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished deploying. <<<`n"
+function GetAppVeyorConfiguration {
+    $AppveyorYamlConfigurationPath = Join-Path -Path $ProjectRootDirectory -ChildPath "appveyor.yml"
+    return Get-Content -Path $AppveyorYamlConfigurationPath | ConvertFrom-Yaml
 }
 
-function DeployLocal {
-    $PackageDeploymentUri = GetConfigurationValue -Type $ConfigurationTypeLocal -Key "PackageDeploymentUri"
-
-    If (-not (Test-Path $PackageDeploymentUri)) {
-        New-Item -ItemType Directory -Path $PackageDeploymentUri -Force
-    }
-
-    Deploy -PackageDeploymentUri $PackageDeploymentUri
-}
-
-function DeployProduction {
-    $PackageDeploymentUri = GetConfigurationValue -Type $ConfigurationTypeProduction -Key "PackageDeploymentUri"
-    Deploy -PackageDeploymentUri $PackageDeploymentUri
+function GetBuildVersion {
+    $AppVeyorConfiguration = GetAppVeyorConfiguration
+    return $AppVeyorConfiguration.version.trimend(".{build}")
 }
 
 # Restore

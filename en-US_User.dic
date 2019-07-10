@@ -76,6 +76,7 @@ finalizer
 fo
 foof
 foofoo
+foreach
 foundational
 Glyphicons
 Halflings
@@ -124,11 +125,13 @@ nullable
 parameterless
 plaintext
 postfix
+powershell
 pre
 psake
 quantized
 que
 rabbitmq
+readonly
 reinitializes
 releasenotes
 reportable
@@ -164,6 +167,7 @@ Structs
 subkeys
 sublicense
 subsegments
+Subtractor
 testcontainer
 Threefish
 timeofday
@@ -184,6 +188,7 @@ utf
 vsix
 wwwroot
 xml
+yaml
 yy
 yyyy
 yyyyyyyy

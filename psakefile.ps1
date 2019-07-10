@@ -2,7 +2,6 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-Import-Module .\cicd\Configuration.psm1
 Import-Module .\cicd\AutomationTools.psm1
 Import-Module .\cicd\BuildAndDeployment.psm1
 Import-Module .\cicd\DevelopmentTools.psm1
@@ -20,12 +19,6 @@ Task Build-Release -Alias br -Depends Clean-Release, Restore-Dependencies { Buil
 Task Clean-All -Alias ca -Depends Clean-Debug, Clean-Release
 Task Clean-Debug -Alias cd { CleanDebug }
 Task Clean-Release -Alias cr { CleanRelease }
-
-# Deploy
-# =================================================================================================================================
-
-Task Deploy-Local -Alias dl -Depends Build-All { DeployLocal }
-Task Deploy-Production -Alias dp -Depends Build-All { DeployProduction }
 
 # List
 # =================================================================================================================================

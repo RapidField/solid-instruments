@@ -7,9 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Inversion of Control label](../RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)
 
-The *RapidField.SolidInstruments.InversionOfControl.Autofac* library exposes the Autofac implementation of Solid Instrument's inversion of control abstraction. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.InversionOfControl.Autofac* library exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.
 
-Refer to the [Inversion of Control project documentation](../RapidField.SolidInstruments.InversionOfControl/README.md) more information about these abstractions.
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.html) for more information.
 
 - - -
 <br />

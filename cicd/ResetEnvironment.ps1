@@ -3,10 +3,8 @@
 # =================================================================================================================================
 
 $AutomationToolsModulePath = Join-Path -Path $PSScriptRoot -ChildPath "AutomationTools.psm1"
-$ConfigurationModulePath = Join-Path -Path $PSScriptRoot -ChildPath "Configuration.psm1"
 $DevelopmentToolsModulePath = Join-Path -Path $PSScriptRoot -ChildPath "DevelopmentTools.psm1"
 
-Import-Module $ConfigurationModulePath
 Import-Module $AutomationToolsModulePath
 Import-Module $DevelopmentToolsModulePath
 

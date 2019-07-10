@@ -7,15 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Serialization label](Label.Serialization.300w.png)
 
-The *RapidField.SolidInstruments.Serialization* library defines a reusable standard for custom type serializers. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.Serialization* library defines a reusable standard for custom type serializers.
 
-- [Dynamic serializer](#dynamic-serializer)
-
-- - -
-
-### Dynamic serializer
-
-[DynamicSerializer](DynamicSerializer.cs) performs binary, JSON or XML serialization and deserialization for a given type.
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html) for more information.
 
 - - -
 <br />

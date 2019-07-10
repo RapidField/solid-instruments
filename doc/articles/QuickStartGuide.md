@@ -10,7 +10,7 @@ Getting started with Solid Instruments is easy. This guide will help you incorpo
 
 Solid Instruments is a collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that expose APIs which make it easier to develop stable, secure, high-performance software. Solid Instruments isn't a framework. Think of it as a really big tool kit.
 
-Solid Instruments is highly modular. Most of its component APIs are designed to be used both with and without other Solid Instruments APIs. The primitive features of the [Core](../api/RapidField.SolidInstruments.Core.html) library are heavily used by and, therefore, integrated with other Solid Instruments libraries. Broadly scoped features, on the other hand, are presented and served a la carte.
+Solid Instruments is highly modular. Most of its component APIs are designed to be used both with and without other Solid Instruments APIs. The primitive features of the [Core](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) library are heavily used by and, therefore, integrated with other Solid Instruments libraries. Broadly scoped features, on the other hand, are presented and served a la carte.
 
 ### Get Started
 
@@ -21,7 +21,7 @@ Solid Instruments is available via [NuGet](https://docs.microsoft.com/en-us/nuge
 ![Collections label](../images/Label.Collections.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Collections](../api/RapidField.SolidInstruments.Collections.html)
+#### [RapidField.SolidInstruments.Collections](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html)
 
 <section>
 Exposes useful collection types and features.
@@ -46,7 +46,7 @@ Install-Package RapidField.SolidInstruments.Collections
 ![Command label](../images/Label.Command.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Command](../api/RapidField.SolidInstruments.Command.html)
+#### [RapidField.SolidInstruments.Command](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.html)
 
 <section>
 Exposes implementations of the command and mediator patterns.
@@ -71,7 +71,7 @@ Install-Package RapidField.SolidInstruments.Command
 ![Core label](../images/Label.Core.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Core](../api/RapidField.SolidInstruments.Core.html)
+#### [RapidField.SolidInstruments.Core](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html)
 
 <section>
 Exposes foundational, general-purpose features.
@@ -96,7 +96,7 @@ Install-Package RapidField.SolidInstruments.Core
 ![Cryptography label](../images/Label.Cryptography.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Cryptography](../api/RapidField.SolidInstruments.Cryptography.html)
+#### [RapidField.SolidInstruments.Cryptography](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.html)
 
 <section>
 Exposes advanced security mechanics.
@@ -121,7 +121,7 @@ Install-Package RapidField.SolidInstruments.Cryptography
 ![Data Access label](../images/Label.DataAccess.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.DataAccess.EntityFramework](../api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
+#### [RapidField.SolidInstruments.DataAccess.EntityFramework](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
 
 <section>
 Provides Entity Framework implementations of the Solid Instruments data access abstractions.
@@ -146,7 +146,7 @@ Install-Package RapidField.SolidInstruments.DataAccess.EntityFramework
 ![Event Authoring label](../images/Label.EventAuthoring.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.EventAuthoring](../api/RapidField.SolidInstruments.EventAuthoring.html)
+#### [RapidField.SolidInstruments.EventAuthoring](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html)
 
 <section>
 Defines a simple pattern for producing and representing reportable application events.
@@ -171,7 +171,7 @@ Install-Package RapidField.SolidInstruments.EventAuthoring
 ![Inversion of Control label](../images/Label.InversionOfControl.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.InversionOfControl.Autofac](../api/RapidField.SolidInstruments.InversionOfControl.Autofac.html)
+#### [RapidField.SolidInstruments.InversionOfControl.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.html)
 
 <section>
 Exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.
@@ -193,7 +193,7 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.Autofac
 
 <br />
 
-#### [RapidField.SolidInstruments.InversionOfControl.DotNetNative](../api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html)
+#### [RapidField.SolidInstruments.InversionOfControl.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html)
 
 <section>
 Exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.
@@ -218,7 +218,7 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.DotNetNative
 ![Mathematics label](../images/Label.Mathematics.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Mathematics](../api/RapidField.SolidInstruments.Mathematics.html)
+#### [RapidField.SolidInstruments.Mathematics](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Mathematics.html)
 
 <section>
 Provides a variety of intuitive mathematics APIs.
@@ -243,7 +243,7 @@ Install-Package RapidField.SolidInstruments.Mathematics
 ![Messaging label](../images/Label.Messaging.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Messaging.AzureServiceBus](../api/RapidField.SolidInstruments.Messaging.AzureServiceBus.html)
+#### [RapidField.SolidInstruments.Messaging.AzureServiceBus](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.AzureServiceBus.html)
 
 <section>
 Provides Azure Service Bus implementations of the Solid Instruments messaging abstractions.
@@ -265,7 +265,7 @@ Install-Package RapidField.SolidInstruments.Messaging.AzureServiceBus
 
 <br />
 
-#### [RapidField.SolidInstruments.Messaging.InMemory](../api/RapidField.SolidInstruments.Messaging.InMemory.html)
+#### [RapidField.SolidInstruments.Messaging.InMemory](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html)
 
 <section>
 Provides in-memory implementations of the Solid Instruments messaging abstractions.
@@ -287,7 +287,7 @@ Install-Package RapidField.SolidInstruments.Messaging.InMemory
 
 <br />
 
-#### [RapidField.SolidInstruments.Messaging.RabbitMq](../api/RapidField.SolidInstruments.Messaging.RabbitMq.html)
+#### [RapidField.SolidInstruments.Messaging.RabbitMq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.RabbitMq.html)
 
 <section>
 Provides RabbitMQ implementations of the Solid Instruments messaging abstractions.
@@ -312,7 +312,7 @@ Install-Package RapidField.SolidInstruments.Messaging.RabbitMq
 ![Object Composition label](../images/Label.ObjectComposition.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.ObjectComposition](../api/RapidField.SolidInstruments.ObjectComposition.html)
+#### [RapidField.SolidInstruments.ObjectComposition](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html)
 
 <section>
 Exposes simple tools for designing extensible and configurable object factories.
@@ -337,7 +337,7 @@ Install-Package RapidField.SolidInstruments.ObjectComposition
 ![Serialization label](../images/Label.Serialization.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Serialization](../api/RapidField.SolidInstruments.Serialization.html)
+#### [RapidField.SolidInstruments.Serialization](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html)
 
 <section>
 Defines a reusable standard for custom type serializers.
@@ -362,7 +362,7 @@ Install-Package RapidField.SolidInstruments.Serialization
 ![Service label](../images/Label.Service.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.Service](../api/RapidField.SolidInstruments.Service.html)
+#### [RapidField.SolidInstruments.Service](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Service.html)
 
 <section>
 Exposes types that simplify service design.
@@ -387,7 +387,7 @@ Install-Package RapidField.SolidInstruments.Service
 ![SignalProcessing label](../images/Label.SignalProcessing.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.SignalProcessing](../api/RapidField.SolidInstruments.SignalProcessing.html)
+#### [RapidField.SolidInstruments.SignalProcessing](https://www.solidinstruments.com/api/RapidField.SolidInstruments.SignalProcessing.html)
 
 <section>
 Facilitates digital signal processing.
@@ -412,7 +412,7 @@ Install-Package RapidField.SolidInstruments.SignalProcessing
 ![TextEncoding label](../images/Label.TextEncoding.300w.png)
 - - -
 
-#### [RapidField.SolidInstruments.TextEncoding](../api/RapidField.SolidInstruments.TextEncoding.html)
+#### [RapidField.SolidInstruments.TextEncoding](https://www.solidinstruments.com/api/RapidField.SolidInstruments.TextEncoding.html)
 
 <section>
 Offers text encoding types that are missing from the .NET Framework.

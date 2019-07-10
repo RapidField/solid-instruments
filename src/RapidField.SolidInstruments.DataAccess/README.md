@@ -7,11 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Data Access label](Label.DataAccess.300w.png)
 
-The *RapidField.SolidInstruments.DataAccess* library exposes abstractions for the repository and unit-of-work patterns that enable developers to write data access layers that work with a variety of ORMs and database tools. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.DataAccess* library exposes abstractions for the repository and unit-of-work patterns that enable developers to write data access layers that work with a variety of ORMs and database tools.
 
-Out-of-the-box implementations provide support for:
-
-- [Entity Framework Core](../RapidField.SolidInstruments.DataAccess.EntityFramework/README.md)
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html) for more information.
 
 - - -
 <br />

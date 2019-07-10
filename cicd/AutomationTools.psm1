@@ -11,6 +11,7 @@ $ChoclateyPackageNameForPsake = "psake"
 $HtmlMinifierCommandName = "html-minifier"
 $NpmCommandName = "npm"
 $NpmPackageNameForHtmlMinifier = "html-minifier"
+$PowershellModuleNameForPowershellYaml = "powershell-yaml"
 
 # Get
 # =================================================================================================================================
@@ -35,6 +36,10 @@ function GetNodeJsInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") })
 }
 
+function GetPowershellYamlInstallationStatus {
+    return Get-Module -ListAvailable -Name "$PowershellModuleNameForPowershellYaml"
+}
+
 function GetPsakeInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") })
 }
@@ -48,6 +53,7 @@ function InstallAllAutomationTools {
     InstallDocFx
     InstallHtmlMinifier
     InstallLeanify
+    InstallPowershellYaml
     InstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n"
 }
@@ -116,6 +122,17 @@ function InstallPackageManagers {
     InstallChocolatey
     InstallNodeJs
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing package managers. <<<`n"
+}
+
+function InstallPowershellYaml {
+    If (GetPowershellYamlInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "powershell-yaml is already installed."
+        return
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing powershell-yaml."
+    Install-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml"
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing powershell-yaml. <<<`n"
 }
 
 function InstallPsake {
@@ -242,6 +259,13 @@ function RestoreNodeJs {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Node.js. <<<`n"
 }
 
+function RestorePowershellYaml {
+    Write-Host -ForegroundColor DarkCyan "Restoring powershell-yaml."
+    UninstallPowershellYaml
+    InstallPowershellYaml
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring powershell-yaml. <<<`n"
+}
+
 function RestorePsake {
     Write-Host -ForegroundColor DarkCyan "Restoring psake."
     UninstallPsake
@@ -257,6 +281,7 @@ function UninstallAllAutomationTools {
     UninstallDocFx
     UninstallHtmlMinifier
     UninstallLeanify
+    UninstallPowershellYaml
     UninstallPsake
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n"
 }
@@ -291,6 +316,13 @@ function UninstallNodeJs {
     }
 }
 
+function UninstallPowershellYaml {
+    If (GetPowershellYamlInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling powershell-yaml."
+        Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml"
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling powershell-yaml. <<<`n"
+    }
+}
 function UninstallPsake {
     If (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling psake."

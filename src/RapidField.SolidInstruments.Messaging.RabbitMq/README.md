@@ -7,9 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Messaging label](../RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)
 
-The *RapidField.SolidInstruments.Messaging.RabbitMq* library provides RabbitMQ implementations of the Solid Instruments messaging abstractions. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.Messaging.RabbitMq* library provides RabbitMQ implementations of the Solid Instruments messaging abstractions.
 
-Refer to the [Messaging project documentation](../RapidField.SolidInstruments.Messaging/README.md) more information about these abstractions.
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.RabbitMq.html) for more information.
 
 - - -
 <br />

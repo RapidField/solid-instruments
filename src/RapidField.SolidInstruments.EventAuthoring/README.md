@@ -7,15 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Event Authoring label](Label.EventAuthoring.300w.png)
 
-The *RapidField.SolidInstruments.EventAuthoring* library defines a simple pattern for producing and representing reportable application events. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.EventAuthoring* library defines a simple pattern for producing and representing reportable application events.
 
-- [Composable event information](#composable-event-information)
-
-- - -
-
-### Composable event information
-
-[ApplicationEvent](ApplicationEvent.cs) represents information about an application event.
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html) for more information.
 
 - - -
 <br />

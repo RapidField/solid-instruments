@@ -14,7 +14,7 @@ Exposes the Autofac implementation of Solid Instrument's inversion of control ab
 ![Inversion of Control label](../images/Label.InversionOfControl.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.Autofac
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions](RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.html)
+#### [RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.html)
 
 <section>
 Exposes extensions that support the Autofac implementation of Solid Instrument's inversion of control abstraction.

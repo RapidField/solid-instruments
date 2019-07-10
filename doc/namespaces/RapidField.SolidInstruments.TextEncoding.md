@@ -14,7 +14,7 @@ Offers text encoding types that are missing from the .NET Framework.
 ![Text Encoding label](../images/Label.TextEncoding.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.TextEncoding
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.TextEncoding.Extensions](RapidField.SolidInstruments.TextEncoding.Extensions.html)
+#### [RapidField.SolidInstruments.TextEncoding.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.TextEncoding.Extensions.html)
 
 <section>
 Exposes extensions that support encoding types.

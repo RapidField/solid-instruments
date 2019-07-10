@@ -7,15 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Object Composition label](Label.ObjectComposition.300w.png)
 
-The *RapidField.SolidInstruments.ObjectComposition* library exposes simple tools for designing extensible and configurable object factories. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.ObjectComposition* library exposes simple tools for designing extensible and configurable object factories.
 
-- [Configurable object factories](#configurable-object-factories)
-
-- - -
-
-### Configurable object factories
-
-[ObjectFactory](ObjectFactory.cs) encapsulates creation of new object instances using explicit types.
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html) for more information.
 
 - - -
 <br />

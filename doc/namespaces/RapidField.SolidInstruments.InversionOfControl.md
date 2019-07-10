@@ -14,7 +14,7 @@ Defines a pattern for abstracting dependency injection tools.
 ![Inversion of Control label](../images/Label.InversionOfControl.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.InversionOfControl
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.InversionOfControl.Extensions](RapidField.SolidInstruments.InversionOfControl.Extensions.html)
+#### [RapidField.SolidInstruments.InversionOfControl.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Extensions.html)
 
 <section>
 Exposes extensions that support dependency injection.

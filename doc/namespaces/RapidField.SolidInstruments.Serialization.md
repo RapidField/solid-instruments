@@ -14,7 +14,7 @@ Defines a reusable standard for custom type serializers.
 ![Serialization label](../images/Label.Serialization.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.Serialization
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.Serialization.Extensions](RapidField.SolidInstruments.Serialization.Extensions.html)
+#### [RapidField.SolidInstruments.Serialization.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.Extensions.html)
 
 <section>
 Exposes extensions that support custom type serialization.

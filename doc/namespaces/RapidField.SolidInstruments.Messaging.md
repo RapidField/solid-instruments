@@ -14,7 +14,7 @@ Exposes abstractions for messaging constructs.
 ![Messaging label](../images/Label.Messaging.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -32,19 +32,19 @@ Install-Package RapidField.SolidInstruments.Messaging
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.Messaging.EventMessages](RapidField.SolidInstruments.Messaging.EventMessages.html)
+#### [RapidField.SolidInstruments.Messaging.EventMessages](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.EventMessages.html)
 
 <section>
 Exposes various event message types.
 </section>
 
-#### [RapidField.SolidInstruments.Messaging.Service](RapidField.SolidInstruments.Messaging.Service.html)
+#### [RapidField.SolidInstruments.Messaging.Service](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Service.html)
 
 <section>
 Provides types that support messaging service applications.
 </section>
 
-#### [RapidField.SolidInstruments.Messaging.TransportPrimitives](RapidField.SolidInstruments.Messaging.TransportPrimitives.html)
+#### [RapidField.SolidInstruments.Messaging.TransportPrimitives](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.TransportPrimitives.html)
 
 <section>
 Contains primitive types that can be used to create custom messaging systems.

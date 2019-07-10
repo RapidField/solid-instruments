@@ -17,8 +17,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-        <PackageProjectUrl>https://www.rapidfield.com/solid-instruments</PackageProjectUrl>
-        <PackageIconUrl>https://www.rapidfield.com/wp-content/uploads/2018/12/Icon.Messaging.128w.png</PackageIconUrl>
+        <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
+        <PackageIconUrl>https://www.solidinstruments.com/images/Icon.Messaging.128w.png</PackageIconUrl>
         <PackageTags>messaging;bus;request-response;pub-sub;notification</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -46,7 +46,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="TransportPrimitives\Transactions\" />
-      <Folder Include="TransportPrimitives\Persistence\" />
+        <Folder Include="TransportPrimitives\Transactions\" />
+        <Folder Include="TransportPrimitives\Persistence\" />
     </ItemGroup>
 </Project>

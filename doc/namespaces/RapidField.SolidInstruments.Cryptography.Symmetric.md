@@ -14,7 +14,7 @@ Provides abstractions for common symmetric-key encryption algorithms.
 ![Cryptography label](../images/Label.Cryptography.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 

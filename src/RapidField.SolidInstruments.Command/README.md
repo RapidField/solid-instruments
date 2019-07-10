@@ -7,68 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Command label](Label.Command.300w.png)
 
-The *RapidField.SolidInstruments.Command* library exposes implementations of the command and mediator patterns. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.Command* library exposes implementations of the command and mediator patterns.
 
-- [Command pattern abstraction](#command-pattern-abstraction)
-- [Mediator pattern implementation](#mediator-pattern-implementation)
-
-- - -
-
-### Command pattern abstractions
-
-[Command](Command.cs) and [CommandHandler](CommandHandler.cs) fulfill the command pattern.
-
-```csharp
-public class SubtractionCommand : Command<int>
-{
-    public SubtractionCommand(int minuend, int subtrahend)
-        : base()
-    {
-        Minuend = minuend;
-        Subtrahend = subtrahend;
-    }
-
-    public int Minuend { get; set; }
-    public int Subtrahend { get; set; }
-}
-
-public class SubtractionCommandHandler : CommandHandler<SubtractionCommand, int>
-{
-    public SubtractionCommandHandler()
-        : base()
-    {
-    }
-
-    protected override int Process(SubtractionCommand command, ConcurrencyControlToken controlToken)
-    {
-        return (command.Minuend - command.Subtrahend);
-    }
-}
-```
-<br/>
-
-### Mediator pattern implementation
-
-[CommandMediator](CommandMediator.cs) serves as a dependency resolver and processing intermediary for commands.
-
-```csharp
-public class Subtractor
-{
-    private readonly ICommandMediator Mediator;
-
-    public Subtractor(ICommandMediator mediator)
-    {
-        Mediator = mediator;
-    }
-
-    public int Subtract(int minuend, int subtrahend)
-    {
-        var command = new SubtractionCommand(minuend, subtrahend);
-        return Mediator.Process(command);
-    }
-}
-```
-<br/>
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.html) for more information.
 
 - - -
 <br />

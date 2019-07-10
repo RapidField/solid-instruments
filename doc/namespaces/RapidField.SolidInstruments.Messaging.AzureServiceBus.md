@@ -14,7 +14,7 @@ Provides Azure Service Bus implementations of the Solid Instruments messaging ab
 ![Messaging label](../images/Label.Messaging.300w.png)
 - - -
 
-### Getting Started
+### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 

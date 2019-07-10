@@ -7,11 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Messaging label](Label.Messaging.300w.png)
 
-The *RapidField.SolidInstruments.Messaging* library exposes abstractions for messaging constructs. Refer to [the project root documentation](../../README.md) for more information.
+The *RapidField.SolidInstruments.Messaging* library exposes abstractions for messaging constructs.
 
-Out-of-the-box implementations provide support for:
-
-- [Azure Service Bus](../RapidField.SolidInstruments.Messaging.AzureServiceBus/README.md)
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.html) for more information.
 
 - - -
 <br />
