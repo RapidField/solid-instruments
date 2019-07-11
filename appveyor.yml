@@ -3,7 +3,7 @@ artifacts:
 - path: artifacts\Release
   name: ReleaseArtifacts
 - path: artifacts\Release\_DocumentationWebsite
-  name: DocumentationWebsite-{build}
+  name: DocumentationWebsite
 build_script:
 - ps: .\Build.ps1
 deploy:
@@ -13,7 +13,7 @@ deploy:
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
   password:
     secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
-  artifact: DocumentationWebsite-{build}
+  artifact: DocumentationWebsite
   on:
     branch: master
 image: Visual Studio 2017
