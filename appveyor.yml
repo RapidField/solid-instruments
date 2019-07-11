@@ -7,14 +7,14 @@ artifacts:
 build_script:
 - ps: .\Build.ps1
 deploy:
-- provider: FTP
-  host: ftps://waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
-  protocol: ftps
+- provider: WebDeploy
+  server: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
+  website: www.solidinstruments.com
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
   password:
     secure: YIUFDGQnnNvw72yX/Cp+c5HPUIDs2Jj38TqF2vjL5YGhjMFKr8JOyU6UkztYLgq9Rd+eRBN8KF8KENcIMSOTUg==
   artifact: DocumentationWebsite
-  active_mode: false
+  remove_files: true
   on:
     branch: master
 image: Visual Studio 2017
