@@ -1,20 +1,19 @@
 version: 1.0.23-preview1.{build}
 artifacts:
-- path: artifacts\Release
-  name: ReleaseArtifacts
 - path: artifacts\Release\_DocumentationWebsite
   name: DocumentationWebsite
 build_script:
 - ps: .\Build.ps1
 deploy:
-- provider: FTP
-  host: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
-  protocol: ftps
-  username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
-  password:
-    secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
+- application: DocumentationWebsite
   artifact: DocumentationWebsite
+  host: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
   on:
     branch: master
+  password:
+    secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
+  protocol: ftps
+  provider: FTP
+  username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
 image: Visual Studio 2017
 test: off
