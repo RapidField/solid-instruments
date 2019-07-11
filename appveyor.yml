@@ -7,17 +7,14 @@ artifacts:
 build_script:
 - ps: .\Build.ps1
 deploy:
-- provider: WebDeploy
-  server: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
-  website: www.solidinstruments.com
+- provider: AzureAppServiceZipDeploy
+  appservice_environment: false
+  website: solidinstruments-docweb-app
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
   password:
-    secure: YIUFDGQnnNvw72yX/Cp+c5HPUIDs2Jj38TqF2vjL5YGhjMFKr8JOyU6UkztYLgq9Rd+eRBN8KF8KENcIMSOTUg==
+    secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
   artifact: DocumentationWebsite
-  remove_files: true
   on:
     branch: master
 image: Visual Studio 2017
-pull_requests:
-  do_not_increment_build_number: true
 test: off
