@@ -7,9 +7,9 @@ artifacts:
 build_script:
 - ps: .\Build.ps1
 deploy:
-- provider: AzureAppServiceZipDeploy
-  appservice_environment: false
-  website: solidinstruments-docweb-app
+- provider: FTP
+  host: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
+  protocol: ftps
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
   password:
     secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
