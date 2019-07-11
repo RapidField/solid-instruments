@@ -9,7 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Solid Instruments is MIT licensed. Your contributions must be your own work. Read the [license terms](#license) below before contributing.
 
-For questions, contact [solidinstruments.team@rapidfield.com](mailto:solidinstruments.team@rapidfield.com).
+For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## License
 
@@ -21,7 +21,7 @@ By contributing to Solid Instruments you assert and agree that:
 
 ## Release versioning
 
-Release versioning is controlled via the [appveyor.yaml](appveyor.yml) file. Please do not submit pull requests that modify the build version. The Solid Instruments team manages release versioning.
+Release versioning is controlled via the [appveyor.yml](appveyor.yml) file. Please do not submit pull requests that modify the build version. The Solid Instruments team manages release versioning.
 
 ## Code of conduct
 
