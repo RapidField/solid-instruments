@@ -279,9 +279,7 @@ function RestoreDependencies {
 function SignPackages {
     Param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [String] $SolutionConfiguration,
-        [Parameter(Mandatory = $true, Position = 1)]
-        [String] $CodeSigningCertificateKey
+        [String] $SolutionConfiguration
     )
 
     If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
@@ -306,7 +304,7 @@ function SignPackages {
     }
 
     If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-        DecryptCodeSigningCertificate -Secret $CodeSigningCertificateKey
+        DecryptCodeSigningCertificate -Secret $CodeSigningCertificateKeyValue
     }
 
     If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
