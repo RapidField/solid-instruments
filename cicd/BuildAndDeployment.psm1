@@ -5,10 +5,11 @@
 $AppVeyorSecureFileUtilityInstallerUri = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
 $AppVeyorToolsDirectoryPath = Join-Path -Path "$PSScriptRoot" -ChildPath "appveyor-tools";
 $ArtifactsDirectoryName = "artifacts";
+$CicdDirectoryName = "cicd";
 $CodeSigningCertificateKeyInvalidValue = "INVALID";
 $CodeSigningCertificateKeyValue = $CodeSigningCertificateKeyInvalidValue;
 $CodeSigningCertificateFileName = "CodeSigningCertificate.cer";
-$CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CodeSigningCertificateFileName";
+$CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CicdDirectoryName\$CodeSigningCertificateFileName";
 $CodeSigningCertificateTimestampServiceUri = "http://tsa.starfieldtech.com";
 $ConfigurationTypeLocal = "Local";
 $ConfigurationTypeProduction = "Production";
@@ -144,7 +145,7 @@ function Clean {
 
         If (Test-Path $ProjectObjPath) {
             Write-Host -ForegroundColor DarkCyan "Removing $ProjectObjPath.";
-            Remove-Item -Path "$ProjectObjPath" -Recurse -Confirm:$false -Force;
+            Remove-Item "$ProjectObjPath" -Recurse -Confirm:$false -Force;
         }
     }
 
@@ -153,7 +154,7 @@ function Clean {
 
     If (Test-Path "$BuildArtifactsDirectoryPath") {
         Write-Host -ForegroundColor DarkCyan "Removing artifacts from $ArtifactsDirectoryPath.";
-        Remove-Item -Path "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
+        Remove-Item "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
@@ -184,14 +185,14 @@ function CleanWebDocumentation {
 
     If (Test-Path "$ObjectsDirectoryPath") {
         Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath.";
-        Remove-Item -Path "$ObjectsDirectoryPath" -Recurse -Confirm:$false -Force;
+        Remove-Item "$ObjectsDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 
     $DocumentationWebsiteDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName";
 
     If (Test-Path "$DocumentationWebsiteDirectoryPath") {
         Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DocumentationWebsiteDirectoryPath.";
-        Remove-Item -Path "$DocumentationWebsiteDirectoryPath" -Recurse -Confirm:$false -Force;
+        Remove-Item "$DocumentationWebsiteDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 }
 
@@ -215,7 +216,7 @@ function DecryptCodeSigningCertificate {
     cd "$AppVeyorToolsDirectoryPath"
     .\secure-file -decrypt "$EncryptedCodeSigningCertificatePath" -secret $Secret
     cd "$PSScriptRoot"
-    Remove-Item -Path "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
+    Remove-Item "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
     cd ..
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
 }
@@ -240,8 +241,8 @@ function EncryptCodeSigningCertificate {
     cd "$AppVeyorToolsDirectoryPath"
     .\secure-file -encrypt "$CodeSigningCertificateFilePath" -secret $Secret
     cd "$PSScriptRoot"
-    Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
-    Remove-Item -Path "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
+    Remove-Item "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
+    Remove-Item "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
     cd ..
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
 }
@@ -325,7 +326,7 @@ function SignPackages {
     }
 
     cd ..
-    Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
+    Remove-Item "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished signing packages. <<<`n";
 }
 
