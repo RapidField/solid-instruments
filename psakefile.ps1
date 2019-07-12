@@ -2,9 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-Import-Module .\cicd\AutomationTools.psm1
-Import-Module .\cicd\BuildAndDeployment.psm1
-Import-Module .\cicd\DevelopmentTools.psm1
+Import-Module .\cicd\AutomationTools.psm1 -Force;
+Import-Module .\cicd\BuildAndDeployment.psm1 -Force;
+Import-Module .\cicd\DevelopmentTools.psm1 -Force;
 
 # Build
 # =================================================================================================================================

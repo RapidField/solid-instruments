@@ -8,16 +8,13 @@ $DevelopmentToolsModulePath = Join-Path -Path "$PSScriptRoot" -ChildPath "Develo
 Import-Module $AutomationToolsModulePath -Force;
 Import-Module $DevelopmentToolsModulePath -Force;
 
-$CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent());
+# Replace the with the real secret before running the script. Revert before committing any changes.
+$Secret = "REPLACE-ME";
 
-If ($CurrentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    RestoreAllAutomationTools;
+If ($Secret -eq "REPLACE-ME") {
+    Write-Host -ForegroundColor Red "Use a real secret to encrypt the code signing certificate. Revert before committing any changes.";
+    return;
 }
-Else {
-    $CurrentInvocationPath = $MyInvocation.MyCommand.Path;
-    $CurrentInvocationArguments = $MyInvocation.UnboundArguments;
 
-    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList "-File `"$CurrentInvocationPath`" $CurrentInvocationArguments";
-    RestoreAllDevelopmentTools;
-    Exit;
-}
+EncryptCodeSigningCertificate -Secret $Secret;
+Write-Host -ForegroundColor Magenta "`n>>> IMPORTANT: Do not commit the secret! <<<`n";

@@ -82,9 +82,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cicd", "cicd", "{265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}"
 	ProjectSection(SolutionItems) = preProject
+		cicd\.gitignore = cicd\.gitignore
 		cicd\AutomationTools.psm1 = cicd\AutomationTools.psm1
 		cicd\BuildAndDeployment.psm1 = cicd\BuildAndDeployment.psm1
 		cicd\DevelopmentTools.psm1 = cicd\DevelopmentTools.psm1
+		cicd\EncryptCodeSigningCertificate.ps1 = cicd\EncryptCodeSigningCertificate.ps1
 		cicd\ExecuteCicdBuild.ps1 = cicd\ExecuteCicdBuild.ps1
 		cicd\ResetEnvironment.ps1 = cicd\ResetEnvironment.ps1
 	EndProjectSection

@@ -1,6 +1,8 @@
 version: 1.0.23-preview1.{build}
 artifacts:
-- path: artifacts\Release\_DocumentationWebsite
+- path: artifacts\Release
+  name: ReleasePackages
+- path: artifacts\_DocumentationWebsite
   name: DocumentationWebsite
 build_script:
 - ps: .\Build.ps1
