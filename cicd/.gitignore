@@ -1,2 +1,6 @@
-appveyor-tools
+# Sensitive files
 *.cer
+
+# Generated files and directories
+appveyor-tools
+nuget.exe

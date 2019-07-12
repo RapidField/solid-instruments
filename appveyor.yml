@@ -17,5 +17,8 @@ deploy:
   protocol: ftps
   provider: FTP
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
+environment:
+  RAPIDFIELD_CSCERTKEY:
+    secure: I1U8lEb/IgS9fSS8eBmb5mTZHkJsiMSOG3+ryrg30+mQa/UcvhUmt0Fo7Z3rCbrB
 image: Visual Studio 2017
 test: off

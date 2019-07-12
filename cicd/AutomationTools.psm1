@@ -11,6 +11,9 @@ $ChoclateyPackageNameForPsake = "psake";
 $HtmlMinifierCommandName = "html-minifier";
 $NpmCommandName = "npm";
 $NpmPackageNameForHtmlMinifier = "html-minifier";
+$NuGetCommandName = "nuget";
+$NuGetExeFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "nuget.exe";
+$NuGetInstallScriptUri = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 $PowershellModuleNameForPowershellYaml = "powershell-yaml";
 
 # Get
@@ -34,6 +37,10 @@ function GetLeanifyInstallationStatus {
 
 function GetNodeJsInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") });
+}
+
+function GetNuGetInstallationStatus {
+    return (Test-Path -Path "$NuGetExeFilePath");
 }
 
 function GetPowershellYamlInstallationStatus {
@@ -117,10 +124,22 @@ function InstallNodeJs {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n";
 }
 
+function InstallNuGet {
+    If (GetNuGetInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "NuGet is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing NuGet.";
+    Invoke-WebRequest -Uri $NuGetInstallScriptUri -OutFile "$NuGetExeFilePath"
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing NuGet. <<<`n";
+}
+
 function InstallPackageManagers {
     Write-Host -ForegroundColor DarkCyan "Installing package managers.";
     InstallChocolatey;
     InstallNodeJs;
+    InstallNuGet;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing package managers. <<<`n";
 }
 
@@ -259,6 +278,13 @@ function RestoreNodeJs {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Node.js. <<<`n";
 }
 
+function RestoreNuGet {
+    Write-Host -ForegroundColor DarkCyan "Restoring NuGet.";
+    UninstallNuGet;
+    InstallNuGet;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring NuGet. <<<`n";
+}
+
 function RestorePowershellYaml {
     Write-Host -ForegroundColor DarkCyan "Restoring powershell-yaml.";
     UninstallPowershellYaml;
@@ -313,6 +339,14 @@ function UninstallNodeJs {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js.";
         choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n";
+    }
+}
+
+function UninstallNuGet {
+    If (GetNuGetInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling NuGet.";
+        Remove-Item -Path "$NuGetExeFilePath" -Confirm:$false -Force;
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling NuGet. <<<`n";
     }
 }
 

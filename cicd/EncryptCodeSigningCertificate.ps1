@@ -17,4 +17,7 @@ If ($Secret -eq "REPLACE-ME") {
 }
 
 EncryptCodeSigningCertificate -Secret $Secret;
-Write-Host -ForegroundColor Magenta "`n>>> IMPORTANT: Do not commit the secret! <<<`n";
+
+Write-Host -ForegroundColor Magenta "============================================";
+Write-Host -ForegroundColor Magenta ">>> IMPORTANT: Do not commit the secret! <<<";
+Write-Host -ForegroundColor Magenta "============================================";

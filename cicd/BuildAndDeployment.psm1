@@ -5,6 +5,8 @@
 $AppVeyorSecureFileUtilityInstallerUri = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
 $AppVeyorToolsDirectoryPath = Join-Path -Path "$PSScriptRoot" -ChildPath "appveyor-tools";
 $ArtifactsDirectoryName = "artifacts";
+$CodeSigningCertificateKeyInvalidValue = "INVALID";
+$CodeSigningCertificateKeyValue = $CodeSigningCertificateKeyInvalidValue;
 $CodeSigningCertificateFileName = "CodeSigningCertificate.cer";
 $CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CodeSigningCertificateFileName";
 $CodeSigningCertificateTimestampServiceUri = "http://tsa.starfieldtech.com";
@@ -16,6 +18,7 @@ $EncryptedCodeSigningCertificatePath = "$CodeSigningCertificateFilePath.enc";
 $ExampleDirectoryName = "example";
 $ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
 $ExampleServiceApplicationTargetFramework = "netcoreapp2.1";
+$NuGetExeFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "nuget.exe";
 $ObjectsDirectoryName = "obj";
 $ProjectRootDirectory = (Get-Item $PSScriptRoot).Parent.FullName;
 $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
@@ -71,6 +74,7 @@ function Build {
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
+    SignPackages -SolutionConfiguration $SolutionConfiguration;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished building. <<<`n";
 }
 
@@ -88,25 +92,27 @@ function BuildWebDocumentation {
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
-        Write-Host -ForegroundColor DarkCyan "`nCompiling web documentation metadata.";
-        cd "$DocumentationDirectoryName"
-        docfx metadata
-
-        Write-Host -ForegroundColor DarkCyan "`nCompiling documentation website.";
-        docfx build --loglevel "Error"
-
-        Write-Host -ForegroundColor DarkCyan "`nMinifying documentation website.";
-
-        Get-ChildItem ".\$DocumentationWebsiteDirectoryName" -Include *.html, *.css -Recurse | ForEach-Object {
-            $ThisFilePath = $_.FullName;
-            Write-Host -ForegroundColor DarkCyan "Minifying file: $ThisFilePath";
-            html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath"
-        }
-
-        cd ..
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished building web documentation. <<<`n";
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
+        return;
     }
+
+    Write-Host -ForegroundColor DarkCyan "`nCompiling web documentation metadata.";
+    cd "$DocumentationDirectoryName"
+    docfx metadata
+
+    Write-Host -ForegroundColor DarkCyan "`nCompiling documentation website.";
+    docfx build --loglevel "Error"
+
+    Write-Host -ForegroundColor DarkCyan "`nMinifying documentation website.";
+
+    Get-ChildItem ".\$DocumentationWebsiteDirectoryName" -Include *.html, *.css -Recurse | ForEach-Object {
+        $ThisFilePath = $_.FullName;
+        Write-Host -ForegroundColor DarkCyan "Minifying file: $ThisFilePath";
+        html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath"
+    }
+
+    cd ..
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished building web documentation. <<<`n";
 }
 
 # Clean
@@ -168,22 +174,24 @@ function CleanWebDocumentation {
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
-        Write-Host -ForegroundColor DarkCyan "Cleaning documentation website.";
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
+        return;
+    }
 
-        $ObjectsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$ObjectsDirectoryName";
+    Write-Host -ForegroundColor DarkCyan "Cleaning documentation website.";
 
-        If (Test-Path "$ObjectsDirectoryPath") {
-            Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath.";
-            Remove-Item -Path "$ObjectsDirectoryPath" -Recurse -Confirm:$false -Force;
-        }
+    $ObjectsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$ObjectsDirectoryName";
 
-        $DocumentationWebsiteDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName";
+    If (Test-Path "$ObjectsDirectoryPath") {
+        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath.";
+        Remove-Item -Path "$ObjectsDirectoryPath" -Recurse -Confirm:$false -Force;
+    }
 
-        If (Test-Path "$DocumentationWebsiteDirectoryPath") {
-            Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DocumentationWebsiteDirectoryPath.";
-            Remove-Item -Path "$DocumentationWebsiteDirectoryPath" -Recurse -Confirm:$false -Force;
-        }
+    $DocumentationWebsiteDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName";
+
+    If (Test-Path "$DocumentationWebsiteDirectoryPath") {
+        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DocumentationWebsiteDirectoryPath.";
+        Remove-Item -Path "$DocumentationWebsiteDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 }
 
@@ -276,35 +284,51 @@ function SignPackages {
         [String] $CodeSigningCertificateKey
     )
 
-    If ($SolutionConfiguration -eq $SolutionConfigurationRelease) {
-        $ArtifactsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ArtifactsDirectoryName";
-        $BuildArtifactsDirectoryPath = Join-Path -Path "$ArtifactsDirectoryPath" -ChildPath "$SolutionConfiguration";
-
-        If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
-            Write-Host -ForegroundColor DarkCyan "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
-            return;
-        }
-
-        If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-            DecryptCodeSigningCertificate -Secret $CodeSigningCertificateKey
-        }
-
-        If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-            Write-Host -ForegroundColor DarkYellow "Packages will not be signed. The code signing certificate is not available at path $CodeSigningCertificateFilePath.";
-            return;
-        }
-
-        Write-Host -ForegroundColor DarkCyan "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
-
-        Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
-            $PackageFilePath = $_.FullName;
-            Write-Host -ForegroundColor DarkCyan "Signing package $PackageFilePath.";
-            nuget sign "$PackageFilePath" -CertificatePath "$CodeSigningCertificateFilePath" -Timestamper "$CodeSigningCertificateTimestampServiceUri";
-        }
-
-        Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished signing packages. <<<`n";
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
+        return;
     }
+
+    If (Test-Path $env:RAPIDFIELD_CSCERTKEY) {
+        $CodeSigningCertificateKeyValue = $env:RAPIDFIELD_CSCERTKEY;
+    }
+    Else {
+        Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate key is unavailable.";
+        $CodeSigningCertificateKeyValue = $CodeSigningCertificateKeyInvalidValue;
+        return;
+    }
+
+    $ArtifactsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ArtifactsDirectoryName";
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$ArtifactsDirectoryPath" -ChildPath "$SolutionConfiguration";
+
+    If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
+        Write-Host -ForegroundColor DarkCyan "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
+        return;
+    }
+
+    If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
+        DecryptCodeSigningCertificate -Secret $CodeSigningCertificateKey
+    }
+
+    If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
+        Write-Host -ForegroundColor DarkYellow "Packages will not be signed. The code signing certificate is not available at path $CodeSigningCertificateFilePath.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
+    cd "$PSScriptRoot"
+
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
+        $PackageFilePath = $_.FullName;
+
+        If ($PackageFilePath -like "*.nupkg") {
+            Write-Host -ForegroundColor DarkCyan "Signing package $PackageFilePath.";
+            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$CodeSigningCertificateFilePath" -Timestamper "$CodeSigningCertificateTimestampServiceUri";
+        }
+    }
+
+    cd ..
+    Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished signing packages. <<<`n";
 }
 
 # Start
