@@ -2,9 +2,9 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-# Stable, secure, high-performance .NET API suite
+# Advanced, multi-purpose .NET tool set
 
-Solid Instruments is a free, open-source, multi-purpose .NET tool set. It was created to help professional software engineers quickly overcome common design challenges and deliver highly-resilient, strongly-secured, readily-maintainable products.
+Solid Instruments is a collection of free, open-source .NET libraries. It was created to help software developers quickly overcome common and uncommon design challenges to deliver highly-resilient, strongly-secured, readily-maintainable products.
 
 <span class="linkbuttongroup">
 <a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>

@@ -10,7 +10,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## About
 
-Solid Instruments, licensed by [RapidField](https://www.rapidfield.com), is an advanced, multi-purpose .NET API suite. Solid Instruments helps you rapidly overcome design challenges and deliver stable, secure, high-performance software.
+Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you:
+
+* rapidly fill feature gaps,
+* overcome common and uncommon design challenges,
+* deliver stable, secure, high-performance software.
 
 ## Contributing
 
