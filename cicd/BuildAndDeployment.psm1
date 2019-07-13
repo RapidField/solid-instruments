@@ -5,9 +5,8 @@
 $AppVeyorSecureFileUtilityInstallerUri = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
 $AppVeyorToolsDirectoryPath = Join-Path -Path "$PSScriptRoot" -ChildPath "appveyor-tools";
 $ArtifactsDirectoryName = "artifacts";
-$CicdDirectoryName = "cicd";
 $CodeSigningCertificateFileName = "CodeSigningCertificate.cer";
-$CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CicdDirectoryName\$CodeSigningCertificateFileName";
+$CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CodeSigningCertificateFileName";
 $CodeSigningCertificateTimestampServiceUri = "http://tsa.starfieldtech.com";
 $ConfigurationTypeLocal = "Local";
 $ConfigurationTypeProduction = "Production";
