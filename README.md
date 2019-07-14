@@ -10,11 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## About
 
-Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you:
-
-* rapidly fill feature gaps,
-* overcome common and uncommon design challenges,
-* deliver stable, secure, high-performance software.
+Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
 ## Contributing
 

@@ -125,6 +125,7 @@ norepair
 npm
 nuget
 nullable
+openssl
 parameterless
 plaintext
 postfix

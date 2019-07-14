@@ -8,11 +8,7 @@ Getting started with Solid Instruments is easy. This guide will help you incorpo
 
 ### About
 
-Solid Instruments is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you:
-
-* rapidly fill feature gaps,
-* overcome common and uncommon design challenges,
-* deliver stable, secure, high-performance software.
+Solid Instruments is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
 ### Get Started
 

@@ -2,25 +2,36 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-$ChoclateyCommandName = "choco";
 $ChoclateyInstallScriptUri = "https://chocolatey.org/install.ps1";
 $ChoclateyPackageNameForDocFx = "docfx";
 $ChoclateyPackageNameForLeanify = "leanify";
 $ChoclateyPackageNameForNodeJs = "nodejs";
+$ChoclateyPackageNameForOpenSsl = "openssl.light";
 $ChoclateyPackageNameForPsake = "psake";
-$HtmlMinifierCommandName = "html-minifier";
-$NpmCommandName = "npm";
+$CommandNameForChocolatey = "choco";
+$CommandNameForHtmlMinifier = "html-minifier";
+$CommandNameForNpm = "npm";
+$CommandNameForNuGet = "nuget";
+$CommandNameForOpenSsl = "openssl";
+$ExeFilePathForNuGet = Join-Path -Path "$PSScriptRoot" -ChildPath "nuget.exe";
+$InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 $NpmPackageNameForHtmlMinifier = "html-minifier";
-$NuGetCommandName = "nuget";
-$NuGetExeFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "nuget.exe";
-$NuGetInstallScriptUri = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 $PowershellModuleNameForPowershellYaml = "powershell-yaml";
+$SkipInstallationOfChocolatey = $false;
+$SkipInstallationOfDocFx = $false;
+$SkipInstallationOfHtmlMinifier = $false;
+$SkipInstallationOfLeanify = $true;
+$SkipInstallationOfNodeJs = $false;
+$SkipInstallationOfNuGet = $false;
+$SkipInstallationOfOpenSsl = $true;
+$SkipInstallationOfPowershellYaml = $false;
+$SkipInstallationOfPsake = $false;
 
 # Get
 # =================================================================================================================================
 
 function GetChocolateyInstallationStatus {
-    return (Get-Command $ChoclateyCommandName -ErrorAction SilentlyContinue);
+    return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
 }
 
 function GetDocFxInstallationStatus {
@@ -28,7 +39,7 @@ function GetDocFxInstallationStatus {
 }
 
 function GetHtmlMinifierInstallationStatus {
-    return (Get-Command $HtmlMinifierCommandName -ErrorAction SilentlyContinue);
+    return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
 }
 
 function GetLeanifyInstallationStatus {
@@ -40,7 +51,11 @@ function GetNodeJsInstallationStatus {
 }
 
 function GetNuGetInstallationStatus {
-    return (Test-Path -Path "$NuGetExeFilePath");
+    return (Test-Path -Path "$ExeFilePathForNuGet");
+}
+
+function GetOpenSslInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
 }
 
 function GetPowershellYamlInstallationStatus {
@@ -60,12 +75,17 @@ function InstallAllAutomationTools {
     InstallDocFx;
     InstallHtmlMinifier;
     InstallLeanify;
+    InstallOpenSsl;
     InstallPowershellYaml;
     InstallPsake;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n";
 }
 
 function InstallChocolatey {
+    If ($SkipInstallationOfChoclatey -eq $true) {
+        return;
+    }
+
     If (GetChocolateyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Chocolatey is already installed.";
         return;
@@ -79,6 +99,10 @@ function InstallChocolatey {
 }
 
 function InstallDocFx {
+    If ($SkipInstallationOfDocFx -eq $true) {
+        return;
+    }
+
     If (GetDocFxInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "DocFX is already installed.";
         return;
@@ -90,6 +114,10 @@ function InstallDocFx {
 }
 
 function InstallHtmlMinifier {
+    If ($SkipInstallationOfHtmlMinifier -eq $true) {
+        return;
+    }
+
     If (GetHtmlMinifierInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "HTMLMinifier is already installed.";
         return;
@@ -97,42 +125,70 @@ function InstallHtmlMinifier {
 
     Write-Host -ForegroundColor DarkCyan "Installing HTMLMinifier.";
     npm install $NpmPackageNameForHtmlMinifier -g --loglevel error
-    MakeCommandPathAvailableAll -Command $HtmlMinifierCommandName;
+    MakeCommandPathAvailableAll -Command $CommandNameForHtmlMinifier;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing HTMLMinifier. <<<`n";
 }
 
 function InstallLeanify {
+    If ($SkipInstallationOfLeanify -eq $true) {
+        return;
+    }
+
     If (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Leanify is already installed.";
         return;
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Leanify.";
-    choco install $ChoclateyPackageNameForLeanify --confirm
+    choco install $ChoclateyPackageNameForLeanify -y --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Leanify. <<<`n";
 }
 
 function InstallNodeJs {
+    If ($SkipInstallationOfNodeJs -eq $true) {
+        return;
+    }
+
     If (GetNodeJsInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Node.js is already installed.";
         return;
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Node.js.";
-    choco install $ChoclateyPackageNameForNodeJs --confirm
-    MakeCommandPathAvailableAll -Command $NpmCommandName;
+    choco install $ChoclateyPackageNameForNodeJs -y --confirm
+    MakeCommandPathAvailableAll -Command $CommandNameForNpm;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n";
 }
 
 function InstallNuGet {
+    If ($SkipInstallationOfNuGet -eq $true) {
+        return;
+    }
+
     If (GetNuGetInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "NuGet is already installed.";
         return;
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing NuGet.";
-    Invoke-WebRequest -Uri $NuGetInstallScriptUri -OutFile "$NuGetExeFilePath"
+    Invoke-WebRequest -Uri $InstallScriptUriForNuGet -OutFile "$ExeFilePathForNuGet"
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing NuGet. <<<`n";
+}
+
+function InstallOpenSsl {
+    If ($SkipInstallationOfOpenSsl -eq $true) {
+        return;
+    }
+
+    If (GetOpenSslInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "OpenSSL is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing OpenSSL.";
+    choco install $ChoclateyPackageNameForOpenSsl -y --confirm
+    MakeCommandPathAvailableAll -Command $CommandNameForOpenSsl;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenSSL. <<<`n";
 }
 
 function InstallPackageManagers {
@@ -144,6 +200,10 @@ function InstallPackageManagers {
 }
 
 function InstallPowershellYaml {
+    If ($SkipInstallationOfPowershellYaml -eq $true) {
+        return;
+    }
+
     If (GetPowershellYamlInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "powershell-yaml is already installed.";
         return;
@@ -155,13 +215,17 @@ function InstallPowershellYaml {
 }
 
 function InstallPsake {
+    If ($SkipInstallationOfPsake -eq $true) {
+        return;
+    }
+
     If (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "psake is already installed.";
         return;
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing psake.";
-    choco install $ChoclateyPackageNameForPsake --confirm
+    choco install $ChoclateyPackageNameForPsake -y --confirm
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing psake. <<<`n";
 }
 
@@ -285,6 +349,13 @@ function RestoreNuGet {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring NuGet. <<<`n";
 }
 
+function RestoreOpenSsl {
+    Write-Host -ForegroundColor DarkCyan "Restoring OpenSSL.";
+    UninstallOpenSsl;
+    InstallOpenSsl;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring OpenSSL. <<<`n";
+}
+
 function RestorePowershellYaml {
     Write-Host -ForegroundColor DarkCyan "Restoring powershell-yaml.";
     UninstallPowershellYaml;
@@ -307,6 +378,7 @@ function UninstallAllAutomationTools {
     UninstallDocFx;
     UninstallHtmlMinifier;
     UninstallLeanify;
+    UninstallOpenSsl;
     UninstallPowershellYaml;
     UninstallPsake;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n";
@@ -345,8 +417,16 @@ function UninstallNodeJs {
 function UninstallNuGet {
     If (GetNuGetInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling NuGet.";
-        Remove-Item -Path "$NuGetExeFilePath" -Confirm:$false -Force;
+        Remove-Item -Path "$ExeFilePathForNuGet" -Confirm:$false -Force;
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling NuGet. <<<`n";
+    }
+}
+
+function UninstallOpenSsl {
+    If (GetOpenSslInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling OpenSSL.";
+        choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenSSL. <<<`n";
     }
 }
 
@@ -360,7 +440,7 @@ function UninstallPowershellYaml {
 function UninstallPsake {
     If (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling psake.";
-        choco uninstall $ChoclateyPackageNameForPsake --confirm
+        choco uninstall $ChoclateyPackageNameForPsake -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling psake. <<<`n";
     }
 }

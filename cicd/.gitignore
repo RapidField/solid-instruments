@@ -1,5 +1,8 @@
 # Sensitive files
 *.cer
+*.pem
+*.pfx
+*.spc
 
 # Generated files and directories
 appveyor-tools

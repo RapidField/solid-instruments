@@ -5,9 +5,9 @@
 $AppVeyorSecureFileUtilityInstallerUri = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
 $AppVeyorToolsDirectoryPath = Join-Path -Path "$PSScriptRoot" -ChildPath "appveyor-tools";
 $ArtifactsDirectoryName = "artifacts";
-$CodeSigningCertificateFileName = "CodeSigningCertificate.cer";
+$CodeSigningCertificateFileName = "CodeSigningCertificate.pfx";
 $CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CodeSigningCertificateFileName";
-$CodeSigningCertificateTimestampServiceUri = "http://tsa.starfieldtech.com";
+$CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
 $ConfigurationTypeLocal = "Local";
 $ConfigurationTypeProduction = "Production";
 $DocumentationDirectoryName = "doc";
@@ -25,8 +25,6 @@ $SolutionConfigurationRelease = "Release";
 $SolutionFileName = "RapidField.SolidInstruments.sln";
 $SolutionPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$SolutionFileName";
 $SourceDirectoryName = "src";
-
-Import-Module "powershell-yaml" -Force;
 
 # Build
 # =================================================================================================================================
@@ -199,7 +197,7 @@ function CleanWebDocumentation {
 function DecryptCodeSigningCertificate {
     Param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [String] $Secret
+        [String] $Key
     )
 
     If (-not (Test-Path "$EncryptedCodeSigningCertificatePath")) {
@@ -212,11 +210,11 @@ function DecryptCodeSigningCertificate {
     Push-Location "$PSScriptRoot"
     iex ((New-Object Net.WebClient).DownloadString($AppVeyorSecureFileUtilityInstallerUri));
     Push-Location "$AppVeyorToolsDirectoryPath"
-    .\secure-file -decrypt "$EncryptedCodeSigningCertificatePath" -secret $Secret
+    .\secure-file -decrypt "$EncryptedCodeSigningCertificatePath" -secret $Key
     Pop-Location
-    Remove-Item "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
+    Remove-Item "$AppVeyorToolsDirectoryPath" -Recurse -Confirm:$false -Force;
     Pop-Location
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished decrypting the code signing certificate. <<<`n";
 }
 
 # Encrypt
@@ -225,7 +223,7 @@ function DecryptCodeSigningCertificate {
 function EncryptCodeSigningCertificate {
     Param (
         [Parameter(Mandatory = $true, Position = 0)]
-        [String] $Secret
+        [String] $Key
     )
 
     If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
@@ -237,10 +235,10 @@ function EncryptCodeSigningCertificate {
     Push-Location "$PSScriptRoot"
     iex ((New-Object Net.WebClient).DownloadString($AppVeyorSecureFileUtilityInstallerUri));
     Push-Location "$AppVeyorToolsDirectoryPath"
-    .\secure-file -encrypt "$CodeSigningCertificateFilePath" -secret $Secret
+    .\secure-file -encrypt "$CodeSigningCertificateFilePath" -secret $Key
     Pop-Location
     Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
-    Remove-Item -Path "$AppVeyorToolsDirectoryPath" -Confirm:$false -Force;
+    Remove-Item -Path "$AppVeyorToolsDirectoryPath" -Recurse -Confirm:$false -Force;
     Pop-Location
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
 }
@@ -249,6 +247,7 @@ function EncryptCodeSigningCertificate {
 # =================================================================================================================================
 
 function GetAppVeyorConfiguration {
+    Import-Module "powershell-yaml" -Force;
     $AppveyorYamlConfigurationPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "appveyor.yml";
     return Get-Content -Path $AppveyorYamlConfigurationPath | ConvertFrom-Yaml;
 }
@@ -285,10 +284,17 @@ function SignPackages {
         return;
     }
 
-    $CodeSigningCertificateKeyValue = $env:RAPIDFIELD_CSCERTKEY;
+    $CodeSigningCertificateKey = $env:RAPIDFIELD_CSCERTKEY;
 
-    If (($CodeSigningCertificateKeyValue -eq $null) -or ($CodeSigningCertificateKeyValue -eq "")) {
+    If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq "")) {
         Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate key is unavailable.";
+        return;
+    }
+
+    $CodeSigningCertificatePassword = $env:RAPIDFIELD_CSCERTPWD;
+
+    If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq "")) {
+        Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate password is unavailable.";
         return;
     }
 
@@ -301,7 +307,7 @@ function SignPackages {
     }
 
     If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-        DecryptCodeSigningCertificate -Secret $CodeSigningCertificateKeyValue
+        DecryptCodeSigningCertificate -Key $CodeSigningCertificateKey
     }
 
     If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
@@ -317,7 +323,7 @@ function SignPackages {
 
         If ($PackageFilePath -like "*.nupkg") {
             Write-Host -ForegroundColor DarkCyan "Signing package $PackageFilePath.";
-            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$CodeSigningCertificateFilePath" -Timestamper "$CodeSigningCertificateTimestampServiceUri";
+            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$CodeSigningCertificateFilePath" -CertificatePassword $CodeSigningCertificatePassword -Timestamper "$CodeSigningCertificateTimestampServiceUri";
         }
     }
 
