@@ -16,7 +16,7 @@ $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 $FileNameForDevelopmentToolsModule = "DevelopmentTools.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = $PSScriptRoot;
+$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
@@ -25,6 +25,9 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
 $FilePathForDevelopmentToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForDevelopmentToolsModule";
+
+# Replace the with the real key before running the script. Revert before committing any changes.
+$Key = "REPLACE-ME";
 
 # Modules
 # =================================================================================================================================
@@ -36,8 +39,13 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Script execution
 # =================================================================================================================================
 
-# This script is intended to be used in containerized build environments. Successful execution requires administrative privilege on
-# the host. Automation tools are installed during the process.
-Push-Location "$DirectoryPathForCicdScripts"
-.\ExecuteCicdBuild.ps1
-Pop-Location
+If ($Key -eq "REPLACE-ME") {
+    Write-Host -ForegroundColor Red "Use a real key to encrypt the code signing certificate. Revert before committing any changes.";
+    return;
+}
+
+EncryptCodeSigningCertificate -Key $Key;
+
+Write-Host -ForegroundColor Magenta "============================================";
+Write-Host -ForegroundColor Magenta ">>> IMPORTANT: Do not commit the secret! <<<";
+Write-Host -ForegroundColor Magenta "============================================";

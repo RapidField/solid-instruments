@@ -3,6 +3,3 @@
 *.pem
 *.pfx
 *.spc
-
-# Generated tools
-tools/*

@@ -16,7 +16,7 @@ $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 $FileNameForDevelopmentToolsModule = "DevelopmentTools.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = $PSScriptRoot;
+$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
@@ -36,8 +36,19 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Script execution
 # =================================================================================================================================
 
-# This script is intended to be used in containerized build environments. Successful execution requires administrative privilege on
-# the host. Automation tools are installed during the process.
-Push-Location "$DirectoryPathForCicdScripts"
-.\ExecuteCicdBuild.ps1
-Pop-Location
+Write-Host -ForegroundColor DarkCyan "Resetting the build environment.";
+
+$CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent());
+
+If ($CurrentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    RestoreAllAutomationTools;
+}
+Else {
+    $CurrentInvocationPath = $MyInvocation.MyCommand.Path;
+    $CurrentInvocationArguments = $MyInvocation.UnboundArguments;
+    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList "-File `"$CurrentInvocationPath`" $CurrentInvocationArguments";
+    RestoreAllDevelopmentTools;
+    Exit;
+}
+
+Write-Host -ForegroundColor DarkCyan "`n>>> Finished resetting the build environment. <<<`n";

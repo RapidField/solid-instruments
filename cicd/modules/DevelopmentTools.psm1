@@ -2,6 +2,12 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# Module configuration
+# =================================================================================================================================
+
+# Powershell package names
+$PowershellModuleNameForPoshGit = "posh-git";
+
 # Install
 # =================================================================================================================================
 
@@ -18,7 +24,7 @@ function InstallPoshGit {
     }
     Else {
         Write-Host -ForegroundColor DarkCyan "Installing PoshGit.";
-        Install-Module posh-git;
+        Install-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing PoshGit. <<<`n";
     }
 
@@ -54,7 +60,7 @@ function UninstallAllDevelopmentTools {
 function UninstallPoshGit {
     If (Get-Module -Name "posh-git") {
         Write-Host -ForegroundColor DarkCyan "Uninstalling PoshGit.";
-        Remove-Module posh-git;
+        Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling PoshGit. <<<`n";
     }
 }

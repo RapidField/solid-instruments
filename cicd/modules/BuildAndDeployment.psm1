@@ -2,29 +2,73 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-$AppVeyorSecureFileUtilityInstallerUri = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
-$AppVeyorToolsDirectoryPath = Join-Path -Path "$PSScriptRoot" -ChildPath "appveyor-tools";
-$ArtifactsDirectoryName = "artifacts";
-$CodeSigningCertificateFileName = "CodeSigningCertificate.pfx";
-$CodeSigningCertificateFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "$CodeSigningCertificateFileName";
+# Module configuration
+# =================================================================================================================================
+
+# Directory names
+$DirectoryNameForArtifacts = "artifacts";
+$DirectoryNameForCicd = "cicd";
+$DirectoryNameForCicdAssets = "assets";
+$DirectoryNameForCicdModules = "modules";
+$DirectoryNameForCicdScripts = "scripts";
+$DirectoryNameForCicdTools = "tools";
+$DirectoryNameForCicdToolsAppVeyorTools = "appveyor-tools";
+$DirectoryNameForDocumentation = "doc";
+$DirectoryNameForDocumentationObjects = "obj";
+$DirectoryNameForDocumentationWebsite = "_DocumentationWebsite";
+$DirectoryNameForExample = "example";
+$DirectoryNameForSource = "src";
+$DirectoryNameForTests = "test";
+
+# File names
+$FileNameForAppVeyorYamlConfiguration = "appveyor.yml";
+$FileNameForNugetExe = "nuget.exe";
+$FileNameForCodeSigningCertificate = "CodeSigningCertificate.pfx";
+$FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
+
+# Directory paths
+$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
+$DirectoryPathForArtifacts = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForArtifacts";
+$DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
+$DirectoryPathForCicdAssets = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdAssets";
+$DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
+$DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
+$DirectoryPathForCicdTools = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdTools";
+$DirectoryPathForCicdToolsAppVeyorTools = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$DirectoryNameForCicdToolsAppVeyorTools";
+$DirectoryPathForDocumentation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForDocumentation";
+$DirectoryPathForDocumentationObjects = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationObjects";
+$DirectoryPathForDocumentationWebsite = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationWebsite";
+$DirectoryPathForExample = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForExample";
+$DirectoryPathForSource = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForSource";
+$DirectoryPathForTests = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForTests";
+
+# File paths
+$FilePathForAppVeyorYamlConfigurlation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForAppVeyorYamlConfiguration";
+$FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
+$FilePathForCodeSigningCertificate = Join-Path -Path "$DirectoryPathForCicdAssets" -ChildPath "$FileNameForCodeSigningCertificate";
+$FilePathForEncryptedCodeSigningCertificate = "$FilePathForCodeSigningCertificate.enc";
+$FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForSolutionFile";
+
+# Install script URIs
+$InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
+
+# Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
+
+# Configuration types
 $ConfigurationTypeLocal = "Local";
 $ConfigurationTypeProduction = "Production";
-$DocumentationDirectoryName = "doc";
-$DocumentationWebsiteDirectoryName = "_DocumentationWebsite";
-$EncryptedCodeSigningCertificatePath = "$CodeSigningCertificateFilePath.enc";
-$ExampleDirectoryName = "example";
-$ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
-$ExampleServiceApplicationTargetFramework = "netcoreapp2.1";
-$NuGetExeFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "nuget.exe";
-$ObjectsDirectoryName = "obj";
-$ProjectRootDirectory = (Get-Item $PSScriptRoot).Parent.FullName;
-$ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
+
+# Solution configurations
 $SolutionConfigurationDebug = "Debug";
 $SolutionConfigurationRelease = "Release";
-$SolutionFileName = "RapidField.SolidInstruments.sln";
-$SolutionPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$SolutionFileName";
-$SourceDirectoryName = "src";
+
+# Namespaces
+$ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
+$ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
+
+# Other configuration values
+$TargetFrameworkForExampleServiceApplication = "netcoreapp2.1";
 
 # Build
 # =================================================================================================================================
@@ -36,17 +80,15 @@ function Build {
     )
 
     $BuildVersion = GetBuildVersion;
-    Write-Host -ForegroundColor DarkCyan "Building $SolutionPath using $SolutionConfiguration configuration.";
+    Write-Host -ForegroundColor DarkCyan "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     Write-Host -ForegroundColor DarkCyan "Build version: $BuildVersion";
-    dotnet build $SolutionPath --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersion
+    dotnet build $FilePathForSolutionFile --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersion
 
     If ($LASTEXITCODE -ne 0) {
-        Throw "The build failed for $SolutionPath using $SolutionConfiguration configuration.";
+        Throw "The build failed for $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     }
 
-    $SourceDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$SourceDirectoryName";
-    $ArtifactsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ArtifactsDirectoryName";
-    $BuildArtifactsDirectoryPath = Join-Path -Path "$ArtifactsDirectoryPath" -ChildPath "$SolutionConfiguration";
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
         New-Item -ItemType Directory -Path "$BuildArtifactsDirectoryPath" -Force | Out-Null;
@@ -54,7 +96,7 @@ function Build {
 
     BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration;
 
-    Get-ChildItem -Path "$SourceDirectoryPath" -Directory | ForEach-Object {
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object {
         $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
 
         If (Test-Path "$ProjectOutputPath") {
@@ -63,10 +105,8 @@ function Build {
         }
     }
 
-    $DocumentationWebsiteDirectoryPath = Join-Path -Path $ProjectRootDirectory -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName";
-
-    If (Test-Path $DocumentationWebsiteDirectoryPath) {
-        Get-Item -Path $DocumentationWebsiteDirectoryPath | Copy-Item -Destination $ArtifactsDirectoryPath -Force -Recurse | Out-Null;
+    If (Test-Path "$DirectoryPathForDocumentationWebsite") {
+        Get-Item -Path "$DirectoryPathForDocumentationWebsite" | Copy-Item -Destination "$DirectoryPathForArtifacts" -Force -Recurse | Out-Null;
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
@@ -93,7 +133,7 @@ function BuildWebDocumentation {
     }
 
     Write-Host -ForegroundColor DarkCyan "`nCompiling web documentation metadata.";
-    Push-Location "$DocumentationDirectoryName"
+    Push-Location "$DirectoryPathForDocumentation"
     docfx metadata
 
     Write-Host -ForegroundColor DarkCyan "`nCompiling documentation website.";
@@ -101,7 +141,7 @@ function BuildWebDocumentation {
 
     Write-Host -ForegroundColor DarkCyan "`nMinifying documentation website.";
 
-    Get-ChildItem ".\$DocumentationWebsiteDirectoryName" -Include *.html, *.css -Recurse | ForEach-Object {
+    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object {
         $ThisFilePath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Minifying file: $ThisFilePath";
         html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath"
@@ -120,35 +160,32 @@ function Clean {
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Cleaning $SolutionPath using $SolutionConfiguration configuration.";
-    dotnet clean $SolutionPath --configuration $SolutionConfiguration --verbosity minimal
+    Write-Host -ForegroundColor DarkCyan "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
+    dotnet clean $FilePathForSolutionFile --configuration $SolutionConfiguration --verbosity minimal
 
     If ($LASTEXITCODE -ne 0) {
-        Throw "Cleaning failed for $SolutionPath using $SolutionConfiguration configuration.";
+        Throw "Cleaning failed for $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     }
 
-    $SourceDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$SourceDirectoryName"
-
-    Get-ChildItem -Path $SourceDirectoryPath -Directory | ForEach-Object {
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object {
         $ProjectBinPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
         $ProjectObjPath = Join-Path -Path $_.FullName -ChildPath "obj";
 
-        If (Test-Path $ProjectBinPath) {
+        If (Test-Path "$ProjectBinPath") {
             Write-Host -ForegroundColor DarkCyan "Removing $ProjectBinPath.";
             Remove-Item -Path "$ProjectBinPath" -Recurse -Confirm:$false -Force;
         }
 
-        If (Test-Path $ProjectObjPath) {
+        If (Test-Path "$ProjectObjPath") {
             Write-Host -ForegroundColor DarkCyan "Removing $ProjectObjPath.";
             Remove-Item -Path "$ProjectObjPath" -Recurse -Confirm:$false -Force;
         }
     }
 
-    $ArtifactsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ArtifactsDirectoryName";
-    $BuildArtifactsDirectoryPath = Join-Path -Path "$ArtifactsDirectoryPath" -ChildPath "$SolutionConfiguration";
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (Test-Path "$BuildArtifactsDirectoryPath") {
-        Write-Host -ForegroundColor DarkCyan "Removing artifacts from $ArtifactsDirectoryPath.";
+        Write-Host -ForegroundColor DarkCyan "Removing artifacts from $BuildArtifactsDirectoryPath.";
         Remove-Item -Path "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 
@@ -176,18 +213,14 @@ function CleanWebDocumentation {
 
     Write-Host -ForegroundColor DarkCyan "Cleaning documentation website.";
 
-    $ObjectsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$ObjectsDirectoryName";
-
-    If (Test-Path "$ObjectsDirectoryPath") {
-        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $ObjectsDirectoryPath.";
-        Remove-Item -Path "$ObjectsDirectoryPath" -Recurse -Confirm:$false -Force;
+    If (Test-Path "$DirectoryPathForDocumentationObjects") {
+        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DirectoryPathForDocumentationObjects.";
+        Remove-Item -Path "$DirectoryPathForDocumentationObjects" -Recurse -Confirm:$false -Force;
     }
 
-    $DocumentationWebsiteDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$DocumentationDirectoryName\$DocumentationWebsiteDirectoryName";
-
-    If (Test-Path "$DocumentationWebsiteDirectoryPath") {
-        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DocumentationWebsiteDirectoryPath.";
-        Remove-Item -Path "$DocumentationWebsiteDirectoryPath" -Recurse -Confirm:$false -Force;
+    If (Test-Path "$DirectoryPathForDocumentationWebsite") {
+        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DirectoryPathForDocumentationWebsite.";
+        Remove-Item -Path "$DirectoryPathForDocumentationWebsite" -Recurse -Confirm:$false -Force;
     }
 }
 
@@ -200,19 +233,22 @@ function DecryptCodeSigningCertificate {
         [String] $Key
     )
 
-    If (-not (Test-Path "$EncryptedCodeSigningCertificatePath")) {
-        Write-Host -ForegroundColor DarkYellow "The encrypted code signing certificate is not available at path $EncryptedCodeSigningCertificatePath.";
+    If (-not (Test-Path "$FilePathForEncryptedCodeSigningCertificate")) {
+        Write-Host -ForegroundColor DarkYellow "The encrypted code signing certificate is not available at path $FilePathForEncryptedCodeSigningCertificate.";
         return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Decrypting the code signing certificate.";
+    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+        New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
+    }
 
-    Push-Location "$PSScriptRoot"
-    iex ((New-Object Net.WebClient).DownloadString($AppVeyorSecureFileUtilityInstallerUri));
-    Push-Location "$AppVeyorToolsDirectoryPath"
-    .\secure-file -decrypt "$EncryptedCodeSigningCertificatePath" -secret $Key
+    Write-Host -ForegroundColor DarkCyan "Decrypting the code signing certificate.";
+    Push-Location "$DirectoryPathForCicdTools"
+    iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
+    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools"
+    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret $Key
     Pop-Location
-    Remove-Item "$AppVeyorToolsDirectoryPath" -Recurse -Confirm:$false -Force;
+    Remove-Item "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
     Pop-Location
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished decrypting the code signing certificate. <<<`n";
 }
@@ -226,19 +262,23 @@ function EncryptCodeSigningCertificate {
         [String] $Key
     )
 
-    If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-        Write-Host -ForegroundColor DarkYellow "The code signing certificate is not available at path $CodeSigningCertificateFilePath.";
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
+        Write-Host -ForegroundColor DarkYellow "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
         return;
     }
 
+    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+        New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
+    }
+
     Write-Host -ForegroundColor DarkCyan "Encrypting the code signing certificate.";
-    Push-Location "$PSScriptRoot"
-    iex ((New-Object Net.WebClient).DownloadString($AppVeyorSecureFileUtilityInstallerUri));
-    Push-Location "$AppVeyorToolsDirectoryPath"
-    .\secure-file -encrypt "$CodeSigningCertificateFilePath" -secret $Key
+    Push-Location "$DirectoryPathForCicdTools"
+    iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
+    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools"
+    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret $Key
     Pop-Location
-    Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
-    Remove-Item -Path "$AppVeyorToolsDirectoryPath" -Recurse -Confirm:$false -Force;
+    Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
+    Remove-Item -Path "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
     Pop-Location
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
 }
@@ -248,8 +288,7 @@ function EncryptCodeSigningCertificate {
 
 function GetAppVeyorConfiguration {
     Import-Module "powershell-yaml" -Force;
-    $AppveyorYamlConfigurationPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "appveyor.yml";
-    return Get-Content -Path $AppveyorYamlConfigurationPath | ConvertFrom-Yaml;
+    return Get-Content -Path "$FilePathForAppVeyorYamlConfigurlation" | ConvertFrom-Yaml;
 }
 
 function GetBuildVersion {
@@ -261,11 +300,11 @@ function GetBuildVersion {
 # =================================================================================================================================
 
 function RestoreDependencies {
-    Write-Host -ForegroundColor DarkCyan "Restoring dependencies for $SolutionPath.";
-    dotnet restore $SolutionPath --verbosity minimal
+    Write-Host -ForegroundColor DarkCyan "Restoring dependencies for $FilePathForSolutionFile.";
+    dotnet restore $FilePathForSolutionFile --verbosity minimal
 
     If ($LASTEXITCODE -ne 0) {
-        Throw "One or more dependencies could not be restored for $SolutionPath.";
+        Throw "One or more dependencies could not be restored for $FilePathForSolutionFile.";
     }
 
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring dependencies. <<<`n";
@@ -298,20 +337,19 @@ function SignPackages {
         return;
     }
 
-    $ArtifactsDirectoryPath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ArtifactsDirectoryName";
-    $BuildArtifactsDirectoryPath = Join-Path -Path "$ArtifactsDirectoryPath" -ChildPath "$SolutionConfiguration";
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
         Write-Host -ForegroundColor DarkCyan "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
         return;
     }
 
-    If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
         DecryptCodeSigningCertificate -Key $CodeSigningCertificateKey
     }
 
-    If (-not (Test-Path "$CodeSigningCertificateFilePath")) {
-        Write-Host -ForegroundColor DarkYellow "Packages will not be signed. The code signing certificate is not available at path $CodeSigningCertificateFilePath.";
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
+        Write-Host -ForegroundColor DarkYellow "Packages will not be signed. The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
         return;
     }
 
@@ -323,12 +361,12 @@ function SignPackages {
 
         If ($PackageFilePath -like "*.nupkg") {
             Write-Host -ForegroundColor DarkCyan "Signing package $PackageFilePath.";
-            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$CodeSigningCertificateFilePath" -CertificatePassword $CodeSigningCertificatePassword -Timestamper "$CodeSigningCertificateTimestampServiceUri";
+            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -CertificatePassword $CodeSigningCertificatePassword -Timestamper "$CodeSigningCertificateTimestampServiceUri";
         }
     }
 
     Pop-Location
-    Remove-Item -Path "$CodeSigningCertificateFilePath" -Confirm:$false -Force;
+    Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished signing packages. <<<`n";
 }
 
@@ -342,7 +380,7 @@ function StartExampleServiceApplication {
     )
 
     Write-Host -ForegroundColor DarkCyan "Starting the example service application using $SolutionConfiguration configuration.";
-    $BinaryFilePath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ExampleDirectoryName\$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$ExampleServiceApplicationTargetFramework\$ExampleServiceApplicationNamespace.dll";
+    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleServiceApplicationNamespace.dll";
     Write-Host -ForegroundColor DarkCyan "Using binary path: $BinaryFilePath";
     Start-Process -FilePath "dotnet" -ArgumentList "$BinaryFilePath" -WindowStyle Minimized;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n";
@@ -363,7 +401,7 @@ function StartExampleWebApplication {
     )
 
     Write-Host -ForegroundColor DarkCyan "Starting the example web application using $SolutionConfiguration configuration.";
-    $ProjectFilePath = Join-Path -Path "$ProjectRootDirectory" -ChildPath "$ExampleDirectoryName\$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj";
+    $ProjectFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj";
     Write-Host -ForegroundColor DarkCyan "Using project path: $ProjectFilePath";
     Start-Process -FilePath "dotnet" -ArgumentList "run --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -WindowStyle Minimized;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n";
@@ -395,9 +433,10 @@ function Test {
         [String] $SolutionConfiguration
     )
 
-    ForEach ($TestDirectoryPath In (Get-ChildItem -Path "test" -Directory)) {
+    Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object {
+        $TestDirectoryPath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        dotnet test $TestDirectoryPath.FullName --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
+        dotnet test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
 
         If ($LASTEXITCODE -ne 0) {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";

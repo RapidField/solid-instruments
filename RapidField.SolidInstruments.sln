@@ -83,12 +83,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cicd", "cicd", "{265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}"
 	ProjectSection(SolutionItems) = preProject
 		cicd\.gitignore = cicd\.gitignore
-		cicd\AutomationTools.psm1 = cicd\AutomationTools.psm1
-		cicd\BuildAndDeployment.psm1 = cicd\BuildAndDeployment.psm1
-		cicd\DevelopmentTools.psm1 = cicd\DevelopmentTools.psm1
-		cicd\EncryptCodeSigningCertificate.ps1 = cicd\EncryptCodeSigningCertificate.ps1
-		cicd\ExecuteCicdBuild.ps1 = cicd\ExecuteCicdBuild.ps1
-		cicd\ResetEnvironment.ps1 = cicd\ResetEnvironment.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.SignalProcessing", "src\RapidField.SolidInstruments.SignalProcessing\RapidField.SolidInstruments.SignalProcessing.csproj", "{37BD9C91-9861-4AB6-AB66-E355FE05429C}"
@@ -283,6 +277,25 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenotes", "{B027F798-DEC4-4399-9959-697D10C8C9D4}"
 	ProjectSection(SolutionItems) = preProject
 		doc\releasenotes\v1.0.23.md = doc\releasenotes\v1.0.23.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{3EDA2412-F5E1-492E-86F4-C5CFCC906955}"
+	ProjectSection(SolutionItems) = preProject
+		cicd\assets\.gitignore = cicd\assets\.gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{8A8C4623-F810-4EF4-9B55-2152DE8CEEC1}"
+	ProjectSection(SolutionItems) = preProject
+		cicd\modules\AutomationTools.psm1 = cicd\modules\AutomationTools.psm1
+		cicd\modules\BuildAndDeployment.psm1 = cicd\modules\BuildAndDeployment.psm1
+		cicd\modules\DevelopmentTools.psm1 = cicd\modules\DevelopmentTools.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213A8C5-E32C-4DEE-B872-7E50E27F9B5A}"
+	ProjectSection(SolutionItems) = preProject
+		cicd\scripts\EncryptCodeSigningCertificate.ps1 = cicd\scripts\EncryptCodeSigningCertificate.ps1
+		cicd\scripts\ExecuteCicdBuild.ps1 = cicd\scripts\ExecuteCicdBuild.ps1
+		cicd\scripts\ResetEnvironment.ps1 = cicd\scripts\ResetEnvironment.ps1
 	EndProjectSection
 EndProject
 Global
@@ -512,6 +525,9 @@ Global
 		{31F22F5A-728C-4144-BDFE-9B7FD5A181CD} = {40906A44-DB6F-43B9-9A29-B00C84D59CDC}
 		{D0DCD47C-22DE-4D5C-A46C-9A92CB15E9D3} = {D086BDF4-E322-40C5-B2A4-F53322C361F3}
 		{B027F798-DEC4-4399-9959-697D10C8C9D4} = {64B9EC77-F607-45D7-AF6D-8AF68A365572}
+		{8A8C4623-F810-4EF4-9B55-2152DE8CEEC1} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
+		{0213A8C5-E32C-4DEE-B872-7E50E27F9B5A} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
+		{3EDA2412-F5E1-492E-86F4-C5CFCC906955} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}
