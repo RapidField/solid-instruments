@@ -7,37 +7,28 @@
 
 # Directory names
 $DirectoryNameForCicd = "cicd";
-$DirectoryNameForCicdModules = "modules";
 $DirectoryNameForCicdScripts = "scripts";
-
-# File names
-$FileNameForAutomationToolsModule = "AutomationTools.psm1";
-$FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
-$FileNameForDevelopmentToolsModule = "DevelopmentTools.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = $PSScriptRoot;
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
-$DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
 
-# File paths
-$FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
-$FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
-$FilePathForDevelopmentToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForDevelopmentToolsModule";
-
-# Modules
-# =================================================================================================================================
-
-Import-Module $FilePathForAutomationToolsModule -Force;
-Import-Module $FilePathForBuildAndDeploymentModule -Force;
-Import-Module $FilePathForDevelopmentToolsModule -Force;
+# Branch names
+$BranchNameForDevelop = "develop";
+$BranchNameForMaster = "master";
 
 # Script execution
 # =================================================================================================================================
 
-# This script is intended to be used in containerized build environments. Successful execution requires administrative privilege on
-# the host. Automation tools are installed during the process.
 Push-Location "$DirectoryPathForCicdScripts"
 .\ExecuteCicdBuild.ps1
 Pop-Location
+
+$BranchName = $env:APPVEYOR_REPO_BRANCH;
+
+If ($BranchName -eq $BranchNameForMaster) {
+    Push-Location "$DirectoryPathForCicdScripts"
+    .\ExecuteCicdDeployment.ps1
+    Pop-Location
+}

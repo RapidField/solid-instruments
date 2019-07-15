@@ -22,5 +22,7 @@ environment:
     secure: 2UnQ5nbiA4U959m61TBLh1vI6/WDt08mN9E5+4h3FsFES7f3CZIJHciIMFWE/Nwn
   RAPIDFIELD_CSCERTPWD:
     secure: igzgdjN7Km8z/cVwEjnyd2Pjq8yF5v5UJym7Zd0r1p4ALkfiadpn0qCdvTGKKFwv
+  RAPIDFIELD_NUGETAPIKEY:
+    secure: +MUxngO910jKz1/jjAh6a5y8O0AujDeYNhKSfjiDBh6OISt1LQlNjXLPqn/OHV8n
 image: Visual Studio 2017
 test: off

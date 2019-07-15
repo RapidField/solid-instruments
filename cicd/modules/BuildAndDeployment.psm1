@@ -54,6 +54,7 @@ $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.c
 
 # Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
+$NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json"
 
 # Configuration types
 $ConfigurationTypeLocal = "Local";
@@ -94,8 +95,6 @@ function Build {
         New-Item -ItemType Directory -Path "$BuildArtifactsDirectoryPath" -Force | Out-Null;
     }
 
-    BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration;
-
     Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object {
         $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
 
@@ -105,12 +104,13 @@ function Build {
         }
     }
 
+    BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration;
+
     If (Test-Path "$DirectoryPathForDocumentationWebsite") {
         Get-Item -Path "$DirectoryPathForDocumentationWebsite" | Copy-Item -Destination "$DirectoryPathForArtifacts" -Force -Recurse | Out-Null;
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
-    SignPackages -SolutionConfiguration $SolutionConfiguration;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished building. <<<`n";
 }
 
@@ -296,6 +296,49 @@ function GetBuildVersion {
     return $AppVeyorConfiguration.version.trimend(".{build}");
 }
 
+# Publish
+# =================================================================================================================================
+
+function PublishPackages {
+    Param (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
+        return;
+    }
+
+    $NuGetApiKey = $env:RAPIDFIELD_NUGETAPIKEY;
+
+    If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq "")) {
+        Write-Host -ForegroundColor DarkCyan "Packages will not be published. The NuGet API key is unavailable.";
+        return;
+    }
+
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
+
+    If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
+        Write-Host -ForegroundColor DarkCyan "No packages are available to publish. The path does not exist: $BuildArtifactsDirectoryPath.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Publishing packages in the directory: $BuildArtifactsDirectoryPath.";
+    Push-Location "$DirectoryPathForCicdTools"
+
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
+        $PackageFilePath = $_.FullName;
+
+        If ($PackageFilePath -like "*.nupkg") {
+            Write-Host -ForegroundColor DarkCyan "Publishing package $PackageFilePath.";
+            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri"
+        }
+    }
+
+    Pop-Location
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished publishing packages. <<<`n";
+}
+
 # Restore
 # =================================================================================================================================
 
@@ -354,7 +397,7 @@ function SignPackages {
     }
 
     Write-Host -ForegroundColor DarkCyan "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
-    Push-Location "$PSScriptRoot"
+    Push-Location "$DirectoryPathForCicdTools"
 
     Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
         $PackageFilePath = $_.FullName;
