@@ -4,11 +4,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 -->
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Authors>RapidField</Authors>
+        <Authors>Solid Instruments contributors</Authors>
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>Solid Instruments, licensed by RapidField LLC, is a multi-purpose API collection for .NET Core and .NET Framework.</Description>
+        <Description>Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <LangVersion>latest</LangVersion>

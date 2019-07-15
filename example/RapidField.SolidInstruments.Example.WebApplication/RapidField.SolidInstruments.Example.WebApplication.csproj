@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 -->
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <Authors>RapidField</Authors>
+        <Authors>Solid Instruments contributors</Authors>
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>

@@ -203,6 +203,10 @@ function InstallNuGet {
         return;
     }
 
+    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+        New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
+    }
+
     Write-Host -ForegroundColor DarkCyan "Installing NuGet.";
     Invoke-WebRequest -Uri $InstallScriptUriForNuGet -OutFile "$FilePathForNuGetExe"
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing NuGet. <<<`n";
