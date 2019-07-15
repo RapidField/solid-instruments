@@ -331,7 +331,7 @@ function PublishPackages {
 
         If ($PackageFilePath -like "*.nupkg") {
             Write-Host -ForegroundColor DarkCyan "Publishing package $PackageFilePath.";
-            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri"
+            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri" -SkipDuplicate
         }
     }
 
