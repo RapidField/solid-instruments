@@ -26,7 +26,7 @@ $FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "
 
 # Install script URIs
 $InstallScriptUriForChocolatey = "https://chocolatey.org/install.ps1";
-$InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/latest/$FileNameForNugetExe";
+$InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/v5.1.0/$FileNameForNugetExe";
 
 # Chocolatey package names
 $ChoclateyPackageNameForDocFx = "docfx";
