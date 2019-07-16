@@ -40,10 +40,12 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Script execution
 # =================================================================================================================================
 
-Write-Host -ForegroundColor Cyan $("`nStarting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+Write-Host -ForegroundColor Cyan $("`nStarting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+WriteBuildDetails
 
 # Publish the packages.
 SignPackages -SolutionConfiguration $SolutionConfigurationRelease;
 PublishPackages -SolutionConfiguration $SolutionConfigurationRelease;
 
-Write-Host -ForegroundColor Cyan $("`nFinished CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+Write-Host -ForegroundColor Cyan $("`nFinished CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+WriteBuildDetails
