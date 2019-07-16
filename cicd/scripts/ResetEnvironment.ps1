@@ -36,7 +36,7 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Script execution
 # =================================================================================================================================
 
-Write-Host -ForegroundColor DarkCyan "Resetting the build environment.";
+Write-Host -ForegroundColor DarkCyan "`nResetting the build environment.`n";
 
 $CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent());
 
