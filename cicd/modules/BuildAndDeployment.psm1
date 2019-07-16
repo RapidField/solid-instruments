@@ -509,7 +509,6 @@ function WriteBuildDetails {
     WriteCommitMessage
     WriteCommitAuthorName
     WriteCommitAuthorEmail
-    Write-Host
 }
 
 function WriteBuildVersion {
