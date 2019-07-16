@@ -496,3 +496,97 @@ function TestDebug {
 function TestRelease {
     Test -SolutionConfiguration $SolutionConfigurationRelease;
 }
+
+# Write
+# =================================================================================================================================
+
+function WriteBuildDetails {
+    WriteRepositoryName
+    WriteBuildVersion
+    WriteTagName
+    WriteCommitId
+    WriteCommitTimeStamp
+    WriteCommitMessage
+    WriteCommitAuthorName
+    WriteCommitAuthorEmail
+}
+
+function WriteBuildVersion {
+    $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
+
+    If (($BuildVersion -eq $null) -or ($BuildVersion -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Build version: $BuildVersion";
+}
+
+function WriteCommitAuthorEmail {
+    $CommitAuthorEmail = $env:APPVEYOR_REPO_AUTHOR_EMAIL;
+
+    If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Commit author email: $CommitAuthorEmail";
+}
+
+function WriteCommitAuthorName {
+    $CommitAuthorName = $env:APPVEYOR_REPO_AUTHOR;
+
+    If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Commit author name: $CommitAuthorName";
+}
+
+function WriteCommitId {
+    $CommitId = $env:APPVEYOR_REPO_COMMIT;
+
+    If (($CommitId -eq $null) -or ($CommitId -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Commit ID: $CommitId";
+}
+
+function WriteCommitMessage {
+    $CommitMessage = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
+
+    If (($CommitMessage -eq $null) -or ($CommitMessage -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Commit message: $CommitMessage";
+}
+
+function WriteCommitTimeStamp {
+    $CommitTimeStamp = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
+
+    If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Commit time stamp: $CommitTimeStamp";
+}
+
+function WriteRepositoryName {
+    $RepositoryName = $env:APPVEYOR_REPO_NAME;
+
+    If (($RepositoryName -eq $null) -or ($RepositoryName -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Repository name: $RepositoryName";
+}
+
+function WriteTagName {
+    $TagName = $env:APPVEYOR_REPO_TAG_NAME;
+
+    If (($TagName -eq $null) -or ($TagName -eq "")) {
+        return;
+    }
+    
+    Write-Host -ForegroundColor DarkCyan "Tag name: $TagName";
+}
