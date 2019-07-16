@@ -2,13 +2,13 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-# Advanced, multi-purpose .NET tool set
+# Advanced, multi-purpose .NET tool belt
 
 Solid Instruments is a collection of free, open-source .NET libraries. It was created to help software developers quickly overcome common and uncommon design challenges to deliver highly-resilient, strongly-secured, readily-maintainable products.
 
 <span class="linkbuttongroup">
 <a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>
-<a class="linkbutton" href="https://www.nuget.org">NuGet Packages</a>
+<a class="linkbutton" href="https://www.nuget.org/packages?q=RapidField.SolidInstruments">NuGet Packages</a>
 <a class="linkbutton" href="https://www.github.com/RapidField/solid-instruments">GitHub Repository</a>
 </span>
 
@@ -35,6 +35,6 @@ Solid Instruments is a collection of free, open-source .NET libraries. It was cr
 
 #### Preview
 
-| Version           | NuGet package                                                         | GitHub branch                                                                                                   | Release notes                                   |
-| :---------------- | :-------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- | :---------------------------------------------- |
-| 1.0.23-preview    | [Download](https://www.nuget.org)                                     | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/1.0.23-preview)                      | [Read](releasenotes/v1.0.23.md)                 |
+| Version         | GitHub branch                                                                               | Release notes                   |
+| :-------------- | :------------------------------------------------------------------------------------------ | :------------------------------ |
+| 1.0.23-preview1 | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/1.0.23-preview1) | [Read](releasenotes/v1.0.23.md) |

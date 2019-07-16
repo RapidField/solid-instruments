@@ -11,6 +11,22 @@ The *RapidField.SolidInstruments.SignalProcessing* library facilitates digital s
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.SignalProcessing.html) for more information.
 
+### Installation
+
+This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.SignalProcessing
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.SignalProcessing
+```
+
 - - -
 <br />
 
