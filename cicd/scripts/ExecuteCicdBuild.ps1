@@ -36,7 +36,8 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Script execution
 # =================================================================================================================================
 
-Write-Host -ForegroundColor Cyan $("`nStarting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+Write-Host -ForegroundColor Cyan $("`nStarting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+WriteBuildDetails
 
 # Establish automation tools.
 Push-Location "$DirectoryPathForCicdScripts"
@@ -48,4 +49,4 @@ Push-Location "$DirectoryPathForProjectRoot";
 psake Test-All
 Pop-Location
 
-Write-Host -ForegroundColor Cyan $("`nFinished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+Write-Host -ForegroundColor Cyan $("`nFinished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
