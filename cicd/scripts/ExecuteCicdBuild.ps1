@@ -50,3 +50,4 @@ psake Test-All
 Pop-Location
 
 Write-Host -ForegroundColor Cyan $("`nFinished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+WriteBuildDetails
