@@ -509,6 +509,7 @@ function WriteBuildDetails {
     WriteCommitMessage
     WriteCommitAuthorName
     WriteCommitAuthorEmail
+    Write-Host
 }
 
 function WriteBuildVersion {
@@ -518,27 +519,27 @@ function WriteBuildVersion {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Build version: $BuildVersion";
+    Write-Host -ForegroundColor Cyan "Build version: $BuildVersion";
 }
 
 function WriteCommitAuthorEmail {
-    $CommitAuthorEmail = $env:APPVEYOR_REPO_AUTHOR_EMAIL;
+    $CommitAuthorEmail = $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL;
 
     If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq "")) {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Commit author email: $CommitAuthorEmail";
+    Write-Host -ForegroundColor Cyan "Commit author email: $CommitAuthorEmail";
 }
 
 function WriteCommitAuthorName {
-    $CommitAuthorName = $env:APPVEYOR_REPO_AUTHOR;
+    $CommitAuthorName = $env:APPVEYOR_REPO_COMMIT_AUTHOR;
 
     If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Commit author name: $CommitAuthorName";
+    Write-Host -ForegroundColor Cyan "Commit author name: $CommitAuthorName";
 }
 
 function WriteCommitId {
@@ -548,17 +549,17 @@ function WriteCommitId {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Commit ID: $CommitId";
+    Write-Host -ForegroundColor Cyan "Commit ID: $CommitId";
 }
 
 function WriteCommitMessage {
-    $CommitMessage = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
+    $CommitMessage = $env:APPVEYOR_REPO_COMMIT_MESSAGE;
 
     If (($CommitMessage -eq $null) -or ($CommitMessage -eq "")) {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Commit message: $CommitMessage";
+    Write-Host -ForegroundColor Cyan "Commit message: $CommitMessage";
 }
 
 function WriteCommitTimeStamp {
@@ -568,7 +569,7 @@ function WriteCommitTimeStamp {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Commit time stamp: $CommitTimeStamp";
+    Write-Host -ForegroundColor Cyan "Commit time stamp: $CommitTimeStamp";
 }
 
 function WriteRepositoryName {
@@ -578,7 +579,7 @@ function WriteRepositoryName {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Repository name: $RepositoryName";
+    Write-Host -ForegroundColor Cyan "Repository name: $RepositoryName";
 }
 
 function WriteTagName {
@@ -588,5 +589,5 @@ function WriteTagName {
         return;
     }
     
-    Write-Host -ForegroundColor DarkCyan "Tag name: $TagName";
+    Write-Host -ForegroundColor Cyan "Tag name: $TagName";
 }
