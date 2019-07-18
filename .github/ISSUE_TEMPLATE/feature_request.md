@@ -5,14 +5,20 @@ title: ''
 labels: 'Category-Feature, Stage0-New'
 assignees: adamjstone
 ---
+<!--
+Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+-->
 
-# Feature Request
+![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)
+- - -
+
+## Feature Request
 
 ### Overview
 
 Replace this with a clear, consise description of the desired functionality.
 
-### Statement of work
+### Statement of Work
 
 The following list describes the work to be done and defines acceptance criteria for the feature.
 
@@ -20,6 +26,6 @@ The following list describes the work to be done and defines acceptance criteria
 2. And the second requirement.
 3. And so on...
 
-### Additional information
+### Additional Information
 
 Provide any other information that might be relevant.
