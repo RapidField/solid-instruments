@@ -1,24 +1,20 @@
 ---
 name: Feature request
-about: Suggest a new feature.
+about: Suggest an idea for this project
 title: ''
-labels: [enhancement], (1) under review
-assignees: adamjstone
+labels: ''
+assignees: ''
 
 ---
 
-**Overview**
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-REPLACE-ME
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-**Statement of work**
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
-The following list describes the work to be done and defines acceptance criteria for the feature.
-
-1. REPLACE-ME
-2. 
-3. 
-
-**Additional information**
-
-REPLACE-ME
+**Additional context**
+Add any other context or screenshots about the feature request here.
