@@ -5,9 +5,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-## Pull request
+## Pull Request
 
-#### Overview
+### Overview
 
 This pull request addresses issue #
 
@@ -17,7 +17,7 @@ Here is an overview of the changes that were made.
 2. 
 3. 
 
-#### Readiness checklist
+### Readiness Checklist
 
 This pull request is in compliance with the readiness requirements listed below.
 
