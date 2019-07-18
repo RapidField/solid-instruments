@@ -1,20 +1,25 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest a new feature.
 title: ''
-labels: ''
-assignees: ''
-
+labels: 'Category-Feature, Stage0-New'
+assignees: adamjstone
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Feature Request
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+### Overview
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+Replace this with a clear, consise description of the desired functionality.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+### Statement of Work
+
+The following list describes the work to be done and defines acceptance criteria for the feature.
+
+1. Briefly describe the first requirement.
+2. And the second requirement.
+3. And so on...
+
+### Additional Information
+
+Provide any other information that might be relevant.
