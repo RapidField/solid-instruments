@@ -2,9 +2,8 @@
 name: Defect report
 about: Create an issue to report an observed defect.
 title: ''
-labels: 'Category-Defect', 'Stage0-New'
+labels: 'Category-Defect, Stage0-New'
 assignees: adamjstone
-
 ---
 
 # Defect Report
