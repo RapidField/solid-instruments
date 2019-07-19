@@ -34,7 +34,6 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 [![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
 ## Releases
-- - -
 
 #### Preview
 
