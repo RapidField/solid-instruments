@@ -33,6 +33,14 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 [![Signal Processing label](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
 [![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
+## Releases
+- - -
+
+#### Preview
+
+| Version         | Notes                               | Branch                                                                                       |
+| :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.23-preview1) |
 - - -
 <br />
 
