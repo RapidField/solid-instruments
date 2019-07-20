@@ -39,6 +39,7 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 
 | Version         | Notes                               | Branch                                                                                       |
 | :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
 | 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.23-preview1) |
 - - -
 <br />
