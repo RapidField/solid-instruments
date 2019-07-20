@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Command label](Label.Command.300w.png)
 
-The *RapidField.SolidInstruments.Command* library exposes implementations of the command and mediator patterns.
+This library exposes implementations of the command and mediator patterns.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.html) for more information.
 
