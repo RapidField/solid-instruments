@@ -5,8 +5,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0djwhtesii54shrb/branch/master?svg=true)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
-[![CodeFactor](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/badge)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
 ## About
 
