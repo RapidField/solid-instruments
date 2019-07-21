@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Messaging label](../RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)
 
-The *RapidField.SolidInstruments.Messaging.InMemory* library provides in-memory implementations of the Solid Instruments messaging abstractions.
+This library provides in-memory implementations of the Solid Instruments messaging abstractions.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html) for more information.
 

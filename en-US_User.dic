@@ -1,9 +1,11 @@
 aa
 aaaaaaaa
 accomodate
+adamjstone
 api
 apidoc
 appveyor
+assignees
 astextplain
 atm
 Autofac
@@ -33,7 +35,9 @@ contentfiles
 cryptographic
 cryptographically
 csharp
+csprng
 css
+dal
 datetimerange
 ddd
 decomposable
@@ -60,6 +64,7 @@ durations
 dword
 dwords
 dynamicserializer
+ef
 eg
 encryptor
 endcomment
@@ -71,6 +76,7 @@ entropic
 Enum
 Enums
 env
+eventing
 Exe
 extensibility
 fibonacci
@@ -126,6 +132,7 @@ npm
 nuget
 nullable
 openssl
+orm
 parameterless
 plaintext
 postfix

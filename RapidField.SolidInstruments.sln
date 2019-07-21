@@ -8,14 +8,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
+		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
 		Build.ps1 = Build.ps1
 		CodeMaid.config = CodeMaid.config
 		CONTRIBUTING.md = CONTRIBUTING.md
 		en-US_User.dic = en-US_User.dic
 		en_US.aff = en_US.aff
 		en_US.dic = en_US.dic
+		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 		LICENSE.txt = LICENSE.txt
 		psakefile.ps1 = psakefile.ps1
+		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
 		RapidField.Logo.Color.Black.Transparent.200w.png = RapidField.Logo.Color.Black.Transparent.200w.png
 		RapidField.SolidInstruments.sln.vsspell = RapidField.SolidInstruments.sln.vsspell
 		README.md = README.md
@@ -277,6 +280,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenotes", "{B027F798-DEC4-4399-9959-697D10C8C9D4}"
 	ProjectSection(SolutionItems) = preProject
 		doc\releasenotes\v1.0.23.md = doc\releasenotes\v1.0.23.md
+		doc\releasenotes\v1.0.24.md = doc\releasenotes\v1.0.24.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{3EDA2412-F5E1-492E-86F4-C5CFCC906955}"
