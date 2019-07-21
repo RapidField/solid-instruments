@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Mathematics label](Label.Mathematics.300w.png)
 
-The *RapidField.SolidInstruments.Mathematics* library provides a variety of intuitive mathematics APIs.
+This library provides a variety of intuitive mathematics APIs.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Mathematics.html) for more information.
 

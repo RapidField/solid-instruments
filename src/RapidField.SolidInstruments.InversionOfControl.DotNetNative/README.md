@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Inversion of Control label](../RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)
 
-The *RapidField.SolidInstruments.InversionOfControl.DotNetNative* library exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.
+This library exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html) for more information.
 
