@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Messaging label](Label.Messaging.300w.png)
 
-The *RapidField.SolidInstruments.Messaging* library exposes abstractions for messaging constructs.
+This library exposes abstractions for messaging constructs.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.html) for more information.
 

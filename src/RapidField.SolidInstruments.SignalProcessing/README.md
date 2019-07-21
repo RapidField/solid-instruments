@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Signal Processing label](Label.SignalProcessing.300w.png)
 
-The *RapidField.SolidInstruments.SignalProcessing* library facilitates digital signal processing.
+This library facilitates digital signal processing.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.SignalProcessing.html) for more information.
 

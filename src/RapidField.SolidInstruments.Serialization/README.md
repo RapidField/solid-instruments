@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Serialization label](Label.Serialization.300w.png)
 
-The *RapidField.SolidInstruments.Serialization* library defines a reusable standard for custom type serializers.
+This library defines a reusable standard for custom type serializers.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html) for more information.
 

@@ -5,8 +5,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Build status](https://ci.appveyor.com/api/projects/status/0djwhtesii54shrb/branch/master?svg=true)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
-[![CodeFactor](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/badge)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
 ## About
 
@@ -33,6 +33,14 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 [![Signal Processing label](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
 [![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
+## Releases
+
+#### Preview
+
+| Version         | Notes                               | Branch                                                                                       |
+| :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
+| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.23-preview1) |
 - - -
 <br />
 

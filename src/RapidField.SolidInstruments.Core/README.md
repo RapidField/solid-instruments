@@ -7,7 +7,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Core label](Label.Core.300w.png)
 
-The *RapidField.SolidInstruments.Core* library exposes foundational, general-purpose features.
+This library exposes foundational, general-purpose features, including:
+
+- concurrency control abstractions
+- configurable types
+- fluent argument validation
+- object lifetime management
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) for more information.
 

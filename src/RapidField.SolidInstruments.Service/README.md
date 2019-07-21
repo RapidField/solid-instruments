@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Service label](Label.Service.300w.png)
 
-The *RapidField.SolidInstruments.Service* library exposes types that simplify service design.
+This library exposes types that simplify service application design.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Service.html) for more information.
 
