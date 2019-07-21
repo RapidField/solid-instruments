@@ -1,6 +1,6 @@
 ---
-name: Defect report
-about: Create an issue to report an observed defect.
+name: Defect Report
+about: Report an observed defect.
 title: ''
 labels: 'Category-Defect, Stage0-New'
 assignees: adamjstone
@@ -10,7 +10,7 @@ assignees: adamjstone
 
 ### Overview
 
-Replace this with a clear, consise description of the problem.
+Replace this with a clear, concise description of the problem.
 
 ### Reproduction steps
 
