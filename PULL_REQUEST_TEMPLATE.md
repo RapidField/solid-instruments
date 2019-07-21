@@ -1,11 +1,3 @@
----
-name: Pull Request
-about: Request change integration.
-title: ''
-labels: 'Stage0-New'
-assignees: adamjstone
----
-
 ## Pull Request
 
 ### Overview
