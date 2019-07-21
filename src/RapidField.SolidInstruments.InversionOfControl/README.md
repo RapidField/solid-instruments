@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Inversion of Control label](Label.InversionOfControl.300w.png)
 
-The *RapidField.SolidInstruments.InversionOfControl* library defines a pattern for abstracting dependency injection tools.
+This library defines a pattern for abstracting dependency injection tools.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html) for more information.
 

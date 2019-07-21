@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Text Encoding label](Label.TextEncoding.300w.png)
 
-The *RapidField.SolidInstruments.TextEncoding* library offers text encoding types that are missing from the .NET Framework.
+This library offers text encoding types that are missing from the .NET Framework.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.TextEncoding.html) for more information.
 

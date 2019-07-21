@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>The RapidField.SolidInstruments.InversionOfControl.DotNetNative library exposes the native .NET implementation of Solid Instrument's inversion of control abstraction. Refer to the project documentation for more information.</Description>
+        <Description>This library exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -19,7 +19,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIconUrl>https://www.solidinstruments.com/images/Icon.InversionOfControl.128w.png</PackageIconUrl>
-        <PackageTags>inversion of control;ioc;dependency injection;di;container abstraction;native</PackageTags>
+        <PackageTags>solid-instruments;inversion-of-control;ioc;dependency-injection;di;container-abstraction</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.InversionOfControl.DotNetNative.xml</DocumentationFile>

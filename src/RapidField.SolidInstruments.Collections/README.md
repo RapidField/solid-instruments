@@ -7,7 +7,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Collections label](Label.Collections.300w.png)
 
-The *RapidField.SolidInstruments.Collections* library exposes useful collection types and features.
+This library exposes useful collection types and features, including:
+
+- circular buffers
+- infinite sequences
+- pinned buffers
+- tree composition and traversal.
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html) for more information.
 

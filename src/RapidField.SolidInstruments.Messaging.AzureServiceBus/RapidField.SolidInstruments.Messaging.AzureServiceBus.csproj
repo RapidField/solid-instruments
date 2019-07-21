@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>The RapidField.SolidInstruments.Messaging.AzureServiceBus library provides Azure Service Bus implementations of the Solid Instruments messaging abstractions. Refer to the project documentation for more information.</Description>
+        <Description>This library provides Azure Service Bus implementations of the Solid Instruments messaging abstractions.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -19,7 +19,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIconUrl>https://www.solidinstruments.com/images/Icon.Messaging.128w.png</PackageIconUrl>
-        <PackageTags>messaging;bus;request-response;pub-sub;notification;azure service bus</PackageTags>
+        <PackageTags>solid-instruments;messaging;service-bus;bus;request-response;pub-sub;eventing;azure-service-bus</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Messaging.AzureServiceBus.xml</DocumentationFile>

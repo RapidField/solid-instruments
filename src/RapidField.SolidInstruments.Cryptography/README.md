@@ -7,7 +7,14 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Cryptography label](Label.Cryptography.300w.png)
 
-The *RapidField.SolidInstruments.Cryptography* library exposes advanced security mechanics.
+This library exposes advanced security mechanics, including:
+
+- bounded random value generation
+- cascading encryption
+- hash trees
+- in-memory security
+- random element selection
+- random collection shuffling
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.html) for more information.
 
