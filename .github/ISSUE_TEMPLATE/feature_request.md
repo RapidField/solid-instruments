@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Feature Request
 about: Suggest a new feature.
 title: ''
 labels: 'Category-Feature, Stage0-New'
@@ -10,7 +10,7 @@ assignees: adamjstone
 
 ### Overview
 
-Replace this with a clear, consise description of the desired functionality.
+Replace this with a clear, concise description of the desired functionality.
 
 ### Statement of Work
 
