@@ -6,13 +6,13 @@ labels: 'Category-Feature, Stage0-New'
 assignees: adamjstone
 ---
 
-## Feature Request
+# Feature Request
 
-### Overview
+## Overview
 
 Replace this with a clear, concise description of the desired functionality.
 
-### Statement of Work
+## Statement of Work
 
 The following list describes the work to be done and defines acceptance criteria for the feature.
 
@@ -20,6 +20,6 @@ The following list describes the work to be done and defines acceptance criteria
 2. And the second requirement.
 3. And so on...
 
-### Additional Information
+## Additional Information
 
 Provide any other information that might be relevant.
