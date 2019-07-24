@@ -16,7 +16,7 @@ This library defines a pattern for abstracting dependency injection tools.
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
-[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.SolidInstruments.InversionOfControl.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.SolidInstruments.InversionOfControl)
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.InversionOfControl.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.InversionOfControl)
 
 ###### .NET CLI
 
