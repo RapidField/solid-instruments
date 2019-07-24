@@ -5,10 +5,10 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
+![Data Access icon](../RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)
+
 [![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-
-![Data Access icon](../RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)
 
 This library provides Entity Framework implementations of the Solid Instruments data access abstractions.
 
