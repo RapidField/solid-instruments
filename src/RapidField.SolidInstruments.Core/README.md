@@ -14,11 +14,11 @@ This library exposes foundational, general-purpose features, including:
 - fluent argument validation
 - object lifetime management
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) for more information.
-
 ### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.Core.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.Core)
 
 ###### .NET CLI
 
@@ -31,6 +31,10 @@ dotnet add package RapidField.SolidInstruments.Core
 ```shell
 Install-Package RapidField.SolidInstruments.Core
 ```
+
+### Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) for more information.
 
 - - -
 <br />
