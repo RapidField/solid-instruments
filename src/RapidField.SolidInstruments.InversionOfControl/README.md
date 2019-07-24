@@ -7,13 +7,16 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Inversion of Control label](Label.InversionOfControl.300w.png)
 
-This library defines a pattern for abstracting dependency injection tools.
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html) for more information.
+This library defines a pattern for abstracting dependency injection tools.
 
 ### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.SolidInstruments.InversionOfControl.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.SolidInstruments.InversionOfControl)
 
 ###### .NET CLI
 
@@ -26,6 +29,10 @@ dotnet add package RapidField.SolidInstruments.InversionOfControl
 ```shell
 Install-Package RapidField.SolidInstruments.InversionOfControl
 ```
+
+### Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html) for more information.
 
 - - -
 <br />
