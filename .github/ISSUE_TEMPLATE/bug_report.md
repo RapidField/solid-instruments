@@ -2,7 +2,7 @@
 name: Defect Report
 about: Report an observed defect.
 title: ''
-labels: 'Category-Defect, Stage0-New'
+labels: 'Category-Defect, Stage0-New, Verdict-Pending'
 assignees: adamjstone
 ---
 
