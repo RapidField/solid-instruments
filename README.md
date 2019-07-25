@@ -12,10 +12,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
-## Contributing
-
-Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
-
 ## Features
 
 [![Collections label](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
@@ -32,6 +28,10 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 [![Service label](src/RapidField.SolidInstruments.Service/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
 [![Signal Processing label](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
 [![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
+
+## Contributing
+
+Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Releases
 
