@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest a new feature.
 title: ''
-labels: 'Category-Feature, Stage0-New'
+labels: 'Category-Feature, Stage0-New, Verdict-Pending'
 assignees: adamjstone
 ---
 
