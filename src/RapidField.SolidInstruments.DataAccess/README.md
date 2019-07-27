@@ -7,13 +7,16 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Data Access label](Label.DataAccess.300w.png)
 
-This library exposes abstractions for the repository and unit-of-work patterns that enable developers to write data access layers that work with a variety of ORMs and database tools.
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html) for more information.
+This library exposes abstractions for the repository and unit-of-work patterns that enable developers to write data access layers that work with a variety of ORMs and database tools.
 
 ### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.DataAccess.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.DataAccess)
 
 ###### .NET CLI
 
@@ -26,6 +29,10 @@ dotnet add package RapidField.SolidInstruments.DataAccess
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess
 ```
+
+### Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html) for more information.
 
 - - -
 <br />

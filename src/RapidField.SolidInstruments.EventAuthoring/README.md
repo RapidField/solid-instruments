@@ -7,13 +7,16 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Event Authoring label](Label.EventAuthoring.300w.png)
 
-This library defines a simple pattern for producing and representing reportable application events.
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html) for more information.
+This library defines a simple pattern for producing and representing reportable application events.
 
 ### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.EventAuthoring.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.EventAuthoring)
 
 ###### .NET CLI
 
@@ -26,6 +29,10 @@ dotnet add package RapidField.SolidInstruments.EventAuthoring
 ```shell
 Install-Package RapidField.SolidInstruments.EventAuthoring
 ```
+
+### Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html) for more information.
 
 - - -
 <br />

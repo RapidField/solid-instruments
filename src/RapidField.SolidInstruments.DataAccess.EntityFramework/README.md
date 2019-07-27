@@ -7,13 +7,16 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Data Access icon](../RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)
 
-This library provides Entity Framework implementations of the Solid Instruments data access abstractions.
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for more information.
+This library provides Entity Framework implementations of the Solid Instruments data access abstractions.
 
 ### Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.DataAccess.EntityFramework.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.DataAccess.EntityFramework)
 
 ###### .NET CLI
 
@@ -26,6 +29,9 @@ dotnet add package RapidField.SolidInstruments.DataAccess.EntityFramework
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess.EntityFramework
 ```
+### Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for more information.
 
 - - -
 <br />

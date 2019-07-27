@@ -1,6 +1,6 @@
-## Pull Request
+# Pull Request
 
-### Overview
+## Overview
 
 This pull request addresses issue #xxx.
 
@@ -10,7 +10,7 @@ Here is an overview of the changes that were made.
 2. And the second change.
 3. And so on...
 
-### Readiness Checklist
+## Readiness checklist
 
 This pull request is in compliance with the readiness requirements listed below.
 
