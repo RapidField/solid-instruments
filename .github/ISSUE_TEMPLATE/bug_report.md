@@ -8,6 +8,8 @@ assignees: adamjstone
 
 # Defect Report
 
+This issue represents an unresolved problem that a user is experiencing while using Solid Instruments.
+
 ## Overview
 
 Replace this with a clear, concise description of the problem.
