@@ -7,9 +7,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Object Composition label](Label.ObjectComposition.300w.png)
 
-This library exposes simple tools for designing extensible and configurable object factories.
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.ObjectComposition.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.ObjectComposition)
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html) for more information.
+## About
+
+This library exposes simple tools for designing extensible and configurable object factories.
 
 ### Installation
 
@@ -26,6 +30,10 @@ dotnet add package RapidField.SolidInstruments.ObjectComposition
 ```shell
 Install-Package RapidField.SolidInstruments.ObjectComposition
 ```
+
+## Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html) for more information.
 
 - - -
 <br />
