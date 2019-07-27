@@ -7,11 +7,15 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Messaging label](Label.Messaging.300w.png)
 
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.Messaging.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.Messaging)
+
+## About
+
 This library exposes abstractions for messaging constructs.
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.html) for more information.
-
-### Installation
+## Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
@@ -26,6 +30,9 @@ dotnet add package RapidField.SolidInstruments.Messaging
 ```shell
 Install-Package RapidField.SolidInstruments.Messaging
 ```
+## Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.html) for more information.
 
 - - -
 <br />
