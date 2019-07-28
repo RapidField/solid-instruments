@@ -7,21 +7,22 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Collections label](Label.Collections.300w.png)
 
-[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.Collections.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
+
+## About
 
 This library exposes useful collection types and features, including:
 
 - circular buffers
 - infinite sequences
 - pinned buffers
-- tree composition and traversal.
+- tree composition and traversal
 
-### Installation
+## Installation
 
 This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
-
-[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.Collections.svg?color=blue)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
 
 ###### .NET CLI
 
@@ -35,7 +36,7 @@ dotnet add package RapidField.SolidInstruments.Collections
 Install-Package RapidField.SolidInstruments.Collections
 ```
 
-### Documentation
+## Documentation
 
 Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html) for more information.
 

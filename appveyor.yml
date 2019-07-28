@@ -1,3 +1,6 @@
+# =================================================================================================================================
+# Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+# =================================================================================================================================
 version: 1.0.24-preview1.{build}
 artifacts:
 - path: artifacts\Release

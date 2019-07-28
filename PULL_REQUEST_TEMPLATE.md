@@ -1,10 +1,12 @@
 # Pull Request
 
+This represents a request to incorporate the associated changes to the Solid Instruments product.
+
 ## Overview
 
 This pull request addresses issue #xxx.
 
-Here is an overview of the changes that were made.
+Below is an overview of the changes that were made.
 
 1. Briefly describe the first change.
 2. And the second change.

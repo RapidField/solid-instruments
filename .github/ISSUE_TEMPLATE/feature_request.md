@@ -8,11 +8,13 @@ assignees: adamjstone
 
 # Feature Request
 
+This issue represents a request for new Solid Instruments functionality.
+
 ## Overview
 
 Replace this with a clear, concise description of the desired functionality.
 
-## Statement of Work
+## Statement of work
 
 The following list describes the work to be done and defines acceptance criteria for the feature.
 
@@ -20,6 +22,6 @@ The following list describes the work to be done and defines acceptance criteria
 2. And the second requirement.
 3. And so on...
 
-## Additional Information
+## Additional information
 
 Provide any other information that might be relevant.

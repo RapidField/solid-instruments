@@ -9,6 +9,8 @@ assignees
 astextplain
 atm
 Autofac
+Backport
+backporting
 boolean
 carte
 cbcm
@@ -47,6 +49,7 @@ decrypted
 decrypting
 decryptor
 Decrypts
+dependabot
 dequeue
 deserialization
 Deserialize
@@ -89,6 +92,7 @@ foundational
 Glyphicons
 Halflings
 hh
+hotfix
 href
 html
 iframe
@@ -108,6 +112,7 @@ ly
 markdig
 mcg
 mensiversary
+Mergify
 Merkle
 minifier
 Minify
@@ -131,6 +136,7 @@ norepair
 npm
 nuget
 nullable
+Nwn
 openssl
 orm
 parameterless
@@ -176,6 +182,7 @@ src
 stdout
 Struct
 Structs
+structuremap
 subkeys
 sublicense
 subsegments

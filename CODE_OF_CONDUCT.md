@@ -5,7 +5,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-## Code of conduct
+# Code of Conduct
 
 Solid Instruments is a tool set for professional software
 developers. We expect Solid Instruments contributors to act with
