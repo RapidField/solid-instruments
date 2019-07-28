@@ -10,7 +10,8 @@ artifacts:
 build_script:
 - ps: .\Build.ps1
 deploy:
-- application: DocumentationWebsite
+- active_mode: true
+  application: DocumentationWebsite
   artifact: DocumentationWebsite
   host: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
   on:

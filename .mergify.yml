@@ -3,28 +3,40 @@
 # =================================================================================================================================
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label merged pull requests complete.
+- name: Label merged pull requests.
   conditions:
+  - label=Stage3-InProgress
   - merged
   actions:
     comment:
-      message: This pull request is merged! (Testing Mergify)
+      message: This pull request has been merged!
     label:
       add:
       - Stage4-Complete
       remove:
-      - Stage0-New
-      - Stage1-UnderReview
-      - Stage2-Accepted
-      - Stage2-Rejected
       - Stage3-InProgress
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to and backport from master when the author is adamjstone.
+- name: Label Mergify pull requests.
+  conditions:
+  - author=mergify[bot]
+  actions:
+    assign:
+    - adamjstone
+    label:
+      add:
+      - Category-Maintenance
+      - Stage0-New
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge and backport from master when the author is trusted.
   conditions:
   - author=adamjstone
   - base=master
+  - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
+    assign:
+    - adamjstone
     backport:
       branches: # List active hotfix and release branches here, along with develop.
       # -------------------------------------------------------------------------------------------
@@ -33,26 +45,25 @@ pull_request_rules:
       - release/v1.0.26-preview1
       # -------------------------------------------------------------------------------------------
     comment:
-      message: Merging and backporting this pull request. (Testing Mergify)
+      message: Merging and backporting this pull request.
     label:
       add:
       - Stage3-InProgress
       remove:
       - Stage0-New
-      - Stage1-UnderReview
-      - Stage2-Accepted
-      - Stage2-Rejected
-      - Stage4-Complete
     merge:
       method: merge
       strict: true
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to and backport from develop when the author is adamjstone or dependabot.
+- name: Merge and backport from develop when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
   - base=develop
+  - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
+    assign:
+    - adamjstone
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
@@ -60,16 +71,12 @@ pull_request_rules:
       - feature/0012_structuremap-support
       # -------------------------------------------------------------------------------------------
     comment:
-      message: Merging and backporting this pull request. (Testing Mergify)
+      message: Merging and backporting this pull request.
     label:
       add:
       - Stage3-InProgress
       remove:
       - Stage0-New
-      - Stage1-UnderReview
-      - Stage2-Accepted
-      - Stage2-Rejected
-      - Stage4-Complete
     merge:
       method: merge
       strict: true
