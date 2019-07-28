@@ -1,0 +1,76 @@
+# =================================================================================================================================
+# Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+# =================================================================================================================================
+pull_request_rules:
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label merged pull requests complete.
+  conditions:
+  - merged
+  actions:
+    comment:
+      message: This pull request is merged!
+    label:
+      add:
+      - Stage4-Complete
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Rejected
+      - Stage3-InProgress
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to and backport from master when the author is adamjstone.
+  conditions:
+  - author=adamjstone
+  - base=master
+  - status-success=['continuous-integration/appveyor/branch','continuous-integration/appveyor/pr']
+  actions:
+    backport:
+      branches: # List active hotfix and release branches here, along with develop.
+      # -------------------------------------------------------------------------------------------
+      - develop
+      - release/v1.0.25-preview1
+      - release/v1.0.26-preview1
+      # -------------------------------------------------------------------------------------------
+    comment:
+      message: Merging and backporting this pull request.
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Rejected
+      - Stage4-Complete
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to and backport from develop when the author is adamjstone or dependabot.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]
+  - base=develop
+  - status-success=['continuous-integration/appveyor/branch','continuous-integration/appveyor/pr']
+  actions:
+    backport:
+      branches: # List active feature branches here.
+      # -------------------------------------------------------------------------------------------
+      - feature/0007_rabbitmq-support
+      - feature/0012_structuremap-support
+      # -------------------------------------------------------------------------------------------
+    comment:
+      message: Merging and backporting this pull request.
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Rejected
+      - Stage4-Complete
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
