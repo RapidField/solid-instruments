@@ -20,8 +20,6 @@ pull_request_rules:
   conditions:
   - author=mergify[bot]
   actions:
-    assign:
-    - adamjstone
     label:
       add:
       - Category-Maintenance
@@ -35,8 +33,6 @@ pull_request_rules:
   - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
-    assign:
-    - adamjstone
     backport:
       branches: # List active hotfix and release branches here, along with develop.
       # -------------------------------------------------------------------------------------------
@@ -62,8 +58,6 @@ pull_request_rules:
   - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
-    assign:
-    - adamjstone
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
