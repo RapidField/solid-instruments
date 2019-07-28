@@ -23,7 +23,7 @@ pull_request_rules:
   conditions:
   - author=adamjstone
   - base=master
-  - status-success=['continuous-integration/appveyor/branch','continuous-integration/appveyor/pr']
+  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active hotfix and release branches here, along with develop.
@@ -51,7 +51,7 @@ pull_request_rules:
   conditions:
   - author~=^adamjstone|dependabot\[bot\]
   - base=develop
-  - status-success=['continuous-integration/appveyor/branch','continuous-integration/appveyor/pr']
+  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active feature branches here.
