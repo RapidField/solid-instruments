@@ -23,6 +23,11 @@ pull_request_rules:
   - merged
   - status-success=continuous-integration/appveyor/pr
   actions:
+<<<<<<< HEAD
+=======
+    comment:
+      message: This pull request is merged! (Testing Mergify)
+>>>>>>> 3e5663b... Testing Mergify.
     label:
       add:
       - Stage4-Complete
@@ -99,6 +104,24 @@ pull_request_rules:
       - develop
       - release/v1.0.25-preview1
       - release/v1.0.26-preview1
+<<<<<<< HEAD
+=======
+      # -------------------------------------------------------------------------------------------
+    comment:
+      message: Merging and backporting this pull request. (Testing Mergify)
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Rejected
+      - Stage4-Complete
+    merge:
+      method: merge
+      strict: true
+>>>>>>> 3e5663b... Testing Mergify.
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
@@ -112,6 +135,25 @@ pull_request_rules:
       # -------------------------------------------------------------------------------------------
       - feature/0007_rabbitmq-support
       - feature/0012_structuremap-support
+<<<<<<< HEAD
       - feature/0053_complex-string-extensions
       - feature/0055_complex-rng-extensions
 # ---------------------------------------------------------------------------------------------------------------------------------
+=======
+      # -------------------------------------------------------------------------------------------
+    comment:
+      message: Merging and backporting this pull request. (Testing Mergify)
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Rejected
+      - Stage4-Complete
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
+>>>>>>> 3e5663b... Testing Mergify.
