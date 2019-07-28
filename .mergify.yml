@@ -4,6 +4,7 @@
 # This file defines rules which govern the behavior of the Mergify bot when evaluating pull requests.
 # ---------------------------------------------------------------------------------------------------------------------------------
 pull_request_rules:
+<<<<<<< HEAD
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label new Dependabot pull requests.
   conditions:
@@ -27,6 +28,10 @@ pull_request_rules:
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label new Mergify pull requests.
+=======
+# --------------------------------------------------------------------------------------------------------------------------------- # test-2
+- name: Label merged pull requests.
+>>>>>>> 5cd8dc7... Testing Mergify (test-2).
   conditions:
   - author~=(^mergify.*$)
   - -closed
