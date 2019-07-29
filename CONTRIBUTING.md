@@ -23,9 +23,10 @@ By contributing to Solid Instruments you assert and agree that:
 
 Release versioning is controlled via the [appveyor.yml](appveyor.yml) file. Please do not submit pull requests that modify the build version. The Solid Instruments team manages release versioning.
 
-- - -
 <br />
 
+- - -
+
 ![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
+
+###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
