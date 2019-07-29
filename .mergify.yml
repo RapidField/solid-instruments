@@ -5,7 +5,6 @@ pull_request_rules:
 # --------------------------------------------------------------------------------------------------------------------------------- # test-2
 - name: Label merged pull requests.
   conditions:
-  - label=Stage3-InProgress
   - merged
   actions:
     comment:
@@ -20,19 +19,27 @@ pull_request_rules:
   conditions:
   - author=mergify[bot]
   actions:
+    assign:
+      users:
+      - adamjstone
     label:
       add:
       - Category-Maintenance
       - Stage0-New
       - Verdict-Pending
+    request_reviews:
+      users:
+      - adamjstone
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge and backport from master when the author is trusted.
   conditions:
   - author=adamjstone
   - base=master
-  - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
+    assign:
+      users:
+      - adamjstone
     backport:
       branches: # List active hotfix and release branches here, along with develop.
       # -------------------------------------------------------------------------------------------
@@ -50,14 +57,19 @@ pull_request_rules:
     merge:
       method: merge
       strict: true
+    request_reviews:
+      users:
+      - adamjstone
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge and backport from develop when the author is trusted.
   conditions:
   - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
   - base=develop
-  - label=Stage0-New
   - status-success=continuous-integration/appveyor/pr
   actions:
+    assign:
+      users:
+      - adamjstone
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
@@ -74,4 +86,30 @@ pull_request_rules:
     merge:
       method: merge
       strict: true
+    request_reviews:
+      users:
+      - adamjstone
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to feature and hotfix branches when the author is trusted.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - base~=^feature\/(.+)|hotfix\/(.+)
+  - status-success=continuous-integration/appveyor/pr
+  actions:
+    assign:
+      users:
+      - adamjstone
+    comment:
+      message: Merging this pull request.
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage0-New
+    merge:
+      method: merge
+      strict: true
+    request_reviews:
+      users:
+      - adamjstone
 # ---------------------------------------------------------------------------------------------------------------------------------
