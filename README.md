@@ -41,9 +41,10 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 | :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
 | 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
 | 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | --                                                                                                                        |
-- - -
 <br />
 
+- - -
+
 ![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
+
+###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
