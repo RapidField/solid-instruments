@@ -3,113 +3,102 @@
 # =================================================================================================================================
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label merged pull requests.
-  conditions:
-  - merged
-  actions:
-    comment:
-      message: This pull request has been merged!
-    label:
-      add:
-      - Stage4-Complete
-      remove:
-      - Stage3-InProgress
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label Mergify pull requests.
+- name: Label new Mergify pull requests.
   conditions:
   - author=mergify[bot]
+  - -closed
+  - -merged
   actions:
-    assign:
-      users:
-      - adamjstone
     label:
       add:
       - Category-Maintenance
       - Stage0-New
+      - Subcategory-Delivery
       - Verdict-Pending
-    request_reviews:
-      users:
-      - adamjstone
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge and backport from master when the author is trusted.
+- name: Label completed pull requests.
   conditions:
-  - author=adamjstone
-  - base=master
+  - closed
+  - label!=Stage4-Complete
+  - merged
   - status-success=continuous-integration/appveyor/pr
   actions:
-    assign:
-      users:
-      - adamjstone
+    label:
+      add:
+      - Stage4-Complete
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Deferred
+      - Stage2-Rejected
+      - Stage3-InProgress
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to master when the author is trusted.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - base=master
+  - -closed
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=continuous-integration/appveyor/pr
+  actions:
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to develop when the author is trusted.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - base=develop
+  - -closed
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=continuous-integration/appveyor/pr
+  actions:
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to feature and hotfix branches when the author is trusted.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - base~=^feature\/(.+)|hotfix\/(.+)
+  - -closed
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=continuous-integration/appveyor/pr
+  actions:
+    merge:
+      method: merge
+      strict: true
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Backport from master when the author is trusted.
+  conditions:
+  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - base=master
+  - merged
+  - status-success=continuous-integration/appveyor/pr
+  actions:
     backport:
       branches: # List active hotfix and release branches here, along with develop.
       # -------------------------------------------------------------------------------------------
       - develop
       - release/v1.0.25-preview1
       - release/v1.0.26-preview1
-      # -------------------------------------------------------------------------------------------
-    comment:
-      message: Merging and backporting this pull request.
-    label:
-      add:
-      - Stage3-InProgress
-      remove:
-      - Stage0-New
-    merge:
-      method: merge
-      strict: true
-    request_reviews:
-      users:
-      - adamjstone
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge and backport from develop when the author is trusted.
+- name: Backport from develop when the author is trusted.
   conditions:
   - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
   - base=develop
+  - merged
   - status-success=continuous-integration/appveyor/pr
   actions:
-    assign:
-      users:
-      - adamjstone
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
       - feature/0007_rabbitmq-support
       - feature/0012_structuremap-support
-      # -------------------------------------------------------------------------------------------
-    comment:
-      message: Merging and backporting this pull request.
-    label:
-      add:
-      - Stage3-InProgress
-      remove:
-      - Stage0-New
-    merge:
-      method: merge
-      strict: true
-    request_reviews:
-      users:
-      - adamjstone
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to feature and hotfix branches when the author is trusted.
-  conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
-  - base~=^feature\/(.+)|hotfix\/(.+)
-  - status-success=continuous-integration/appveyor/pr
-  actions:
-    assign:
-      users:
-      - adamjstone
-    comment:
-      message: Merging this pull request.
-    label:
-      add:
-      - Stage3-InProgress
-      remove:
-      - Stage0-New
-    merge:
-      method: merge
-      strict: true
-    request_reviews:
-      users:
-      - adamjstone
+      - feature/0053_complex-string-extensions
+      - feature/0055_complex-rng-extensions
 # ---------------------------------------------------------------------------------------------------------------------------------
