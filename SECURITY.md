@@ -20,3 +20,10 @@ The Solid Instruments versions listed below are currently supported with securit
 ## Reporting a vulnerability
 
 TODO
+
+- - -
+<br />
+
+![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
+<br /><br />
+Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
