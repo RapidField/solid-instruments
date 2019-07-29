@@ -2,25 +2,8 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 pull_request_rules:
-<<<<<<< HEAD
-# --------------------------------------------------------------------------------------------------------------------------------- # test-2
-- name: Label merged pull requests.
-  conditions:
-  - merged
-  actions:
-    comment:
-      message: This pull request has been merged!
-    label:
-      add:
-      - Stage4-Complete
-      remove:
-      - Stage3-InProgress
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label Mergify pull requests.
-=======
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label new Mergify pull requests.
->>>>>>> b4d2d10... Fixing issues with Mergify.
   conditions:
   - author=mergify[bot]
   - -closed
@@ -53,7 +36,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to master when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
   - base=master
   - -closed
   - label!=Stage2-Rejected
@@ -62,11 +45,11 @@ pull_request_rules:
   actions:
     merge:
       method: merge
-      strict: true
+      strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to develop when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
   - base=develop
   - -closed
   - label!=Stage2-Rejected
@@ -75,11 +58,11 @@ pull_request_rules:
   actions:
     merge:
       method: merge
-      strict: true
+      strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to feature and hotfix branches when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
   - base~=^feature\/(.+)|hotfix\/(.+)
   - -closed
   - label!=Stage2-Rejected
@@ -88,11 +71,24 @@ pull_request_rules:
   actions:
     merge:
       method: merge
-      strict: true
+      strict: smart
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to feature and hotfix branches when reviewed and approved.
+  conditions:
+  - "#approved-reviews-by>=1"
+  - base~=^feature\/(.+)|hotfix\/(.+)
+  - -closed
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=continuous-integration/appveyor/pr
+  actions:
+    merge:
+      method: merge
+      strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from master when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
   - base=master
   - merged
   - status-success=continuous-integration/appveyor/pr
@@ -106,7 +102,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
-  - author~=^adamjstone|dependabot\[bot\]|mergify\[bot\]
+  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
   - base=develop
   - merged
   - status-success=continuous-integration/appveyor/pr
