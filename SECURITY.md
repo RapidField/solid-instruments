@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Security Policy
 
-For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The Solid Instruments team actively addresses security issues. All supported versions of Solid Instruments receive security updates.
 
 ## Supported versions
 
@@ -19,7 +19,7 @@ The Solid Instruments versions listed below are currently supported with securit
 
 ## Reporting a vulnerability
 
-TODO
+To report a suspected or known vulnerability, contact [security@rapidfield.com](mailto:security@rapidfield.com). Do not open a GitHub issue to report a vulnerability. When in doubt, contact [security@rapidfield.com](mailto:security@rapidfield.com).
 
 - - -
 <br />
