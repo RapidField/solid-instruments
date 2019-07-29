@@ -1,4 +1,13 @@
+<!--
+Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+-->
+
+![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
+- - -
+
 # Security Policy
+
+For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Supported versions
 
