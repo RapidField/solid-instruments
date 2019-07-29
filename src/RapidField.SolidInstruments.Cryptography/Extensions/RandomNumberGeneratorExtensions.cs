@@ -1667,48 +1667,13 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             var characterEncoding = permitNonLatin ? Encoding.Unicode : Encoding.ASCII;
             var characterByteLength = permitNonLatin ? UnicodeCharByteLength : AsciiCharByteLength;
-            var binaryBuffer = new Byte[characterByteLength * CharacterBufferLengthMultiplier];
-            var singlePassIterationCount = (binaryBuffer.Length - characterByteLength);
+            var buffer = new Byte[characterByteLength * CharacterBufferLengthMultiplier];
+            var singlePassIterationCount = (buffer.Length - characterByteLength);
+            target.GetBytes(buffer);
 
-            while (true)
+            while (PermuteCharacterGeneration(buffer, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) == false)
             {
-                target.GetBytes(binaryBuffer);
-
-                for (var i = 0; i < singlePassIterationCount; i++)
-                {
-                    if (permitNonLatin == false && binaryBuffer[i] > 0x7f)
-                    {
-                        // 0x7f is the last valid ASCII character.
-                        continue;
-                    }
-
-                    randomValue = characterEncoding.GetChars(binaryBuffer, i, characterByteLength).First();
-
-                    if (permitLowercaseAlphabetic && randomValue.IsLowercaseAlphabetic())
-                    {
-                        return;
-                    }
-                    else if (permitUppercaseAlphabetic && randomValue.IsUppercaseAlphabetic())
-                    {
-                        return;
-                    }
-                    else if (permitNumeric && randomValue.IsNumeric())
-                    {
-                        return;
-                    }
-                    else if (permitSymbolic && randomValue.IsSymbolic())
-                    {
-                        return;
-                    }
-                    else if (permitWhiteSpace && randomValue.IsWhiteSpaceCharacter())
-                    {
-                        return;
-                    }
-                    else if (permitControl && randomValue.IsControlCharacter())
-                    {
-                        return;
-                    }
-                }
+                target.GetBytes(buffer);
             }
         }
 
@@ -2245,6 +2210,79 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             var range = BigInteger.Subtract(new BigInteger(ceiling), new BigInteger(floor));
             GenerateRangePosition(target, (Decimal)range, out var rangePosition);
             randomValue = Convert.ToUInt64(floor + rangePosition.RoundedTo(0));
+        }
+
+        /// <summary>
+        /// Executes a single pass of the character generation operation.
+        /// </summary>
+        /// <param name="buffer">
+        /// A buffer containing the randomly-generated character bytes.
+        /// </param>
+        /// <param name="iterationCount">
+        /// The number of iterations to execute.
+        /// </param>
+        /// <param name="characterByteLength">
+        /// The length of a single character, in bytes.
+        /// </param>
+        /// <param name="characterEncoding">
+        /// The text encoding to use.
+        /// </param>
+        /// <param name="permitNonLatin">
+        /// A value indicating whether or not the value can be a non-Latin Unicode character.
+        /// </param>
+        /// <param name="permitLowercaseAlphabetic">
+        /// A value indicating whether or not the value can be a Unicode lowercase alphabetic character.
+        /// </param>
+        /// <param name="permitUppercaseAlphabetic">
+        /// A value indicating whether or not the value can be an Unicode uppercase alphabetic character.
+        /// </param>
+        /// <param name="permitNumeric">
+        /// A value indicating whether or not the value can be a Unicode numeric character (0 - 9).
+        /// </param>
+        /// <param name="permitSymbolic">
+        /// A value indicating whether or not the value can be a Unicode symbolic character.
+        /// </param>
+        /// <param name="permitWhiteSpace">
+        /// A value indicating whether or not the value can be a Unicode white space character.
+        /// </param>
+        /// <param name="permitControl">
+        /// A value indicating whether or not the value can be a Unicode control character.
+        /// </param>
+        /// <param name="randomValue">
+        /// The generated random <see cref="Char" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the random character was generated successfully, otherwise <see langword="false" />.
+        /// </returns>
+        [DebuggerHidden]
+        private static Boolean PermuteCharacterGeneration(Byte[] buffer, Int32 iterationCount, Int32 characterByteLength, Encoding characterEncoding, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl, out Char randomValue)
+        {
+            var operationIsSuccessful = false;
+
+            for (var i = 0; i < iterationCount; i++)
+            {
+                if (permitNonLatin == false && buffer[i] > 0x7f)
+                {
+                    // 0x7f is the last valid ASCII character.
+                    continue;
+                }
+
+                randomValue = characterEncoding.GetChars(buffer, i, characterByteLength).First();
+                operationIsSuccessful = operationIsSuccessful || (permitLowercaseAlphabetic && randomValue.IsLowercaseAlphabetic());
+                operationIsSuccessful = operationIsSuccessful || (permitUppercaseAlphabetic && randomValue.IsUppercaseAlphabetic());
+                operationIsSuccessful = operationIsSuccessful || (permitNumeric && randomValue.IsNumeric());
+                operationIsSuccessful = operationIsSuccessful || (permitSymbolic && randomValue.IsSymbolic());
+                operationIsSuccessful = operationIsSuccessful || (permitWhiteSpace && randomValue.IsWhiteSpaceCharacter());
+                operationIsSuccessful = operationIsSuccessful || (permitControl && randomValue.IsControlCharacter());
+
+                if (operationIsSuccessful)
+                {
+                    return true;
+                }
+            }
+
+            randomValue = default;
+            return operationIsSuccessful;
         }
 
         /// <summary>
