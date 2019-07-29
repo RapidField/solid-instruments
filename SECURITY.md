@@ -21,9 +21,10 @@ The Solid Instruments versions listed below are currently supported with securit
 
 To report a suspected or known vulnerability, contact [security@rapidfield.com](mailto:security@rapidfield.com). Do not open a GitHub issue to report a vulnerability. When in doubt, contact [security@rapidfield.com](mailto:security@rapidfield.com).
 
-- - -
 <br />
 
+- - -
+
 ![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
+
+###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
