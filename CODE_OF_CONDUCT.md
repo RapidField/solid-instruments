@@ -27,7 +27,6 @@ advice from more senior members of the team.
 
 Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
-<br />
 - - -
 <br />
 
