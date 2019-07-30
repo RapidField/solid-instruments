@@ -5,8 +5,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
 ## About
 
@@ -40,10 +40,11 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 | Version         | Notes                               | Branch                                                                                       |
 | :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
 | 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
-| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.23-preview1) |
-- - -
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | --                                                                                                                        |
 <br />
 
+- - -
+
 ![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
+
+###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
