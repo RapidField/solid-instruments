@@ -36,7 +36,7 @@ Import-Module $FilePathForDevelopmentToolsModule -Force;
 # Build
 # =================================================================================================================================
 
-Task Build-All -Alias ba -Depends Clean-All, Restore-Dependencies, Build-Debug, Build-Release
+Task Build-All -Alias ba -Depends Build-Debug, Build-Release
 Task Build-Debug -Alias bd -Depends Clean-Debug, Restore-Dependencies { BuildDebug }
 Task Build-Release -Alias br -Depends Clean-Release, Restore-Dependencies { BuildRelease }
 
@@ -75,6 +75,12 @@ Task Stop-All -Alias sa { StopAllApplications }
 # Test
 # =================================================================================================================================
 
-Task Test-All -Alias ta -Depends Build-All, Test-Debug, Test-Release
+Task Test-All -Alias ta -Depends Test-Debug, Test-Release
 Task Test-Debug -Alias td -Depends Build-Debug { TestDebug }
 Task Test-Release -Alias tr -Depends Build-Release { TestRelease }
+
+# Verify
+# =================================================================================================================================
+
+Task Verify-All -Alias va -Depends Test-All
+Task Verify-Fast -Alias vf -Depends Test-Release
