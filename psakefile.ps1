@@ -80,5 +80,3 @@ Task Test-Release -Alias tr -Depends Build-Release { TestRelease }
 # =================================================================================================================================
 
 Task Verify -Alias v -Depends Test-Release
-Task Verify-All -Alias va -Depends Test-Release
-Task Verify-Fast -Alias vf -Depends Test-Release
