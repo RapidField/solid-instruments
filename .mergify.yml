@@ -112,6 +112,4 @@ pull_request_rules:
       # -------------------------------------------------------------------------------------------
       - feature/0007_rabbitmq-support
       - feature/0012_structuremap-support
-      - feature/0053_complex-string-extensions
-      - feature/0055_complex-rng-extensions
 # ---------------------------------------------------------------------------------------------------------------------------------
