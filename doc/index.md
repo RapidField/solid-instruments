@@ -37,4 +37,5 @@ Solid Instruments is a collection of free, open-source .NET libraries. It was cr
 
 | Version         | Notes                           | Branch                                                                                       |
 | :-------------- | :------------------------------ | :------------------------------------------------------------------------------------------- |
-| 1.0.23-preview1 | [Read](releasenotes/v1.0.23.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.23-preview1) |
+| 1.0.24-preview1 | [Read](releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
+| 1.0.23-preview1 | [Read](releasenotes/v1.0.23.md) | --                                                                                                                            |
