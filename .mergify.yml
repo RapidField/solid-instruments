@@ -5,7 +5,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label new Dependabot pull requests.
   conditions:
-  - author=dependabot[bot]
+  - author~=(^dependabot.*$)
   - -closed
   - label!=Stage0-New
   - label!=Stage1-UnderReview
@@ -26,7 +26,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label new Mergify pull requests.
   conditions:
-  - author=mergify[bot]
+  - author~=(^mergify.*$)
   - -closed
   - label!=Stage0-New
   - label!=Stage1-UnderReview
@@ -63,7 +63,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label backported Mergify pull requests.
   conditions:
-  - author=mergify[bot]
+  - author~=(^mergify.*$)
   - closed
   - label=Stage4-Complete
   - merged
@@ -78,7 +78,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to master when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
   - -closed
   - label!=Stage2-Rejected
@@ -91,7 +91,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to develop when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
   - -closed
   - label!=Stage2-Rejected
@@ -104,7 +104,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to feature and hotfix branches when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base~=^feature\/(.+)|hotfix\/(.+)
   - -closed
   - label!=Stage2-Rejected
@@ -130,7 +130,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from master when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
   - merged
   - status-success=continuous-integration/appveyor/pr
@@ -144,7 +144,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
   - merged
   - status-success=continuous-integration/appveyor/pr
