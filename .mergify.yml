@@ -3,17 +3,44 @@
 # =================================================================================================================================
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label new Mergify pull requests.
+- name: Label new Dependabot pull requests.
   conditions:
-  - author=mergify[bot]
+  - author=dependabot[bot]
   - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
   - -merged
   actions:
     label:
       add:
       - Category-Maintenance
       - Stage0-New
-      - Subcategory-Delivery
+      - Subcategory-Dependencies
+      - Tag-AddReleaseNote
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label new Mergify pull requests.
+  conditions:
+  - author=mergify[bot]
+  - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
+  - -merged
+  actions:
+    label:
+      add:
+      - Category-Maintenance
+      - Stage0-New
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed pull requests.
@@ -33,6 +60,21 @@ pull_request_rules:
       - Stage2-Deferred
       - Stage2-Rejected
       - Stage3-InProgress
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label backported Mergify pull requests.
+  conditions:
+  - author=mergify[bot]
+  - closed
+  - label=Stage4-Complete
+  - merged
+  - status-success=continuous-integration/appveyor/pr
+  - title~=(^.*\(bp .*\)$)
+  actions:
+    label:
+      add:
+      - Verdict-Relayed
+      remove:
+      - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to master when the author is trusted.
   conditions:
