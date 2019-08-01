@@ -294,7 +294,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{8A8C
 	ProjectSection(SolutionItems) = preProject
 		cicd\modules\AutomationTools.psm1 = cicd\modules\AutomationTools.psm1
 		cicd\modules\BuildAndDeployment.psm1 = cicd\modules\BuildAndDeployment.psm1
-		cicd\modules\DevelopmentTools.psm1 = cicd\modules\DevelopmentTools.psm1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213A8C5-E32C-4DEE-B872-7E50E27F9B5A}"
