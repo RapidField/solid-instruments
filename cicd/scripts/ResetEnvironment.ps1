@@ -13,7 +13,6 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
-$FileNameForDevelopmentToolsModule = "DevelopmentTools.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -24,14 +23,12 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 # File paths
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
-$FilePathForDevelopmentToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForDevelopmentToolsModule";
 
 # Modules
 # =================================================================================================================================
 
 Import-Module $FilePathForAutomationToolsModule -Force;
 Import-Module $FilePathForBuildAndDeploymentModule -Force;
-Import-Module $FilePathForDevelopmentToolsModule -Force;
 
 # Script execution
 # =================================================================================================================================
@@ -47,7 +44,6 @@ Else {
     $CurrentInvocationPath = $MyInvocation.MyCommand.Path;
     $CurrentInvocationArguments = $MyInvocation.UnboundArguments;
     Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList "-File `"$CurrentInvocationPath`" $CurrentInvocationArguments";
-    RestoreAllDevelopmentTools;
     Exit;
 }
 
