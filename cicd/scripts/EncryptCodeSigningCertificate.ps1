@@ -13,7 +13,6 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
-$FileNameForDevelopmentToolsModule = "DevelopmentTools.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -24,7 +23,6 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 # File paths
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
-$FilePathForDevelopmentToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForDevelopmentToolsModule";
 
 # Replace the with the real key before running the script. Revert before committing any changes.
 $Key = "REPLACE-ME";
@@ -34,7 +32,6 @@ $Key = "REPLACE-ME";
 
 Import-Module $FilePathForAutomationToolsModule -Force;
 Import-Module $FilePathForBuildAndDeploymentModule -Force;
-Import-Module $FilePathForDevelopmentToolsModule -Force;
 
 # Script execution
 # =================================================================================================================================
