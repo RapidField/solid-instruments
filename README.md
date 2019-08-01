@@ -45,6 +45,8 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 
 - - -
 
+<br />
+
 ![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
