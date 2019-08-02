@@ -7,7 +7,7 @@ summary: *content
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-Exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.
+Exposes the Autofac implementation of the **Solid Instruments** inversion of control abstraction.
 
 <br />
 
@@ -16,7 +16,7 @@ Exposes the Autofac implementation of Solid Instrument's inversion of control ab
 
 ### Installation
 
-This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
 ###### .NET CLI
 
@@ -35,5 +35,5 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.Autofac
 #### [RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions.html)
 
 <section>
-Exposes extensions that support the Autofac implementation of Solid Instrument's inversion of control abstraction.
+Exposes extensions that support the Autofac implementation of the Solid Instruments inversion of control abstraction.
 </section>
