@@ -4,15 +4,15 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Quick Start Guide
 
-Getting started with Solid Instruments is easy. This guide will help you incorporate the libraries and begin using them right away.
+Getting started with **Solid Instruments** is easy. This guide will help you incorporate the libraries and begin using them right away.
 
 ### About
 
-Solid Instruments is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
+**Solid Instruments** is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
 ### Get Started
 
-Solid Instruments is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Choose the libraries below that you want to import, then execute the associated commands using the [.NET CLI](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) or the [NuGet Package Manager console](https://docs.microsoft.com/en-us/nuget/tools/package-manager-console) to download and install them.
+**Solid Instruments** is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Choose the libraries below that you want to import, then execute the associated commands using the [.NET CLI](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) or the [NuGet Package Manager console](https://docs.microsoft.com/en-us/nuget/tools/package-manager-console) to download and install them.
 
 <br />
 
@@ -172,7 +172,7 @@ Install-Package RapidField.SolidInstruments.EventAuthoring
 #### [RapidField.SolidInstruments.InversionOfControl.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.html)
 
 <section>
-Exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.
+Exposes the Autofac implementation of the Solid Instruments inversion of control abstraction.
 </section>
 
 <br />
@@ -194,7 +194,7 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.Autofac
 #### [RapidField.SolidInstruments.InversionOfControl.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html)
 
 <section>
-Exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.
+Exposes the native .NET implementation of the Solid Instruments inversion of control abstraction.
 </section>
 
 <br />
