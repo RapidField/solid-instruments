@@ -14,7 +14,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## Features
 
-The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [quick start guide](https://solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
+The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
 
 <br />
 
@@ -56,6 +56,6 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 
 <br />
 
-![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
+[![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
