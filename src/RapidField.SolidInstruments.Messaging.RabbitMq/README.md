@@ -13,11 +13,19 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## About
 
-This library provides RabbitMQ implementations of the Solid Instruments messaging abstractions.
+This library provides [**RabbitMQ**](https://www.rabbitmq.com/) implementations of the **Solid Instruments** messaging abstractions.
+
+## Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.RabbitMq.html) for more information.
+
+## License
+
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
 
 ## Installation
 
-This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
 ###### .NET CLI
 
@@ -31,13 +39,12 @@ dotnet add package RapidField.SolidInstruments.Messaging.RabbitMq
 Install-Package RapidField.SolidInstruments.Messaging.RabbitMq
 ```
 
-## Documentation
-
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.RabbitMq.html) for more information.
+<br />
 
 - - -
+
 <br />
 
 ![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
+
+###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
