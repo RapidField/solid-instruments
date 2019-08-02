@@ -14,6 +14,13 @@ Solid Instruments is a single-sourced, loosely-coupled collection of .NET librar
 
 ## Features
 
+<<<<<<< HEAD
+=======
+The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
+
+<br />
+
+>>>>>>> 2d8ba55... Fixing hyperlinks throughout documentation.
 [![Collections label](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
 [![Command label](src/RapidField.SolidInstruments.Command/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
 [![Core label](src/RapidField.SolidInstruments.Core/Label.Core.300w.png)](src/RapidField.SolidInstruments.Core/README.md)
@@ -47,6 +54,6 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 
 <br />
 
-![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
+[![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
