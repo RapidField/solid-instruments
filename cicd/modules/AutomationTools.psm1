@@ -30,6 +30,7 @@ $InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/v5.1.0/$
 
 # Chocolatey package names
 $ChoclateyPackageNameForDocFx = "docfx";
+$ChoclateyPackageNameForHub = "hub";
 $ChoclateyPackageNameForLeanify = "leanify";
 $ChoclateyPackageNameForNodeJs = "nodejs";
 $ChoclateyPackageNameForOpenSsl = "openssl.light";
@@ -39,11 +40,13 @@ $ChoclateyPackageNameForPsake = "psake";
 $NpmPackageNameForHtmlMinifier = "html-minifier";
 
 # Powershell package names
+$PowershellModuleNameForPoshGit = "posh-git";
 $PowershellModuleNameForPowershellYaml = "powershell-yaml";
 
 # Command names
 $CommandNameForChocolatey = "choco";
 $CommandNameForHtmlMinifier = "html-minifier";
+$CommandNameForHub = "hub";
 $CommandNameForNpm = "npm";
 $CommandNameForNuGet = "nuget";
 $CommandNameForOpenSsl = "openssl";
@@ -52,11 +55,13 @@ $CommandNameForOpenSsl = "openssl";
 $SuppressInstallationOfChocolatey = $false;
 $SuppressInstallationOfDocFx = $false;
 $SuppressInstallationOfHtmlMinifier = $false;
+$SuppressInstallationOfHub = $true;
 $SuppressInstallationOfLeanify = $true;
 $SuppressInstallationOfNodeJs = $false;
 $SuppressInstallationOfNuGet = $false;
 $SuppressInstallationOfOpenSsl = $true;
 $SuppressInstallationOfPackageManagers = $false;
+$SuppressInstallationOfPoshGit = $true;
 $SuppressInstallationOfPowershellYaml = $false;
 $SuppressInstallationOfPsake = $false;
 
@@ -75,6 +80,10 @@ function GetHtmlMinifierInstallationStatus {
     return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
 }
 
+function GetHubInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForHub") });
+}
+
 function GetLeanifyInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") });
 }
@@ -89,6 +98,10 @@ function GetNuGetInstallationStatus {
 
 function GetOpenSslInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
+}
+
+function GetPoshGitInstallationStatus {
+    return Get-Module -ListAvailable -Name "$PowershellModuleNameForPoshGit";
 }
 
 function GetPowershellYamlInstallationStatus {
@@ -107,8 +120,10 @@ function InstallAllAutomationTools {
     InstallPackageManagers;
     InstallDocFx;
     InstallHtmlMinifier;
+    InstallHub;
     InstallLeanify;
     InstallOpenSsl;
+    InstallPoshGit;
     InstallPowershellYaml;
     InstallPsake;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n";
@@ -160,6 +175,22 @@ function InstallHtmlMinifier {
     npm install $NpmPackageNameForHtmlMinifier -g --loglevel error
     MakeCommandPathAvailableAll -Command $CommandNameForHtmlMinifier;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing HTMLMinifier. <<<`n";
+}
+
+function InstallHub {
+    If ($SuppressInstallationOfHub -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing installation of hub.";
+        return;
+    }
+    ElseIf (GetHubInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "hub is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing hub.";
+    choco install $ChoclateyPackageNameForHub -y --confirm
+    MakeCommandPathAvailableAll -Command $CommandNameForHub;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing hub. <<<`n";
 }
 
 function InstallLeanify {
@@ -239,6 +270,21 @@ function InstallPackageManagers {
     InstallNodeJs;
     InstallNuGet;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing package managers. <<<`n";
+}
+
+function InstallPoshGit {
+    If ($SuppressInstallationOfPowershellYaml -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing installation of posh-git.";
+        return;
+    }
+    ElseIf (GetPoshGitInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "posh-git is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing posh-git.";
+    Install-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing posh-git. <<<`n";
 }
 
 function InstallPowershellYaml {
@@ -370,6 +416,13 @@ function RestoreHtmlMinifier {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring HTMLMinifier. <<<`n";
 }
 
+function RestoreHtmlMinifier {
+    Write-Host -ForegroundColor DarkCyan "Restoring hub.";
+    UninstallHub;
+    InstallHub;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring hub. <<<`n";
+}
+
 function RestoreLeanify {
     Write-Host -ForegroundColor DarkCyan "Restoring Leanify.";
     UninstallLeanify;
@@ -398,6 +451,13 @@ function RestoreOpenSsl {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring OpenSSL. <<<`n";
 }
 
+function RestorePoshGit {
+    Write-Host -ForegroundColor DarkCyan "Restoring posh-git.";
+    UninstallPoshGit;
+    InstallPoshGit;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring posh-git. <<<`n";
+}
+
 function RestorePowershellYaml {
     Write-Host -ForegroundColor DarkCyan "Restoring powershell-yaml.";
     UninstallPowershellYaml;
@@ -419,8 +479,10 @@ function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools.";
     UninstallDocFx;
     UninstallHtmlMinifier;
+    UninstallHub;
     UninstallLeanify;
     UninstallOpenSsl;
+    UninstallPoshGit;
     UninstallPowershellYaml;
     UninstallPsake;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n";
@@ -438,6 +500,14 @@ function UninstallHtmlMinifier {
     Write-Host -ForegroundColor DarkCyan "Uninstalling HTMLMinifier.";
     npm uninstall $NpmPackageNameForHtmlMinifier -g --loglevel error
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling HTMLMinifier. <<<`n";
+}
+
+function UninstallHub {
+    If (GetLeanifyInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling hub.";
+        choco uninstall $ChoclateyPackageNameForHub -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling hub. <<<`n";
+    }
 }
 
 function UninstallLeanify {
@@ -469,6 +539,14 @@ function UninstallOpenSsl {
         Write-Host -ForegroundColor DarkCyan "Uninstalling OpenSSL.";
         choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenSSL. <<<`n";
+    }
+}
+
+function UninstallPoshGit {
+    If (GetPowershellYamlInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling posh-git.";
+        Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling posh-git. <<<`n";
     }
 }
 
