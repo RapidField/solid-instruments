@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # API Reference
 
-This page indexes the complete Solid Instruments API reference documentation. Beginning users should review the [Quick Start Guide](../articles/QuickStartGuide.md).
+This page indexes the complete **Solid Instruments** API reference documentation. Beginning users should review the [Quick Start Guide](../articles/QuickStartGuide.md).
 
 ### Libraries
 - - -
@@ -60,13 +60,13 @@ Defines a pattern for abstracting dependency injection tools.
 #### [RapidField.SolidInstruments.InversionOfControl.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.html)
 
 <section>
-Exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.
+Exposes the Autofac implementation of the Solid Instruments inversion of control abstraction.
 </section>
 
 #### [RapidField.SolidInstruments.InversionOfControl.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html)
 
 <section>
-Exposes the native .NET implementation of Solid Instrument's inversion of control abstraction.
+Exposes the native .NET implementation of the Solid Instruments inversion of control abstraction.
 </section>
 
 #### [RapidField.SolidInstruments.Mathematics](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Mathematics.html)
