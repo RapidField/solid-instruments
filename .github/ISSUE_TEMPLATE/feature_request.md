@@ -8,7 +8,7 @@ assignees: adamjstone
 
 # Feature Request
 
-This issue represents a request for new Solid Instruments functionality.
+This issue represents a request for new **Solid Instruments** functionality.
 
 ## Overview
 

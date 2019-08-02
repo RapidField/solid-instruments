@@ -8,7 +8,7 @@ assignees: adamjstone
 
 # Defect Report
 
-This issue represents an unresolved problem that a user is experiencing while using Solid Instruments.
+This issue represents an unresolved problem that a user is experiencing while using **Solid Instruments**.
 
 ## Overview
 

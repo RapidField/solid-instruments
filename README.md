@@ -10,9 +10,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## About
 
-Solid Instruments is a single-sourced, loosely-coupled collection of .NET libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
+**Solid Instruments** is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
 ## Features
+
+The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [quick start guide](https://solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
+
+<br />
 
 [![Collections label](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
 [![Command label](src/RapidField.SolidInstruments.Command/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
@@ -29,6 +33,10 @@ Solid Instruments is a single-sourced, loosely-coupled collection of .NET librar
 [![Signal Processing label](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
 [![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
+## License
+
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](LICENSE.txt) for more information.
+
 ## Contributing
 
 Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
@@ -40,7 +48,8 @@ Before beginning work please read [the guide](CONTRIBUTING.md). For questions, c
 | Version         | Notes                               | Branch                                                                                       |
 | :-------------- | :---------------------------------- | :------------------------------------------------------------------------------------------- |
 | 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://www.github.com/RapidField/solid-instruments/tree/release/v1.0.24-preview1) |
-| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | --                                                                                                                        |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | --                                                                                           |
+
 <br />
 
 - - -
