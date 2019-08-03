@@ -76,10 +76,10 @@ pull_request_rules:
       remove:
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to master when the author is trusted.
+- name: Merge to eligible branches when the author is trusted.
   conditions:
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
-  - base=master
+  - base~=(^master$)|(^develop$)|(^release\/(.+)$)|(^feature\/(.+)$)|(^hotfix\/(.+)$)
   - -closed
   - label!=Stage2-Rejected
   - -merged
@@ -89,36 +89,10 @@ pull_request_rules:
       method: merge
       strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to develop when the author is trusted.
-  conditions:
-  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
-  - base=develop
-  - -closed
-  - label!=Stage2-Rejected
-  - -merged
-  - status-success=continuous-integration/appveyor/pr
-  actions:
-    merge:
-      method: merge
-      strict: smart
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to feature and hotfix branches when the author is trusted.
-  conditions:
-  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
-  - base~=^feature\/(.+)|hotfix\/(.+)
-  - -closed
-  - label!=Stage2-Rejected
-  - -merged
-  - status-success=continuous-integration/appveyor/pr
-  actions:
-    merge:
-      method: merge
-      strict: smart
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to feature and hotfix branches when reviewed and approved.
+- name: Merge to eligible branches when reviewed and approved.
   conditions:
   - "#approved-reviews-by>=1"
-  - base~=^feature\/(.+)|hotfix\/(.+)
+  - base~=(^feature\/(.+)$)|(^hotfix\/(.+)$)
   - -closed
   - label!=Stage2-Rejected
   - -merged
