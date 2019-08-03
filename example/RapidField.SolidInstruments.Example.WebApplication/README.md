@@ -5,11 +5,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 - - -
 
-## Example web application
+[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 
-<<<<<<< HEAD
-This project serves as a sample web application that employs the Solid Instruments dependency injection abstractions. Refer to [the project root documentation](../../README.md) for more information.
-=======
 ## About
 
 This project serves as a sample web application that employs the **Solid Instruments** [dependency injection](../../src/RapidField.SolidInstruments.InversionOfControl/README.md) abstractions.
@@ -23,17 +21,11 @@ This project serves as a sample web application that employs the **Solid Instrum
 Check out the [root project documentation](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
 
 <br />
->>>>>>> 2d8ba55... Fixing hyperlinks throughout documentation.
 
 - - -
+
 <br />
 
-<<<<<<< HEAD
-![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
-=======
 [![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
->>>>>>> 2d8ba55... Fixing hyperlinks throughout documentation.

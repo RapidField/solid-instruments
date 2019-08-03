@@ -7,11 +7,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Security Policy
 
-The Solid Instruments team actively addresses security issues. All supported versions of Solid Instruments receive security updates.
+The **Solid Instruments** team actively addresses security issues. All supported versions receive security updates.
 
 ## Supported versions
 
-The Solid Instruments versions listed below are currently supported with security updates.
+The versions listed below are currently supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -25,12 +25,8 @@ To report a suspected or known vulnerability, contact [security@rapidfield.com](
 
 - - -
 
-<<<<<<< HEAD
-![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)
-=======
 <br />
 
 [![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
->>>>>>> 2d8ba55... Fixing hyperlinks throughout documentation.
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.

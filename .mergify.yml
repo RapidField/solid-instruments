@@ -3,17 +3,44 @@
 # =================================================================================================================================
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label new Mergify pull requests.
+- name: Label new Dependabot pull requests.
   conditions:
-  - author=mergify[bot]
+  - author~=(^dependabot.*$)
   - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
   - -merged
   actions:
     label:
       add:
       - Category-Maintenance
       - Stage0-New
-      - Subcategory-Delivery
+      - Subcategory-Dependencies
+      - Tag-AddReleaseNote
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label new Mergify pull requests.
+  conditions:
+  - author~=(^mergify.*$)
+  - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
+  - -merged
+  actions:
+    label:
+      add:
+      - Category-Maintenance
+      - Stage0-New
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed pull requests.
@@ -34,9 +61,24 @@ pull_request_rules:
       - Stage2-Rejected
       - Stage3-InProgress
 # ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label backported Mergify pull requests.
+  conditions:
+  - author~=(^mergify.*$)
+  - closed
+  - label=Stage4-Complete
+  - merged
+  - status-success=continuous-integration/appveyor/pr
+  - title~=(^.*\(bp .*\)$)
+  actions:
+    label:
+      add:
+      - Verdict-Relayed
+      remove:
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to master when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
   - -closed
   - label!=Stage2-Rejected
@@ -49,7 +91,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to develop when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
   - -closed
   - label!=Stage2-Rejected
@@ -62,7 +104,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Merge to feature and hotfix branches when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base~=^feature\/(.+)|hotfix\/(.+)
   - -closed
   - label!=Stage2-Rejected
@@ -88,7 +130,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from master when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
   - merged
   - status-success=continuous-integration/appveyor/pr
@@ -102,7 +144,7 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
   - merged
   - status-success=continuous-integration/appveyor/pr
@@ -112,6 +154,4 @@ pull_request_rules:
       # -------------------------------------------------------------------------------------------
       - feature/0007_rabbitmq-support
       - feature/0012_structuremap-support
-      - feature/0053_complex-string-extensions
-      - feature/0055_complex-rng-extensions
 # ---------------------------------------------------------------------------------------------------------------------------------

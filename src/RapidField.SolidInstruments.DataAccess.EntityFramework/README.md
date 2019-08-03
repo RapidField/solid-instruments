@@ -13,11 +13,19 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## About
 
-This library provides Entity Framework implementations of the Solid Instruments data access abstractions.
+This library provides [**Entity Framework**](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ef/overview) implementations of the **Solid Instruments** data access abstractions.
+
+## Documentation
+
+Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for more information.
+
+## License
+
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
 
 ## Installation
 
-This library is available via [NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
+This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
 ###### .NET CLI
 
@@ -30,19 +38,13 @@ dotnet add package RapidField.SolidInstruments.DataAccess.EntityFramework
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess.EntityFramework
 ```
-## Documentation
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for more information.
-
-- - -
 <br />
 
-<<<<<<< HEAD
-![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)
-<br /><br />
-Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
-=======
+- - -
+
+<br />
+
 [![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
->>>>>>> 2d8ba55... Fixing hyperlinks throughout documentation.
