@@ -48,7 +48,6 @@ pull_request_rules:
   - closed
   - label!=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     label:
       add:
@@ -66,8 +65,8 @@ pull_request_rules:
   - author~=(^mergify.*$)
   - closed
   - label=Stage4-Complete
+  - label!=Verdict-Relayed
   - merged
-  - status-success=continuous-integration/appveyor/pr
   - title~=(^.*\(bp .*\)$)
   actions:
     label:
@@ -83,7 +82,10 @@ pull_request_rules:
   - -closed
   - label!=Stage2-Rejected
   - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
   actions:
     merge:
       method: merge
@@ -96,7 +98,10 @@ pull_request_rules:
   - -closed
   - label!=Stage2-Rejected
   - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
   actions:
     merge:
       method: merge
@@ -106,8 +111,9 @@ pull_request_rules:
   conditions:
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
+  - closed
+  - label=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active hotfix and release branches here, along with develop.
@@ -120,8 +126,9 @@ pull_request_rules:
   conditions:
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
+  - closed
+  - label=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active feature branches here.
