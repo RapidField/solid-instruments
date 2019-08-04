@@ -3,17 +3,44 @@
 # =================================================================================================================================
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label new Mergify pull requests.
+- name: Label new Dependabot pull requests.
   conditions:
-  - author=mergify[bot]
+  - author~=(^dependabot.*$)
   - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
   - -merged
   actions:
     label:
       add:
       - Category-Maintenance
       - Stage0-New
-      - Subcategory-Delivery
+      - Subcategory-Dependencies
+      - Tag-AddReleaseNote
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label new Mergify pull requests.
+  conditions:
+  - author~=(^mergify.*$)
+  - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
+  - -merged
+  actions:
+    label:
+      add:
+      - Category-Maintenance
+      - Stage0-New
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed pull requests.
@@ -21,7 +48,6 @@ pull_request_rules:
   - closed
   - label!=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     label:
       add:
@@ -34,53 +60,48 @@ pull_request_rules:
       - Stage2-Rejected
       - Stage3-InProgress
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to master when the author is trusted.
+- name: Label backported Mergify pull requests.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
-  - base=master
+  - author~=(^mergify.*$)
+  - closed
+  - label=Stage4-Complete
+  - label!=Verdict-Relayed
+  - merged
+  - title~=(^.*\(bp .*\)$)
+  actions:
+    label:
+      add:
+      - Verdict-Relayed
+      remove:
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Merge to eligible branches when the author is trusted.
+  conditions:
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
+  - base~=(^master$)|(^develop$)|(^release\/(.+)$)|(^feature\/(.+)$)|(^hotfix\/(.+)$)
   - -closed
   - label!=Stage2-Rejected
   - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
   actions:
     merge:
       method: merge
       strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to develop when the author is trusted.
-  conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
-  - base=develop
-  - -closed
-  - label!=Stage2-Rejected
-  - -merged
-  - status-success=continuous-integration/appveyor/pr
-  actions:
-    merge:
-      method: merge
-      strict: smart
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to feature and hotfix branches when the author is trusted.
-  conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
-  - base~=^feature\/(.+)|hotfix\/(.+)
-  - -closed
-  - label!=Stage2-Rejected
-  - -merged
-  - status-success=continuous-integration/appveyor/pr
-  actions:
-    merge:
-      method: merge
-      strict: smart
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to feature and hotfix branches when reviewed and approved.
+- name: Merge to eligible branches when reviewed and approved.
   conditions:
   - "#approved-reviews-by>=1"
-  - base~=^feature\/(.+)|hotfix\/(.+)
+  - base~=(^feature\/(.+)$)|(^hotfix\/(.+)$)
   - -closed
   - label!=Stage2-Rejected
   - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
   actions:
     merge:
       method: merge
@@ -88,10 +109,11 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from master when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
+  - closed
+  - label=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active hotfix and release branches here, along with develop.
@@ -102,16 +124,15 @@ pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot\[bot\]$)|(^mergify\[bot\]$)
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
+  - closed
+  - label=Stage4-Complete
   - merged
-  - status-success=continuous-integration/appveyor/pr
   actions:
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
       - feature/0007_rabbitmq-support
       - feature/0012_structuremap-support
-      - feature/0053_complex-string-extensions
-      - feature/0055_complex-rng-extensions
 # ---------------------------------------------------------------------------------------------------------------------------------
