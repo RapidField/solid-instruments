@@ -31,6 +31,8 @@ Release versioning is controlled via [appveyor.yml](appveyor.yml). Please do not
 
 - - -
 
+<br />
+
 [![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
