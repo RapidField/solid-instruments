@@ -1,14 +1,19 @@
 # =================================================================================================================================
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
+# This file controls automated CI/CD activity via AppVeyor.
+# ---------------------------------------------------------------------------------------------------------------------------------
 version: 1.0.24-preview1.{build}
+# ---------------------------------------------------------------------------------------------------------------------------------
 artifacts:
 - path: artifacts\Release
   name: ReleasePackages
 - path: artifacts\_DocumentationWebsite
   name: DocumentationWebsite
+# ---------------------------------------------------------------------------------------------------------------------------------
 build_script:
 - ps: .\Build.ps1
+# ---------------------------------------------------------------------------------------------------------------------------------
 deploy:
 - application: DocumentationWebsite
   artifact: DocumentationWebsite
@@ -20,6 +25,7 @@ deploy:
   protocol: ftps
   provider: FTP
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
+# ---------------------------------------------------------------------------------------------------------------------------------
 environment:
   RAPIDFIELD_CSCERTKEY:
     secure: 2UnQ5nbiA4U959m61TBLh1vI6/WDt08mN9E5+4h3FsFES7f3CZIJHciIMFWE/Nwn
@@ -27,5 +33,8 @@ environment:
     secure: igzgdjN7Km8z/cVwEjnyd2Pjq8yF5v5UJym7Zd0r1p4ALkfiadpn0qCdvTGKKFwv
   RAPIDFIELD_NUGETAPIKEY:
     secure: +MUxngO910jKz1/jjAh6a5y8O0AujDeYNhKSfjiDBh6OISt1LQlNjXLPqn/OHV8n
+# ---------------------------------------------------------------------------------------------------------------------------------
 image: Visual Studio 2017
+# ---------------------------------------------------------------------------------------------------------------------------------
 test: off
+# ---------------------------------------------------------------------------------------------------------------------------------
