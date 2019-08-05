@@ -135,6 +135,6 @@ pull_request_rules:
     backport:
       branches: # List active feature branches here.
       # -------------------------------------------------------------------------------------------
-      - feature/0007_rabbitmq-support
-      - feature/0012_structuremap-support
+      - feature/0007-rabbitmq-support
+      - feature/0012-structuremap-support
 # ---------------------------------------------------------------------------------------------------------------------------------
