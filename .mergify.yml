@@ -5,45 +5,168 @@
 # ---------------------------------------------------------------------------------------------------------------------------------
 pull_request_rules:
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label new Dependabot pull requests.
+- name: Label new pull requests.
+  conditions:
+  - -closed
+  - label!=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - label!=Stage4-Complete
+  - label!=Verdict-Pending
+  - label!=Verdict-Relayed
+  - -merged
+  actions:
+    label:
+      add:
+      - Stage0-New
+      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label uncategorized pull requests.
+  conditions:
+  - -closed
+  - label!=Category-Defect
+  - label!=Category-Feature
+  - label!=Category-Maintenance
+  - label!=Category-ProductionRelease
+  - label!=Category-Question
+  - label!=Category-Uncategorized
+  - -merged
+  actions:
+    label:
+      add:
+      - Category-Uncategorized
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label dependency management pull requests.
   conditions:
   - author~=(^dependabot.*$)
   - -closed
-  - label!=Stage0-New
-  - label!=Stage1-UnderReview
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
-  - label!=Stage4-Complete
+  - label!=Subcategory-Dependencies
+  - label!=Tag-AddReleaseNote
   - -merged
   actions:
     label:
       add:
-      - Category-Maintenance
-      - Stage0-New
       - Subcategory-Dependencies
       - Tag-AddReleaseNote
-      - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label new Mergify pull requests.
+- name: Label maintenance pull requests.
   conditions:
-  - author~=(^mergify.*$)
+  - author~=(^dependabot.*$)|(^mergify.*$)
   - -closed
-  - label!=Stage0-New
-  - label!=Stage1-UnderReview
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
-  - label!=Stage4-Complete
+  - label!=Category-Maintenance
+  - label=Category-Uncategorized
   - -merged
   actions:
     label:
       add:
       - Category-Maintenance
+      remove:
+      - Category-Uncategorized
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label under-review pull requests.
+  conditions:
+  - -closed
+  - label!=Category-Uncategorized
+  - label=Stage0-New
+  - label!=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
+  - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
+  actions:
+    label:
+      add:
+      - Stage1-UnderReview
+      remove:
       - Stage0-New
-      - Verdict-Pending
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label accepted maintenance pull requests.
+  conditions:
+  - -closed
+  - label=Category-Maintenance
+  - label=Stage1-UnderReview
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
+  - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
+  actions:
+    label:
+      add:
+      - Stage2-Accepted
+      remove:
+      - Stage1-UnderReview
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label rejected pull requests.
+  conditions:
+  - closed
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - -merged
+  actions:
+    label:
+      add:
+      - Stage2-Rejected
+      remove:
+      - Stage0-New
+      - Stage1-UnderReview
+      - Stage2-Accepted
+      - Stage2-Deferred
+      - Stage3-InProgress
+      - Stage4-Complete
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label in-progress branches when the author is trusted.
+  conditions:
+  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
+  - base~=(^master$)|(^develop$)|(^release\/(.+)$)|(^feature\/(.+)$)|(^hotfix\/(.+)$)
+  - -closed
+  - label=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
+  - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
+  actions:
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage2-Accepted
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label in-progress branches when reviewed and approved.
+  conditions:
+  - "#approved-reviews-by>=1"
+  - base~=(^feature\/(.+)$)|(^hotfix\/(.+)$)
+  - -closed
+  - label=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
+  - -merged
+  - status-success=CodeFactor
+  - status-success=continuous-integration/appveyor/branch
+  - status-success=continuous-integration/appveyor/pr
+  - status-success=Summary
+  actions:
+    label:
+      add:
+      - Stage3-InProgress
+      remove:
+      - Stage2-Accepted
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed pull requests.
   conditions:
@@ -62,11 +185,12 @@ pull_request_rules:
       - Stage2-Rejected
       - Stage3-InProgress
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label backported Mergify pull requests.
+- name: Label backport pull requests.
   conditions:
   - author~=(^mergify.*$)
   - closed
   - label=Stage4-Complete
+  - label=Verdict-Pending
   - label!=Verdict-Relayed
   - merged
   - title~=(^.*\(bp .*\)$)
@@ -77,28 +201,14 @@ pull_request_rules:
       remove:
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to eligible branches when the author is trusted.
+- name: Merge eligible branches.
   conditions:
-  - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
-  - base~=(^master$)|(^develop$)|(^release\/(.+)$)|(^feature\/(.+)$)|(^hotfix\/(.+)$)
   - -closed
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
   - label!=Stage2-Rejected
-  - -merged
-  - status-success=CodeFactor
-  - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
-  - status-success=Summary
-  actions:
-    merge:
-      method: merge
-      strict: smart
-# ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge to eligible branches when reviewed and approved.
-  conditions:
-  - "#approved-reviews-by>=1"
-  - base~=(^feature\/(.+)$)|(^hotfix\/(.+)$)
-  - -closed
-  - label!=Stage2-Rejected
+  - label=Stage3-InProgress
+  - label!=Stage4-Complete
   - -merged
   - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
@@ -114,7 +224,12 @@ pull_request_rules:
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=master
   - closed
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
   - label=Stage4-Complete
+  - label!=Tag-Backported
   - merged
   actions:
     backport:
@@ -123,13 +238,22 @@ pull_request_rules:
       - develop
       - release/v1.0.25-preview1
       - release/v1.0.26-preview1
+      # -------------------------------------------------------------------------------------------
+    label:
+      add:
+      - Tag-Backported
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backport from develop when the author is trusted.
   conditions:
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
   - base=develop
   - closed
+  - label!=Stage2-Accepted
+  - label!=Stage2-Deferred
+  - label!=Stage2-Rejected
+  - label!=Stage3-InProgress
   - label=Stage4-Complete
+  - label!=Tag-Backported
   - merged
   actions:
     backport:
@@ -137,4 +261,8 @@ pull_request_rules:
       # -------------------------------------------------------------------------------------------
       - feature/0007-rabbitmq-support
       - feature/0012-structuremap-support
+      # -------------------------------------------------------------------------------------------
+    label:
+      add:
+      - Tag-Backported
 # ---------------------------------------------------------------------------------------------------------------------------------
