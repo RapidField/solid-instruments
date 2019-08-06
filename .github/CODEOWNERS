@@ -1,0 +1,21 @@
+# =================================================================================================================================
+# Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+# =================================================================================================================================
+# This file governs automatic review requests.
+# ---------------------------------------------------------------------------------------------------------------------------------
+
+*               @RapidField/solid-instruments-contributors
+.editorconfig   @RapidField/solid-instruments-maintainers
+.gitattributes  @RapidField/solid-instruments-maintainers
+.gitignore      @RapidField/solid-instruments-maintainers
+*.config        @RapidField/solid-instruments-maintainers
+*.json          @RapidField/solid-instruments-maintainers
+*.md            @RapidField/solid-instruments-maintainers
+*.ps1           @RapidField/solid-instruments-maintainers
+*.sln           @RapidField/solid-instruments-maintainers
+/cicd/          @RapidField/solid-instruments-maintainers
+/doc/           @RapidField/solid-instruments-maintainers
+/.github/       @RapidField/solid-instruments-administrators
+*.enc           @RapidField/solid-instruments-administrators
+*.yml           @RapidField/solid-instruments-administrators
+LICENSE.txt     @RapidField/solid-instruments-administrators
