@@ -33,11 +33,54 @@ pull_request_rules:
   - label!=Category-ProductionRelease
   - label!=Category-Question
   - label!=Category-Uncategorized
+  - label=Stage0-New
   - -merged
   actions:
     label:
       add:
       - Category-Uncategorized
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label bot-sourced pull requests.
+  conditions:
+  - author~=(^dependabot.*$)|(^mergify.*$)
+  - -closed
+  - label!=Source-Bot
+  - label!=Source-Maintainer
+  - label!=Source-User
+  - label=Stage0-New
+  - -merged
+  actions:
+    label:
+      add:
+      - Source-Bot
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label maintainer-sourced pull requests.
+  conditions:
+  - author~=(^adamjstone$)
+  - -closed
+  - label!=Source-Bot
+  - label!=Source-Maintainer
+  - label!=Source-User
+  - label=Stage0-New
+  - -merged
+  actions:
+    label:
+      add:
+      - Source-Maintainer
+# ---------------------------------------------------------------------------------------------------------------------------------
+- name: Label user-sourced pull requests.
+  conditions:
+  - -closed
+  - label!=Source-Bot
+  - label!=Source-Maintainer
+  - label!=Source-User
+  - label!=Stage0-New
+  - label=Stage1-UnderReview
+  - -merged
+  actions:
+    label:
+      add:
+      - Source-User
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label dependency management pull requests.
   conditions:
