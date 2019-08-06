@@ -1,0 +1,18 @@
+﻿@*
+    Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+*@
+
+@using RapidField.SolidInstruments.Example.WebApplication.Models.Home
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="col-lg-12">
+    <h1>
+        Demonstration features
+    </h1>
+    <h4>
+        @Html.ActionLink("Fibonacci sequence generator", "Index", "FibonacciSequence")
+    </h4>
+</div>
