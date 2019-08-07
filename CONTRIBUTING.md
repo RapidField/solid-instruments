@@ -19,6 +19,15 @@ By contributing to **Solid Instruments** you assert and agree that:
 2. You have the right to assign the copyright for the work (it is not owned by your employer, or you have been granted copyright assignment rights in writing).
 3. Your contribution is licensed under [the terms](LICENSE.txt)  applied to the **Solid Instruments** project.
 
+## Tooling
+
+**Solid Instruments** is developed using [**Visual Studio**](https://visualstudio.microsoft.com/downloads) with the following extensions installed.
+
+- [**CodeMaid**](http://www.codemaid.net)
+- [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker)
+
+CI/CD tooling is managed and defined by [this file](https://github.com/RapidField/solid-instruments/blob/master/cicd/modules/AutomationTools.psm1).
+
 ## Styling
 
 The [.editorconfig](.editorconfig) and [CodeMaid.config](CodeMaid.config) files, in combination, define the styling guidelines for **Solid Instruments**. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
