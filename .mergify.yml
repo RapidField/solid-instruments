@@ -154,7 +154,6 @@ pull_request_rules:
   - label!=Stage2-Deferred
   - label!=Stage2-Rejected
   # ----------------------------------------------------------------
-  - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
@@ -179,7 +178,6 @@ pull_request_rules:
   - label!=Stage2-Deferred
   - label!=Stage2-Rejected
   # ----------------------------------------------------------------
-  - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
@@ -227,7 +225,6 @@ pull_request_rules:
   - label!=Stage2-Rejected
   - label!=Stage3-InProgress
   # ----------------------------------------------------------------
-  - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
@@ -253,7 +250,6 @@ pull_request_rules:
   - label!=Stage2-Rejected
   - label!=Stage3-InProgress
   # ----------------------------------------------------------------
-  - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
@@ -318,7 +314,6 @@ pull_request_rules:
   - label=Stage3-InProgress
   - label!=Stage4-Complete
   # ----------------------------------------------------------------
-  - status-success=CodeFactor
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
