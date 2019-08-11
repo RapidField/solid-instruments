@@ -7,9 +7,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Serialization label](Label.Serialization.300w.png)
 
-[![Build status](https://img.shields.io/appveyor/ci/adamjstone/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
+[![Build status](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/adamjstone/solid-instruments/branch/master)
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![NuGet package](https://img.shields.io/nuget/vpre/Rapidfield.SolidInstruments.Serialization.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.Serialization)
+[![NuGet package](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Serialization.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.Serialization)
 
 ## About
 
