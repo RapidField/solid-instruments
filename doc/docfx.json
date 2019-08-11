@@ -18,7 +18,7 @@
         ],
         "dest": "_DocumentationWebsite",
         "globalMetadata": {
-            "_appFaviconPath": "images/favicon.ico",
+            "_appFaviconPath": "favicon.ico",
             "_appFooter": "&copy; 2019 RapidField",
             "_appLogoPath": "images/RapidField.Logo.Color.White.Transparent.227w.png",
             "_appTitle": "Solid Instruments",
