@@ -39,3 +39,5 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 | :-------------- | :----------: | :-----------------------------: | :------------------------------------------------------------------------------: | :----------------: |
 | 1.0.24-preview1 | 21 Jul 2019  | [Read](releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | :heavy_check_mark: |
 | 1.0.23-preview1 | 20 Jul 2019  | [Read](releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | :heavy_check_mark: |
+
+Test
