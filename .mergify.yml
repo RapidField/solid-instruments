@@ -249,7 +249,6 @@ pull_request_rules:
   - label!=Stage-3-InProgress
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
   # ----------------------------------------------------------------
   actions:
@@ -313,6 +312,7 @@ pull_request_rules:
   - label!=Stage-4-Complete
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
+  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
  # ----------------------------------------------------------------
   actions:
