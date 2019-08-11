@@ -11,13 +11,13 @@ pull_request_rules:
   - -closed
   - -merged
   # ----------------------------------------------------------------
-  - label!=Stage0-New
-  - label!=Stage1-UnderReview
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
-  - label!=Stage4-Complete
+  - label!=Stage-0-New
+  - label!=Stage-1-UnderReview
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label!=Stage-3-InProgress
+  - label!=Stage-4-Complete
   # ----------------------------------------------------------------
   - label!=Verdict-Pending
   - label!=Verdict-Relayed
@@ -25,7 +25,7 @@ pull_request_rules:
   actions:
     label:
       add:
-      - Stage0-New
+      - Stage-0-New
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label uncategorized pull requests.
@@ -41,7 +41,7 @@ pull_request_rules:
   - label!=Category-Question
   - label!=Category-Uncategorized
   # ----------------------------------------------------------------
-  - label=Stage0-New
+  - label=Stage-0-New
   # ----------------------------------------------------------------
   actions:
     label:
@@ -60,7 +60,7 @@ pull_request_rules:
   - label!=Source-Maintainer
   - label!=Source-User
   # ----------------------------------------------------------------
-  - label=Stage0-New
+  - label=Stage-0-New
   # ----------------------------------------------------------------
   actions:
     label:
@@ -79,7 +79,7 @@ pull_request_rules:
   - label!=Source-Maintainer
   - label!=Source-User
   # ----------------------------------------------------------------
-  - label=Stage0-New
+  - label=Stage-0-New
   # ----------------------------------------------------------------
   actions:
     label:
@@ -96,8 +96,8 @@ pull_request_rules:
   - label!=Source-Maintainer
   - label!=Source-User
   # ----------------------------------------------------------------
-  - label!=Stage0-New
-  - label=Stage1-UnderReview
+  - label!=Stage-0-New
+  - label=Stage-1-UnderReview
   # ----------------------------------------------------------------
   actions:
     label:
@@ -148,46 +148,45 @@ pull_request_rules:
   # ----------------------------------------------------------------
   - label!=Category-Uncategorized
   # ----------------------------------------------------------------
-  - label=Stage0-New
-  - label!=Stage1-UnderReview
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
+  - label=Stage-0-New
+  - label!=Stage-1-UnderReview
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
   # ----------------------------------------------------------------
-  - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
   # ----------------------------------------------------------------
   actions:
     label:
       add:
-      - Stage1-UnderReview
+      - Stage-1-UnderReview
       remove:
-      - Stage0-New
+      - Stage-0-New
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label accepted maintenance pull requests.
   conditions:
+  # ----------------------------------------------------------------
+  - base~=(^master$)|(^develop$)|(^release\/(.+)$)|(^feature\/(.+)$)|(^hotfix\/(.+)$)
   # ----------------------------------------------------------------
   - -closed
   - -merged
   # ----------------------------------------------------------------
   - label=Category-Maintenance
   # ----------------------------------------------------------------
-  - label=Stage1-UnderReview
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
+  - label=Stage-1-UnderReview
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
   # ----------------------------------------------------------------
   actions:
     label:
       add:
-      - Stage2-Accepted
+      - Stage-2-Accepted
       remove:
-      - Stage1-UnderReview
+      - Stage-1-UnderReview
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label rejected pull requests.
   conditions:
@@ -195,23 +194,23 @@ pull_request_rules:
   - closed
   - -merged
   # ----------------------------------------------------------------
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
   # ----------------------------------------------------------------
   actions:
     label:
       add:
-      - Stage2-Rejected
+      - Stage-2-Rejected
       remove:
-      - Stage0-New
-      - Stage1-UnderReview
-      - Stage2-Accepted
-      - Stage2-Deferred
-      - Stage3-InProgress
-      - Stage4-Complete
+      - Stage-0-New
+      - Stage-1-UnderReview
+      - Stage-2-Accepted
+      - Stage-2-Deferred
+      - Stage-3-InProgress
+      - Stage-4-Complete
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label in-progress branches when the author is trusted.
+- name: Label in-progress pull requests when the author is trusted.
   conditions:
   # ----------------------------------------------------------------
   - author~=(^adamjstone$)|(^dependabot.*$)|(^mergify.*$)
@@ -220,23 +219,22 @@ pull_request_rules:
   - -closed
   - -merged
   # ----------------------------------------------------------------
-  - label=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
+  - label=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label!=Stage-3-InProgress
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
   # ----------------------------------------------------------------
   actions:
     label:
       add:
-      - Stage3-InProgress
+      - Stage-3-InProgress
       remove:
-      - Stage2-Accepted
+      - Stage-2-Accepted
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Label in-progress branches when reviewed and approved.
+- name: Label in-progress pull requests when reviewed and approved.
   conditions:
   # ----------------------------------------------------------------
   - "#approved-reviews-by>=1"
@@ -245,10 +243,10 @@ pull_request_rules:
   - -closed
   - -merged
   # ----------------------------------------------------------------
-  - label=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
+  - label=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label!=Stage-3-InProgress
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
@@ -257,9 +255,9 @@ pull_request_rules:
   actions:
     label:
       add:
-      - Stage3-InProgress
+      - Stage-3-InProgress
       remove:
-      - Stage2-Accepted
+      - Stage-2-Accepted
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed pull requests.
   conditions:
@@ -267,19 +265,19 @@ pull_request_rules:
   - closed
   - merged
   # ----------------------------------------------------------------
-  - label!=Stage4-Complete
+  - label!=Stage-4-Complete
   # ----------------------------------------------------------------
   actions:
     label:
       add:
-      - Stage4-Complete
+      - Stage-4-Complete
       remove:
-      - Stage0-New
-      - Stage1-UnderReview
-      - Stage2-Accepted
-      - Stage2-Deferred
-      - Stage2-Rejected
-      - Stage3-InProgress
+      - Stage-0-New
+      - Stage-1-UnderReview
+      - Stage-2-Accepted
+      - Stage-2-Deferred
+      - Stage-2-Rejected
+      - Stage-3-InProgress
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Label completed backmerge pull requests.
   conditions:
@@ -290,7 +288,7 @@ pull_request_rules:
   - closed
   - merged
   # ----------------------------------------------------------------
-  - label=Stage4-Complete
+  - label=Stage-4-Complete
   # ----------------------------------------------------------------
   - label=Verdict-Pending
   - label!=Verdict-Relayed
@@ -302,26 +300,24 @@ pull_request_rules:
       remove:
       - Verdict-Pending
 # ---------------------------------------------------------------------------------------------------------------------------------
-- name: Merge eligible branches.
+- name: Merge eligible pull requests.
   conditions:
   # ----------------------------------------------------------------
   - -closed
   - -merged
   # ----------------------------------------------------------------
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label=Stage3-InProgress
-  - label!=Stage4-Complete
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label=Stage-3-InProgress
+  - label!=Stage-4-Complete
   # ----------------------------------------------------------------
   - status-success=continuous-integration/appveyor/branch
-  - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
-  # ----------------------------------------------------------------
+ # ----------------------------------------------------------------
   actions:
     merge:
       method: merge
-      strict: smart
 # ---------------------------------------------------------------------------------------------------------------------------------
 - name: Backmerge from master when the author is trusted.
   conditions:
@@ -332,11 +328,11 @@ pull_request_rules:
   - closed
   - merged
   # ----------------------------------------------------------------
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
-  - label=Stage4-Complete
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label!=Stage-3-InProgress
+  - label=Stage-4-Complete
   # ----------------------------------------------------------------
   - label!=Tag-Backmerged
   # ----------------------------------------------------------------
@@ -361,11 +357,11 @@ pull_request_rules:
   - closed
   - merged
   # ----------------------------------------------------------------
-  - label!=Stage2-Accepted
-  - label!=Stage2-Deferred
-  - label!=Stage2-Rejected
-  - label!=Stage3-InProgress
-  - label=Stage4-Complete
+  - label!=Stage-2-Accepted
+  - label!=Stage-2-Deferred
+  - label!=Stage-2-Rejected
+  - label!=Stage-3-InProgress
+  - label=Stage-4-Complete
   # ----------------------------------------------------------------
   - label!=Tag-Backmerged
   # ----------------------------------------------------------------
