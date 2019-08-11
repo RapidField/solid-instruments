@@ -30,7 +30,7 @@ deploy:
   on:
     branch: master
   password:
-    secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
+    secure: IeMo53dCxMhfdS0Ul10w8VgFAz5voNHjVj7NcJcdGAfFrrxoTrqwFH7URO+tGWyFuTSdJzvH8woYilq+VTFb1Q==
   protocol: ftps
   provider: FTP
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
