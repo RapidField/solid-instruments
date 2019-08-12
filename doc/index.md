@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Advanced, multi-purpose .NET tool belt
 
-**Solid Instruments** is a collection of free, open-source [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries. It was created to help software developers quickly overcome common and uncommon design challenges to deliver highly-resilient, strongly-secured, readily-maintainable products.
+**Solid Instruments** is a collection of free, open-source [**.NET**](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries. It was created to help software developers quickly overcome common and uncommon design challenges to deliver highly-resilient, strongly-secured, readily-maintainable products.
 
 <span class="linkbuttongroup">
 <a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>
@@ -39,5 +39,3 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 | :-------------- | :----------: | :-----------------------------: | :------------------------------------------------------------------------------: | :----------------: |
 | 1.0.24-preview1 | 21 Jul 2019  | [Read](releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | :heavy_check_mark: |
 | 1.0.23-preview1 | 20 Jul 2019  | [Read](releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | :heavy_check_mark: |
-
-Test

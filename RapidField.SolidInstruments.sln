@@ -144,6 +144,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{1F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{3A97001A-5B3F-401E-8B13-3FB80F3B86AB}"
 	ProjectSection(SolutionItems) = preProject
+		doc\images\favicon.ico = doc\images\favicon.ico
 		doc\images\Icon.Collections.128w.png = doc\images\Icon.Collections.128w.png
 		doc\images\Icon.Command.128w.png = doc\images\Icon.Command.128w.png
 		doc\images\Icon.Core.128w.png = doc\images\Icon.Core.128w.png
