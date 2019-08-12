@@ -1,18 +1,28 @@
 # =================================================================================================================================
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
+
 # This file controls automated CI/CD activity via AppVeyor.
 # ---------------------------------------------------------------------------------------------------------------------------------
+
+# Version definition
+# ---------------------------------------------------------------------------------------------------------------------------------
 version: 1.0.24-preview1.{build}
+
+# Artifact definitions
 # ---------------------------------------------------------------------------------------------------------------------------------
 artifacts:
 - path: artifacts\Release
   name: ReleasePackages
 - path: artifacts\_DocumentationWebsite
   name: DocumentationWebsite
+
+# Build script
 # ---------------------------------------------------------------------------------------------------------------------------------
 build_script:
 - ps: .\Build.ps1
+
+# Deployment settings
 # ---------------------------------------------------------------------------------------------------------------------------------
 deploy:
 - application: DocumentationWebsite
@@ -21,10 +31,12 @@ deploy:
   on:
     branch: master
   password:
-    secure: 6waa1SXgMW3RRH/oTntGQctSsvmtRSibqov05sr+2gQiVNCeiogQf3bWycsH5VWzrz1j3w4BWUI0YY1hBnYcyA==
+    secure: IeMo53dCxMhfdS0Ul10w8VgFAz5voNHjVj7NcJcdGAfFrrxoTrqwFH7URO+tGWyFuTSdJzvH8woYilq+VTFb1Q==
   protocol: ftps
   provider: FTP
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
+
+# Environment variables
 # ---------------------------------------------------------------------------------------------------------------------------------
 environment:
   RAPIDFIELD_CSCERTKEY:
@@ -33,8 +45,11 @@ environment:
     secure: igzgdjN7Km8z/cVwEjnyd2Pjq8yF5v5UJym7Zd0r1p4ALkfiadpn0qCdvTGKKFwv
   RAPIDFIELD_NUGETAPIKEY:
     secure: +MUxngO910jKz1/jjAh6a5y8O0AujDeYNhKSfjiDBh6OISt1LQlNjXLPqn/OHV8n
+
+# Visual Studio image
 # ---------------------------------------------------------------------------------------------------------------------------------
 image: Visual Studio 2017
+
+# Test settings
 # ---------------------------------------------------------------------------------------------------------------------------------
 test: off
-# ---------------------------------------------------------------------------------------------------------------------------------
