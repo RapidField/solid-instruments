@@ -5,10 +5,10 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Build status](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![NuGet package](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
-[![Gitter](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
+[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
+[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
 
 ## About
 
@@ -20,20 +20,20 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 
 <br />
 
-[![Collections label](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
-[![Command label](src/RapidField.SolidInstruments.Command/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
-[![Core label](src/RapidField.SolidInstruments.Core/Label.Core.300w.png)](src/RapidField.SolidInstruments.Core/README.md)
-[![Cryptography label](src/RapidField.SolidInstruments.Cryptography/Label.Cryptography.300w.png)](src/RapidField.SolidInstruments.Cryptography/README.md)
-[![Data Access label](src/RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)](src/RapidField.SolidInstruments.DataAccess/README.md)
-[![Event Authoring label](src/RapidField.SolidInstruments.EventAuthoring/Label.EventAuthoring.300w.png)](src/RapidField.SolidInstruments.EventAuthoring/README.md)
-[![Inversion of Control label](src/RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)](src/RapidField.SolidInstruments.InversionOfControl/README.md)
-[![Mathematics label](src/RapidField.SolidInstruments.Mathematics/Label.Mathematics.300w.png)](src/RapidField.SolidInstruments.Mathematics/README.md)
-[![Messaging label](src/RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)](src/RapidField.SolidInstruments.Messaging/README.md)
-[![Object Composition label](src/RapidField.SolidInstruments.ObjectComposition/Label.ObjectComposition.300w.png)](src/RapidField.SolidInstruments.ObjectComposition/README.md)
-[![Serialization label](src/RapidField.SolidInstruments.Serialization/Label.Serialization.300w.png)](src/RapidField.SolidInstruments.Serialization/README.md)
-[![Service label](src/RapidField.SolidInstruments.Service/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
-[![Signal Processing label](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
-[![Text Encoding label](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
+[![Collections](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
+[![Command](src/RapidField.SolidInstruments.Command/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
+[![Core](src/RapidField.SolidInstruments.Core/Label.Core.300w.png)](src/RapidField.SolidInstruments.Core/README.md)
+[![Cryptography](src/RapidField.SolidInstruments.Cryptography/Label.Cryptography.300w.png)](src/RapidField.SolidInstruments.Cryptography/README.md)
+[![Data Access](src/RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)](src/RapidField.SolidInstruments.DataAccess/README.md)
+[![Event Authoring](src/RapidField.SolidInstruments.EventAuthoring/Label.EventAuthoring.300w.png)](src/RapidField.SolidInstruments.EventAuthoring/README.md)
+[![Inversion of Control](src/RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)](src/RapidField.SolidInstruments.InversionOfControl/README.md)
+[![Mathematics](src/RapidField.SolidInstruments.Mathematics/Label.Mathematics.300w.png)](src/RapidField.SolidInstruments.Mathematics/README.md)
+[![Messaging](src/RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)](src/RapidField.SolidInstruments.Messaging/README.md)
+[![Object Composition](src/RapidField.SolidInstruments.ObjectComposition/Label.ObjectComposition.300w.png)](src/RapidField.SolidInstruments.ObjectComposition/README.md)
+[![Serialization](src/RapidField.SolidInstruments.Serialization/Label.Serialization.300w.png)](src/RapidField.SolidInstruments.Serialization/README.md)
+[![Service](src/RapidField.SolidInstruments.Service/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
+[![Signal Processing](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
+[![Text Encoding](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
 ## License
 

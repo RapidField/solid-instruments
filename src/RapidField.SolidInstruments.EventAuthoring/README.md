@@ -7,9 +7,10 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Event Authoring label](Label.EventAuthoring.300w.png)
 
-[![Build status](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments.svg?style=popout&label=build)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![NuGet package](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.EventAuthoring.svg?color=blue&label=version)](https://www.nuget.org/packages/RapidField.SolidInstruments.EventAuthoring)
+[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
+[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.EventAuthoring.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.EventAuthoring)
+[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
 
 ## About
 

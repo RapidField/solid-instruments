@@ -72,7 +72,7 @@ public class SubtractionCommandHandler : CommandHandler<SubtractionCommand, int>
 
 #### Mediator pattern implementation
 
-[CommandMediator](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.CommandMediator.cs) serves as a dependency resolver and processing intermediary for commands.
+[CommandMediator](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.CommandMediator.html) serves as a dependency resolver and processing intermediary for commands.
 
 ###### C#
 
