@@ -8,32 +8,34 @@ Getting started with **Solid Instruments** is easy. This guide will help you inc
 
 ### About
 
-**Solid Instruments** is a single-sourced, loosely-coupled collection of [.NET](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
+**Solid Instruments** is a single-sourced, loosely-coupled collection of [**.NET**](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
 
 ### Get Started
 
 **Solid Instruments** is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Choose the libraries below that you want to import, then execute the associated commands using the [**.NET CLI**](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) or the [**NuGet Package Manager Console**](https://docs.microsoft.com/en-us/nuget/tools/package-manager-console) to download and install them.
 
-[![Collections](../images/Label.Collections.300w.png)](#Collections)
-[![Command](../images/Label.Command.300w.png)](#Command)
-[![Core](../images/Label.Core.300w.png)](#Core)
-[![Cryptography](../images/Label.Cryptography.300w.png)](#Cryptography)
-[![Data Access](../images/Label.DataAccess.300w.png)](#Data-Access)
-[![Event Authoring](../images/Label.EventAuthoring.300w.png)](#Event-Authoring)
-[![Inversion of Control](../images/Label.InversionOfControl.300w.png)](#Inversion-of-Control)
-[![Mathematics](../images/Label.Mathematics.300w.png)](#Mathematics)
-[![Messaging](../images/Label.Messaging.300w.png)](#Messaging)
-[![Object Composition](../images/Label.ObjectComposition.300w.png)](#Object-Composition)
-[![Serialization](../images/Label.Serialization.300w.png)](#Serialization)
-[![Service](../images/Label.Service.300w.png)](#Service)
-[![Signal Processing](../images/Label.SignalProcessing.300w.png)](#Signal-Processing)
-[![Text Encoding](../images/Label.TextEncoding.300w.png)](#Text-Encoding)
+<br />
+
+[![Collections](../images/Label.Collections.300w.png)](#collections)
+[![Command](../images/Label.Command.300w.png)](#command)
+[![Core](../images/Label.Core.300w.png)](#core)
+[![Cryptography](../images/Label.Cryptography.300w.png)](#cryptography)
+[![Data Access](../images/Label.DataAccess.300w.png)](#data-access)
+[![Event Authoring](../images/Label.EventAuthoring.300w.png)](#event-authoring)
+[![Inversion of Control](../images/Label.InversionOfControl.300w.png)](#inversion-of-control)
+[![Mathematics](../images/Label.Mathematics.300w.png)](#mathematics)
+[![Messaging](../images/Label.Messaging.300w.png)](#messaging)
+[![Object Composition](../images/Label.ObjectComposition.300w.png)](#object-composition)
+[![Serialization](../images/Label.Serialization.300w.png)](#serialization)
+[![Service](../images/Label.Service.300w.png)](#service)
+[![Signal Processing](../images/Label.SignalProcessing.300w.png)](#signal-processing)
+[![Text Encoding](../images/Label.TextEncoding.300w.png)](#text-encoding)
+
+<br />
 
 ## Libraries
 
 The full suite of **Solid Instruments** constituent libraries are listed below. Scroll down to get started!
-
-<br />
 
 ### ![Collections](../images/Label.Collections.300w.png)
 - - -
