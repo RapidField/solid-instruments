@@ -9,6 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 [![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
 [![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=popout&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
 
 ## About
 
