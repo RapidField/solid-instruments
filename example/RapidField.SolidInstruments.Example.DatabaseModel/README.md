@@ -23,7 +23,7 @@ This project serves as a sample data access API that is modeled using the **Soli
 
 ## Getting started
 
-Check out the [root project documentation](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
+Check out the [root project README](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
 
 <br />
 

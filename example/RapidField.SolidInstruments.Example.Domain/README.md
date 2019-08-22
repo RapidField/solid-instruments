@@ -23,7 +23,7 @@ This project houses sample domain machinery that utilizes **Solid Instruments** 
 
 ## Getting started
 
-Check out the [root project documentation](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
+Check out the [root project README](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
 
 <br />
 

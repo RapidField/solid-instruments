@@ -21,10 +21,6 @@ This folder houses test projects for the **Solid Instruments** [constituent libr
 
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../LICENSE.txt) for more information.
 
-## Getting started
-
-Check out the [root project documentation](../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
-
 <br />
 
 - - -
