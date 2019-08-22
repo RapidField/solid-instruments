@@ -2,6 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This file exposes the build and deployment functions that are used by the CI/CD pipeline.
+# =================================================================================================================================
+
 # Module configuration
 # =================================================================================================================================
 
@@ -517,7 +520,7 @@ function WriteBuildVersion {
     If (($BuildVersion -eq $null) -or ($BuildVersion -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Build version: $BuildVersion";
 }
 
@@ -527,7 +530,7 @@ function WriteCommitAuthorEmail {
     If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit author email: $CommitAuthorEmail";
 }
 
@@ -537,7 +540,7 @@ function WriteCommitAuthorName {
     If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit author name: $CommitAuthorName";
 }
 
@@ -547,7 +550,7 @@ function WriteCommitId {
     If (($CommitId -eq $null) -or ($CommitId -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit ID: $CommitId";
 }
 
@@ -557,7 +560,7 @@ function WriteCommitMessage {
     If (($CommitMessage -eq $null) -or ($CommitMessage -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit message: $CommitMessage";
 }
 
@@ -567,7 +570,7 @@ function WriteCommitTimeStamp {
     If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit time stamp: $CommitTimeStamp";
 }
 
@@ -577,7 +580,7 @@ function WriteRepositoryName {
     If (($RepositoryName -eq $null) -or ($RepositoryName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Repository name: $RepositoryName";
 }
 
@@ -587,6 +590,6 @@ function WriteTagName {
     If (($TagName -eq $null) -or ($TagName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Tag name: $TagName";
 }

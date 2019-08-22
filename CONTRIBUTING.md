@@ -28,6 +28,10 @@ By contributing to **Solid Instruments** you assert and agree that:
 
 CI/CD tooling is managed and defined by [this file](https://github.com/RapidField/solid-instruments/blob/master/cicd/modules/AutomationTools.psm1).
 
+## Design conventions
+
+New contributors should familiarize themselves with the **Solid Instruments** design conventions by reviewing existing source. When in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+
 ## Styling
 
 The [.editorconfig](.editorconfig) and [CodeMaid.config](CodeMaid.config) files, in combination, define the styling guidelines for **Solid Instruments**. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
