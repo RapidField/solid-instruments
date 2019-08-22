@@ -32,10 +32,13 @@ $InstallScriptUriForChocolatey = "https://chocolatey.org/install.ps1";
 $InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/v5.1.0/$FileNameForNugetExe";
 
 # Chocolatey package names
+$ChoclateyPackageNameForCodecov = "codecov";
 $ChoclateyPackageNameForDocFx = "docfx";
+$ChoclateyPackageNameForDotNetCoreSdk = "dotnetcore-sdk";
 $ChoclateyPackageNameForHub = "hub";
 $ChoclateyPackageNameForLeanify = "leanify";
 $ChoclateyPackageNameForNodeJs = "nodejs";
+$ChoclateyPackageNameForOpenCover = "opencover.portable";
 $ChoclateyPackageNameForOpenSsl = "openssl.light";
 $ChoclateyPackageNameForPsake = "psake";
 
@@ -48,25 +51,30 @@ $PowershellModuleNameForPowershellYaml = "powershell-yaml";
 
 # Command names
 $CommandNameForChocolatey = "choco";
+$CommandNameForCodecov = "codecov";
 $CommandNameForHtmlMinifier = "html-minifier";
 $CommandNameForHub = "hub";
 $CommandNameForNpm = "npm";
 $CommandNameForNuGet = "nuget";
+$CommandNameForOpenCover = "opencover.console.exe";
 $CommandNameForOpenSsl = "openssl";
 
-# Installation suppression flags
-$SuppressInstallationOfChocolatey = $false;
-$SuppressInstallationOfDocFx = $false;
-$SuppressInstallationOfHtmlMinifier = $false;
-$SuppressInstallationOfHub = $true;
-$SuppressInstallationOfLeanify = $true;
-$SuppressInstallationOfNodeJs = $false;
-$SuppressInstallationOfNuGet = $false;
-$SuppressInstallationOfOpenSsl = $true;
-$SuppressInstallationOfPackageManagers = $false;
-$SuppressInstallationOfPoshGit = $true;
-$SuppressInstallationOfPowershellYaml = $false;
-$SuppressInstallationOfPsake = $false;
+# Installation/uninstallation suppression flags
+$SuppressChocolatey = $false;
+$SuppressCodecov = $false;
+$SuppressDocFx = $false;
+$SuppressDotNetCoreSdk = $true;
+$SuppressHtmlMinifier = $false;
+$SuppressHub = $true;
+$SuppressLeanify = $true;
+$SuppressNodeJs = $false;
+$SuppressNuGet = $false;
+$SuppressOpenCover = $false;
+$SuppressOpenSsl = $true;
+$SuppressPackageManagers = $false;
+$SuppressPoshGit = $true;
+$SuppressPowershellYaml = $false;
+$SuppressPsake = $false;
 
 # Get
 # =================================================================================================================================
@@ -75,8 +83,16 @@ function GetChocolateyInstallationStatus {
     return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
 }
 
+function GetCodecovInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForCodecov") });
+}
+
 function GetDocFxInstallationStatus {
     return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
+}
+
+function GetDotNetCoreSdkInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNetCoreSdk") });
 }
 
 function GetHtmlMinifierInstallationStatus {
@@ -97,6 +113,10 @@ function GetNodeJsInstallationStatus {
 
 function GetNuGetInstallationStatus {
     return (Test-Path -Path "$FilePathForNuGetExe");
+}
+
+function GetOpenCoverInstallationStatus {
+    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenCover") });
 }
 
 function GetOpenSslInstallationStatus {
@@ -121,10 +141,13 @@ function GetPsakeInstallationStatus {
 function InstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Installing all automation tools.";
     InstallPackageManagers;
+    InstallCodecov;
     InstallDocFx;
+    InstallDotNetCoreSdk;
     InstallHtmlMinifier;
     InstallHub;
     InstallLeanify;
+    InstallOpenCover;
     InstallOpenSsl;
     InstallPoshGit;
     InstallPowershellYaml;
@@ -133,7 +156,7 @@ function InstallAllAutomationTools {
 }
 
 function InstallChocolatey {
-    If ($SuppressInstallationOfChoclatey -eq $true) {
+    If ($SuppressChoclatey -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of Chocolatey.";
         return;
     }
@@ -149,8 +172,24 @@ function InstallChocolatey {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Chocolatey. <<<`n";
 }
 
+function InstallCodecov {
+    If ($SuppressCodecov -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing installation of Codecov.";
+        return;
+    }
+    ElseIf (GetCodecovInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Codecov is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing Codecov.";
+    choco install $ChoclateyPackageNameForCodecov -y --confirm
+    MakeCommandPathAvailableAll -Command $CommandNameForCodecov;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Codecov. <<<`n";
+}
+
 function InstallDocFx {
-    If ($SuppressInstallationOfDocFx -eq $true) {
+    If ($SuppressDocFx -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of DocFX.";
         return;
     }
@@ -164,8 +203,23 @@ function InstallDocFx {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n";
 }
 
+function InstallDotNetCoreSdk {
+    If ($SuppressDotNetCoreSdk -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing installation of the .NET Core SDK.";
+        return;
+    }
+    ElseIf (GetDotNetCoreSdkInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "The .NET Core SDK is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing the .NET Core SDK.";
+    choco install $ChoclateyPackageNameForDotNetCoreSdk -y --confirm
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing the .NET Core SDK. <<<`n";
+}
+
 function InstallHtmlMinifier {
-    If ($SuppressInstallationOfHtmlMinifier -eq $true) {
+    If ($SuppressHtmlMinifier -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of HTMLMinifier.";
         return;
     }
@@ -181,7 +235,7 @@ function InstallHtmlMinifier {
 }
 
 function InstallHub {
-    If ($SuppressInstallationOfHub -eq $true) {
+    If ($SuppressHub -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of hub.";
         return;
     }
@@ -197,7 +251,7 @@ function InstallHub {
 }
 
 function InstallLeanify {
-    If ($SuppressInstallationOfLeanify -eq $true) {
+    If ($SuppressLeanify -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of Leanify.";
         return;
     }
@@ -212,7 +266,7 @@ function InstallLeanify {
 }
 
 function InstallNodeJs {
-    If ($SuppressInstallationOfNodeJs -eq $true) {
+    If ($SuppressNodeJs -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of Node.js.";
         return;
     }
@@ -228,7 +282,7 @@ function InstallNodeJs {
 }
 
 function InstallNuGet {
-    If ($SuppressInstallationOfNuGet -eq $true) {
+    If ($SuppressNuGet -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of NuGet.";
         return;
     }
@@ -246,8 +300,24 @@ function InstallNuGet {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing NuGet. <<<`n";
 }
 
+function InstallOpenCover {
+    If ($SuppressOpenCover -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing installation of OpenCover.";
+        return;
+    }
+    ElseIf (GetOpenCoverInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "OpenCover is already installed.";
+        return;
+    }
+
+    Write-Host -ForegroundColor DarkCyan "Installing OpenCover.";
+    choco install $ChoclateyPackageNameForOpenCover -y --confirm
+    MakeCommandPathAvailableAll -Command $CommandNameForOpenCover;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenCover. <<<`n";
+}
+
 function InstallOpenSsl {
-    If ($SuppressInstallationOfOpenSsl -eq $true) {
+    If ($SuppressOpenSsl -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of OpenSSL.";
         return;
     }
@@ -263,7 +333,7 @@ function InstallOpenSsl {
 }
 
 function InstallPackageManagers {
-    If ($SuppressInstallationOfPackageManagers -eq $true) {
+    If ($SuppressPackageManagers -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of package managers.";
         return;
     }
@@ -276,7 +346,7 @@ function InstallPackageManagers {
 }
 
 function InstallPoshGit {
-    If ($SuppressInstallationOfPowershellYaml -eq $true) {
+    If ($SuppressPoshGit -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of posh-git.";
         return;
     }
@@ -291,7 +361,7 @@ function InstallPoshGit {
 }
 
 function InstallPowershellYaml {
-    If ($SuppressInstallationOfPowershellYaml -eq $true) {
+    If ($SuppressPowershellYaml -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of powershell-yaml.";
         return;
     }
@@ -306,7 +376,7 @@ function InstallPowershellYaml {
 }
 
 function InstallPsake {
-    If ($SuppressInstallationOfPsake -eq $true) {
+    If ($SuppressPsake -eq $true) {
         Write-Host -ForegroundColor DarkCyan "Suppressing installation of psake.";
         return;
     }
@@ -405,11 +475,25 @@ function RestoreAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring all automation tools. <<<`n";
 }
 
+function RestoreCodecov {
+    Write-Host -ForegroundColor DarkCyan "Restoring Codecov.";
+    UninstallCodecov;
+    InstallCodecov;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Codecov. <<<`n";
+}
+
 function RestoreDocFx {
     Write-Host -ForegroundColor DarkCyan "Restoring DocFX.";
     UninstallDocFx;
     InstallDocFx;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring DocFX. <<<`n";
+}
+
+function RestoreDotNetCoreSdk {
+    Write-Host -ForegroundColor DarkCyan "Restoring the .NET Core SDK.";
+    UninstallDotNetCoreSdk;
+    InstallDotNetCoreSdk;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring the .NET Core SDK. <<<`n";
 }
 
 function RestoreHtmlMinifier {
@@ -447,6 +531,13 @@ function RestoreNuGet {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring NuGet. <<<`n";
 }
 
+function RestoreOpenCover {
+    Write-Host -ForegroundColor DarkCyan "Restoring OpenCover.";
+    UninstallOpenCover;
+    InstallOpenCover;
+    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring OpenCover. <<<`n";
+}
+
 function RestoreOpenSsl {
     Write-Host -ForegroundColor DarkCyan "Restoring OpenSSL.";
     UninstallOpenSsl;
@@ -480,10 +571,13 @@ function RestorePsake {
 
 function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools.";
+    UninstallCodecov;
     UninstallDocFx;
+    UninstallDotNetCoreSdk;
     UninstallHtmlMinifier;
     UninstallHub;
     UninstallLeanify;
+    UninstallOpenCover;
     UninstallOpenSsl;
     UninstallPoshGit;
     UninstallPowershellYaml;
@@ -491,22 +585,60 @@ function UninstallAllAutomationTools {
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n";
 }
 
+function UninstallCodecov {
+    If ($SuppressCodecov -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Codecov.";
+        return;
+    }
+    ElseIf (GetCodecovInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling Codecov.";
+        choco uninstall $ChoclateyPackageNameForCodecov -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Codecov. <<<`n";
+    }
+}
+
 function UninstallDocFx {
-    If (GetDocFxInstallationStatus) {
+    If ($SuppressDocFx -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of DocFX.";
+        return;
+    }
+    ElseIf (GetDocFxInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX.";
         choco uninstall $ChoclateyPackageNameForDocFx -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n";
     }
 }
 
+function UninstallDotNetCoreSdk {
+    If ($SuppressDotNetCoreSdk -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of the .NET Core SDK.";
+        return;
+    }
+    ElseIf (GetDotNetCoreSdkInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling the .NET Core SDK.";
+        choco uninstall $ChoclateyPackageNameForDotNetCoreSdk -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling the .NET Core SDK. <<<`n";
+    }
+}
+
 function UninstallHtmlMinifier {
-    Write-Host -ForegroundColor DarkCyan "Uninstalling HTMLMinifier.";
-    npm uninstall $NpmPackageNameForHtmlMinifier -g --loglevel error
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling HTMLMinifier. <<<`n";
+    If ($SuppressHtmlMinifier -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of HTMLMinifier.";
+        return;
+    }
+    ElseIf (GetHtmlMinifierInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling HTMLMinifier.";
+        npm uninstall $NpmPackageNameForHtmlMinifier -g --loglevel error
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling HTMLMinifier. <<<`n";
+    }
 }
 
 function UninstallHub {
-    If (GetLeanifyInstallationStatus) {
+    If ($SuppressHub -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of hub.";
+        return;
+    }
+    ElseIf (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling hub.";
         choco uninstall $ChoclateyPackageNameForHub -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling hub. <<<`n";
@@ -514,7 +646,11 @@ function UninstallHub {
 }
 
 function UninstallLeanify {
-    If (GetLeanifyInstallationStatus) {
+    If ($SuppressLeanify -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Leanify.";
+        return;
+    }
+    ElseIf (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Leanify.";
         choco uninstall $ChoclateyPackageNameForLeanify -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Leanify. <<<`n";
@@ -522,7 +658,11 @@ function UninstallLeanify {
 }
 
 function UninstallNodeJs {
-    If (GetNodeJsInstallationStatus) {
+    If ($SuppressNodeJs -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Node.js.";
+        return;
+    }
+    ElseIf (GetNodeJsInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js.";
         choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n";
@@ -530,15 +670,35 @@ function UninstallNodeJs {
 }
 
 function UninstallNuGet {
-    If (GetNuGetInstallationStatus) {
+    If ($SuppressNuGet -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of NuGet.";
+        return;
+    }
+    ElseIf (GetNuGetInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling NuGet.";
         Remove-Item -Path "$FilePathForNuGetExe" -Confirm:$false -Force;
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling NuGet. <<<`n";
     }
 }
 
+function UninstallOpenCover {
+    If ($SuppressOpenCover -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of OpenCover.";
+        return;
+    }
+    ElseIf (GetOpenCoverInstallationStatus) {
+        Write-Host -ForegroundColor DarkCyan "Uninstalling OpenCover.";
+        choco uninstall $ChoclateyPackageNameForOpenCover -y --confirm
+        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenCover. <<<`n";
+    }
+}
+
 function UninstallOpenSsl {
-    If (GetOpenSslInstallationStatus) {
+    If ($SuppressOpenSsl -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of OpenSSL.";
+        return;
+    }
+    ElseIf (GetOpenSslInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling OpenSSL.";
         choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenSSL. <<<`n";
@@ -546,7 +706,11 @@ function UninstallOpenSsl {
 }
 
 function UninstallPoshGit {
-    If (GetPowershellYamlInstallationStatus) {
+    If ($SuppressPoshGit -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of posh-git.";
+        return;
+    }
+    ElseIf (GetPoshGitInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling posh-git.";
         Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling posh-git. <<<`n";
@@ -554,7 +718,11 @@ function UninstallPoshGit {
 }
 
 function UninstallPowershellYaml {
-    If (GetPowershellYamlInstallationStatus) {
+    If ($SuppressPowershellYaml -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of powershell-yaml.";
+        return;
+    }
+    ElseIf (GetPowershellYamlInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling powershell-yaml.";
         Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml";
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling powershell-yaml. <<<`n";
@@ -562,7 +730,11 @@ function UninstallPowershellYaml {
 }
 
 function UninstallPsake {
-    If (GetPsakeInstallationStatus) {
+    If ($SuppressPsake -eq $true) {
+        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of psake.";
+        return;
+    }
+    ElseIf (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling psake.";
         choco uninstall $ChoclateyPackageNameForPsake -y --confirm
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling psake. <<<`n";
