@@ -183,7 +183,7 @@ function InstallCodecov {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Codecov.";
-    choco install $ChoclateyPackageNameForCodecov -y --confirm
+    choco install $ChoclateyPackageNameForCodecov -y --accept-license --confirm --limit-output --no-progress
     MakeCommandPathAvailableAll -Command $CommandNameForCodecov;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Codecov. <<<`n";
 }
@@ -199,7 +199,7 @@ function InstallDocFx {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing DocFX.";
-    choco install $ChoclateyPackageNameForDocFx -y --confirm
+    choco install $ChoclateyPackageNameForDocFx -y --accept-license --confirm --limit-output --no-progress
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n";
 }
 
@@ -214,7 +214,7 @@ function InstallDotNetCoreSdk {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing the .NET Core SDK.";
-    choco install $ChoclateyPackageNameForDotNetCoreSdk -y --confirm
+    choco install $ChoclateyPackageNameForDotNetCoreSdk -y --accept-license --confirm --limit-output --no-progress
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing the .NET Core SDK. <<<`n";
 }
 
@@ -245,7 +245,7 @@ function InstallHub {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing hub.";
-    choco install $ChoclateyPackageNameForHub -y --confirm
+    choco install $ChoclateyPackageNameForHub -y --accept-license --confirm --limit-output --no-progress
     MakeCommandPathAvailableAll -Command $CommandNameForHub;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing hub. <<<`n";
 }
@@ -261,7 +261,7 @@ function InstallLeanify {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Leanify.";
-    choco install $ChoclateyPackageNameForLeanify -y --confirm
+    choco install $ChoclateyPackageNameForLeanify -y --accept-license --confirm --limit-output --no-progress
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Leanify. <<<`n";
 }
 
@@ -276,7 +276,7 @@ function InstallNodeJs {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing Node.js.";
-    choco install $ChoclateyPackageNameForNodeJs -y --confirm
+    choco install $ChoclateyPackageNameForNodeJs -y --accept-license --confirm --limit-output --no-progress
     MakeCommandPathAvailableAll -Command $CommandNameForNpm;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n";
 }
@@ -311,7 +311,7 @@ function InstallOpenCover {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing OpenCover.";
-    choco install $ChoclateyPackageNameForOpenCover -y --confirm
+    choco install $ChoclateyPackageNameForOpenCover -y --accept-license --confirm --limit-output --no-progress
     MakeCommandPathAvailableAll -Command $CommandNameForOpenCover;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenCover. <<<`n";
 }
@@ -327,7 +327,7 @@ function InstallOpenSsl {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing OpenSSL.";
-    choco install $ChoclateyPackageNameForOpenSsl -y --confirm
+    choco install $ChoclateyPackageNameForOpenSsl -y --accept-license --confirm --limit-output --no-progress
     MakeCommandPathAvailableAll -Command $CommandNameForOpenSsl;
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenSSL. <<<`n";
 }
@@ -356,7 +356,7 @@ function InstallPoshGit {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing posh-git.";
-    Install-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
+    Install-Module -AcceptLicense -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing posh-git. <<<`n";
 }
 
@@ -371,7 +371,7 @@ function InstallPowershellYaml {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing powershell-yaml.";
-    Install-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml";
+    Install-Module -AcceptLicense -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml";
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing powershell-yaml. <<<`n";
 }
 
@@ -386,7 +386,7 @@ function InstallPsake {
     }
 
     Write-Host -ForegroundColor DarkCyan "Installing psake.";
-    choco install $ChoclateyPackageNameForPsake -y --confirm
+    choco install $ChoclateyPackageNameForPsake -y --accept-license --confirm --limit-output --no-progress
     Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing psake. <<<`n";
 }
 
@@ -592,7 +592,7 @@ function UninstallCodecov {
     }
     ElseIf (GetCodecovInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Codecov.";
-        choco uninstall $ChoclateyPackageNameForCodecov -y --confirm
+        choco uninstall $ChoclateyPackageNameForCodecov -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Codecov. <<<`n";
     }
 }
@@ -604,7 +604,7 @@ function UninstallDocFx {
     }
     ElseIf (GetDocFxInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX.";
-        choco uninstall $ChoclateyPackageNameForDocFx -y --confirm
+        choco uninstall $ChoclateyPackageNameForDocFx -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n";
     }
 }
@@ -616,7 +616,7 @@ function UninstallDotNetCoreSdk {
     }
     ElseIf (GetDotNetCoreSdkInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling the .NET Core SDK.";
-        choco uninstall $ChoclateyPackageNameForDotNetCoreSdk -y --confirm
+        choco uninstall $ChoclateyPackageNameForDotNetCoreSdk -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling the .NET Core SDK. <<<`n";
     }
 }
@@ -640,7 +640,7 @@ function UninstallHub {
     }
     ElseIf (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling hub.";
-        choco uninstall $ChoclateyPackageNameForHub -y --confirm
+        choco uninstall $ChoclateyPackageNameForHub -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling hub. <<<`n";
     }
 }
@@ -652,7 +652,7 @@ function UninstallLeanify {
     }
     ElseIf (GetLeanifyInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Leanify.";
-        choco uninstall $ChoclateyPackageNameForLeanify -y --confirm
+        choco uninstall $ChoclateyPackageNameForLeanify -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Leanify. <<<`n";
     }
 }
@@ -664,7 +664,7 @@ function UninstallNodeJs {
     }
     ElseIf (GetNodeJsInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js.";
-        choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm
+        choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n";
     }
 }
@@ -688,7 +688,7 @@ function UninstallOpenCover {
     }
     ElseIf (GetOpenCoverInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling OpenCover.";
-        choco uninstall $ChoclateyPackageNameForOpenCover -y --confirm
+        choco uninstall $ChoclateyPackageNameForOpenCover -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenCover. <<<`n";
     }
 }
@@ -700,7 +700,7 @@ function UninstallOpenSsl {
     }
     ElseIf (GetOpenSslInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling OpenSSL.";
-        choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm
+        choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenSSL. <<<`n";
     }
 }
@@ -736,7 +736,7 @@ function UninstallPsake {
     }
     ElseIf (GetPsakeInstallationStatus) {
         Write-Host -ForegroundColor DarkCyan "Uninstalling psake.";
-        choco uninstall $ChoclateyPackageNameForPsake -y --confirm
+        choco uninstall $ChoclateyPackageNameForPsake -y --confirm --limit-output
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling psake. <<<`n";
     }
 }
