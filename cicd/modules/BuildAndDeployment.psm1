@@ -485,7 +485,8 @@ function Test {
         $TestDirectoryPath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
         #dotnet test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
-        OpenCover.Console.exe -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
+        OpenCover.Console.exe -excludebyattribute:DebuggerHidden -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
+        
         If ($LASTEXITCODE -ne 0) {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
         }
