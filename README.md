@@ -5,22 +5,26 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Codecov](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
-[![CII](https://img.shields.io/cii/level/3063?style=flat&label=cii&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
-
-[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
-[![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/blob/master/LICENSE.txt)
-
-[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
-[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
-
-
-
 ## About
 
 **Solid Instruments** is a single-sourced, loosely-coupled collection of [**.NET**](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
+
+### Product
+
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
+[![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/blob/master/LICENSE.txt)
+[![CII](https://img.shields.io/cii/level/3063?style=flat&label=cii&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
+
+### Status
+
+[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
+[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Codecov](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
+
+### Help
+
+[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
 
 ## Features
 
