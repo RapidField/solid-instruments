@@ -25,8 +25,9 @@ $DirectoryNameForTests = "test";
 
 # File names
 $FileNameForAppVeyorYamlConfiguration = "appveyor.yml";
-$FileNameForNugetExe = "nuget.exe";
+$FileNameForCoverageReport = "Coverage.xml";
 $FileNameForCodeSigningCertificate = "CodeSigningCertificate.pfx";
+$FileNameForNugetExe = "nuget.exe";
 $FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
 
 # Directory paths
@@ -47,9 +48,10 @@ $DirectoryPathForTests = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPa
 
 # File paths
 $FilePathForAppVeyorYamlConfigurlation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForAppVeyorYamlConfiguration";
-$FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForCodeSigningCertificate = Join-Path -Path "$DirectoryPathForCicdAssets" -ChildPath "$FileNameForCodeSigningCertificate";
+$FilePathForCoverageReport = Join-Path -Path "$DirectoryPathForTests" -ChildPath "$FileNameForCoverageReport";
 $FilePathForEncryptedCodeSigningCertificate = "$FilePathForCodeSigningCertificate.enc";
+$FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForSolutionFile";
 
 # Install script URIs
@@ -482,7 +484,8 @@ function Test {
     Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object {
         $TestDirectoryPath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        dotnet test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
+        #dotnet test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
+        OpenCover.Console.exe -mergeoutput -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
 
         If ($LASTEXITCODE -ne 0) {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
