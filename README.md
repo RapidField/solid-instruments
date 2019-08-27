@@ -5,7 +5,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
-[![Commits](https://img.shields.io/github/commit-activity/m/rapidfield/solid-instruments?style=flat&color=black&label=commits&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/graphs/contributors)
+[![Commits](https://img.shields.io/github/commit-activity/w/rapidfield/solid-instruments?style=flat&color=black&label=commits&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/graphs/contributors)
 [![Pull requests](https://img.shields.io/github/issues-pr-closed/rapidfield/solid-instruments?style=flat&color=black&label=pull%20requests&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/pulls)
 [![Release](https://img.shields.io/github/v/release/rapidfield/solid-instruments?style=flat&color=black&include_prereleases&label=release&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/releases)
 
