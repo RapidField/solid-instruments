@@ -1,0 +1,38 @@
+# =================================================================================================================================
+# Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+# =================================================================================================================================
+
+# This file configures code coverage reporting via Codecov.
+# ---------------------------------------------------------------------------------------------------------------------------------
+
+codecov:
+  notify:
+    require_ci_to_pass: yes
+
+comment:
+  layout: "header, diff"
+  behavior: default
+  require_changes: no
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project: yes
+    patch: yes
+    changes: no
+
+ignore:
+  - "cicd/**"
+  - "example/**"
+  
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
