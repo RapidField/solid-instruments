@@ -7,11 +7,15 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd
 
-[![Release](https://img.shields.io/github/v/release/rapidfield/solid-instruments?style=flat&color=black&include_prereleases&label=release&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/releases)
+This document describes the purpose of the [`solid-instruments/cicd`](https://github.com/RapidField/solid-instruments/tree/master/cicd) directory.
 
 ## Purpose
 
-This folder contains source objects that define the behavior of the **Solid Instruments** CI/CD pipeline.
+This path houses source objects which define the behavior of the **Solid Instruments** CI/CD pipeline and which are divided into subdirectories as follows.
+
+* [`assets`](https://github.com/RapidField/solid-instruments/tree/master/cicd/assets) contains resource files that are utilized by CI/CD operations.
+* [`modules`](https://github.com/RapidField/solid-instruments/tree/master/cicd/modules) contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) module files that expose functions which define the core CI/CD pipeline. 
+* [`scripts`](https://github.com/RapidField/solid-instruments/tree/master/cicd/scripts) contains scripts that serve as entry points for pipeline invocation. 
 
 ## License
 
