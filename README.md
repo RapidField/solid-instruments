@@ -5,6 +5,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 ![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
+[![Commits](https://img.shields.io/github/commit-activity/m/rapidfield/solid-instruments?color=black&label=commits&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/graphs/contributors)
+[![Downloads](https://img.shields.io/nuget/dt/rapidfield.solidinstruments.core?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
+
 ## About
 
 **Solid Instruments** is a single-sourced, loosely-coupled collection of [**.NET**](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) libraries that help you rapidly fill feature gaps, overcome common and uncommon design challenges, and deliver stable, secure, high-performance software.
@@ -41,7 +44,7 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
 [![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
 
-Refer to the [product website](https://www.solidinstruments.com) for usage examples and reference documentation, or ask the community for [help via Gitter](https://gitter.im/RapidField/solid-instruments).
+Refer to the [product website](https://www.solidinstruments.com) for usage examples and reference documentation, or ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
 
 ## Contributing
 
@@ -50,7 +53,7 @@ Refer to the [product website](https://www.solidinstruments.com) for usage examp
 [![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
 [![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
-The **Solid Instruments** team strives to maintain [CII Best Practices](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Releases
 
