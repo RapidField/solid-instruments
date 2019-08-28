@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Instructions for Contributing
 
-**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Your contributions must be your own work. Review the [license terms](LICENSE.txt) and the [code of conduct](CODE_OF_CONDUCT.md) before contributing.
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Your contributions must be your own work. Review the [license terms](LICENSE.txt) and the [**Code of Conduct**](CODE_OF_CONDUCT.md) before contributing.
 
 For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
@@ -26,7 +26,7 @@ By contributing to **Solid Instruments** you assert and agree that:
 - [**CodeMaid**](http://www.codemaid.net)
 - [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker)
 
-CI/CD tooling is managed and defined by [this file](https://github.com/RapidField/solid-instruments/blob/master/cicd/modules/AutomationTools.psm1).
+CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](./cicd/modules/AutomationTools.psm1).
 
 ## Design conventions
 
@@ -34,11 +34,11 @@ New contributors should familiarize themselves with the **Solid Instruments** de
 
 ## Styling
 
-The [.editorconfig](.editorconfig) and [CodeMaid.config](CodeMaid.config) files, in combination, define the styling guidelines for **Solid Instruments**. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
+[`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines for **Solid Instruments**. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
 ## Release versioning
 
-Release versioning is controlled via [appveyor.yml](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
+Release versioning is controlled via [`appveyor.yml`](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
 
 <br />
 
