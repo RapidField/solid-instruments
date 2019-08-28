@@ -16,7 +16,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## Features
 
-The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
+The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [**Quick Start Guide**](https://www.solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
 
 <br />
 
@@ -46,7 +46,7 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
 [![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
 
-Refer to the [product website](https://www.solidinstruments.com) for usage examples and reference documentation, or ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
+Refer to the [product website](https://www.solidinstruments.com) for usage examples and reference documentation, or ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments). Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose) to request a feature or report a defect.
 
 ## Contributing
 
@@ -55,7 +55,7 @@ Refer to the [product website](https://www.solidinstruments.com) for usage examp
 [![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
 [![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
-The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Releases
 
