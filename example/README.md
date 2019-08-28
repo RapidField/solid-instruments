@@ -5,18 +5,19 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Solid Instruments logo](../SolidInstruments.Logo.Color.Transparent.500w.png)](../README.md)
 - - -
 
-[![Pull requests](https://img.shields.io/github/issues-pr-closed/rapidfield/solid-instruments?style=flat&color=black&label=pull%20requests&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/pulls)
-[![Release](https://img.shields.io/github/v/release/rapidfield/solid-instruments?style=flat&color=black&include_prereleases&label=release&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/releases)
+# /example
+
+This document describes the purpose of the [`example`](https://github.com/RapidField/solid-instruments/tree/master/example) directory.
 
 ## Purpose
 
-This folder contains sample projects that utilize the **Solid Instruments** [constituent libraries](../src/README.md).
+This path contains sample projects that utilize the **Solid Instruments** [constituent libraries](../src/README.md).
 
 ## License
 
 [![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/blob/master/LICENSE.txt)
 
-**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](LICENSE.txt) for more information.
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../LICENSE.txt) for more information.
 
 ## Get help
 
@@ -32,7 +33,7 @@ Refer to the [product website](https://www.solidinstruments.com) for usage examp
 [![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
 [![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
-The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](../CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
