@@ -21,7 +21,7 @@ This path houses source objects which define the behavior of the **Solid Instrum
 
 [![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/blob/master/LICENSE.txt)
 
-**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](LICENSE.txt) for more information.
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../LICENSE.txt) for more information.
 
 ## Get help
 
@@ -37,7 +37,7 @@ Refer to the [product website](https://www.solidinstruments.com) for usage examp
 [![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
 [![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
-The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](../CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
