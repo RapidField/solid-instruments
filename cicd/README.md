@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd
 
-This document describes the purpose of the [`solid-instruments/cicd`](https://github.com/RapidField/solid-instruments/tree/master/cicd) directory.
+This document describes the purpose of the [`cicd`](https://github.com/RapidField/solid-instruments/tree/master/cicd) directory.
 
 ## Purpose
 
