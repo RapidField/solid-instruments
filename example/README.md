@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /example
 
-This document describes the purpose of the [`example`](https://github.com/RapidField/solid-instruments/tree/master/example) directory.
+This document describes the purpose of the [`example`](./example) directory.
 
 ## Purpose
 
