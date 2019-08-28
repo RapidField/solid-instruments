@@ -19,22 +19,6 @@ This path contains sample projects that utilize the **Solid Instruments** [const
 
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../LICENSE.txt) for more information.
 
-## Get help
-
-[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
-[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
-
-Refer to the [product website](https://www.solidinstruments.com) for usage examples and reference documentation, or ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
-
-## Contributing
-
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
-[![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
-
-The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read [the guide](../CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
-
 <br />
 
 - - -
