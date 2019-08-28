@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /example
 
-This document describes the purpose of the [`example`](./example) directory.
+This document describes the purpose of the [`example`](./) directory.
 
 ## Purpose
 
