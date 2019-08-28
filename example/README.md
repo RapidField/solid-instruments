@@ -11,7 +11,7 @@ This document describes the purpose of the [`example`](./) directory.
 
 ## Purpose
 
-This path contains sample projects that utilize the **Solid Instruments** [constituent libraries](../src/README.md).
+This path contains sample projects that utilize the **Solid Instruments** [constituent libraries](../src).
 
 ## License
 
