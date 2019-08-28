@@ -9,6 +9,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Collections](Label.Collections.300w.png)
 
+[![Downloads](https://img.shields.io/nuget/dt/RapidField.SolidInstruments.Collections?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
+
 ## About
 
 This library exposes useful collection types and features, including:
@@ -31,6 +33,8 @@ Refer to the [project website](https://www.solidinstruments.com/api/RapidField.S
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
 
 ## Installation
+
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Collections?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
 
 This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
