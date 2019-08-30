@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # RapidField.SolidInstruments.Collections.UnitTests
 
-This document describes the purpose of the [`RapidField.SolidInstruments.Collections.UnitTests`](./) project.
+This document describes the purpose of the [`RapidField.SolidInstruments.Collections.UnitTests`]() project.
 
 ## Purpose
 
