@@ -2,6 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This file scripts the encryption of the Solid Instruments code signing certificate.
+# =================================================================================================================================
+
 # Script configuration
 # =================================================================================================================================
 

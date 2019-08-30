@@ -30,8 +30,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}"
+	ProjectSection(SolutionItems) = preProject
+		src\README.md = src\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5DAD6C24-954B-43EC-B7D9-62BC08CF7AC6}"
+	ProjectSection(SolutionItems) = preProject
+		test\README.md = test\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core", "src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj", "{AA3D9B87-9EC2-403F-B999-C1EB4F8F43EC}"
 EndProject
@@ -90,6 +96,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cicd", "cicd", "{265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}"
 	ProjectSection(SolutionItems) = preProject
 		cicd\.gitignore = cicd\.gitignore
+		cicd\README.md = cicd\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.SignalProcessing", "src\RapidField.SolidInstruments.SignalProcessing\RapidField.SolidInstruments.SignalProcessing.csproj", "{37BD9C91-9861-4AB6-AB66-E355FE05429C}"
@@ -99,6 +106,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.AzureServiceBus", "src\RapidField.SolidInstruments.Messaging.AzureServiceBus\RapidField.SolidInstruments.Messaging.AzureServiceBus.csproj", "{FCFCA29A-2909-462D-AEAB-F067654236EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}"
+	ProjectSection(SolutionItems) = preProject
+		example\README.md = example\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.InversionOfControl.DotNetNative", "src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj", "{C08FA672-FAC1-4A6C-AEAA-C12417DBB25D}"
 EndProject

@@ -7,10 +7,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Core label](Label.Core.300w.png)
 
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Core)
-[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
+[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Core)
+[![CII](https://img.shields.io/cii/level/3063?style=flat&label=cii&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
+[![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/blob/master/LICENSE.txt)
+[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html)
 
 ## About
 
@@ -23,7 +26,7 @@ This library exposes foundational, general-purpose features, including:
 
 ## Documentation
 
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) for more information.
+Refer to the [project website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html) for usage examples and reference documentation.
 
 ## License
 

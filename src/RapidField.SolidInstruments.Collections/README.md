@@ -5,14 +5,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 - - -
 
-![Collections label](Label.Collections.300w.png)
+# RapidField.SolidInstruments.Collections
 
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Collections.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
-[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+![Collections](Label.Collections.300w.png)
 
-## About
+This document describes the purpose of the [`RapidField.SolidInstruments.Collections`](./) library and offers guidance with respect to licensing, installation and usage.
+
+## Features
 
 This library exposes useful collection types and features, including:
 
@@ -21,15 +20,22 @@ This library exposes useful collection types and features, including:
 - pinned buffers
 - tree composition and traversal
 
-## Documentation
-
-Refer to the [documentation website](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html) for more information.
-
 ## License
+
+[![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](../../LICENSE.txt)
 
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
 
+## Documentation
+
+[![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html)
+
+Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.html) for usage examples and reference documentation.
+
 ## Installation
+
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Collections?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
+[![Downloads](https://img.shields.io/nuget/dt/RapidField.SolidInstruments.Collections?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
 
 This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
