@@ -2,6 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This file exposes the build and deployment functions that are used by the CI/CD pipeline.
+# =================================================================================================================================
+
 # Module configuration
 # =================================================================================================================================
 
@@ -22,8 +25,9 @@ $DirectoryNameForTests = "test";
 
 # File names
 $FileNameForAppVeyorYamlConfiguration = "appveyor.yml";
-$FileNameForNugetExe = "nuget.exe";
+$FileNameForCoverageReport = "Coverage.xml";
 $FileNameForCodeSigningCertificate = "CodeSigningCertificate.pfx";
+$FileNameForNugetExe = "nuget.exe";
 $FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
 
 # Directory paths
@@ -44,9 +48,10 @@ $DirectoryPathForTests = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPa
 
 # File paths
 $FilePathForAppVeyorYamlConfigurlation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForAppVeyorYamlConfiguration";
-$FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForCodeSigningCertificate = Join-Path -Path "$DirectoryPathForCicdAssets" -ChildPath "$FileNameForCodeSigningCertificate";
+$FilePathForCoverageReport = Join-Path -Path "$DirectoryPathForTests" -ChildPath "$FileNameForCoverageReport";
 $FilePathForEncryptedCodeSigningCertificate = "$FilePathForCodeSigningCertificate.enc";
+$FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForSolutionFile";
 
 # Install script URIs
@@ -67,6 +72,20 @@ $SolutionConfigurationRelease = "Release";
 # Namespaces
 $ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
 $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
+
+# Environment variables
+$BuildVersion = $env:APPVEYOR_BUILD_VERSION;
+$CodecovToken = $env:CODECOV_TOKEN;
+$CodeSigningCertificateKey = $env:RAPIDFIELD_CSCERTKEY;
+$CodeSigningCertificatePassword = $env:RAPIDFIELD_CSCERTPWD;
+$CommitAuthorEmail = $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL;
+$CommitAuthorName = $env:APPVEYOR_REPO_COMMIT_AUTHOR;
+$CommitId = $env:APPVEYOR_REPO_COMMIT;
+$CommitMessage = $env:APPVEYOR_REPO_COMMIT_MESSAGE;
+$CommitTimeStamp = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
+$NuGetApiKey = $env:RAPIDFIELD_NUGETAPIKEY;
+$RepositoryName = $env:APPVEYOR_REPO_NAME;
+$TagName = $env:APPVEYOR_REPO_TAG_NAME;
 
 # Other configuration values
 $TargetFrameworkForExampleServiceApplication = "netcoreapp2.1";
@@ -309,8 +328,6 @@ function PublishPackages {
         return;
     }
 
-    $NuGetApiKey = $env:RAPIDFIELD_NUGETAPIKEY;
-
     If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq "")) {
         Write-Host -ForegroundColor DarkCyan "Packages will not be published. The NuGet API key is unavailable.";
         return;
@@ -366,14 +383,10 @@ function SignPackages {
         return;
     }
 
-    $CodeSigningCertificateKey = $env:RAPIDFIELD_CSCERTKEY;
-
     If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq "")) {
         Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate key is unavailable.";
         return;
     }
-
-    $CodeSigningCertificatePassword = $env:RAPIDFIELD_CSCERTPWD;
 
     If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq "")) {
         Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate password is unavailable.";
@@ -479,12 +492,19 @@ function Test {
     Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object {
         $TestDirectoryPath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        dotnet test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal
-
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
+        
         If ($LASTEXITCODE -ne 0) {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
         }
-
+        
+        If (($CodecovToken -eq $null) -or ($CodecovToken -eq "")) {
+            Write-Host -ForegroundColor DarkCyan "A code coverage report will not be published. The Codecov token is unavailable.";
+        }
+        Else {
+            codecov -f "$FilePathForCoverageReport" -t $CodecovToken
+        }
+        
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished running tests. <<<`n";
     }
 }
@@ -512,81 +532,65 @@ function WriteBuildDetails {
 }
 
 function WriteBuildVersion {
-    $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
-
     If (($BuildVersion -eq $null) -or ($BuildVersion -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Build version: $BuildVersion";
 }
 
 function WriteCommitAuthorEmail {
-    $CommitAuthorEmail = $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL;
-
     If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit author email: $CommitAuthorEmail";
 }
 
 function WriteCommitAuthorName {
-    $CommitAuthorName = $env:APPVEYOR_REPO_COMMIT_AUTHOR;
-
     If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit author name: $CommitAuthorName";
 }
 
 function WriteCommitId {
-    $CommitId = $env:APPVEYOR_REPO_COMMIT;
-
     If (($CommitId -eq $null) -or ($CommitId -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit ID: $CommitId";
 }
 
 function WriteCommitMessage {
-    $CommitMessage = $env:APPVEYOR_REPO_COMMIT_MESSAGE;
-
     If (($CommitMessage -eq $null) -or ($CommitMessage -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit message: $CommitMessage";
 }
 
 function WriteCommitTimeStamp {
-    $CommitTimeStamp = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
-
     If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Commit time stamp: $CommitTimeStamp";
 }
 
 function WriteRepositoryName {
-    $RepositoryName = $env:APPVEYOR_REPO_NAME;
-
     If (($RepositoryName -eq $null) -or ($RepositoryName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Repository name: $RepositoryName";
 }
 
 function WriteTagName {
-    $TagName = $env:APPVEYOR_REPO_TAG_NAME;
-
     If (($TagName -eq $null) -or ($TagName -eq "")) {
         return;
     }
-    
+
     Write-Host -ForegroundColor Cyan "Tag name: $TagName";
 }

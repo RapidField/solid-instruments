@@ -2,6 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This file scripts the deployment process for successful CI/CD master builds.
+# =================================================================================================================================
+
 # Script configuration
 # =================================================================================================================================
 
@@ -40,7 +43,7 @@ Import-Module $FilePathForBuildAndDeploymentModule -Force;
 Write-Host -ForegroundColor Cyan $("`nStarting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
 WriteBuildDetails
 
-# Publish the packages.
+# Sign and publish the packages.
 SignPackages -SolutionConfiguration $SolutionConfigurationRelease;
 PublishPackages -SolutionConfiguration $SolutionConfigurationRelease;
 

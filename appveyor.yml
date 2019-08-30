@@ -39,6 +39,8 @@ deploy:
 # Environment variables
 # ---------------------------------------------------------------------------------------------------------------------------------
 environment:
+  CODECOV_TOKEN:
+    secure: 7/8LlzRGKOUWnZwRUPiZjaw1ugVc9OsFebsLdIA/mbbVintw7IhTOqT/fu31eTz3
   RAPIDFIELD_CSCERTKEY:
     secure: 2UnQ5nbiA4U959m61TBLh1vI6/WDt08mN9E5+4h3FsFES7f3CZIJHciIMFWE/Nwn
   RAPIDFIELD_CSCERTPWD:
