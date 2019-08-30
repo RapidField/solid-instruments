@@ -11,7 +11,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## Features
 
-[![Pull requests](https://img.shields.io/github/issues-pr-closed/rapidfield/solid-instruments?style=flat&color=black&label=pull%20requests&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/pulls)
 [![Release](https://img.shields.io/github/v/release/rapidfield/solid-instruments?style=flat&color=black&include_prereleases&label=release&logo=github&logoColor=lightgrey)](https://github.com/RapidField/solid-instruments/releases)
 
 The **Solid Instruments** constituent libraries expose a wide variety of powerful feature APIs. Check out the [**Quick Start Guide**](https://www.solidinstruments.com/articles/QuickStartGuide.html) or explore the links below to get started.
