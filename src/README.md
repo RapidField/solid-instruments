@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /src
 
-This document describes the purpose of the [`src`](./) directory.
+This document describes the purpose of the [`src`]() directory.
 
 ## Purpose
 
