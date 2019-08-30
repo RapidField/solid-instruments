@@ -5,10 +5,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 - - -
 
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=popout&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=popout&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=popout&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
-[![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=popout&color=teal&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
+# RapidField.SolidInstruments.Collections.UnitTests
+
+[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
+[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
+[![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
+[![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
 ## About
 
@@ -16,11 +18,9 @@ This project houses unit tests for the **Solid Instruments** [**Collections**](.
 
 ## License
 
+[![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](../../LICENSE.txt)
+
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
-
-## Getting started
-
-Check out the [root project documentation](../../README.md) and the [quick start guide](https://www.solidinstruments.com/articles/QuickStartGuide.html) to get started.
 
 <br />
 

@@ -34,6 +34,7 @@ cicd
 ciphertext
 cmd
 codebook
+codecov
 composable
 configurator
 configurators
@@ -65,6 +66,7 @@ docfx
 docurl
 docweb
 dotnet
+dotnetcore
 dropdown
 dsp
 durations
@@ -167,6 +169,7 @@ rng
 runas
 runtime
 scalable
+sdk
 seealso
 Segoe
 serializable

@@ -11,13 +11,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ## Conflict resolution
 
-When contributors disagree on design or direction, the conflict should be resolved by direct, honest communication. Ideal resolutions to such conflicts should address the concerns of all involved parties. Otherwise, reasonable compromises should be made.
-
-When contributors cannot reach an agreement, they should ask for advice from more senior members of the team.
+When contributors disagree on design or direction, the conflict should be resolved by direct, honest communication. While ideal solutions address the concerns of all involved parties, it is expected that reasonable compromises will sometimes be made. When contributors cannot reach an agreement they should ask for advice from more senior members of the team.
 
 ## Contributing
 
-Before beginning work please read [the guide](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
