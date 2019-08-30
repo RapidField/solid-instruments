@@ -9,7 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 This document describes the purpose of the [`RapidField.SolidInstruments.Collections.UnitTests`](./) project.
 
-## About
+## Purpose
 
 This project houses unit tests for the **Solid Instruments** [**Collections**](../../src/RapidField.SolidInstruments.Collections/README.md) APIs.
 
