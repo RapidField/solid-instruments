@@ -11,7 +11,7 @@ This document describes the purpose of the [`src`]() directory.
 
 ## Purpose
 
-This path houses the source for the **Solid Instruments** constituent libraries. 
+This path houses the source for the **Solid Instruments** constituent libraries.
 
 ## License
 

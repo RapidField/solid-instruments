@@ -11,7 +11,7 @@ This document describes the purpose of the [`test`]() directory.
 
 ## Purpose
 
-This path houses test projects for the **Solid Instruments** [constituent libraries](../src).
+This path houses test projects for the **Solid Instruments** [constituent libraries](/../src).
 
 ## License
 
