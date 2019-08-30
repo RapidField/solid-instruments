@@ -9,7 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 ![Collections](Label.Collections.300w.png)
 
-This document describes the purpose of the [`RapidField.SolidInstruments.Collections`](./) library and offers guidance with respect to licensing, installation and usage.
+This document describes the purpose of the [`RapidField.SolidInstruments.Collections`]() library and offers guidance with respect to licensing, installation and usage.
 
 ## Features
 
