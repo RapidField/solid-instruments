@@ -13,10 +13,6 @@ This document describes the purpose of the [`RapidField.SolidInstruments.Collect
 
 ## Features
 
-[![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
-[![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
-[![Downloads](https://img.shields.io/nuget/dt/RapidField.SolidInstruments.Collections?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
-
 This library exposes useful collection types and features, including:
 
 - circular buffers
@@ -39,6 +35,7 @@ Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField
 ## Installation
 
 [![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Collections?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
+[![Downloads](https://img.shields.io/nuget/dt/RapidField.SolidInstruments.Collections?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
 
 This library is available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Use one of the commands below to download and install the library and all of its dependencies.
 
