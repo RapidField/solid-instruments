@@ -7,13 +7,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # RapidField.SolidInstruments.Collections
 
-![Collections](Label.Collections.300w.png)
-
 [![Build](https://img.shields.io/appveyor/ci/rapidfield/solid-instruments?style=flat&label=build&logo=appveyor&logoColor=lightgrey)](https://ci.appveyor.com/project/rapidfield/solid-instruments/branch/master)
 [![Quality](https://img.shields.io/codefactor/grade/github/rapidfield/solid-instruments/master.svg?style=flat&label=quality&logo=codeforces&logoColor=lightgrey)](https://www.codefactor.io/repository/github/rapidfield/solid-instruments)
 [![Downloads](https://img.shields.io/nuget/dt/RapidField.SolidInstruments.Collections?style=flat&color=blue&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages/RapidField.SolidInstruments.Collections)
 
-## About
+![Collections](Label.Collections.300w.png)
+
+## Features
 
 This library exposes useful collection types and features, including:
 
