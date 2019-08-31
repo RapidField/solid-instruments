@@ -25,4 +25,4 @@ If feature libraries were added or modified:
 - [ ] Applicable unit tests have been added or updated.
 - [ ] All unit tests are passing.
 - [ ] Thorough source documentation accompanies all code additions and modifications.
-- [ ] Styling guidelines were carefully followed.
+- [ ] Design and styling choices are reflective of project conventions.

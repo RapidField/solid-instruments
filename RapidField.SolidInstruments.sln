@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		codecov.yml = codecov.yml
 		CodeMaid.config = CodeMaid.config
+		.github\CODEOWNERS = .github\CODEOWNERS
 		CONTRIBUTING.md = CONTRIBUTING.md
 		en-US_User.dic = en-US_User.dic
 		en_US.aff = en_US.aff
