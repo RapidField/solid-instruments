@@ -23,18 +23,44 @@ By contributing to **Solid Instruments** you assert and agree that:
 
 **Solid Instruments** is developed using [**Visual Studio**](https://visualstudio.microsoft.com/downloads) with the following extensions installed.
 
-- [**CodeMaid**](http://www.codemaid.net)
-- [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker)
+- [**CodeMaid**](http://www.codemaid.net) is used to maintain standard document formatting throughout the project.
+- [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker) is used to uncover spelling errors.
 
-CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](./cicd/modules/AutomationTools.psm1).
+CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
+
+### Package managers
+
+* [**Chocolatey**](https://chocolatey.org/about)
+* [**npm**](https://docs.npmjs.com/about-npm)
+* [**NuGet**](https://www.nuget.org)
+
+### Command-line tools
+
+* [**The .NET SDK**](https://docs.microsoft.com/en-us/dotnet/core/sdk) is the project's foundational build and test instrument.
+* [**codecov.exe**](https://github.com/codecov/codecov-exe) publishes test coverage reports.
+* [**DocFx**](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html) produces the [project website](https://www.solidinstruments.com).
+* [**HTMLMinifier**](https://www.npmjs.com/package/html-minifier) minifies the project website.
+* [**OpenCover**](https://github.com/OpenCover/opencover) executes the project tests and produces test coverage reports.
+* [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
+* [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
+
+## Repository contents
+
+Contents of the repository are organized as follows.
+
+* [`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
+* [`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
+* [`/example`](/example) contains sample projects that utilize the product libraries.
+* [`/src`](/src) houses the source for the product libraries.
+* [`/test`](/test) houses the test projects for the product libraries.
 
 ## Design conventions
 
-New contributors should familiarize themselves with the **Solid Instruments** design conventions by reviewing existing source. When in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+New contributors should familiarize themselves with the design conventions by reviewing existing source. When in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Styling
 
-[`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines for **Solid Instruments**. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
+[`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
 ## Release versioning
 
