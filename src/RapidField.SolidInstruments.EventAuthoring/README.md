@@ -25,7 +25,7 @@ This library defines a simple pattern for producing and representing reportable 
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.html) for usage examples and reference documentation.
 
 ## Installation
 

@@ -25,7 +25,7 @@ This library provides in-memory implementations of the **Solid Instruments** mes
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html) for usage examples and reference documentation.
 
 ## Installation
 

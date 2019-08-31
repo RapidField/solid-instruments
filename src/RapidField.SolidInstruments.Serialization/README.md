@@ -25,7 +25,7 @@ This library defines a reusable standard for custom type serializers.
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Serialization.html) for usage examples and reference documentation.
 
 ## Installation
 

@@ -25,7 +25,7 @@ This library provides [**Entity Framework**](https://docs.microsoft.com/en-us/do
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html) for usage examples and reference documentation.
 
 ## Installation
 

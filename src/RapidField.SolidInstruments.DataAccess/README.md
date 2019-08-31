@@ -25,7 +25,7 @@ This library exposes abstractions for the repository and unit-of-work patterns t
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.html) for usage examples and reference documentation.
 
 ## Installation
 

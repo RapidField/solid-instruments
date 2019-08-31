@@ -43,7 +43,7 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 
 There are multiple ways to find help.
 
-* Refer to the [**API Reference**](https://www.solidinstruments.com/api) for usage examples and reference documentation.
+* Check out the [**API Reference**](https://www.solidinstruments.com/api) for usage examples and reference documentation.
 * Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
 * Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose) to request a feature or report a defect.
 * Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).

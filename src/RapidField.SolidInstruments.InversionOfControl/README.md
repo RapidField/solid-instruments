@@ -25,7 +25,7 @@ This library defines a pattern for abstracting dependency injection tools.
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html) for usage examples and reference documentation.
 
 ## Installation
 

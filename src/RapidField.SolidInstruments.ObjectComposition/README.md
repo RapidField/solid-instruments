@@ -25,7 +25,7 @@ This library exposes simple tools for designing extensible and configurable obje
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html)
 
-Refer to the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html) for usage examples and reference documentation.
+Check out the [**API Reference**](https://www.solidinstruments.com/api/RapidField.SolidInstruments.ObjectComposition.html) for usage examples and reference documentation.
 
 ## Installation
 
