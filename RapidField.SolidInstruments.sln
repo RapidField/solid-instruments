@@ -303,12 +303,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{3EDA2412-F5E1-492E-86F4-C5CFCC906955}"
 	ProjectSection(SolutionItems) = preProject
 		cicd\assets\.gitignore = cicd\assets\.gitignore
+		cicd\assets\README.md = cicd\assets\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{8A8C4623-F810-4EF4-9B55-2152DE8CEEC1}"
 	ProjectSection(SolutionItems) = preProject
 		cicd\modules\AutomationTools.psm1 = cicd\modules\AutomationTools.psm1
 		cicd\modules\BuildAndDeployment.psm1 = cicd\modules\BuildAndDeployment.psm1
+		cicd\modules\README.md = cicd\modules\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213A8C5-E32C-4DEE-B872-7E50E27F9B5A}"
@@ -316,6 +318,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213
 		cicd\scripts\EncryptCodeSigningCertificate.ps1 = cicd\scripts\EncryptCodeSigningCertificate.ps1
 		cicd\scripts\ExecuteCicdBuild.ps1 = cicd\scripts\ExecuteCicdBuild.ps1
 		cicd\scripts\ExecuteCicdDeployment.ps1 = cicd\scripts\ExecuteCicdDeployment.ps1
+		cicd\scripts\README.md = cicd\scripts\README.md
 		cicd\scripts\ResetEnvironment.ps1 = cicd\scripts\ResetEnvironment.ps1
 	EndProjectSection
 EndProject

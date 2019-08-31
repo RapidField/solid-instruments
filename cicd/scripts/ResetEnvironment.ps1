@@ -2,7 +2,7 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file scripts the build environment reset process.
+# This file scripts the build environment setup/reset process.
 # =================================================================================================================================
 
 # Script configuration
