@@ -493,18 +493,18 @@ function Test {
         $TestDirectoryPath = $_.FullName;
         Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
         OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
-        
+
         If ($LASTEXITCODE -ne 0) {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
         }
-        
+
         If (($CodecovToken -eq $null) -or ($CodecovToken -eq "")) {
             Write-Host -ForegroundColor DarkCyan "A code coverage report will not be published. The Codecov token is unavailable.";
         }
         Else {
             codecov -f "$FilePathForCoverageReport" -t $CodecovToken
         }
-        
+
         Write-Host -ForegroundColor DarkCyan "`n>>> Finished running tests. <<<`n";
     }
 }

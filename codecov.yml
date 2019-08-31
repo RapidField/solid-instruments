@@ -27,7 +27,7 @@ coverage:
 ignore:
   - "cicd/**"
   - "example/**"
-  
+
 parsers:
   gcov:
     branch_detection:
