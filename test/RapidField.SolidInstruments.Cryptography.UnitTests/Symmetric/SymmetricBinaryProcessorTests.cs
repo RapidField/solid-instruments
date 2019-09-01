@@ -48,25 +48,6 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             Encrypt_ShouldReproduceTestVector(algorithm, blockLengthInBits, cipherMode, key, initializationVector, plaintext, ciphertext);
         }
 
-        /* =================================================================================================================
-         * Twofish and Threefish are out-of-scope for MVP-01.
-         * =================================================================================================================
-        [TestMethod]
-        public void Encrypt_ShouldReproduceTestVector_ForTwofish128Ecb()
-        {
-            // Arrange.
-            var algorithm = SymmetricAlgorithmSpecification.Twofish128Ecb;
-            var blockLengthInBits = 128;
-            var cipherMode = CipherMode.ECB;
-            var key = new Byte[] { 0x9f, 0x58, 0x9f, 0x5c, 0xf6, 0x12, 0x2c, 0x32, 0xb6, 0xbf, 0xec, 0x2f, 0x2a, 0xe8, 0xc3, 0x5a };
-            var initializationVector = (Byte[])null;
-            var plaintext = new Byte[] { 0xd4, 0x91, 0xdB, 0x16, 0xe7, 0xb1, 0xc3, 0x9e, 0x86, 0xcb, 0x08, 0x6b, 0x78, 0x9f, 0x54, 0x19 };
-            var ciphertext = new Byte[] { 0x01, 0x9f, 0x98, 0x09, 0xde, 0x17, 0x11, 0x85, 0x8f, 0xaa, 0xc3, 0xa3, 0xba, 0x20, 0xfb, 0xc3 };
-
-            // Assert.
-            Encrypt_ShouldReproduceTestVector(algorithm, blockLengthInBits, cipherMode, key, initializationVector, plaintext, ciphertext);
-        }*/
-
         private static void Encrypt_ShouldReproduceTestVector(SymmetricAlgorithmSpecification algorithm, Int32 blockLengthInBits, CipherMode cipherMode, Byte[] key, Byte[] initializationVector, Byte[] plaintext, Byte[] ciphertext)
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())

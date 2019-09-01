@@ -55,57 +55,6 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
 
                     return new Aes256EcbCipher(randomnessProvider);
 
-                /* =================================================================================================================
-                 * Twofish and Threefish are out-of-scope for MVP-01.
-                 * =================================================================================================================
-                case SymmetricAlgorithmSpecification.Twofish128Cbc:
-
-                    return new Twofish128CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Twofish128Ecb:
-
-                    return new Twofish128EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Twofish192Cbc:
-
-                    return new Twofish192CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Twofish192Ecb:
-
-                    return new Twofish192EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Twofish256Cbc:
-
-                    return new Twofish256CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Twofish256Ecb:
-
-                    return new Twofish256EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish256Cbc:
-
-                    return new Threefish256CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish256Ecb:
-
-                    return new Threefish256EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish512Cbc:
-
-                    return new Threefish512CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish512Ecb:
-
-                    return new Threefish512EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish1024Cbc:
-
-                    return new Threefish1024CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Threefish1024Ecb:
-
-                    return new Threefish1024EcbCipher(randomnessProvider);*/
-
                 default:
 
                     throw new ArgumentException($"{target} is not a supported {nameof(SymmetricAlgorithmSpecification)}.", nameof(target));
@@ -145,57 +94,6 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
                 case SymmetricAlgorithmSpecification.Aes256Ecb:
 
                     return 256;
-
-                /* =================================================================================================================
-                 * Twofish and Threefish are out-of-scope for MVP-01.
-                 * =================================================================================================================
-                case SymmetricAlgorithmSpecification.Twofish128Cbc:
-
-                    return 128;
-
-                case SymmetricAlgorithmSpecification.Twofish128Ecb:
-
-                    return 128;
-
-                case SymmetricAlgorithmSpecification.Twofish192Cbc:
-
-                    return 192;
-
-                case SymmetricAlgorithmSpecification.Twofish192Ecb:
-
-                    return 192;
-
-                case SymmetricAlgorithmSpecification.Twofish256Cbc:
-
-                    return 256;
-
-                case SymmetricAlgorithmSpecification.Twofish256Ecb:
-
-                    return 256;
-
-                case SymmetricAlgorithmSpecification.Threefish256Cbc:
-
-                    return 256;
-
-                case SymmetricAlgorithmSpecification.Threefish256Ecb:
-
-                    return 256;
-
-                case SymmetricAlgorithmSpecification.Threefish512Cbc:
-
-                    return 512;
-
-                case SymmetricAlgorithmSpecification.Threefish512Ecb:
-
-                    return 512;
-
-                case SymmetricAlgorithmSpecification.Threefish1024Cbc:
-
-                    return 1024;
-
-                case SymmetricAlgorithmSpecification.Threefish1024Ecb:
-
-                    return 1024;*/
 
                 default:
 
