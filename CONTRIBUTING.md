@@ -19,6 +19,16 @@ By contributing to **Solid Instruments** you assert and agree that:
 2. You have the right to assign the copyright for the work (it is not owned by your employer, or you have been granted copyright assignment rights in writing).
 3. Your contribution is licensed under [the terms](LICENSE.txt)  applied to the **Solid Instruments** project.
 
+## Repository contents
+
+Contents of the repository are organized as follows.
+
+* [`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
+* [`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
+* [`/example`](/example) contains sample projects that utilize the product libraries.
+* [`/src`](/src) houses the source for the product libraries.
+* [`/test`](/test) houses the test projects for the product libraries.
+
 ## Tooling
 
 **Solid Instruments** is developed using [**Visual Studio**](https://visualstudio.microsoft.com/downloads) with the following extensions installed.
@@ -27,12 +37,6 @@ By contributing to **Solid Instruments** you assert and agree that:
 - [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker) is used to uncover spelling errors.
 
 CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
-
-### Package managers
-
-* [**Chocolatey**](https://chocolatey.org/about)
-* [**npm**](https://docs.npmjs.com/about-npm)
-* [**NuGet**](https://www.nuget.org)
 
 ### Command-line tools
 
@@ -44,15 +48,11 @@ CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](ci
 * [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
 * [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
 
-## Repository contents
+### Package managers
 
-Contents of the repository are organized as follows.
-
-* [`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
-* [`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
-* [`/example`](/example) contains sample projects that utilize the product libraries.
-* [`/src`](/src) houses the source for the product libraries.
-* [`/test`](/test) houses the test projects for the product libraries.
+* [**Chocolatey**](https://chocolatey.org/about)
+* [**npm**](https://docs.npmjs.com/about-npm)
+* [**NuGet**](https://www.nuget.org)
 
 ## Design conventions
 
@@ -65,6 +65,14 @@ New contributors should familiarize themselves with the design conventions by re
 ## Release versioning
 
 Release versioning is controlled via [`appveyor.yml`](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
+
+## Get started
+
+Ready to start contributing? You know what to do.
+
+```shell
+git clone https://github.com/RapidField/solid-instruments.git
+```
 
 <br />
 

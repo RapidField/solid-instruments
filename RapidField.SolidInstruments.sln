@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 		.gitignore = .gitignore
 		.mergify.yml = .mergify.yml
 		appveyor.yml = appveyor.yml
+		AUTHORS.md = AUTHORS.md
 		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
 		Build.ps1 = Build.ps1
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md

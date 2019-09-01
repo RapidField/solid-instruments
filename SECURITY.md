@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Security Policy
 
-The **Solid Instruments** team actively addresses security issues. All supported versions receive security updates.
+The **Solid Instruments** maintainers actively address security issues. All supported versions receive security updates.
 
 ## Supported versions
 
