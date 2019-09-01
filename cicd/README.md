@@ -13,7 +13,7 @@ This document describes the purpose of the [`cicd`]() directory.
 
 This path houses source objects which define the behavior of the **Solid Instruments** CI/CD pipeline and which are divided into sub-directories as follows.
 
-* [`assets`](/./assets) contains resource files that are utilized by CI/CD operations.
+* [`assets`](/cicd/assets) contains resource files that are utilized by CI/CD operations.
 * [`modules`](/./modules) contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) module files that expose functions which define the core CI/CD pipeline.
 * [`scripts`](/./scripts) contains scripts that serve as entry points for pipeline invocation.
 
