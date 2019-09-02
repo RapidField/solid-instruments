@@ -374,7 +374,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
             if (LockedMessages.TryRemove(lockToken.RejectIf().IsNull(nameof(lockToken)), out _))
             {
-                return PersistSnapshotAsync();
+                return Task.CompletedTask;
             }
 
             throw new ArgumentException("The specified lock token does not reference an existing locked message in the queue.", nameof(lockToken));
@@ -403,37 +403,37 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public async Task<IEnumerable<DurableMessage>> DequeueAsync(Int32 count)
+        public Task<IEnumerable<DurableMessage>> DequeueAsync(Int32 count)
         {
             RejectIfDisposed();
 
             if (count.RejectIf().IsLessThan(0, nameof(count)) == 0)
             {
-                return Array.Empty<DurableMessage>();
+                return Task.FromResult<IEnumerable<DurableMessage>>(Array.Empty<DurableMessage>());
             }
 
-            var messageList = new List<DurableMessage>();
-
-            while (messageList.Count() < count && TryDequeue(out var message))
+            return Task.Factory.StartNew<IEnumerable<DurableMessage>>(() =>
             {
-                var lockToken = new DurableMessageLockToken(Guid.NewGuid(), message.Identifier, TimeStamp.Current.Add(MessageLockExpirationThreshold));
-                message.LockToken = lockToken;
+                var messageList = new List<DurableMessage>();
+                var requeueTasks = new List<Task>();
 
-                if (LockedMessages.TryAdd(lockToken, message))
+                while (messageList.Count() < count && TryDequeue(out var message))
                 {
-                    messageList.Add(message);
-                    continue;
+                    var lockToken = new DurableMessageLockToken(Guid.NewGuid(), message.Identifier, TimeStamp.Current.Add(MessageLockExpirationThreshold));
+                    message.LockToken = lockToken;
+
+                    if (LockedMessages.TryAdd(lockToken, message))
+                    {
+                        messageList.Add(message);
+                        continue;
+                    }
+
+                    requeueTasks.Add(RequeueAsync(message));
                 }
 
-                await RequeueAsync(message).ConfigureAwait(false);
-            }
-
-            if (messageList.Any())
-            {
-                await PersistSnapshotAsync().ConfigureAwait(false);
-            }
-
-            return messageList;
+                Task.WaitAll(requeueTasks.ToArray());
+                return messageList;
+            });
         }
 
         /// <summary>
@@ -698,74 +698,34 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             if (TryEnqueue(message))
             {
-                return PersistSnapshotAsync();
+                return Task.CompletedTask;
             }
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            try
+            return Task.Factory.StartNew(() =>
             {
-                while (stopwatch.Elapsed < EnqueueTimeoutThreshold)
+                try
                 {
-                    RejectIfDisposed();
-                    Thread.Sleep(EnqueueDelayDuration);
-
-                    if (TryEnqueue(message))
+                    while (stopwatch.Elapsed < EnqueueTimeoutThreshold)
                     {
-                        return PersistSnapshotAsync();
+                        RejectIfDisposed();
+                        Thread.Sleep(EnqueueDelayDuration);
+
+                        if (TryEnqueue(message))
+                        {
+                            return;
+                        }
                     }
                 }
-            }
-            finally
-            {
-                stopwatch.Stop();
-            }
+                finally
+                {
+                    stopwatch.Stop();
+                }
 
-            throw new TimeoutException($"The timeout threshold duration was exceeded while waiting for queue availability (path: {Path}).");
-        }
-
-        /// <summary>
-        /// Asynchronously persists a thread-safe snapshot of the current <see cref="DurableMessageQueue" />.
-        /// </summary>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        [DebuggerHidden]
-        private async Task PersistSnapshotAsync()
-        {
-            RejectIfDisposed();
-
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                await PersistSnapshotAsync(controlToken).ConfigureAwait(false);
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously persists a thread-safe snapshot of the current <see cref="DurableMessageQueue" />.
-        /// </summary>
-        /// <param name="controlToken">
-        /// A token that represents and manages contextual thread safety.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
-        /// </exception>
-        [DebuggerHidden]
-        private Task PersistSnapshotAsync(ConcurrencyControlToken controlToken)
-        {
-            var snapshot = CaptureSnapshot(controlToken);
-            return PersistenceProxy.PersistSnapshotAsync(snapshot);
+                throw new TimeoutException($"The timeout threshold duration was exceeded while waiting for queue availability (path: {Path}).");
+            });
         }
 
         /// <summary>

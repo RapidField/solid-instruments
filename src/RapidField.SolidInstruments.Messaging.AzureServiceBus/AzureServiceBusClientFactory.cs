@@ -207,17 +207,10 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureQueueExistanceAsync(String queuePath)
+        private Task EnsureQueueExistanceAsync(String queuePath) => ManagementClient.QueueExistsAsync(queuePath).ContinueWith(queueExistsTask =>
         {
-            var queueExists = await ManagementClient.QueueExistsAsync(queuePath).ConfigureAwait(false);
-
-            if (queueExists)
-            {
-                return;
-            }
-
-            await ManagementClient.CreateQueueAsync(queuePath).ConfigureAwait(false);
-        }
+            return queueExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateQueueAsync(queuePath);
+        });
 
         /// <summary>
         /// Asynchronously creates the specified Azure Service Bus subscription if it does not exist.
@@ -232,18 +225,13 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureSubscriptionExistanceAsync(String topicPath, String subscriptionName)
+        private Task EnsureSubscriptionExistanceAsync(String topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(ensureTopicExistenceTask =>
         {
-            await EnsureTopicExistanceAsync(topicPath).ConfigureAwait(false);
-            var subscriptionExists = await ManagementClient.SubscriptionExistsAsync(topicPath, subscriptionName).ConfigureAwait(false);
-
-            if (subscriptionExists)
+            return ManagementClient.SubscriptionExistsAsync(topicPath, subscriptionName).ContinueWith(subscriptionExistsTask =>
             {
-                return;
-            }
-
-            await ManagementClient.CreateSubscriptionAsync(topicPath, subscriptionName);
-        }
+                return subscriptionExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateSubscriptionAsync(topicPath, subscriptionName);
+            });
+        });
 
         /// <summary>
         /// Asynchronously creates the specified Azure Service Bus topic if it does not exist.
@@ -255,17 +243,10 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureTopicExistanceAsync(String topicPath)
+        private Task EnsureTopicExistanceAsync(String topicPath) => ManagementClient.TopicExistsAsync(topicPath).ContinueWith(topicExistsTask =>
         {
-            var topicExists = await ManagementClient.TopicExistsAsync(topicPath).ConfigureAwait(false);
-
-            if (topicExists)
-            {
-                return;
-            }
-
-            await ManagementClient.CreateTopicAsync(topicPath).ConfigureAwait(false);
-        }
+            return topicExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateTopicAsync(topicPath);
+        });
 
         /// <summary>
         /// Represents the behavior used by clients when receiving messages.

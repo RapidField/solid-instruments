@@ -204,14 +204,25 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// An exception was raised while attempting to publish the heartbeat message.
         /// </exception>
         [DebuggerHidden]
-        private async Task PublishHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
+        private Task PublishHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
         {
             try
             {
-                using (var dependencyScope = CreateDependencyScope())
+                var dependencyScope = CreateDependencyScope();
+
+                try
                 {
                     var messagePublishingFacade = dependencyScope.Resolve<IMessagePublishingFacade>();
-                    await scheduleItem.PublishHeartbeatMessageAsync(messagePublishingFacade).ConfigureAwait(false);
+
+                    return scheduleItem.PublishHeartbeatMessageAsync(messagePublishingFacade).ContinueWith(publishHeartbeatMessageTask =>
+                    {
+                        dependencyScope.Dispose();
+                    });
+                }
+                catch
+                {
+                    dependencyScope.Dispose();
+                    throw;
                 }
             }
             catch (MessagePublishingException)
@@ -233,7 +244,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         [DebuggerHidden]
         private void ScheduleHeartbeat(IHeartbeatScheduleItem heartbeatScheduleItem)
         {
-            var timerCallback = new TimerCallback((state) => Task.Factory.StartNew(async () => await PublishHeartbeatMessageAsync(state as IHeartbeatScheduleItem).ConfigureAwait(false)));
+            var timerCallback = new TimerCallback((state) => PublishHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
             var timer = new Timer(timerCallback, heartbeatScheduleItem, TimeSpan.Zero, TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds));
             HeartbeatTimers.Add(timer);
             ReferenceManager.AddObject(timer);

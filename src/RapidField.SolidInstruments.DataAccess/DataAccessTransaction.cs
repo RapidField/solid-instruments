@@ -65,21 +65,32 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public async Task BeginAsync()
+        public Task BeginAsync()
         {
-            using (var controlToken = StateControl.Enter())
+            var controlToken = StateControl.Enter();
+
+            try
             {
                 RejectIfDisposed();
 
                 if (State == DataAccessTransactionState.Ready)
                 {
                     State = DataAccessTransactionState.InProgress;
-                    await BeginAsync(controlToken).ConfigureAwait(false);
+
+                    return BeginAsync(controlToken).ContinueWith(beginTask =>
+                    {
+                        controlToken.Dispose();
+                    });
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(BeginAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
                 }
+            }
+            catch
+            {
+                controlToken.Dispose();
+                throw;
             }
         }
 
@@ -122,21 +133,32 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public async Task CommitAsync()
+        public Task CommitAsync()
         {
-            using (var controlToken = StateControl.Enter())
+            var controlToken = StateControl.Enter();
+
+            try
             {
                 RejectIfDisposed();
 
                 if (State == DataAccessTransactionState.InProgress)
                 {
                     State = DataAccessTransactionState.Committed;
-                    await CommitAsync(controlToken).ConfigureAwait(false);
+
+                    return CommitAsync(controlToken).ContinueWith(commitTask =>
+                    {
+                        controlToken.Dispose();
+                    });
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(CommitAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
                 }
+            }
+            catch
+            {
+                controlToken.Dispose();
+                throw;
             }
         }
 
@@ -179,21 +201,32 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public async Task RejectAsync()
+        public Task RejectAsync()
         {
-            using (var controlToken = StateControl.Enter())
+            var controlToken = StateControl.Enter();
+
+            try
             {
                 RejectIfDisposed();
 
                 if (State == DataAccessTransactionState.InProgress)
                 {
                     State = DataAccessTransactionState.Rejected;
-                    await RejectAsync(controlToken).ConfigureAwait(false);
+
+                    return RejectAsync(controlToken).ContinueWith(rejectTask =>
+                    {
+                        controlToken.Dispose();
+                    });
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Reject)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(RejectAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
                 }
+            }
+            catch
+            {
+                controlToken.Dispose();
+                throw;
             }
         }
 

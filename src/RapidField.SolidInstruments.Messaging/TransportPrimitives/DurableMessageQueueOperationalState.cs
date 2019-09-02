@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents the operational state of a <see cref="DurableMessageQueue" />.
+    /// Represents the operational state of an <see cref="IDurableMessageQueue" />.
     /// </summary>
     [DataContract]
     public enum DurableMessageQueueOperationalState : Int32

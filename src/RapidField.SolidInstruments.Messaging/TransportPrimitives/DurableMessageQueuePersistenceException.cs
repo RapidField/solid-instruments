@@ -8,8 +8,8 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents an exception that is raised when an <see cref="IDurableMessageQueuePersistenceProxy" /> is unable to persist a
-    /// queue snapshot.
+    /// Represents an exception that is raised when an <see cref="IDurableMessageQueuePersistenceProxy" /> is unable to perform a
+    /// state persistence operation.
     /// </summary>
     public sealed class DurableMessageQueuePersistenceException : Exception
     {
@@ -65,6 +65,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Represents the default message for the exception.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String DefaultMessage = "A queue snapshot persistence operation failed.";
+        private const String DefaultMessage = "A queue state persistence operation failed.";
     }
 }

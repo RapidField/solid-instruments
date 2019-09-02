@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore.Storage;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
@@ -86,7 +88,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override async Task BeginAsync(ConcurrencyControlToken controlToken) => Transaction = await Context.Database.BeginTransactionAsync(IsolationLevel).ConfigureAwait(false);
+        protected override Task BeginAsync(ConcurrencyControlToken controlToken) => Context.Database.BeginTransactionAsync(IsolationLevel).ContinueWith(beginTransactionTask =>
+        {
+            Transaction = beginTransactionTask.Result;
+        });
 
         /// <summary>
         /// Commits all changes made within the scope of the current <see cref="EntityFrameworkTransaction{TContext}" />.
@@ -110,11 +115,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override async Task CommitAsync(ConcurrencyControlToken controlToken)
+        protected override Task CommitAsync(ConcurrencyControlToken controlToken) => Context.SaveChangesAsync(true).ContinueWith(saveChangesTask =>
         {
-            await Context.SaveChangesAsync(true).ConfigureAwait(false);
             Transaction?.Commit();
-        }
+        });
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DataAccessTransaction" />.
@@ -176,9 +180,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override async Task RejectAsync(ConcurrencyControlToken controlToken)
+        protected override Task RejectAsync(ConcurrencyControlToken controlToken)
         {
             var entities = Context.ChangeTracker.Entries();
+            var reloadTasks = new List<Task>();
 
             foreach (var entity in entities)
             {
@@ -191,12 +196,20 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
 
                     default:
 
-                        await entity.ReloadAsync().ConfigureAwait(false);
+                        reloadTasks.Add(entity.ReloadAsync());
                         break;
                 }
             }
 
-            Transaction?.Rollback();
+            if (reloadTasks.Any())
+            {
+                return Task.WhenAll(reloadTasks.ToArray()).ContinueWith(reloadAllEntitiesTask =>
+                {
+                    Transaction?.Rollback();
+                });
+            }
+
+            return Task.Factory.StartNew(() => Transaction?.Rollback());
         }
 
         /// <summary>

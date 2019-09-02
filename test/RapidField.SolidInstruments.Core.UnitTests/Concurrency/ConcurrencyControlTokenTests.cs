@@ -39,10 +39,9 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
             completionRecords.ElementAt(2).Should().Be(800);
         }
 
-        private static async Task Delay(Int32 durationInMilliseconds, IList<Int32> completionRecords)
+        private static Task Delay(Int32 durationInMilliseconds, IList<Int32> completionRecords) => Task.Delay(durationInMilliseconds).ContinueWith(delayTask =>
         {
-            await Task.Delay(durationInMilliseconds).ConfigureAwait(false);
             completionRecords.Add(durationInMilliseconds);
-        }
+        });
     }
 }
