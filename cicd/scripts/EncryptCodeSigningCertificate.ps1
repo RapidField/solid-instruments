@@ -44,8 +44,10 @@ If ($Key -eq "REPLACE-ME") {
     return;
 }
 
+# Perform the encryption.
 EncryptCodeSigningCertificate -Key $Key;
 
+# Remind the user not to commit the key.
 Write-Host -ForegroundColor Magenta "============================================";
 Write-Host -ForegroundColor Magenta ">>> IMPORTANT: Do not commit the secret! <<<";
 Write-Host -ForegroundColor Magenta "============================================";

@@ -12,6 +12,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     public interface IDurableMessageQueueOperation
     {
         /// <summary>
+        /// Gets an identifier for the most recent <see cref="DurableMessageQueueSnapshot" /> to which this operation applies.
+        /// </summary>
+        Guid SnapshotIdentifier
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets the date and time when the operation was recorded.
         /// </summary>
         DateTime TimeStamp

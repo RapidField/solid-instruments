@@ -21,6 +21,9 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 $BranchNameForDevelop = "develop";
 $BranchNameForMaster = "master";
 
+# Environment variables
+$CurrentBranchName = $env:APPVEYOR_REPO_BRANCH;
+
 # Script execution
 # =================================================================================================================================
 
@@ -28,9 +31,7 @@ Push-Location "$DirectoryPathForCicdScripts"
 .\ExecuteCicdBuild.ps1
 Pop-Location
 
-$BranchName = $env:APPVEYOR_REPO_BRANCH;
-
-If ($BranchName -eq $BranchNameForMaster) {
+If ($CurrentBranchName -eq $BranchNameForMaster) {
     Push-Location "$DirectoryPathForCicdScripts"
     .\ExecuteCicdDeployment.ps1
     Pop-Location
