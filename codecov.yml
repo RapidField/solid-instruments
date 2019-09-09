@@ -6,27 +6,32 @@
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 codecov:
+  branch: master
   notify:
     require_ci_to_pass: yes
 
 comment:
-  layout: "header, diff"
+  layout: "reach, diff"
   behavior: default
   require_changes: no
 
 coverage:
-  precision: 2
+  precision: 0
   round: down
   range: "30...70"
-
   status:
-    project: yes
-    patch: yes
-    changes: no
+    changes: off
+    patch: off
+    project:
+      default:
+        base: auto
+        target: auto
+        threshold: 1
 
 ignore:
   - "cicd/**"
   - "example/**"
+  - "test/**"
 
 parsers:
   gcov:
