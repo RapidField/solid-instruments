@@ -34,5 +34,5 @@ Individual contributors should follow these branching conventions when working o
 - `master` is the pull request target for
 - `release/v0.0.0`, which is the pull request target for
 - `develop`, which is the pull request target for
-- `feature/00000_xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
-- `user/{username}/00000_xxxxx`
+- `feature/00000-xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
+- `user/{username}/00000-xxxxx`
