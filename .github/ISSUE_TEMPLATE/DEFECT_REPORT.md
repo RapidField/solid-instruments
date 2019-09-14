@@ -1,6 +1,6 @@
 ---
-name: Defect Report
-about: Report an observed defect.
+name: Report an observed defect
+about: Use this to report an unresolved problem that a user is experiencing
 title: ''
 labels: 'Category-Defect, Stage0-New, Verdict-Pending'
 ---
@@ -38,3 +38,14 @@ Describe what should have happened.
 ## Additional information
 
 Provide any other information that might be relevant.
+
+## Revision control strategy
+
+> **LEAVE UNMODIFIED:** This section will be completed by the project maintainers after the issue is accepted.
+
+Individual contributors should follow these branching conventions when working on this issue.
+
+- `master` is the pull request target for
+- `release/v0.0.0`, which is the pull request target for
+- `hotfix/00000-xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
+- `user/{username}/00000-xxxxx`
