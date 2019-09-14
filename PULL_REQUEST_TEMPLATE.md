@@ -4,7 +4,7 @@ This represents a request to incorporate the associated changes to the **Solid I
 
 ## Overview
 
-This pull request addresses issue #XXXXX.
+This pull request addresses issue #00000.
 
 Below is an overview of the changes that were made.
 
