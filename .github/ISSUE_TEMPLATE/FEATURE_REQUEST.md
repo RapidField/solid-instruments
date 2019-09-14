@@ -1,6 +1,6 @@
 ---
-name: Feature Request
-about: Suggest a new feature.
+name: Suggest a new feature
+about: Use this to request new functionality
 title: ''
 labels: 'Category-Feature, Stage0-New, Verdict-Pending'
 ---
