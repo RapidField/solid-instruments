@@ -1,6 +1,6 @@
 ---
-name: Defect Report
-about: Report an observed defect.
+name: Report an observed defect
+about: Use this to report an unresolved problem that a user is experiencing while using Solid Instruments.
 title: ''
 labels: 'Category-Defect, Stage0-New, Verdict-Pending'
 ---
