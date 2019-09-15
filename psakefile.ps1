@@ -2,6 +2,9 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# This file organizes, aggregates and abstracts CI/CD operations.
+# =================================================================================================================================
+
 # Script configuration
 # =================================================================================================================================
 
@@ -57,10 +60,10 @@ Task Restore-Dependencies -Alias rd { RestoreDependencies }
 
 Task Start-All-Debug -Alias sad -Depends Stop-All, Start-ExampleServiceApplication-Debug, Start-ExampleWebApplication-Debug
 Task Start-All-Release -Alias sar -Depends Stop-All, Start-ExampleServiceApplication-Release, Start-ExampleWebApplication-Release
-Task Start-ExampleServiceApplication-Debug -Alias spsad -Depends Build-Debug { StartExampleServiceApplicationDebug }
-Task Start-ExampleServiceApplication-Release -Alias spsar -Depends Build-Release { StartExampleServiceApplicationRelease }
-Task Start-ExampleWebApplication-Debug -Alias spwad -Depends Build-Debug { StartExampleWebApplicationDebug }
-Task Start-ExampleWebApplication-Release -Alias spwar -Depends Build-Release { StartExampleWebApplicationRelease }
+Task Start-ExampleServiceApplication-Debug -Alias sesad -Depends Build-Debug { StartExampleServiceApplicationDebug }
+Task Start-ExampleServiceApplication-Release -Alias sesar -Depends Build-Release { StartExampleServiceApplicationRelease }
+Task Start-ExampleWebApplication-Debug -Alias sewad -Depends Build-Debug { StartExampleWebApplicationDebug }
+Task Start-ExampleWebApplication-Release -Alias sewar -Depends Build-Release { StartExampleWebApplicationRelease }
 
 # Start
 # =================================================================================================================================
