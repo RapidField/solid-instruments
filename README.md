@@ -2,7 +2,7 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)
+![Solid Instruments](SolidInstruments.Logo.Color.Transparent.500w.png)
 - - -
 
 # Advanced, multi-purpose .NET tool belt
@@ -43,10 +43,10 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 
 There are multiple ways to find help.
 
-* Check out the [**API Reference**](https://www.solidinstruments.com/api) for usage examples and reference documentation.
-* Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
-* Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose) to request a feature or report a defect.
-* Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+- Check out the [**API Reference**](https://www.solidinstruments.com/api) for usage examples and reference documentation.
+- Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
+- Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose) to request a feature or report a defect.
+- Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Contributing
 
@@ -76,6 +76,6 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 
 <br />
 
-[![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
+[![RapidField](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.

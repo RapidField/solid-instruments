@@ -2,7 +2,7 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-[![Solid Instruments logo](SolidInstruments.Logo.Color.Transparent.500w.png)](README.md)
+[![Solid Instruments](SolidInstruments.Logo.Color.Transparent.500w.png)](README.md)
 - - -
 
 # Instructions for Contributing
@@ -23,11 +23,11 @@ By contributing to **Solid Instruments** you assert and agree that:
 
 Contents of the repository are organized as follows.
 
-* [`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
-* [`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
-* [`/example`](/example) contains sample projects that utilize the product libraries.
-* [`/src`](/src) houses the source for the product libraries.
-* [`/test`](/test) houses the test projects for the product libraries.
+- [`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
+- [`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
+- [`/example`](/example) contains sample projects that utilize the product libraries.
+- [`/src`](/src) houses the source for the product libraries.
+- [`/test`](/test) houses the test projects for the product libraries.
 
 ## Tooling
 
@@ -40,19 +40,19 @@ CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](ci
 
 ### Command-line tools
 
-* [**The .NET SDK**](https://docs.microsoft.com/en-us/dotnet/core/sdk) is the project's foundational build and test instrument.
-* [**codecov.exe**](https://github.com/codecov/codecov-exe) publishes test coverage reports.
-* [**DocFx**](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html) produces the [project website](https://www.solidinstruments.com).
-* [**HTMLMinifier**](https://www.npmjs.com/package/html-minifier) minifies the project website.
-* [**OpenCover**](https://github.com/OpenCover/opencover) executes the project tests and produces test coverage reports.
-* [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
-* [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
+- [**The .NET SDK**](https://docs.microsoft.com/en-us/dotnet/core/sdk) is the project's foundational build and test instrument.
+- [**codecov.exe**](https://github.com/codecov/codecov-exe) publishes test coverage reports.
+- [**DocFx**](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html) produces the [project website](https://www.solidinstruments.com).
+- [**HTMLMinifier**](https://www.npmjs.com/package/html-minifier) minifies the project website.
+- [**OpenCover**](https://github.com/OpenCover/opencover) executes the project tests and produces test coverage reports.
+- [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
+- [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
 
 ### Package managers
 
-* [**Chocolatey**](https://chocolatey.org/about)
-* [**npm**](https://docs.npmjs.com/about-npm)
-* [**NuGet**](https://www.nuget.org)
+- [**Chocolatey**](https://chocolatey.org/about)
+- [**npm**](https://docs.npmjs.com/about-npm)
+- [**NuGet**](https://www.nuget.org)
 
 ## Design conventions
 
@@ -62,9 +62,32 @@ New contributors should familiarize themselves with the design conventions by re
 
 [`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
-## Release versioning
+## Revision control strategy
 
-Release versioning is controlled via [`appveyor.yml`](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
+The **Solid Instruments** team uses a [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/)-like strategy for managing source branches. Our model diverges by introducing **defect** and **maintenance** branches, which are treated like **feature** branches from a process perspective but are used for different purposes.
+
+### Branching conventions
+
+The following patterns define the project's branch naming and usage conventions. Five-digit numeric tokens ("00000") represent an associated issue number.
+
+- `master` is the root branch and represents, at all times, the state of the latest production release.
+- Branches matching the pattern `hotfix/00000-{semantic-key}` are children of `master` and house active work associated with an urgent production defect.
+- Branches matching the pattern `release/v0.0.0` are children of `master` and house completed, tested and integrated work for a named release.
+- `develop` is a child of `master` and serves as a work-in-progress integration branch for **defect**, **feature** and **maintenance** branches.
+- Branches matching the pattern `defect/00000-{semantic-key}` are children of `develop` and house active work associated with a non-urgent defect.
+- Branches matching the pattern `feature/00000-{semantic-key}` are children of `develop` and house active feature development work.
+- Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work.
+- Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting **defect**, **feature** and **maintenance** branches.
+
+### Workflow
+
+**Solid Instruments** employs the **RapidField Revision Control Workflow**, which is diagrammed below.
+
+[![Revision control diagram](RapidFieldRevisionControlWorkflow.png)](RapidFieldRevisionControlWorkflow.png)
+
+### Release versioning
+
+**Solid Instruments** releases are versioned using the [**Semantic Versioning 2.0.0**](https://semver.org/spec/v2.0.0.html) specification. Release versioning is controlled via [`appveyor.yml`](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
 
 ## Get started
 
@@ -80,6 +103,6 @@ git clone https://github.com/RapidField/solid-instruments.git
 
 <br />
 
-[![RapidField logo](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
+[![RapidField](RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
