@@ -587,15 +587,7 @@ pull_request_rules:
 
     backport:
       branches:
-
-      # Persistent
-      # ================================================================
-      - develop
-
-      # Release/hotfix
-      # ================================================================
-      - release/v1.0.25-preview1
-      - release/v1.0.26-preview1
+      - (^admin$)|(^develop$)|(^hotfix\/(.+)$)|(^release\/(.+)$)
 
     label:
       add:
@@ -633,11 +625,7 @@ pull_request_rules:
 
     backport:
       branches:
-
-      # Feature
-      # ================================================================
-      - feature/0007-rabbitmq-support
-      - feature/0012-structuremap-support
+      - (^defect\/(.+)$)|(^feature\/(.+)$)|(^maintenance\/(.+)$)
 
     label:
       add:
