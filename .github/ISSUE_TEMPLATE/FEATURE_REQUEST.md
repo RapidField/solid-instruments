@@ -35,7 +35,7 @@ Replace this with additional information.
 
 > **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
 
-**Solid Instruments** uses the [**RapidField Revision Control Workflow**](../../CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
+**Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
 
 - `master` is the pull request target for
 - `release/v0.0.0`, which is the pull request target for
