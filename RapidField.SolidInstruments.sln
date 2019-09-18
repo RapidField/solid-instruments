@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E17E-4985-AD23-29F83799CAFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{DD6DE5D2-E17E-4985-AD23-29F83799CAFC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
@@ -17,18 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{DD6DE5D2-E
 		CodeMaid.config = CodeMaid.config
 		.github\CODEOWNERS = .github\CODEOWNERS
 		CONTRIBUTING.md = CONTRIBUTING.md
-		.github\ISSUE_TEMPLATE\DEFECT_REPORT.md = .github\ISSUE_TEMPLATE\DEFECT_REPORT.md
 		en-US_User.dic = en-US_User.dic
 		en_US.aff = en_US.aff
 		en_US.dic = en_US.dic
-		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
 		LICENSE.txt = LICENSE.txt
-		.github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md = .github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md
 		psakefile.ps1 = psakefile.ps1
-		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
-		.github\ISSUE_TEMPLATE\QUESTION.md = .github\ISSUE_TEMPLATE\QUESTION.md
 		RapidField.Logo.Color.Black.Transparent.200w.png = RapidField.Logo.Color.Black.Transparent.200w.png
 		RapidField.SolidInstruments.sln.vsspell = RapidField.SolidInstruments.sln.vsspell
+		RapidFieldRevisionControlWorkflow.png = RapidFieldRevisionControlWorkflow.png
 		README.md = README.md
 		SECURITY.md = SECURITY.md
 		SolidInstruments.Logo.Color.Transparent.500w.png = SolidInstruments.Logo.Color.Transparent.500w.png
@@ -326,6 +322,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213
 		cicd\scripts\ResetEnvironment.ps1 = cicd\scripts\ResetEnvironment.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{1D0A68B1-B7B3-49C0-87AB-EC52A192D4A3}"
+	ProjectSection(SolutionItems) = preProject
+		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{94B64CCC-D7FA-4781-9236-5227222368FC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\DEFECT_REPORT.md = .github\ISSUE_TEMPLATE\DEFECT_REPORT.md
+		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
+		.github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md = .github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md
+		.github\ISSUE_TEMPLATE\QUESTION.md = .github\ISSUE_TEMPLATE\QUESTION.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -556,6 +565,8 @@ Global
 		{3EDA2412-F5E1-492E-86F4-C5CFCC906955} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
 		{8A8C4623-F810-4EF4-9B55-2152DE8CEEC1} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
 		{0213A8C5-E32C-4DEE-B872-7E50E27F9B5A} = {265B737A-1B0A-4FAC-9A81-0EC3C19C8AFA}
+		{1D0A68B1-B7B3-49C0-87AB-EC52A192D4A3} = {DD6DE5D2-E17E-4985-AD23-29F83799CAFC}
+		{94B64CCC-D7FA-4781-9236-5227222368FC} = {1D0A68B1-B7B3-49C0-87AB-EC52A192D4A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}
