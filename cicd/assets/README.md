@@ -2,7 +2,7 @@
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-[![Solid Instruments logo](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
+[![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 - - -
 
 # /cicd/assets
@@ -13,7 +13,7 @@ This document describes the purpose of the [`cicd/assets`]() directory.
 
 This path contains resource files that are utilized by CI/CD operations.
 
-* [`CodeSigningCertificate.pfx.enc`](CodeSigningCertificate.pfx.enc) is an encrypted copy of the **Solid Instruments** code signing certificate.
+- [`CodeSigningCertificate.pfx.enc`](CodeSigningCertificate.pfx.enc) is an encrypted copy of the **Solid Instruments** code signing certificate.
 
 ## License
 
@@ -27,6 +27,6 @@ This path contains resource files that are utilized by CI/CD operations.
 
 <br />
 
-[![RapidField logo](../../RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
+[![RapidField](../../RapidField.Logo.Color.Black.Transparent.200w.png)](https://www.rapidfield.com)
 
 ###### Copyright (c) RapidField LLC. All rights reserved. "RapidField" and "Solid Instruments" are trademarks of RapidField LLC.
