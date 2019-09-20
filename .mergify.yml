@@ -586,7 +586,7 @@ pull_request_rules:
   actions:
 
     backport:
-      branches:
+      regexes:
       - (^admin$)|(^develop$)|(^hotfix\/(.+)$)|(^release\/(.+)$)
 
     label:
@@ -624,7 +624,7 @@ pull_request_rules:
   actions:
 
     backport:
-      branches:
+      regexes:
       - (^defect\/(.+)$)|(^feature\/(.+)$)|(^maintenance\/(.+)$)
 
     label:
