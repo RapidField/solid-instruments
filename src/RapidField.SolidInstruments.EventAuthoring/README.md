@@ -3,11 +3,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 -->
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
+<br />&nbsp;
+![Event Authoring](Label.EventAuthoring.300w.png)
 - - -
 
 # RapidField.SolidInstruments.EventAuthoring
-
-![Event Authoring](Label.EventAuthoring.300w.png)
 
 This document describes the purpose of the [`RapidField.SolidInstruments.EventAuthoring`]() library and offers guidance with respect to licensing, installation and usage.
 
