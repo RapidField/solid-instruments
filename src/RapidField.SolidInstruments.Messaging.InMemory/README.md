@@ -3,11 +3,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 -->
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
+<br />&nbsp;
+![Messaging](../RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)
 - - -
 
 # RapidField.SolidInstruments.Messaging.InMemory
-
-![Messaging](../RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)
 
 This document describes the purpose of the [`RapidField.SolidInstruments.Messaging.InMemory`]() library and offers guidance with respect to licensing, installation and usage.
 
