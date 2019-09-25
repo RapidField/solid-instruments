@@ -305,6 +305,7 @@ pull_request_rules:
 
   # Status
   # ================================================================
+  - status-success=codecov/project
   - status-success=continuous-integration/appveyor/branch
   - status-success=Summary
 
@@ -371,6 +372,7 @@ pull_request_rules:
 
   # Status
   # ================================================================
+  - status-success=codecov/project
   - status-success=continuous-integration/appveyor/branch
   - status-success=Summary
 
@@ -407,6 +409,7 @@ pull_request_rules:
 
   # Status
   # ================================================================
+  - status-success=codecov/project
   - status-success=continuous-integration/appveyor/branch
   - status-success=Summary
 
@@ -525,6 +528,7 @@ pull_request_rules:
 
   # Status
   # ================================================================
+  - status-success=codecov/project
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
@@ -571,6 +575,7 @@ pull_request_rules:
 
   # Status
   # ================================================================
+  - status-success=codecov/project
   - status-success=continuous-integration/appveyor/branch
   - status-success=continuous-integration/appveyor/pr
   - status-success=Summary
