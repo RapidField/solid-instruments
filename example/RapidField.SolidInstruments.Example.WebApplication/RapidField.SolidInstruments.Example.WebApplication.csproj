@@ -18,7 +18,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.All" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     </ItemGroup>
