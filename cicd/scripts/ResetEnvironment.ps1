@@ -2,11 +2,16 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file scripts the build environment setup/reset process.
-# =================================================================================================================================
+<#
+.Synopsis
+This script performs the build environment setup/reset process.
+#>
 
-# Script configuration
-# =================================================================================================================================
+Param
+(
+    [Parameter(Mandatory = $false, Position = 0)]
+    [Switch] $Interactive
+)
 
 # Directory names
 $DirectoryNameForCicd = "cicd";
@@ -16,6 +21,7 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
+$FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -26,28 +32,66 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 # File paths
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
+$FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
+
+# Other configuration values
+$ContextIsInteractive = $Interactive.IsPresent;
 
 # Modules
-# =================================================================================================================================
-
 Import-Module $FilePathForAutomationToolsModule -Force;
 Import-Module $FilePathForBuildAndDeploymentModule -Force;
+Import-Module $FilePathForCoreModule -Force;
 
-# Script execution
-# =================================================================================================================================
-
-Write-Host -ForegroundColor DarkCyan "`nResetting the build environment.`n";
-
-$CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent());
-
-If ($CurrentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+<#
+.Synopsis
+Houses the functional body of the current script.
+#>
+Function PerformActions
+{
     RestoreAllAutomationTools;
 }
-Else {
-    $CurrentInvocationPath = $MyInvocation.MyCommand.Path;
-    $CurrentInvocationArguments = $MyInvocation.UnboundArguments;
-    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList "-File `"$CurrentInvocationPath`" $CurrentInvocationArguments";
-    Exit;
+
+<#
+.Synopsis
+Initiates execution of the current script.
+#>
+Function EnterScript
+{
+    ComposeHeader "Solid Instruments CI/CD Pipeline | Environment setup/reset";
+
+    If ($ContextIsInteractive)
+    {
+        ComposeNormal "The following process will install the Solid Instruments automation tooling.";
+        ComposeNormal "By continuing, you agree to accept the license agreements for the various software packages contained herein.";
+        ComposeNormal "For more information, see https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#tooling";
+        $UserInput = PromptUser -QuestionText "Would you like to continue?" -PromptText "[Y] Yes [N] No";
+
+        If (($UserInput -eq $null) -or ($UserInput -eq ""))
+        {
+            ComposeVerbose "`nExiting.";
+            Exit;
+        }
+
+        Switch ($UserInput.Trim().ToUpper().Substring(0, 1))
+        {
+            "Y"
+            {
+                Break;
+            }
+            Default
+            {
+                ComposeVerbose "`nExiting.";
+                Exit;
+            }
+        }
+    }
+
+    RejectNonAdministratorUsers;
+    ComposeStart $("`nResetting the build environment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    WriteBuildDetails;
+    PerformActions;
+    ComposeFinish $("Finished resetting the build environment at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
 }
 
-Write-Host -ForegroundColor DarkCyan "`n>>> Finished resetting the build environment. <<<`n";
+# Execution
+EnterScript;

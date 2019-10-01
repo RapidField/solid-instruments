@@ -2,11 +2,10 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file defines CI/CD automation tooling for the project.
-# =================================================================================================================================
-
-# Module configuration
-# =================================================================================================================================
+<#
+.Synopsis
+This module defines CI/CD automation tooling for the project.
+#>
 
 # Directory names
 $DirectoryNameForCicd = "cicd";
@@ -15,6 +14,8 @@ $DirectoryNameForCicdScripts = "scripts";
 $DirectoryNameForCicdTools = "tools";
 
 # File names
+$FileNameForChocoExe = "choco.exe";
+$FileNameForCoreModule = "Core.psm1";
 $FileNameForNugetExe = "nuget.exe";
 
 # Directory paths
@@ -25,6 +26,7 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 $DirectoryPathForCicdTools = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdTools";
 
 # File paths
+$FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
 $FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 
 # Install script URIs
@@ -76,70 +78,82 @@ $SuppressPoshGit = $true;
 $SuppressPowershellYaml = $false;
 $SuppressPsake = $false;
 
-# Get
-# =================================================================================================================================
+# Modules
+Import-Module $FilePathForCoreModule -Force;
 
-function GetChocolateyInstallationStatus {
-    return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
+Function GetChocolateyInstallationStatus
+{
+    Return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
 }
 
-function GetCodecovInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForCodecov") });
+Function GetCodecovInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForCodecov") });
 }
 
-function GetDocFxInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
+Function GetDocFxInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
 }
 
-function GetDotNetCoreSdkInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNetCoreSdk") });
+Function GetDotNetCoreSdkInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNetCoreSdk") });
 }
 
-function GetHtmlMinifierInstallationStatus {
-    return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
+Function GetHtmlMinifierInstallationStatus
+{
+    Return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
 }
 
-function GetHubInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForHub") });
+Function GetHubInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForHub") });
 }
 
-function GetLeanifyInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") });
+Function GetLeanifyInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") });
 }
 
-function GetNodeJsInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") });
+Function GetNodeJsInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") });
 }
 
-function GetNuGetInstallationStatus {
-    return (Test-Path -Path "$FilePathForNuGetExe");
+Function GetNuGetInstallationStatus
+{
+    Return (Test-Path -Path "$FilePathForNuGetExe");
 }
 
-function GetOpenCoverInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenCover") });
+Function GetOpenCoverInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenCover") });
 }
 
-function GetOpenSslInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
+Function GetOpenSslInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
 }
 
-function GetPoshGitInstallationStatus {
-    return Get-Module -ListAvailable -Name "$PowershellModuleNameForPoshGit";
+Function GetPoshGitInstallationStatus
+{
+    Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPoshGit";
 }
 
-function GetPowershellYamlInstallationStatus {
-    return Get-Module -ListAvailable -Name "$PowershellModuleNameForPowershellYaml";
+Function GetPowershellYamlInstallationStatus
+{
+    Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPowershellYaml";
 }
 
-function GetPsakeInstallationStatus {
-    return (GetChocolateyInstallationStatus) -And (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") });
+Function GetPsakeInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") });
 }
 
-# Install
-# =================================================================================================================================
-
-function InstallAllAutomationTools {
-    Write-Host -ForegroundColor DarkCyan "Installing all automation tools.";
+Function InstallAllAutomationTools
+{
+    ComposeStart "Installing all automation tools.";
     InstallPackageManagers;
     InstallCodecov;
     InstallDocFx;
@@ -152,274 +166,322 @@ function InstallAllAutomationTools {
     InstallPoshGit;
     InstallPowershellYaml;
     InstallPsake;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing all automation tools. <<<`n";
+    ComposeFinish "Finished installing all automation tools.";
 }
 
-function InstallChocolatey {
-    If ($SuppressChoclatey -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of Chocolatey.";
-        return;
+Function InstallChocolatey
+{
+    If ($SuppressChoclatey -eq $true)
+    {
+        ComposeNormal "Suppressing installation of Chocolatey.";
+        Return;
     }
-    ElseIf (GetChocolateyInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Chocolatey is already installed.";
-        return;
+    ElseIf (GetChocolateyInstallationStatus)
+    {
+        ComposeNormal "Chocolatey is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing Chocolatey.";
-    Stop-Process -Name "choco.exe" -Force -ErrorAction Ignore;
+    ComposeStart "Installing Chocolatey.";
+    Stop-Process -Name "$FileNameForChocoExe" -Force -ErrorAction Ignore;
     Set-ExecutionPolicy Bypass -Scope Process -Force;
     iex ((New-Object System.Net.WebClient).DownloadString($InstallScriptUriForChocolatey));
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Chocolatey. <<<`n";
+    ComposeFinish "Finished installing Chocolatey.";
 }
 
-function InstallCodecov {
-    If ($SuppressCodecov -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of Codecov.";
-        return;
+Function InstallCodecov
+{
+    If ($SuppressCodecov -eq $true)
+    {
+        ComposeNormal "Suppressing installation of Codecov.";
+        Return;
     }
-    ElseIf (GetCodecovInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Codecov is already installed.";
-        return;
+    ElseIf (GetCodecovInstallationStatus)
+    {
+        ComposeNormal "Codecov is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing Codecov.";
-    choco install $ChoclateyPackageNameForCodecov -y --accept-license --confirm --limit-output --no-progress
+    ComposeStart "Installing Codecov.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForCodecov";
     MakeCommandPathAvailableAll -Command $CommandNameForCodecov;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Codecov. <<<`n";
+    ComposeFinish "Finished installing Codecov.";
 }
 
-function InstallDocFx {
-    If ($SuppressDocFx -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of DocFX.";
-        return;
+Function InstallDocFx
+{
+    If ($SuppressDocFx -eq $true)
+    {
+        ComposeNormal "Suppressing installation of DocFX.";
+        Return;
     }
-    ElseIf (GetDocFxInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "DocFX is already installed.";
-        return;
+    ElseIf (GetDocFxInstallationStatus)
+    {
+        ComposeNormal "DocFX is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing DocFX.";
-    choco install $ChoclateyPackageNameForDocFx -y --accept-license --confirm --limit-output --no-progress
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing DocFX. <<<`n";
+    ComposeStart "Installing DocFX.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDocFx";
+    ComposeFinish "Finished installing DocFX.";
 }
 
-function InstallDotNetCoreSdk {
-    If ($SuppressDotNetCoreSdk -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of the .NET Core SDK.";
-        return;
+Function InstallDotNetCoreSdk
+{
+    If ($SuppressDotNetCoreSdk -eq $true)
+    {
+        ComposeNormal "Suppressing installation of the .NET Core SDK.";
+        Return;
     }
-    ElseIf (GetDotNetCoreSdkInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "The .NET Core SDK is already installed.";
-        return;
+    ElseIf (GetDotNetCoreSdkInstallationStatus)
+    {
+        ComposeNormal "The .NET Core SDK is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing the .NET Core SDK.";
-    choco install $ChoclateyPackageNameForDotNetCoreSdk -y --accept-license --confirm --limit-output --no-progress
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing the .NET Core SDK. <<<`n";
+    ComposeStart "Installing the .NET Core SDK.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDotNetCoreSdk";
+    ComposeFinish "Finished installing the .NET Core SDK.";
 }
 
-function InstallHtmlMinifier {
-    If ($SuppressHtmlMinifier -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of HTMLMinifier.";
-        return;
+Function InstallHtmlMinifier
+{
+    If ($SuppressHtmlMinifier -eq $true)
+    {
+        ComposeNormal "Suppressing installation of HTMLMinifier.";
+        Return;
     }
-    ElseIf (GetHtmlMinifierInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "HTMLMinifier is already installed.";
-        return;
+    ElseIf (GetHtmlMinifierInstallationStatus)
+    {
+        ComposeNormal "HTMLMinifier is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing HTMLMinifier.";
-    npm install $NpmPackageNameForHtmlMinifier -g --loglevel error
+    ComposeStart "Installing HTMLMinifier.";
+    UseNpmToInstall -PackageName "$NpmPackageNameForHtmlMinifier";
     MakeCommandPathAvailableAll -Command $CommandNameForHtmlMinifier;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing HTMLMinifier. <<<`n";
+    ComposeFinish "Finished installing HTMLMinifier.";
 }
 
-function InstallHub {
-    If ($SuppressHub -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of hub.";
-        return;
+Function InstallHub
+{
+    If ($SuppressHub -eq $true)
+    {
+        ComposeNormal "Suppressing installation of hub.";
+        Return;
     }
-    ElseIf (GetHubInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "hub is already installed.";
-        return;
+    ElseIf (GetHubInstallationStatus)
+    {
+        ComposeNormal "hub is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing hub.";
-    choco install $ChoclateyPackageNameForHub -y --accept-license --confirm --limit-output --no-progress
+    ComposeStart "Installing hub.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForHub";
     MakeCommandPathAvailableAll -Command $CommandNameForHub;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing hub. <<<`n";
+    ComposeFinish "Finished installing hub.";
 }
 
-function InstallLeanify {
-    If ($SuppressLeanify -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of Leanify.";
-        return;
+Function InstallLeanify
+{
+    If ($SuppressLeanify -eq $true)
+    {
+        ComposeNormal "Suppressing installation of Leanify.";
+        Return;
     }
-    ElseIf (GetLeanifyInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Leanify is already installed.";
-        return;
+    ElseIf (GetLeanifyInstallationStatus)
+    {
+        ComposeNormal "Leanify is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing Leanify.";
-    choco install $ChoclateyPackageNameForLeanify -y --accept-license --confirm --limit-output --no-progress
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Leanify. <<<`n";
+    ComposeStart "Installing Leanify.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForLeanify";
+    ComposeFinish "Finished installing Leanify.";
 }
 
-function InstallNodeJs {
-    If ($SuppressNodeJs -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of Node.js.";
-        return;
+Function InstallNodeJs
+{
+    If ($SuppressNodeJs -eq $true)
+    {
+        ComposeNormal "Suppressing installation of Node.js.";
+        Return;
     }
-    ElseIf (GetNodeJsInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Node.js is already installed.";
-        return;
+    ElseIf (GetNodeJsInstallationStatus)
+    {
+        ComposeNormal "Node.js is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing Node.js.";
-    choco install $ChoclateyPackageNameForNodeJs -y --accept-license --confirm --limit-output --no-progress
+    ComposeStart "Installing Node.js.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForNodeJs";
     MakeCommandPathAvailableAll -Command $CommandNameForNpm;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing Node.js. <<<`n";
+    ComposeFinish "Finished installing Node.js.";
 }
 
-function InstallNuGet {
-    If ($SuppressNuGet -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of NuGet.";
-        return;
+Function InstallNuGet
+{
+    If ($SuppressNuGet -eq $true)
+    {
+        ComposeNormal "Suppressing installation of NuGet.";
+        Return;
     }
-    ElseIf (GetNuGetInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "NuGet is already installed.";
-        return;
+    ElseIf (GetNuGetInstallationStatus)
+    {
+        ComposeNormal "NuGet is already installed.";
+        Return;
     }
 
-    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+    If (-not (Test-Path "$DirectoryPathForCicdTools"))
+    {
         New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing NuGet.";
-    Invoke-WebRequest -Uri $InstallScriptUriForNuGet -OutFile "$FilePathForNuGetExe"
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing NuGet. <<<`n";
+    ComposeStart "Installing NuGet.";
+    Invoke-WebRequest -Uri $InstallScriptUriForNuGet -OutFile "$FilePathForNuGetExe";
+    ComposeFinish "Finished installing NuGet.";
 }
 
-function InstallOpenCover {
-    If ($SuppressOpenCover -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of OpenCover.";
-        return;
+Function InstallOpenCover
+{
+    If ($SuppressOpenCover -eq $true)
+    {
+        ComposeNormal "Suppressing installation of OpenCover.";
+        Return;
     }
-    ElseIf (GetOpenCoverInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "OpenCover is already installed.";
-        return;
+    ElseIf (GetOpenCoverInstallationStatus)
+    {
+        ComposeNormal "OpenCover is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing OpenCover.";
-    choco install $ChoclateyPackageNameForOpenCover -y --accept-license --confirm --limit-output --no-progress
+    ComposeStart "Installing OpenCover.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForOpenCover";
     MakeCommandPathAvailableAll -Command $CommandNameForOpenCover;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenCover. <<<`n";
+    ComposeFinish "Finished installing OpenCover.";
 }
 
-function InstallOpenSsl {
-    If ($SuppressOpenSsl -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of OpenSSL.";
-        return;
+Function InstallOpenSsl
+{
+    If ($SuppressOpenSsl -eq $true)
+    {
+        ComposeNormal "Suppressing installation of OpenSSL.";
+        Return;
     }
-    ElseIf (GetOpenSslInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "OpenSSL is already installed.";
-        return;
+    ElseIf (GetOpenSslInstallationStatus)
+    {
+        ComposeNormal "OpenSSL is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing OpenSSL.";
-    choco install $ChoclateyPackageNameForOpenSsl -y --accept-license --confirm --limit-output --no-progress
+    ComposeStart "Installing OpenSSL.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForOpenSsl";
     MakeCommandPathAvailableAll -Command $CommandNameForOpenSsl;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing OpenSSL. <<<`n";
+    ComposeFinish "Finished installing OpenSSL.";
 }
 
-function InstallPackageManagers {
-    If ($SuppressPackageManagers -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of package managers.";
-        return;
+Function InstallPackageManagers
+{
+    If ($SuppressPackageManagers -eq $true)
+    {
+        ComposeNormal "Suppressing installation of package managers.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing package managers.";
+    ComposeStart "Installing package managers.";
     InstallChocolatey;
     InstallNodeJs;
     InstallNuGet;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing package managers. <<<`n";
+    ComposeFinish "Finished installing package managers.";
 }
 
-function InstallPoshGit {
-    If ($SuppressPoshGit -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of posh-git.";
-        return;
+Function InstallPoshGit
+{
+    If ($SuppressPoshGit -eq $true)
+    {
+        ComposeNormal "Suppressing installation of posh-git.";
+        Return;
     }
-    ElseIf (GetPoshGitInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "posh-git is already installed.";
-        return;
+    ElseIf (GetPoshGitInstallationStatus)
+    {
+        ComposeNormal "posh-git is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing posh-git.";
-    Install-Module -AcceptLicense -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing posh-git. <<<`n";
+    ComposeStart "Installing posh-git.";
+    UsePowerShellGalleryToInstall -ModuleName "$PowershellModuleNameForPoshGit";
+    ComposeFinish "Finished installing posh-git.";
 }
 
-function InstallPowershellYaml {
-    If ($SuppressPowershellYaml -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of powershell-yaml.";
-        return;
+Function InstallPowershellYaml
+{
+    If ($SuppressPowershellYaml -eq $true)
+    {
+        ComposeNormal "Suppressing installation of powershell-yaml.";
+        Return;
     }
-    ElseIf (GetPowershellYamlInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "powershell-yaml is already installed.";
-        return;
+    ElseIf (GetPowershellYamlInstallationStatus)
+    {
+        ComposeNormal "powershell-yaml is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing powershell-yaml.";
-    Install-Module -AcceptLicense -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml";
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing powershell-yaml. <<<`n";
+    ComposeStart "Installing powershell-yaml.";
+    UsePowerShellGalleryToInstall -ModuleName "$PowershellModuleNameForPowershellYaml";
+    ComposeFinish "Finished installing powershell-yaml.";
 }
 
-function InstallPsake {
-    If ($SuppressPsake -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing installation of psake.";
-        return;
+Function InstallPsake
+{
+    If ($SuppressPsake -eq $true)
+    {
+        ComposeNormal "Suppressing installation of psake.";
+        Return;
     }
-    ElseIf (GetPsakeInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "psake is already installed.";
-        return;
+    ElseIf (GetPsakeInstallationStatus)
+    {
+        ComposeNormal "psake is already installed.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Installing psake.";
-    choco install $ChoclateyPackageNameForPsake -y --accept-license --confirm --limit-output --no-progress
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished installing psake. <<<`n";
+    ComposeStart "Installing psake.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForPsake";
+    ComposeFinish "Finished installing psake.";
 }
 
-# Make
-# =================================================================================================================================
-
-function MakeCommandPathAvailable {
-    Param (
+Function MakeCommandPathAvailable
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Command,
         [Parameter(Mandatory = $true, Position = 1)]
         [String] $EnvironmentTarget
     )
 
-    Get-Command "$Command" | ForEach-Object {
+    Get-Command "$Command" | ForEach-Object
+    {
         $CommandDirectoryPath = Split-Path $_.Source;
         $PathVariable = [System.Environment]::GetEnvironmentVariable("Path", $EnvironmentTarget);
 
-        If ($PathVariable -like "*$CommandDirectoryPath*") {
-            Write-Host -ForegroundColor DarkCyan "Command path already available for $EnvironmentTarget target: $CommandDirectoryPath";
-            return;
+        If ($PathVariable -like "*$CommandDirectoryPath*")
+        {
+            ComposeVerbose "Command path already available for $EnvironmentTarget target: $CommandDirectoryPath";
+            Return;
         }
 
         $PathVariable = $PathVariable + ";$CommandDirectoryPath";
         [System.Environment]::SetEnvironmentVariable("Path", "$PathVariable", $EnvironmentTarget);
         RefreshSession;
-        Write-Host -ForegroundColor DarkCyan "Added command path for $EnvironmentTarget target: $CommandDirectoryPath";
-        return;
+        ComposeVerbose "Added command path for $EnvironmentTarget target: $CommandDirectoryPath";
+        Return;
     }
 }
 
-function MakeCommandPathAvailableAll {
-    Param (
+Function MakeCommandPathAvailableAll
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Command
     )
@@ -429,8 +491,10 @@ function MakeCommandPathAvailableAll {
     MakeCommandPathAvailableUser -Command $Command;
 }
 
-function MakeCommandPathAvailableMachine {
-    Param (
+Function MakeCommandPathAvailableMachine
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Command
     )
@@ -438,8 +502,10 @@ function MakeCommandPathAvailableMachine {
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Machine";
 }
 
-function MakeCommandPathAvailableProcess {
-    Param (
+Function MakeCommandPathAvailableProcess
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Command
     )
@@ -447,8 +513,10 @@ function MakeCommandPathAvailableProcess {
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Process";
 }
 
-function MakeCommandPathAvailableUser {
-    Param (
+Function MakeCommandPathAvailableUser
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Command
     )
@@ -456,121 +524,128 @@ function MakeCommandPathAvailableUser {
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "User";
 }
 
-# Refresh
-# =================================================================================================================================
-
-function RefreshSession {
+Function RefreshSession
+{
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force;
     Update-SessionEnvironment;
 }
 
-# Restore
-# =================================================================================================================================
-
-function RestoreAllAutomationTools {
-    Write-Host -ForegroundColor DarkCyan "Restoring all automation tools.";
+Function RestoreAllAutomationTools
+{
+    ComposeStart "Restoring all automation tools.";
     InstallPackageManagers;
     UninstallAllAutomationTools;
     InstallAllAutomationTools;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring all automation tools. <<<`n";
+    ComposeFinish "Finished restoring all automation tools.";
 }
 
-function RestoreCodecov {
-    Write-Host -ForegroundColor DarkCyan "Restoring Codecov.";
+Function RestoreCodecov
+{
+    ComposeStart "Restoring Codecov.";
     UninstallCodecov;
     InstallCodecov;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Codecov. <<<`n";
+    ComposeFinish "Finished restoring Codecov.";
 }
 
-function RestoreDocFx {
-    Write-Host -ForegroundColor DarkCyan "Restoring DocFX.";
+Function RestoreDocFx
+{
+    ComposeStart "Restoring DocFX.";
     UninstallDocFx;
     InstallDocFx;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring DocFX. <<<`n";
+    ComposeFinish "Finished restoring DocFX.";
 }
 
-function RestoreDotNetCoreSdk {
-    Write-Host -ForegroundColor DarkCyan "Restoring the .NET Core SDK.";
+Function RestoreDotNetCoreSdk
+{
+    ComposeStart "Restoring the .NET Core SDK.";
     UninstallDotNetCoreSdk;
     InstallDotNetCoreSdk;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring the .NET Core SDK. <<<`n";
+    ComposeFinish "Finished restoring the .NET Core SDK.";
 }
 
-function RestoreHtmlMinifier {
-    Write-Host -ForegroundColor DarkCyan "Restoring HTMLMinifier.";
+Function RestoreHtmlMinifier
+{
+    ComposeStart "Restoring HTMLMinifier.";
     UninstallHtmlMinifier;
     InstallHtmlMinifier;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring HTMLMinifier. <<<`n";
+    ComposeFinish "Finished restoring HTMLMinifier.";
 }
 
-function RestoreHtmlMinifier {
-    Write-Host -ForegroundColor DarkCyan "Restoring hub.";
+Function RestoreHtmlMinifier
+{
+    ComposeStart "Restoring hub.";
     UninstallHub;
     InstallHub;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring hub. <<<`n";
+    ComposeFinish "Finished restoring hub.";
 }
 
-function RestoreLeanify {
-    Write-Host -ForegroundColor DarkCyan "Restoring Leanify.";
+Function RestoreLeanify
+{
+    ComposeStart "Restoring Leanify.";
     UninstallLeanify;
     InstallLeanify;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Leanify. <<<`n";
+    ComposeFinish "Finished restoring Leanify.";
 }
 
-function RestoreNodeJs {
-    Write-Host -ForegroundColor DarkCyan "Restoring Node.js.";
+Function RestoreNodeJs
+{
+    ComposeStart "Restoring Node.js.";
     UninstallNodeJs;
     InstallNodeJs;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring Node.js. <<<`n";
+    ComposeFinish "Finished restoring Node.js.";
 }
 
-function RestoreNuGet {
-    Write-Host -ForegroundColor DarkCyan "Restoring NuGet.";
+Function RestoreNuGet
+{
+    ComposeStart "Restoring NuGet.";
     UninstallNuGet;
     InstallNuGet;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring NuGet. <<<`n";
+    ComposeFinish "Finished restoring NuGet.";
 }
 
-function RestoreOpenCover {
-    Write-Host -ForegroundColor DarkCyan "Restoring OpenCover.";
+Function RestoreOpenCover
+{
+    ComposeStart "Restoring OpenCover.";
     UninstallOpenCover;
     InstallOpenCover;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring OpenCover. <<<`n";
+    ComposeFinish "Finished restoring OpenCover.";
 }
 
-function RestoreOpenSsl {
-    Write-Host -ForegroundColor DarkCyan "Restoring OpenSSL.";
+Function RestoreOpenSsl
+{
+    ComposeStart "Restoring OpenSSL.";
     UninstallOpenSsl;
     InstallOpenSsl;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring OpenSSL. <<<`n";
+    ComposeFinish "Finished restoring OpenSSL.";
 }
 
-function RestorePoshGit {
-    Write-Host -ForegroundColor DarkCyan "Restoring posh-git.";
+Function RestorePoshGit
+{
+    ComposeStart "Restoring posh-git.";
     UninstallPoshGit;
     InstallPoshGit;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring posh-git. <<<`n";
+    ComposeFinish "Finished restoring posh-git.";
 }
 
-function RestorePowershellYaml {
-    Write-Host -ForegroundColor DarkCyan "Restoring powershell-yaml.";
+Function RestorePowershellYaml
+{
+    ComposeStart "Restoring powershell-yaml.";
     UninstallPowershellYaml;
     InstallPowershellYaml;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring powershell-yaml. <<<`n";
+    ComposeFinish "Finished restoring powershell-yaml.";
 }
 
-function RestorePsake {
-    Write-Host -ForegroundColor DarkCyan "Restoring psake.";
+Function RestorePsake
+{
+    ComposeStart "Restoring psake.";
     UninstallPsake;
     InstallPsake;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring psake. <<<`n";
+    ComposeFinish "Finished restoring psake.";
 }
 
-# Uninstall
-# =================================================================================================================================
-
-function UninstallAllAutomationTools {
-    Write-Host -ForegroundColor DarkCyan "Uninstalling all automation tools.";
+Function UninstallAllAutomationTools
+{
+    ComposeStart "Uninstalling all automation tools.";
     UninstallCodecov;
     UninstallDocFx;
     UninstallDotNetCoreSdk;
@@ -582,161 +657,266 @@ function UninstallAllAutomationTools {
     UninstallPoshGit;
     UninstallPowershellYaml;
     UninstallPsake;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling all automation tools. <<<`n";
+    ComposeFinish "Finished uninstalling all automation tools.";
 }
 
-function UninstallCodecov {
-    If ($SuppressCodecov -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Codecov.";
-        return;
+Function UninstallCodecov
+{
+    If ($SuppressCodecov -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of Codecov.";
+        Return;
     }
-    ElseIf (GetCodecovInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling Codecov.";
-        choco uninstall $ChoclateyPackageNameForCodecov -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Codecov. <<<`n";
-    }
-}
-
-function UninstallDocFx {
-    If ($SuppressDocFx -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of DocFX.";
-        return;
-    }
-    ElseIf (GetDocFxInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling DocFX.";
-        choco uninstall $ChoclateyPackageNameForDocFx -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling DocFX. <<<`n";
+    ElseIf (GetCodecovInstallationStatus)
+    {
+        ComposeStart "Uninstalling Codecov.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForCodecov";
+        ComposeFinish "Finished uninstalling Codecov.";
     }
 }
 
-function UninstallDotNetCoreSdk {
-    If ($SuppressDotNetCoreSdk -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of the .NET Core SDK.";
-        return;
+Function UninstallDocFx
+{
+    If ($SuppressDocFx -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of DocFX.";
+        Return;
     }
-    ElseIf (GetDotNetCoreSdkInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling the .NET Core SDK.";
-        choco uninstall $ChoclateyPackageNameForDotNetCoreSdk -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling the .NET Core SDK. <<<`n";
-    }
-}
-
-function UninstallHtmlMinifier {
-    If ($SuppressHtmlMinifier -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of HTMLMinifier.";
-        return;
-    }
-    ElseIf (GetHtmlMinifierInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling HTMLMinifier.";
-        npm uninstall $NpmPackageNameForHtmlMinifier -g --loglevel error
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling HTMLMinifier. <<<`n";
+    ElseIf (GetDocFxInstallationStatus)
+    {
+        ComposeStart "Uninstalling DocFX.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDocFx";
+        ComposeFinish "Finished uninstalling DocFX.";
     }
 }
 
-function UninstallHub {
-    If ($SuppressHub -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of hub.";
-        return;
+Function UninstallDotNetCoreSdk
+{
+    If ($SuppressDotNetCoreSdk -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of the .NET Core SDK.";
+        Return;
     }
-    ElseIf (GetLeanifyInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling hub.";
-        choco uninstall $ChoclateyPackageNameForHub -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling hub. <<<`n";
-    }
-}
-
-function UninstallLeanify {
-    If ($SuppressLeanify -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Leanify.";
-        return;
-    }
-    ElseIf (GetLeanifyInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling Leanify.";
-        choco uninstall $ChoclateyPackageNameForLeanify -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Leanify. <<<`n";
+    ElseIf (GetDotNetCoreSdkInstallationStatus)
+    {
+        ComposeStart "Uninstalling the .NET Core SDK.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDotNetCoreSdk";
+        ComposeFinish "Finished uninstalling the .NET Core SDK.";
     }
 }
 
-function UninstallNodeJs {
-    If ($SuppressNodeJs -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of Node.js.";
-        return;
+Function UninstallHtmlMinifier
+{
+    If ($SuppressHtmlMinifier -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of HTMLMinifier.";
+        Return;
     }
-    ElseIf (GetNodeJsInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling Node.js.";
-        choco uninstall $ChoclateyPackageNameForNodeJs -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling Node.js. <<<`n";
+    ElseIf (GetHtmlMinifierInstallationStatus)
+    {
+        ComposeStart "Uninstalling HTMLMinifier.";
+        UseNpmToUninstall -PackageName "$NpmPackageNameForHtmlMinifier";
+        ComposeFinish "Finished uninstalling HTMLMinifier.";
     }
 }
 
-function UninstallNuGet {
-    If ($SuppressNuGet -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of NuGet.";
-        return;
+Function UninstallHub
+{
+    If ($SuppressHub -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of hub.";
+        Return;
     }
-    ElseIf (GetNuGetInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling NuGet.";
+    ElseIf (GetLeanifyInstallationStatus)
+    {
+        ComposeStart "Uninstalling hub.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForHub";
+        ComposeFinish "Finished uninstalling hub.";
+    }
+}
+
+Function UninstallLeanify
+{
+    If ($SuppressLeanify -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of Leanify.";
+        Return;
+    }
+    ElseIf (GetLeanifyInstallationStatus)
+    {
+        ComposeStart "Uninstalling Leanify.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForLeanify";
+        ComposeFinish "Finished uninstalling Leanify.";
+    }
+}
+
+Function UninstallNodeJs
+{
+    If ($SuppressNodeJs -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of Node.js.";
+        Return;
+    }
+    ElseIf (GetNodeJsInstallationStatus)
+    {
+        ComposeStart "Uninstalling Node.js.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForNodeJs";
+        ComposeFinish "Finished uninstalling Node.js.";
+    }
+}
+
+Function UninstallNuGet
+{
+    If ($SuppressNuGet -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of NuGet.";
+        Return;
+    }
+    ElseIf (GetNuGetInstallationStatus)
+    {
+        ComposeStart "Uninstalling NuGet.";
         Remove-Item -Path "$FilePathForNuGetExe" -Confirm:$false -Force;
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling NuGet. <<<`n";
+        ComposeFinish "Finished uninstalling NuGet.";
     }
 }
 
-function UninstallOpenCover {
-    If ($SuppressOpenCover -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of OpenCover.";
-        return;
+Function UninstallOpenCover
+{
+    If ($SuppressOpenCover -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of OpenCover.";
+        Return;
     }
-    ElseIf (GetOpenCoverInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling OpenCover.";
-        choco uninstall $ChoclateyPackageNameForOpenCover -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenCover. <<<`n";
-    }
-}
-
-function UninstallOpenSsl {
-    If ($SuppressOpenSsl -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of OpenSSL.";
-        return;
-    }
-    ElseIf (GetOpenSslInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling OpenSSL.";
-        choco uninstall $ChoclateyPackageNameForOpenSsl -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling OpenSSL. <<<`n";
+    ElseIf (GetOpenCoverInstallationStatus)
+    {
+        ComposeStart "Uninstalling OpenCover.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForOpenCover";
+        ComposeFinish "Finished uninstalling OpenCover.";
     }
 }
 
-function UninstallPoshGit {
-    If ($SuppressPoshGit -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of posh-git.";
-        return;
+Function UninstallOpenSsl
+{
+    If ($SuppressOpenSsl -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of OpenSSL.";
+        Return;
     }
-    ElseIf (GetPoshGitInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling posh-git.";
-        Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPoshGit";
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling posh-git. <<<`n";
-    }
-}
-
-function UninstallPowershellYaml {
-    If ($SuppressPowershellYaml -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of powershell-yaml.";
-        return;
-    }
-    ElseIf (GetPowershellYamlInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling powershell-yaml.";
-        Uninstall-Module -Confirm:$false -Force -Name "$PowershellModuleNameForPowershellYaml";
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling powershell-yaml. <<<`n";
+    ElseIf (GetOpenSslInstallationStatus)
+    {
+        ComposeStart "Uninstalling OpenSSL.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForOpenSsl";
+        ComposeFinish "Finished uninstalling OpenSSL.";
     }
 }
 
-function UninstallPsake {
-    If ($SuppressPsake -eq $true) {
-        Write-Host -ForegroundColor DarkCyan "Suppressing uninstallation of psake.";
-        return;
+Function UninstallPoshGit
+{
+    If ($SuppressPoshGit -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of posh-git.";
+        Return;
     }
-    ElseIf (GetPsakeInstallationStatus) {
-        Write-Host -ForegroundColor DarkCyan "Uninstalling psake.";
-        choco uninstall $ChoclateyPackageNameForPsake -y --confirm --limit-output
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished uninstalling psake. <<<`n";
+    ElseIf (GetPoshGitInstallationStatus)
+    {
+        ComposeStart "Uninstalling posh-git.";
+        UsePowerShellGalleryToUninstall -ModuleName "$PowershellModuleNameForPoshGit";
+        ComposeFinish "Finished uninstalling posh-git.";
     }
+}
+
+Function UninstallPowershellYaml
+{
+    If ($SuppressPowershellYaml -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of powershell-yaml.";
+        Return;
+    }
+    ElseIf (GetPowershellYamlInstallationStatus)
+    {
+        ComposeStart "Uninstalling powershell-yaml.";
+        UsePowerShellGalleryToUninstall -ModuleName "$PowershellModuleNameForPowershellYaml";
+        ComposeFinish "Finished uninstalling powershell-yaml.";
+    }
+}
+
+Function UninstallPsake
+{
+    If ($SuppressPsake -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of psake.";
+        Return;
+    }
+    ElseIf (GetPsakeInstallationStatus)
+    {
+        ComposeStart "Uninstalling psake.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForPsake";
+        ComposeFinish "Finished uninstalling psake.";
+    }
+}
+
+Function UseChocolateyToInstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $PackageName
+    )
+
+    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "install $PackageName -y --accept-license --confirm --limit-output --no-progress";
+}
+
+Function UseChocolateyToUninstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $PackageName
+    )
+
+    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "uninstall $PackageName -y --confirm --limit-output";
+}
+
+Function UseNpmToInstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $PackageName
+    )
+
+    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "install $PackageName -g --loglevel error";
+}
+
+Function UseNpmToUninstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $PackageName
+    )
+
+    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "uninstall $PackageName -g --loglevel error";
+}
+
+Function UsePowerShellGalleryToInstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $ModuleName
+    )
+
+    Install-Module -Confirm:$false -ErrorAction Stop -Force -Name "$ModuleName";
+}
+
+Function UsePowerShellGalleryToUninstall
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $ModuleName
+    )
+
+    Uninstall-Module -Confirm:$false -ErrorAction Stop -Force -Name "$ModuleName";
 }
