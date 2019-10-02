@@ -66,7 +66,7 @@ Function EnterScript
 
         If (($UserInput -eq $null) -or ($UserInput -eq ""))
         {
-            ComposeVerbose "Exiting.";
+            ComposeNormal "Exiting.";
             Exit;
         }
 
@@ -74,11 +74,12 @@ Function EnterScript
         {
             "Y"
             {
+                ComposeNormal "Continuing.";
                 Break;
             }
             Default
             {
-                ComposeVerbose "Exiting.";
+                ComposeNormal "Exiting.";
                 Exit;
             }
         }

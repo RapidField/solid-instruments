@@ -139,26 +139,6 @@ Function ComposeWarning
     Write-Host -ForegroundColor Yellow "$Text";
 }
 
-Function ExecutePowerShellScript
-{
-    Param
-    (
-        [Parameter(Mandatory = $true, Position = 0)]
-        [String] $ScriptPath,
-        [Parameter(Mandatory = $false, Position = 1)]
-        [String] $Arguments = ""
-    )
-
-    If (($Arguments -eq $null) -or ($Arguments -eq ""))
-    {
-        ExecuteProcess -Path "$CommandNameForPowerShell" -Arguments "`"$ScriptPath`""
-    }
-    Else
-    {
-        ExecuteProcess -Path "$CommandNameForPowerShell" -Arguments "`"$ScriptPath`" $Arguments"
-    }
-}
-
 Function ExecuteProcess
 {
     Param

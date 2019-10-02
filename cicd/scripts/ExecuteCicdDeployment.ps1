@@ -37,6 +37,12 @@ $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPa
 # Solution configurations
 $SolutionConfigurationRelease = "Release";
 
+# Branch names
+$BranchNameForMaster = "master";
+
+# Environment variables
+$BranchName = $env:APPVEYOR_REPO_BRANCH;
+
 # Other configuration values
 $ContextIsInteractive = $Interactive.IsPresent;
 
@@ -70,7 +76,7 @@ Function EnterScript
 
         If (($UserInput -eq $null) -or ($UserInput -eq ""))
         {
-            ComposeVerbose "Exiting.";
+            ComposeNormal "Exiting.";
             Exit;
         }
 
@@ -78,14 +84,21 @@ Function EnterScript
         {
             "Y"
             {
+                ComposeNormal "Continuing.";
                 Break;
             }
             Default
             {
-                ComposeVerbose "Exiting.";
+                ComposeNormal "Exiting.";
                 Exit;
             }
         }
+    }
+
+    If ($BranchName -ne $BranchNameForMaster)
+    {
+        ComposeNormal "Suppressing deployment. The branch is not $BranchNameForMaster.";
+        Exit;
     }
 
     ComposeStart $("Starting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));

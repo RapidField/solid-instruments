@@ -22,9 +22,6 @@ $DirectoryNameForCicdScripts = "scripts";
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 $FileNameForCoreModule = "Core.psm1";
-$FileNameForExecuteCicdBuildScript = "ExecuteCicdBuild.ps1";
-$FileNameForExecuteCicdDeploymentScript = "ExecuteCicdDeployment.ps1";
-$FileNameForResetEnvironmentScript = "ResetEnvironment.ps1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = $PSScriptRoot;
@@ -36,15 +33,6 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
 $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
-$FilePathForExecuteCicdBuildScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForExecuteCicdBuildScript";
-$FilePathForExecuteCicdDeploymentScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForExecuteCicdDeploymentScript";
-$FilePathForResetEnvironmentScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForResetEnvironmentScript";
-
-# Branch names
-$BranchNameForMaster = "master";
-
-# Environment variables
-$BranchName = $env:APPVEYOR_REPO_BRANCH;
 
 # Other configuration values
 $ContextIsInteractive = $Interactive.IsPresent;
@@ -60,17 +48,11 @@ Houses the functional body of the current script.
 #>
 Function PerformActions
 {
-    ExecutePowerShellScript -ScriptPath "$FilePathForResetEnvironmentScript" -Arguments "-Interactive:`$$ContextIsInteractive";
-    ExecutePowerShellScript -ScriptPath "$FilePathForExecuteCicdBuildScript" -Arguments "-Interactive:`$$ContextIsInteractive";
-
-    If ($BranchName -eq $BranchNameForMaster)
-    {
-        ExecutePowerShellScript -ScriptPath "$FilePathForExecuteCicdDeploymentScript" -Arguments "-Interactive:`$$ContextIsInteractive";
-    }
-    Else
-    {
-        ComposeNormal "Suppressing deployment.";
-    }
+    Push-Location "$DirectoryPathForCicdScripts";
+    .\ResetEnvironment.ps1 -Interactive:$ContextIsInteractive;
+    .\ExecuteCicdBuild.ps1 -Interactive:$ContextIsInteractive;
+    .\ExecuteCicdDeployment.ps1 -Interactive:$ContextIsInteractive;
+    Pop-Location;
 }
 
 <#
