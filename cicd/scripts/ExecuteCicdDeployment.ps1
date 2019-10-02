@@ -61,7 +61,7 @@ Initiates execution of the current script.
 #>
 Function EnterScript
 {
-    ComposeHeader "Solid Instruments CI/CD Pipeline | Deployment";
+    ComposeHeader "CI/CD deployment";
 
     If ($ContextIsInteractive)
     {
@@ -70,7 +70,7 @@ Function EnterScript
 
         If (($UserInput -eq $null) -or ($UserInput -eq ""))
         {
-            ComposeVerbose "`nExiting.";
+            ComposeVerbose "Exiting.";
             Exit;
         }
 
@@ -82,16 +82,16 @@ Function EnterScript
             }
             Default
             {
-                ComposeVerbose "`nExiting.";
+                ComposeVerbose "Exiting.";
                 Exit;
             }
         }
     }
 
-    ComposeStart $("`nStarting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    ComposeStart $("Starting CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
     WriteBuildDetails;
     PerformActions;
-    ComposeFinish $("Finished CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+    ComposeFinish $("Finished CI/CD deployment at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
 }
 
 # Execution

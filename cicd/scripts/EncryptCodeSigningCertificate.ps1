@@ -59,7 +59,7 @@ Initiates execution of the current script.
 #>
 Function EnterScript
 {
-    ComposeHeader "Solid Instruments CI/CD Pipeline | Code signing certificate encryption";
+    ComposeHeader "Code signing certificate encryption";
 
     If ($ContextIsInteractive)
     {
@@ -68,7 +68,7 @@ Function EnterScript
 
         If (($UserInput -eq $null) -or ($UserInput -eq ""))
         {
-            ComposeVerbose "`nExiting.";
+            ComposeVerbose "Exiting.";
             Exit;
         }
 
@@ -80,7 +80,7 @@ Function EnterScript
             }
             Default
             {
-                ComposeVerbose "`nExiting.";
+                ComposeVerbose "Exiting.";
                 Exit;
             }
         }
@@ -91,9 +91,10 @@ Function EnterScript
         Throw "The code signing certificate will not be encrypted. No private key was specified.";
     }
 
-    ComposeStart $("`nEncrypting the code signing certificate at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    ComposeStart $("Encrypting the code signing certificate at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    WriteBuildDetails;
     PerformActions;
-    ComposeFinish $("Finished encrypting the code signing certificate at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+    ComposeFinish $("Finished encrypting the code signing certificate at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
 }
 
 # Execution

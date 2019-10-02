@@ -22,7 +22,6 @@ $DirectoryNameForCicdScripts = "scripts";
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 $FileNameForCoreModule = "Core.psm1";
-$FileNameForResetEnvironmentScript = "ResetEnvironment.ps1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -34,7 +33,6 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
 $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
-$FilePathForResetEnvironmentScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForResetEnvironmentScript";
 
 # Other configuration values
 $ContextIsInteractive = $Interactive.IsPresent;
@@ -50,7 +48,6 @@ Houses the functional body of the current script.
 #>
 Function PerformActions
 {
-    ExecutePowerShellScript -ScriptPath "$FilePathForResetEnvironmentScript" -Arguments "-Interactive:`$$ContextIsInteractive";
     VerifyBuild;
 }
 
@@ -60,7 +57,7 @@ Initiates execution of the current script.
 #>
 Function EnterScript
 {
-    ComposeHeader "Solid Instruments CI/CD Pipeline | Build";
+    ComposeHeader "CI/CD build";
 
     If ($ContextIsInteractive)
     {
@@ -69,7 +66,7 @@ Function EnterScript
 
         If (($UserInput -eq $null) -or ($UserInput -eq ""))
         {
-            ComposeVerbose "`nExiting.";
+            ComposeVerbose "Exiting.";
             Exit;
         }
 
@@ -81,16 +78,16 @@ Function EnterScript
             }
             Default
             {
-                ComposeVerbose "`nExiting.";
+                ComposeVerbose "Exiting.";
                 Exit;
             }
         }
     }
 
-    ComposeStart $("`nStarting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    ComposeStart $("Starting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
     WriteBuildDetails;
     PerformActions;
-    ComposeFinish $("Finished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+    ComposeFinish $("Finished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
 }
 
 # Execution

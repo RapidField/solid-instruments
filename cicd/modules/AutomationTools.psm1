@@ -459,7 +459,7 @@ Function MakeCommandPathAvailable
         [String] $EnvironmentTarget
     )
 
-    Get-Command "$Command" | ForEach-Object
+    Get-Command "$Command" | ForEach-Object `
     {
         $CommandDirectoryPath = Split-Path $_.Source;
         $PathVariable = [System.Environment]::GetEnvironmentVariable("Path", $EnvironmentTarget);

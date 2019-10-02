@@ -123,7 +123,7 @@ Function Build
 
     ComposeStart "Copying artifacts.";
 
-    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
     {
         $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
 
@@ -175,10 +175,10 @@ Function BuildWebDocumentation
     ComposeFinish "Finished compiling web documentation metadata.";
     ComposeStart "Compiling documentation website.";
     docfx build --loglevel "Error";
-    ComposeFinish "Finished compiling documentation website..";
+    ComposeFinish "Finished compiling documentation website.";
     ComposeStart "Minifying documentation website.";
 
-    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object
+    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object `
     {
         $ThisFilePath = $_.FullName;
         ComposeVerbose "Minifying file: $ThisFilePath";
@@ -202,7 +202,7 @@ Function Clean
     ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile --configuration $SolutionConfiguration --verbosity minimal";
     ComposeStart "Destroying build artifacts.";
 
-    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
     {
         $ProjectBinPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
         $ProjectObjPath = Join-Path -Path $_.FullName -ChildPath "obj";
@@ -310,7 +310,8 @@ Function EncryptCodeSigningCertificate
         [String] $Key
     )
 
-    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
+    {
         ComposeWarning "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
         Return;
     }
@@ -374,7 +375,7 @@ Function PublishPackages
     ComposeStart "Publishing packages in the directory: $BuildArtifactsDirectoryPath.";
     Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
     {
         $PackageFilePath = $_.FullName;
 
@@ -449,7 +450,7 @@ Function SignPackages
     ComposeStart "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
     Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
     {
         $PackageFilePath = $_.FullName;
 
@@ -530,7 +531,7 @@ Function Test
         [String] $SolutionConfiguration
     )
 
-    Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object
+    Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object `
     {
         $TestDirectoryPath = $_.FullName;
         ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";

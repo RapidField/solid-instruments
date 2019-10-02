@@ -21,9 +21,10 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
+$FileNameForCoreModule = "Core.psm1";
 $FileNameForExecuteCicdBuildScript = "ExecuteCicdBuild.ps1";
 $FileNameForExecuteCicdDeploymentScript = "ExecuteCicdDeployment.ps1";
-$FileNameForCoreModule = "Core.psm1";
+$FileNameForResetEnvironmentScript = "ResetEnvironment.ps1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = $PSScriptRoot;
@@ -37,6 +38,7 @@ $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdMod
 $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
 $FilePathForExecuteCicdBuildScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForExecuteCicdBuildScript";
 $FilePathForExecuteCicdDeploymentScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForExecuteCicdDeploymentScript";
+$FilePathForResetEnvironmentScript = Join-Path -Path "$DirectoryPathForCicdScripts" -ChildPath "$FileNameForResetEnvironmentScript";
 
 # Branch names
 $BranchNameForMaster = "master";
@@ -58,6 +60,7 @@ Houses the functional body of the current script.
 #>
 Function PerformActions
 {
+    ExecutePowerShellScript -ScriptPath "$FilePathForResetEnvironmentScript" -Arguments "-Interactive:`$$ContextIsInteractive";
     ExecutePowerShellScript -ScriptPath "$FilePathForExecuteCicdBuildScript" -Arguments "-Interactive:`$$ContextIsInteractive";
 
     If ($BranchName -eq $BranchNameForMaster)
@@ -76,12 +79,10 @@ Initiates execution of the current script.
 #>
 Function EnterScript
 {
-    ComposeHeader "Solid Instruments CI/CD Pipeline";
     RejectNonAdministratorUsers;
     ComposeStart $("Entering CI/CD pipeline at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
-    WriteBuildDetails;
     PerformActions;
-    ComposeFinish $("Exiting CI/CD pipeline at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
+    ComposeFinish $("Exiting CI/CD pipeline at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
 }
 
 # Execution
