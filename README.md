@@ -71,10 +71,10 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 
 #### Preview
 
-| Version         | Notes                               | Source                                                                           | Supported          | Release date | End of support |
-| :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------------: | :----------: | :------------: |
-| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | :heavy_check_mark: | 21 Jul 2019  | 16 Apr 2022    |
-| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | :heavy_check_mark: | 20 Jul 2019  | 15 Apr 2022    | 
+| Version         | Notes                               | Source                                                                           | Release date | End of support |
+| :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
+| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 16 Apr 2022    |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 15 Apr 2022    | 
 
 <br />
 
