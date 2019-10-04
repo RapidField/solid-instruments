@@ -14,7 +14,7 @@ The **Solid Instruments** maintainers actively address security issues. All supp
 The versions listed below are currently supported with security updates.
 
 | Version | Supported          |
-| ------- | ------------------ |
+| ------- | :----------------: |
 | 1.0.x   | :heavy_check_mark: |
 
 ## Reporting a vulnerability
