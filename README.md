@@ -36,7 +36,7 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](LICENSE.txt) for more information.
 
-## Get help
+## Support
 
 [![Documentation](https://img.shields.io/badge/documentation-website-tan?style=flat&logo=buffer&logoColor=lightgrey)](https://www.solidinstruments.com)
 [![Chat](https://img.shields.io/gitter/room/rapidfield/solid-instruments?style=flat&color=darkslateblue&label=chat&logo=gitter&logoColor=lightgrey)](https://gitter.im/RapidField/solid-instruments)
@@ -55,7 +55,13 @@ There are multiple ways to find help.
 [![Coverage](https://img.shields.io/codecov/c/github/RapidField/solid-instruments?color=brightgreen&label=coverage&logo=codecov&logoColor=lightgrey)](https://codecov.io/gh/rapidfield/solid-instruments)
 [![CII best practices](https://img.shields.io/cii/level/3063?&style=flat&label=cii+best+practices&logo=linux-foundation&logoColor=lightgrey)](https://bestpractices.coreinfrastructure.org/en/projects/3063)
 
-The **Solid Instruments** team strives to maintain [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status. Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).
+The **Solid Instruments** team strives to maintain high standards as defined by our key quality metrics.
+
+- 100% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches.
+- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches.
+- [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status.
+
+Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).
 
 ## Releases
 
@@ -65,10 +71,10 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 
 #### Preview
 
-| Version         | Release date | Notes                               | Source                                                                           | Supported          |
-| :-------------- | :----------: | :---------------------------------: | :------------------------------------------------------------------------------: | :----------------: |
-| 1.0.24-preview1 | 21 Jul 2019  | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | :heavy_check_mark: |
-| 1.0.23-preview1 | 20 Jul 2019  | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | :heavy_check_mark: |
+| Version         | Notes                               | Source                                                                           | Supported          | Release date | End of support |
+| :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------------: | :----------: | :------------: |
+| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | :heavy_check_mark: | 21 Jul 2019  | 16 Apr 2022    |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | :heavy_check_mark: | 20 Jul 2019  | 15 Apr 2022    | 
 
 <br />
 
