@@ -15,6 +15,7 @@ This path contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) mo
 
 - [`AutomationTools.psm1`](AutomationTools.psm1) defines CI/CD automation tooling for the project.
 - [`BuildAndDeployment.psm1`](BuildAndDeployment.psm1) exposes the build and deployment functions that are used by the CI/CD pipeline.
+- [`Core.psm1`](Core.psm1) exposes shared utility functions for the CI/CD pipeline.
 
 ## License
 

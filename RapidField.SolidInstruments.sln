@@ -310,6 +310,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{8A8C
 	ProjectSection(SolutionItems) = preProject
 		cicd\modules\AutomationTools.psm1 = cicd\modules\AutomationTools.psm1
 		cicd\modules\BuildAndDeployment.psm1 = cicd\modules\BuildAndDeployment.psm1
+		cicd\modules\Core.psm1 = cicd\modules\Core.psm1
 		cicd\modules\README.md = cicd\modules\README.md
 	EndProjectSection
 EndProject
