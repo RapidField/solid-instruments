@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{DD6DE5D2
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		codecov.yml = codecov.yml
 		CodeMaid.config = CodeMaid.config
-		.github\CODEOWNERS = .github\CODEOWNERS
 		CONTRIBUTING.md = CONTRIBUTING.md
 		en-US_User.dic = en-US_User.dic
 		en_US.aff = en_US.aff
@@ -325,6 +324,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{1D0A68B1-B7B3-49C0-87AB-EC52A192D4A3}"
 	ProjectSection(SolutionItems) = preProject
+		.github\CODEOWNERS = .github\CODEOWNERS
 		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
 	EndProjectSection
 EndProject

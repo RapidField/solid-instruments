@@ -81,7 +81,7 @@ The following patterns define the project's branch naming and usage conventions.
 
 ### Workflow
 
-**RapidField Revision Control Workflow 1.1** diverges from **GitFlow** by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
+**RapidField Revision Control Workflow 1.1** diverges from  [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/) by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
 [![Revision control diagram](RapidFieldRevisionControlWorkflow.png)](RapidFieldRevisionControlWorkflow.png)
 
@@ -99,7 +99,7 @@ git clone https://github.com/RapidField/solid-instruments.git
 
 ### Environment setup
 
-After cloning the repository, navigate to the root directory in an administrative **PowerShell** session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
+After cloning the repository, navigate to the root directory in an administrative [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
 
 ###### PowerShell
 
