@@ -64,7 +64,7 @@ New contributors should familiarize themselves with the design conventions by re
 
 ## Revision control strategy
 
-The **Solid Instruments** team uses a [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/)-like strategy for managing source branches. Our model diverges by introducing **defect** and **maintenance** branches, which are treated like **feature** branches from a process perspective but are used for different purposes.
+The **Solid Instruments** team uses **RapidField Revision Control Workflow 1.1**, a [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/)-like strategy for managing source branches.
 
 ### Branching conventions
 
@@ -73,15 +73,15 @@ The following patterns define the project's branch naming and usage conventions.
 - `master` is the root branch and represents, at all times, the state of the latest production release.
 - Branches matching the pattern `hotfix/00000-{semantic-key}` are children of `master` and house active work associated with an urgent production defect.
 - Branches matching the pattern `release/v0.0.0` are children of `master` and house completed, tested and integrated work for a named release.
-- `develop` is a child of `master` and serves as a work-in-progress integration branch for **defect**, **feature** and **maintenance** branches.
+- `develop` is a child of `master` and serves as a work-in-progress integration branch for defect, feature and maintenance branches.
 - Branches matching the pattern `defect/00000-{semantic-key}` are children of `develop` and house active work associated with a non-urgent defect.
 - Branches matching the pattern `feature/00000-{semantic-key}` are children of `develop` and house active feature development work.
 - Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work.
-- Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting **defect**, **feature** and **maintenance** branches.
+- Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches.
 
 ### Workflow
 
-**Solid Instruments** employs the **RapidField Revision Control Workflow**, which is diagrammed below.
+**RapidField Revision Control Workflow 1.1** diverges from **GitFlow** by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
 [![Revision control diagram](RapidFieldRevisionControlWorkflow.png)](RapidFieldRevisionControlWorkflow.png)
 
@@ -96,6 +96,32 @@ Ready to start contributing? You know what to do.
 ```shell
 git clone https://github.com/RapidField/solid-instruments.git
 ```
+
+### Environment setup
+
+After cloning the repository, navigate to the root directory in an administrative **PowerShell** session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
+
+###### PowerShell
+
+```powershell
+.\build.ps1 -interactive
+```
+
+### Build verification
+
+During development it is good practice to ensure that your build remains in a passing state. Before pushing commits upstream, open a [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) console and execute the `verify` task in the project root.
+
+###### PowerShell
+
+```powershell
+psake verify
+```
+
+### Your first issue
+
+First-time contributors are welcome to start with any open, unassigned issues labeled [**Tag-GoodFirstIssue**](https://github.com/RapidField/solid-instruments/issues?q=is%3Aopen+is%3Aissue+label%3AStage-2-Accepted+no%3Aassignee). After picking one, leave a comment on the issue so that we can assign it to you and promote its status.
+
+Revision control plans are provided with the descriptions of all accepted issues. Please review carefully before starting.
 
 <br />
 

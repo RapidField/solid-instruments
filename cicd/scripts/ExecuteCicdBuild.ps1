@@ -2,11 +2,16 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file scripts the standard CI/CD build process.
-# =================================================================================================================================
+<#
+.Synopsis
+This script performs the standard CI/CD build process.
+#>
 
-# Script configuration
-# =================================================================================================================================
+Param
+(
+    [Parameter(Mandatory = $false, Position = 0)]
+    [Switch] $Interactive
+)
 
 # Directory names
 $DirectoryNameForCicd = "cicd";
@@ -16,6 +21,7 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
+$FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -26,28 +32,64 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 # File paths
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
+$FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
+
+# Other configuration values
+$ContextIsInteractive = $Interactive.IsPresent;
 
 # Modules
-# =================================================================================================================================
-
 Import-Module $FilePathForAutomationToolsModule -Force;
 Import-Module $FilePathForBuildAndDeploymentModule -Force;
+Import-Module $FilePathForCoreModule -Force;
 
-# Script execution
-# =================================================================================================================================
+<#
+.Synopsis
+Houses the functional body of the current script.
+#>
+Function PerformActions
+{
+    VerifyBuild;
+}
 
-Write-Host -ForegroundColor Cyan $("`nStarting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
-WriteBuildDetails
+<#
+.Synopsis
+Initiates execution of the current script.
+#>
+Function EnterScript
+{
+    ComposeHeader "CI/CD build";
 
-# Establish automation tools.
-Push-Location "$DirectoryPathForCicdScripts"
-.\ResetEnvironment.ps1
-Pop-Location
+    If ($ContextIsInteractive)
+    {
+        ComposeNormal "The following process will perform a standard Solid Instruments build.";
+        $UserInput = PromptUser -QuestionText "Would you like to continue?" -PromptText "[Y] Yes [N] No";
 
-# Execute the build.
-Push-Location "$DirectoryPathForProjectRoot";
-psake Verify
-Pop-Location
+        If (($UserInput -eq $null) -or ($UserInput -eq ""))
+        {
+            ComposeNormal "Exiting.";
+            Exit;
+        }
 
-Write-Host -ForegroundColor Cyan $("`nFinished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}.`n" -f (Get-Date));
-WriteBuildDetails
+        Switch ($UserInput.Trim().ToUpper().Substring(0, 1))
+        {
+            "Y"
+            {
+                ComposeNormal "Continuing.";
+                Break;
+            }
+            Default
+            {
+                ComposeNormal "Exiting.";
+                Exit;
+            }
+        }
+    }
+
+    ComposeStart $("Starting CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    WriteBuildDetails;
+    PerformActions;
+    ComposeFinish $("Finished CI/CD build at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+}
+
+# Execution
+EnterScript;
