@@ -1,6 +1,6 @@
 ---
 name: Request project maintenance
-about: Use this to request non-functional changes.
+about: Use this to request non-functional changes (documentation, testing, refactoring, etc).
 title: ''
 labels: 'Category-Maintenance, Stage0-New, Verdict-Pending'
 ---
