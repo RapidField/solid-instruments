@@ -3,11 +3,13 @@
 # =================================================================================================================================
 
 # This file governs automatic review requests.
-# =================================================================================================================================
 
+# Contributors
 /example/       @RapidField/solid-instruments-contributors
 /src/           @RapidField/solid-instruments-contributors
 /test/          @RapidField/solid-instruments-contributors
+
+# Maintainers
 .editorconfig   @RapidField/solid-instruments-maintainers
 .gitattributes  @RapidField/solid-instruments-maintainers
 .gitignore      @RapidField/solid-instruments-maintainers
@@ -18,6 +20,8 @@
 *.sln           @RapidField/solid-instruments-maintainers
 /cicd/          @RapidField/solid-instruments-maintainers
 /doc/           @RapidField/solid-instruments-maintainers
+
+# Administrators
 /.github/       @RapidField/solid-instruments-administrators
 *.enc           @RapidField/solid-instruments-administrators
 *.yml           @RapidField/solid-instruments-administrators

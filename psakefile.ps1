@@ -2,11 +2,10 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file organizes, aggregates and abstracts CI/CD operations.
-# =================================================================================================================================
-
-# Script configuration
-# =================================================================================================================================
+<#
+.Synopsis
+This file organizes, aggregates and abstracts CI/CD operations.
+#>
 
 # Directory names
 $DirectoryNameForCicd = "cicd";
@@ -28,55 +27,26 @@ $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModule
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
 
 # Modules
-# =================================================================================================================================
-
 Import-Module $FilePathForAutomationToolsModule -Force;
 Import-Module $FilePathForBuildAndDeploymentModule -Force;
 
-# Build
-# =================================================================================================================================
-
-Task Build-Debug -Alias bd -Depends Clean-Debug, Restore-Dependencies { BuildDebug }
-Task Build-Release -Alias br -Depends Clean-Release, Restore-Dependencies { BuildRelease }
-
-# Clean
-# =================================================================================================================================
-
-Task Clean-Debug -Alias cd { CleanDebug }
-Task Clean-Release -Alias cr { CleanRelease }
-
-# List
-# =================================================================================================================================
-
-Task List -Alias l { psake -docs }
-
-# Restore
-# =================================================================================================================================
-
-Task Restore-Dependencies -Alias rd { RestoreDependencies }
-
-# Start
-# =================================================================================================================================
-
-Task Start-All-Debug -Alias sad -Depends Stop-All, Start-ExampleServiceApplication-Debug, Start-ExampleWebApplication-Debug
-Task Start-All-Release -Alias sar -Depends Stop-All, Start-ExampleServiceApplication-Release, Start-ExampleWebApplication-Release
-Task Start-ExampleServiceApplication-Debug -Alias sesad -Depends Build-Debug { StartExampleServiceApplicationDebug }
-Task Start-ExampleServiceApplication-Release -Alias sesar -Depends Build-Release { StartExampleServiceApplicationRelease }
-Task Start-ExampleWebApplication-Debug -Alias sewad -Depends Build-Debug { StartExampleWebApplicationDebug }
-Task Start-ExampleWebApplication-Release -Alias sewar -Depends Build-Release { StartExampleWebApplicationRelease }
-
-# Start
-# =================================================================================================================================
-
-Task Stop-All -Alias sa { StopAllApplications }
-
-# Test
-# =================================================================================================================================
-
-Task Test-Debug -Alias td -Depends Build-Debug { TestDebug }
-Task Test-Release -Alias tr -Depends Build-Release { TestRelease }
-
-# Verify
-# =================================================================================================================================
-
-Task Verify -Alias v -Depends Test-Release
+# Tasks
+Task Build-All -Alias ba -Depends Clean-All, Restore-Dependencies, Build-Debug, Build-Release;
+Task Build-Debug -Alias bd -Depends Clean-Debug, Restore-Dependencies -Action { BuildDebug; };
+Task Build-Release -Alias br -Depends Clean-Release, Restore-Dependencies -Action { BuildRelease; };
+Task Clean-All -Alias ca -Depends Clean-Debug, Clean-Release;
+Task Clean-Debug -Alias cd -Action { CleanDebug; };
+Task Clean-Release -Alias cr -Action { CleanRelease; };
+Task List -Alias l -Action { psake -docs };
+Task Restore-Dependencies -Alias rd -Action { RestoreDependencies; };
+Task Start-All-Debug -Alias sad -Depends Stop-All, Start-ExampleServiceApplication-Debug, Start-ExampleWebApplication-Debug;
+Task Start-All-Release -Alias sar -Depends Stop-All, Start-ExampleServiceApplication-Release, Start-ExampleWebApplication-Release;
+Task Start-ExampleServiceApplication-Debug -Alias sesad -Depends Build-Debug -Action { StartExampleServiceApplicationDebug; };
+Task Start-ExampleServiceApplication-Release -Alias sesar -Depends Build-Release -Action { StartExampleServiceApplicationRelease; };
+Task Start-ExampleWebApplication-Debug -Alias sewad -Depends Build-Debug -Action { StartExampleWebApplicationDebug; };
+Task Start-ExampleWebApplication-Release -Alias sewar -Depends Build-Release -Action { StartExampleWebApplicationRelease; };
+Task Stop-All -Alias sa -Action { StopAllApplications; };
+Task Test-All -Alias ta -Depends Build-All, Test-Debug, Test-Release;
+Task Test-Debug -Alias td -Depends Build-Debug -Action { TestDebug; };
+Task Test-Release -Alias tr -Depends Build-Release -Action { TestRelease; };
+Task Verify -Alias v -Depends Build-All, Test-Release;
