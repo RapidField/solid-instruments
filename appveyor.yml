@@ -3,14 +3,11 @@
 # =================================================================================================================================
 
 # This file controls automated CI/CD activity via AppVeyor.
-# =================================================================================================================================
 
 # Version definition
-# =================================================================================================================================
 version: 1.0.24-preview1.{build}
 
 # Artifact definitions
-# =================================================================================================================================
 artifacts:
 - path: artifacts\Release
   name: ReleasePackages
@@ -18,12 +15,10 @@ artifacts:
   name: DocumentationWebsite
 
 # Build script
-# =================================================================================================================================
 build_script:
 - ps: .\Build.ps1
 
 # Deployment settings
-# =================================================================================================================================
 deploy:
 - application: DocumentationWebsite
   artifact: DocumentationWebsite
@@ -37,7 +32,6 @@ deploy:
   username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
 
 # Environment variables
-# =================================================================================================================================
 environment:
   CODECOV_TOKEN:
     secure: 7/8LlzRGKOUWnZwRUPiZjaw1ugVc9OsFebsLdIA/mbbVintw7IhTOqT/fu31eTz3
@@ -49,9 +43,7 @@ environment:
     secure: +MUxngO910jKz1/jjAh6a5y8O0AujDeYNhKSfjiDBh6OISt1LQlNjXLPqn/OHV8n
 
 # Visual Studio image
-# =================================================================================================================================
 image: Visual Studio 2017
 
 # Test settings
-# =================================================================================================================================
 test: off
