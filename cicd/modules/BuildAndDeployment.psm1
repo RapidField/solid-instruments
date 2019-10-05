@@ -2,11 +2,10 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
-# This file exposes the build and deployment functions that are used by the CI/CD pipeline.
-# =================================================================================================================================
-
-# Module configuration
-# =================================================================================================================================
+<#
+.Synopsis
+This module exposes the build and deployment functions that are used by the CI/CD pipeline.
+#>
 
 # Directory names
 $DirectoryNameForArtifacts = "artifacts";
@@ -27,6 +26,8 @@ $DirectoryNameForTests = "test";
 $FileNameForAppVeyorYamlConfiguration = "appveyor.yml";
 $FileNameForCoverageReport = "Coverage.xml";
 $FileNameForCodeSigningCertificate = "CodeSigningCertificate.pfx";
+$FileNameForCoreModule = "Core.psm1";
+$FileNameForDotNetCli = "dotnet.exe";
 $FileNameForNugetExe = "nuget.exe";
 $FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
 
@@ -49,17 +50,25 @@ $DirectoryPathForTests = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPa
 # File paths
 $FilePathForAppVeyorYamlConfigurlation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForAppVeyorYamlConfiguration";
 $FilePathForCodeSigningCertificate = Join-Path -Path "$DirectoryPathForCicdAssets" -ChildPath "$FileNameForCodeSigningCertificate";
+$FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
 $FilePathForCoverageReport = Join-Path -Path "$DirectoryPathForTests" -ChildPath "$FileNameForCoverageReport";
 $FilePathForEncryptedCodeSigningCertificate = "$FilePathForCodeSigningCertificate.enc";
 $FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForSolutionFile";
+
+# Command names
+$CommandNameForCodecov = "codecov";
+$CommandNameForDotNetCli = "dotnet";
+$CommandNameForHtmlMinifier = "html-minifier";
+$CommandNameForNuGet = "nuget";
+$CommandNameForOpenCover = "opencover.console.exe";
 
 # Install script URIs
 $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
 
 # Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
-$NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json"
+$NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json";
 
 # Configuration types
 $ConfigurationTypeLocal = "Local";
@@ -90,507 +99,566 @@ $TagName = $env:APPVEYOR_REPO_TAG_NAME;
 # Other configuration values
 $TargetFrameworkForExampleServiceApplication = "netcoreapp2.1";
 
-# Build
-# =================================================================================================================================
+# Modules
+Import-Module $FilePathForCoreModule -Force;
 
-function Build {
-    Param (
+Function Build
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
     $BuildVersion = GetBuildVersion;
-    Write-Host -ForegroundColor DarkCyan "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    Write-Host -ForegroundColor DarkCyan "Build version: $BuildVersion";
-    dotnet build $FilePathForSolutionFile --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersion
-
-    If ($LASTEXITCODE -ne 0) {
-        Throw "The build failed for $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    }
-
+    ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
+    ComposeNormal "Build version: $BuildVersion";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersion";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
-    If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
+    If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
+    {
         New-Item -ItemType Directory -Path "$BuildArtifactsDirectoryPath" -Force | Out-Null;
     }
 
-    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object {
+    ComposeStart "Copying artifacts.";
+
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
+    {
         $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
 
-        If (Test-Path "$ProjectOutputPath") {
-            Write-Host -ForegroundColor DarkCyan "Copying artifacts from $ProjectOutputPath.";
+        If (Test-Path "$ProjectOutputPath")
+        {
+            ComposeVerbose "Copying artifacts from $ProjectOutputPath.";
             Get-ChildItem -Path "$ProjectOutputPath" -File | Copy-Item -Container -Destination "$BuildArtifactsDirectoryPath" -Force | Out-Null;
         }
     }
 
+    ComposeFinish "Finished copying artifacts.";
     BuildWebDocumentation -SolutionConfiguration $SolutionConfiguration;
 
-    If (Test-Path "$DirectoryPathForDocumentationWebsite") {
+    If (Test-Path "$DirectoryPathForDocumentationWebsite")
+    {
         Get-Item -Path "$DirectoryPathForDocumentationWebsite" | Copy-Item -Destination "$DirectoryPathForArtifacts" -Force -Recurse | Out-Null;
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished building. <<<`n";
+    ComposeFinish "Finished building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
 }
 
-function BuildDebug {
+Function BuildDebug
+{
     Build -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
-function BuildRelease {
+Function BuildRelease
+{
     Build -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
-function BuildWebDocumentation {
-    Param (
+Function BuildWebDocumentation
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
-        return;
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease)
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "`nCompiling web documentation metadata.";
-    Push-Location "$DirectoryPathForDocumentation"
-    docfx metadata
+    ComposeStart "Compiling web documentation metadata.";
+    Push-Location "$DirectoryPathForDocumentation";
+    docfx metadata;
+    ComposeFinish "Finished compiling web documentation metadata.";
+    ComposeStart "Compiling documentation website.";
+    docfx build --loglevel "Error";
+    ComposeFinish "Finished compiling documentation website.";
+    ComposeStart "Minifying documentation website.";
 
-    Write-Host -ForegroundColor DarkCyan "`nCompiling documentation website.";
-    docfx build --loglevel "Error"
-
-    Write-Host -ForegroundColor DarkCyan "`nMinifying documentation website.";
-
-    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object {
+    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object `
+    {
         $ThisFilePath = $_.FullName;
-        Write-Host -ForegroundColor DarkCyan "Minifying file: $ThisFilePath";
-        html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath"
+        ComposeVerbose "Minifying file: $ThisFilePath";
+        html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath";
     }
 
-    Pop-Location
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished building web documentation. <<<`n";
+    ComposeFinish "Finished minifying documentation website.";
+    Pop-Location;
+    ComposeFinish "Finished building web documentation.";
 }
 
-# Clean
-# =================================================================================================================================
-
-function Clean {
-    Param (
+Function Clean
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    dotnet clean $FilePathForSolutionFile --configuration $SolutionConfiguration --verbosity minimal
+    ComposeStart "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile --configuration $SolutionConfiguration --verbosity minimal";
+    ComposeStart "Destroying build artifacts.";
 
-    If ($LASTEXITCODE -ne 0) {
-        Throw "Cleaning failed for $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    }
-
-    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object {
+    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
+    {
         $ProjectBinPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
         $ProjectObjPath = Join-Path -Path $_.FullName -ChildPath "obj";
 
-        If (Test-Path "$ProjectBinPath") {
-            Write-Host -ForegroundColor DarkCyan "Removing $ProjectBinPath.";
+        If (Test-Path "$ProjectBinPath")
+        {
+            ComposeVerbose "Removing $ProjectBinPath.";
             Remove-Item -Path "$ProjectBinPath" -Recurse -Confirm:$false -Force;
         }
 
-        If (Test-Path "$ProjectObjPath") {
-            Write-Host -ForegroundColor DarkCyan "Removing $ProjectObjPath.";
+        If (Test-Path "$ProjectObjPath")
+        {
+            ComposeVerbose "Removing $ProjectObjPath.";
             Remove-Item -Path "$ProjectObjPath" -Recurse -Confirm:$false -Force;
         }
     }
 
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
-    If (Test-Path "$BuildArtifactsDirectoryPath") {
-        Write-Host -ForegroundColor DarkCyan "Removing artifacts from $BuildArtifactsDirectoryPath.";
+    If (Test-Path "$BuildArtifactsDirectoryPath")
+    {
+        ComposeVerbose "Removing artifacts from $BuildArtifactsDirectoryPath.";
         Remove-Item -Path "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
     }
 
     CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished cleaning. <<<`n";
+    ComposeFinish "Finished cleaning.";
 }
 
-function CleanDebug {
+Function CleanDebug
+{
     Clean -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
-function CleanRelease {
+Function CleanRelease
+{
     Clean -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
-function CleanWebDocumentation {
-    Param (
+Function CleanWebDocumentation
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
-        return;
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease)
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Cleaning documentation website.";
+    ComposeStart "Cleaning documentation website.";
 
-    If (Test-Path "$DirectoryPathForDocumentationObjects") {
-        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DirectoryPathForDocumentationObjects.";
+    If (Test-Path "$DirectoryPathForDocumentationObjects")
+    {
+        ComposeNormal "Removing documentation website artifacts from $DirectoryPathForDocumentationObjects.";
         Remove-Item -Path "$DirectoryPathForDocumentationObjects" -Recurse -Confirm:$false -Force;
     }
 
-    If (Test-Path "$DirectoryPathForDocumentationWebsite") {
-        Write-Host -ForegroundColor DarkCyan "Removing documentation website artifacts from $DirectoryPathForDocumentationWebsite.";
+    If (Test-Path "$DirectoryPathForDocumentationWebsite")
+    {
+        ComposeNormal "Removing documentation website artifacts from $DirectoryPathForDocumentationWebsite.";
         Remove-Item -Path "$DirectoryPathForDocumentationWebsite" -Recurse -Confirm:$false -Force;
     }
+
+    ComposeFinish "Finished cleaning documentation website.";
 }
 
-# Decrypt
-# =================================================================================================================================
-
-function DecryptCodeSigningCertificate {
-    Param (
+Function DecryptCodeSigningCertificate
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Key
     )
 
-    If (-not (Test-Path "$FilePathForEncryptedCodeSigningCertificate")) {
-        Write-Host -ForegroundColor DarkYellow "The encrypted code signing certificate is not available at path $FilePathForEncryptedCodeSigningCertificate.";
-        return;
+    If (-not (Test-Path "$FilePathForEncryptedCodeSigningCertificate"))
+    {
+        ComposeWarning "The encrypted code signing certificate is not available at path $FilePathForEncryptedCodeSigningCertificate.";
+        Return;
     }
 
-    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+    If (-not (Test-Path "$DirectoryPathForCicdTools"))
+    {
         New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Decrypting the code signing certificate.";
-    Push-Location "$DirectoryPathForCicdTools"
+    ComposeStart "Decrypting the code signing certificate.";
+    Push-Location "$DirectoryPathForCicdTools";
     iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
-    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools"
-    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret $Key
-    Pop-Location
+    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
+    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret $Key;
+    Pop-Location;
     Remove-Item "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
-    Pop-Location
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished decrypting the code signing certificate. <<<`n";
+    Pop-Location;
+    ComposeFinish "Finished decrypting the code signing certificate.";
 }
 
-# Encrypt
-# =================================================================================================================================
-
-function EncryptCodeSigningCertificate {
-    Param (
+Function EncryptCodeSigningCertificate
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Key
     )
 
-    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
-        Write-Host -ForegroundColor DarkYellow "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
-        return;
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
+    {
+        ComposeWarning "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
+        Return;
     }
 
-    If (-not (Test-Path "$DirectoryPathForCicdTools")) {
+    If (-not (Test-Path "$DirectoryPathForCicdTools"))
+    {
         New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Encrypting the code signing certificate.";
-    Push-Location "$DirectoryPathForCicdTools"
+    ComposeStart "Encrypting the code signing certificate.";
+    Push-Location "$DirectoryPathForCicdTools";
     iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
-    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools"
-    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret $Key
-    Pop-Location
+    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
+    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret $Key;
+    Pop-Location;
     Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
     Remove-Item -Path "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
-    Pop-Location
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished encrypting the code signing certificate. <<<`n";
+    Pop-Location;
+    ComposeFinish "Finished encrypting the code signing certificate.";
 }
 
-# Get
-# =================================================================================================================================
-
-function GetAppVeyorConfiguration {
+Function GetAppVeyorConfiguration
+{
     Import-Module "powershell-yaml" -Force;
-    return Get-Content -Path "$FilePathForAppVeyorYamlConfigurlation" | ConvertFrom-Yaml;
+    Return Get-Content -Path "$FilePathForAppVeyorYamlConfigurlation" | ConvertFrom-Yaml;
 }
 
-function GetBuildVersion {
+Function GetBuildVersion
+{
     $AppVeyorConfiguration = GetAppVeyorConfiguration;
-    return $AppVeyorConfiguration.version.trimend(".{build}");
+    Return $AppVeyorConfiguration.version.trimend(".{build}");
 }
 
-# Publish
-# =================================================================================================================================
-
-function PublishPackages {
-    Param (
+Function PublishPackages
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
-        return;
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease)
+    {
+        Return;
     }
 
-    If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq "")) {
-        Write-Host -ForegroundColor DarkCyan "Packages will not be published. The NuGet API key is unavailable.";
-        return;
+    If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq ""))
+    {
+        ComposeWarning "Packages will not be published. The NuGet API key is unavailable.";
+        Return;
     }
 
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
-    If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
-        Write-Host -ForegroundColor DarkCyan "No packages are available to publish. The path does not exist: $BuildArtifactsDirectoryPath.";
-        return;
+    If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
+    {
+        ComposeWarning "No packages are available to publish. The path does not exist: $BuildArtifactsDirectoryPath.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Publishing packages in the directory: $BuildArtifactsDirectoryPath.";
-    Push-Location "$DirectoryPathForCicdTools"
+    ComposeStart "Publishing packages in the directory: $BuildArtifactsDirectoryPath.";
+    Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
+    {
         $PackageFilePath = $_.FullName;
 
-        If ($PackageFilePath -like "*.nupkg") {
-            Write-Host -ForegroundColor DarkCyan "Publishing package $PackageFilePath.";
-            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri" -SkipDuplicate
+        If ($PackageFilePath -like "*.nupkg")
+        {
+            ComposeNormal "Publishing package $PackageFilePath.";
+            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri" -SkipDuplicate;
         }
     }
 
-    Pop-Location
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished publishing packages. <<<`n";
+    Pop-Location;
+    ComposeFinish "Finished publishing packages.";
 }
 
-# Restore
-# =================================================================================================================================
+Function RestoreDependencies
+{
+    ComposeStart "Restoring dependencies for $FilePathForSolutionFile.";
+    dotnet restore $FilePathForSolutionFile --verbosity minimal;
 
-function RestoreDependencies {
-    Write-Host -ForegroundColor DarkCyan "Restoring dependencies for $FilePathForSolutionFile.";
-    dotnet restore $FilePathForSolutionFile --verbosity minimal
-
-    If ($LASTEXITCODE -ne 0) {
+    If ($LASTEXITCODE -ne 0)
+    {
         Throw "One or more dependencies could not be restored for $FilePathForSolutionFile.";
     }
 
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished restoring dependencies. <<<`n";
+    ComposeFinish "Finished restoring dependencies for $FilePathForSolutionFile.";
 }
 
-# Sign
-# =================================================================================================================================
-
-function SignPackages {
-    Param (
+Function SignPackages
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    If ($SolutionConfiguration -ne $SolutionConfigurationRelease) {
-        return;
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease)
+    {
+        Return;
     }
 
-    If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq "")) {
-        Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate key is unavailable.";
-        return;
+    If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq ""))
+    {
+        ComposeWarning "Packages will not be signed. The code signing certificate key is unavailable.";
+        Return;
     }
 
-    If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq "")) {
-        Write-Host -ForegroundColor DarkCyan "Packages will not be signed. The code signing certificate password is unavailable.";
-        return;
+    If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq ""))
+    {
+        ComposeWarning "Packages will not be signed. The code signing certificate password is unavailable.";
+        Return;
     }
 
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
-    If (-not (Test-Path "$BuildArtifactsDirectoryPath")) {
-        Write-Host -ForegroundColor DarkCyan "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
-        return;
+    If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
+    {
+        ComposeWarning "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
+        Return;
     }
 
-    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
-        DecryptCodeSigningCertificate -Key $CodeSigningCertificateKey
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
+    {
+        DecryptCodeSigningCertificate -Key $CodeSigningCertificateKey;
     }
 
-    If (-not (Test-Path "$FilePathForCodeSigningCertificate")) {
-        Write-Host -ForegroundColor DarkYellow "Packages will not be signed. The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
-        return;
+    If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
+    {
+        ComposeWarning "Packages will not be signed. The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
+        Return;
     }
 
-    Write-Host -ForegroundColor DarkCyan "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
-    Push-Location "$DirectoryPathForCicdTools"
+    ComposeStart "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
+    Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object {
+    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
+    {
         $PackageFilePath = $_.FullName;
 
-        If ($PackageFilePath -like "*.nupkg") {
-            Write-Host -ForegroundColor DarkCyan "Signing package $PackageFilePath.";
+        If ($PackageFilePath -like "*.nupkg")
+        {
+            ComposeStart "Signing package $PackageFilePath.";
             .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -CertificatePassword $CodeSigningCertificatePassword -Timestamper "$CodeSigningCertificateTimestampServiceUri";
         }
     }
 
-    Pop-Location
+    Pop-Location;
     Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished signing packages. <<<`n";
+    ComposeFinish "Finished signing packages.";
 }
 
-# Start
-# =================================================================================================================================
-
-function StartExampleServiceApplication {
-    Param (
+Function StartExampleServiceApplication
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Starting the example service application using $SolutionConfiguration configuration.";
+    ComposeStart "Starting the example service application using $SolutionConfiguration configuration.";
     $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleServiceApplicationNamespace.dll";
-    Write-Host -ForegroundColor DarkCyan "Using binary path: $BinaryFilePath";
-    Start-Process -FilePath "dotnet" -ArgumentList "$BinaryFilePath" -WindowStyle Minimized;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n";
+    ComposeNormal "Using binary path: $BinaryFilePath";
+    Start-Process -ArgumentList "$BinaryFilePath" -FilePath "dotnet" -WindowStyle Minimized;
+    ComposeFinish "Finished starting the application.";
 }
 
-function StartExampleServiceApplicationDebug {
+Function StartExampleServiceApplicationDebug
+{
     StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
-function StartExampleServiceApplicationRelease {
+Function StartExampleServiceApplicationRelease
+{
     StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
-function StartExampleWebApplication {
-    Param (
+Function StartExampleWebApplication
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Write-Host -ForegroundColor DarkCyan "Starting the example web application using $SolutionConfiguration configuration.";
+    ComposeStart "Starting the example web application using $SolutionConfiguration configuration.";
     $ProjectFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj";
-    Write-Host -ForegroundColor DarkCyan "Using project path: $ProjectFilePath";
-    Start-Process -FilePath "dotnet" -ArgumentList "run --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -WindowStyle Minimized;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished starting the application. <<<`n";
+    ComposeNormal "Using project path: $ProjectFilePath";
+    Start-Process -ArgumentList "run --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -FilePath "dotnet" -WindowStyle Minimized;
+    ComposeFinish "Finished starting the application.";
 }
 
-function StartExampleWebApplicationDebug {
+Function StartExampleWebApplicationDebug
+{
     StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
-function StartExampleWebApplicationRelease {
+Function StartExampleWebApplicationRelease
+{
     StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
-# Stop
-# =================================================================================================================================
-
-function StopAllApplications {
-    Write-Host -ForegroundColor DarkCyan "Stopping all applications.";
+Function StopAllApplications
+{
+    ComposeStart "Stopping all applications.";
     Stop-Process -Name "dotnet" -ErrorAction SilentlyContinue -Force;
-    Write-Host -ForegroundColor DarkCyan "`n>>> Finished stopping all applications. <<<`n";
+    ComposeFinish "Finished stopping all applications.";
 }
 
-# Test
-# =================================================================================================================================
-
-function Test {
-    Param (
+Function Test
+{
+    Param
+    (
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $SolutionConfiguration
     )
 
-    Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object {
+    Get-ChildItem -Path "$DirectoryPathForTests" -Directory | ForEach-Object `
+    {
         $TestDirectoryPath = $_.FullName;
-        Write-Host -ForegroundColor DarkCyan "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal"
+        ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --no-restore --verbosity minimal";
 
-        If ($LASTEXITCODE -ne 0) {
+        If ($LASTEXITCODE -ne 0)
+        {
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
         }
 
-        If (($CodecovToken -eq $null) -or ($CodecovToken -eq "")) {
-            Write-Host -ForegroundColor DarkCyan "A code coverage report will not be published. The Codecov token is unavailable.";
+        If (($CodecovToken -eq $null) -or ($CodecovToken -eq ""))
+        {
+            ComposeWarning "A code coverage report will not be published. The Codecov token is unavailable.";
         }
-        Else {
-            codecov -f "$FilePathForCoverageReport" -t $CodecovToken
+        Else
+        {
+            codecov -f "$FilePathForCoverageReport" -t $CodecovToken;
         }
 
-        Write-Host -ForegroundColor DarkCyan "`n>>> Finished running tests. <<<`n";
+        ComposeFinish "Finished running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
     }
 }
 
-function TestDebug {
+Function TestDebug
+{
     Test -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
-function TestRelease {
+Function TestRelease
+{
     Test -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
-# Write
-# =================================================================================================================================
-
-function WriteBuildDetails {
-    WriteRepositoryName
-    WriteBuildVersion
-    WriteTagName
-    WriteCommitId
-    WriteCommitTimeStamp
-    WriteCommitMessage
-    WriteCommitAuthorName
-    WriteCommitAuthorEmail
+Function VerifyBuild
+{
+    Push-Location "$DirectoryPathForProjectRoot";
+    psake Verify;
+    Pop-Location;
 }
 
-function WriteBuildVersion {
-    If (($BuildVersion -eq $null) -or ($BuildVersion -eq "")) {
-        return;
+Function WriteBuildDetails
+{
+    WriteRepositoryName;
+    WriteBuildVersion;
+    WriteTagName;
+    WriteCommitId;
+    WriteCommitTimeStamp;
+    WriteCommitMessage;
+    WriteCommitAuthorName;
+    WriteCommitAuthorEmail;
+}
+
+Function WriteBuildVersion
+{
+    If (($BuildVersion -eq $null) -or ($BuildVersion -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Build version: $BuildVersion";
+    ComposeNormal "Build version: $BuildVersion";
 }
 
-function WriteCommitAuthorEmail {
-    If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq "")) {
-        return;
+Function WriteCommitAuthorEmail
+{
+    If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Commit author email: $CommitAuthorEmail";
+    ComposeNormal "Commit author email: $CommitAuthorEmail";
 }
 
-function WriteCommitAuthorName {
+Function WriteCommitAuthorName
+{
     If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
-        return;
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Commit author name: $CommitAuthorName";
+    ComposeNormal "Commit author name: $CommitAuthorName";
 }
 
-function WriteCommitId {
-    If (($CommitId -eq $null) -or ($CommitId -eq "")) {
-        return;
+Function WriteCommitId
+{
+    If (($CommitId -eq $null) -or ($CommitId -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Commit ID: $CommitId";
+    ComposeNormal "Commit ID: $CommitId";
 }
 
-function WriteCommitMessage {
-    If (($CommitMessage -eq $null) -or ($CommitMessage -eq "")) {
-        return;
+Function WriteCommitMessage
+{
+    If (($CommitMessage -eq $null) -or ($CommitMessage -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Commit message: $CommitMessage";
+    ComposeNormal "Commit message: $CommitMessage";
 }
 
-function WriteCommitTimeStamp {
-    If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq "")) {
-        return;
+Function WriteCommitTimeStamp
+{
+    If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Commit time stamp: $CommitTimeStamp";
+    ComposeNormal "Commit time stamp: $CommitTimeStamp";
 }
 
-function WriteRepositoryName {
-    If (($RepositoryName -eq $null) -or ($RepositoryName -eq "")) {
-        return;
+Function WriteRepositoryName
+{
+    If (($RepositoryName -eq $null) -or ($RepositoryName -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Repository name: $RepositoryName";
+    ComposeNormal "Repository name: $RepositoryName";
 }
 
-function WriteTagName {
-    If (($TagName -eq $null) -or ($TagName -eq "")) {
-        return;
+Function WriteTagName
+{
+    If (($TagName -eq $null) -or ($TagName -eq ""))
+    {
+        Return;
     }
 
-    Write-Host -ForegroundColor Cyan "Tag name: $TagName";
+    ComposeNormal "Tag name: $TagName";
 }

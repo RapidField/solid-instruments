@@ -1,13 +1,13 @@
 ---
 name: Suggest a new feature
-about: Use this to request new functionality.
+about: Use this to suggest additional functionality.
 title: ''
 labels: 'Category-Feature, Stage0-New, Verdict-Pending'
 ---
 
 # Feature Request
 
-This issue represents a request for new **Solid Instruments** functionality.
+This issue represents a suggestion for new **Solid Instruments** functionality.
 
 ## Overview
 
