@@ -65,7 +65,7 @@ Before beginning work please read the [**Instructions for Contributing**](CONTRI
 
 ## Releases
 
-[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=RapidField.SolidInstruments)
+[![Version](https://img.shields.io/nuget/vpre/RapidField.SolidInstruments.Core.svg?style=flat&color=blue&label=version&logo=nuget&logoColor=lightgrey)](https://www.nuget.org/packages?q=title%3ARapidField.SolidInstruments)
 
 The **Solid Instruments** constituent libraries are made available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Supported releases are listed below.
 
@@ -73,8 +73,10 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 
 | Version         | Notes                               | Source                                                                           | Release date | End of support |
 | :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
-| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 16 Apr 2022    |
-| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 16 Apr 2022    |
+| 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 31 Jul 2022    |
+| 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 31 Jul 2022    |
+
+Check out the [**Product Roadmap**](ROADMAP.md) to see what's planned for future releases.
 
 <br />
 

@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 <span class="linkbuttongroup">
 <a class="linkbutton" href="articles/QuickStartGuide.html">Quick Start Guide</a>
-<a class="linkbutton" href="https://www.nuget.org/packages?q=RapidField.SolidInstruments">NuGet Packages</a>
+<a class="linkbutton" href="https://www.nuget.org/packages?q=title%3ARapidField.SolidInstruments">NuGet Packages</a>
 <a class="linkbutton" href="https://www.github.com/RapidField/solid-instruments">GitHub Repository</a>
 </span>
 
@@ -37,5 +37,5 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 | Version         | Notes                           | Source                                                                           | Release date | End of support |
 | :-------------- | :-----------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
-| 1.0.24-preview1 | [Read](releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 16 Apr 2022    |
-| 1.0.23-preview1 | [Read](releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 16 Apr 2022    |
+| 1.0.24-preview1 | [Read](releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 31 Jul 2022    |
+| 1.0.23-preview1 | [Read](releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 31 Jul 2022    |
