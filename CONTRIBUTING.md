@@ -54,19 +54,21 @@ CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](ci
 - [**npm**](https://docs.npmjs.com/about-npm)
 - [**NuGet**](https://www.nuget.org)
 
-## Design conventions
+## Conventions
 
-New contributors should familiarize themselves with the design conventions by reviewing existing source. When in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+The **Solid Instruments** team adheres to a variety of design and workflow conventions, which are described here. We value consistency in these practices. Please feel free to contact us with questions using any available avenue.
 
-## Styling
+### Architecture
+
+New contributors should familiarize themselves with basic architectural conventions by reviewing the [**System Architecture Guide**](ARCHITECTURE.md). The existing body of source can often be used as a reliable authority when making design decisions but, when in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+
+### Styling
 
 [`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
-## Revision control strategy
+### Revision control workflow
 
 The **Solid Instruments** team uses **RapidField Revision Control Workflow 1.1**, a [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/)-like strategy for managing source branches.
-
-### Branching conventions
 
 The following patterns define the project's branch naming and usage conventions. Five-digit numeric tokens ("00000") represent an associated issue number.
 
@@ -79,9 +81,7 @@ The following patterns define the project's branch naming and usage conventions.
 - Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work.
 - Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches.
 
-### Workflow
-
-**RapidField Revision Control Workflow 1.1** diverges from **GitFlow** by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
+**RapidField Revision Control Workflow 1.1** diverges from  [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/) by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
 [![Revision control diagram](RapidFieldRevisionControlWorkflow.png)](RapidFieldRevisionControlWorkflow.png)
 
@@ -99,7 +99,7 @@ git clone https://github.com/RapidField/solid-instruments.git
 
 ### Environment setup
 
-After cloning the repository, navigate to the root directory in an administrative **PowerShell** session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
+After cloning the repository, navigate to the root directory in an administrative [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
 
 ###### PowerShell
 
