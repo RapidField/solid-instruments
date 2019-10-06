@@ -69,12 +69,18 @@ Before beginning work please read the [**Instructions for Contributing**](CONTRI
 
 The **Solid Instruments** constituent libraries are made available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Supported releases are listed below.
 
+#### Stable
+
+Coming soon.
+
 #### Preview
 
 | Version         | Notes                               | Source                                                                           | Release date | End of support |
 | :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
 | 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 31 Jul 2022    |
 | 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 31 Jul 2022    |
+
+#### Future
 
 Check out the [**Product Roadmap**](ROADMAP.md) to see what's planned for future releases.
 
