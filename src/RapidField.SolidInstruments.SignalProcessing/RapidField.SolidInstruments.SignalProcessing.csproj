@@ -18,7 +18,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
-        <PackageIconUrl>https://www.solidinstruments.com/images/Icon.SignalProcessing.128w.png</PackageIconUrl>
+        <PackageIcon>Icon.SignalProcessing.128w.png</PackageIcon>
         <PackageTags>solid-instruments;signal-processing;dsp</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,6 +32,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <WarningsAsErrors />
     </PropertyGroup>
     <ItemGroup>
+        <Content Include="..\..\doc\images\Icon.SignalProcessing.128w.png" Link="Icon.SignalProcessing.128w.png" PackagePath="" />
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
