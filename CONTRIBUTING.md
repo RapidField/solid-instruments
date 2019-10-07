@@ -60,11 +60,11 @@ The **Solid Instruments** team adheres to a variety of design and workflow conve
 
 ### Architecture
 
-New contributors should familiarize themselves with basic architectural conventions by reviewing the [**System Architecture Guide**](ARCHITECTURE.md). The existing body of source can often be used as a reliable authority when making design decisions but, when in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+New contributors should familiarize themselves with basic architectural conventions by reviewing the [**Architectural Guide**](ARCHITECTURE.md). The existing body of source can often be used as a reliable authority when making design decisions but, when in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
-### Styling
+### Design and style
 
-[`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config), in combination, define the styling guidelines. When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
+The [`.editorconfig`](.editorconfig) and [`CodeMaid.config`](CodeMaid.config) files, in combination, define most of the project's styling guidelines. More information can be found by reading the [**Development Guidelines**](GUIDELINES.md). When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
 ### Revision control workflow
 
@@ -122,6 +122,15 @@ psake verify
 First-time contributors are welcome to start with any open, unassigned issues labeled [**Tag-GoodFirstIssue**](https://github.com/RapidField/solid-instruments/issues?q=is%3Aopen+is%3Aissue+label%3AStage-2-Accepted+no%3Aassignee). After picking one, leave a comment on the issue so that we can assign it to you and promote its status.
 
 Revision control plans are provided with the descriptions of all accepted issues. Please review carefully before starting.
+
+## Get help
+
+If you encounter problems or if questions arise, there are several options available for finding help.
+
+- Check out the [**API Reference**](https://www.solidinstruments.com/api).
+- Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
+- Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose).
+- Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 

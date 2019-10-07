@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 <br />&nbsp;&nbsp;&nbsp;&nbsp;
-![Serialization](Label.Serialization.300w.png)
+![Serialization](../../doc/images/Label.Serialization.300w.png)
 - - -
 
 # RapidField.SolidInstruments.Serialization

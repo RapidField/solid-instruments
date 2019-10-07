@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 <br />&nbsp;&nbsp;&nbsp;&nbsp;
-![Inversion of Control](../RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)
+![Inversion of Control](../../doc/images/Label.InversionOfControl.300w.png)
 - - -
 
 # RapidField.SolidInstruments.InversionOfControl.Autofac
