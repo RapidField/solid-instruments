@@ -17,13 +17,13 @@ Our team is committed to seeking, adopting and maintaining best practices. Here 
 
 In most cases, the team should...
 
-:thumbsup: **favor a design that**
+**favor a design that**
 
 - advertises its modes of failure
 - fails as advertised
 - cultivates trust among users
 
-:thumbsdown: **over a design that**
+**over a design that**
 
 - corrects anticipated user mistakes
 - tolerates external faults
@@ -33,13 +33,13 @@ In most cases, the team should...
 
 In most cases, the team should...
 
-:thumbsup: **favor a design that**
+**favor a design that**
 
 - uses perennial technologies and/or patterns
 - establishes or adheres to meaningful conventions
 - sets forth clear, helpful, repeatable examples for others
 
-:thumbsdown: **over a design that**
+**over a design that**
 
 - introduces new technologies and/or patterns
 - departs from established, meaningful conventions
@@ -49,13 +49,13 @@ In most cases, the team should...
 
 In most cases, the team should...
 
-:thumbsup: **favor a design that**
+**favor a design that**
 
 - employs unambiguous terminology and naming conventions
 - is thoroughly documented
 - can be readily understood and used by others
 
-:thumbsdown: **over a design that**
+**over a design that**
 
 - was developed quickly
 - saves visual space on screen
