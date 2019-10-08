@@ -57,8 +57,8 @@ There are multiple ways to find help.
 
 The **Solid Instruments** team strives to maintain high standards as defined by our key quality metrics.
 
-- 100% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches.
-- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches.
+- 99.9% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches
+- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches
 - [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status.
 
 Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).
