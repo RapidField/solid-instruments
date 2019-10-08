@@ -13,7 +13,7 @@ The **Solid Instruments** product deliverables consist of a collection of [**.NE
 
 Our team is committed to seeking, adopting and maintaining best practices. Here are some philosophies that guide our decision making at a high level.
 
-### Reliability over flexibility
+### Transparency over flexibility
 
 In most cases, the team should...
 
@@ -23,11 +23,68 @@ In most cases, the team should...
 - fails as advertised
 - cultivates trust among users
 
+```csharp
+/// <summary>
+/// Converts the current <see cref="String" /> to an array of bytes.
+/// </summary>
+/// <param name="target">
+/// The current instance of the <see cref="String" />.
+/// </param>
+/// <param name="encoding">
+/// The encoding to use.
+/// </param>
+/// <returns>
+/// An array of bytes representing the current <see cref="String" />.
+/// </returns>
+/// <exception cref="ArgumentNullException">
+/// <paramref name="encoding" /> is <see langword="null" />.
+/// </exception>
+/// <exception cref="EncoderFallbackException">
+/// The current <see cref="String" /> could not be decoded; a fallback occurred.
+/// </exception>
+public static Byte[] ToByteArray(this String target, Encoding encoding)
+{
+    encoding.RejectIf().IsNull(nameof(encoding));
+    return encoding.GetBytes(target);
+}
+```
+
 **over a design that**
 
-- corrects anticipated user mistakes
+- obscures important functional details
 - tolerates external faults
 - casts doubt upon expected behavior
+
+```csharp
+/// <summary>
+/// Converts the current <see cref="String" /> to an array of bytes.
+/// </summary>
+/// <param name="target">
+/// The current instance of the <see cref="String" />.
+/// </param>
+/// <param name="encoding">
+/// The encoding to use.
+/// </param>
+/// <returns>
+/// An array of bytes representing the current <see cref="String" />.
+/// </returns>
+public static Byte[] ToByteArray(this String target, Encoding encoding)
+{
+    if (encoding is null)
+    {
+        return Array.Empty<Byte>();
+    }
+    
+    try
+    {
+        return encoding.GetBytes(target);
+    }
+    catch (EncoderFallbackException)
+    {
+        return null;
+    }
+}
+```
 
 ### Consistency over novelty
 
