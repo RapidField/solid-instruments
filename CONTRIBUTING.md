@@ -72,14 +72,39 @@ The **Solid Instruments** team uses **RapidField Revision Control Workflow 1.1**
 
 The following patterns define the project's branch naming and usage conventions. Five-digit numeric tokens ("00000") represent an associated issue number.
 
-- `master` is the root branch and represents, at all times, the state of the latest production release.
-- Branches matching the pattern `hotfix/00000-{semantic-key}` are children of `master` and house active work associated with an urgent production defect.
-- Branches matching the pattern `release/v0.0.0` are children of `master` and house completed, tested and integrated work for a named release.
-- `develop` is a child of `master` and serves as a work-in-progress integration branch for defect, feature and maintenance branches.
-- Branches matching the pattern `defect/00000-{semantic-key}` are children of `develop` and house active work associated with a non-urgent defect.
-- Branches matching the pattern `feature/00000-{semantic-key}` are children of `develop` and house active feature development work.
-- Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work.
-- Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches.
+#### Master branch
+
+`master` is the root branch and represents, at all times, the state of the latest production release. The team aims to maintain a 99.9% minimum build success rate for `master`.
+
+#### Hotfix branches
+
+Branches matching the pattern `hotfix/00000-{semantic-key}` are children of `master` and house active work associated with an urgent production defect. Pull requests to hotfix branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+
+#### Release branches
+
+Branches matching the pattern `release/v0.0.0` are children of `master` and house completed, tested and integrated work for a named release. Release branches should always be in a releasable state.
+
+#### Develop branch
+
+`develop` is a child of `master` and serves as an integration branch for completed and tested work sourced from defect, feature and maintenance branches. The team aims to maintain a 99.9% minimum build success rate for `develop`.
+
+#### Defect branches
+
+Branches matching the pattern `defect/00000-{semantic-key}` are children of `develop` and house active work associated with a non-urgent defect. Pull requests to defect branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+
+#### Feature branches
+
+Branches matching the pattern `feature/00000-{semantic-key}` are children of `develop` and house active feature development work. Pull requests to feature branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+
+#### Maintenance branches
+
+Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work. Pull requests to maintenance branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+
+#### User branches
+
+Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches. User branches may contain work-in-progress and there are no requirements for them with respect to status checks.
+
+#### Workflow diagram
 
 **RapidField Revision Control Workflow 1.1** diverges from  [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/) by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
