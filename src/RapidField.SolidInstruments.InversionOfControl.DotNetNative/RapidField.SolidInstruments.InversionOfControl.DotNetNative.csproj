@@ -33,6 +33,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </PropertyGroup>
     <ItemGroup>
         <Content Include="..\..\doc\images\Icon.InversionOfControl.128w.png" Link="Icon.InversionOfControl.128w.png" PackagePath="" />
+        <Content Include="..\..\doc\images\Label.InversionOfControl.300w.png" Link="Label.InversionOfControl.300w.png" PackagePath="" />
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>

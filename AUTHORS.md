@@ -7,10 +7,20 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Authors
 
-This document lists the **Solid Instruments** maintainers and contributors.
+This document lists the **Solid Instruments** maintainers and contributors. For more information about us and our roles, review our [**Governance Model**](GOVERNANCE.md).
 
-* [Adam Stone](https://github.com/adamjstone)
+## Maintainers
+
+* [Adam Stone](https://github.com/adamjstone) | Architect, Project Administrator
 * [your name here] :wink:
+
+## Contributors
+
+* [your name here] :wink:
+
+## Aspiring contributors
+
+Interested in adding your name to this list? Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 

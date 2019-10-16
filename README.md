@@ -15,20 +15,20 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 
 <br />
 
-[![Collections](src/RapidField.SolidInstruments.Collections/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
-[![Command](src/RapidField.SolidInstruments.Command/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
-[![Core](src/RapidField.SolidInstruments.Core/Label.Core.300w.png)](src/RapidField.SolidInstruments.Core/README.md)
-[![Cryptography](src/RapidField.SolidInstruments.Cryptography/Label.Cryptography.300w.png)](src/RapidField.SolidInstruments.Cryptography/README.md)
-[![Data Access](src/RapidField.SolidInstruments.DataAccess/Label.DataAccess.300w.png)](src/RapidField.SolidInstruments.DataAccess/README.md)
-[![Event Authoring](src/RapidField.SolidInstruments.EventAuthoring/Label.EventAuthoring.300w.png)](src/RapidField.SolidInstruments.EventAuthoring/README.md)
-[![Inversion of Control](src/RapidField.SolidInstruments.InversionOfControl/Label.InversionOfControl.300w.png)](src/RapidField.SolidInstruments.InversionOfControl/README.md)
-[![Mathematics](src/RapidField.SolidInstruments.Mathematics/Label.Mathematics.300w.png)](src/RapidField.SolidInstruments.Mathematics/README.md)
-[![Messaging](src/RapidField.SolidInstruments.Messaging/Label.Messaging.300w.png)](src/RapidField.SolidInstruments.Messaging/README.md)
-[![Object Composition](src/RapidField.SolidInstruments.ObjectComposition/Label.ObjectComposition.300w.png)](src/RapidField.SolidInstruments.ObjectComposition/README.md)
-[![Serialization](src/RapidField.SolidInstruments.Serialization/Label.Serialization.300w.png)](src/RapidField.SolidInstruments.Serialization/README.md)
-[![Service](src/RapidField.SolidInstruments.Service/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
-[![Signal Processing](src/RapidField.SolidInstruments.SignalProcessing/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
-[![Text Encoding](src/RapidField.SolidInstruments.TextEncoding/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
+[![Collections](doc/images/Label.Collections.300w.png)](src/RapidField.SolidInstruments.Collections/README.md)
+[![Command](doc/images/Label.Command.300w.png)](src/RapidField.SolidInstruments.Command/README.md)
+[![Core](doc/images/Label.Core.300w.png)](src/RapidField.SolidInstruments.Core/README.md)
+[![Cryptography](doc/images/Label.Cryptography.300w.png)](src/RapidField.SolidInstruments.Cryptography/README.md)
+[![Data Access](doc/images/Label.DataAccess.300w.png)](src/RapidField.SolidInstruments.DataAccess/README.md)
+[![Event Authoring](doc/images/Label.EventAuthoring.300w.png)](src/RapidField.SolidInstruments.EventAuthoring/README.md)
+[![Inversion of Control](doc/images/Label.InversionOfControl.300w.png)](src/RapidField.SolidInstruments.InversionOfControl/README.md)
+[![Mathematics](doc/images/Label.Mathematics.300w.png)](src/RapidField.SolidInstruments.Mathematics/README.md)
+[![Messaging](doc/images/Label.Messaging.300w.png)](src/RapidField.SolidInstruments.Messaging/README.md)
+[![Object Composition](doc/images/Label.ObjectComposition.300w.png)](src/RapidField.SolidInstruments.ObjectComposition/README.md)
+[![Serialization](doc/images/Label.Serialization.300w.png)](src/RapidField.SolidInstruments.Serialization/README.md)
+[![Service](doc/images/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
+[![Signal Processing](doc/images/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
+[![Text Encoding](doc/images/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
 
 ## License
 
@@ -57,8 +57,8 @@ There are multiple ways to find help.
 
 The **Solid Instruments** team strives to maintain high standards as defined by our key quality metrics.
 
-- 100% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches.
-- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches.
+- 99.9% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches
+- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches
 - [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status.
 
 Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).

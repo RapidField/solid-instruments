@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 <br />&nbsp;&nbsp;&nbsp;&nbsp;
-![Signal Processing](Label.SignalProcessing.300w.png)
+![Signal Processing](../../doc/images/Label.SignalProcessing.300w.png)
 - - -
 
 # RapidField.SolidInstruments.SignalProcessing

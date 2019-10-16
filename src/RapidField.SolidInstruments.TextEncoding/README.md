@@ -4,7 +4,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 <br />&nbsp;&nbsp;&nbsp;&nbsp;
-![Text Encoding](Label.TextEncoding.300w.png)
+![Text Encoding](../../doc/images/Label.TextEncoding.300w.png)
 - - -
 
 # RapidField.SolidInstruments.TextEncoding

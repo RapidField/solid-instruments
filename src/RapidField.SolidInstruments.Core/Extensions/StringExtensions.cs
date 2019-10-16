@@ -186,6 +186,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="encoding" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="EncoderFallbackException">
+        /// The current <see cref="String" /> could not be decoded; a fallback occurred.
+        /// </exception>
         public static Byte[] ToByteArray(this String target, Encoding encoding)
         {
             encoding.RejectIf().IsNull(nameof(encoding));
