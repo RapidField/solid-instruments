@@ -81,76 +81,136 @@ $SuppressPsake = $false;
 # Modules
 Import-Module $FilePathForCoreModule -Force;
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not Chocolatey is installed in the current environment.
+#>
 Function GetChocolateyInstallationStatus
 {
     Return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not Codecov is installed in the current environment.
+#>
 Function GetCodecovInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForCodecov") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not DocFX is installed in the current environment.
+#>
 Function GetDocFxInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not the .NET Core SDK is installed in the current environment.
+#>
 Function GetDotNetCoreSdkInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNetCoreSdk") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not HTMLMinifier is installed in the current environment.
+#>
 Function GetHtmlMinifierInstallationStatus
 {
     Return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not hub is installed in the current environment.
+#>
 Function GetHubInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForHub") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not Leanify is installed in the current environment.
+#>
 Function GetLeanifyInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not Node.js is installed in the current environment.
+#>
 Function GetNodeJsInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not NuGet is installed in the current environment.
+#>
 Function GetNuGetInstallationStatus
 {
     Return (Test-Path -Path "$FilePathForNuGetExe");
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not OpenCover is installed in the current environment.
+#>
 Function GetOpenCoverInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenCover") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not OpenSSL is installed in the current environment.
+#>
 Function GetOpenSslInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not posh-git is installed in the current environment.
+#>
 Function GetPoshGitInstallationStatus
 {
     Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPoshGit";
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not powershell-yaml is installed in the current environment.
+#>
 Function GetPowershellYamlInstallationStatus
 {
     Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPowershellYaml";
 }
 
+<#
+.Synopsis
+Returns a boolean value indicating whether or not psake is installed in the current environment.
+#>
 Function GetPsakeInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") });
 }
 
+<#
+.Synopsis
+Installs all of the available automation tools in the current environment.
+#>
 Function InstallAllAutomationTools
 {
     ComposeStart "Installing all automation tools.";
@@ -169,6 +229,10 @@ Function InstallAllAutomationTools
     ComposeFinish "Finished installing all automation tools.";
 }
 
+<#
+.Synopsis
+Installs Chocolatey in the current environment.
+#>
 Function InstallChocolatey
 {
     If ($SuppressChoclatey -eq $true)
@@ -189,6 +253,10 @@ Function InstallChocolatey
     ComposeFinish "Finished installing Chocolatey.";
 }
 
+<#
+.Synopsis
+Installs Codecov in the current environment.
+#>
 Function InstallCodecov
 {
     If ($SuppressCodecov -eq $true)
@@ -208,6 +276,10 @@ Function InstallCodecov
     ComposeFinish "Finished installing Codecov.";
 }
 
+<#
+.Synopsis
+Installs DocFX in the current environment.
+#>
 Function InstallDocFx
 {
     If ($SuppressDocFx -eq $true)
@@ -226,6 +298,10 @@ Function InstallDocFx
     ComposeFinish "Finished installing DocFX.";
 }
 
+<#
+.Synopsis
+Installs the .NET Core SDK in the current environment.
+#>
 Function InstallDotNetCoreSdk
 {
     If ($SuppressDotNetCoreSdk -eq $true)
@@ -244,6 +320,10 @@ Function InstallDotNetCoreSdk
     ComposeFinish "Finished installing the .NET Core SDK.";
 }
 
+<#
+.Synopsis
+Installs HTMLMinifier in the current environment.
+#>
 Function InstallHtmlMinifier
 {
     If ($SuppressHtmlMinifier -eq $true)
@@ -263,6 +343,10 @@ Function InstallHtmlMinifier
     ComposeFinish "Finished installing HTMLMinifier.";
 }
 
+<#
+.Synopsis
+Installs hub in the current environment.
+#>
 Function InstallHub
 {
     If ($SuppressHub -eq $true)
@@ -282,6 +366,10 @@ Function InstallHub
     ComposeFinish "Finished installing hub.";
 }
 
+<#
+.Synopsis
+Installs Leanify in the current environment.
+#>
 Function InstallLeanify
 {
     If ($SuppressLeanify -eq $true)
@@ -300,6 +388,10 @@ Function InstallLeanify
     ComposeFinish "Finished installing Leanify.";
 }
 
+<#
+.Synopsis
+Installs Node.js in the current environment.
+#>
 Function InstallNodeJs
 {
     If ($SuppressNodeJs -eq $true)
@@ -319,6 +411,10 @@ Function InstallNodeJs
     ComposeFinish "Finished installing Node.js.";
 }
 
+<#
+.Synopsis
+Installs NuGet in the current environment.
+#>
 Function InstallNuGet
 {
     If ($SuppressNuGet -eq $true)
@@ -342,6 +438,10 @@ Function InstallNuGet
     ComposeFinish "Finished installing NuGet.";
 }
 
+<#
+.Synopsis
+Installs OpenCover in the current environment.
+#>
 Function InstallOpenCover
 {
     If ($SuppressOpenCover -eq $true)
@@ -361,6 +461,10 @@ Function InstallOpenCover
     ComposeFinish "Finished installing OpenCover.";
 }
 
+<#
+.Synopsis
+Installs OpenSSL in the current environment.
+#>
 Function InstallOpenSsl
 {
     If ($SuppressOpenSsl -eq $true)
@@ -380,6 +484,10 @@ Function InstallOpenSsl
     ComposeFinish "Finished installing OpenSSL.";
 }
 
+<#
+.Synopsis
+Installs all package managers in the current environment.
+#>
 Function InstallPackageManagers
 {
     If ($SuppressPackageManagers -eq $true)
@@ -395,6 +503,10 @@ Function InstallPackageManagers
     ComposeFinish "Finished installing package managers.";
 }
 
+<#
+.Synopsis
+Installs posh-git in the current environment.
+#>
 Function InstallPoshGit
 {
     If ($SuppressPoshGit -eq $true)
@@ -413,6 +525,10 @@ Function InstallPoshGit
     ComposeFinish "Finished installing posh-git.";
 }
 
+<#
+.Synopsis
+Installs powershell-yaml in the current environment.
+#>
 Function InstallPowershellYaml
 {
     If ($SuppressPowershellYaml -eq $true)
@@ -431,6 +547,10 @@ Function InstallPowershellYaml
     ComposeFinish "Finished installing powershell-yaml.";
 }
 
+<#
+.Synopsis
+Installs psake in the current environment.
+#>
 Function InstallPsake
 {
     If ($SuppressPsake -eq $true)
@@ -449,6 +569,10 @@ Function InstallPsake
     ComposeFinish "Finished installing psake.";
 }
 
+<#
+.Synopsis
+Exposes the path for the specified command using the specified environment target.
+#>
 Function MakeCommandPathAvailable
 {
     Param
@@ -478,6 +602,10 @@ Function MakeCommandPathAvailable
     }
 }
 
+<#
+.Synopsis
+Exposes the path for the specified command using all environment targets.
+#>
 Function MakeCommandPathAvailableAll
 {
     Param
@@ -491,6 +619,10 @@ Function MakeCommandPathAvailableAll
     MakeCommandPathAvailableUser -Command $Command;
 }
 
+<#
+.Synopsis
+Exposes the path for the specified command using the Machine environment target.
+#>
 Function MakeCommandPathAvailableMachine
 {
     Param
@@ -502,6 +634,10 @@ Function MakeCommandPathAvailableMachine
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Machine";
 }
 
+<#
+.Synopsis
+Exposes the path for the specified command using the Process environment target.
+#>
 Function MakeCommandPathAvailableProcess
 {
     Param
@@ -513,6 +649,10 @@ Function MakeCommandPathAvailableProcess
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Process";
 }
 
+<#
+.Synopsis
+Exposes the path for the specified command using the User environment target.
+#>
 Function MakeCommandPathAvailableUser
 {
     Param
@@ -524,12 +664,20 @@ Function MakeCommandPathAvailableUser
     MakeCommandPathAvailable -Command $Command -EnvironmentTarget "User";
 }
 
+<#
+.Synopsis
+Updates the session environment and ensures that Chocolatey is available.
+#>
 Function RefreshSession
 {
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force;
     Update-SessionEnvironment;
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs all available automation tools in the current environment.
+#>
 Function RestoreAllAutomationTools
 {
     ComposeStart "Restoring all automation tools.";
@@ -539,6 +687,10 @@ Function RestoreAllAutomationTools
     ComposeFinish "Finished restoring all automation tools.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs Codecov in the current environment.
+#>
 Function RestoreCodecov
 {
     ComposeStart "Restoring Codecov.";
@@ -547,6 +699,10 @@ Function RestoreCodecov
     ComposeFinish "Finished restoring Codecov.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs DocFX in the current environment.
+#>
 Function RestoreDocFx
 {
     ComposeStart "Restoring DocFX.";
@@ -555,6 +711,10 @@ Function RestoreDocFx
     ComposeFinish "Finished restoring DocFX.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs the .NET Core SDK in the current environment.
+#>
 Function RestoreDotNetCoreSdk
 {
     ComposeStart "Restoring the .NET Core SDK.";
@@ -563,6 +723,10 @@ Function RestoreDotNetCoreSdk
     ComposeFinish "Finished restoring the .NET Core SDK.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs HTMLMinifier in the current environment.
+#>
 Function RestoreHtmlMinifier
 {
     ComposeStart "Restoring HTMLMinifier.";
@@ -571,6 +735,10 @@ Function RestoreHtmlMinifier
     ComposeFinish "Finished restoring HTMLMinifier.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs hub in the current environment.
+#>
 Function RestoreHtmlMinifier
 {
     ComposeStart "Restoring hub.";
@@ -579,6 +747,10 @@ Function RestoreHtmlMinifier
     ComposeFinish "Finished restoring hub.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs Leanify in the current environment.
+#>
 Function RestoreLeanify
 {
     ComposeStart "Restoring Leanify.";
@@ -587,6 +759,10 @@ Function RestoreLeanify
     ComposeFinish "Finished restoring Leanify.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs Node.js in the current environment.
+#>
 Function RestoreNodeJs
 {
     ComposeStart "Restoring Node.js.";
@@ -595,6 +771,10 @@ Function RestoreNodeJs
     ComposeFinish "Finished restoring Node.js.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs NuGet in the current environment.
+#>
 Function RestoreNuGet
 {
     ComposeStart "Restoring NuGet.";
@@ -603,6 +783,10 @@ Function RestoreNuGet
     ComposeFinish "Finished restoring NuGet.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs OpenCover in the current environment.
+#>
 Function RestoreOpenCover
 {
     ComposeStart "Restoring OpenCover.";
@@ -611,6 +795,10 @@ Function RestoreOpenCover
     ComposeFinish "Finished restoring OpenCover.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs OpenSSL in the current environment.
+#>
 Function RestoreOpenSsl
 {
     ComposeStart "Restoring OpenSSL.";
@@ -619,6 +807,10 @@ Function RestoreOpenSsl
     ComposeFinish "Finished restoring OpenSSL.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs posh-git in the current environment.
+#>
 Function RestorePoshGit
 {
     ComposeStart "Restoring posh-git.";
@@ -627,6 +819,10 @@ Function RestorePoshGit
     ComposeFinish "Finished restoring posh-git.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs powershell-yaml in the current environment.
+#>
 Function RestorePowershellYaml
 {
     ComposeStart "Restoring powershell-yaml.";
@@ -635,6 +831,10 @@ Function RestorePowershellYaml
     ComposeFinish "Finished restoring powershell-yaml.";
 }
 
+<#
+.Synopsis
+Uninstalls, if necessary, and installs psake in the current environment.
+#>
 Function RestorePsake
 {
     ComposeStart "Restoring psake.";
@@ -643,6 +843,10 @@ Function RestorePsake
     ComposeFinish "Finished restoring psake.";
 }
 
+<#
+.Synopsis
+Uninstalls all available automation tools in the current environment.
+#>
 Function UninstallAllAutomationTools
 {
     ComposeStart "Uninstalling all automation tools.";
@@ -660,6 +864,10 @@ Function UninstallAllAutomationTools
     ComposeFinish "Finished uninstalling all automation tools.";
 }
 
+<#
+.Synopsis
+Uninstalls Codecov in the current environment.
+#>
 Function UninstallCodecov
 {
     If ($SuppressCodecov -eq $true)
@@ -675,6 +883,10 @@ Function UninstallCodecov
     }
 }
 
+<#
+.Synopsis
+Uninstalls DocFX in the current environment.
+#>
 Function UninstallDocFx
 {
     If ($SuppressDocFx -eq $true)
@@ -690,6 +902,10 @@ Function UninstallDocFx
     }
 }
 
+<#
+.Synopsis
+Uninstalls the .NET Core SDK in the current environment.
+#>
 Function UninstallDotNetCoreSdk
 {
     If ($SuppressDotNetCoreSdk -eq $true)
@@ -705,6 +921,10 @@ Function UninstallDotNetCoreSdk
     }
 }
 
+<#
+.Synopsis
+Uninstalls HTMLMinifier in the current environment.
+#>
 Function UninstallHtmlMinifier
 {
     If ($SuppressHtmlMinifier -eq $true)
@@ -720,6 +940,10 @@ Function UninstallHtmlMinifier
     }
 }
 
+<#
+.Synopsis
+Uninstalls hub in the current environment.
+#>
 Function UninstallHub
 {
     If ($SuppressHub -eq $true)
@@ -735,6 +959,10 @@ Function UninstallHub
     }
 }
 
+<#
+.Synopsis
+Uninstalls Leanify in the current environment.
+#>
 Function UninstallLeanify
 {
     If ($SuppressLeanify -eq $true)
@@ -750,6 +978,10 @@ Function UninstallLeanify
     }
 }
 
+<#
+.Synopsis
+Uninstalls Node.js in the current environment.
+#>
 Function UninstallNodeJs
 {
     If ($SuppressNodeJs -eq $true)
@@ -765,6 +997,10 @@ Function UninstallNodeJs
     }
 }
 
+<#
+.Synopsis
+Uninstalls NuGet in the current environment.
+#>
 Function UninstallNuGet
 {
     If ($SuppressNuGet -eq $true)
@@ -780,6 +1016,10 @@ Function UninstallNuGet
     }
 }
 
+<#
+.Synopsis
+Uninstalls OpenCover in the current environment.
+#>
 Function UninstallOpenCover
 {
     If ($SuppressOpenCover -eq $true)
@@ -795,6 +1035,10 @@ Function UninstallOpenCover
     }
 }
 
+<#
+.Synopsis
+Uninstalls OpenSSL in the current environment.
+#>
 Function UninstallOpenSsl
 {
     If ($SuppressOpenSsl -eq $true)
@@ -810,6 +1054,10 @@ Function UninstallOpenSsl
     }
 }
 
+<#
+.Synopsis
+Uninstalls posh-git in the current environment.
+#>
 Function UninstallPoshGit
 {
     If ($SuppressPoshGit -eq $true)
@@ -825,6 +1073,10 @@ Function UninstallPoshGit
     }
 }
 
+<#
+.Synopsis
+Uninstalls powershell-yaml in the current environment.
+#>
 Function UninstallPowershellYaml
 {
     If ($SuppressPowershellYaml -eq $true)
@@ -840,6 +1092,10 @@ Function UninstallPowershellYaml
     }
 }
 
+<#
+.Synopsis
+Uninstalls psake in the current environment.
+#>
 Function UninstallPsake
 {
     If ($SuppressPsake -eq $true)
@@ -855,6 +1111,10 @@ Function UninstallPsake
     }
 }
 
+<#
+.Synopsis
+Uses Chocolatey to install the specified package in the current environment.
+#>
 Function UseChocolateyToInstall
 {
     Param
@@ -866,6 +1126,10 @@ Function UseChocolateyToInstall
     ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "install $PackageName -y --accept-license --confirm --limit-output --no-progress";
 }
 
+<#
+.Synopsis
+Uses Chocolatey to uninstall the specified package in the current environment.
+#>
 Function UseChocolateyToUninstall
 {
     Param
@@ -877,6 +1141,10 @@ Function UseChocolateyToUninstall
     ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "uninstall $PackageName -y --confirm --limit-output";
 }
 
+<#
+.Synopsis
+Uses npm to install the specified package in the current environment.
+#>
 Function UseNpmToInstall
 {
     Param
@@ -888,6 +1156,10 @@ Function UseNpmToInstall
     ExecuteProcess -Path "$CommandNameForNpm" -Arguments "install $PackageName -g --loglevel error";
 }
 
+<#
+.Synopsis
+Uses npm to uninstall the specified package in the current environment.
+#>
 Function UseNpmToUninstall
 {
     Param
@@ -899,6 +1171,10 @@ Function UseNpmToUninstall
     ExecuteProcess -Path "$CommandNameForNpm" -Arguments "uninstall $PackageName -g --loglevel error";
 }
 
+<#
+.Synopsis
+Uses the PowerShell Gallery to install the specified package in the current environment.
+#>
 Function UsePowerShellGalleryToInstall
 {
     Param
@@ -910,6 +1186,10 @@ Function UsePowerShellGalleryToInstall
     Install-Module -Confirm:$false -ErrorAction Stop -Force -Name "$ModuleName";
 }
 
+<#
+.Synopsis
+Uses the PowerShell Gallery to uninstall the specified package in the current environment.
+#>
 Function UsePowerShellGalleryToUninstall
 {
     Param
