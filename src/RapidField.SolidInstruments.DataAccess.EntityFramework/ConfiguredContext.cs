@@ -152,32 +152,20 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         {
             try
             {
-                switch (DatabaseType)
+                optionsBuilder = DatabaseType switch
                 {
-                    case ContextDatabaseType.InMemory:
-
-                        optionsBuilder = optionsBuilder
-                            .UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory)
-                            .UseQueryTrackingBehavior(TrackingBehavior)
-                            .ConfigureWarnings((warningsBuilder) =>
-                            {
-                                warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning);
-                            });
-
-                        break;
-
-                    case ContextDatabaseType.SQLServer:
-
-                        optionsBuilder = optionsBuilder
-                            .UseSqlServer(ConnectionString, OnConfiguringSqlServer)
-                            .UseQueryTrackingBehavior(TrackingBehavior);
-
-                        break;
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.");
-                }
+                    ContextDatabaseType.InMemory => optionsBuilder
+                        .UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory)
+                        .UseQueryTrackingBehavior(TrackingBehavior)
+                        .ConfigureWarnings((warningsBuilder) =>
+                        {
+                            warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning);
+                        }),
+                    ContextDatabaseType.SQLServer => optionsBuilder
+                        .UseSqlServer(ConnectionString, OnConfiguringSqlServer)
+                        .UseQueryTrackingBehavior(TrackingBehavior),
+                    _ => throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.")
+                };
             }
             finally
             {

@@ -24,35 +24,15 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// The bit-length of the digest for the current <see cref="HashingAlgorithmSpecification" />.
         /// </returns>
         [DebuggerHidden]
-        internal static Int32 ToDigestBitLength(this HashingAlgorithmSpecification target)
+        internal static Int32 ToDigestBitLength(this HashingAlgorithmSpecification target) => target switch
         {
-            switch (target)
-            {
-                case HashingAlgorithmSpecification.Unspecified:
-
-                    return default;
-
-                case HashingAlgorithmSpecification.Md5:
-
-                    return 128;
-
-                case HashingAlgorithmSpecification.ShaTwo256:
-
-                    return 256;
-
-                case HashingAlgorithmSpecification.ShaTwo384:
-
-                    return 384;
-
-                case HashingAlgorithmSpecification.ShaTwo512:
-
-                    return 512;
-
-                default:
-
-                    throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target));
-            }
-        }
+            HashingAlgorithmSpecification.Unspecified => default,
+            HashingAlgorithmSpecification.Md5 => 128,
+            HashingAlgorithmSpecification.ShaTwo256 => 256,
+            HashingAlgorithmSpecification.ShaTwo384 => 384,
+            HashingAlgorithmSpecification.ShaTwo512 => 512,
+            _ => throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target))
+        };
 
         /// <summary>
         /// Returns a new <see cref="HashAlgorithm" /> matching the current <see cref="HashingAlgorithmSpecification" />.
@@ -64,34 +44,14 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// A new <see cref="HashAlgorithm" /> matching the current <see cref="HashingAlgorithmSpecification" />.
         /// </returns>
         [DebuggerHidden]
-        internal static HashAlgorithm ToHashAlgorithm(this HashingAlgorithmSpecification target)
+        internal static HashAlgorithm ToHashAlgorithm(this HashingAlgorithmSpecification target) => target switch
         {
-            switch (target)
-            {
-                case HashingAlgorithmSpecification.Unspecified:
-
-                    return null;
-
-                case HashingAlgorithmSpecification.Md5:
-
-                    return MD5.Create();
-
-                case HashingAlgorithmSpecification.ShaTwo256:
-
-                    return SHA256.Create();
-
-                case HashingAlgorithmSpecification.ShaTwo384:
-
-                    return SHA384.Create();
-
-                case HashingAlgorithmSpecification.ShaTwo512:
-
-                    return SHA512.Create();
-
-                default:
-
-                    throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target));
-            }
-        }
+            HashingAlgorithmSpecification.Unspecified => null,
+            HashingAlgorithmSpecification.Md5 => MD5.Create(),
+            HashingAlgorithmSpecification.ShaTwo256 => SHA256.Create(),
+            HashingAlgorithmSpecification.ShaTwo384 => SHA384.Create(),
+            HashingAlgorithmSpecification.ShaTwo512 => SHA512.Create(),
+            _ => throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target))
+        };
     }
 }

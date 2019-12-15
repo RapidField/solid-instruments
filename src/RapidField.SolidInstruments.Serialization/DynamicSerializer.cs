@@ -99,35 +99,15 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="SerializationException">
         /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected virtual T Deserialize(Byte[] buffer, SerializationFormat format)
+        protected virtual T Deserialize(Byte[] buffer, SerializationFormat format) => format switch
         {
-            switch (format)
-            {
-                case SerializationFormat.Binary:
-
-                    return Deserialize(buffer, DefaultFormat);
-
-                case SerializationFormat.CompressedJson:
-
-                    return DeserializeFromJson(buffer.Decompress());
-
-                case SerializationFormat.CompressedXml:
-
-                    return DeserializeFromXml(buffer.Decompress());
-
-                case SerializationFormat.Json:
-
-                    return DeserializeFromJson(buffer);
-
-                case SerializationFormat.Xml:
-
-                    return DeserializeFromXml(buffer);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified serialization format, {Format}, is not supported.");
-            }
-        }
+            SerializationFormat.Binary => Deserialize(buffer, DefaultFormat),
+            SerializationFormat.CompressedJson => DeserializeFromJson(buffer.Decompress()),
+            SerializationFormat.CompressedXml => DeserializeFromXml(buffer.Decompress()),
+            SerializationFormat.Json => DeserializeFromJson(buffer),
+            SerializationFormat.Xml => DeserializeFromXml(buffer),
+            _ => throw new UnsupportedSpecificationException($"The specified serialization format, {Format}, is not supported.")
+        };
 
         /// <summary>
         /// Converts the specified object to a buffer.
@@ -144,35 +124,15 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
         /// </exception>
-        protected virtual Byte[] Serialize(T target, SerializationFormat format)
+        protected virtual Byte[] Serialize(T target, SerializationFormat format) => format switch
         {
-            switch (format)
-            {
-                case SerializationFormat.Binary:
-
-                    return Serialize(target, DefaultFormat);
-
-                case SerializationFormat.CompressedJson:
-
-                    return SerializeToJson(target).Compress();
-
-                case SerializationFormat.CompressedXml:
-
-                    return SerializeToXml(target).Compress();
-
-                case SerializationFormat.Json:
-
-                    return SerializeToJson(target);
-
-                case SerializationFormat.Xml:
-
-                    return SerializeToXml(target);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.");
-            }
-        }
+            SerializationFormat.Binary => Serialize(target, DefaultFormat),
+            SerializationFormat.CompressedJson => SerializeToJson(target).Compress(),
+            SerializationFormat.CompressedXml => SerializeToXml(target).Compress(),
+            SerializationFormat.Json => SerializeToJson(target),
+            SerializationFormat.Xml => SerializeToXml(target),
+            _ => throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.")
+        };
 
         /// <summary>
         /// Initializes an XML serializer.
@@ -564,35 +524,15 @@ namespace RapidField.SolidInstruments.Serialization
         /// </returns>
         [DebuggerHidden]
         private static ISerializer<T> CreateGeneric<T>(SerializationFormat format)
-            where T : class
-        {
-            switch (format)
+            where T : class => format switch
             {
-                case SerializationFormat.Binary:
-
-                    return new Serializer<T>();
-
-                case SerializationFormat.CompressedJson:
-
-                    return new CompressedJsonSerializer<T>();
-
-                case SerializationFormat.CompressedXml:
-
-                    return new CompressedXmlSerializer<T>();
-
-                case SerializationFormat.Json:
-
-                    return new JsonSerializer<T>();
-
-                case SerializationFormat.Xml:
-
-                    return new XmlSerializer<T>();
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.");
-            }
-        }
+                SerializationFormat.Binary => new Serializer<T>(),
+                SerializationFormat.CompressedJson => new CompressedJsonSerializer<T>(),
+                SerializationFormat.CompressedXml => new CompressedXmlSerializer<T>(),
+                SerializationFormat.Json => new JsonSerializer<T>(),
+                SerializationFormat.Xml => new XmlSerializer<T>(),
+                _ => throw new UnsupportedSpecificationException($"The specified serialization format, {format}, is not supported.")
+            };
 
         /// <summary>
         /// Gets the format to use for serialization and deserialization.

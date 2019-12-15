@@ -204,7 +204,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
 
             foreach (var hash in hashList)
             {
-                foldedHash = foldedHash ^ hash;
+                foldedHash ^= hash;
             }
 
             return foldedHash;

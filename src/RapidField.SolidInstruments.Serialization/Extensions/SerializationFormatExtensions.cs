@@ -37,35 +37,15 @@ namespace RapidField.SolidInstruments.Serialization.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="target" /> is equal to <see cref="SerializationFormat.Unspecified" />.
         /// </exception>
-        public static String ToMimeMediaType(this SerializationFormat target)
+        public static String ToMimeMediaType(this SerializationFormat target) => target.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(target)).TargetArgument switch
         {
-            switch (target.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(target)).TargetArgument)
-            {
-                case SerializationFormat.Binary:
-
-                    return MimeMediaTypeForBinary;
-
-                case SerializationFormat.CompressedJson:
-
-                    return MimeMediaTypeForBinary;
-
-                case SerializationFormat.CompressedXml:
-
-                    return MimeMediaTypeForBinary;
-
-                case SerializationFormat.Json:
-
-                    return MimeMediaTypeForJson;
-
-                case SerializationFormat.Xml:
-
-                    return MimeMediaTypeForXml;
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified serialization type, {target}, is not supported.");
-            }
-        }
+            SerializationFormat.Binary => MimeMediaTypeForBinary,
+            SerializationFormat.CompressedJson => MimeMediaTypeForBinary,
+            SerializationFormat.CompressedXml => MimeMediaTypeForBinary,
+            SerializationFormat.Json => MimeMediaTypeForJson,
+            SerializationFormat.Xml => MimeMediaTypeForXml,
+            _ => throw new UnsupportedSpecificationException($"The specified serialization type, {target}, is not supported.")
+        };
 
         /// <summary>
         /// Represents the MIME media type for binary content.

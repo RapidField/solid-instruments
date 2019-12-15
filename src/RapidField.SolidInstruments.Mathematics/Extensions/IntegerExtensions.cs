@@ -190,8 +190,8 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         public static Boolean IsOdd(this UInt64 target) => UnsignedIntegerIsOdd(target);
 
         /// <summary>
-        /// Returns the position of the current <see cref="Int16" /> within the specified range, expressed as a percentage where zero
-        /// is equal to the lower boundary and one is equal to the upper boundary.
+        /// Returns the position of the current <see cref="Int16" /> within the specified range, expressed as a percentage where
+        /// zero is equal to the lower boundary and one is equal to the upper boundary.
         /// </summary>
         /// <param name="target">
         /// The current <see cref="Int16" />.
@@ -219,8 +219,8 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         }
 
         /// <summary>
-        /// Returns the position of the current <see cref="Int32" /> within the specified range, expressed as a percentage where zero
-        /// is equal to the lower boundary and one is equal to the upper boundary.
+        /// Returns the position of the current <see cref="Int32" /> within the specified range, expressed as a percentage where
+        /// zero is equal to the lower boundary and one is equal to the upper boundary.
         /// </summary>
         /// <param name="target">
         /// The current <see cref="Int32" />.
@@ -248,8 +248,8 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         }
 
         /// <summary>
-        /// Returns the position of the current <see cref="Int64" /> within the specified range, expressed as a percentage where zero
-        /// is equal to the lower boundary and one is equal to the upper boundary.
+        /// Returns the position of the current <see cref="Int64" /> within the specified range, expressed as a percentage where
+        /// zero is equal to the lower boundary and one is equal to the upper boundary.
         /// </summary>
         /// <param name="target">
         /// The current <see cref="Int64" />.
@@ -383,24 +383,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return Convert.ToInt16(target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return Convert.ToInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target));
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => Convert.ToInt16(target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => Convert.ToInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -423,24 +412,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToUInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return Convert.ToUInt16(target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return Convert.ToUInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target));
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => Convert.ToUInt16(target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => Convert.ToUInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -463,24 +441,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return (target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return ((target % factor == 0) ? target : ((factor - (target % factor)) + target));
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => (target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => ((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -503,24 +470,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToUInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return (target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return (target % factor == 0) ? target : ((factor - (target % factor)) + target);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => (target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => (target % factor == 0) ? target : ((factor - (target % factor)) + target),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -543,24 +499,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return Convert.ToInt64(target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return Convert.ToInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target));
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => Convert.ToInt64(target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => Convert.ToInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -583,24 +528,13 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         {
             mode.RejectIf().IsEqualToValue(FactorRoundingMode.Unspecified, nameof(mode));
 
-            switch (mode)
+            return mode switch
             {
-                case FactorRoundingMode.InwardOrOutward:
-
-                    return Convert.ToUInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor);
-
-                case FactorRoundingMode.InwardOnly:
-
-                    return Convert.ToUInt64(target - (target % factor));
-
-                case FactorRoundingMode.OutwardOnly:
-
-                    return Convert.ToUInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target));
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.");
-            }
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => Convert.ToUInt64(target - (target % factor)),
+                FactorRoundingMode.OutwardOnly => Convert.ToUInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
+            };
         }
 
         /// <summary>

@@ -127,20 +127,12 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 if (OutputLengthIsFixed && (index < 0 || index >= OutputLength))
                 {
-                    switch (InvalidReadBehavior)
+                    return InvalidReadBehavior switch
                     {
-                        case InvalidReadBehavior.RaiseException:
-
-                            throw new IndexOutOfRangeException();
-
-                        case InvalidReadBehavior.ReadSilence:
-
-                            return ReadSilence();
-
-                        default:
-
-                            throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
-                    }
+                        InvalidReadBehavior.RaiseException => throw new IndexOutOfRangeException(),
+                        InvalidReadBehavior.ReadSilence => ReadSilence(),
+                        _ => throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.")
+                    };
                 }
 
                 using (var controlToken = StateControl.Enter())
@@ -210,20 +202,12 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
             if (OutputLengthIsFixed && (index < 0 || index >= OutputLength))
             {
-                switch (InvalidReadBehavior)
+                return InvalidReadBehavior switch
                 {
-                    case InvalidReadBehavior.RaiseException:
-
-                        throw new ArgumentOutOfRangeException(nameof(index));
-
-                    case InvalidReadBehavior.ReadSilence:
-
-                        return Task.FromResult(ReadSilence(index));
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
-                }
+                    InvalidReadBehavior.RaiseException => throw new ArgumentOutOfRangeException(nameof(index)),
+                    InvalidReadBehavior.ReadSilence => Task.FromResult(ReadSilence(index)),
+                    _ => throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.")
+                };
             }
 
             using (var controlToken = StateControl.Enter())
@@ -268,8 +252,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ArgumentOutOfRangeException">
         /// <see cref="InvalidReadBehavior" /> is equal to <see cref="InvalidReadBehavior.RaiseException" /> and
         /// <paramref name="index" /> is less than zero -or- <paramref name="lookBehindLength" /> is less than zero -or- the
-        /// resulting sample range precedes the start boundary of the channel's output stream -or- the resulting sample range exceeds
-        /// the end boundary of the channel's output stream.
+        /// resulting sample range precedes the start boundary of the channel's output stream -or- the resulting sample range
+        /// exceeds the end boundary of the channel's output stream.
         /// </exception>
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
@@ -343,20 +327,12 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 if (argumentOutOfRangeExceptionParameterName is null == false)
                 {
-                    switch (InvalidReadBehavior)
+                    return InvalidReadBehavior switch
                     {
-                        case InvalidReadBehavior.RaiseException:
-
-                            throw new ArgumentOutOfRangeException(argumentOutOfRangeExceptionParameterName);
-
-                        case InvalidReadBehavior.ReadSilence:
-
-                            return Task.FromResult(new SignalSample<T>(ReadSilence(index)));
-
-                        default:
-
-                            throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.");
-                    }
+                        InvalidReadBehavior.RaiseException => throw new ArgumentOutOfRangeException(argumentOutOfRangeExceptionParameterName),
+                        InvalidReadBehavior.ReadSilence => Task.FromResult(new SignalSample<T>(ReadSilence(index))),
+                        _ => throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.")
+                    };
                 }
             }
 
@@ -435,8 +411,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
         public DiscreteUnitOfOutput<T> ReadSilence(Int32 index) => new DiscreteUnitOfOutput<T>(ReadSilence(), InvalidReadBehavior == InvalidReadBehavior.RaiseException ? index : (index < 0 ? 0 : index));
 
         /// <summary>
-        /// Changes the channel's status to <see cref="ChannelStatus.Live" /> if it is currently silent, otherwise changes the status
-        /// to <see cref="ChannelStatus.Silent" /> if it is currently live, otherwise raises an
+        /// Changes the channel's status to <see cref="ChannelStatus.Live" /> if it is currently silent, otherwise changes the
+        /// status to <see cref="ChannelStatus.Silent" /> if it is currently live, otherwise raises an
         /// <see cref="InvalidOperationException" />.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -446,26 +422,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
         {
             using (var controlToken = StateControl.Enter())
             {
-                switch (Status)
+                Status = Status switch
                 {
-                    case ChannelStatus.Live:
-
-                        Status = ChannelStatus.Silent;
-                        break;
-
-                    case ChannelStatus.Silent:
-
-                        Status = ChannelStatus.Live;
-                        break;
-
-                    case ChannelStatus.Unavailable:
-
-                        throw new InvalidOperationException("The channel is unavailable.");
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
-                }
+                    ChannelStatus.Live => ChannelStatus.Silent,
+                    ChannelStatus.Silent => ChannelStatus.Live,
+                    ChannelStatus.Unavailable => throw new InvalidOperationException("The channel is unavailable."),
+                    _ => throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.")
+                };
             }
         }
 
