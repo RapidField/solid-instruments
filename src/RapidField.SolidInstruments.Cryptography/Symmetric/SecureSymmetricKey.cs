@@ -534,8 +534,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </summary>
         /// <remarks>
         /// The author acknowledges that obscurity does not ensure security. Encrypting sensitive information with a known key does
-        /// not secure it. This is intended to stand up a barrier against unsophisticated attacks targeting users who have mistakenly
-        /// exposed their key source.
+        /// not secure it. This is intended to stand up a barrier against unsophisticated attacks targeting users who have
+        /// mistakenly exposed their key source.
         /// </remarks>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly PinnedBuffer BufferEncryptionKey = new PinnedBuffer(new Byte[]

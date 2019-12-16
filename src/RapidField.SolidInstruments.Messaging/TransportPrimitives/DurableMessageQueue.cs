@@ -79,7 +79,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
+        /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" />.
@@ -110,7 +111,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
+        /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
@@ -146,12 +148,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
+        /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
-        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
-        /// is equal to <see cref="SerializationFormat.Unspecified" />.
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
         internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat)
@@ -187,13 +190,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
+        /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
-        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
-        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
-        /// less than eight seconds.
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
+        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds.
         /// </exception>
         [DebuggerHidden]
         internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold)
@@ -233,13 +237,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="path" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />.
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
+        /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
-        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
-        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
-        /// less than eight seconds -or- <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
+        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds -or-
+        /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
         internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
@@ -291,9 +297,10 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="operationalState" /> is equal
-        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or- <paramref name="messageBodySerializationFormat" />
-        /// is equal to <see cref="SerializationFormat.Unspecified" /> -or- <paramref name="messageLockExpirationThreshold" /> is
-        /// less than eight seconds -or- <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
+        /// to <see cref="DurableMessageQueueOperationalState.Unspecified" /> -or-
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" /> -or-
+        /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds -or-
+        /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
         private DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold, IEnumerable<DurableMessage> messages, IDictionary<DurableMessageLockToken, DurableMessage> lockedMessages)
@@ -960,8 +967,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         private static readonly TimeSpan DefaultEnqueueTimeoutThreshold = TimeSpan.FromSeconds(11);
 
         /// <summary>
-        /// Represents the default length of time that a locked message is held before abandoning the associated token and making the
-        /// message available for processing.
+        /// Represents the default length of time that a locked message is held before abandoning the associated token and making
+        /// the message available for processing.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly TimeSpan DefaultMessageLockExpirationThreshold = TimeSpan.FromMinutes(3);

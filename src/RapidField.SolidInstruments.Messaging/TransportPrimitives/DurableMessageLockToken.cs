@@ -149,8 +149,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public static Boolean operator >(DurableMessageLockToken a, DurableMessageLockToken b) => a.CompareTo(b) == 1;
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="DurableMessageLockToken" /> instance is greater than or equal to another
-        /// supplied instance.
+        /// Determines whether or not a specified <see cref="DurableMessageLockToken" /> instance is greater than or equal to
+        /// another supplied instance.
         /// </summary>
         /// <param name="a">
         /// The first <see cref="DurableMessageLockToken" /> instance to compare.

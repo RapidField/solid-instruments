@@ -75,7 +75,8 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// environment.
         /// </param>
         /// <param name="userInformation">
-        /// Information about a user whose action(s) caused the exception to be raised. This argument can be <see langword="null" />.
+        /// Information about a user whose action(s) caused the exception to be raised. This argument can be
+        /// <see langword="null" />.
         /// </param>
         /// <returns>
         /// A reportable <see cref="ApplicationEvent" /> representing the current <see cref="Exception" />.
@@ -99,7 +100,8 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// environment.
         /// </param>
         /// <param name="userInformation">
-        /// Information about a user whose action(s) caused the exception to be raised. This argument can be <see langword="null" />.
+        /// Information about a user whose action(s) caused the exception to be raised. This argument can be
+        /// <see langword="null" />.
         /// </param>
         /// <param name="occurrenceDateTime">
         /// A <see cref="DateTime" /> that indicates when the exception was raised. The default value is

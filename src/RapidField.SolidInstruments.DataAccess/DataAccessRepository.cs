@@ -55,7 +55,8 @@ namespace RapidField.SolidInstruments.DataAccess
         }
 
         /// <summary>
-        /// Updates the specified entity in the current <see cref="DataAccessRepository{TEntity}" />, or adds it if it doesn't exist.
+        /// Updates the specified entity in the current <see cref="DataAccessRepository{TEntity}" />, or adds it if it doesn't
+        /// exist.
         /// </summary>
         /// <param name="entity">
         /// The entity to add or update.

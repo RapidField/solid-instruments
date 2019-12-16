@@ -144,8 +144,8 @@ namespace RapidField.SolidInstruments.TextEncoding
         public static Boolean operator >(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) == 1;
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is greater than or equal to another
-        /// supplied instance.
+        /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is greater than or equal to
+        /// another supplied instance.
         /// </summary>
         /// <param name="a">
         /// The first <see cref="EnhancedReadabilityGuid" /> instance to compare.

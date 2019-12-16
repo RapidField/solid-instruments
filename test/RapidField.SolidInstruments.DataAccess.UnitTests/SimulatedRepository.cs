@@ -91,7 +91,8 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => CountWhere(predicate, controlToken) > 0;
 
         /// <summary>
-        /// Determines whether or not the specified entity exists in the current <see cref="SimulatedRepository{TEntity, TValue}" />.
+        /// Determines whether or not the specified entity exists in the current
+        /// <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </summary>
         /// <param name="entity">
         /// The entity to evaluate.

@@ -118,7 +118,8 @@ namespace RapidField.SolidInstruments.Collections
         /// The child node to remove.
         /// </param>
         /// <returns>
-        /// <see langword="true" /> if the specified node was present in <see cref="Children" />, otherwise <see langword="false" />.
+        /// <see langword="true" /> if the specified node was present in <see cref="Children" />, otherwise
+        /// <see langword="false" />.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="childNode" /> is <see langword="null" />.
@@ -236,8 +237,8 @@ namespace RapidField.SolidInstruments.Collections
         internal const Int32 UnlimitedCapacityValue = -1;
 
         /// <summary>
-        /// Represents the maximum count of <see cref="Children" /> permitted for the current <see cref="TreeNode{T}" />, or -1 if no
-        /// limit is imposed.
+        /// Represents the maximum count of <see cref="Children" /> permitted for the current <see cref="TreeNode{T}" />, or -1 if
+        /// no limit is imposed.
         /// </summary>
         protected readonly Int32 Capacity;
 

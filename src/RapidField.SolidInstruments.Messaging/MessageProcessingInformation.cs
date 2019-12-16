@@ -42,15 +42,15 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not yet
-        /// been attempted.
+        /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not
+        /// yet been attempted.
         /// </summary>
         [IgnoreDataMember]
         public Int32 AttemptCount => AttemptResults.Count();
 
         /// <summary>
-        /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if processing
-        /// has not yet been attempted.
+        /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if
+        /// processing has not yet been attempted.
         /// </summary>
         [DataMember]
         public Collection<MessageProcessingAttemptResult> AttemptResults

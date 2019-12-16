@@ -153,7 +153,8 @@ namespace RapidField.SolidInstruments.Collections
         /// </param>
         /// <param name="permitOverwrite">
         /// A value indicating whether or not to permit overwriting existing elements. If this argument is <see langword="false" />
-        /// an <see cref="InvalidOperationException" /> is raised to prevent overwrite. The default value is <see langword="true" />.
+        /// an <see cref="InvalidOperationException" /> is raised to prevent overwrite. The default value is
+        /// <see langword="true" />.
         /// </param>
         /// <exception cref="InvalidOperationException">
         /// <paramref name="permitOverwrite" /> is <see langword="false" /> and the write operation would have caused overwrite.

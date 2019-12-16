@@ -95,8 +95,8 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not subscribers should publish <see cref="ExceptionRaisedMessage" /> instances
-        /// when an exception is raised during message processing.
+        /// Gets or sets a value indicating whether or not subscribers should publish <see cref="ExceptionRaisedMessage" />
+        /// instances when an exception is raised during message processing.
         /// </summary>
         [DataMember]
         public Boolean PublishExceptionRaisedMessage
