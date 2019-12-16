@@ -2,7 +2,7 @@
 name: Suggest a new feature
 about: Use this to suggest additional functionality.
 title: ''
-labels: 'Category-Feature, Stage0-New, Verdict-Pending'
+labels: 'Category-Feature, Stage-0-New, Verdict-Pending'
 ---
 
 # Feature Request

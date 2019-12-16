@@ -2,7 +2,7 @@
 name: Report an observed defect
 about: Use this to report an unresolved problem that a user is experiencing.
 title: ''
-labels: 'Category-Defect, Stage0-New, Verdict-Pending'
+labels: 'Category-Defect, Stage-0-New, Verdict-Pending'
 ---
 
 # Defect Report
