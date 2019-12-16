@@ -102,6 +102,10 @@ $TargetFrameworkForExampleServiceApplication = "netcoreapp2.1";
 # Modules
 Import-Module $FilePathForCoreModule -Force;
 
+<#
+.Synopsis
+Compiles the current build.
+#>
 Function Build
 {
     Param
@@ -146,16 +150,28 @@ Function Build
     ComposeFinish "Finished building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
 }
 
+<#
+.Synopsis
+Compiles the current build in debug mode.
+#>
 Function BuildDebug
 {
     Build -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
+<#
+.Synopsis
+Compiles the current build in release mode.
+#>
 Function BuildRelease
 {
     Build -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
+<#
+.Synopsis
+Compiles the documentation website.
+#>
 Function BuildWebDocumentation
 {
     Param
@@ -190,6 +206,10 @@ Function BuildWebDocumentation
     ComposeFinish "Finished building web documentation.";
 }
 
+<#
+.Synopsis
+Cleans the artifacts for the current build.
+#>
 Function Clean
 {
     Param
@@ -232,16 +252,28 @@ Function Clean
     ComposeFinish "Finished cleaning.";
 }
 
+<#
+.Synopsis
+Cleans the debug mode artifacts for the current build.
+#>
 Function CleanDebug
 {
     Clean -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
+<#
+.Synopsis
+Cleans the release mode artifacts for the current build.
+#>
 Function CleanRelease
 {
     Clean -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
+<#
+.Synopsis
+Cleans the documentation website artifacts for the current build.
+#>
 Function CleanWebDocumentation
 {
     Param
@@ -272,6 +304,10 @@ Function CleanWebDocumentation
     ComposeFinish "Finished cleaning documentation website.";
 }
 
+<#
+.Synopsis
+Decrypts the RapidField code signing certificate.
+#>
 Function DecryptCodeSigningCertificate
 {
     Param
@@ -302,6 +338,10 @@ Function DecryptCodeSigningCertificate
     ComposeFinish "Finished decrypting the code signing certificate.";
 }
 
+<#
+.Synopsis
+Encrypts the RapidField code signing certificate.
+#>
 Function EncryptCodeSigningCertificate
 {
     Param
@@ -333,18 +373,30 @@ Function EncryptCodeSigningCertificate
     ComposeFinish "Finished encrypting the code signing certificate.";
 }
 
+<#
+.Synopsis
+Gets the contents of appveyor.yml.
+#>
 Function GetAppVeyorConfiguration
 {
     Import-Module "powershell-yaml" -Force;
     Return Get-Content -Path "$FilePathForAppVeyorYamlConfigurlation" | ConvertFrom-Yaml;
 }
 
+<#
+.Synopsis
+Extracts the build version from appveyor.yml.
+#>
 Function GetBuildVersion
 {
     $AppVeyorConfiguration = GetAppVeyorConfiguration;
     Return $AppVeyorConfiguration.version.trimend(".{build}");
 }
 
+<#
+.Synopsis
+Publishes the NuGet packages for the current build.
+#>
 Function PublishPackages
 {
     Param
@@ -390,6 +442,10 @@ Function PublishPackages
     ComposeFinish "Finished publishing packages.";
 }
 
+<#
+.Synopsis
+Restores dependencies for the current build.
+#>
 Function RestoreDependencies
 {
     ComposeStart "Restoring dependencies for $FilePathForSolutionFile.";
@@ -403,6 +459,10 @@ Function RestoreDependencies
     ComposeFinish "Finished restoring dependencies for $FilePathForSolutionFile.";
 }
 
+<#
+.Synopsis
+Signs the NuGet packages for the current build using the RapidField code signing certificate.
+#>
 Function SignPackages
 {
     Param
@@ -466,6 +526,10 @@ Function SignPackages
     ComposeFinish "Finished signing packages.";
 }
 
+<#
+.Synopsis
+Starts the example service application.
+#>
 Function StartExampleServiceApplication
 {
     Param
@@ -481,16 +545,28 @@ Function StartExampleServiceApplication
     ComposeFinish "Finished starting the application.";
 }
 
+<#
+.Synopsis
+Starts the example service application in debug mode.
+#>
 Function StartExampleServiceApplicationDebug
 {
     StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
+<#
+.Synopsis
+Starts the example service application in release mode.
+#>
 Function StartExampleServiceApplicationRelease
 {
     StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
+<#
+.Synopsis
+Starts the example web application.
+#>
 Function StartExampleWebApplication
 {
     Param
@@ -506,16 +582,28 @@ Function StartExampleWebApplication
     ComposeFinish "Finished starting the application.";
 }
 
+<#
+.Synopsis
+Starts the example web application in debug mode.
+#>
 Function StartExampleWebApplicationDebug
 {
     StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
+<#
+.Synopsis
+Starts the example web application in release mode.
+#>
 Function StartExampleWebApplicationRelease
 {
     StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
+<#
+.Synopsis
+Stops all running .NET applications.
+#>
 Function StopAllApplications
 {
     ComposeStart "Stopping all applications.";
@@ -523,6 +611,10 @@ Function StopAllApplications
     ComposeFinish "Finished stopping all applications.";
 }
 
+<#
+.Synopsis
+Executes the test suite against the current build.
+#>
 Function Test
 {
     Param
@@ -555,16 +647,28 @@ Function Test
     }
 }
 
+<#
+.Synopsis
+Executes the test suite against the current build in debug mode.
+#>
 Function TestDebug
 {
     Test -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
+<#
+.Synopsis
+Executes the test suite against the current build in release mode.
+#>
 Function TestRelease
 {
     Test -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
+<#
+.Synopsis
+Compiles the current build and executes the test suite against it.
+#>
 Function VerifyBuild
 {
     Push-Location "$DirectoryPathForProjectRoot";
@@ -572,6 +676,10 @@ Function VerifyBuild
     Pop-Location;
 }
 
+<#
+.Synopsis
+Writes various details about the build.
+#>
 Function WriteBuildDetails
 {
     WriteRepositoryName;
@@ -584,6 +692,10 @@ Function WriteBuildDetails
     WriteCommitAuthorEmail;
 }
 
+<#
+.Synopsis
+Writes the build version.
+#>
 Function WriteBuildVersion
 {
     If (($BuildVersion -eq $null) -or ($BuildVersion -eq ""))
@@ -594,6 +706,10 @@ Function WriteBuildVersion
     ComposeNormal "Build version: $BuildVersion";
 }
 
+<#
+.Synopsis
+Writes the commit author's email address for the build.
+#>
 Function WriteCommitAuthorEmail
 {
     If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq ""))
@@ -604,6 +720,10 @@ Function WriteCommitAuthorEmail
     ComposeNormal "Commit author email: $CommitAuthorEmail";
 }
 
+<#
+.Synopsis
+Writes the commit author's name for the build.
+#>
 Function WriteCommitAuthorName
 {
     If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
@@ -613,6 +733,10 @@ Function WriteCommitAuthorName
     ComposeNormal "Commit author name: $CommitAuthorName";
 }
 
+<#
+.Synopsis
+Writes the commit ID for the build.
+#>
 Function WriteCommitId
 {
     If (($CommitId -eq $null) -or ($CommitId -eq ""))
@@ -623,6 +747,10 @@ Function WriteCommitId
     ComposeNormal "Commit ID: $CommitId";
 }
 
+<#
+.Synopsis
+Writes the commit message for the build.
+#>
 Function WriteCommitMessage
 {
     If (($CommitMessage -eq $null) -or ($CommitMessage -eq ""))
@@ -633,6 +761,10 @@ Function WriteCommitMessage
     ComposeNormal "Commit message: $CommitMessage";
 }
 
+<#
+.Synopsis
+Writes the commit time stamp for the build.
+#>
 Function WriteCommitTimeStamp
 {
     If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq ""))
@@ -643,6 +775,10 @@ Function WriteCommitTimeStamp
     ComposeNormal "Commit time stamp: $CommitTimeStamp";
 }
 
+<#
+.Synopsis
+Writes the repository name for the build.
+#>
 Function WriteRepositoryName
 {
     If (($RepositoryName -eq $null) -or ($RepositoryName -eq ""))
@@ -653,6 +789,10 @@ Function WriteRepositoryName
     ComposeNormal "Repository name: $RepositoryName";
 }
 
+<#
+.Synopsis
+Writes the tag name for the build.
+#>
 Function WriteTagName
 {
     If (($TagName -eq $null) -or ($TagName -eq ""))

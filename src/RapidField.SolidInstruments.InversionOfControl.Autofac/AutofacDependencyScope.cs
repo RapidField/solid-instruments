@@ -64,7 +64,8 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         protected override Object Resolve(ILifetimeScope sourceScope, Type type) => sourceScope.Resolve(type);
 
         /// <summary>
-        /// Requests an object of specified type from the associated container for the current <see cref="AutofacDependencyScope" />.
+        /// Requests an object of specified type from the associated container for the current
+        /// <see cref="AutofacDependencyScope" />.
         /// </summary>
         /// <param name="sourceScope">
         /// The underlying scope.

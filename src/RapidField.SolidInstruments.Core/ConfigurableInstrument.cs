@@ -12,7 +12,8 @@ using System.Threading;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents a lazily-configurable utility with disposable resources and exposes a lazily-loaded concurrency control mechanism.
+    /// Represents a lazily-configurable utility with disposable resources and exposes a lazily-loaded concurrency control
+    /// mechanism.
     /// </summary>
     /// <typeparam name="TConfiguration">
     /// The type of the configuration information for the instrument.

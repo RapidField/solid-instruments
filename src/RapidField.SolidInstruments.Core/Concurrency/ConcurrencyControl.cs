@@ -76,35 +76,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see cref="Timeout.InfiniteTimeSpan" /> -or- <paramref name="mode" /> is equal to
         /// <see cref="ConcurrencyControlMode.Unspecified" />.
         /// </exception>
-        public static ConcurrencyControl New(ConcurrencyControlMode mode, TimeSpan blockTimeoutThreshold)
+        public static ConcurrencyControl New(ConcurrencyControlMode mode, TimeSpan blockTimeoutThreshold) => mode.RejectIf().IsEqualToValue(ConcurrencyControlMode.Unspecified).TargetArgument switch
         {
-            switch (mode.RejectIf().IsEqualToValue(ConcurrencyControlMode.Unspecified).TargetArgument)
-            {
-                case ConcurrencyControlMode.DuplexSemaphore:
-
-                    return new DuplexSemaphoreControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.ProcessorCountSemaphore:
-
-                    return new ProcessorCountSemaphoreControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.SingleThreadLock:
-
-                    return new SingleThreadLockControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.SingleThreadSpinLock:
-
-                    return new SingleThreadSpinLockControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.Unconstrained:
-
-                    return new UnconstrainedControl();
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified concurrency control mode, {mode}, is not supported.");
-            }
-        }
+            ConcurrencyControlMode.DuplexSemaphore => new DuplexSemaphoreControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.ProcessorCountSemaphore => new ProcessorCountSemaphoreControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.SingleThreadLock => new SingleThreadLockControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.SingleThreadSpinLock => new SingleThreadSpinLockControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.Unconstrained => new UnconstrainedControl(),
+            _ => throw new UnsupportedSpecificationException($"The specified concurrency control mode, {mode}, is not supported.")
+        };
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.

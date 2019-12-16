@@ -36,7 +36,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.Repositories
         /// The identifier to find.
         /// </param>
         /// <returns>
-        /// The <see cref="Number" /> with the specified value, or <see langword="null" /> if the <see cref="Number" /> is not found.
+        /// The <see cref="Number" /> with the specified value, or <see langword="null" /> if the <see cref="Number" /> is not
+        /// found.
         /// </returns>
         public Number FindByIdentifier(Guid identifier) => FindWhere(entity => entity.Identifier == identifier).SingleOrDefault();
 
@@ -47,7 +48,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.Repositories
         /// The value to find.
         /// </param>
         /// <returns>
-        /// The <see cref="Number" /> with the specified value, or <see langword="null" /> if the <see cref="Number" /> is not found.
+        /// The <see cref="Number" /> with the specified value, or <see langword="null" /> if the <see cref="Number" /> is not
+        /// found.
         /// </returns>
         public Number FindByValue(Int64 value) => FindWhere(entity => entity.Value == value).SingleOrDefault();
     }

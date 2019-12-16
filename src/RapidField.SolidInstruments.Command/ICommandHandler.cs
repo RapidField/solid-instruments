@@ -44,8 +44,8 @@ namespace RapidField.SolidInstruments.Command
     /// Processes commands.
     /// </summary>
     /// <remarks>
-    /// Do not implement <see cref="ICommandHandler{TCommand}" /> directly in user code. Use <see cref="ICommandHandler{TCommand}" />
-    /// as a registration target for inversion of control tools.
+    /// Do not implement <see cref="ICommandHandler{TCommand}" /> directly in user code. Use
+    /// <see cref="ICommandHandler{TCommand}" /> as a registration target for inversion of control tools.
     /// </remarks>
     /// <typeparam name="TCommand">
     /// The type of the command that is processed by the handler.

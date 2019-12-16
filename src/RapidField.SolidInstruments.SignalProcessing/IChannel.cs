@@ -73,8 +73,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ArgumentOutOfRangeException">
         /// <see cref="InvalidReadBehavior" /> is equal to <see cref="InvalidReadBehavior.RaiseException" /> and
         /// <paramref name="index" /> is less than zero -or- <paramref name="lookBehindLength" /> is less than zero -or- the
-        /// resulting sample range precedes the start boundary of the channel's output stream -or- the resulting sample range exceeds
-        /// the end boundary of the channel's output stream.
+        /// resulting sample range precedes the start boundary of the channel's output stream -or- the resulting sample range
+        /// exceeds the end boundary of the channel's output stream.
         /// </exception>
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
@@ -148,8 +148,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
     public interface IChannel : IDisposable
     {
         /// <summary>
-        /// Changes the channel's status to <see cref="ChannelStatus.Live" /> if it is currently silent, otherwise changes the status
-        /// to <see cref="ChannelStatus.Silent" /> if it is currently live, otherwise raises an
+        /// Changes the channel's status to <see cref="ChannelStatus.Live" /> if it is currently silent, otherwise changes the
+        /// status to <see cref="ChannelStatus.Silent" /> if it is currently live, otherwise raises an
         /// <see cref="InvalidOperationException" />.
         /// </summary>
         /// <exception cref="InvalidOperationException">

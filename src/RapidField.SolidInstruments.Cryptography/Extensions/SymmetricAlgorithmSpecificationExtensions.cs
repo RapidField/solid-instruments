@@ -31,35 +31,15 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal static SymmetricKeyCipher ToCipher(this SymmetricAlgorithmSpecification target, RandomNumberGenerator randomnessProvider)
+        internal static SymmetricKeyCipher ToCipher(this SymmetricAlgorithmSpecification target, RandomNumberGenerator randomnessProvider) => target switch
         {
-            switch (target)
-            {
-                case SymmetricAlgorithmSpecification.Unspecified:
-
-                    return null;
-
-                case SymmetricAlgorithmSpecification.Aes128Cbc:
-
-                    return new Aes128CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Aes128Ecb:
-
-                    return new Aes128EcbCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Aes256Cbc:
-
-                    return new Aes256CbcCipher(randomnessProvider);
-
-                case SymmetricAlgorithmSpecification.Aes256Ecb:
-
-                    return new Aes256EcbCipher(randomnessProvider);
-
-                default:
-
-                    throw new ArgumentException($"{target} is not a supported {nameof(SymmetricAlgorithmSpecification)}.", nameof(target));
-            }
-        }
+            SymmetricAlgorithmSpecification.Unspecified => null,
+            SymmetricAlgorithmSpecification.Aes128Cbc => new Aes128CbcCipher(randomnessProvider),
+            SymmetricAlgorithmSpecification.Aes128Ecb => new Aes128EcbCipher(randomnessProvider),
+            SymmetricAlgorithmSpecification.Aes256Cbc => new Aes256CbcCipher(randomnessProvider),
+            SymmetricAlgorithmSpecification.Aes256Ecb => new Aes256EcbCipher(randomnessProvider),
+            _ => throw new ArgumentException($"{target} is not a supported {nameof(SymmetricAlgorithmSpecification)}.", nameof(target))
+        };
 
         /// <summary>
         /// Returns the key bit-length component of the current <see cref="SymmetricAlgorithmSpecification" />.
@@ -71,34 +51,14 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// The bit-length of the key for the current <see cref="SymmetricAlgorithmSpecification" />.
         /// </returns>
         [DebuggerHidden]
-        internal static Int32 ToKeyBitLength(this SymmetricAlgorithmSpecification target)
+        internal static Int32 ToKeyBitLength(this SymmetricAlgorithmSpecification target) => target switch
         {
-            switch (target)
-            {
-                case SymmetricAlgorithmSpecification.Unspecified:
-
-                    return default;
-
-                case SymmetricAlgorithmSpecification.Aes128Cbc:
-
-                    return 128;
-
-                case SymmetricAlgorithmSpecification.Aes128Ecb:
-
-                    return 128;
-
-                case SymmetricAlgorithmSpecification.Aes256Cbc:
-
-                    return 256;
-
-                case SymmetricAlgorithmSpecification.Aes256Ecb:
-
-                    return 256;
-
-                default:
-
-                    throw new ArgumentException($"{target} is not a supported {nameof(SymmetricAlgorithmSpecification)}.", nameof(target));
-            }
-        }
+            SymmetricAlgorithmSpecification.Unspecified => default,
+            SymmetricAlgorithmSpecification.Aes128Cbc => 128,
+            SymmetricAlgorithmSpecification.Aes128Ecb => 128,
+            SymmetricAlgorithmSpecification.Aes256Cbc => 256,
+            SymmetricAlgorithmSpecification.Aes256Ecb => 256,
+            _ => throw new ArgumentException($"{target} is not a supported {nameof(SymmetricAlgorithmSpecification)}.", nameof(target))
+        };
     }
 }

@@ -11,21 +11,21 @@ The **Solid Instruments** product backlog is fluid and persistently subject to c
 
 ## 2019
 
-[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2019-Q4)
+[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2019-Q4)
 
 ## 2020
 
-[**Quarter 1**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2020-Q1) |
-[**Quarter 2**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2020-Q2) |
-[**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2020-Q3) |
-[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2020-Q4)
+[**Quarter 1**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2020-Q1) |
+[**Quarter 2**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2020-Q2) |
+[**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2020-Q3) |
+[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2020-Q4)
 
 ## 2021
 
-[**Quarter 1**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2021-Q1) |
-[**Quarter 2**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2021-Q2) |
-[**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2021-Q3) |
-[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:Window-2021-Q4)
+[**Quarter 1**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q1) |
+[**Quarter 2**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q2) |
+[**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q3) |
+[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q4)
 
 ## Contributing
 

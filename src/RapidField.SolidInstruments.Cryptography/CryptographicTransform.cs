@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

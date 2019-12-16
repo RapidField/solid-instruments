@@ -70,23 +70,12 @@ namespace RapidField.SolidInstruments.Core
         /// The current date and time.
         /// </returns>
         [DebuggerHidden]
-        private DateTime Produce()
+        private DateTime Produce() => Kind switch
         {
-            switch (Kind)
-            {
-                case DateTimeKind.Local:
-
-                    return DateTime.Now;
-
-                case DateTimeKind.Utc:
-
-                    return DateTime.UtcNow;
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified date time kind, {Kind}, is not supported.");
-            }
-        }
+            DateTimeKind.Local => DateTime.Now,
+            DateTimeKind.Utc => DateTime.UtcNow,
+            _ => throw new UnsupportedSpecificationException($"The specified date time kind, {Kind}, is not supported.")
+        };
 
         /// <summary>
         /// Gets the current date and time.

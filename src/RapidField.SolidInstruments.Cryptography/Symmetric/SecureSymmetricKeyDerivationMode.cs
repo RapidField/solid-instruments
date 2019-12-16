@@ -30,8 +30,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The key bit field is divided into blocks that are XORed sequentially, producing an output key of the desired length.
         /// </summary>
         /// <remarks>
-        /// No key bits are discarded. Some distinct <see cref="SecureSymmetricKey" /> instances produce identical key outputs due to
-        /// the fact that patterned substitutions produce identical XOR outputs.
+        /// No key bits are discarded. Some distinct <see cref="SecureSymmetricKey" /> instances produce identical key outputs due
+        /// to the fact that patterned substitutions produce identical XOR outputs.
         /// </remarks>
         XorLayering = 0x02,
 
@@ -40,8 +40,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// producing an output key of the desired length.
         /// </summary>
         /// <remarks>
-        /// No key bits are discarded and the probability of patterned-substitution collisions is extremely low when the key bits are
-        /// entropic.
+        /// No key bits are discarded and the probability of patterned-substitution collisions is extremely low when the key bits
+        /// are entropic.
         /// </remarks>
         XorLayeringWithSubstitution = 0x03,
 

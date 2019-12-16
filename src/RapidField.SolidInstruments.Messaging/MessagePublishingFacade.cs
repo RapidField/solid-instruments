@@ -206,22 +206,12 @@ namespace RapidField.SolidInstruments.Messaging
                 RejectIfDisposed();
                 var sendClient = default(TSender);
 
-                switch (entityType)
+                sendClient = entityType switch
                 {
-                    case MessagingEntityType.Queue:
-
-                        sendClient = ClientFactory.GetQueueSender<TMessage>(pathTokens);
-                        break;
-
-                    case MessagingEntityType.Topic:
-
-                        sendClient = ClientFactory.GetTopicSender<TMessage>(pathTokens);
-                        break;
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.");
-                }
+                    MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathTokens),
+                    MessagingEntityType.Topic => ClientFactory.GetTopicSender<TMessage>(pathTokens),
+                    _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
+                };
 
                 try
                 {

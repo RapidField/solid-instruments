@@ -141,8 +141,8 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         public static Boolean operator >(ConcurrencyControlToken a, ConcurrencyControlToken b) => a.CompareTo(b) == 1;
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is greater than or equal to another
-        /// supplied instance.
+        /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is greater than or equal to
+        /// another supplied instance.
         /// </summary>
         /// <param name="a">
         /// The first <see cref="ConcurrencyControlToken" /> instance to compare.
@@ -473,8 +473,8 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         private readonly Stopwatch ExpirationStopwatch;
 
         /// <summary>
-        /// Represents the maximum length of time to honor the token, or <see cref="Timeout.InfiniteTimeSpan" /> if indefinite thread
-        /// blocking is permitted.
+        /// Represents the maximum length of time to honor the token, or <see cref="Timeout.InfiniteTimeSpan" /> if indefinite
+        /// thread blocking is permitted.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly TimeSpan ExpirationThreshold;

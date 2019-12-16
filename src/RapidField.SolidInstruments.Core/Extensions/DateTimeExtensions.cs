@@ -110,63 +110,22 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="Int32" /> representing the calendar quarter of the current <see cref="DateTime" />.
         /// </returns>
-        public static Int32 CalendarQuarter(this DateTime target)
+        public static Int32 CalendarQuarter(this DateTime target) => target.Month switch
         {
-            switch (target.Month)
-            {
-                case 1:
-
-                    return 1; // January
-
-                case 2:
-
-                    return 1; // February
-
-                case 3:
-
-                    return 1; // March
-
-                case 4:
-
-                    return 2; // April
-
-                case 5:
-
-                    return 2; // May
-
-                case 6:
-
-                    return 2; // June
-
-                case 7:
-
-                    return 3; // July
-
-                case 8:
-
-                    return 3; // August
-
-                case 9:
-
-                    return 3; // September
-
-                case 10:
-
-                    return 4; // October
-
-                case 11:
-
-                    return 4; // November
-
-                case 12:
-
-                    return 4; // December
-
-                default:
-
-                    return default;
-            }
-        }
+            1 => 1, // January
+            2 => 1, // February
+            3 => 1, // March
+            4 => 2, // April
+            5 => 2, // May
+            6 => 2, // June
+            7 => 3, // July
+            8 => 3, // August
+            9 => 3, // September
+            10 => 4, // October
+            11 => 4, // November
+            12 => 4, // December
+            _ => default
+        };
 
         /// <summary>
         /// Determines the ordinal position of the current <see cref="DateTime" /> instance's <see cref="DayOfWeek" /> value within
@@ -345,8 +304,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="DateTime" />.
         /// </param>
         /// <param name="encodeKind">
-        /// A value indicating whether or not the result should encode the kind of the current <see cref="DateTime" />. This argument
-        /// is <see langword="true" /> by default.
+        /// A value indicating whether or not the result should encode the kind of the current <see cref="DateTime" />. This
+        /// argument is <see langword="true" /> by default.
         /// </param>
         /// <returns>
         /// An array of bytes representing the current <see cref="DateTime" />.
@@ -453,44 +412,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 throw new ArgumentOutOfRangeException(nameof(granularity));
             }
 
-            switch (granularity)
+            return granularity switch
             {
-                case DateTimeRangeGranularity.Exact:
-
-                    return target;
-
-                case DateTimeRangeGranularity.AccurateToTheMillisecond:
-
-                    return target.MidpointOfThisMillisecond();
-
-                case DateTimeRangeGranularity.AccurateToTheSecond:
-
-                    return target.MidpointOfThisSecond();
-
-                case DateTimeRangeGranularity.AccurateToTheMinute:
-
-                    return target.MidpointOfThisMinute();
-
-                case DateTimeRangeGranularity.AccurateToTheHour:
-
-                    return target.MidpointOfThisHour();
-
-                case DateTimeRangeGranularity.AccurateToTheDay:
-
-                    return target.MidpointOfThisDay();
-
-                case DateTimeRangeGranularity.AccurateToTheMonth:
-
-                    return target.MidpointOfThisMonth();
-
-                case DateTimeRangeGranularity.AccurateToTheYear:
-
-                    return target.MidpointOfThisYear();
-
-                default:
-
-                    throw new ArgumentException($"{granularity} is not a supported {nameof(DateTimeRangeGranularity)}.", nameof(granularity));
-            }
+                DateTimeRangeGranularity.Exact => target,
+                DateTimeRangeGranularity.AccurateToTheMillisecond => target.MidpointOfThisMillisecond(),
+                DateTimeRangeGranularity.AccurateToTheSecond => target.MidpointOfThisSecond(),
+                DateTimeRangeGranularity.AccurateToTheMinute => target.MidpointOfThisMinute(),
+                DateTimeRangeGranularity.AccurateToTheHour => target.MidpointOfThisHour(),
+                DateTimeRangeGranularity.AccurateToTheDay => target.MidpointOfThisDay(),
+                DateTimeRangeGranularity.AccurateToTheMonth => target.MidpointOfThisMonth(),
+                DateTimeRangeGranularity.AccurateToTheYear => target.MidpointOfThisYear(),
+                _ => throw new ArgumentException($"{granularity} is not a supported {nameof(DateTimeRangeGranularity)}.", nameof(granularity))
+            };
         }
 
         /// <summary>
@@ -617,27 +550,13 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// A detailed format string using the appropriate time zone format.
         /// </returns>
         [DebuggerHidden]
-        private static String ConstructFullDetailFormatString(DateTime dateTime)
+        private static String ConstructFullDetailFormatString(DateTime dateTime) => dateTime.Kind switch
         {
-            switch (dateTime.Kind)
-            {
-                case DateTimeKind.Utc:
-
-                    return FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneUtcFormat);
-
-                case DateTimeKind.Local:
-
-                    return FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneLocalFormat);
-
-                case DateTimeKind.Unspecified:
-
-                    return FullDetailDateTimeFormatTemplate.ApplyFormat(String.Empty);
-
-                default:
-
-                    throw new ArgumentException($"{dateTime.Kind} is not a supported {nameof(DateTimeKind)}.", nameof(dateTime));
-            }
-        }
+            DateTimeKind.Utc => FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneUtcFormat),
+            DateTimeKind.Local => FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneLocalFormat),
+            DateTimeKind.Unspecified => FullDetailDateTimeFormatTemplate.ApplyFormat(String.Empty),
+            _ => throw new ArgumentException($"{dateTime.Kind} is not a supported {nameof(DateTimeKind)}.", nameof(dateTime))
+        };
 
         /// <summary>
         /// Represents a <see cref="DateTime" /> zone format for local time.

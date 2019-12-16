@@ -37,8 +37,8 @@ namespace RapidField.SolidInstruments.Messaging
         where TConnection : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingClientFactory{TSender, TReceiver, TConnection, TWrappedMessage}" />
-        /// class.
+        /// Initializes a new instance of the
+        /// <see cref="MessagingClientFactory{TSender, TReceiver, TConnection, TWrappedMessage}" /> class.
         /// </summary>
         /// <param name="connection">
         /// A connection that governs interaction with messaging entities.
@@ -316,23 +316,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         [DebuggerHidden]
         private String GetEntityPath<TMessage>(MessagingEntityType entityType, IEnumerable<String> pathTokens)
-            where TMessage : class
-        {
-            switch (entityType)
+            where TMessage : class => entityType switch
             {
-                case MessagingEntityType.Queue:
-
-                    return GetQueuePath<TMessage>(pathTokens);
-
-                case MessagingEntityType.Topic:
-
-                    return GetTopicPath<TMessage>(pathTokens);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+                MessagingEntityType.Queue => GetQueuePath<TMessage>(pathTokens),
+                MessagingEntityType.Topic => GetTopicPath<TMessage>(pathTokens),
+                _ => throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.")
+            };
 
         /// <summary>
         /// Returns an entity path for the specified message type.

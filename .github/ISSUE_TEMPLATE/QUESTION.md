@@ -2,7 +2,7 @@
 name: Ask a question
 about: Use this to start a conversation with the team.
 title: ''
-labels: 'Category-Question, Stage0-New, Verdict-Pending'
+labels: 'Category-Question, Stage-0-New, Verdict-Pending'
 ---
 
 # Question

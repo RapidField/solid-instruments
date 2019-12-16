@@ -36,8 +36,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" /> is
-        /// equal to <see cref="MessagingEntityType.Unspecified" />.
+        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" />
+        /// is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
         protected MessageHandler(ICommandMediator mediator, MessageHandlerRole role, MessagingEntityType entityType)
             : base(mediator)
@@ -103,8 +103,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" /> is
-        /// equal to <see cref="MessagingEntityType.Unspecified" />.
+        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" />
+        /// is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
         protected MessageHandler(ICommandMediator mediator, MessageHandlerRole role, MessagingEntityType entityType)
             : base(mediator)

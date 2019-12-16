@@ -89,7 +89,8 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// A value specifying whether or not salt is applied to the plaintext.
         /// </param>
         /// <returns>
-        /// <see langword="true" /> if the resulting hash value matches <paramref name="hash" />, otherwise <see langword="false" />.
+        /// <see langword="true" /> if the resulting hash value matches <paramref name="hash" />, otherwise
+        /// <see langword="false" />.
         /// </returns>
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.

@@ -295,20 +295,12 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     Label = Label
                 };
 
-                switch (EntityType)
+                return EntityType switch
                 {
-                    case MessagingEntityType.Queue:
-
-                        return messagePublishingFacade.PublishToQueueAsync(message);
-
-                    case MessagingEntityType.Topic:
-
-                        return messagePublishingFacade.PublishToTopicAsync(message);
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.");
-                }
+                    MessagingEntityType.Queue => messagePublishingFacade.PublishToQueueAsync(message),
+                    MessagingEntityType.Topic => messagePublishingFacade.PublishToTopicAsync(message),
+                    _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+                };
             }
             catch (MessagePublishingException)
             {

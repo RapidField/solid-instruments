@@ -35,26 +35,12 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions
         /// The resulting <see cref="IRegistrationBuilder{TLimit, TActivatorData, TRegistrationStyle}" />.
         /// </returns>
         [DebuggerHidden]
-        internal static IRegistrationBuilder<Object, TActivatorData, TRegistrationStyle> WithLifetime<TActivatorData, TRegistrationStyle>(this IRegistrationBuilder<Object, TActivatorData, TRegistrationStyle> target, ServiceLifetime lifetime)
+        internal static IRegistrationBuilder<Object, TActivatorData, TRegistrationStyle> WithLifetime<TActivatorData, TRegistrationStyle>(this IRegistrationBuilder<Object, TActivatorData, TRegistrationStyle> target, ServiceLifetime lifetime) => lifetime switch
         {
-            switch (lifetime)
-            {
-                case ServiceLifetime.Singleton:
-
-                    return target.SingleInstance();
-
-                case ServiceLifetime.Scoped:
-
-                    return target.InstancePerLifetimeScope();
-
-                case ServiceLifetime.Transient:
-
-                    return target.InstancePerDependency();
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified service lifetime, {lifetime}, is not supported.");
-            }
-        }
+            ServiceLifetime.Singleton => target.SingleInstance(),
+            ServiceLifetime.Scoped => target.InstancePerLifetimeScope(),
+            ServiceLifetime.Transient => target.InstancePerDependency(),
+            _ => throw new UnsupportedSpecificationException($"The specified service lifetime, {lifetime}, is not supported.")
+        };
     }
 }

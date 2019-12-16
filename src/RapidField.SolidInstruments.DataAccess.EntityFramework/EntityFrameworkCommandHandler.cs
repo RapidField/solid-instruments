@@ -189,7 +189,8 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="EntityFrameworkCommandHandler{TContext, TCommand, TResult}" />.
+        /// Releases all resources consumed by the current
+        /// <see cref="EntityFrameworkCommandHandler{TContext, TCommand, TResult}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

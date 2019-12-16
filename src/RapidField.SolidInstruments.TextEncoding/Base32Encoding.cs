@@ -110,7 +110,8 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="charIndex" /> or <paramref name="charCount" /> or <paramref name="byteIndex" /> is less than zero. -or-
-        /// <paramref name="charIndex" /> and <paramref name="charCount" /> do not denote a valid range in <paramref name="chars" />.
+        /// <paramref name="charIndex" /> and <paramref name="charCount" /> do not denote a valid range in
+        /// <paramref name="chars" />.
         /// -or- <paramref name="byteIndex" /> is not a valid index in <paramref name="bytes" />.
         /// </exception>
         /// <exception cref="DecoderFallbackException">
@@ -215,7 +216,8 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="byteIndex" /> or <paramref name="byteCount" /> or <paramref name="charIndex" /> is less than zero. -or-
-        /// <paramref name="byteIndex" /> and <paramref name="byteCount" /> do not denote a valid range in <paramref name="bytes" />.
+        /// <paramref name="byteIndex" /> and <paramref name="byteCount" /> do not denote a valid range in
+        /// <paramref name="bytes" />.
         /// -or- <paramref name="charIndex" /> is not a valid index in <paramref name="chars" />.
         /// </exception>
         public override Int32 GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)

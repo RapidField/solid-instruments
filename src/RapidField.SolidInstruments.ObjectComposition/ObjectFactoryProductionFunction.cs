@@ -97,7 +97,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         public abstract Object Invoke();
 
         /// <summary>
-        /// Converts the value of the current <see cref="ObjectFactoryProductionFunction" /> to its equivalent string representation.
+        /// Converts the value of the current <see cref="ObjectFactoryProductionFunction" /> to its equivalent string
+        /// representation.
         /// </summary>
         /// <returns>
         /// A string representation of the current <see cref="ObjectFactoryProductionFunction" />.

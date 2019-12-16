@@ -10,6 +10,10 @@ This module exposes shared utility functions for the CI/CD pipeline.
 # Command names
 $CommandNameForPowerShell = "powershell";
 
+<#
+.Synopsis
+Writes the specified error message.
+#>
 Function ComposeError
 {
     Param
@@ -26,6 +30,10 @@ Function ComposeError
     Write-Host -ForegroundColor Red "$Text";
 }
 
+<#
+.Synopsis
+Writes the specified announcement of a finished process.
+#>
 Function ComposeFinish
 {
     Param
@@ -42,6 +50,10 @@ Function ComposeFinish
     Write-Host -ForegroundColor Cyan "$Text`n";
 }
 
+<#
+.Synopsis
+Writes the specified header.
+#>
 Function ComposeHeader
 {
     Param
@@ -59,6 +71,10 @@ Function ComposeHeader
     Write-Host -ForegroundColor Magenta "================================================================================================`n";
 }
 
+<#
+.Synopsis
+Writes the specified text.
+#>
 Function ComposeNormal
 {
     Param
@@ -75,6 +91,10 @@ Function ComposeNormal
     Write-Host -ForegroundColor White "$Text";
 }
 
+<#
+.Synopsis
+Writes the specified announcement of a starting process.
+#>
 Function ComposeStart
 {
     Param
@@ -91,6 +111,10 @@ Function ComposeStart
     Write-Host -ForegroundColor DarkCyan "$Text";
 }
 
+<#
+.Synopsis
+Writes the specified success message.
+#>
 Function ComposeSuccess
 {
     Param
@@ -107,6 +131,10 @@ Function ComposeSuccess
     Write-Host -ForegroundColor Green "$Text";
 }
 
+<#
+.Synopsis
+Writes the specified verbose text.
+#>
 Function ComposeVerbose
 {
     Param
@@ -123,6 +151,10 @@ Function ComposeVerbose
     Write-Host -ForegroundColor DarkGray "  $Text";
 }
 
+<#
+.Synopsis
+Writes the specified warning message.
+#>
 Function ComposeWarning
 {
     Param
@@ -139,6 +171,10 @@ Function ComposeWarning
     Write-Host -ForegroundColor Yellow "$Text";
 }
 
+<#
+.Synopsis
+Starts and awaits a new process.
+#>
 Function ExecuteProcess
 {
     Param
@@ -168,6 +204,10 @@ Function ExecuteProcess
     }
 }
 
+<#
+.Synopsis
+Prompts the user to respond to a question.
+#>
 Function PromptUser
 {
     Param
@@ -191,6 +231,10 @@ Function PromptUser
     Return $null;
 }
 
+<#
+.Synopsis
+Raises an error if the current user is not an administrator.
+#>
 Function RejectNonAdministratorUsers
 {
     $CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent());

@@ -33,8 +33,8 @@ namespace RapidField.SolidInstruments.Messaging
     /// The type of the implementation-specific messaging facade that is used to publish response messages.
     /// </typeparam>
     /// <remarks>
-    /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> is the default implementation
-    /// of <see cref="IMessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
+    /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" /> is the default
+    /// implementation of <see cref="IMessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade}" />.
     /// </remarks>
     public abstract class MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
@@ -94,24 +94,12 @@ namespace RapidField.SolidInstruments.Messaging
                     }
 
                     var requestEntityType = Message.RequestEntityType;
-                    var requestReceiveClient = default(TReceiver);
-
-                    switch (requestEntityType)
+                    var requestReceiveClient = requestEntityType switch
                     {
-                        case MessagingEntityType.Queue:
-
-                            requestReceiveClient = ClientFactory.GetQueueReceiver<TRequestMessage>();
-                            break;
-
-                        case MessagingEntityType.Topic:
-
-                            requestReceiveClient = ClientFactory.GetTopicReceiver<TRequestMessage>(Identifier);
-                            break;
-
-                        default:
-
-                            throw new UnsupportedSpecificationException($"The specified messaging entity type, {requestEntityType}, is not supported.");
-                    }
+                        MessagingEntityType.Queue => ClientFactory.GetQueueReceiver<TRequestMessage>(),
+                        MessagingEntityType.Topic => ClientFactory.GetTopicReceiver<TRequestMessage>(Identifier),
+                        _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {requestEntityType}, is not supported.")
+                    };
 
                     var messageHandler = new Action<TAdaptedMessage>((adaptedRequestMessage) =>
                     {
@@ -433,24 +421,12 @@ namespace RapidField.SolidInstruments.Messaging
                     }
                 }
 
-                var receiveClient = default(TReceiver);
-
-                switch (entityType)
+                var receiveClient = entityType switch
                 {
-                    case MessagingEntityType.Queue:
-
-                        receiveClient = ClientFactory.GetQueueReceiver<TMessage>(pathTokens);
-                        break;
-
-                    case MessagingEntityType.Topic:
-
-                        receiveClient = ClientFactory.GetTopicReceiver<TMessage>(Identifier, pathTokens);
-                        break;
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.");
-                }
+                    MessagingEntityType.Queue => ClientFactory.GetQueueReceiver<TMessage>(pathTokens),
+                    MessagingEntityType.Topic => ClientFactory.GetTopicReceiver<TMessage>(Identifier, pathTokens),
+                    _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
+                };
 
                 var adaptedMessageHandler = new Action<TAdaptedMessage>((adaptedMessage) =>
                 {
@@ -601,46 +577,24 @@ namespace RapidField.SolidInstruments.Messaging
             if (retryPolicy.RetryCount >= attemptCount)
             {
                 var baseDelayDurationInSeconds = retryPolicy.BaseDelayDurationInSeconds.AbsoluteValue();
-                var calculatedDelayDurationInSeconds = default(Int32);
-
-                switch (retryPolicy.DurationScale)
+                var calculatedDelayDurationInSeconds = retryPolicy.DurationScale switch
                 {
-                    case MessageSubscribingRetryDurationScale.Fibonacci:
-
-                        calculatedDelayDurationInSeconds = (Int32)new FibonacciSequence(0, baseDelayDurationInSeconds).ToArray(attemptCount, 1).First();
-                        break;
-
-                    case MessageSubscribingRetryDurationScale.Linear:
-
-                        calculatedDelayDurationInSeconds = baseDelayDurationInSeconds * processingInformation.AttemptCount;
-                        break;
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.");
-                }
+                    MessageSubscribingRetryDurationScale.Fibonacci => (Int32)new FibonacciSequence(0, baseDelayDurationInSeconds).ToArray(attemptCount, 1).First(),
+                    MessageSubscribingRetryDurationScale.Linear => baseDelayDurationInSeconds * processingInformation.AttemptCount,
+                    _ => throw new UnsupportedSpecificationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.")
+                };
 
                 failurePolicyTasks.Add(Task.Delay(TimeSpan.FromSeconds(calculatedDelayDurationInSeconds)));
                 failurePolicyTasks.Add(HandleMessageAsync(messageHandler, message));
             }
             else
             {
-                switch (failurePolicy.SecondaryFailureBehavior)
+                throw failurePolicy.SecondaryFailureBehavior switch
                 {
-                    case MessageSubscribingSecondaryFailureBehavior.Discard:
-
-                        // TODO
-                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
-
-                    case MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue:
-
-                        // TODO
-                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.");
-                }
+                    MessageSubscribingSecondaryFailureBehavior.Discard => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO
+                    MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO
+                    _ => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.")
+                };
             }
 
             if (failurePolicyTasks.Any())

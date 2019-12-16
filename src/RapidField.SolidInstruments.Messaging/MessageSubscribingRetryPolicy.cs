@@ -48,8 +48,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// or zero to employ secondary behavior upon first failure. The default value is three.
         /// </param>
         /// <param name="baseDelayDurationInSeconds">
-        /// The number of seconds to wait between retries, or the duration, in seconds, from which to scale non-linearly. The default
-        /// value is three.
+        /// The number of seconds to wait between retries, or the duration, in seconds, from which to scale non-linearly. The
+        /// default value is three.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="baseDelayDurationInSeconds" /> is less than zero -or- <paramref name="retryCount" /> is less than zero.
@@ -68,8 +68,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// or zero to employ secondary behavior upon first failure. The default value is three.
         /// </param>
         /// <param name="baseDelayDurationInSeconds">
-        /// The number of seconds to wait between retries, or the duration, in seconds, from which to scale non-linearly. The default
-        /// value is three.
+        /// The number of seconds to wait between retries, or the duration, in seconds, from which to scale non-linearly. The
+        /// default value is three.
         /// </param>
         /// <param name="durationScale">
         /// The retry duration scaling behavior employed by subscribers in response to message processing failure. The default value
@@ -136,14 +136,15 @@ namespace RapidField.SolidInstruments.Messaging
         private const Int32 DefaultBaseDelayDurationInSeconds = 3;
 
         /// <summary>
-        /// Represents the default retry duration scaling behavior employed by subscribers in response to message processing failure.
+        /// Represents the default retry duration scaling behavior employed by subscribers in response to message processing
+        /// failure.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const MessageSubscribingRetryDurationScale DefaultDurationScale = MessageSubscribingRetryDurationScale.Fibonacci;
 
         /// <summary>
-        /// Represents the default number of times that subscribers should try to process a failed message before employing secondary
-        /// failure behavior, or zero to employ secondary behavior upon first failure.
+        /// Represents the default number of times that subscribers should try to process a failed message before employing
+        /// secondary failure behavior, or zero to employ secondary behavior upon first failure.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const Int32 DefaultRetryCount = 3;

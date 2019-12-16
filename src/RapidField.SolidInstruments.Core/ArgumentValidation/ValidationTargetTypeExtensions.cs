@@ -41,8 +41,8 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         public static ValidationResult<Type> IsNotSupportedType(this ValidationTarget<Type> target, Type supportedBaseType) => target.IsNotSupportedType(supportedBaseType, null);
 
         /// <summary>
-        /// Raises a new <see cref="UnsupportedTypeArgumentException" /> if the target argument is not contained within the specified
-        /// collection of supported types.
+        /// Raises a new <see cref="UnsupportedTypeArgumentException" /> if the target argument is not contained within the
+        /// specified collection of supported types.
         /// </summary>
         /// <remarks>
         /// This method should be used for argument validation.
@@ -107,8 +107,8 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         }
 
         /// <summary>
-        /// Raises a new <see cref="UnsupportedTypeArgumentException" /> if the target argument is not contained within the specified
-        /// collection of supported types.
+        /// Raises a new <see cref="UnsupportedTypeArgumentException" /> if the target argument is not contained within the
+        /// specified collection of supported types.
         /// </summary>
         /// <remarks>
         /// This method should be used for argument validation.

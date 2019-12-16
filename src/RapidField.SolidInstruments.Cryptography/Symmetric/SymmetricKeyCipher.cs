@@ -68,7 +68,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// is invalid.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="ciphertext" /> is <see langword="null" /> -or- <paramref name="privateKey" /> is <see langword="null" />.
+        /// <paramref name="ciphertext" /> is <see langword="null" /> -or- <paramref name="privateKey" /> is
+        /// <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
         internal PinnedBuffer Decrypt(PinnedBuffer ciphertext, PinnedBuffer privateKey)
@@ -76,20 +77,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             ciphertext.RejectIf().IsNull(nameof(ciphertext)).OrIf(argument => argument.Count() < BlockSizeInBytes, nameof(ciphertext), "The length of the specified ciphertext is invalid for the algorithm.");
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
 
-            switch (Mode)
+            return Mode switch
             {
-                case CryptographicTransform.CipherModeCbc:
-
-                    return DecryptInCbcMode(ciphertext, privateKey);
-
-                case CryptographicTransform.CipherModeEcb:
-
-                    return DecryptInEcbMode(ciphertext, privateKey);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
-            }
+                CryptographicTransform.CipherModeCbc => DecryptInCbcMode(ciphertext, privateKey),
+                CryptographicTransform.CipherModeEcb => DecryptInEcbMode(ciphertext, privateKey),
+                _ => throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.")
+            };
         }
 
         /// <summary>
@@ -122,20 +115,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             plaintext.RejectIf().IsNull(nameof(plaintext));
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
 
-            switch (Mode)
+            return Mode switch
             {
-                case CryptographicTransform.CipherModeCbc:
-
-                    return EncryptInCbcMode(plaintext, privateKey, initializationVector);
-
-                case CryptographicTransform.CipherModeEcb:
-
-                    return EncryptInEcbMode(plaintext, privateKey);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.");
-            }
+                CryptographicTransform.CipherModeCbc => EncryptInCbcMode(plaintext, privateKey, initializationVector),
+                CryptographicTransform.CipherModeEcb => EncryptInEcbMode(plaintext, privateKey),
+                _ => throw new UnsupportedSpecificationException($"The specified cipher mode, {Mode}, is not supported.")
+            };
         }
 
         /// <summary>

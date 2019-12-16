@@ -73,8 +73,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// recorded. The default value is <see langword="null" />.
         /// </param>
         /// <param name="raisedException">
-        /// An exception that was raised during the associated attempt, or <see langword="null" /> if the attempt was successful. The
-        /// default value is <see langword="null" />.
+        /// An exception that was raised during the associated attempt, or <see langword="null" /> if the attempt was successful.
+        /// The default value is <see langword="null" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="attemptEndTimeStamp" /> is equal to the default <see cref="DateTime" /> value.

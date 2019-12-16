@@ -325,7 +325,8 @@ namespace RapidField.SolidInstruments.Core
         public TimeOfDay BeginningOfThisSecond() => new TimeOfDay(Zone, Hour, Minute, Second, 0);
 
         /// <summary>
-        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative values.
+        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative
+        /// values.
         /// </summary>
         /// <param name="other">
         /// The <see cref="TimeOfDay" /> to compare to this instance.

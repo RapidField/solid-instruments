@@ -201,9 +201,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 try
                 {
-                    var responseMessage = WaitForResponse(requestMessageIdentifier) as TResponseMessage;
-
-                    if (responseMessage is null)
+                    if (!(WaitForResponse(requestMessageIdentifier) is TResponseMessage responseMessage))
                     {
                         throw new MessageSubscribingException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
                     }
@@ -315,7 +313,7 @@ namespace RapidField.SolidInstruments.Messaging
         [DebuggerHidden]
         private Boolean TryAddUnprocessedResponse(IResponseMessage responseMessage)
         {
-            if (OutstandingRequests.TryRemove(responseMessage.RequestMessageIdentifier, out var requestMessage))
+            if (OutstandingRequests.TryRemove(responseMessage.RequestMessageIdentifier, out _))
             {
                 if (UnprocessedResponses.TryAdd(responseMessage.RequestMessageIdentifier, responseMessage))
                 {
@@ -415,7 +413,8 @@ namespace RapidField.SolidInstruments.Messaging
         private readonly Lazy<ConcurrentDictionary<Guid, IMessageBase>> LazyOutstandingRequests = new Lazy<ConcurrentDictionary<Guid, IMessageBase>>(() => new ConcurrentDictionary<Guid, IMessageBase>(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
-        /// Represents a lazily-initialized collection of unprocessed response messages that are keyed by request message identifier.
+        /// Represents a lazily-initialized collection of unprocessed response messages that are keyed by request message
+        /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<ConcurrentDictionary<Guid, IResponseMessage>> LazyUnprocessedResponses = new Lazy<ConcurrentDictionary<Guid, IResponseMessage>>(() => new ConcurrentDictionary<Guid, IResponseMessage>(), LazyThreadSafetyMode.ExecutionAndPublication);

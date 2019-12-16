@@ -48,8 +48,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.Repositories
         /// The name to find.
         /// </param>
         /// <returns>
-        /// The <see cref="NumberSeries" /> with the specified name, or <see langword="null" /> if the <see cref="NumberSeries" /> is
-        /// not found.
+        /// The <see cref="NumberSeries" /> with the specified name, or <see langword="null" /> if the <see cref="NumberSeries" />
+        /// is not found.
         /// </returns>
         public NumberSeries FindByName(String name) => FindWhere(entity => entity.Name == name).SingleOrDefault();
     }

@@ -54,23 +54,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates receive operations.
         /// </returns>
-        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName)
+        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName) => entityType switch
         {
-            switch (entityType)
-            {
-                case MessagingEntityType.Queue:
-
-                    return CreateQueueClient<TMessage>(connection, entityPath);
-
-                case MessagingEntityType.Topic:
-
-                    return CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+            MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
+            MessagingEntityType.Topic => CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName),
+            _ => throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.")
+        };
 
         /// <summary>
         /// Creates a new implementation-specific client that facilitates send operations.
@@ -90,23 +79,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates send operations.
         /// </returns>
-        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath)
+        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath) => entityType switch
         {
-            switch (entityType)
-            {
-                case MessagingEntityType.Queue:
-
-                    return CreateQueueClient<TMessage>(connection, entityPath);
-
-                case MessagingEntityType.Topic:
-
-                    return CreateTopicClient<TMessage>(connection, entityPath);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+            MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
+            MessagingEntityType.Topic => CreateTopicClient<TMessage>(connection, entityPath),
+            _ => throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.")
+        };
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="AzureServiceBusClientFactory" />.

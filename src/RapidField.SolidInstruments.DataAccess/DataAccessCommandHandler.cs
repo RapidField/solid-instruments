@@ -64,9 +64,9 @@ namespace RapidField.SolidInstruments.DataAccess
                 {
                     Repositories.Dispose();
 
-                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by a
-                    // consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes may
-                    // initialize transactions in their constructors and thereby rely on this class to manage them.
+                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                    // a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                    // may initialize transactions in their constructors and thereby rely on this class to manage them.
                     Transaction.Dispose();
                 }
             }
@@ -205,9 +205,9 @@ namespace RapidField.SolidInstruments.DataAccess
                 {
                     Repositories.Dispose();
 
-                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by a
-                    // consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes may
-                    // initialize transactions in their constructors and thereby rely on this class to manage them.
+                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                    // a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                    // may initialize transactions in their constructors and thereby rely on this class to manage them.
                     Transaction.Dispose();
                 }
             }
