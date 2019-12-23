@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This library exposes useful collection types and features, including: circular buffers, infinite sequences, pinned buffers, tree composition and traversal.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>

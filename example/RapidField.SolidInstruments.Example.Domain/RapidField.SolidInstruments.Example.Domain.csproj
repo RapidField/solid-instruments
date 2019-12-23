@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This project houses sample domain machinery that utilizes Solid Instruments data access and messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

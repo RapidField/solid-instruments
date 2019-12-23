@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 return block;
             }
 
-            var paddingLengthInBytes = block[block.Length - 1];
+            var paddingLengthInBytes = block[^1];
 
             if (paddingLengthInBytes > blockSizeInBytes)
             {

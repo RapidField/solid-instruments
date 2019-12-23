@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This library exposes the Autofac implementation of Solid Instrument's inversion of control abstraction.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
@@ -38,8 +38,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Autofac" Version="4.9.4" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" Version="$(BuildVersion)" />

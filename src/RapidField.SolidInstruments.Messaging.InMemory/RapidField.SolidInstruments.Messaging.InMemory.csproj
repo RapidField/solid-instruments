@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This library provides in-memory implementations of the Solid Instruments messaging abstractions.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
