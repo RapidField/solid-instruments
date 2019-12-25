@@ -357,7 +357,7 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : IMessageBase
         {
             var attemptStartTimeStamp = TimeStamp.Current;
-            var raisedException = (Exception)null;
+            Exception raisedException;
 
             try
             {
