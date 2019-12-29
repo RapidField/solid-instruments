@@ -43,8 +43,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -52,7 +51,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var action = new Action(() =>
@@ -120,8 +119,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -129,7 +127,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var result = target.Get<Instrument>();
@@ -195,8 +193,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -204,7 +201,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var resultOne = target.Get<Instrument>();
@@ -274,8 +271,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -283,7 +279,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var resultOne = target.Get<Instrument>();
@@ -353,8 +349,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -362,7 +357,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var action = new Action(() =>
@@ -432,8 +427,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -441,7 +435,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var resultOne = target.GetNew<Instrument>();
@@ -509,8 +503,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -518,7 +511,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var result = target.GetNew<Instrument>();
@@ -582,8 +575,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void InstanceTypes_ShouldReturnConfiguredTypes_UsingFactoryConfiguration()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-            var objectFactory = new SimulatedInstrumentFactory(configuration);
+            var objectFactory = new SimulatedInstrumentFactory();
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
@@ -591,7 +583,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                     .Add<Instrument, SimulatedInstrument>();
             });
 
-            using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
+            using (var target = new ObjectContainer(objectFactory, definitionConfigurator))
             {
                 // Act.
                 var instanceTypes = target.InstanceTypes;

@@ -6,3 +6,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Collections.UnitTests")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.ObjectComposition")]

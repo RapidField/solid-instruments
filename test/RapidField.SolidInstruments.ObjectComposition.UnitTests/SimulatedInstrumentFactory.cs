@@ -18,6 +18,15 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulatedInstrumentFactory" /> class.
         /// </summary>
+        public SimulatedInstrumentFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedInstrumentFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>

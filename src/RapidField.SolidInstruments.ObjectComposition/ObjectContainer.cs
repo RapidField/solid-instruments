@@ -37,7 +37,26 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see langword="null" />.
         /// </exception>
         public ObjectContainer(Action<ObjectFactoryConfigurationProductionFunctions> factoryConfigurator, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator)
-            : this(DefaultConfiguration, InitializeFactory(DefaultConfiguration, factoryConfigurator.RejectIf().IsNull()), definitionConfigurator, false)
+            : this(InitializeFactory(DefaultConfiguration, factoryConfigurator.RejectIf().IsNull()), definitionConfigurator)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectContainer" /> class.
+        /// </summary>
+        /// <param name="factory">
+        /// A factory that produces objects for the container.
+        /// </param>
+        /// <param name="definitionConfigurator">
+        /// An action that configures the request-product type pair definitions for the container.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definitionConfigurator" /> is <see langword="null" /> -or- <paramref name="factory" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        public ObjectContainer(IObjectFactory factory, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator)
+            : this(DefaultConfiguration, factory, definitionConfigurator, false)
         {
             return;
         }
@@ -256,15 +275,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
-        /// Initializes a default <see cref="IConfiguration" /> instance.
-        /// </summary>
-        /// <returns>
-        /// A default <see cref="IConfiguration" /> instance.
-        /// </returns>
-        [DebuggerHidden]
-        private static IConfiguration InitializeDefaultConfiguration() => new ConfigurationBuilder().Build();
-
-        /// <summary>
         /// Initializes and configures a new <see cref="IObjectFactory" /> for the container.
         /// </summary>
         /// <param name="applicationConfiguration">
@@ -331,12 +341,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         public IEnumerable<Type> InstanceTypes => Configuration.Definitions.Registrations.Keys;
 
         /// <summary>
-        /// Gets a default <see cref="IConfiguration" /> instance.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static IConfiguration DefaultConfiguration => LazyDefaultConfiguration.Value;
-
-        /// <summary>
         /// Gets a collection of managed object instances.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -350,12 +354,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private FactoryProducedInstanceGroup InstanceGroup => LazyInstanceGroup.Value;
-
-        /// <summary>
-        /// Represents a lazily-initialized default <see cref="IConfiguration" /> instance.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IConfiguration> LazyDefaultConfiguration = new Lazy<IConfiguration>(InitializeDefaultConfiguration, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Represents an action that configures the request-product type pair definitions for the container.

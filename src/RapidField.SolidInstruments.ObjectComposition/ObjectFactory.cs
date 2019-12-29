@@ -24,6 +24,15 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactory" /> class.
         /// </summary>
+        protected ObjectFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -72,6 +81,15 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// </typeparam>
     public abstract class ObjectFactory<TProductBase> : ConfigurableInstrument<ObjectFactoryConfiguration<TProductBase>>, IObjectFactory<TProductBase>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactory{TProductBase}" /> class.
+        /// </summary>
+        protected ObjectFactory()
+            : this(DefaultConfiguration)
+        {
+            return;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactory{TProductBase}" /> class.
         /// </summary>

@@ -18,6 +18,15 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulatedEncodingFactory" /> class.
         /// </summary>
+        public SimulatedEncodingFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedEncodingFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>

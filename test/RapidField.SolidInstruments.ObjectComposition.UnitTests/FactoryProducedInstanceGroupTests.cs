@@ -17,9 +17,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldRaiseArgumentException_ForUnsupportedTypes()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var factory = new SimulatedInstrumentFactory(configuration))
+            using (var factory = new SimulatedInstrumentFactory())
             {
                 using (var target = new FactoryProducedInstanceGroup(factory))
                 {
@@ -39,9 +37,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnValidInstance_ForSupportedTypes()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var factory = new SimulatedInstrumentFactory(configuration))
+            using (var factory = new SimulatedInstrumentFactory())
             {
                 using (var target = new FactoryProducedInstanceGroup(factory))
                 {
@@ -59,9 +55,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetLazy_ShouldReturnValidInstance_ForSupportedTypes()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var factory = new SimulatedInstrumentFactory(configuration))
+            using (var factory = new SimulatedInstrumentFactory())
             {
                 using (var target = new FactoryProducedInstanceGroup(factory))
                 {

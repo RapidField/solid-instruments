@@ -65,6 +65,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// </exception>
         [DebuggerHidden]
         internal ObjectFactoryConfiguration(ObjectFactoryConfigurationProductionFunctions<TProductBase> productionFunctions)
+            : base()
         {
             ProductionFunctions = productionFunctions.RejectIf().IsNull(nameof(productionFunctions));
         }

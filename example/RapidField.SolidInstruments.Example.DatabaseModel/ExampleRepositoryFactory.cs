@@ -19,18 +19,33 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ExampleRepositoryFactory" /> class.
         /// </summary>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the application.
-        /// </param>
         /// <param name="context">
         /// The database session that is used by the produced repositories.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="context" /> is
+        /// <paramref name="context" /> is <see langword="null" />.
+        /// </exception>
+        public ExampleRepositoryFactory(ExampleContext context)
+            : base(context)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExampleRepositoryFactory" /> class.
+        /// </summary>
+        /// <param name="context">
+        /// The database session that is used by the produced repositories.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="context" /> is <see langword="null" /> -or- <paramref name="applicationConfiguration" /> is
         /// <see langword="null" />.
         /// </exception>
-        public ExampleRepositoryFactory(IConfiguration applicationConfiguration, ExampleContext context)
-            : base(applicationConfiguration, context)
+        public ExampleRepositoryFactory(ExampleContext context, IConfiguration applicationConfiguration)
+            : base(context, applicationConfiguration)
         {
             return;
         }

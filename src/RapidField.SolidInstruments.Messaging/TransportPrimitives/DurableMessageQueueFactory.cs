@@ -19,6 +19,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="DurableMessageQueueFactory" /> class.
         /// </summary>
+        protected DurableMessageQueueFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DurableMessageQueueFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
