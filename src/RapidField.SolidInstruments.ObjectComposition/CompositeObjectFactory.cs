@@ -67,6 +67,14 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             return;
         }
+
+        /// <summary>
+        /// Releases all resources consumed by the current <see cref="CompositeObjectFactory" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
     }
 
     /// <summary>

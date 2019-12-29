@@ -7,7 +7,8 @@ using System;
 namespace RapidField.SolidInstruments.ObjectComposition
 {
     /// <summary>
-    /// Represents an exception that is raised by an <see cref="IObjectFactory" /> instance during object production.
+    /// Represents an exception that is raised by an <see cref="IObjectFactory" /> or an <see cref="IObjectContainer" /> instance
+    /// during object production.
     /// </summary>
     public class ObjectProductionException : Exception
     {

@@ -37,6 +37,22 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
+        /// Configures the current <see cref="ObjectFactory" />.
+        /// </summary>
+        /// <param name="configuration">
+        /// Configuration information for the current <see cref="ObjectFactory" />.
+        /// </param>
+        protected abstract void Configure(ObjectFactoryConfiguration configuration);
+
+        /// <summary>
+        /// Configures the current <see cref="ObjectFactory" />.
+        /// </summary>
+        /// <param name="configuration">
+        /// Configuration information for the current <see cref="ObjectFactory" />.
+        /// </param>
+        protected sealed override void Configure(ObjectFactoryConfiguration<Object> configuration) => Configure(new ObjectFactoryConfiguration(configuration));
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory" />.
         /// </summary>
         /// <param name="disposing">
@@ -138,7 +154,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerHidden]
-        internal virtual ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions() => Configuration.ProductionFunctions.Functions;
+        internal virtual ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions() => Configuration.ProductionFunctions.Dictionary;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory{TProductBase}" />.

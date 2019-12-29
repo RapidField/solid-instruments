@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -9,21 +10,66 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.ObjectComposition
 {
     /// <summary>
+    /// Represents a collection of configured types and functions that produce them using an <see cref="ObjectFactory" />.
+    /// </summary>
+    public sealed class ObjectFactoryConfigurationProductionFunctions : ObjectFactoryConfigurationProductionFunctions<Object>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactoryConfigurationProductionFunctions" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        internal ObjectFactoryConfigurationProductionFunctions()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactoryConfiguration" /> class.
+        /// </summary>
+        /// <param name="functions">
+        /// Configured types that are wrapped by the new functions.
+        /// </param>
+        [DebuggerHidden]
+        internal ObjectFactoryConfigurationProductionFunctions(ObjectFactoryConfigurationProductionFunctions<Object> functions)
+            : base(functions.Dictionary)
+        {
+            return;
+        }
+    }
+
+    /// <summary>
     /// Represents a collection of configured types and functions that produce them using an
     /// <see cref="ObjectFactory{TProductBase}" />.
     /// </summary>
     /// <typeparam name="TProductBase">
     /// The base type from which objects produced by the associated factory derive.
     /// </typeparam>
-    public sealed class ObjectFactoryConfigurationProductionFunctions<TProductBase>
+    public class ObjectFactoryConfigurationProductionFunctions<TProductBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactoryConfigurationProductionFunctions{TProductBase}" /> class.
         /// </summary>
         [DebuggerHidden]
         internal ObjectFactoryConfigurationProductionFunctions()
+            : this(new ConcurrentDictionary<Type, ObjectFactoryProductionFunction>())
         {
-            Functions = new ConcurrentDictionary<Type, ObjectFactoryProductionFunction>();
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactoryConfigurationProductionFunctions{TProductBase}" /> class.
+        /// </summary>
+        /// <param name="dictionary">
+        /// A collection of functions that produce an output.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="dictionary" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal ObjectFactoryConfigurationProductionFunctions(ConcurrentDictionary<Type, ObjectFactoryProductionFunction> dictionary)
+        {
+            Dictionary = dictionary.RejectIf().IsNull(nameof(dictionary));
         }
 
         /// <summary>
@@ -46,7 +92,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             var productType = typeof(TProduct);
 
-            if (Functions.TryAdd(productType, new ObjectFactoryProductionFunction<TProduct>(function)))
+            if (Dictionary.TryAdd(productType, new ObjectFactoryProductionFunction<TProduct>(function)))
             {
                 return this;
             }
@@ -58,6 +104,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Represents a collection of functions that produce an output.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly ConcurrentDictionary<Type, ObjectFactoryProductionFunction> Functions;
+        internal readonly ConcurrentDictionary<Type, ObjectFactoryProductionFunction> Dictionary;
     }
 }
