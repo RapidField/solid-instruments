@@ -15,7 +15,32 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
     public class ObjectContainerTests
     {
         [TestMethod]
-        public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfigurationConstructor()
+        public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var action = new Action(() =>
+                    {
+                        target.Get<ReferenceManager>();
+                    });
+
+                    // Assert.
+                    action.Should().Throw<ArgumentException>();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -23,8 +48,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -41,18 +66,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfigurationConstructor()
+        public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -69,7 +94,30 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfigurationConstructor()
+        public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var result = target.Get<Instrument>();
+
+                    // Assert.
+                    result.Should().NotBeNull();
+                    result.Should().BeOfType<SimulatedInstrument>();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -77,8 +125,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -93,18 +141,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfigurationConstructor()
+        public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -119,7 +167,32 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingFactoryConfigurationConstructor()
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var resultOne = target.Get<Instrument>();
+                    var resultTwo = target.Get<SimulatedInstrument>();
+
+                    // Assert.
+                    resultOne.Should().NotBeNull();
+                    resultTwo.Should().NotBeNull();
+                    resultOne.Should().BeSameAs(resultTwo);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -127,8 +200,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -145,18 +218,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingManualConfigurationConstructor()
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -173,7 +246,32 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingFactoryConfigurationConstructor()
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var resultOne = target.Get<Instrument>();
+                    var resultTwo = target.Get<Instrument>();
+
+                    // Assert.
+                    resultOne.Should().NotBeNull();
+                    resultTwo.Should().NotBeNull();
+                    resultOne.Should().BeSameAs(resultTwo);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -181,8 +279,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -199,18 +297,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingManualConfigurationConstructor()
+        public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -227,7 +325,32 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfigurationConstructor()
+        public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var action = new Action(() =>
+                    {
+                        target.GetNew<ReferenceManager>();
+                    });
+
+                    // Assert.
+                    action.Should().Throw<ArgumentException>();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -235,8 +358,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -253,18 +376,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfigurationConstructor()
+        public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -281,7 +404,32 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingFactoryConfigurationConstructor()
+        public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var resultOne = target.GetNew<Instrument>();
+                    var resultTwo = target.GetNew<Instrument>();
+
+                    // Assert.
+                    resultOne.Should().NotBeNull();
+                    resultTwo.Should().NotBeNull();
+                    resultOne.Should().NotBeSameAs(resultTwo);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -289,8 +437,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -307,18 +455,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingManualConfigurationConstructor()
+        public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -335,7 +483,30 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfigurationConstructor()
+        public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var result = target.GetNew<Instrument>();
+
+                    // Assert.
+                    result.Should().NotBeNull();
+                    result.Should().BeOfType<SimulatedInstrument>();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -343,8 +514,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -359,18 +530,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfigurationConstructor()
+        public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))
@@ -385,7 +556,30 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void InstanceTypes_ShouldReturnConfiguredTypes_UsingFactoryConfigurationConstructor()
+        public void InstanceTypes_ShouldReturnConfiguredTypes_UsingBuilderConfiguration()
+        {
+            using (var builder = new ObjectContainerBuilder())
+            {
+                // Arrange.
+                var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                builder
+                    .ConfigureProductType(productionFunction)
+                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+
+                using (var target = builder.ToResult())
+                {
+                    // Act.
+                    var instanceTypes = target.InstanceTypes;
+
+                    // Assert.
+                    instanceTypes.Should().Contain(typeof(Instrument));
+                    instanceTypes.Should().Contain(typeof(SimulatedInstrument));
+                }
+            }
+        }
+
+        [TestMethod]
+        public void InstanceTypes_ShouldReturnConfiguredTypes_UsingFactoryConfiguration()
         {
             // Arrange.
             var configuration = new ConfigurationBuilder().Build();
@@ -393,8 +587,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(configuration, objectFactory, definitionConfigurator))
@@ -409,18 +603,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         }
 
         [TestMethod]
-        public void InstanceTypes_ShouldReturnConfiguredTypes_UsingManualConfigurationConstructor()
+        public void InstanceTypes_ShouldReturnConfiguredTypes_UsingManualConfiguration()
         {
             // Arrange.
             var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
-                functions.Define(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
+                functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
             var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
-                    .Register<SimulatedInstrument>()
-                    .Register<Instrument, SimulatedInstrument>();
+                    .Add<SimulatedInstrument>()
+                    .Add<Instrument, SimulatedInstrument>();
             });
 
             using (var target = new ObjectContainer(factoryConfigurator, definitionConfigurator))

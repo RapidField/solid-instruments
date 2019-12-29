@@ -10,9 +10,9 @@ namespace RapidField.SolidInstruments.Core
     /// Represents an object that configures and produces new <typeparamref name="TResult" /> instances.
     /// </summary>
     /// <typeparam name="TResult">
-    /// The output type that results from the invocation of <see cref="IBuilder{TResult}.Build" />.
+    /// The output type that results from the invocation of <see cref="IObjectBuilder{TResult}.ToResult" />.
     /// </typeparam>
-    public interface IBuilder<TResult> : IDisposable
+    public interface IObjectBuilder<TResult> : IDisposable
         where TResult : class
     {
         /// <summary>
@@ -21,6 +21,9 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// The configured <typeparamref name="TResult" /> instance.
         /// </returns>
-        TResult Build();
+        /// <exception cref="ObjectBuilderException">
+        /// An exception was raised during finalization of the builder.
+        /// </exception>
+        TResult ToResult();
     }
 }

@@ -39,8 +39,8 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         {
             configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
             configuration.ProductionFunctions
-                .Define(() => new SimulatedBarRepository(BarData))
-                .Define(() => new SimulatedFooRepository(FooData));
+                .Add(() => new SimulatedBarRepository(BarData))
+                .Add(() => new SimulatedFooRepository(FooData));
         }
 
         /// <summary>

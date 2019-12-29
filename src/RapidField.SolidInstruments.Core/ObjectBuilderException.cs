@@ -7,16 +7,16 @@ using System;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents an exception that is raised when an error occurs during configuration of a
-    /// <see cref="ConfigurableInstrument{TConfiguration}" /> instance.
+    /// Represents an exception that is raised when an error occurs during configuration or finalization of an
+    /// <see cref="IObjectBuilder{TResult}" /> instance.
     /// </summary>
-    public class ObjectConfigurationException : Exception
+    public class ObjectBuilderException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectConfigurationException" /> class.
         /// </summary>
-        public ObjectConfigurationException()
-            : this(instrumentType: null)
+        public ObjectBuilderException()
+            : this(builderType: null)
         {
             return;
         }
@@ -24,11 +24,11 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectConfigurationException" />
         /// </summary>
-        /// <param name="instrumentType">
-        /// The type of the <see cref="ConfigurableInstrument{TConfiguration}" /> that raised the exception.
+        /// <param name="builderType">
+        /// The type of the <see cref="IObjectBuilder{TResult}" /> that raised the exception.
         /// </param>
-        public ObjectConfigurationException(Type instrumentType)
-            : this(instrumentType: instrumentType, innerException: null)
+        public ObjectBuilderException(Type builderType)
+            : this(builderType: builderType, innerException: null)
         {
             return;
         }
@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="message">
         /// The error message that explains the reason for the exception.
         /// </param>
-        public ObjectConfigurationException(String message)
+        public ObjectBuilderException(String message)
             : this(message: message, innerException: null)
         {
             return;
@@ -48,16 +48,16 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectConfigurationException" />
         /// </summary>
-        /// <param name="instrumentType">
-        /// The type of the <see cref="ConfigurableInstrument{TConfiguration}" /> that raised the exception.
+        /// <param name="builderType">
+        /// The type of the <see cref="IObjectBuilder{TResult}" /> that raised the exception.
         /// </param>
         /// <param name="innerException">
         /// The exception that is the cause of the current exception.
         /// </param>
-        public ObjectConfigurationException(Type instrumentType, Exception innerException)
-            : this(instrumentType is null ? "An exception was raised during configuration of an instance." : $"An exception was raised during configuration of an instance of type {instrumentType.FullName}.", innerException)
+        public ObjectBuilderException(Type builderType, Exception innerException)
+            : this(builderType is null ? "An exception was raised during configuration finalization of an instance." : $"An exception was raised during configuration or finalization of an instance of type {builderType.FullName}.", innerException)
         {
-            InstrumentType = instrumentType;
+            BuilderType = builderType;
         }
 
         /// <summary>
@@ -69,16 +69,16 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="innerException">
         /// The exception that is the cause of the current exception.
         /// </param>
-        public ObjectConfigurationException(String message, Exception innerException)
+        public ObjectBuilderException(String message, Exception innerException)
             : base(message, innerException)
         {
             return;
         }
 
         /// <summary>
-        /// Gets the type of the <see cref="ConfigurableInstrument{TConfiguration}" /> that raised the exception.
+        /// Gets the type of the <see cref="IObjectBuilder{TResult}" /> that raised the exception.
         /// </summary>
-        public Type InstrumentType
+        public Type BuilderType
         {
             get;
         }

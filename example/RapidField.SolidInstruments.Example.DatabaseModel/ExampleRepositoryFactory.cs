@@ -45,8 +45,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// The database session that is used by the produced repositories.
         /// </param>
         protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration, ExampleContext context) => configuration.ProductionFunctions
-            .Define(() => new NumberRepository(context))
-            .Define(() => new NumberSeriesNumberRepository(context))
-            .Define(() => new NumberSeriesRepository(context));
+            .Add(() => new NumberRepository(context))
+            .Add(() => new NumberSeriesNumberRepository(context))
+            .Add(() => new NumberSeriesRepository(context));
     }
 }

@@ -26,18 +26,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <summary>
         /// Registers the specified product type with the associated <see cref="IObjectContainer" />.
         /// </summary>
-        /// <typeparam name="TProduct">
-        /// The type that is registered for production by the container.
-        /// </typeparam>
-        /// <exception cref="ArgumentException">
-        /// A definition already exists for <typeparamref name="TProduct" />.
-        /// </exception>
-        public ObjectContainerConfigurationDefinitions Register<TProduct>()
-            where TProduct : class => Register<TProduct, TProduct>();
-
-        /// <summary>
-        /// Registers the specified product type with the associated <see cref="IObjectContainer" />.
-        /// </summary>
         /// <typeparam name="TRequest">
         /// The request type that identifies the registration.
         /// </typeparam>
@@ -47,7 +35,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ArgumentException">
         /// A definition already exists for <typeparamref name="TRequest" />.
         /// </exception>
-        public ObjectContainerConfigurationDefinitions Register<TRequest, TProduct>()
+        public ObjectContainerConfigurationDefinitions Add<TRequest, TProduct>()
+            where TRequest : class
             where TProduct : class, TRequest
         {
             var requestType = typeof(TRequest);
@@ -60,6 +49,18 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
             throw new ArgumentException($"A definition already exists for the specified request type, {requestType.FullName}.", nameof(TRequest));
         }
+
+        /// <summary>
+        /// Registers the specified product type with the associated <see cref="IObjectContainer" />.
+        /// </summary>
+        /// <typeparam name="TProduct">
+        /// The type that is registered for production by the container.
+        /// </typeparam>
+        /// <exception cref="ArgumentException">
+        /// A definition already exists for <typeparamref name="TProduct" />.
+        /// </exception>
+        public ObjectContainerConfigurationDefinitions Add<TProduct>()
+            where TProduct : class => Add<TProduct, TProduct>();
 
         /// <summary>
         /// Represents a collection of request-product type pairs that constitute the definitions.

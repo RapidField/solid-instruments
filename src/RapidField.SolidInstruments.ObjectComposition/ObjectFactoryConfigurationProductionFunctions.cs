@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ArgumentNullException">
         /// <paramref name="function" /> is <see langword="null" />.
         /// </exception>
-        public ObjectFactoryConfigurationProductionFunctions<TProductBase> Define<TProduct>(Func<TProduct> function)
+        public ObjectFactoryConfigurationProductionFunctions<TProductBase> Add<TProduct>(Func<TProduct> function)
             where TProduct : class, TProductBase
         {
             var productType = typeof(TProduct);
