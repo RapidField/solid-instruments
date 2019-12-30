@@ -38,8 +38,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder ConfigureProductType<TProduct>()
-            where TProduct : class, new() => ConfigureProductType(() => new TProduct());
+        public ObjectContainerBuilder Configure<TProduct>()
+            where TProduct : class, new() => Configure(() => new TProduct());
 
         /// <summary>
         /// Configures the <see cref="IObjectContainer" /> to support production of <typeparamref name="TProduct" />.
@@ -59,8 +59,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder ConfigureProductType<TProduct>(Func<TProduct> productionFunction)
-            where TProduct : class => ConfigureRequestProductTypePair<TProduct, TProduct>(productionFunction);
+        public ObjectContainerBuilder Configure<TProduct>(Func<TProduct> productionFunction)
+            where TProduct : class => Configure<TProduct, TProduct>(productionFunction);
 
         /// <summary>
         /// Configures the <see cref="IObjectContainer" /> to support production of <typeparamref name="TProduct" /> in response to
@@ -78,9 +78,9 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder ConfigureRequestProductTypePair<TRequest, TProduct>()
+        public ObjectContainerBuilder Configure<TRequest, TProduct>()
             where TRequest : class
-            where TProduct : class, TRequest, new() => ConfigureRequestProductTypePair<TRequest, TProduct>(() => new TProduct());
+            where TProduct : class, TRequest, new() => Configure<TRequest, TProduct>(() => new TProduct());
 
         /// <summary>
         /// Configures the <see cref="IObjectContainer" /> to support production of <typeparamref name="TProduct" /> in response to
@@ -104,7 +104,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder ConfigureRequestProductTypePair<TRequest, TProduct>(Func<TProduct> productionFunction)
+        public ObjectContainerBuilder Configure<TRequest, TProduct>(Func<TProduct> productionFunction)
             where TRequest : class
             where TProduct : class, TRequest
         {

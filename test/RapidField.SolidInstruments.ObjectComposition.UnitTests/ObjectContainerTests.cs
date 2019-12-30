@@ -22,8 +22,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -100,8 +100,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -172,8 +172,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -250,8 +250,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -328,8 +328,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -406,8 +406,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -484,8 +484,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
@@ -556,8 +556,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 // Arrange.
                 var productionFunction = new Func<SimulatedInstrument>(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
                 builder
-                    .ConfigureProductType(productionFunction)
-                    .ConfigureRequestProductTypePair<Instrument, SimulatedInstrument>(productionFunction);
+                    .Configure(productionFunction)
+                    .Configure<Instrument, SimulatedInstrument>(productionFunction);
 
                 using (var target = builder.ToResult())
                 {
