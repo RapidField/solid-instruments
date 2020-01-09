@@ -17,10 +17,13 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// Represents hash values for an ordered series of data block objects and produces a deterministic root hash using a Merkle
     /// tree.
     /// </summary>
+    /// <remarks>
+    /// <see cref="HashTree{TBlock}" /> is the default implementation of <see cref="IHashTree{TBlock}" />.
+    /// </remarks>
     /// <typeparam name="TBlock">
     /// The type of the data block objects underlying the hash tree.
     /// </typeparam>
-    public class HashTree<TBlock> : Instrument
+    public class HashTree<TBlock> : Instrument, IHashTree<TBlock>
         where TBlock : class
     {
         /// <summary>

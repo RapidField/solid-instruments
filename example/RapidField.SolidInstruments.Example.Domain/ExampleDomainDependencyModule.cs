@@ -46,9 +46,9 @@ namespace RapidField.SolidInstruments.Example.Domain
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register queue subscribers.
-            configurator.AddTransient<IMessageSubscriber<ApplicationStartingMessage>, ApplicationStartingMessageSubscriber>();
-            configurator.AddTransient<IMessageSubscriber<ApplicationStoppingMessage>, ApplicationStoppingMessageSubscriber>();
-            configurator.AddTransient<IMessageSubscriber<ExceptionRaisedMessage>, ExceptionRaisedMessageSubscriber>();
+            configurator.AddTransient<IMessageSubscriber<ApplicationStartedEventMessage>, ApplicationStartedEventMessageSubscriber>();
+            configurator.AddTransient<IMessageSubscriber<ApplicationStoppedEventMessage>, ApplicationStoppedEventMessageSubscriber>();
+            configurator.AddTransient<IMessageSubscriber<ExceptionRaisedEventMessage>, ExceptionRaisedEventMessageSubscriber>();
 
             // Register topic subscribers.
             configurator.AddTransient<IMessageSubscriber<HeartbeatMessage>, HeartbeatMessageSubscriber>();

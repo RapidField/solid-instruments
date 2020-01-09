@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Cryptography
     /// <summary>
     /// Represents a fixed-length bit field that is pinned in memory and encrypted at rest.
     /// </summary>
-    public class SecureBuffer : Instrument
+    public class SecureBuffer : Instrument, ISecureBuffer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SecureBuffer" /> class.

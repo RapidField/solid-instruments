@@ -15,10 +15,13 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a thread-safe, contiguous, generic collection of elements.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CircularBuffer{T}" /> is the default implementation of <see cref="ICircularBuffer{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The element type of the collection.
     /// </typeparam>
-    public class CircularBuffer<T> : Instrument, IEnumerable<T>, IEnumerable
+    public class CircularBuffer<T> : Instrument, ICircularBuffer<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class.

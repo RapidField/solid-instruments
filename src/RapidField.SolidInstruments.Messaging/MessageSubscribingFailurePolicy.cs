@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see cref="MessageSubscribingSecondaryFailureBehavior.Unspecified" />.
         /// </exception>
         public MessageSubscribingFailurePolicy(MessageSubscribingRetryPolicy retryPolicy, MessageSubscribingSecondaryFailureBehavior secondaryFailureBehavior)
-            : this(retryPolicy, secondaryFailureBehavior, DefaultPublishExceptionRaisedMessage)
+            : this(retryPolicy, secondaryFailureBehavior, DefaultPublishExceptionRaisedEventMessage)
         {
             return;
         }
@@ -76,9 +76,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// The failure behavior that is employed after the retry policy is exhausted. The default value is
         /// <see cref="MessageSubscribingSecondaryFailureBehavior.RouteToDeadLetterQueue" />.
         /// </param>
-        /// <param name="publishExceptionRaisedMessage">
-        /// A value indicating whether or not subscribers should publish <see cref="ExceptionRaisedMessage" /> instances when an
-        /// exception is raised during message processing. The default value is <see langword="false" />.
+        /// <param name="publishExceptionRaisedEventMessage">
+        /// A value indicating whether or not subscribers should publish <see cref="ExceptionRaisedEventMessage" /> instances when
+        /// an exception is raised during message processing. The default value is <see langword="false" />.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="retryPolicy" /> is <see langword="null" />.
@@ -87,19 +87,19 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="secondaryFailureBehavior" /> is equal to
         /// <see cref="MessageSubscribingSecondaryFailureBehavior.Unspecified" />.
         /// </exception>
-        public MessageSubscribingFailurePolicy(MessageSubscribingRetryPolicy retryPolicy, MessageSubscribingSecondaryFailureBehavior secondaryFailureBehavior, Boolean publishExceptionRaisedMessage)
+        public MessageSubscribingFailurePolicy(MessageSubscribingRetryPolicy retryPolicy, MessageSubscribingSecondaryFailureBehavior secondaryFailureBehavior, Boolean publishExceptionRaisedEventMessage)
         {
-            PublishExceptionRaisedMessage = publishExceptionRaisedMessage;
+            PublishExceptionRaisedEventMessage = publishExceptionRaisedEventMessage;
             RetryPolicy = retryPolicy.RejectIf().IsNull(nameof(retryPolicy));
             SecondaryFailureBehavior = secondaryFailureBehavior.RejectIf().IsEqualToValue(MessageSubscribingSecondaryFailureBehavior.Unspecified, nameof(secondaryFailureBehavior));
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not subscribers should publish <see cref="ExceptionRaisedMessage" />
+        /// Gets or sets a value indicating whether or not subscribers should publish <see cref="ExceptionRaisedEventMessage" />
         /// instances when an exception is raised during message processing.
         /// </summary>
         [DataMember]
-        public Boolean PublishExceptionRaisedMessage
+        public Boolean PublishExceptionRaisedEventMessage
         {
             get;
             set;
@@ -131,11 +131,11 @@ namespace RapidField.SolidInstruments.Messaging
         public static readonly MessageSubscribingFailurePolicy Default = new MessageSubscribingFailurePolicy();
 
         /// <summary>
-        /// Represents the default value indicating whether or not subscribers should publish <see cref="ExceptionRaisedMessage" />
-        /// instances when an exception is raised during message processing.
+        /// Represents the default value indicating whether or not subscribers should publish
+        /// <see cref="ExceptionRaisedEventMessage" /> instances when an exception is raised during message processing.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Boolean DefaultPublishExceptionRaisedMessage = false;
+        private const Boolean DefaultPublishExceptionRaisedEventMessage = false;
 
         /// <summary>
         /// Represents the default failure behavior that is employed after the retry policy is exhausted.
