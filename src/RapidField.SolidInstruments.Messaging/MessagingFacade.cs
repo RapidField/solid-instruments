@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Messaging
         protected virtual String InitializeApplicationIdentity()
         {
             var process = Process.GetCurrentProcess();
-            return $"{process.MachineName}_{process.ProcessName}_{process.Id.ToString()}";
+            return $"{process.MachineName}_{process.ProcessName}_{process.Id}";
         }
 
         /// <summary>

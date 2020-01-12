@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void GetImpliedHashCode_ShouldProduceUniqueHashCodes_ForUniqueObjects()
         {
             // Arrange.
-            var elementCount = 30;
+            var elementCount = 300;
             var target = new List<Int32>();
 
             using (var randomnessProvider = RandomNumberGenerator.Create())

@@ -438,7 +438,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// A string representation of the current <see cref="Channel{T}" />.
         /// </returns>
-        public override String ToString() => $"{Identifier.ToEnhancedReadabilityGuid().ToString()} | {Name}";
+        public override String ToString() => $"{Identifier.ToEnhancedReadabilityGuid()} | {Name}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Channel{T}" />.

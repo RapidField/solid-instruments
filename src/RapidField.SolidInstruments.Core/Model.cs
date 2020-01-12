@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents a serializable data/domain model.
+    /// Represents an object that models a general construct.
     /// </summary>
     /// <remarks>
     /// <see cref="Model{TIdentifier}" /> is the default implementation of <see cref="IModel{TIdentifier}" />.
@@ -178,6 +178,14 @@ namespace RapidField.SolidInstruments.Core
         public override Int32 GetHashCode() => base.GetHashCode();
 
         /// <summary>
+        /// Converts the value of the current <see cref="Model{TIdentifier}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="Model" />.
+        /// </returns>
+        public override String ToString() => Identifier.ToString();
+
+        /// <summary>
         /// Gets or sets a value that uniquely identifies the current <see cref="Model{TIdentifier}" />.
         /// </summary>
         [DataMember]
@@ -189,7 +197,7 @@ namespace RapidField.SolidInstruments.Core
     }
 
     /// <summary>
-    /// Represents a serializable data/domain model.
+    /// Represents an object that models a general construct.
     /// </summary>
     /// <remarks>
     /// <see cref="Model" /> is the default implementation of <see cref="IModel" />.

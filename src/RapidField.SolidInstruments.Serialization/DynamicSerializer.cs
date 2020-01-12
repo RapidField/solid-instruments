@@ -376,7 +376,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <returns>
         /// A string representation of the current <see cref="DynamicSerializer" />.
         /// </returns>
-        public override String ToString() => $"Format: {Format.ToString()}";
+        public override String ToString() => $"Format: {Format}";
 
         /// <summary>
         /// Converts the specified buffer to its typed equivalent.

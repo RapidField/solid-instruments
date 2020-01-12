@@ -441,7 +441,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var end = TimeStamp.Current;
             var start = end.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity}";
 
             // Act.
             var action = new Action(() =>
@@ -460,7 +460,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity}";
 
             // Act.
             var action = new Action(() =>
@@ -479,7 +479,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity}";
 
             // Act.
             var result = DateTimeRange.Parse(target);
@@ -496,7 +496,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity}";
 
             // Act.
             var result = DateTimeRange.Parse(target);
@@ -596,7 +596,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()}|{end.ToFullDetailString()}|{granularity}";
             var resultOne = (DateTimeRange)null;
 
             // Act.
@@ -614,7 +614,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity}";
             var resultOne = (DateTimeRange)null;
 
             // Act.
@@ -647,7 +647,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var start = TimeStamp.Current;
             var end = start.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} ; {granularity}";
             var resultOne = (DateTimeRange)null;
 
             // Act.
@@ -680,7 +680,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var end = TimeStamp.Current;
             var start = end.AddSeconds(55555);
             var granularity = DateTimeRangeGranularity.Exact;
-            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity.ToString()}";
+            var target = $"{start.ToFullDetailString()} | {end.ToFullDetailString()} | {granularity}";
             var resultOne = (DateTimeRange)null;
 
             // Act.
@@ -693,7 +693,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
 
         private static void ShouldBeSerializable(SerializationFormat format)
         {
-            // Arrange. Arrange.
+            // Arrange.
             var start = new DateTime(1997, 11, 6, 14, 7, 46, 482, DateTimeKind.Local);
             var end = new DateTime(2024, 2, 29, 17, 41, 10, 193, DateTimeKind.Local);
             var target = new DateTimeRange(start, end);

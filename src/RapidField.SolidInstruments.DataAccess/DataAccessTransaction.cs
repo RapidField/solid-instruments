@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Begin)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(Begin)} cannot be invoked when the transaction state is {State}.");
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(BeginAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(BeginAsync)} cannot be invoked when the transaction state is {State}.");
                 }
             }
             catch
@@ -116,7 +116,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State}.");
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(CommitAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(CommitAsync)} cannot be invoked when the transaction state is {State}.");
                 }
             }
             catch
@@ -184,7 +184,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(Reject)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(Reject)} cannot be invoked when the transaction state is {State}.");
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(RejectAsync)} cannot be invoked when the transaction state is {State.ToString()}.");
+                    throw new InvalidOperationException($"{nameof(RejectAsync)} cannot be invoked when the transaction state is {State}.");
                 }
             }
             catch

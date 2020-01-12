@@ -4,12 +4,12 @@
 
 using System;
 
-namespace RapidField.SolidInstruments.Core.Domain
+namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents an object that models a domain entity and is identified primarily an <see cref="Int64" /> value.
+    /// Represents an object that models a general construct and that is identified primarily by an <see cref="Int64" /> value.
     /// </summary>
-    public interface INumericIdentityDomainEntity : IDomainEntity<Int64>
+    public interface INumericIdentityModel : IModel<Int64>
     {
     }
 }

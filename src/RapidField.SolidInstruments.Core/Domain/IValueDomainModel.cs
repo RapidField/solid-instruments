@@ -4,30 +4,23 @@
 
 using System;
 
-namespace RapidField.SolidInstruments.Core
+namespace RapidField.SolidInstruments.Core.Domain
 {
     /// <summary>
-    /// Represents an object that models a general construct.
+    /// Represents an object that models a domain construct as a domain value.
     /// </summary>
     /// <typeparam name="TIdentifier">
-    /// The type of the value that uniquely identifies the model.
+    /// The type of the unique primary identifier for the model.
     /// </typeparam>
-    public interface IModel<TIdentifier> : IComparable<IModel<TIdentifier>>, IModel
+    public interface IValueDomainModel<TIdentifier> : IValueDomainModel, IDomainModel<TIdentifier>
         where TIdentifier : IComparable<TIdentifier>, IEquatable<TIdentifier>
     {
-        /// <summary>
-        /// Gets or sets a value that uniquely identifies the current <see cref="IModel{TIdentifier}" />.
-        /// </summary>
-        TIdentifier Identifier
-        {
-            get;
-        }
     }
 
     /// <summary>
-    /// Represents an object that models a general construct.
+    /// Represents an object that models a domain construct as a domain value.
     /// </summary>
-    public interface IModel : IEquatable<IModel>
+    public interface IValueDomainModel : IDomainModel
     {
     }
 }

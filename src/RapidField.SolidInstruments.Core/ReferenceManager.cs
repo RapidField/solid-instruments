@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="ReferenceManager" />.
         /// </returns>
-        public override String ToString() => $"Object count: {ObjectCount.ToString()}";
+        public override String ToString() => $"Object count: {ObjectCount}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReferenceManager" />.

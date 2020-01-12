@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
 
         private static void ShouldBeSerializable(SerializationFormat format)
         {
-            // Arrange. Arrange.
+            // Arrange.
             var requestMessageIdentifier = Guid.Parse("fab2812e-88f4-4a03-8723-6d285a98b149");
             var correlationIdentifier = Guid.Parse("4aaadf09-0a66-41dc-bfc8-f8520f4aeaf8");
             var result = TimeSpan.FromMilliseconds(99999);
