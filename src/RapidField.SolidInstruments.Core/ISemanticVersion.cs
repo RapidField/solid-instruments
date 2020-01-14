@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents a version identifier that is compliant with the Semantic Versioning Specification (SemVer 2.0.0).
     /// </summary>
-    public interface ISemanticVersion : IComparable<ISemanticVersion>, IEquatable<ISemanticVersion>
+    public interface ISemanticVersion : ICloneable, IComparable<ISemanticVersion>, IEquatable<ISemanticVersion>
     {
         /// <summary>
         /// Gets the build metadata, <see langword="null" /> if there is no metadata.

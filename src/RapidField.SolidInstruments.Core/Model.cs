@@ -254,6 +254,14 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Creates a new <see cref="Model" /> that is an identical copy of the current <see cref="Model" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="Model" /> that is an identical copy of the current <see cref="Model" />.
+        /// </returns>
+        public virtual Object Clone() => this.GetSerializedClone();
+
+        /// <summary>
         /// Determines whether or not the current <see cref="Model" /> is equal to the specified <see cref="Object" />.
         /// </summary>
         /// <param name="obj">

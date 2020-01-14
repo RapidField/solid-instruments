@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core
     /// Represents a specific time of day in a specific time zone.
     /// </summary>
     [DataContract]
-    public sealed class TimeOfDay : IComparable<TimeOfDay>, IEquatable<TimeOfDay>
+    public sealed class TimeOfDay : ICloneable, IComparable<TimeOfDay>, IEquatable<TimeOfDay>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeOfDay" /> class.
@@ -323,6 +323,14 @@ namespace RapidField.SolidInstruments.Core
         /// A <see cref="TimeOfDay" /> representing the start of the second of the current <see cref="TimeOfDay" />.
         /// </returns>
         public TimeOfDay BeginningOfThisSecond() => new TimeOfDay(Zone, Hour, Minute, Second, 0);
+
+        /// <summary>
+        /// Creates a new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </returns>
+        public Object Clone() => new TimeOfDay(Zone, Hour, Minute, Second, Millisecond);
 
         /// <summary>
         /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative

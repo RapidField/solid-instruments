@@ -151,35 +151,6 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         }
 
         /// <summary>
-        /// Creates an identical copy of the current <see cref="SimulatedModel" />.
-        /// </summary>
-        /// <returns>
-        /// An identical copy of the current <see cref="SimulatedModel" />.
-        /// </returns>
-        public SimulatedModel Copy()
-        {
-            var zone = Time.Zone;
-            var hour = Time.Hour;
-            var minute = Time.Minute;
-            var second = Time.Second;
-            var millisecond = Time.Millisecond;
-            var time = new TimeOfDay(zone, hour, minute, second, millisecond);
-            var integerCollectionLength = IntegerCollection.Count;
-            var integerCollection = new Int32[integerCollectionLength];
-            var modelCollectionLength = ModelCollection.Count;
-            var modelCollection = new SimulatedModel[modelCollectionLength];
-            var stringValue = StringValue is null ? null : new String(StringValue.ToCharArray());
-            IntegerCollection.CopyTo(integerCollection, 0);
-
-            for (var i = 0; i < modelCollectionLength; i++)
-            {
-                modelCollection[i] = ModelCollection.ElementAt(i).Copy();
-            }
-
-            return new SimulatedModel(time, integerCollection, modelCollection, stringValue);
-        }
-
-        /// <summary>
         /// Makes a single, random modification to the current <see cref="SimulatedModel" />.
         /// </summary>
         /// <param name="randomnessProvider">
@@ -296,13 +267,13 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// Represents an <see cref="Int32" /> collection.
         /// </summary>
         [DataMember]
-        public readonly ICollection<Int32> IntegerCollection;
+        public readonly List<Int32> IntegerCollection;
 
         /// <summary>
         /// Represents a <see cref="SimulatedModel" /> collection.
         /// </summary>
         [DataMember]
-        public readonly ICollection<SimulatedModel> ModelCollection;
+        public readonly List<SimulatedModel> ModelCollection;
 
         /// <summary>
         /// Represents a <see cref="String" /> value.

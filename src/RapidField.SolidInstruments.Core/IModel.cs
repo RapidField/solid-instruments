@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents an object that models a general construct.
     /// </summary>
-    public interface IModel : IEquatable<IModel>
+    public interface IModel : ICloneable, IEquatable<IModel>
     {
     }
 }

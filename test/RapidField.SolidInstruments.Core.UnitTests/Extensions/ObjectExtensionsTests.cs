@@ -20,16 +20,16 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             {
                 // Arrange.
                 var target = SimulatedModel.Random(randomnessProvider);
-                var copy = target.Copy();
+                var clone = target.Clone() as SimulatedModel;
 
                 // Act.
                 var targetHashCode = target.GetHashCode();
-                var copyHashCode = copy.GetHashCode();
+                var copyHashCode = clone.GetHashCode();
 
                 // Assert.
                 target.Should().NotBeNull();
-                copy.Should().NotBeNull();
-                target.Should().BeEquivalentTo(copy);
+                clone.Should().NotBeNull();
+                target.Should().BeEquivalentTo(clone);
                 targetHashCode.Should().Be(copyHashCode);
             }
         }
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
                 {
                     // Act.
                     var model = SimulatedModel.Random(randomnessProvider);
-                    var randomlyModifiedModel = model.Copy();
+                    var randomlyModifiedModel = model.Clone() as SimulatedModel;
                     randomlyModifiedModel.RandomlyModify(randomnessProvider);
                     target.Add(model.GetHashCode());
                     target.Add(randomlyModifiedModel.GetHashCode());

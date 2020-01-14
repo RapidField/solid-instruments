@@ -2,11 +2,13 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -129,6 +131,61 @@ namespace RapidField.SolidInstruments.Core
             PreReleaseLabel = preReleaseLabel;
             BuildMetadata = buildMetadata;
         }
+
+        /// <summary>
+        /// Returns the <see cref="SemanticVersion" /> of the specified <see cref="Assembly" />, or <see cref="Zero" /> if the
+        /// version isn't available.
+        /// </summary>
+        /// <param name="assembly">
+        /// The assembly to evaluate.
+        /// </param>
+        /// <returns>
+        /// The <see cref="SemanticVersion" /> of the specified <see cref="Assembly" />, or <see cref="Zero" /> if the version isn't
+        /// available.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="assembly" /> is <see langword="null" />.
+        /// </exception>
+        public static SemanticVersion OfAssembly(Assembly assembly)
+        {
+            var assemblyVersion = assembly.RejectIf().IsNull(nameof(assembly)).TargetArgument.GetName()?.Version;
+
+            if (assemblyVersion is null)
+            {
+                return Zero;
+            }
+
+            var majorVersion = Convert.ToUInt64(assemblyVersion.Major < 0 ? 0 : assemblyVersion.Major);
+            var minorVersion = Convert.ToUInt64(assemblyVersion.Minor < 0 ? 0 : assemblyVersion.Minor);
+            var patchVersion = Convert.ToUInt64(assemblyVersion.Revision < 0 ? 0 : assemblyVersion.Revision);
+            var buildMetadata = assemblyVersion.Build > 0 ? assemblyVersion.Build.ToString() : null;
+            return new SemanticVersion(majorVersion, minorVersion, patchVersion, null, buildMetadata);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="SemanticVersion" /> of the executing assembly, or <see cref="Zero" /> if the version isn't
+        /// available.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="SemanticVersion" /> of the executing assembly, or <see cref="Zero" /> if the version isn't available.
+        /// </returns>
+        public static SemanticVersion OfExecutingAssembly() => OfAssembly(Assembly.GetExecutingAssembly());
+
+        /// <summary>
+        /// Returns the <see cref="SemanticVersion" /> of the assembly that defines the specified type, or <see cref="Zero" /> if
+        /// the version isn't available.
+        /// </summary>
+        /// <param name="type">
+        /// The type to evaluate.
+        /// </param>
+        /// <returns>
+        /// The <see cref="SemanticVersion" /> of the assembly that defines the specified type, or <see cref="Zero" /> if the
+        /// version isn't available.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type" /> is <see langword="null" />.
+        /// </exception>
+        public static SemanticVersion OfType(Type type) => OfAssembly(Assembly.GetAssembly(type.RejectIf().IsNull(nameof(type))));
 
         /// <summary>
         /// Determines whether or not two specified <see cref="ISemanticVersion" /> instances are not equal.
@@ -284,6 +341,14 @@ namespace RapidField.SolidInstruments.Core
             result = default;
             return false;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="SemanticVersion" /> that is an identical copy of the current <see cref="SemanticVersion" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="SemanticVersion" /> that is an identical copy of the current <see cref="SemanticVersion" />.
+        /// </returns>
+        public Object Clone() => new SemanticVersion(MajorVersion, MinorVersion, PatchVersion, PreReleaseLabel, BuildMetadata);
 
         /// <summary>
         /// Compares the current <see cref="SemanticVersion" /> to the specified object and returns an indication of their relative

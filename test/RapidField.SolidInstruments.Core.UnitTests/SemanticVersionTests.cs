@@ -16,6 +16,26 @@ namespace RapidField.SolidInstruments.Core.UnitTests
     public class SemanticVersionTests
     {
         [TestMethod]
+        public void Clone_ShouldCreateIdenticalCopies()
+        {
+            // Arrange.
+            var majorVersion = (UInt64)1;
+            var minorVersion = (UInt64)2;
+            var patchVersion = (UInt64)3;
+            var preReleaseLabel = "preview1";
+            var buildMetadata = "1234";
+            var target = new SemanticVersion(majorVersion, minorVersion, patchVersion).NextMajorVersion(preReleaseLabel, buildMetadata);
+
+            // Act.
+            var result = target.Clone() as SemanticVersion;
+
+            // Assert.
+            result.Should().NotBeNull();
+            result.Should().NotBeSameAs(target);
+            result.Should().BeEquivalentTo(target);
+        }
+
+        [TestMethod]
         public void CompareTo_ShouldProduceDesiredResults()
         {
             // Arrange.
@@ -1073,6 +1093,31 @@ namespace RapidField.SolidInstruments.Core.UnitTests
 
             // Assert.
             target.ToString().Should().Be($"1.2.4+{buildMetadata}");
+        }
+
+        [TestMethod]
+        public void OfExecutingAssembly_ShouldProduceDesiredResults()
+        {
+            // Act.
+            var target = SemanticVersion.OfExecutingAssembly();
+
+            // Assert.
+            target.Should().NotBeNull();
+            target.Should().NotBe(SemanticVersion.Zero);
+        }
+
+        [TestMethod]
+        public void OfType_ShouldProduceDesiredResults_ForValidTypes()
+        {
+            // Arrange.
+            var type = typeof(Object);
+
+            // Act.
+            var target = SemanticVersion.OfType(type);
+
+            // Assert.
+            target.Should().NotBeNull();
+            target.Should().NotBe(SemanticVersion.Zero);
         }
 
         [TestMethod]
