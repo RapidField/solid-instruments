@@ -12,16 +12,19 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Represents a contiguous collection of discrete units of output from an <see cref="IChannel" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="OutputRange{T}" /> is the default implementation of <see cref="IOutputRange{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The type of the associated channel's output value.
     /// </typeparam>
-    public sealed class OutputRange<T> : ReadOnlyCollection<DiscreteUnitOfOutput<T>>
+    public sealed class OutputRange<T> : ReadOnlyCollection<IDiscreteUnitOfOutput<T>>, IOutputRange<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OutputRange{T}" /> class.
         /// </summary>
         public OutputRange()
-            : base(new List<DiscreteUnitOfOutput<T>>())
+            : base(new List<IDiscreteUnitOfOutput<T>>())
         {
             return;
         }
@@ -38,7 +41,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ArgumentNullException">
         /// <paramref name="unitsOfOutput" /> is <see langword="null" />.
         /// </exception>
-        public OutputRange(IList<DiscreteUnitOfOutput<T>> unitsOfOutput)
+        public OutputRange(IList<IDiscreteUnitOfOutput<T>> unitsOfOutput)
             : base(unitsOfOutput)
         {
             var listLength = unitsOfOutput.Count();

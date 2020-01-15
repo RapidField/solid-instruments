@@ -146,7 +146,7 @@ namespace RapidField.SolidInstruments.Service
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, ServiceExecutionLifetime executionLifetime)
+        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
         {
             return;
         }

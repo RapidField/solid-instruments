@@ -12,7 +12,10 @@ namespace RapidField.SolidInstruments.Service
     /// <summary>
     /// Provides control over the lifetime of execution for a service.
     /// </summary>
-    public sealed class ServiceExecutionLifetime : Instrument
+    /// <remarks>
+    /// <see cref="ServiceExecutionLifetime" /> is the default implementation of <see cref="IServiceExecutionLifetime" />.
+    /// </remarks>
+    public sealed class ServiceExecutionLifetime : Instrument, IServiceExecutionLifetime
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceExecutionLifetime" /> class.

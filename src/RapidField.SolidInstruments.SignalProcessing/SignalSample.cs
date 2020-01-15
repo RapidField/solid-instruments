@@ -10,10 +10,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Represents the result of a read operation performed against an <see cref="IChannel{T}" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="SignalSample{T}" /> is the default implementation of <see cref="ISignalSample{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The type of the sampled channel's output value.
     /// </typeparam>
-    public sealed class SignalSample<T>
+    public sealed class SignalSample<T> : ISignalSample<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SignalSample{T}" /> class.
@@ -24,7 +27,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ArgumentNullException">
         /// <paramref name="unitOfOutput" /> is <see langword="null" />.
         /// </exception>
-        public SignalSample(DiscreteUnitOfOutput<T> unitOfOutput)
+        public SignalSample(IDiscreteUnitOfOutput<T> unitOfOutput)
             : this(unitOfOutput, new OutputRange<T>())
         {
             return;
@@ -44,7 +47,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <paramref name="unitOfOutput" /> is <see langword="null" /> -or- <paramref name="lookBehindRange" /> is
         /// <see langword="null" />.
         /// </exception>
-        public SignalSample(DiscreteUnitOfOutput<T> unitOfOutput, OutputRange<T> lookBehindRange)
+        public SignalSample(IDiscreteUnitOfOutput<T> unitOfOutput, IOutputRange<T> lookBehindRange)
             : this(unitOfOutput, lookBehindRange, new OutputRange<T>())
         {
             return;
@@ -68,18 +71,18 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <paramref name="unitOfOutput" /> is <see langword="null" /> -or- <paramref name="lookAheadRange" /> is
         /// <see langword="null" /> -or- <paramref name="lookBehindRange" /> is <see langword="null" />.
         /// </exception>
-        public SignalSample(DiscreteUnitOfOutput<T> unitOfOutput, OutputRange<T> lookBehindRange, OutputRange<T> lookAheadRange)
+        public SignalSample(IDiscreteUnitOfOutput<T> unitOfOutput, IOutputRange<T> lookBehindRange, IOutputRange<T> lookAheadRange)
         {
-            UnitOfOutput = unitOfOutput.RejectIf().IsNull(nameof(unitOfOutput));
-            LookAheadRange = lookAheadRange.RejectIf().IsNull(nameof(lookAheadRange));
-            LookBehindRange = lookBehindRange.RejectIf().IsNull(nameof(lookBehindRange));
+            UnitOfOutput = unitOfOutput.RejectIf().IsNull(nameof(unitOfOutput)).TargetArgument;
+            LookAheadRange = lookAheadRange.RejectIf().IsNull(nameof(lookAheadRange)).TargetArgument;
+            LookBehindRange = lookBehindRange.RejectIf().IsNull(nameof(lookBehindRange)).TargetArgument;
         }
 
         /// <summary>
         /// Gets a range of discrete units of output following <see cref="UnitOfOutput" /> in the channel's output stream, or an
         /// empty range if look-ahead was not requested.
         /// </summary>
-        public OutputRange<T> LookAheadRange
+        public IOutputRange<T> LookAheadRange
         {
             get;
         }
@@ -88,7 +91,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// Gets a range of discrete units of output preceding <see cref="UnitOfOutput" /> in the channel's output stream, or an
         /// empty range if look-behind was not requested.
         /// </summary>
-        public OutputRange<T> LookBehindRange
+        public IOutputRange<T> LookBehindRange
         {
             get;
         }
@@ -96,7 +99,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the discrete unit of output that was read from the channel's output stream.
         /// </summary>
-        public DiscreteUnitOfOutput<T> UnitOfOutput
+        public IDiscreteUnitOfOutput<T> UnitOfOutput
         {
             get;
         }

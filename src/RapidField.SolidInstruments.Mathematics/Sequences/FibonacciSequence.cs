@@ -14,7 +14,10 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
     /// <summary>
     /// Represents a unidirectional, positive sequence of Fibonacci numbers.
     /// </summary>
-    public class FibonacciSequence : InfiniteSequence<BigInteger>
+    /// <remarks>
+    /// <see cref="FibonacciSequence" /> is the default implementation of <see cref="IFibonacciSequence" />.
+    /// </remarks>
+    public class FibonacciSequence : InfiniteSequence<BigInteger>, IFibonacciSequence
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FibonacciSequence" /> class.
@@ -56,6 +59,6 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <summary>
         /// Represents the classic Fibonacci sequence beginning with zero and one.
         /// </summary>
-        public static readonly FibonacciSequence Classic = new FibonacciSequence(0, 1);
+        public static readonly IFibonacciSequence Classic = new FibonacciSequence(0, 1);
     }
 }

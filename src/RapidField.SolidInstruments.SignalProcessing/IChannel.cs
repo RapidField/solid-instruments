@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<DiscreteUnitOfOutput<T>> ReadAsync(Int32 index);
+        Task<IDiscreteUnitOfOutput<T>> ReadAsync(Int32 index);
 
         /// <summary>
         /// Asynchronously reads a sample from the channel's output stream at the specified index.
@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<SignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength);
+        Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength);
 
         /// <summary>
         /// Asynchronously reads a sample from the channel's output stream at the specified index.
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<SignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength, Int32 lookAheadLength);
+        Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength, Int32 lookAheadLength);
 
         /// <summary>
         /// Returns a discrete unit that represents a silent or empty signal.
@@ -131,7 +131,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <see cref="InvalidReadBehavior" /> is equal to <see cref="InvalidReadBehavior.RaiseException" /> and
         /// <paramref name="index" /> is less than zero.
         /// </exception>
-        DiscreteUnitOfOutput<T> ReadSilence(Int32 index);
+        IDiscreteUnitOfOutput<T> ReadSilence(Int32 index);
 
         /// <summary>
         /// Gets the behavior of the channel when an out-of-range read request is made.

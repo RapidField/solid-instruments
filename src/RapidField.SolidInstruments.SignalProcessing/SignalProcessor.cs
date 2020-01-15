@@ -11,6 +11,10 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Converts one or more input signals to a single output signal.
     /// </summary>
+    /// <remarks>
+    /// <see cref="SignalProcessor{TOutput, TSettings, TInputChannels}" /> is the default implementation of
+    /// <see cref="ISignalProcessor{TOutput, TSettings}" />.
+    /// </remarks>
     /// <typeparam name="TOutput">
     /// The type of the signal processor's output value.
     /// </typeparam>

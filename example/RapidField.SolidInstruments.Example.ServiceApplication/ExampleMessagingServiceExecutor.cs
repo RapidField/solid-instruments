@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected override void OnExecutionStarting(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, ServiceExecutionLifetime executionLifetime)
+        protected override void OnExecutionStarting(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
         {
             Console.WriteLine($"Solid Instruments | {ServiceName}");
             Console.WriteLine($"Copyright (c) RapidField LLC. All rights reserved.{Environment.NewLine}");

@@ -13,10 +13,13 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a thread-safe, infinite sequence of calculated values.
     /// </summary>
+    /// <remarks>
+    /// <see cref="InfiniteSequence{T}" /> is the default implementation of <see cref="IInfiniteSequence{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The element type of the sequence.
     /// </typeparam>
-    public abstract class InfiniteSequence<T> : ICalculatedSequence<T>
+    public abstract class InfiniteSequence<T> : IInfiniteSequence<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InfiniteSequence{T}" /> class.

@@ -16,6 +16,133 @@ namespace RapidField.SolidInstruments.Collections
     /// Represents a node in a tree structure.
     /// </summary>
     /// <remarks>
+    /// <see cref="TreeNode{T, TChildNode}" /> is the default implementation of <see cref="ITreeNode{T, TChildNode}" />.
+    /// </remarks>
+    /// <typeparam name="T">
+    /// The value type of the node.
+    /// </typeparam>
+    /// <typeparam name="TChildNode">
+    /// The type of the node's children.
+    /// </typeparam>
+    public class TreeNode<T, TChildNode> : TreeNode<T>, ITreeNode<T, TChildNode>
+        where TChildNode : TreeNode<T>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
+        /// </summary>
+        public TreeNode()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
+        /// </summary>
+        /// <param name="value">
+        /// The value of the node.
+        /// </param>
+        public TreeNode(T value)
+            : base(value)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
+        /// </summary>
+        /// <param name="value">
+        /// The value of the node.
+        /// </param>
+        /// <param name="capacity">
+        /// The maximum number of children permitted by the node, or -1 if no limit is imposed. The default value is -1.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="capacity" /> is less than -1.
+        /// </exception>
+        public TreeNode(T value, Int32 capacity)
+            : base(capacity)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T}" /> class.
+        /// </summary>
+        /// <param name="value">
+        /// The value of the node.
+        /// </param>
+        /// <param name="children">
+        /// The child nodes of the new node, or <see langword="null" /> if the new node is a terminal node. The default value is
+        /// <see langword="null" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="children" /> contains a null, duplicate or invalid node.
+        /// </exception>
+        public TreeNode(T value, IEnumerable<TChildNode> children)
+            : base(value, children)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Adds the specified node to <see cref="TreeNode{T}.Children" /> and sets its <see cref="TreeNode{T}.Parent" /> to the
+        /// current node.
+        /// </summary>
+        /// <param name="childNode">
+        /// The child node to add.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the specified node was added to <see cref="TreeNode{T}.Children" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="childNode" /> is <see langword="null" />.
+        /// </exception>
+        public Boolean AddChild(TChildNode childNode) => AddChild(childNode, true);
+
+        /// <summary>
+        /// Destroys all references to and from associated tree nodes and sets <see cref="TreeNode{T}.Value" /> equal to the default
+        /// value.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The state of the node or the associated tree was changed during the destroy operation.
+        /// </exception>
+        public void Destroy()
+        {
+            if (IsRoot == false)
+            {
+                ((TreeNode<T>)Parent).RemoveChild(this);
+            }
+
+            var children = Children.ToArray();
+            var childrenLength = children.Length;
+
+            for (var i = 0; i < childrenLength; i++)
+            {
+                try
+                {
+                    if (RemoveChild(children.ElementAt(i) as TreeNode<T>))
+                    {
+                        continue;
+                    }
+                }
+                catch (ArgumentNullException exception)
+                {
+                    throw new InvalidOperationException("The tree node is in an invalid state.", exception);
+                }
+
+                throw new InvalidOperationException("The tree structure has become corrupt.");
+            }
+
+            Value = default;
+        }
+    }
+
+    /// <summary>
+    /// Represents a node in a tree structure.
+    /// </summary>
+    /// <remarks>
     /// <see cref="TreeNode{T}" /> is the default implementation of <see cref="ITreeNode{T}" />.
     /// </remarks>
     /// <typeparam name="T">
@@ -279,129 +406,5 @@ namespace RapidField.SolidInstruments.Collections
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ITreeNode<T> ParentReference = null;
-    }
-
-    /// <summary>
-    /// Represents a node in a tree structure.
-    /// </summary>
-    /// <typeparam name="T">
-    /// The value type of the node.
-    /// </typeparam>
-    /// <typeparam name="TChildNode">
-    /// The type of the node's children.
-    /// </typeparam>
-    public class TreeNode<T, TChildNode> : TreeNode<T>
-        where TChildNode : TreeNode<T>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
-        /// </summary>
-        public TreeNode()
-            : base()
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
-        /// </summary>
-        /// <param name="value">
-        /// The value of the node.
-        /// </param>
-        public TreeNode(T value)
-            : base(value)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeNode{T, TChildNode}" /> class.
-        /// </summary>
-        /// <param name="value">
-        /// The value of the node.
-        /// </param>
-        /// <param name="capacity">
-        /// The maximum number of children permitted by the node, or -1 if no limit is imposed. The default value is -1.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="capacity" /> is less than -1.
-        /// </exception>
-        public TreeNode(T value, Int32 capacity)
-            : base(capacity)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeNode{T}" /> class.
-        /// </summary>
-        /// <param name="value">
-        /// The value of the node.
-        /// </param>
-        /// <param name="children">
-        /// The child nodes of the new node, or <see langword="null" /> if the new node is a terminal node. The default value is
-        /// <see langword="null" />.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="children" /> contains a null, duplicate or invalid node.
-        /// </exception>
-        public TreeNode(T value, IEnumerable<TChildNode> children)
-            : base(value, children)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Adds the specified node to <see cref="TreeNode{T}.Children" /> and sets its <see cref="TreeNode{T}.Parent" /> to the
-        /// current node.
-        /// </summary>
-        /// <param name="childNode">
-        /// The child node to add.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if the specified node was added to <see cref="TreeNode{T}.Children" />, otherwise
-        /// <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="childNode" /> is <see langword="null" />.
-        /// </exception>
-        public Boolean AddChild(TChildNode childNode) => AddChild(childNode, true);
-
-        /// <summary>
-        /// Destroys all references to and from associated tree nodes and sets <see cref="TreeNode{T}.Value" /> equal to the default
-        /// value.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">
-        /// The state of the node or the associated tree was changed during the destroy operation.
-        /// </exception>
-        public void Destroy()
-        {
-            if (IsRoot == false)
-            {
-                ((TreeNode<T>)Parent).RemoveChild(this);
-            }
-
-            var children = Children.ToArray();
-            var childrenLength = children.Length;
-
-            for (var i = 0; i < childrenLength; i++)
-            {
-                try
-                {
-                    if (RemoveChild(children.ElementAt(i) as TreeNode<T>))
-                    {
-                        continue;
-                    }
-                }
-                catch (ArgumentNullException exception)
-                {
-                    throw new InvalidOperationException("The tree node is in an invalid state.", exception);
-                }
-
-                throw new InvalidOperationException("The tree structure has become corrupt.");
-            }
-
-            Value = default;
-        }
     }
 }
