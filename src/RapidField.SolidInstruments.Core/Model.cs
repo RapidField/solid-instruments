@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Core
     /// </typeparam>
     [DataContract]
     public abstract class Model<TIdentifier> : Model, IModel<TIdentifier>
-        where TIdentifier : IComparable<TIdentifier>, IEquatable<TIdentifier>
+        where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Model{TIdentifier}" /> class.

@@ -58,6 +58,186 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         public static Int64 AbsoluteValue(this Int64 target) => Math.Abs(target);
 
         /// <summary>
+        /// Indicates whether or not the current <see cref="Int16" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int16" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int16" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this Int16 target, Int16 multiple) => SignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="Int32" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int32" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int32" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this Int32 target, Int32 multiple) => SignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="Int64" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int64" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int64" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this Int64 target, Int64 multiple) => SignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt16" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt16" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt16" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this UInt16 target, UInt16 multiple) => UnsignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt32" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt32" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt32" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this UInt32 target, UInt32 multiple) => UnsignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt64" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt64" />.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt64" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsAFactorOf(this UInt64 target, UInt64 multiple) => UnsignedIntegerIsAFactorOf(target, multiple);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="Int16" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int16" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int16" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this Int16 target, Int16 divisor) => SignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="Int32" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int32" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int32" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this Int32 target, Int32 divisor) => SignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="Int64" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="Int64" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Int64" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this Int64 target, Int64 divisor) => SignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt16" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt16" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt16" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this UInt16 target, UInt16 divisor) => UnsignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt32" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt32" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt32" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this UInt32 target, UInt32 divisor) => UnsignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="UInt64" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="UInt64" />.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="UInt64" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsDivisibleBy(this UInt64 target, UInt64 divisor) => UnsignedIntegerIsDivisibleBy(target, divisor);
+
+        /// <summary>
         /// Indicates whether or not the current <see cref="Int16" /> is an even number.
         /// </summary>
         /// <param name="target">
@@ -538,6 +718,40 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         }
 
         /// <summary>
+        /// Indicates whether or not the provided <see cref="Int64" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// A <see cref="Int64" /> value.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the provided <see cref="Int64" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Boolean SignedIntegerIsAFactorOf(Int64 target, Int64 multiple) => multiple.IsDivisibleBy(target);
+
+        /// <summary>
+        /// Indicates whether or not the provided <see cref="Int64" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// A <see cref="Int64" /> value.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the provided <see cref="Int64" /> is divisible by the <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Boolean SignedIntegerIsDivisibleBy(Int64 target, Int64 divisor) => ((divisor != 0) && (target % divisor == 0));
+
+        /// <summary>
         /// Indicates whether or not the provided <see cref="Int64" /> is an even number.
         /// </summary>
         /// <param name="target">
@@ -562,6 +776,40 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Boolean SignedIntegerIsOdd(Int64 target) => ((target & 0x01) == 0x01);
+
+        /// <summary>
+        /// Indicates whether or not the provided <see cref="UInt64" /> is a factor of the specified multiple.
+        /// </summary>
+        /// <param name="target">
+        /// A <see cref="UInt64" /> value.
+        /// </param>
+        /// <param name="multiple">
+        /// The multiple.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the provided <see cref="UInt64" /> is a factor of <paramref name="multiple" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Boolean UnsignedIntegerIsAFactorOf(UInt64 target, UInt64 multiple) => multiple.IsDivisibleBy(target);
+
+        /// <summary>
+        /// Indicates whether or not the provided <see cref="UInt64" /> is divisible by the specified divisor.
+        /// </summary>
+        /// <param name="target">
+        /// A <see cref="UInt64" /> value.
+        /// </param>
+        /// <param name="divisor">
+        /// The divisor.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the provided <see cref="UInt64" /> is divisible by <paramref name="divisor" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Boolean UnsignedIntegerIsDivisibleBy(UInt64 target, UInt64 divisor) => ((divisor != 0) && (target % divisor == 0));
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="UInt64" /> is an even number.

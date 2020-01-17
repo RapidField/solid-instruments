@@ -131,13 +131,13 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Act.
                 using (var buffer = target.ToBuffer())
                 {
-                    buffer.Access(plaintext =>
+                    buffer.Access((plaintext =>
                     {
                         // Assert.
                         plaintext.Should().NotBeNullOrEmpty();
                         plaintext.Length.Should().Be(secureKeyLengthInBytes);
-                        plaintext.Count(value => value == 0x00).Should().NotBe(plaintext.Length);
-                    });
+                        plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
+                    }));
                 }
             }
         }

@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             BlockCount = (KeySourceWordCount / BlockWordCount);
 
             // Copy in the key source bits.
-            KeySource.Access(buffer => Array.Copy(keySource, buffer, buffer.Length));
+            KeySource.Access(buffer => Array.Copy(keySource, buffer.GetField(), buffer.Length));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </exception>
         public static SecureSymmetricKey FromBuffer(SecureBuffer buffer)
         {
-            buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.Length != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
+            buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
             try
             {
@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         KeySource.Access(pinnedKeySourceBuffer =>
                         {
-                            Array.Copy(pinnedKeySourceBuffer, 0, plaintextBuffer, KeySourceBufferIndex, KeySourceLengthInBytes);
+                            Array.Copy(pinnedKeySourceBuffer.GetField(), 0, plaintextBuffer, KeySourceBufferIndex, KeySourceLengthInBytes);
                         });
 
                         plaintextBuffer[AlgorithmBufferIndex] = (Byte)Algorithm;
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 {
                                     using (var ciphertext = cipher.Encrypt(plaintextBuffer, BufferEncryptionKey, initializationVector))
                                     {
-                                        Array.Copy(ciphertext, 0, pinnedResultBuffer, 0, SerializedLength);
+                                        Array.Copy(ciphertext, 0, pinnedResultBuffer.GetField(), 0, SerializedLength);
                                     }
                                 });
                             }
@@ -279,15 +279,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                     result = new PinnedBuffer(DerivedKeyLength, true);
 
-                    using (var sourceWords = new PinnedStructureArray<UInt32>(KeySourceWordCount, true))
+                    using (var sourceWords = new PinnedBuffer<UInt32>(KeySourceWordCount, true))
                     {
-                        KeySource.Access((PinnedBuffer buffer) =>
+                        KeySource.Access((buffer) =>
                         {
                             // Convert the source buffer to an array of 32-bit words.
-                            Buffer.BlockCopy(buffer, 0, sourceWords, 0, KeySourceLengthInBytes);
+                            Buffer.BlockCopy(buffer.GetField(), 0, sourceWords, 0, KeySourceLengthInBytes);
                         });
 
-                        using (var transformedWords = new PinnedStructureArray<UInt32>(BlockWordCount, true))
+                        using (var transformedWords = new PinnedBuffer<UInt32>(BlockWordCount, true))
                         {
                             // Copy out the first block. If nothing further is done, this satisfies truncation mode.
                             Array.Copy(sourceWords, transformedWords, BlockWordCount);
@@ -608,7 +608,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents a buffer that is used to derive key bits from the current <see cref="SecureSymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly SecureBuffer KeySource;
+        private readonly ISecureBuffer KeySource;
 
         /// <summary>
         /// Represents the lazily-initialized PBKDF2 algorithm provider for the current <see cref="SecureSymmetricKey" />.

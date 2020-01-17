@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Collections.UnitTests
 {
@@ -110,6 +111,20 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
 
             // Assert.
             field.Should().OnlyContain(value => value == 0x00);
+        }
+
+        [TestMethod]
+        public void LengthInBytes_ShouldProduceDesiredResults()
+        {
+            // Arrange.
+            var length = 10;
+            var field = new Int32[length];
+
+            using (var target = new PinnedBuffer<Int32>(field, false))
+            {
+                // Assert.
+                target.LengthInBytes.Should().Be(length * 4);
+            }
         }
 
         [TestMethod]

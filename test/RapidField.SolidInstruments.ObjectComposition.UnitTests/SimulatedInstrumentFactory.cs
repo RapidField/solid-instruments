@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
             configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
             configuration.ProductionFunctions
                 .Add(() => new SimulatedInstrument(configuration.StateControlMode))
-                .Add(() => new PinnedStructureArray<Int16>(3))
+                .Add(() => new PinnedBuffer<Int16>(3))
                 .Add(() => new CircularBuffer<Int32>(5));
         }
 

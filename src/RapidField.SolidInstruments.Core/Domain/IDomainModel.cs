@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Core.Domain
     /// The type of the unique primary identifier for the model.
     /// </typeparam>
     public interface IDomainModel<TIdentifier> : IDomainModel, IModel<TIdentifier>
-        where TIdentifier : IComparable<TIdentifier>, IEquatable<TIdentifier>
+        where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
     {
     }
 

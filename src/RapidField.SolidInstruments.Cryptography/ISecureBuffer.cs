@@ -22,6 +22,6 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Access(Action<PinnedBuffer> action);
+        void Access(Action<IPinnedBuffer<Byte>> action);
     }
 }

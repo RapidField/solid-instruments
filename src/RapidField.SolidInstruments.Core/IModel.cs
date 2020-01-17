@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Core
     /// The type of the value that uniquely identifies the model.
     /// </typeparam>
     public interface IModel<TIdentifier> : IComparable<IModel<TIdentifier>>, IModel
-        where TIdentifier : IComparable<TIdentifier>, IEquatable<TIdentifier>
+        where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
     {
         /// <summary>
         /// Gets or sets a value that uniquely identifies the current <see cref="IModel{TIdentifier}" />.

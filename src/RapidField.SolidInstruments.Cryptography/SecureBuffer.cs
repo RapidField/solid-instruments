@@ -20,19 +20,19 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="SecureBuffer" /> class.
         /// </summary>
-        /// <param name="length">
+        /// <param name="lengthInBytes">
         /// The length of the buffer, in bytes.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="length" /> is less than or equal to zero.
+        /// <paramref name="lengthInBytes" /> is less than or equal to zero.
         /// </exception>
-        public SecureBuffer(Int32 length)
+        public SecureBuffer(Int32 lengthInBytes)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
-            Length = length.RejectIf().IsLessThanOrEqualTo(0, nameof(length));
-            Entropy = new PinnedBuffer(EntropyLength, true);
+            LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
+            Entropy = new PinnedBuffer(EntropyLengthInBytes, true);
             RandomnessProvider.GetBytes(Entropy);
-            var ciphertextBytes = ProtectedData.Protect(new Byte[length], Entropy, Scope);
+            var ciphertextBytes = ProtectedData.Protect(new Byte[lengthInBytes], Entropy, Scope);
             Ciphertext = new PinnedBuffer(ciphertextBytes.Length, true);
             Array.Copy(ciphertextBytes, Ciphertext, Ciphertext.Length);
         }
@@ -43,18 +43,18 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <remarks>
         /// This method is useful for generating keys and other sensitive random values.
         /// </remarks>
-        /// <param name="length">
+        /// <param name="lengthInBytes">
         /// The length of the random buffer, in bytes.
         /// </param>
         /// <returns>
         /// A cryptographically secure pseudo-random byte array of specified length.
         /// </returns>
-        public static SecureBuffer GenerateHardenedRandomBytes(Int32 length)
+        public static ISecureBuffer GenerateHardenedRandomBytes(Int32 lengthInBytes)
         {
-            var hardenedRandomBytes = new SecureBuffer(length);
+            var hardenedRandomBytes = new SecureBuffer(lengthInBytes);
             hardenedRandomBytes.Access((pinnedBuffer) =>
             {
-                RandomnessProvider.GetBytes(pinnedBuffer);
+                RandomnessProvider.GetBytes(pinnedBuffer.Span);
             });
 
             return hardenedRandomBytes;
@@ -70,13 +70,13 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Access(Action<PinnedBuffer> action)
+        public void Access(Action<IPinnedBuffer<Byte>> action)
         {
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
 
-                using (var plaintext = new PinnedBuffer(Length, true))
+                using (var plaintext = new PinnedBuffer(LengthInBytes, true))
                 {
                     DecryptField(plaintext);
 
@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The buffer to which the plaintext result is written.
         /// </param>
         [DebuggerHidden]
-        private void DecryptField(PinnedBuffer plaintext) => Array.Copy(ProtectedData.Unprotect(Ciphertext, Entropy, Scope), plaintext, Length);
+        private void DecryptField(PinnedBuffer plaintext) => Array.Copy(ProtectedData.Unprotect(Ciphertext, Entropy, Scope), plaintext, LengthInBytes);
 
         /// <summary>
         /// Encrypts the specified plaintext and writes the result to the current buffer.
@@ -142,13 +142,13 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the length of the buffer, in bytes.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly Int32 Length;
+        internal readonly Int32 LengthInBytes;
 
         /// <summary>
         /// Represents the length, in bytes, of <see cref="Entropy" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 EntropyLength = 16;
+        private const Int32 EntropyLengthInBytes = 16;
 
         /// <summary>
         /// Represents the data protection scope used by <see cref="DecryptField(PinnedBuffer)" /> and

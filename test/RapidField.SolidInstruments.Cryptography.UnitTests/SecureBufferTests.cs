@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             using (var target = new SecureBuffer(length))
             {
                 // Act.
-                target.Access(buffer =>
+                target.Access((buffer =>
                 {
                     // Assert.
                     buffer.Length.Should().Be(length);
@@ -76,19 +76,19 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                     }
 
                     // Arrange.
-                    bufferReference = buffer;
-                    Array.Copy(buffer, 1, bufferSubsegment, 0, 3);
-                });
+                    bufferReference = buffer.GetField();
+                    Array.Copy(buffer.GetField(), 1, bufferSubsegment, 0, 3);
+                }));
 
                 // Act.
-                target.Access(buffer =>
+                target.Access((buffer =>
                 {
                     // Assert.
                     buffer.Length.Should().Be(length);
                     buffer[0].Should().Be(0x00);
                     buffer[4].Should().Be(0x04);
                     buffer[8].Should().Be(0x08);
-                });
+                }));
             }
 
             // Assert.
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             {
                 array.Access(buffer =>
                 {
-                    target = new RandomByteArrayProfile(buffer);
+                    target = new RandomByteArrayProfile(buffer.GetField());
                 });
             }
 
