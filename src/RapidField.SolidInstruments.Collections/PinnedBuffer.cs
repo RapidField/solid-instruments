@@ -12,6 +12,9 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a fixed-length bit field that is pinned in memory.
     /// </summary>
+    /// <remarks>
+    /// <see cref="PinnedBuffer" /> is the default implementation of <see cref="IPinnedBuffer" />.
+    /// </remarks>
     public class PinnedBuffer : PinnedBuffer<Byte>
     {
         /// <summary>
@@ -94,6 +97,9 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a fixed-length bit field that is pinned in memory.
     /// </summary>
+    /// <remarks>
+    /// <see cref="PinnedBuffer{T}" /> is the default implementation of <see cref="IPinnedBuffer{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The element type of the buffer.
     /// </typeparam>
@@ -232,7 +238,14 @@ namespace RapidField.SolidInstruments.Collections
         /// <returns>
         /// The pinned array of elements underlying the current <see cref="PinnedBuffer{T}" />.
         /// </returns>
-        public T[] GetField() => Field;
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public T[] GetField()
+        {
+            RejectIfDisposed();
+            return Field;
+        }
 
         /// <summary>
         /// Overwrites the current <see cref="PinnedBuffer{T}" /> with default values.
@@ -280,7 +293,17 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets a <see cref="Span{T}" /> for the current <see cref="PinnedBuffer{T}" />.
         /// </summary>
-        public Span<T> Span => FieldMemory.Span;
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Span<T> Span
+        {
+            get
+            {
+                RejectIfDisposed();
+                return FieldMemory.Span;
+            }
+        }
 
         /// <summary>
         /// Represents a value indicating whether or not to overwrite the array with default values upon disposal.

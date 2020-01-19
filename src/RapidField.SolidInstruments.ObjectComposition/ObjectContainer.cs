@@ -317,7 +317,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException($"The object container is not configured or the factory does not support the registered types. See inner exception for details.", exception);
+                throw new InvalidOperationException($"The object container is not configured or the factory does not support the registered types. See inner exception.", exception);
             }
 
             return instanceDictionary;

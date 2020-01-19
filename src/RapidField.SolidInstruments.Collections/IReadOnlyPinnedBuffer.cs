@@ -36,6 +36,9 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="IReadOnlyPinnedBuffer{T}" />.
         /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
         ReadOnlySpan<T> ReadOnlySpan
         {
             get;
@@ -47,6 +50,14 @@ namespace RapidField.SolidInstruments.Collections
     /// </summary>
     public interface IReadOnlyPinnedBuffer : IDisposable
     {
+        /// <summary>
+        /// Gets a value indicating whether or not the buffer is empty.
+        /// </summary>
+        Boolean IsEmpty
+        {
+            get;
+        }
+
         /// <summary>
         /// Gets the number of elements comprising the buffer.
         /// </summary>

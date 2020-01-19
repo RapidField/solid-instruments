@@ -17,6 +17,9 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
+    /// <remarks>
+    /// <see cref="ReadOnlyPinnedBuffer" /> is the default implementation of <see cref="IReadOnlyPinnedBuffer" />.
+    /// </remarks>
     public class ReadOnlyPinnedBuffer : ReadOnlyPinnedBuffer<Byte>
     {
         /// <summary>
@@ -61,6 +64,9 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
+    /// <remarks>
+    /// <see cref="ReadOnlyPinnedBuffer{T}" /> is the default implementation of <see cref="IReadOnlyPinnedBuffer{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The element type of the buffer.
     /// </typeparam>
@@ -190,6 +196,11 @@ namespace RapidField.SolidInstruments.Collections
         private Memory<T> InitializeFieldMemory() => new Memory<T>(Field);
 
         /// <summary>
+        /// Gets a value indicating whether or not the buffer is empty.
+        /// </summary>
+        public Boolean IsEmpty => Length == 0;
+
+        /// <summary>
         /// Gets the number of elements comprising the buffer.
         /// </summary>
         public Int32 Length
@@ -205,7 +216,17 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="ReadOnlyPinnedBuffer{T}" />.
         /// </summary>
-        public ReadOnlySpan<T> ReadOnlySpan => FieldMemory.Span;
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public ReadOnlySpan<T> ReadOnlySpan
+        {
+            get
+            {
+                RejectIfDisposed();
+                return FieldMemory.Span;
+            }
+        }
 
         /// <summary>
         /// Gets the structure collection as a <see cref="Memory{T}" />.
@@ -218,6 +239,12 @@ namespace RapidField.SolidInstruments.Collections
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly T[] Field;
+
+        /// <summary>
+        /// Represents a pointer for <see cref="Field" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal IntPtr Pointer;
 
         /// <summary>
         /// Represents the byte length of the element type.
@@ -236,11 +263,5 @@ namespace RapidField.SolidInstruments.Collections
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Memory<T>> LazyFieldMemory;
-
-        /// <summary>
-        /// Represents a pointer for <see cref="Field" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IntPtr Pointer;
     }
 }

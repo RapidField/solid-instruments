@@ -19,6 +19,9 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <param name="action">
         /// The operation to perform.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
