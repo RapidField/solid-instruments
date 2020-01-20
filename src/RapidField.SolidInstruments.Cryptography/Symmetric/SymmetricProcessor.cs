@@ -312,7 +312,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting plaintext object.
         /// </returns>
         [DebuggerHidden]
-        private T Decrypt(Byte[] ciphertext, IPinnedBuffer<Byte> key, SymmetricAlgorithmSpecification algorithm)
+        private T Decrypt(Byte[] ciphertext, PinnedBuffer<Byte> key, SymmetricAlgorithmSpecification algorithm)
         {
             using (var cipher = algorithm.ToCipher(RandomnessProvider))
             {
@@ -346,7 +346,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting ciphertext.
         /// </returns>
         [DebuggerHidden]
-        private Byte[] Encrypt(T plaintextObject, IPinnedBuffer<Byte> key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        private Byte[] Encrypt(T plaintextObject, PinnedBuffer<Byte> key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
             var plaintext = BinarySerializer.Serialize(plaintextObject);
             var plaintextLength = plaintext.Length;

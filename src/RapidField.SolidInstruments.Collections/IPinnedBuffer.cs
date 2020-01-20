@@ -35,17 +35,6 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets the pinned array of elements underlying the current <see cref="IPinnedBuffer{T}" />.
-        /// </summary>
-        /// <returns>
-        /// The pinned array of elements underlying the current <see cref="IPinnedBuffer{T}" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        T[] GetField();
-
-        /// <summary>
         /// Gets a <see cref="Span{T}" /> for the current <see cref="IPinnedBuffer{T}" />.
         /// </summary>
         /// <exception cref="ObjectDisposedException">

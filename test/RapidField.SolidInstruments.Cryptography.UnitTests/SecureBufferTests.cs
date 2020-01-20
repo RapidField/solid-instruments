@@ -76,8 +76,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                     }
 
                     // Arrange.
-                    bufferReference = buffer.GetField();
-                    Array.Copy(buffer.GetField(), 1, bufferSubsegment, 0, 3);
+                    bufferReference = buffer;
+                    Array.Copy(buffer, 1, bufferSubsegment, 0, 3);
                 }));
 
                 // Act.
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             {
                 array.Access(buffer =>
                 {
-                    target = new RandomByteArrayProfile(buffer.GetField());
+                    target = new RandomByteArrayProfile(buffer);
                 });
             }
 

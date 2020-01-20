@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                     var target = new SymmetricBinaryProcessor(randomnessProvider);
                     secureKey.Access(keyBuffer =>
                     {
-                        Array.Copy(key, keyBuffer.GetField(), key.Length);
+                        Array.Copy(key, keyBuffer, key.Length);
                     });
 
                     // Act.

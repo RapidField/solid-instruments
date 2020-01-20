@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             BlockCount = (KeySourceWordCount / BlockWordCount);
 
             // Copy in the key source bits.
-            KeySource.Access(buffer => Array.Copy(keySource, buffer.GetField(), buffer.Length));
+            KeySource.Access(buffer => Array.Copy(keySource, buffer, buffer.Length));
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         KeySource.Access(pinnedKeySourceBuffer =>
                         {
-                            Array.Copy(pinnedKeySourceBuffer.GetField(), 0, plaintextBuffer, KeySourceBufferIndex, KeySourceLengthInBytes);
+                            Array.Copy(pinnedKeySourceBuffer, 0, plaintextBuffer, KeySourceBufferIndex, KeySourceLengthInBytes);
                         });
 
                         plaintextBuffer[AlgorithmBufferIndex] = (Byte)Algorithm;
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 {
                                     using (var ciphertext = cipher.Encrypt(plaintextBuffer, BufferEncryptionKey, initializationVector))
                                     {
-                                        Array.Copy(ciphertext, 0, pinnedResultBuffer.GetField(), 0, SerializedLength);
+                                        Array.Copy(ciphertext, 0, pinnedResultBuffer, 0, SerializedLength);
                                     }
                                 });
                             }
@@ -284,7 +284,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         KeySource.Access((buffer) =>
                         {
                             // Convert the source buffer to an array of 32-bit words.
-                            Buffer.BlockCopy(buffer.GetField(), 0, sourceWords, 0, KeySourceLengthInBytes);
+                            Buffer.BlockCopy(buffer, 0, sourceWords, 0, KeySourceLengthInBytes);
                         });
 
                         using (var transformedWords = new PinnedBuffer<UInt32>(BlockWordCount, true))

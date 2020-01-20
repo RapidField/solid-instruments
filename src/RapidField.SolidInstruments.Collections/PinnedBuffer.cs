@@ -233,21 +233,6 @@ namespace RapidField.SolidInstruments.Collections
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
-        /// Gets the pinned array of elements underlying the current <see cref="PinnedBuffer{T}" />.
-        /// </summary>
-        /// <returns>
-        /// The pinned array of elements underlying the current <see cref="PinnedBuffer{T}" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public T[] GetField()
-        {
-            RejectIfDisposed();
-            return Field;
-        }
-
-        /// <summary>
         /// Overwrites the current <see cref="PinnedBuffer{T}" /> with default values.
         /// </summary>
         /// <exception cref="ObjectDisposedException">

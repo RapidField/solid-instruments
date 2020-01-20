@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Cryptography
             var hardenedRandomBytes = new SecureBuffer(lengthInBytes);
             hardenedRandomBytes.Access((pinnedBuffer) =>
             {
-                RandomnessProvider.GetBytes(pinnedBuffer.GetField());
+                RandomnessProvider.GetBytes(pinnedBuffer);
             });
 
             return hardenedRandomBytes;
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Access(Action<IPinnedBuffer<Byte>> action)
+        public void Access(Action<PinnedBuffer> action)
         {
             action = action.RejectIf().IsNull(nameof(action));
 

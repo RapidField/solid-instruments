@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     // Interrogate the final 16 bits to determine the depth.
                     var keyLength = SecureSymmetricKey.SerializedLength;
-                    var depth = BitConverter.ToUInt16(pinnedBuffer.GetField(), (SerializedLength - sizeof(UInt16)));
+                    var depth = BitConverter.ToUInt16(pinnedBuffer, (SerializedLength - sizeof(UInt16)));
                     keys = new SecureSymmetricKey[depth];
 
                     for (var i = 0; i < depth; i++)
@@ -94,7 +94,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             secureBuffer.Access(keyBuffer =>
                             {
                                 // Copy out the key buffers.
-                                Array.Copy(pinnedBuffer.GetField(), (keyLength * i), keyBuffer.GetField(), 0, keyLength);
+                                Array.Copy(pinnedBuffer, (keyLength * i), keyBuffer, 0, keyLength);
                             });
 
                             keys[i] = SecureSymmetricKey.FromBuffer(secureBuffer);
@@ -222,7 +222,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                     keyBuffer.Access(pinnedKeyBuffer =>
                                     {
                                         // Copy the key buffers out to the result buffer.
-                                        Array.Copy(pinnedKeyBuffer.GetField(), 0, pinnedResultBuffer.GetField(), (keyLength * i), keyLength);
+                                        Array.Copy(pinnedKeyBuffer, 0, pinnedResultBuffer, (keyLength * i), keyLength);
                                     });
                                 }
 
@@ -232,11 +232,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             // Fill the unused segments with random bytes.
                             var randomBytes = new Byte[keyLength];
                             HardenedRandomNumberGenerator.Instance.GetBytes(randomBytes);
-                            Array.Copy(randomBytes, 0, pinnedResultBuffer.GetField(), (keyLength * i), keyLength);
+                            Array.Copy(randomBytes, 0, pinnedResultBuffer, (keyLength * i), keyLength);
                         }
 
                         // Append the depth as a 16-bit integer.
-                        Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedResultBuffer.GetField(), (SerializedLength - sizeof(UInt16)), sizeof(UInt16));
+                        Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedResultBuffer, (SerializedLength - sizeof(UInt16)), sizeof(UInt16));
                     });
 
                     return result;
