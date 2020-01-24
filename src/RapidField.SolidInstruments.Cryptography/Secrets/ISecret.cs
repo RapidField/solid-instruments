@@ -13,7 +13,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// The type of the value.
     /// </typeparam>
     public interface ISecret<TValue> : IReadOnlySecret<TValue>
-        where TValue : IComparable, IComparable<TValue>, IEquatable<TValue>
     {
         /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.

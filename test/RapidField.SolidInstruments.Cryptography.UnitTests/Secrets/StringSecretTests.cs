@@ -10,23 +10,23 @@ using System;
 namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
 {
     [TestClass]
-    public class GuidSecretTests
+    public class StringSecretTests
     {
         [TestMethod]
         public void FunctionalLifeSpanTest_ShouldProduceDesiredResults()
         {
             // Arrange.
             var name = "foo";
-            var valueOne = Guid.NewGuid();
-            var valueTwo = Guid.Empty;
-            var valueThree = Guid.NewGuid();
+            var valueOne = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+            var valueTwo = String.Empty;
+            var valueThree = "foobar";
 
-            using (var target = new GuidSecret(name))
+            using (var target = new StringSecret(name))
             {
                 // Assert.
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
-                target.ValueType.Should().Be(typeof(Guid));
+                target.ValueType.Should().Be(typeof(String));
 
                 // Act.
                 target.Write(() => valueOne);
@@ -42,6 +42,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Write(() => valueTwo);
 
                 // Assert.
+                target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
                     secret.Should().Be(valueTwo);
@@ -51,6 +52,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Write(() => valueThree);
 
                 // Assert.
+                target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
                     secret.Should().Be(valueThree);

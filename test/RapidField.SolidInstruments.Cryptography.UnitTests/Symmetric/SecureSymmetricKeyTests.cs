@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Collections;
+using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Linq;
@@ -138,6 +139,60 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         plaintext.Length.Should().Be(secureKeyLengthInBytes);
                         plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
                     }));
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ToDerivedKeyBytes_ShouldReturnValidResult_ForAes128Cbc()
+        {
+            // Arrange.
+            var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
+
+            // Assert.
+            ToDerivedKeyBytes_ShouldReturnValidResult(algorithm);
+        }
+
+        [TestMethod]
+        public void ToDerivedKeyBytes_ShouldReturnValidResult_ForAes128Ecb()
+        {
+            // Arrange.
+            var algorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
+
+            // Assert.
+            ToDerivedKeyBytes_ShouldReturnValidResult(algorithm);
+        }
+
+        [TestMethod]
+        public void ToDerivedKeyBytes_ShouldReturnValidResult_ForAes256Cbc()
+        {
+            // Arrange.
+            var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
+
+            // Assert.
+            ToDerivedKeyBytes_ShouldReturnValidResult(algorithm);
+        }
+
+        [TestMethod]
+        public void ToDerivedKeyBytes_ShouldReturnValidResult_ForAes256Ecb()
+        {
+            // Arrange.
+            var algorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
+
+            // Assert.
+            ToDerivedKeyBytes_ShouldReturnValidResult(algorithm);
+        }
+
+        private static void ToDerivedKeyBytes_ShouldReturnValidResult(SymmetricAlgorithmSpecification algorithm)
+        {
+            using (var target = SecureSymmetricKey.New(algorithm))
+            {
+                // Act.
+                using (var result = target.ToDerivedKeyBytes())
+                {
+                    // Assert.
+                    result.Should().NotBeNull();
+                    result.LengthInBytes.Should().Be(algorithm.ToKeyBitLength() / 8);
                 }
             }
         }

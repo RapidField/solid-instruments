@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Collections
         /// The length of the array.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="length" /> is less than or equal to zero.
+        /// <paramref name="length" /> is less than zero.
         /// </exception>
         public ReadOnlyPinnedBuffer(Int32 length)
             : base(length)
@@ -80,10 +80,10 @@ namespace RapidField.SolidInstruments.Collections
         /// The length of the array.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="length" /> is less than or equal to zero.
+        /// <paramref name="length" /> is less than zero.
         /// </exception>
         public ReadOnlyPinnedBuffer(Int32 length)
-            : this(new T[length.RejectIf().IsLessThanOrEqualTo(0, nameof(length))])
+            : this(new T[length.RejectIf().IsLessThan(0, nameof(length))])
         {
             return;
         }

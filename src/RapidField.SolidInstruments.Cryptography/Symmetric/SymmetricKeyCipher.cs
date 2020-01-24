@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal PinnedBuffer Decrypt(PinnedBuffer<Byte> ciphertext, PinnedBuffer<Byte> privateKey)
+        internal PinnedBuffer Decrypt(PinnedBuffer ciphertext, PinnedBuffer privateKey)
         {
             ciphertext.RejectIf().IsNull(nameof(ciphertext)).OrIf(argument => argument.Count() < BlockSizeInBytes, nameof(ciphertext), "The length of the specified ciphertext is invalid for the algorithm.");
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         ///  <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal PinnedBuffer Encrypt(PinnedBuffer<Byte> plaintext, PinnedBuffer<Byte> privateKey, PinnedBuffer<Byte> initializationVector)
+        internal PinnedBuffer Encrypt(PinnedBuffer plaintext, PinnedBuffer privateKey, PinnedBuffer initializationVector)
         {
             plaintext.RejectIf().IsNull(nameof(plaintext));
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
@@ -153,7 +153,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The plaintext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer DecryptInCbcMode(PinnedBuffer<Byte> ciphertext, PinnedBuffer<Byte> privateKey)
+        private PinnedBuffer DecryptInCbcMode(PinnedBuffer ciphertext, PinnedBuffer privateKey)
         {
             using (var initializationVector = new PinnedBuffer(BlockSizeInBytes, true))
             {
@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The plaintext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer DecryptInEcbMode(PinnedBuffer<Byte> ciphertext, PinnedBuffer<Byte> privateKey)
+        private PinnedBuffer DecryptInEcbMode(PinnedBuffer ciphertext, PinnedBuffer privateKey)
         {
             using (var encryptionProvider = InitializeProvider())
             {
@@ -249,7 +249,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="initializationVector" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private PinnedBuffer EncryptInCbcMode(PinnedBuffer<Byte> plaintext, PinnedBuffer<Byte> privateKey, PinnedBuffer<Byte> initializationVector)
+        private PinnedBuffer EncryptInCbcMode(PinnedBuffer plaintext, PinnedBuffer privateKey, PinnedBuffer initializationVector)
         {
             initializationVector.RejectIf().IsNull(nameof(initializationVector)).OrIf(argument => argument.Count() != BlockSizeInBytes, nameof(privateKey), "The length of the specified initialization vector is invalid for the algorithm.");
 
@@ -290,7 +290,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The ciphertext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer EncryptInEcbMode(PinnedBuffer<Byte> plaintext, PinnedBuffer<Byte> privateKey)
+        private PinnedBuffer EncryptInEcbMode(PinnedBuffer plaintext, PinnedBuffer privateKey)
         {
             using (var encryptionProvider = InitializeProvider())
             {
@@ -320,6 +320,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal Int32 BlockSizeInBytes => (BlockSizeInBits / 8);
+
+        /// <summary>
+        /// Gets the number of key bytes for the cipher represented by this <see cref="SymmetricKeyCipher" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal Int32 KeySizeInBytes => KeySizeInBits / 8;
 
         /// <summary>
         /// Gets the number of bits per block for the cipher represented by this <see cref="SymmetricKeyCipher" />.
@@ -360,12 +366,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         {
             get;
         }
-
-        /// <summary>
-        /// Gets the number of key bytes for the cipher represented by this <see cref="SymmetricKeyCipher" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Int32 KeySizeInBytes => (KeySizeInBits / 8);
 
         /// <summary>
         /// Gets an unused initialization vector with correct byte length for Electronic Codebook (ECB) mode transformations.

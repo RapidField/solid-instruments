@@ -14,7 +14,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// The type of the value.
     /// </typeparam>
     public interface IReadOnlySecret<TValue> : IReadOnlySecret
-        where TValue : IComparable, IComparable<TValue>, IEquatable<TValue>
     {
         /// <summary>
         /// Decrypts the secret value, pins a copy of it in memory and performs the specified read operation against it as a

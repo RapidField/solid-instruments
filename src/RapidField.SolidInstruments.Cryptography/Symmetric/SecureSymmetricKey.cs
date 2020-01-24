@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
@@ -73,7 +74,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        public static SecureSymmetricKey FromBuffer(SecureBuffer buffer)
+        public static SecureSymmetricKey FromBuffer(ISecureBuffer buffer)
         {
             buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
@@ -108,6 +109,29 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             catch
             {
                 throw new ArgumentException("The specified buffer is invalid.", nameof(buffer));
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="password">
+        /// </param>
+        /// <param name="algorithm">
+        /// </param>
+        /// <param name="derivationMode">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static SecureSymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode)
+        {
+            var passwordBytes = Encoding.Unicode.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)));
+            var saltBytes = new Byte[Pbkdf2SaltLengthInBytes];
+            RandomnessProvider.GetBytes(saltBytes);
+            var pbkdf2Provider = new Rfc2898DeriveBytes(passwordBytes, saltBytes, Pbkdf2MinimumIterationCount);
+
+            using (var keySource = new PinnedBuffer(pbkdf2Provider.GetBytes(KeySourceLengthInBytes)))
+            {
+                return New(algorithm, derivationMode, keySource);
             }
         }
 
@@ -166,42 +190,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Generates a new <see cref="SecureSymmetricKey" />.
-        /// </summary>
-        /// <param name="algorithm">
-        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
-        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
-        /// </param>
-        /// <param name="derivationMode">
-        /// The mode used to derive the generated key. The default value is
-        /// <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
-        /// </param>
-        /// <param name="keySource">
-        /// A buffer comprising 384 bytes (3,072 bits) from which the private key is derived.
-        /// </param>
-        /// <returns>
-        /// A new <see cref="SecureSymmetricKey" />.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="keySource" /> is not 384 bytes in length.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
-        /// <paramref name="derivationMode" /> is equal to <see cref="SecureSymmetricKeyDerivationMode.Unspecified" />.
-        /// </exception>
-        public static SecureSymmetricKey New(SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
-        {
-            keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length.");
-            return new SecureSymmetricKey(algorithm, derivationMode, keySource);
-        }
-
-        /// <summary>
         /// Converts the value of the current <see cref="SecureSymmetricKey" /> to its equivalent binary representation.
         /// </summary>
         /// <returns>
         /// A binary representation of the current <see cref="SecureSymmetricKey" />.
         /// </returns>
-        public SecureBuffer ToBuffer()
+        public ISecureBuffer ToBuffer()
         {
             var resultBuffer = new SecureBuffer(SerializedLength);
 
@@ -254,9 +248,9 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The derived key.
         /// </returns>
         [DebuggerHidden]
-        internal PinnedBuffer DeriveKey()
+        public ISecureBuffer ToDerivedKeyBytes()
         {
-            var result = (PinnedBuffer)null;
+            var result = new SecureBuffer(DerivedKeyLength);
 
             try
             {
@@ -266,8 +260,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         try
                         {
-                            // Perform PBKDF2 key-derivation.
-                            result = new PinnedBuffer(Pbkdf2Provider.GetBytes(DerivedKeyLength), true);
+                            result.Access((buffer) =>
+                            {
+                                // Perform PBKDF2 key-derivation.
+                                var keyBytes = new Span<Byte>(Pbkdf2Provider.GetBytes(DerivedKeyLength));
+                                keyBytes.CopyTo(buffer);
+                                keyBytes.Clear();
+                            });
                         }
                         finally
                         {
@@ -276,8 +275,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                         return result;
                     }
-
-                    result = new PinnedBuffer(DerivedKeyLength, true);
 
                     using (var sourceWords = new PinnedBuffer<UInt32>(KeySourceWordCount, true))
                     {
@@ -329,8 +326,18 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                     throw new UnsupportedSpecificationException($"The specified key derivation mode, {DerivationMode}, is not supported.");
                             }
 
-                            // Copy out the key bits.
-                            Buffer.BlockCopy(transformedWords, 0, result, 0, DerivedKeyLength);
+                            result.Access((buffer) =>
+                            {
+                                // Copy out the key bits.
+                                var keyBytes = new Byte[DerivedKeyLength];
+                                Buffer.BlockCopy(transformedWords, 0, keyBytes, 0, DerivedKeyLength);
+                                keyBytes.CopyTo(buffer);
+
+                                for (var i = 0; i < DerivedKeyLength; i++)
+                                {
+                                    keyBytes[i] = 0x00;
+                                }
+                            });
                         }
                     }
 
@@ -342,6 +349,37 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 result?.Dispose();
                 throw new SecurityException("Key derivation failed.");
             }
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="SecureSymmetricKey" />.
+        /// </summary>
+        /// <param name="algorithm">
+        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated key. The default value is
+        /// <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// </param>
+        /// <param name="keySource">
+        /// A buffer comprising 384 bytes (3,072 bits) from which the private key is derived.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SecureSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="keySource" /> is not 384 bytes in length.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
+        /// <paramref name="derivationMode" /> is equal to <see cref="SecureSymmetricKeyDerivationMode.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static SecureSymmetricKey New(SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
+        {
+            keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length.");
+            return new SecureSymmetricKey(algorithm, derivationMode, keySource);
         }
 
         /// <summary>

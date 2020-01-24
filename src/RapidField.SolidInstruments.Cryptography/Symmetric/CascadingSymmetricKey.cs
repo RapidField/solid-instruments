@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        public static CascadingSymmetricKey FromBuffer(SecureBuffer buffer)
+        public static CascadingSymmetricKey FromBuffer(ISecureBuffer buffer)
         {
             buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A binary representation of the current <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        public SecureBuffer ToBuffer()
+        public ISecureBuffer ToBuffer()
         {
             var result = new SecureBuffer(SerializedLength);
 

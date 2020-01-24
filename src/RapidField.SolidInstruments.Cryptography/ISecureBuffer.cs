@@ -26,5 +26,13 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The object is disposed.
         /// </exception>
         void Access(Action<PinnedBuffer> action);
+
+        /// <summary>
+        /// Gets the length of the buffer, in bytes.
+        /// </summary>
+        Int32 LengthInBytes
+        {
+            get;
+        }
     }
 }

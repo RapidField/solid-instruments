@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Collections
         /// The length of the array.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="length" /> is less than or equal to zero.
+        /// <paramref name="length" /> is less than zero.
         /// </exception>
         public PinnedBuffer(Int32 length)
             : base(length)
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <see langword="false" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="length" /> is less than or equal to zero.
+        /// <paramref name="length" /> is less than zero.
         /// </exception>
         public PinnedBuffer(Int32 length, Boolean overwriteWithZerosOnDispose)
             : base(length, overwriteWithZerosOnDispose)

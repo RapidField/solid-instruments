@@ -14,12 +14,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a named secret value that is pinned in memory and encrypted at rest.
     /// </summary>
+    /// <remarks>
+    /// <see cref="Secret{TValue}" /> is the default implementation of <see cref="ISecret{TValue}" />.
+    /// </remarks>
     /// <typeparam name="TValue">
     /// The type of the value.
     /// </typeparam>
 
     public abstract class Secret<TValue> : Instrument, ISecret<TValue>
-        where TValue : IComparable, IComparable<TValue>, IEquatable<TValue>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Secret{TValue}" /> class.

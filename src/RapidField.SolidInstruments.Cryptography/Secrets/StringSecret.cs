@@ -4,18 +4,21 @@
 
 using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Text;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a named secret <see cref="Guid" /> value that is pinned in memory and encrypted at rest.
+    /// Represents a named secret <see cref="String" /> value that is pinned in memory and encrypted at rest.
     /// </summary>
-    public class GuidSecret : Secret<Guid>
+
+    public class StringSecret : Secret<String>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GuidSecret" /> class.
+        /// Initializes a new instance of the <see cref="StringSecret" /> class.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -26,14 +29,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
         /// </exception>
-        public GuidSecret(String name)
+        public StringSecret(String name)
             : base(name)
         {
             return;
         }
 
         /// <summary>
-        /// Creates a new <see cref="GuidSecret" /> using the specified name and value.
+        /// Creates a new <see cref="StringSecret" /> using the specified name and value.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -42,34 +45,35 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The secret value.
         /// </param>
         /// <returns>
-        /// A new <see cref="GuidSecret" />.
+        /// A new <see cref="StringSecret" />.
         /// </returns>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="name" /> is <see langword="null" />.
+        /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="value" /> is <see langword="null" />.
         /// </exception>
-        public static GuidSecret FromValue(String name, Guid value)
+        public static StringSecret FromValue(String name, String value)
         {
-            var secret = new GuidSecret(name);
+            value = value.RejectIf().IsNull(nameof(value));
+            var secret = new StringSecret(name);
             secret.Write(() => value);
             return secret;
         }
 
         /// <summary>
-        /// Creates a <see cref="Guid" /> using the provided bytes.
+        /// Creates a <see cref="String" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="Guid" />.
+        /// A pinned buffer representing a <see cref="String" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// The resulting <see cref="Guid" />.
+        /// The resulting <see cref="String" />.
         /// </returns>
-        protected sealed override Guid ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => new Guid(bytes.ReadOnlySpan);
+        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -84,7 +88,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as a pinned buffer.
         /// </returns>
-        protected sealed override IPinnedBuffer<Byte> ConvertValueToBytes(Guid value, ConcurrencyControlToken controlToken) => new PinnedBuffer(value.ToByteArray());
+        protected sealed override IPinnedBuffer<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedBuffer(Encoding.Unicode.GetBytes(value));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret{TValue}" />.
