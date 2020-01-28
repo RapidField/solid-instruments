@@ -7,9 +7,9 @@ using System;
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
 {
     /// <summary>
-    /// Defines options for deriving key bits from a <see cref="SecureSymmetricKey" />.
+    /// Defines options for deriving key bits from an <see cref="ISymmetricKey" />.
     /// </summary>
-    public enum SecureSymmetricKeyDerivationMode : Byte
+    public enum SymmetricKeyDerivationMode : Byte
     {
         /// <summary>
         /// The derivation mode is not specified.
@@ -30,8 +30,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The key bit field is divided into blocks that are XORed sequentially, producing an output key of the desired length.
         /// </summary>
         /// <remarks>
-        /// No key bits are discarded. Some distinct <see cref="SecureSymmetricKey" /> instances produce identical key outputs due
-        /// to the fact that patterned substitutions produce identical XOR outputs.
+        /// No key bits are discarded. Some distinct <see cref="SymmetricKey" /> instances produce identical key outputs due to the
+        /// fact that patterned substitutions produce identical XOR outputs.
         /// </remarks>
         XorLayering = 0x02,
 

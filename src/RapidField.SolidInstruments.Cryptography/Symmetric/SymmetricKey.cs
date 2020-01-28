@@ -22,10 +22,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// Represents a symmetric-key algorithm and source bits for a derived key, encapsulates key derivation operations and secures
     /// key bits in memory.
     /// </summary>
-    public sealed class SecureSymmetricKey : Instrument
+    /// <remarks>
+    /// <see cref="SymmetricKey" /> is the default implementation of <see cref="ISymmetricKey" />.
+    /// </remarks>
+    public sealed class SymmetricKey : Instrument, ISymmetricKey
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecureSymmetricKey" /> class.
+        /// Initializes a new instance of the <see cref="SymmetricKey" /> class.
         /// </summary>
         /// <param name="algorithm">
         /// The symmetric-key algorithm for which a key is derived.
@@ -38,14 +41,14 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> or
-        /// <paramref name="derivationMode" /> is equal to <see cref="SecureSymmetricKeyDerivationMode.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        private SecureSymmetricKey(SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
+        private SymmetricKey(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
             Algorithm = algorithm.RejectIf().IsEqualToValue(SymmetricAlgorithmSpecification.Unspecified, nameof(algorithm));
-            DerivationMode = derivationMode.RejectIf().IsEqualToValue(SecureSymmetricKeyDerivationMode.Unspecified, nameof(derivationMode));
+            DerivationMode = derivationMode.RejectIf().IsEqualToValue(SymmetricKeyDerivationMode.Unspecified, nameof(derivationMode));
             KeySource = new SecureBuffer(KeySourceLengthInBytes);
             LazyPbkdf2Provider = new Lazy<Rfc2898DeriveBytes>(InitializePbkdf2Algorithm, LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -60,13 +63,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="SecureSymmetricKey" /> using the specified buffer.
+        /// Creates a new instance of a <see cref="SymmetricKey" /> using the specified buffer.
         /// </summary>
         /// <param name="buffer">
-        /// A binary representation of a <see cref="SecureSymmetricKey" />.
+        /// A binary representation of a <see cref="SymmetricKey" />.
         /// </param>
         /// <returns>
-        /// A new instance of a <see cref="SecureSymmetricKey" />.
+        /// A new instance of a <see cref="SymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentException">
         /// <paramref name="buffer" /> is invalid.
@@ -74,13 +77,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        public static SecureSymmetricKey FromBuffer(ISecureBuffer buffer)
+        public static SymmetricKey FromBuffer(ISecureBuffer buffer)
         {
             buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
             try
             {
-                var result = (SecureSymmetricKey)null;
+                var result = (SymmetricKey)null;
 
                 buffer.Access(pinnedCiphertext =>
                 {
@@ -98,17 +101,17 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             Array.Copy(plaintextBuffer, KeySourceBufferIndex, keySource, 0, KeySourceLengthInBytes);
                             var algorithm = (SymmetricAlgorithmSpecification)plaintextBuffer[AlgorithmBufferIndex];
-                            var derivationMode = (SecureSymmetricKeyDerivationMode)plaintextBuffer[DerivationModeBufferIndex];
-                            result = new SecureSymmetricKey(algorithm, derivationMode, keySource);
+                            var derivationMode = (SymmetricKeyDerivationMode)plaintextBuffer[DerivationModeBufferIndex];
+                            result = new SymmetricKey(algorithm, derivationMode, keySource);
                         }
                     }
                 });
 
                 return result;
             }
-            catch
+            catch (Exception exception)
             {
-                throw new ArgumentException("The specified buffer is invalid.", nameof(buffer));
+                throw new ArgumentException("The specified buffer is invalid.", nameof(buffer), exception);
             }
         }
 
@@ -122,7 +125,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </param>
         /// <returns>
         /// </returns>
-        public static SecureSymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode)
+        public static SymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
         {
             var passwordBytes = Encoding.Unicode.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)));
             var saltBytes = new Byte[Pbkdf2SaltLengthInBytes];
@@ -136,34 +139,34 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Generates a new <see cref="SecureSymmetricKey" />.
+        /// Generates a new <see cref="SymmetricKey" />.
         /// </summary>
         /// <remarks>
-        /// Keys generated by this method employ <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" /> for key
+        /// Keys generated by this method employ <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" /> for key
         /// derivation and <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" /> for transformation.
         /// </remarks>
         /// <returns>
-        /// A new <see cref="SecureSymmetricKey" />.
+        /// A new <see cref="SymmetricKey" />.
         /// </returns>
-        public static SecureSymmetricKey New() => New(DefaultAlgorithm);
+        public static SymmetricKey New() => New(DefaultAlgorithm);
 
         /// <summary>
-        /// Generates a new <see cref="SecureSymmetricKey" />.
+        /// Generates a new <see cref="SymmetricKey" />.
         /// </summary>
         /// <param name="algorithm">
         /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
         /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
         /// </param>
         /// <returns>
-        /// A new <see cref="SecureSymmetricKey" />.
+        /// A new <see cref="SymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
-        public static SecureSymmetricKey New(SymmetricAlgorithmSpecification algorithm) => New(algorithm, DefaultDerivationMode);
+        public static SymmetricKey New(SymmetricAlgorithmSpecification algorithm) => New(algorithm, DefaultDerivationMode);
 
         /// <summary>
-        /// Generates a new <see cref="SecureSymmetricKey" />.
+        /// Generates a new <see cref="SymmetricKey" />.
         /// </summary>
         /// <param name="algorithm">
         /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
@@ -171,16 +174,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </param>
         /// <param name="derivationMode">
         /// The mode used to derive the generated key. The default value is
-        /// <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
         /// </param>
         /// <returns>
-        /// A new <see cref="SecureSymmetricKey" />.
+        /// A new <see cref="SymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> or
-        /// <paramref name="derivationMode" /> is equal to <see cref="SecureSymmetricKeyDerivationMode.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
-        public static SecureSymmetricKey New(SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode)
+        public static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
         {
             using (var keySource = new PinnedBuffer(KeySourceLengthInBytes, true))
             {
@@ -190,11 +193,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="SecureSymmetricKey" /> to its equivalent binary representation.
+        /// Converts the value of the current <see cref="SymmetricKey" /> to its equivalent binary representation.
         /// </summary>
         /// <returns>
-        /// A binary representation of the current <see cref="SecureSymmetricKey" />.
+        /// A binary representation of the current <see cref="SymmetricKey" />.
         /// </returns>
+        [DebuggerHidden]
         public ISecureBuffer ToBuffer()
         {
             var resultBuffer = new SecureBuffer(SerializedLength);
@@ -241,8 +245,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Converts the current <see cref="SecureSymmetricKey" /> to symmetric-key plaintext with correct bit-length for the
-        /// encryption mode specified by <see cref="Algorithm" />.
+        /// Converts the current <see cref="SymmetricKey" /> to symmetric-key plaintext with correct bit-length for the encryption
+        /// mode specified by <see cref="Algorithm" />.
         /// </summary>
         /// <returns>
         /// The derived key.
@@ -256,7 +260,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             {
                 using (var controlToken = StateControl.Enter())
                 {
-                    if (DerivationMode == SecureSymmetricKeyDerivationMode.Pbkdf2)
+                    if (DerivationMode == SymmetricKeyDerivationMode.Pbkdf2)
                     {
                         try
                         {
@@ -291,11 +295,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                             switch (DerivationMode)
                             {
-                                case SecureSymmetricKeyDerivationMode.Truncation:
+                                case SymmetricKeyDerivationMode.Truncation:
 
                                     break;
 
-                                case SecureSymmetricKeyDerivationMode.XorLayering:
+                                case SymmetricKeyDerivationMode.XorLayering:
 
                                     for (var i = 1; i < BlockCount; i++)
                                     {
@@ -308,7 +312,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                                     break;
 
-                                case SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution:
+                                case SymmetricKeyDerivationMode.XorLayeringWithSubstitution:
 
                                     for (var i = 1; i < BlockCount; i++)
                                     {
@@ -352,7 +356,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Generates a new <see cref="SecureSymmetricKey" />.
+        /// Generates a new <see cref="SymmetricKey" />.
         /// </summary>
         /// <param name="algorithm">
         /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
@@ -360,30 +364,30 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </param>
         /// <param name="derivationMode">
         /// The mode used to derive the generated key. The default value is
-        /// <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
         /// </param>
         /// <param name="keySource">
         /// A buffer comprising 384 bytes (3,072 bits) from which the private key is derived.
         /// </param>
         /// <returns>
-        /// A new <see cref="SecureSymmetricKey" />.
+        /// A new <see cref="SymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentException">
         /// <paramref name="keySource" /> is not 384 bytes in length.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
-        /// <paramref name="derivationMode" /> is equal to <see cref="SecureSymmetricKeyDerivationMode.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal static SecureSymmetricKey New(SymmetricAlgorithmSpecification algorithm, SecureSymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
+        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
         {
             keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length.");
-            return new SecureSymmetricKey(algorithm, derivationMode, keySource);
+            return new SymmetricKey(algorithm, derivationMode, keySource);
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="SecureSymmetricKey" />.
+        /// Releases all resources consumed by the current <see cref="SymmetricKey" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -452,23 +456,24 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Gets the PBKDF2 algorithm provider for the current <see cref="SecureSymmetricKey" />.
+        /// Gets the symmetric-key algorithm for which a key is derived.
+        /// </summary>
+        public SymmetricAlgorithmSpecification Algorithm
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the PBKDF2 algorithm provider for the current <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Rfc2898DeriveBytes Pbkdf2Provider => LazyPbkdf2Provider.Value;
 
         /// <summary>
-        /// Represents the number of bytes comprising a post-encrypted, serialized representation of a
-        /// <see cref="SecureSymmetricKey" />.
+        /// Represents the number of bytes comprising a post-encrypted, serialized representation of a <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const Int32 SerializedLength = (SerializedPlaintextLength + (BufferEncryptionAlgorithmBlockSizeInBytes * 2) - AlgorithmLength - DerivationModeLength);
-
-        /// <summary>
-        /// Represents the symmetric-key algorithm for which a key is derived.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly SymmetricAlgorithmSpecification Algorithm;
 
         /// <summary>
         /// Represents the byte index of the algorithm byte within an unencrypted, serialized buffer.
@@ -504,7 +509,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents the default derivation mode for new keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const SecureSymmetricKeyDerivationMode DefaultDerivationMode = SecureSymmetricKeyDerivationMode.Pbkdf2;
+        private const SymmetricKeyDerivationMode DefaultDerivationMode = SymmetricKeyDerivationMode.Pbkdf2;
 
         /// <summary>
         /// Represents the byte index of the derivation mode byte within an unencrypted, serialized buffer.
@@ -516,7 +521,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents the byte length of <see cref="DerivationMode" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 DerivationModeLength = sizeof(SecureSymmetricKeyDerivationMode);
+        private const Int32 DerivationModeLength = sizeof(SymmetricKeyDerivationMode);
 
         /// <summary>
         /// Represents the byte index of the key source within an unencrypted, serialized buffer.
@@ -561,8 +566,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private const Int32 Pbkdf2SaltLengthInBytes = (KeySourceLengthInBytes / 3);
 
         /// <summary>
-        /// Represents the number of bytes comprising a pre-encrypted, serialized representation of a
-        /// <see cref="SecureSymmetricKey" />.
+        /// Represents the number of bytes comprising a pre-encrypted, serialized representation of a <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const Int32 SerializedPlaintextLength = (KeySourceLengthInBytes + AlgorithmLength + DerivationModeLength);
@@ -582,7 +586,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         });
 
         /// <summary>
-        /// Represents a finalizer for static members of the <see cref="SecureSymmetricKey" /> class.
+        /// Represents a finalizer for static members of the <see cref="SymmetricKey" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(BufferEncryptionKey.Dispose);
@@ -595,7 +599,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
         /// <summary>
         /// Represents substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" /> is
-        /// equal to <see cref="SecureSymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// equal to <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Byte[] SubstitutionBox =
@@ -631,10 +635,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private readonly Int32 BlockWordCount;
 
         /// <summary>
-        /// Represents the mode used to derive key bits from the current <see cref="SecureSymmetricKey" />.
+        /// Represents the mode used to derive key bits from the current <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly SecureSymmetricKeyDerivationMode DerivationMode;
+        private readonly SymmetricKeyDerivationMode DerivationMode;
 
         /// <summary>
         /// Represents the number of bytes contained within the derived key.
@@ -643,13 +647,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private readonly Int32 DerivedKeyLength;
 
         /// <summary>
-        /// Represents a buffer that is used to derive key bits from the current <see cref="SecureSymmetricKey" />.
+        /// Represents a buffer that is used to derive key bits from the current <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ISecureBuffer KeySource;
 
         /// <summary>
-        /// Represents the lazily-initialized PBKDF2 algorithm provider for the current <see cref="SecureSymmetricKey" />.
+        /// Represents the lazily-initialized PBKDF2 algorithm provider for the current <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Rfc2898DeriveBytes> LazyPbkdf2Provider;

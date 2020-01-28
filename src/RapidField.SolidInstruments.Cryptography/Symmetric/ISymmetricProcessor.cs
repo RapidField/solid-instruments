@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        T Decrypt(Byte[] ciphertext, SecureSymmetricKey key);
+        T Decrypt(Byte[] ciphertext, ISymmetricKey key);
 
         /// <summary>
         /// Decrypts the specified ciphertext.
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        T Decrypt(Byte[] ciphertext, CascadingSymmetricKey key);
+        T Decrypt(Byte[] ciphertext, ICascadingSymmetricKey key);
 
         /// <summary>
         /// Decrypts the specified ciphertext.
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        Byte[] Encrypt(T plaintextObject, SecureSymmetricKey key);
+        Byte[] Encrypt(T plaintextObject, ISymmetricKey key);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -101,7 +101,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        Byte[] Encrypt(T plaintextObject, CascadingSymmetricKey key);
+        Byte[] Encrypt(T plaintextObject, ICascadingSymmetricKey key);
 
         /// <summary>
         /// Encrypts the specified plaintext object.

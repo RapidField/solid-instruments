@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using RapidField.SolidInstruments.Cryptography.Symmetric.Aes;
 using System;
@@ -31,7 +32,7 @@ namespace RapidField.SolidInstruments.Cryptography
         public SecureBuffer(Int32 lengthInBytes)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
-            Cipher = new Aes128EcbCipher(RandomnessProvider);
+            Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
             PrivateKey = new PinnedBuffer(Cipher.KeySizeInBytes, true);
             RandomnessProvider.GetBytes(PrivateKey);
@@ -106,6 +107,14 @@ namespace RapidField.SolidInstruments.Cryptography
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer hash code.
+        /// </returns>
+        public override Int32 GetHashCode() => Ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureBuffer" />.

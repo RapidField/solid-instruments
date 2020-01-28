@@ -20,10 +20,14 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             var valueOne = Guid.NewGuid();
             var valueTwo = Guid.Empty;
             var valueThree = Guid.NewGuid();
+            var hashCode = 0;
 
             using (var target = new GuidSecret(name))
             {
                 // Assert.
+                hashCode.Should().NotBe(target.GetHashCode());
+                hashCode = target.GetHashCode();
+                hashCode.Should().Be(target.GetHashCode());
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
                 target.ValueType.Should().Be(typeof(Guid));
@@ -32,6 +36,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Write(() => valueOne);
 
                 // Assert.
+                hashCode.Should().NotBe(target.GetHashCode());
+                hashCode = target.GetHashCode();
+                hashCode.Should().Be(target.GetHashCode());
                 target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
@@ -42,6 +49,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Write(() => valueTwo);
 
                 // Assert.
+                hashCode.Should().NotBe(target.GetHashCode());
+                hashCode = target.GetHashCode();
+                hashCode.Should().Be(target.GetHashCode());
                 target.Read(secret =>
                 {
                     secret.Should().Be(valueTwo);
@@ -51,6 +61,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Write(() => valueThree);
 
                 // Assert.
+                hashCode.Should().NotBe(target.GetHashCode());
+                hashCode = target.GetHashCode();
+                hashCode.Should().Be(target.GetHashCode());
                 target.Read(secret =>
                 {
                     secret.Should().Be(valueThree);

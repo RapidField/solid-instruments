@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldRaiseArgumentOutOfRangeException_ForUnspecifiedAlgorithm()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -44,7 +44,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldRaiseArgumentOutOfRangeException_ForUnspecifiedDerivationMode()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Unspecified;
+            var derivationMode = SymmetricKeyDerivationMode.Unspecified;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -67,7 +67,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldReturnValidKey_ForValidArguments()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToBuffer_ShouldBeReversible_WithFourLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToBuffer_ShouldBeReversible_WithThreeLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToBuffer_ShouldBeReversible_WithTwoLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
 
@@ -160,7 +160,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var cascadingKeyLengthInBytes = 1666;
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;

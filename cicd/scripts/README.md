@@ -16,6 +16,7 @@ This path contains scripts that serve as entry points for pipeline invocation.
 - [`EncryptCodeSigningCertificate.ps1`](EncryptCodeSigningCertificate.ps1) scripts the encryption of the **Solid Instruments** code signing certificate.
 - [`ExecuteCicdBuild.ps1`](ExecuteCicdBuild.ps1) scripts the standard CI/CD build process.
 - [`ExecuteCicdDeployment.ps1`](ExecuteCicdDeployment.ps1) scripts the deployment process for successful CI/CD master builds.
+- [`GenerateTestCertificates.ps1`](GenerateTestCertificates.ps1) scripts generation of self-signed X509 certificates that are used for testing.
 - [`ResetEnvironment.ps1`](ResetEnvironment.ps1) scripts the build environment setup/reset process.
 
 ## License

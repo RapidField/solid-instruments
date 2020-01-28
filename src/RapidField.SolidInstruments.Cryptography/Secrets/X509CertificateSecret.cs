@@ -7,17 +7,18 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
-using System.Text;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a named secret <see cref="String" /> value that is pinned in memory and encrypted at rest.
+    /// Represents a named secret <see cref="X509Certificate2" /> value that is pinned in memory and encrypted at rest.
     /// </summary>
-    public sealed class StringSecret : Secret<String>
+    public sealed class X509CertificateSecret : Secret<X509Certificate2>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringSecret" /> class.
+        /// Initializes a new instance of the <see cref="X509CertificateSecret" /> class.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -28,14 +29,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
         /// </exception>
-        public StringSecret(String name)
+        public X509CertificateSecret(String name)
             : base(name)
         {
             return;
         }
 
         /// <summary>
-        /// Creates a new <see cref="StringSecret" /> using the specified name and value.
+        /// Creates a new <see cref="X509CertificateSecret" /> using the specified name and value.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -44,7 +45,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The secret value.
         /// </param>
         /// <returns>
-        /// A new <see cref="StringSecret" />.
+        /// A new <see cref="X509CertificateSecret" />.
         /// </returns>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="name" /> is empty.
@@ -52,27 +53,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="value" /> is <see langword="null" />.
         /// </exception>
-        public static StringSecret FromValue(String name, String value)
+        public static X509CertificateSecret FromValue(String name, X509Certificate2 value)
         {
             value = value.RejectIf().IsNull(nameof(value));
-            var secret = new StringSecret(name);
+            var secret = new X509CertificateSecret(name);
             secret.Write(() => value);
             return secret;
         }
 
         /// <summary>
-        /// Creates a <see cref="String" /> using the provided bytes.
+        /// Creates a <see cref="X509Certificate2" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="String" />.
+        /// A pinned buffer representing a <see cref="X509Certificate2" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// The resulting <see cref="String" />.
+        /// The resulting <see cref="X509Certificate2" />.
         /// </returns>
-        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
+        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -87,10 +88,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as a pinned buffer.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedBuffer(Encoding.Unicode.GetBytes(value), true);
+        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(X509Certificate2 value, ConcurrencyControlToken controlToken) => new PinnedBuffer(value.RawData);
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="StringSecret" />.
+        /// Releases all resources consumed by the current <see cref="X509CertificateSecret" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

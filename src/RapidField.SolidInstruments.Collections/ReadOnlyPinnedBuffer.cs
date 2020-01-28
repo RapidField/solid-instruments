@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -166,6 +167,29 @@ namespace RapidField.SolidInstruments.Collections
         /// An enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer hash code.
+        /// </returns>
+        public override Int32 GetHashCode()
+        {
+            var hashCode = 0x3acf3acf;
+
+            foreach (var element in this)
+            {
+                hashCode ^= element.GetHashCode() ^ 0x66666666;
+
+                using (var buffer = new ReadOnlyPinnedBuffer(hashCode.ToByteArray()))
+                {
+                    hashCode = buffer.ComputeThirtyTwoBitHash() ^ 0x33333333;
+                }
+            }
+
+            return hashCode ^ 0x55555555;
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedBuffer{T}" />.

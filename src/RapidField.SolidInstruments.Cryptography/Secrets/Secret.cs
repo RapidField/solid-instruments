@@ -12,6 +12,93 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
+    /// Represents a named secret bit field that is pinned in memory and encrypted at rest.
+    /// </summary>
+    public sealed class Secret : Secret<IReadOnlyPinnedBuffer<Byte>>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Secret" /> class.
+        /// </summary>
+        /// <param name="name">
+        /// A textual name that uniquely identifies the secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        public Secret(String name)
+            : base(name)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Secret" /> using the specified name and value.
+        /// </summary>
+        /// <param name="name">
+        /// A textual name that uniquely identifies the secret.
+        /// </param>
+        /// <param name="value">
+        /// The secret value.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="Secret" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="value" /> is <see langword="null" />.
+        /// </exception>
+        public static Secret FromValue(String name, Byte[] value)
+        {
+            value = value.RejectIf().IsNull(nameof(value));
+            var secret = new Secret(name);
+            secret.Write(() => new PinnedBuffer<Byte>(value));
+            return secret;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="IReadOnlyPinnedBuffer{T}" /> using the provided bytes.
+        /// </summary>
+        /// <param name="bytes">
+        /// A pinned buffer.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// </returns>
+        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => bytes;
+
+        /// <summary>
+        /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
+        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// </summary>
+        /// <param name="value">
+        /// The secret value.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <returns>
+        /// <paramref name="value" /> as a pinned buffer.
+        /// </returns>
+        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(IReadOnlyPinnedBuffer<Byte> value, ConcurrencyControlToken controlToken) => value;
+
+        /// <summary>
+        /// Releases all resources consumed by the current <see cref="Secret" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+    }
+
+    /// <summary>
     /// Represents a named secret value that is pinned in memory and encrypted at rest.
     /// </summary>
     /// <remarks>
@@ -20,7 +107,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <typeparam name="TValue">
     /// The type of the value.
     /// </typeparam>
-
     public abstract class Secret<TValue> : Instrument, ISecret<TValue>
     {
         /// <summary>
@@ -41,6 +127,24 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             HasValue = false;
             Name = name.RejectIf().IsNullOrEmpty(nameof(name));
             SecureValueBuffer = null;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer hash code.
+        /// </returns>
+        public override Int32 GetHashCode()
+        {
+            var hashCode = (Name?.GetHashCode() ?? 0) ^ (ValueType?.FullName.GetHashCode() ?? 0);
+
+            if (HasValue && SecureValueBuffer is null == false)
+            {
+                hashCode ^= SecureValueBuffer.GetHashCode();
+            }
+
+            return hashCode;
         }
 
         /// <summary>
@@ -149,7 +253,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -160,7 +264,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as a pinned buffer.
         /// </returns>
-        protected abstract IPinnedBuffer<Byte> ConvertValueToBytes(TValue value, ConcurrencyControlToken controlToken);
+        protected abstract IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(TValue value, ConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret{TValue}" />.
@@ -309,38 +413,31 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                 using (var valueBuffer = ConvertValueToBytes(value, controlToken))
                 {
-                    try
+                    if (valueBuffer.IsEmpty)
                     {
-                        if (valueBuffer.IsEmpty)
-                        {
-                            // Secure buffers cannot be empty.
-                            SecureValueBuffer?.Dispose();
-                            SecureValueBuffer = null;
-                            HasValue = true;
-                            return;
-                        }
-
-                        if (SecureValueBuffer is null)
-                        {
-                            SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
-                        }
-                        else if (SecureValueBuffer.LengthInBytes != valueBuffer.LengthInBytes)
-                        {
-                            SecureValueBuffer.Dispose();
-                            SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
-                        }
-
-                        SecureValueBuffer.Access(secureBuffer =>
-                        {
-                            valueBuffer.Span.CopyTo(secureBuffer.Span);
-                        });
-
+                        // Secure buffers cannot be empty.
+                        SecureValueBuffer?.Dispose();
+                        SecureValueBuffer = null;
                         HasValue = true;
+                        return;
                     }
-                    finally
+
+                    if (SecureValueBuffer is null)
                     {
-                        valueBuffer.OverwriteWithZeros();
+                        SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
                     }
+                    else if (SecureValueBuffer.LengthInBytes != valueBuffer.LengthInBytes)
+                    {
+                        SecureValueBuffer.Dispose();
+                        SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
+                    }
+
+                    SecureValueBuffer.Access(secureBuffer =>
+                    {
+                        valueBuffer.ReadOnlySpan.CopyTo(secureBuffer.Span);
+                    });
+
+                    HasValue = true;
                 }
             }
             catch (ObjectDisposedException)
@@ -383,6 +480,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Represents the encrypted field in which the secure value is stored.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private SecureBuffer SecureValueBuffer;
+        private ISecureBuffer SecureValueBuffer;
     }
 }

@@ -4,25 +4,26 @@
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Cryptography.Secrets;
 using System;
 
 namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
 {
     [TestClass]
-    public class StringSecretTests
+    public class SecretTests
     {
         [TestMethod]
         public void FunctionalLifeSpanTest_ShouldProduceDesiredResults()
         {
             // Arrange.
             var name = "foo";
-            var valueOne = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-            var valueTwo = String.Empty;
-            var valueThree = "foobar";
+            var valueOne = new Byte[] { 0x01 };
+            var valueTwo = Array.Empty<Byte>();
+            var valueThree = new Byte[] { 0xcc, 0xff };
             var hashCode = 0;
 
-            using (var target = new StringSecret(name))
+            using (var target = new Secret(name))
             {
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
@@ -30,10 +31,10 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().Be(target.GetHashCode());
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
-                target.ValueType.Should().Be(typeof(String));
+                target.ValueType.Should().Be(typeof(IReadOnlyPinnedBuffer<Byte>));
 
                 // Act.
-                target.Write(() => valueOne);
+                target.Write(() => new PinnedBuffer(valueOne));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
@@ -42,33 +43,31 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueOne);
+                    secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueOne);
                 });
 
                 // Act.
-                target.Write(() => valueTwo);
+                target.Write(() => new PinnedBuffer(valueTwo));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
-                target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueTwo);
+                    secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueTwo);
                 });
 
                 // Act.
-                target.Write(() => valueThree);
+                target.Write(() => new PinnedBuffer(valueThree));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
-                target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueThree);
+                    secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueThree);
                 });
             }
 

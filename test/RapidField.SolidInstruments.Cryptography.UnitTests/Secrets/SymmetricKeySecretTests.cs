@@ -5,24 +5,28 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Cryptography.Secrets;
+using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 
 namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
 {
     [TestClass]
-    public class StringSecretTests
+    public class SymmetricKeySecretTests
     {
         [TestMethod]
         public void FunctionalLifeSpanTest_ShouldProduceDesiredResults()
         {
             // Arrange.
             var name = "foo";
-            var valueOne = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-            var valueTwo = String.Empty;
-            var valueThree = "foobar";
+            var valueOne = SymmetricKey.New();
+            var valueTwo = SymmetricKey.New();
+            var valueThree = SymmetricKey.New();
             var hashCode = 0;
+            var symmetricProcessor = new SymmetricStringProcessor(SecureBuffer.RandomnessProvider);
+            var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+            var ciphertextObject = Array.Empty<Byte>();
 
-            using (var target = new StringSecret(name))
+            using (var target = new SymmetricKeySecret(name))
             {
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
@@ -30,7 +34,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().Be(target.GetHashCode());
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
-                target.ValueType.Should().Be(typeof(String));
+                target.ValueType.Should().Be(typeof(SymmetricKey));
 
                 // Act.
                 target.Write(() => valueOne);
@@ -42,7 +46,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueOne);
+                    var ciphertext = symmetricProcessor.Encrypt(plaintextObject, secret);
+                    ciphertext.Should().NotBeEquivalentTo(ciphertextObject);
+                    ciphertextObject = ciphertext;
+                    var plaintext = symmetricProcessor.Decrypt(ciphertext, secret);
+                    plaintext.Should().NotBeNullOrEmpty();
+                    plaintext.Should().Be(plaintextObject);
                 });
 
                 // Act.
@@ -55,7 +64,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueTwo);
+                    var ciphertext = symmetricProcessor.Encrypt(plaintextObject, secret);
+                    ciphertext.Should().NotBeEquivalentTo(ciphertextObject);
+                    ciphertextObject = ciphertext;
+                    var plaintext = symmetricProcessor.Decrypt(ciphertext, secret);
+                    plaintext.Should().NotBeNullOrEmpty();
+                    plaintext.Should().Be(plaintextObject);
                 });
 
                 // Act.
@@ -68,14 +82,19 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.HasValue.Should().BeTrue();
                 target.Read(secret =>
                 {
-                    secret.Should().Be(valueThree);
+                    var ciphertext = symmetricProcessor.Encrypt(plaintextObject, secret);
+                    ciphertext.Should().NotBeEquivalentTo(ciphertextObject);
+                    ciphertextObject = ciphertext;
+                    var plaintext = symmetricProcessor.Decrypt(ciphertext, secret);
+                    plaintext.Should().NotBeNullOrEmpty();
+                    plaintext.Should().Be(plaintextObject);
                 });
             }
 
             // Assert.
-            valueOne.Should().NotBeEmpty();
-            valueTwo.Should().BeEmpty();
-            valueThree.Should().NotBeEmpty();
+            valueOne.Should().NotBeNull();
+            valueTwo.Should().NotBeNull();
+            valueThree.Should().NotBeNull();
         }
     }
 }

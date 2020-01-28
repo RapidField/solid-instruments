@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{DD6DE5D2-E17E-4985-AD23-29F83799CAFC}"
 	ProjectSection(SolutionItems) = preProject
@@ -322,6 +322,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0213
 		cicd\scripts\EncryptCodeSigningCertificate.ps1 = cicd\scripts\EncryptCodeSigningCertificate.ps1
 		cicd\scripts\ExecuteCicdBuild.ps1 = cicd\scripts\ExecuteCicdBuild.ps1
 		cicd\scripts\ExecuteCicdDeployment.ps1 = cicd\scripts\ExecuteCicdDeployment.ps1
+		cicd\scripts\GenerateTestCertificates.ps1 = cicd\scripts\GenerateTestCertificates.ps1
 		cicd\scripts\README.md = cicd\scripts\README.md
 		cicd\scripts\ResetEnvironment.ps1 = cicd\scripts\ResetEnvironment.ps1
 	EndProjectSection

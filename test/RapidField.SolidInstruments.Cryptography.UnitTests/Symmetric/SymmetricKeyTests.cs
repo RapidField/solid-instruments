@@ -14,14 +14,14 @@ using System.Security.Cryptography;
 namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
 {
     [TestClass]
-    public class SecureSymmetricKeyTests
+    public class SymmetricKeyTests
     {
         [TestMethod]
         public void New_ShouldRaiseArgumentOutOfRangeException_ForInvalidLengthKeySource()
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var keyLength = 3;
 
             using (var keySource = new PinnedBuffer(keyLength))
@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Act.
                 var action = new Action(() =>
                 {
-                    using (var target = SecureSymmetricKey.New(algorithm, derivationMode, keySource))
+                    using (var target = SymmetricKey.New(algorithm, derivationMode, keySource))
                     {
                         return;
                     }
@@ -45,12 +45,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Unspecified;
-            var derivationMode = SecureSymmetricKeyDerivationMode.Truncation;
+            var derivationMode = SymmetricKeyDerivationMode.Truncation;
 
             // Act.
             var action = new Action(() =>
             {
-                using (var target = SecureSymmetricKey.New(algorithm, derivationMode))
+                using (var target = SymmetricKey.New(algorithm, derivationMode))
                 {
                     return;
                 }
@@ -65,12 +65,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-            var derivationMode = SecureSymmetricKeyDerivationMode.Unspecified;
+            var derivationMode = SymmetricKeyDerivationMode.Unspecified;
 
             // Act.
             var action = new Action(() =>
             {
-                using (var target = SecureSymmetricKey.New(algorithm, derivationMode))
+                using (var target = SymmetricKey.New(algorithm, derivationMode))
                 {
                     return;
                 }
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldReturnValidKey_ForValidArguments()
         {
             // Arrange.
-            using (var target = SecureSymmetricKey.New())
+            using (var target = SymmetricKey.New())
             {
                 // Assert.
                 target.Should().NotBeNull();
@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var processor = new SymmetricStringProcessor(randomnessProvider);
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
 
-                using (var target = SecureSymmetricKey.New())
+                using (var target = SymmetricKey.New())
                 {
                     // Arrange.
                     var ciphertext = processor.Encrypt(plaintextObject, target);
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                     // Act.
                     using (var buffer = target.ToBuffer())
                     {
-                        using (var parityKey = SecureSymmetricKey.FromBuffer(buffer))
+                        using (var parityKey = SymmetricKey.FromBuffer(buffer))
                         {
                             // Arrange.
                             var result = processor.Decrypt(ciphertext, parityKey);
@@ -125,9 +125,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToBuffer_ShouldReturnValidResult()
         {
             // Arrange.
-            var secureKeyLengthInBytes = 416;
+            var keyLengthInBytes = 416;
 
-            using (var target = SecureSymmetricKey.New())
+            using (var target = SymmetricKey.New())
             {
                 // Act.
                 using (var buffer = target.ToBuffer())
@@ -136,7 +136,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                     {
                         // Assert.
                         plaintext.Should().NotBeNullOrEmpty();
-                        plaintext.Length.Should().Be(secureKeyLengthInBytes);
+                        plaintext.Length.Should().Be(keyLengthInBytes);
                         plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
                     }));
                 }
@@ -185,7 +185,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
 
         private static void ToDerivedKeyBytes_ShouldReturnValidResult(SymmetricAlgorithmSpecification algorithm)
         {
-            using (var target = SecureSymmetricKey.New(algorithm))
+            using (var target = SymmetricKey.New(algorithm))
             {
                 // Act.
                 using (var result = target.ToDerivedKeyBytes())

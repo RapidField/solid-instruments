@@ -15,7 +15,21 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="TestRootOne.testcert" />
+      <None Remove="TestRootThree.testcert" />
+      <None Remove="TestRootTwo.testcert" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
+        <Content Include="TestRootOne.testcert">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="TestRootThree.testcert">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="TestRootTwo.testcert">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />

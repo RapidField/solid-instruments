@@ -6,18 +6,19 @@ using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
-using System.Text;
+using System.Linq;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a named secret <see cref="String" /> value that is pinned in memory and encrypted at rest.
+    /// Represents a named secret <see cref="CascadingSymmetricKey" /> value that is pinned in memory and encrypted at rest.
     /// </summary>
-    public sealed class StringSecret : Secret<String>
+    public sealed class CascadingSymmetricKeySecret : Secret<CascadingSymmetricKey>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringSecret" /> class.
+        /// Initializes a new instance of the <see cref="CascadingSymmetricKeySecret" /> class.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -28,14 +29,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
         /// </exception>
-        public StringSecret(String name)
+        public CascadingSymmetricKeySecret(String name)
             : base(name)
         {
             return;
         }
 
         /// <summary>
-        /// Creates a new <see cref="StringSecret" /> using the specified name and value.
+        /// Creates a new <see cref="CascadingSymmetricKeySecret" /> using the specified name and value.
         /// </summary>
         /// <param name="name">
         /// A textual name that uniquely identifies the secret.
@@ -52,27 +53,42 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="value" /> is <see langword="null" />.
         /// </exception>
-        public static StringSecret FromValue(String name, String value)
+        public static CascadingSymmetricKeySecret FromValue(String name, CascadingSymmetricKey value)
         {
-            value = value.RejectIf().IsNull(nameof(value));
-            var secret = new StringSecret(name);
+            value = value.RejectIf().IsNull(nameof(value)).TargetArgument;
+            var secret = new CascadingSymmetricKeySecret(name);
             secret.Write(() => value);
             return secret;
         }
 
         /// <summary>
-        /// Creates a <see cref="String" /> using the provided bytes.
+        /// Creates a <see cref="CascadingSymmetricKey" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="String" />.
+        /// A pinned buffer representing a <see cref="CascadingSymmetricKey" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// The resulting <see cref="String" />.
+        /// The resulting <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
+        protected sealed override CascadingSymmetricKey ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken)
+        {
+            var result = (CascadingSymmetricKey)null;
+
+            using (var secureBuffer = new SecureBuffer(bytes.Length))
+            {
+                secureBuffer.Access(buffer =>
+                {
+                    bytes.ReadOnlySpan.CopyTo(buffer);
+                });
+
+                result = CascadingSymmetricKey.FromBuffer(secureBuffer);
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -87,10 +103,23 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as a pinned buffer.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedBuffer(Encoding.Unicode.GetBytes(value), true);
+        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(CascadingSymmetricKey value, ConcurrencyControlToken controlToken)
+        {
+            var result = (ReadOnlyPinnedBuffer)null;
+
+            using (var secureBuffer = value.ToBuffer())
+            {
+                secureBuffer.Access(buffer =>
+                {
+                    result = new ReadOnlyPinnedBuffer(buffer.ToArray());
+                });
+            }
+
+            return result;
+        }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="StringSecret" />.
+        /// Releases all resources consumed by the current <see cref="CascadingSymmetricKeySecret" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
