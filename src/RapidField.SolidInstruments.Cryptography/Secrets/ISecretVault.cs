@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     public interface ISecretVault : IDisposable
     {
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -38,7 +39,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, Byte[] secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -59,7 +60,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, String secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -80,7 +81,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, Guid secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -101,7 +102,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, Double secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -122,7 +123,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, SymmetricKey secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -143,7 +144,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         void AddOrUpdate(String name, CascadingSymmetricKey secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -162,6 +163,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         void AddOrUpdate(String name, X509Certificate2 secret);
+
+        /// <summary>
+        /// Removes and safely disposes of all secrets that are stored by the current <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        void Clear();
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -399,5 +408,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         Boolean TryRemove(String name);
+
+        /// <summary>
+        /// Gets the number of secrets that are stored by the current <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Int32 Count
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the textual names that uniquely identify the secrets that are stored by the current <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        IEnumerable<String> Names
+        {
+            get;
+        }
     }
 }

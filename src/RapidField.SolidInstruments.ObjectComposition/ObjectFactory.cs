@@ -204,7 +204,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
             get
             {
                 RejectIfDisposed();
-                return ProductionFunctions.Values.Select(function => function.ProductType);
+                var supportedProductTypes = ProductionFunctions.Values.Select(function => function.ProductType);
+
+                foreach (var supportedProductType in supportedProductTypes)
+                {
+                    RejectIfDisposed();
+                    yield return supportedProductType;
+                }
             }
         }
 

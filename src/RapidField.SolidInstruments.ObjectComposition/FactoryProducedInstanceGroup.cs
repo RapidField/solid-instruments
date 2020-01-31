@@ -189,8 +189,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             get
             {
-                RejectIfDisposed();
-                return Factory.SupportedProductTypes;
+                foreach (var supportedProductType in Factory.SupportedProductTypes)
+                {
+                    RejectIfDisposed();
+                    yield return supportedProductType;
+                }
             }
         }
 

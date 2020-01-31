@@ -181,6 +181,39 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, X509Certificate2 secret) => AddOrUpdate(name, X509CertificateSecret.FromValue(name, secret));
 
         /// <summary>
+        /// Removes and safely disposes of all secrets that are stored by the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void Clear()
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+
+                try
+                {
+                    foreach (var secret in Secrets.Values)
+                    {
+                        try
+                        {
+                            secret?.Dispose();
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+                finally
+                {
+                    Secrets.Clear();
+                }
+            }
+        }
+
+        /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
         /// operation against it as a thread-safe, atomic operation.
         /// </summary>
@@ -446,9 +479,16 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 if (disposing)
                 {
-                    using (var controlToken = StateControl.Enter())
+                    try
                     {
-                        LazyReferenceManager.Dispose();
+                        using (var controlToken = StateControl.Enter())
+                        {
+                            LazyReferenceManager.Dispose();
+                        }
+                    }
+                    finally
+                    {
+                        Secrets.Clear();
                     }
                 }
             }
@@ -591,6 +631,46 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 Read(name, readAction);
             });
+        }
+
+        /// <summary>
+        /// Gets the number of secrets that are stored by the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Int32 Count
+        {
+            get
+            {
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    return Secrets.Count;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the textual names that uniquely identify the secrets that are stored by the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public IEnumerable<String> Names
+        {
+            get
+            {
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+
+                    foreach (var name in Secrets.Keys)
+                    {
+                        yield return name;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -338,7 +338,17 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public IEnumerable<Type> InstanceTypes => Configuration.Definitions.Registrations.Keys;
+        public IEnumerable<Type> InstanceTypes
+        {
+            get
+            {
+                foreach (var instanceType in Configuration.Definitions.Registrations.Keys)
+                {
+                    RejectIfDisposed();
+                    yield return instanceType;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a collection of managed object instances.

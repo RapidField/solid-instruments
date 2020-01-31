@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Extensions;
+using RapidField.SolidInstruments.Cryptography.Hashing;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -116,25 +117,86 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified password.
         /// </summary>
         /// <param name="password">
-        /// </param>
-        /// <param name="algorithm">
-        /// </param>
-        /// <param name="derivationMode">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
         /// </param>
         /// <returns>
+        /// A new <see cref="SymmetricKey" />.
         /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        public static SymmetricKey FromPassword(String password) => FromPassword(password, DefaultAlgorithm);
+
+        /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="algorithm">
+        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        public static SymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm) => FromPassword(password, algorithm, DefaultDerivationMode);
+
+        /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="algorithm">
+        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated key. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
+        /// </exception>
         public static SymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
         {
-            var passwordBytes = Encoding.Unicode.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)));
-            var saltBytes = new Byte[Pbkdf2SaltLengthInBytes];
-            RandomnessProvider.GetBytes(saltBytes);
-            var pbkdf2Provider = new Rfc2898DeriveBytes(passwordBytes, saltBytes, Pbkdf2MinimumIterationCount);
-
-            using (var keySource = new PinnedBuffer(pbkdf2Provider.GetBytes(KeySourceLengthInBytes)))
+            using (var keySource = DeriveKeySourceBytesFromPassword(password, KeySourceLengthInBytes))
             {
-                return New(algorithm, derivationMode, keySource);
+                return New(algorithm.RejectIf().IsEqualToValue(SymmetricAlgorithmSpecification.Unspecified, nameof(algorithm)), derivationMode.RejectIf().IsEqualToValue(SymmetricKeyDerivationMode.Unspecified, nameof(derivationMode)), keySource);
             }
         }
 
@@ -173,14 +235,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
         /// </param>
         /// <param name="derivationMode">
-        /// The mode used to derive the generated key. The default value is
-        /// <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// The mode used to derive the generated key. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
         /// </param>
         /// <returns>
         /// A new <see cref="SymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> or
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         public static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
@@ -356,6 +417,45 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Generates private key source bytes using the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="keySourceLengthInBytes">
+        /// The desired number of key source bytes.
+        /// </param>
+        /// <returns>
+        /// The key source bytes.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keySourceLengthInBytes" /> is less than or equal to zero.
+        /// </exception>
+        [DebuggerHidden]
+        internal static PinnedBuffer DeriveKeySourceBytesFromPassword(String password, Int32 keySourceLengthInBytes)
+        {
+            using (var passwordBytes = new ReadOnlyPinnedBuffer(PasswordEncoding.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)).OrIf(argument => argument.Length < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters."))))
+            {
+                var hashingProcessor = new HashingBinaryProcessor(RandomnessProvider);
+
+                using (var saltBytes = new ReadOnlyPinnedBuffer(hashingProcessor.CalculateHash(passwordBytes, PasswordSaltHashingAlgorithm)))
+                {
+                    var pbkdf2Provider = new Rfc2898DeriveBytes(passwordBytes, saltBytes, Pbkdf2MinimumIterationCount);
+                    return new PinnedBuffer(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
+                }
+            }
+        }
+
+        /// <summary>
         /// Generates a new <see cref="SymmetricKey" />.
         /// </summary>
         /// <param name="algorithm">
@@ -363,8 +463,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
         /// </param>
         /// <param name="derivationMode">
-        /// The mode used to derive the generated key. The default value is
-        /// <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// The mode used to derive the generated key. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
         /// </param>
         /// <param name="keySource">
         /// A buffer comprising 384 bytes (3,072 bits) from which the private key is derived.
@@ -380,11 +479,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
-        {
-            keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length.");
-            return new SymmetricKey(algorithm, derivationMode, keySource);
-        }
+        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource) => new SymmetricKey(algorithm, derivationMode, keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length."));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SymmetricKey" />.
@@ -435,7 +530,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         [DebuggerHidden]
         private Rfc2898DeriveBytes InitializePbkdf2Algorithm()
         {
-            Rfc2898DeriveBytes result = null;
+            var result = (Rfc2898DeriveBytes)null;
 
             KeySource.Access(buffer =>
             {
@@ -470,10 +565,34 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private Rfc2898DeriveBytes Pbkdf2Provider => LazyPbkdf2Provider.Value;
 
         /// <summary>
+        /// Represents the number of bytes comprising <see cref="KeySource" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Int32 KeySourceLengthInBytes = (KeySourceWordCount * sizeof(UInt32));
+
+        /// <summary>
+        /// Represents the minimum allowable length, in characters, of a password.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Int32 MinimumPasswordLength = 13;
+
+        /// <summary>
         /// Represents the number of bytes comprising a post-encrypted, serialized representation of a <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const Int32 SerializedLength = (SerializedPlaintextLength + (BufferEncryptionAlgorithmBlockSizeInBytes * 2) - AlgorithmLength - DerivationModeLength);
+
+        /// <summary>
+        /// Represents the encoding that is used when evaluating passwords.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly Encoding PasswordEncoding = Encoding.Unicode;
+
+        /// <summary>
+        /// Represents a static random number generator instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly RandomNumberGenerator RandomnessProvider = HardenedRandomNumberGenerator.Instance;
 
         /// <summary>
         /// Represents the byte index of the algorithm byte within an unencrypted, serialized buffer.
@@ -530,16 +649,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private const Int32 KeySourceBufferIndex = 0;
 
         /// <summary>
-        /// Represents the number of bytes comprising <see cref="KeySource" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 KeySourceLengthInBytes = (KeySourceWordCount * sizeof(UInt32));
-
-        /// <summary>
         /// Represents the exact number of 32-bit key words that are derived from <see cref="KeySource" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const Int32 KeySourceWordCount = 96;
+
+        /// <summary>
+        /// Represents the hashing algorithm that is used to produce salt bytes from a password.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const HashingAlgorithmSpecification PasswordSaltHashingAlgorithm = HashingAlgorithmSpecification.ShaTwo512;
 
         /// <summary>
         /// Represents the number of key source bytes constituting the iteration sum for PBKDF2-derived keys.
@@ -590,12 +709,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(BufferEncryptionKey.Dispose);
-
-        /// <summary>
-        /// Represents a static random number generator instance.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly RandomNumberGenerator RandomnessProvider = HardenedRandomNumberGenerator.Instance;
 
         /// <summary>
         /// Represents substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" /> is

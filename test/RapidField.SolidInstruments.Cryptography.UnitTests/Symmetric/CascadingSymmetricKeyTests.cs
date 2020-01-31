@@ -18,6 +18,134 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
     public class CascadingSymmetricKeyTests
     {
         [TestMethod]
+        public void FromPassword_ShouldBeRepeatable_UsingBasicMethod()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var processor = new SymmetricStringProcessor(randomnessProvider);
+                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+
+                // Act.
+                using (var targetOne = CascadingSymmetricKey.FromPassword(password))
+                {
+                    using (var targetTwo = CascadingSymmetricKey.FromPassword(password))
+                    {
+                        // Arrange.
+                        var ciphertextOne = processor.Encrypt(plaintextObject, targetOne);
+                        var ciphertextTwo = processor.Encrypt(plaintextObject, targetTwo);
+                        var plaintextOne = processor.Decrypt(ciphertextOne, targetOne);
+                        var plaintextTwo = processor.Decrypt(ciphertextTwo, targetTwo);
+
+                        // Assert.
+                        ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
+                        plaintextOne.Should().Be(plaintextTwo);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void FromPassword_ShouldBeRepeatable_UsingFourAlgorithms()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var processor = new SymmetricStringProcessor(randomnessProvider);
+                var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
+                var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
+                var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
+                var fourthLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
+                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+
+                // Act.
+                using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm))
+                {
+                    using (var targetTwo = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm))
+                    {
+                        // Arrange.
+                        var ciphertextOne = processor.Encrypt(plaintextObject, targetOne);
+                        var ciphertextTwo = processor.Encrypt(plaintextObject, targetTwo);
+                        var plaintextOne = processor.Decrypt(ciphertextOne, targetOne);
+                        var plaintextTwo = processor.Decrypt(ciphertextTwo, targetTwo);
+
+                        // Assert.
+                        ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
+                        plaintextOne.Should().Be(plaintextTwo);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void FromPassword_ShouldBeRepeatable_UsingThreeAlgorithms()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var processor = new SymmetricStringProcessor(randomnessProvider);
+                var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
+                var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
+                var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
+                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+
+                // Act.
+                using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm))
+                {
+                    using (var targetTwo = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm))
+                    {
+                        // Arrange.
+                        var ciphertextOne = processor.Encrypt(plaintextObject, targetOne);
+                        var ciphertextTwo = processor.Encrypt(plaintextObject, targetTwo);
+                        var plaintextOne = processor.Decrypt(ciphertextOne, targetOne);
+                        var plaintextTwo = processor.Decrypt(ciphertextTwo, targetTwo);
+
+                        // Assert.
+                        ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
+                        plaintextOne.Should().Be(plaintextTwo);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void FromPassword_ShouldBeRepeatable_UsingTwoAlgorithms()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var processor = new SymmetricStringProcessor(randomnessProvider);
+                var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
+                var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
+                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+
+                // Act.
+                using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm))
+                {
+                    using (var targetTwo = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm))
+                    {
+                        // Arrange.
+                        var ciphertextOne = processor.Encrypt(plaintextObject, targetOne);
+                        var ciphertextTwo = processor.Encrypt(plaintextObject, targetTwo);
+                        var plaintextOne = processor.Decrypt(ciphertextOne, targetOne);
+                        var plaintextTwo = processor.Decrypt(ciphertextTwo, targetTwo);
+
+                        // Assert.
+                        ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
+                        plaintextOne.Should().Be(plaintextTwo);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
         public void New_ShouldRaiseArgumentOutOfRangeException_ForUnspecifiedAlgorithm()
         {
             // Arrange.

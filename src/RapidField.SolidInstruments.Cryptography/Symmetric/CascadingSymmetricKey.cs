@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
@@ -14,8 +15,8 @@ using System.Security;
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
 {
     /// <summary>
-    /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading
-    /// encryption and decryption.
+    /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading encryption
+    /// and decryption.
     /// </summary>
     /// <remarks>
     /// <see cref="CascadingSymmetricKey" /> is the default implementation of <see cref="ICascadingSymmetricKey" />.
@@ -32,8 +33,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The layered algorithm specifications.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or
-        /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
         private CascadingSymmetricKey(SymmetricKeyDerivationMode derivationMode, params SymmetricAlgorithmSpecification[] algorithms)
@@ -116,6 +117,136 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(String password) => FromPassword(password, DefaultDerivationMode, DefaultFirstLayerAlgorithm, DefaultSecondLayerAlgorithm);
+
+        /// <summary>
+        /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <param name="firstLayerAlgorithm">
+        /// The algorithm for the first (inner) layer of encryption. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <param name="secondLayerAlgorithm">
+        /// The algorithm for the second (outer) layer of encryption. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes128Ecb" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm });
+
+        /// <summary>
+        /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <param name="firstLayerAlgorithm">
+        /// The algorithm for the first (inner-most) layer of encryption.
+        /// </param>
+        /// <param name="secondLayerAlgorithm">
+        /// The algorithm for the second layer of encryption.
+        /// </param>
+        /// <param name="thirdLayerAlgorithm">
+        /// The algorithm for the third (outer-most) layer of encryption.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm });
+
+        /// <summary>
+        /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <param name="firstLayerAlgorithm">
+        /// The algorithm for the first (inner-most) layer of encryption.
+        /// </param>
+        /// <param name="secondLayerAlgorithm">
+        /// The algorithm for the second layer of encryption.
+        /// </param>
+        /// <param name="thirdLayerAlgorithm">
+        /// The algorithm for the third layer of encryption.
+        /// </param>
+        /// <param name="fourthLayerAlgorithm">
+        /// The algorithm for the fourth (outer-most) layer of encryption.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm });
+
+        /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKey" />.
         /// </summary>
         /// <remarks>
@@ -132,20 +263,22 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Generates a new <see cref="CascadingSymmetricKey" />.
         /// </summary>
         /// <param name="derivationMode">
-        /// The mode used to derive the generated keys.
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
         /// </param>
         /// <param name="firstLayerAlgorithm">
-        /// The algorithm for the first (inner) layer of encryption.
+        /// The algorithm for the first (inner) layer of encryption. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
         /// </param>
         /// <param name="secondLayerAlgorithm">
-        /// The algorithm for the second (outer) layer of encryption.
+        /// The algorithm for the second (outer) layer of encryption. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes128Ecb" />.
         /// </param>
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or
-        /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         public static CascadingSymmetricKey New(SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm);
 
@@ -153,7 +286,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Generates a new <see cref="CascadingSymmetricKey" />.
         /// </summary>
         /// <param name="derivationMode">
-        /// The mode used to derive the generated keys.
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
         /// </param>
         /// <param name="firstLayerAlgorithm">
         /// The algorithm for the first (inner-most) layer of encryption.
@@ -168,8 +301,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or
-        /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         public static CascadingSymmetricKey New(SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm);
 
@@ -177,7 +310,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Generates a new <see cref="CascadingSymmetricKey" />.
         /// </summary>
         /// <param name="derivationMode">
-        /// The mode used to derive the generated keys.
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
         /// </param>
         /// <param name="firstLayerAlgorithm">
         /// The algorithm for the first (inner-most) layer of encryption.
@@ -195,8 +328,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or
-        /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         public static CascadingSymmetricKey New(SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm);
 
@@ -279,6 +412,58 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
+        /// </summary>
+        /// <param name="password">
+        /// A Unicode password with length greater than or equal to thirteen characters from which the symmetric key is derived.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated keys. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <param name="algorithms">
+        /// An ordered array of algorithms.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty -or- <paramref name="algorithms" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" /> -or- <paramref name="algorithms" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
+        /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        private static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification[] algorithms)
+        {
+            var keyDepth = algorithms.RejectIf().IsNullOrEmpty(nameof(algorithms)).TargetArgument.Length;
+            var singleKeySourceLengthInBytes = SymmetricKey.KeySourceLengthInBytes;
+            var totalSourceLengthInBytes = singleKeySourceLengthInBytes * keyDepth;
+            var keys = new ISymmetricKey[keyDepth];
+
+            using (var keySourceBytes = SymmetricKey.DeriveKeySourceBytesFromPassword(password, totalSourceLengthInBytes))
+            {
+                for (var i = 0; i < keyDepth; i++)
+                {
+                    var algorithm = algorithms[i];
+
+                    using (var keySource = new PinnedBuffer(keySourceBytes.Span.Slice(i * singleKeySourceLengthInBytes, singleKeySourceLengthInBytes).ToArray()))
+                    {
+                        keys[i] = SymmetricKey.New(algorithm, derivationMode, keySource);
+                    }
+                }
+            }
+
+            return new CascadingSymmetricKey(keys);
+        }
+
+        /// <summary>
         /// Gets the number of layers of encryption that a resulting transform will apply.
         /// </summary>
         public Int32 Depth => Keys.Count();
@@ -301,7 +486,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents the default derivation mode for new keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const SymmetricKeyDerivationMode DefaultDerivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+        private const SymmetricKeyDerivationMode DefaultDerivationMode = SymmetricKeyDerivationMode.Pbkdf2;
 
         /// <summary>
         /// Represents the default inner-layer symmetric-key algorithm specification for new keys.

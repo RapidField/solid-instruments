@@ -208,7 +208,16 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Gets a collection of message types that are supported by the associated
         /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
         /// </summary>
-        public IEnumerable<Type> SupportedMessageTypes => SupportedMessageTypesReference;
+        public IEnumerable<Type> SupportedMessageTypes
+        {
+            get
+            {
+                foreach (var supportedMessageType in SupportedMessageTypesReference)
+                {
+                    yield return supportedMessageType;
+                }
+            }
+        }
 
         /// <summary>
         /// Represents a dependency scope that spans the full lifetime of execution for the associated

@@ -629,7 +629,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// Gets the collection of message types for which the current
         /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
         /// </summary>
-        public IEnumerable<Type> SubscribedMessageTypes => SubscribedMessageTypeList.ToArray();
+        public IEnumerable<Type> SubscribedMessageTypes
+        {
+            get
+            {
+                foreach (var subscribedMessageType in SubscribedMessageTypeList)
+                {
+                    yield return subscribedMessageType;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the entity type that is used to publish new instances of <see cref="ExceptionRaisedEventMessage" />.
