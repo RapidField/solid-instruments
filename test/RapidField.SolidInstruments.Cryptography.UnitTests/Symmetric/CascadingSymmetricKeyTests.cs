@@ -41,6 +41,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         // Assert.
                         ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
                         plaintextOne.Should().Be(plaintextTwo);
+                        plaintextOne.Should().Be(plaintextObject);
                     }
                 }
             }
@@ -75,6 +76,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         // Assert.
                         ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
                         plaintextOne.Should().Be(plaintextTwo);
+                        plaintextOne.Should().Be(plaintextObject);
                     }
                 }
             }
@@ -108,6 +110,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         // Assert.
                         ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
                         plaintextOne.Should().Be(plaintextTwo);
+                        plaintextOne.Should().Be(plaintextObject);
                     }
                 }
             }
@@ -140,6 +143,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         // Assert.
                         ciphertextOne.Should().NotBeEquivalentTo(ciphertextTwo);
                         plaintextOne.Should().Be(plaintextTwo);
+                        plaintextOne.Should().Be(plaintextObject);
                     }
                 }
             }
