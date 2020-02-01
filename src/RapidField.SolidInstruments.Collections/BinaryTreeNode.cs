@@ -12,10 +12,13 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a node in a binary tree structure.
     /// </summary>
+    /// <remarks>
+    /// <see cref="BinaryTreeNode{T}" /> is the default implementation of <see cref="BinaryTreeNode{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The value type of the node.
     /// </typeparam>
-    public class BinaryTreeNode<T> : TreeNode<T, BinaryTreeNode<T>>
+    public class BinaryTreeNode<T> : TreeNode<T, BinaryTreeNode<T>>, ITreeNode<T, IBinaryTreeNode<T>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryTreeNode{T}" /> class.
@@ -143,11 +146,11 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the left child of the current <see cref="BinaryTreeNode{T}" />.
         /// </summary>
-        public BinaryTreeNode<T> LeftChild => Children.ElementAtOrDefault(0) as BinaryTreeNode<T>;
+        public IBinaryTreeNode<T> LeftChild => Children.ElementAtOrDefault(0) as IBinaryTreeNode<T>;
 
         /// <summary>
         /// Gets the right child of the current <see cref="BinaryTreeNode{T}" />.
         /// </summary>
-        public BinaryTreeNode<T> RightChild => Children.ElementAtOrDefault(1) as BinaryTreeNode<T>;
+        public IBinaryTreeNode<T> RightChild => Children.ElementAtOrDefault(1) as IBinaryTreeNode<T>;
     }
 }

@@ -24,6 +24,15 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactory" /> class.
         /// </summary>
+        protected ObjectFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -35,6 +44,22 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             return;
         }
+
+        /// <summary>
+        /// Configures the current <see cref="ObjectFactory" />.
+        /// </summary>
+        /// <param name="configuration">
+        /// Configuration information for the current <see cref="ObjectFactory" />.
+        /// </param>
+        protected abstract void Configure(ObjectFactoryConfiguration configuration);
+
+        /// <summary>
+        /// Configures the current <see cref="ObjectFactory" />.
+        /// </summary>
+        /// <param name="configuration">
+        /// Configuration information for the current <see cref="ObjectFactory" />.
+        /// </param>
+        protected sealed override void Configure(ObjectFactoryConfiguration<Object> configuration) => Configure(new ObjectFactoryConfiguration(configuration));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory" />.
@@ -56,6 +81,15 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// </typeparam>
     public abstract class ObjectFactory<TProductBase> : ConfigurableInstrument<ObjectFactoryConfiguration<TProductBase>>, IObjectFactory<TProductBase>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectFactory{TProductBase}" /> class.
+        /// </summary>
+        protected ObjectFactory()
+            : this(DefaultConfiguration)
+        {
+            return;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactory{TProductBase}" /> class.
         /// </summary>
@@ -138,7 +172,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerHidden]
-        internal virtual ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions() => Configuration.ProductionFunctions.Functions;
+        internal virtual ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions() => Configuration.ProductionFunctions.Dictionary;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory{TProductBase}" />.
@@ -170,7 +204,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
             get
             {
                 RejectIfDisposed();
-                return ProductionFunctions.Values.Select(function => function.ProductType);
+                var supportedProductTypes = ProductionFunctions.Values.Select(function => function.ProductType);
+
+                foreach (var supportedProductType in supportedProductTypes)
+                {
+                    RejectIfDisposed();
+                    yield return supportedProductType;
+                }
             }
         }
 

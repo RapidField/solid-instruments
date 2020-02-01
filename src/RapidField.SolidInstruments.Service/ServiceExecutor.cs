@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Service
             }
             catch (Exception exception)
             {
-                throw new ServiceExectuionException($"An exception was raised during execution of the service: \"{ServiceName}\". See inner exception for details.", exception);
+                throw new ServiceExectuionException($"An exception was raised during execution of the service: \"{ServiceName}\". See inner exception.", exception);
             }
         }
 
@@ -146,7 +146,7 @@ namespace RapidField.SolidInstruments.Service
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, ServiceExecutionLifetime executionLifetime)
+        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
         {
             return;
         }

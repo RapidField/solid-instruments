@@ -156,7 +156,7 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Asynchronously publishes the specified <see cref="ExceptionRaisedMessage" /> instance.
+        /// Asynchronously publishes the specified <see cref="ExceptionRaisedEventMessage" /> instance.
         /// </summary>
         /// <param name="exceptionRaisedMessage">
         /// The message to publish.
@@ -167,7 +167,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PublishReceiverExceptionAsync(ExceptionRaisedMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType) => PublishingFacade.PublishAsync(exceptionRaisedMessage, null, messagingEntityType);
+        protected sealed override Task PublishReceiverExceptionAsync(ExceptionRaisedEventMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType) => PublishingFacade.PublishAsync(exceptionRaisedMessage, null, messagingEntityType);
 
         /// <summary>
         /// Represents an implementation-specific messaging facade that is used to publish response messages.
@@ -508,7 +508,7 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Asynchronously publishes the specified <see cref="ExceptionRaisedMessage" /> instance.
+        /// Asynchronously publishes the specified <see cref="ExceptionRaisedEventMessage" /> instance.
         /// </summary>
         /// <param name="exceptionRaisedMessage">
         /// The message to publish.
@@ -519,7 +519,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected abstract Task PublishReceiverExceptionAsync(ExceptionRaisedMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType);
+        protected abstract Task PublishReceiverExceptionAsync(ExceptionRaisedEventMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType);
 
         /// <summary>
         /// Registers the specified message handler with the bus.
@@ -569,7 +569,7 @@ namespace RapidField.SolidInstruments.Messaging
             var retryPolicy = failurePolicy?.RetryPolicy ?? DefaultFailurePolicy.RetryPolicy;
             var failurePolicyTasks = new List<Task>();
 
-            if (failurePolicy.PublishExceptionRaisedMessage)
+            if (failurePolicy.PublishExceptionRaisedEventMessage)
             {
                 failurePolicyTasks.Add(PublishReceiverExceptionAsync(raisedException, message.CorrelationIdentifier));
             }
@@ -606,7 +606,7 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Asynchronously publishes a new <see cref="ExceptionRaisedMessage" /> instance for the specified exception.
+        /// Asynchronously publishes a new <see cref="ExceptionRaisedEventMessage" /> instance for the specified exception.
         /// </summary>
         /// <param name="raisedException">
         /// An exception for which to publish a new message.
@@ -620,25 +620,35 @@ namespace RapidField.SolidInstruments.Messaging
         [DebuggerHidden]
         private Task PublishReceiverExceptionAsync(Exception raisedException, Guid correlationIdentifier)
         {
-            var exceptionRaisedMessage = new ExceptionRaisedMessage(raisedException, ExceptionRaisedMessageEventVerbosity, correlationIdentifier);
-            return PublishReceiverExceptionAsync(exceptionRaisedMessage, ExceptionRaisedMessageEntityType);
+            var exceptionRaisedEvent = new ExceptionRaisedEvent(ApplicationIdentity, raisedException, ExceptionRaisedMessageEventVerbosity);
+            var exceptionRaisedEventMessage = new ExceptionRaisedEventMessage(exceptionRaisedEvent, correlationIdentifier);
+            return PublishReceiverExceptionAsync(exceptionRaisedEventMessage, ExceptionRaisedMessageEntityType);
         }
 
         /// <summary>
         /// Gets the collection of message types for which the current
         /// <see cref="MessageSubscribingFacade{TSender, TReceiver, TAdaptedMessage}" /> has one or more registered handlers.
         /// </summary>
-        public IEnumerable<Type> SubscribedMessageTypes => SubscribedMessageTypeList.ToArray();
+        public IEnumerable<Type> SubscribedMessageTypes
+        {
+            get
+            {
+                foreach (var subscribedMessageType in SubscribedMessageTypeList)
+                {
+                    yield return subscribedMessageType;
+                }
+            }
+        }
 
         /// <summary>
-        /// Gets the entity type that is used to publish new instances of <see cref="ExceptionRaisedMessage" />.
+        /// Gets the entity type that is used to publish new instances of <see cref="ExceptionRaisedEventMessage" />.
         /// </summary>
         protected virtual MessagingEntityType ExceptionRaisedMessageEntityType => MessagingEntityType.Topic;
 
         /// <summary>
-        /// Gets the event verbosity level that is used when publishing new instances of <see cref="ExceptionRaisedMessage" />.
+        /// Gets the event verbosity level that is used when publishing new instances of <see cref="ExceptionRaisedEventMessage" />.
         /// </summary>
-        protected virtual ApplicationEventVerbosity ExceptionRaisedMessageEventVerbosity => ApplicationEventVerbosity.Normal;
+        protected virtual EventVerbosity ExceptionRaisedMessageEventVerbosity => EventVerbosity.Normal;
 
         /// <summary>
         /// Represents the default instructions that guide failure behavior for the subscriber.

@@ -18,6 +18,15 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulatedEncodingFactory" /> class.
         /// </summary>
+        public SimulatedEncodingFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedEncodingFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -40,8 +49,8 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
             configuration.ProductionFunctions
-                .Define(() => Base32Encoding.Default)
-                .Define(() => Base32Encoding.ZBase32 as ZBase32Encoding);
+                .Add(() => Base32Encoding.Default)
+                .Add(() => Base32Encoding.ZBase32 as ZBase32Encoding);
         }
 
         /// <summary>

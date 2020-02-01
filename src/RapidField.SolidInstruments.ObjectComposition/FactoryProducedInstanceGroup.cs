@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Concurrency;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ using System.Threading;
 namespace RapidField.SolidInstruments.ObjectComposition
 {
     /// <summary>
-    /// Manages object creation, storage, resolution and disposal for a related group of factory-produced instances.
+    /// Manages object creation, storage, resolution and disposal for a related group of factory-produced object instances.
     /// </summary>
     /// <remarks>
     /// <see cref="FactoryProducedInstanceGroup" /> is the default implementation of <see cref="IFactoryProducedInstanceGroup" />.
@@ -36,13 +37,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
-        /// Returns the instance of specified type that is managed by the current <see cref="IFactoryProducedInstanceGroup" />.
+        /// Returns the instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the instance to return.
         /// </typeparam>
         /// <returns>
-        /// The instance of specified type that is managed by the current <see cref="IFactoryProducedInstanceGroup" />.
+        /// The instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
         /// </returns>
         /// <exception cref="ArgumentException">
         /// <typeparamref name="T" /> is not a supported type for the group.
@@ -67,23 +68,22 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     return (extantInstance as T);
                 }
 
-                var newInstance = Factory.Produce(instanceType) as T;
+                var newInstance = GetNew<T>(controlToken);
                 Instances.Add(instanceType, newInstance);
-                ReferenceManager.AddObject(newInstance);
                 return newInstance;
             }
         }
 
         /// <summary>
         /// Returns the lazily-initialized instance of specified type that is managed by the current
-        /// <see cref="IFactoryProducedInstanceGroup" />.
+        /// <see cref="FactoryProducedInstanceGroup" />.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the lazily-initialized instance to return.
         /// </typeparam>
         /// <returns>
         /// The lazily-initialized instance of specified type that is managed by the current
-        /// <see cref="IFactoryProducedInstanceGroup" />.
+        /// <see cref="FactoryProducedInstanceGroup" />.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -93,6 +93,38 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             RejectIfDisposed();
             return new Lazy<T>(() => Get<T>(), LazyThreadSafetyMode.PublicationOnly);
+        }
+
+        /// <summary>
+        /// Returns a new instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="GetNew{T}()" /> differs from <see cref="Get{T}" /> in that it returns a distinct instance for every
+        /// subsequent call.
+        /// </remarks>
+        /// <typeparam name="T">
+        /// The type of the instance to return.
+        /// </typeparam>
+        /// <returns>
+        /// The instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <typeparamref name="T" /> is not a supported type for the group.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="ObjectProductionException">
+        /// An exception was raised during object production.
+        /// </exception>
+        public T GetNew<T>()
+            where T : class
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                return GetNew<T>(controlToken);
+            }
         }
 
         /// <summary>
@@ -117,6 +149,37 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
+        /// Returns the instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the instance to return.
+        /// </typeparam>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <returns>
+        /// The instance of specified type that is managed by the current <see cref="FactoryProducedInstanceGroup" />.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <typeparamref name="T" /> is not a supported type for the group.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="ObjectProductionException">
+        /// An exception was raised during object production.
+        /// </exception>
+        [DebuggerHidden]
+        private T GetNew<T>(ConcurrencyControlToken controlToken)
+            where T : class
+        {
+            var instanceType = typeof(T);
+            var newInstance = Factory.Produce(instanceType) as T;
+            ReferenceManager.AddObject(newInstance);
+            return newInstance;
+        }
+
+        /// <summary>
         /// Gets the types of the instances that are managed by the current <see cref="FactoryProducedInstanceGroup" />.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
@@ -126,8 +189,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             get
             {
-                RejectIfDisposed();
-                return Factory.SupportedProductTypes;
+                foreach (var supportedProductType in Factory.SupportedProductTypes)
+                {
+                    RejectIfDisposed();
+                    yield return supportedProductType;
+                }
             }
         }
 

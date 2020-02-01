@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core
     /// Represents a specific time of day in a specific time zone.
     /// </summary>
     [DataContract]
-    public sealed class TimeOfDay : IComparable<TimeOfDay>, IEquatable<TimeOfDay>
+    public sealed class TimeOfDay : ICloneable, IComparable, IComparable<TimeOfDay>, IEquatable<TimeOfDay>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeOfDay" /> class.
@@ -325,6 +325,14 @@ namespace RapidField.SolidInstruments.Core
         public TimeOfDay BeginningOfThisSecond() => new TimeOfDay(Zone, Hour, Minute, Second, 0);
 
         /// <summary>
+        /// Creates a new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </returns>
+        public Object Clone() => new TimeOfDay(Zone, Hour, Minute, Second, Millisecond);
+
+        /// <summary>
         /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative
         /// values.
         /// </summary>
@@ -353,6 +361,19 @@ namespace RapidField.SolidInstruments.Core
                 return 0;
             }
         }
+
+        /// <summary>
+        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative
+        /// values.
+        /// </summary>
+        /// <param name="obj">
+        /// The object to compare to this instance.
+        /// </param>
+        /// <returns>
+        /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
+        /// instance; zero if they are equal.
+        /// </returns>
+        public Int32 CompareTo(Object obj) => obj is TimeOfDay ? CompareTo((TimeOfDay)obj) : GetType().FullName.CompareTo(obj.GetType().FullName);
 
         /// <summary>
         /// Determines whether or not the current <see cref="TimeOfDay" /> is equal to the specified <see cref="Object" />.

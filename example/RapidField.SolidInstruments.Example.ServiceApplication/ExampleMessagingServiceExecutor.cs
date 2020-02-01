@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
@@ -46,9 +47,9 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
             try
             {
                 // Add queue subscribers.
-                subscriptionProfile.AddQueueSubscriber<ApplicationStartingMessage>();
-                subscriptionProfile.AddQueueSubscriber<ApplicationStoppingMessage>();
-                subscriptionProfile.AddQueueSubscriber<ExceptionRaisedMessage>();
+                subscriptionProfile.AddQueueSubscriber<ApplicationStartedEventMessage>();
+                subscriptionProfile.AddQueueSubscriber<ApplicationStoppedEventMessage>();
+                subscriptionProfile.AddQueueSubscriber<ExceptionRaisedEventMessage>();
 
                 // Add topic subscribers.
                 subscriptionProfile.AddTopicSubscriber<HeartbeatMessage>();
@@ -121,7 +122,7 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected override void OnExecutionStarting(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, ServiceExecutionLifetime executionLifetime)
+        protected override void OnExecutionStarting(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
         {
             Console.WriteLine($"Solid Instruments | {ServiceName}");
             Console.WriteLine($"Copyright (c) RapidField LLC. All rights reserved.{Environment.NewLine}");
@@ -135,8 +136,9 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
                 };
 
                 var mediator = dependencyScope.Resolve<ICommandMediator>();
-                var applicationStartedMessage = new ApplicationStartingMessage(ServiceName);
-                mediator.Process(applicationStartedMessage);
+                var applicationStartedEvent = new ApplicationStartedEvent(ServiceName);
+                var applicationStartedEventMessage = new ApplicationStartedEventMessage(applicationStartedEvent);
+                mediator.Process(applicationStartedEventMessage);
                 Thread.Sleep(1600);
             }
             finally
@@ -159,8 +161,9 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
             try
             {
                 var mediator = dependencyScope.Resolve<ICommandMediator>();
-                var applicationStoppedMessage = new ApplicationStoppingMessage(ServiceName);
-                mediator.Process(applicationStoppedMessage);
+                var applicationStoppedEvent = new ApplicationStoppedEvent(ServiceName);
+                var applicationStoppedEventMessage = new ApplicationStoppedEventMessage(applicationStoppedEvent);
+                mediator.Process(applicationStoppedEventMessage);
                 Thread.Sleep(3200);
             }
             finally

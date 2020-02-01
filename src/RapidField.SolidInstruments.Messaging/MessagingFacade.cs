@@ -49,6 +49,7 @@ namespace RapidField.SolidInstruments.Messaging
             : base(ConcurrencyControlMode.SingleThreadLock, Timeout.InfiniteTimeSpan)
         {
             ClientFactory = clientFactory.RejectIf().IsNull(nameof(clientFactory)).TargetArgument;
+            LazyApplicationIdentity = new Lazy<String>(InitializeApplicationIdentity, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyIdentifier = new Lazy<String>(InitializeIdentifier, LazyThreadSafetyMode.ExecutionAndPublication);
             MessageAdapter = messageAdapter.RejectIf().IsNull(nameof(messageAdapter)).TargetArgument;
         }
@@ -62,6 +63,19 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Initializes the name or value that uniquely identifies the application in which the current
+        /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" /> is running.
+        /// </summary>
+        /// <returns>
+        /// A unique textual identifier.
+        /// </returns>
+        protected virtual String InitializeApplicationIdentity()
+        {
+            var process = Process.GetCurrentProcess();
+            return $"{process.MachineName}_{process.ProcessName}_{process.Id}";
+        }
+
+        /// <summary>
         /// Initializes the unique textual identifier for the current
         /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
         /// </summary>
@@ -69,6 +83,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// A unique textual identifier.
         /// </returns>
         protected virtual String InitializeIdentifier() => new String(new ZBase32Encoding().GetChars(Guid.NewGuid().ToByteArray().ComputeThirtyTwoBitHash().ToByteArray()));
+
+        /// <summary>
+        /// Gets the name or value that uniquely identifies the application in which the current
+        /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" /> is running.
+        /// </summary>
+        public String ApplicationIdentity => LazyApplicationIdentity.Value;
 
         /// <summary>
         /// Gets the unique identifier for the current <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" />.
@@ -86,6 +106,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly IMessageAdapter<TAdaptedMessage> MessageAdapter;
+
+        /// <summary>
+        /// Represents the lazily-initialized name or value that uniquely identifies the application in which the current
+        /// <see cref="MessagingFacade{TSender, TReceiver, TAdaptedMessage}" /> is running.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Lazy<String> LazyApplicationIdentity;
 
         /// <summary>
         /// Represents the lazily-initialized unique identifier for the current

@@ -23,17 +23,32 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkRepositoryFactory{TContext}" /> class.
         /// </summary>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the application.
-        /// </param>
         /// <param name="context">
         /// The database session that is used by the produced repositories.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="context" /> is
+        /// <paramref name="context" /> is <see langword="null" />.
+        /// </exception>
+        protected EntityFrameworkRepositoryFactory(TContext context)
+            : base()
+        {
+            Context = context.RejectIf().IsNull(nameof(context));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepositoryFactory{TContext}" /> class.
+        /// </summary>
+        /// <param name="context">
+        /// The database session that is used by the produced repositories.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="context" /> is <see langword="null" /> -or- <paramref name="applicationConfiguration" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkRepositoryFactory(IConfiguration applicationConfiguration, TContext context)
+        protected EntityFrameworkRepositoryFactory(TContext context, IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             Context = context.RejectIf().IsNull(nameof(context));

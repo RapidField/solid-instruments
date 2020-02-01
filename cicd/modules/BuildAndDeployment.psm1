@@ -114,10 +114,10 @@ Function Build
         [String] $SolutionConfiguration
     )
 
-    $BuildVersion = GetBuildVersion;
+    $BuildVersionWithoutMetadata = GetBuildVersion;
     ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    ComposeNormal "Build version: $BuildVersion";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersion";
+    ComposeNormal "Build version: $BuildVersionWithoutMetadata";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
@@ -390,7 +390,7 @@ Extracts the build version from appveyor.yml.
 Function GetBuildVersion
 {
     $AppVeyorConfiguration = GetAppVeyorConfiguration;
-    Return $AppVeyorConfiguration.version.trimend(".{build}");
+    Return $AppVeyorConfiguration.version.trimend("+{build}");
 }
 
 <#

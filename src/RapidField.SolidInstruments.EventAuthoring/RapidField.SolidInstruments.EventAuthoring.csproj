@@ -38,5 +38,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Serialization\RapidField.SolidInstruments.Serialization.csproj" />
     </ItemGroup>
 </Project>

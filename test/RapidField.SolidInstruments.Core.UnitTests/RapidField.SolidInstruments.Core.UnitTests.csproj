@@ -26,6 +26,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Serialization\RapidField.SolidInstruments.Serialization.csproj" />
     </ItemGroup>
 </Project>

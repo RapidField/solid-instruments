@@ -19,6 +19,15 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="DataAccessRepositoryFactory" /> class.
         /// </summary>
+        protected DataAccessRepositoryFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataAccessRepositoryFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>

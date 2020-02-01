@@ -21,6 +21,48 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeObjectFactory" /> class.
         /// </summary>
+        /// <param name="factories">
+        /// A collection of factories comprising the new composite factory.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="factories" /> is an empty collection.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="factories" /> contains a null element.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="factories" /> is <see langword="null" />.
+        /// </exception>
+        public CompositeObjectFactory(params ObjectFactory[] factories)
+            : base(factories)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeObjectFactory" /> class.
+        /// </summary>
+        /// <param name="factories">
+        /// A collection of factories comprising the new composite factory.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="factories" /> is an empty collection.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="factories" /> contains a null element.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="factories" /> is <see langword="null" />.
+        /// </exception>
+        public CompositeObjectFactory(IList<ObjectFactory> factories)
+            : this(DefaultConfiguration, factories)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeObjectFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -67,6 +109,14 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             return;
         }
+
+        /// <summary>
+        /// Releases all resources consumed by the current <see cref="CompositeObjectFactory" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
     }
 
     /// <summary>
@@ -78,6 +128,48 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// </typeparam>
     public class CompositeObjectFactory<TProductBase> : ObjectFactory<TProductBase>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeObjectFactory{TProductBase}" /> class.
+        /// </summary>
+        /// <param name="factories">
+        /// A collection of factories comprising the new composite factory.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="factories" /> is an empty collection.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="factories" /> contains a null element.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="factories" /> is <see langword="null" />.
+        /// </exception>
+        public CompositeObjectFactory(params ObjectFactory<TProductBase>[] factories)
+            : this(new List<ObjectFactory<TProductBase>>(factories))
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeObjectFactory{TProductBase}" /> class.
+        /// </summary>
+        /// <param name="factories">
+        /// A collection of factories comprising the new composite factory.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="factories" /> is an empty collection.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="factories" /> contains a null element.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="factories" /> is <see langword="null" />.
+        /// </exception>
+        public CompositeObjectFactory(IList<ObjectFactory<TProductBase>> factories)
+            : this(DefaultConfiguration, factories)
+        {
+            return;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeObjectFactory{TProductBase}" /> class.
         /// </summary>

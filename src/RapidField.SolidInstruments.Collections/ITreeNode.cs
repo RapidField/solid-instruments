@@ -14,6 +14,28 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The value type of the node.
     /// </typeparam>
+    /// <typeparam name="TChildNode">
+    /// The type of the node's children.
+    /// </typeparam>
+    public interface ITreeNode<T, TChildNode> : ITreeNode<T>
+        where TChildNode : ITreeNode<T>
+    {
+        /// <summary>
+        /// Destroys all references to and from associated tree nodes and sets <see cref="ITreeNode{T}.Value" /> equal to the
+        /// default value.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The state of the node or the associated tree was changed during the destroy operation.
+        /// </exception>
+        void Destroy();
+    }
+
+    /// <summary>
+    /// Represents a node in a tree structure.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The value type of the node.
+    /// </typeparam>
     public interface ITreeNode<T> : IEnumerable<ITreeNode<T>>, IEnumerable
     {
         /// <summary>

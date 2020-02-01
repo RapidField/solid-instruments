@@ -9,6 +9,7 @@ using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 
@@ -60,11 +61,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, SecureSymmetricKey key)
+        public T Decrypt(Byte[] ciphertext, ISymmetricKey key)
         {
             try
             {
-                using (var keyBuffer = key.DeriveKey())
+                using (var keyBuffer = key.ToDerivedKeyBytes())
                 {
                     return Decrypt(ciphertext, keyBuffer, key.Algorithm);
                 }
@@ -90,7 +91,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, CascadingSymmetricKey key)
+        public T Decrypt(Byte[] ciphertext, ICascadingSymmetricKey key)
         {
             try
             {
@@ -100,10 +101,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                 for (var i = (key.Depth - 1); i > 0; i--)
                 {
-                    buffer = binaryDecryptor.Decrypt(buffer, keys[i]);
+                    buffer = binaryDecryptor.Decrypt(buffer, keys.ElementAt(i));
                 }
 
-                return Decrypt(buffer, keys[0]);
+                return Decrypt(buffer, keys.First());
             }
             catch
             {
@@ -129,7 +130,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, SecureBuffer key, SymmetricAlgorithmSpecification algorithm)
+        public T Decrypt(Byte[] ciphertext, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm)
         {
             try
             {
@@ -163,7 +164,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureSymmetricKey key) => Encrypt(plaintextObject, key, null);
+        public Byte[] Encrypt(T plaintextObject, ISymmetricKey key) => Encrypt(plaintextObject, key, null);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -184,11 +185,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureSymmetricKey key, Byte[] initializationVector)
+        public Byte[] Encrypt(T plaintextObject, ISymmetricKey key, Byte[] initializationVector)
         {
             try
             {
-                using (var keyBuffer = key.DeriveKey())
+                using (var keyBuffer = key.ToDerivedKeyBytes())
                 {
                     return Encrypt(plaintextObject, keyBuffer, key.Algorithm, initializationVector);
                 }
@@ -214,17 +215,17 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, CascadingSymmetricKey key)
+        public Byte[] Encrypt(T plaintextObject, ICascadingSymmetricKey key)
         {
             try
             {
                 var keys = key.Keys;
                 var binaryEncryptor = new SymmetricBinaryProcessor(RandomnessProvider);
-                var buffer = Encrypt(plaintextObject, keys[0]);
+                var buffer = Encrypt(plaintextObject, keys.First());
 
                 for (var i = 1; i < key.Depth; i++)
                 {
-                    buffer = binaryEncryptor.Encrypt(buffer, keys[i]);
+                    buffer = binaryEncryptor.Encrypt(buffer, keys.ElementAt(i));
                 }
 
                 return buffer;
@@ -253,7 +254,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureBuffer key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
+        public Byte[] Encrypt(T plaintextObject, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -277,7 +278,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        public Byte[] Encrypt(T plaintextObject, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
             try
             {

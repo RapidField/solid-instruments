@@ -14,8 +14,10 @@ Backmerged
 Backport
 backported
 backporting
+baz
 boolean
 bp
+buildmetadata
 carte
 cbcm
 cbft
@@ -35,6 +37,7 @@ ciphertext
 cmd
 codebook
 codecov
+comparer
 composable
 configurator
 configurators
@@ -154,6 +157,7 @@ plaintext
 postfix
 powershell
 pre
+prerelease
 psake
 quantized
 que

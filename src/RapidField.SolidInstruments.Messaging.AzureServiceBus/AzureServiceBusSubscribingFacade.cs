@@ -96,7 +96,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="AggregateException">
-        /// An exception was raised while trying to publish an <see cref="ExceptionRaisedMessage" />.
+        /// An exception was raised while trying to publish an <see cref="ExceptionRaisedEventMessage" />.
         /// </exception>
         [DebuggerHidden]
         private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask;

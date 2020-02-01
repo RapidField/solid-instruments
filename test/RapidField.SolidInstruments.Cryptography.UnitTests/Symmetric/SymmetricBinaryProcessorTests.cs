@@ -52,18 +52,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
-                using (var secureKey = new SecureBuffer(key.Length))
+                using (var secureKeyBuffer = new SecureBuffer(key.Length))
                 {
                     // Arrange.
                     var blockLengthInBytes = (blockLengthInBits / 8);
                     var target = new SymmetricBinaryProcessor(randomnessProvider);
-                    secureKey.Access(keyBuffer =>
+                    secureKeyBuffer.Access(keyBuffer =>
                     {
                         Array.Copy(key, keyBuffer, key.Length);
                     });
 
                     // Act.
-                    var encryptResult = target.Encrypt(plaintext, secureKey, algorithm, initializationVector);
+                    var encryptResult = target.Encrypt(plaintext, secureKeyBuffer, algorithm, initializationVector);
 
                     // Assert.
                     encryptResult.Should().NotBeNullOrEmpty();

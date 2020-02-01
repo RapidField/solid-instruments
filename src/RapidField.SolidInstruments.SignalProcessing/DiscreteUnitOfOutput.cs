@@ -10,10 +10,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Represents a discrete unit of output from an <see cref="IChannel" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="DiscreteUnitOfOutput{T}" /> is the default implementation of <see cref="IDiscreteUnitOfOutput{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The type of the associated channel's output value.
     /// </typeparam>
-    public sealed class DiscreteUnitOfOutput<T>
+    public sealed class DiscreteUnitOfOutput<T> : IDiscreteUnitOfOutput<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscreteUnitOfOutput{T}" /> class.

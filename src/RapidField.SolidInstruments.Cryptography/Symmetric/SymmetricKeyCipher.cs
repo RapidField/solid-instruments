@@ -322,6 +322,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         internal Int32 BlockSizeInBytes => (BlockSizeInBits / 8);
 
         /// <summary>
+        /// Gets the number of key bytes for the cipher represented by this <see cref="SymmetricKeyCipher" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal Int32 KeySizeInBytes => KeySizeInBits / 8;
+
+        /// <summary>
         /// Gets the number of bits per block for the cipher represented by this <see cref="SymmetricKeyCipher" />.
         /// </summary>
         protected internal Int32 BlockSizeInBits
@@ -360,12 +366,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         {
             get;
         }
-
-        /// <summary>
-        /// Gets the number of key bytes for the cipher represented by this <see cref="SymmetricKeyCipher" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Int32 KeySizeInBytes => (KeySizeInBits / 8);
 
         /// <summary>
         /// Gets an unused initialization vector with correct byte length for Electronic Codebook (ECB) mode transformations.

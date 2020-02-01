@@ -24,6 +24,15 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.
         /// </summary>
+        protected ConfigurableInstrument()
+            : this(DefaultConfiguration)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -71,6 +80,15 @@ namespace RapidField.SolidInstruments.Core
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Initializes a default <see cref="IConfiguration" /> instance.
+        /// </summary>
+        /// <returns>
+        /// A default <see cref="IConfiguration" /> instance.
+        /// </returns>
+        [DebuggerHidden]
+        private static IConfiguration InitializeDefaultConfiguration() => new ConfigurationBuilder().Build();
+
+        /// <summary>
         /// Configures the current <see cref="ConfigurableInstrument{TConfiguration}" />.
         /// </summary>
         /// <returns>
@@ -99,12 +117,24 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Gets a default <see cref="IConfiguration" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static IConfiguration DefaultConfiguration => LazyDefaultConfiguration.Value;
+
+        /// <summary>
         /// Gets configuration information for the current <see cref="ConfigurableInstrument{TConfiguration}" />.
         /// </summary>
         /// <exception cref="ObjectConfigurationException">
         /// An exception was raised during configuration of the instrument.
         /// </exception>
         protected TConfiguration Configuration => LazyConfiguration.Value;
+
+        /// <summary>
+        /// Represents a lazily-initialized default <see cref="IConfiguration" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Lazy<IConfiguration> LazyDefaultConfiguration = new Lazy<IConfiguration>(InitializeDefaultConfiguration, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Represents configuration information for the application.

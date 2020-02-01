@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core
     /// Represents the span of a contiguous period of time with specific start and end points.
     /// </summary>
     [DataContract]
-    public sealed class DateTimeRange : IEquatable<DateTimeRange>
+    public sealed class DateTimeRange : ICloneable, IEquatable<DateTimeRange>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DateTimeRange" /> class.
@@ -185,6 +185,14 @@ namespace RapidField.SolidInstruments.Core
             result = new DateTimeRange(start, end, granularity);
             return true;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="DateTimeRange" /> that is an identical copy of the current <see cref="DateTimeRange" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="DateTimeRange" /> that is an identical copy of the current <see cref="DateTimeRange" />.
+        /// </returns>
+        public Object Clone() => new DateTimeRange(Start, End, Granularity);
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="DateTime" /> is within the bounds of the current

@@ -282,7 +282,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
 
         private static void ShouldBeSerializable(SerializationFormat format)
         {
-            // Arrange. Arrange.
+            // Arrange.
             var target = new TimeOfDay(TimeZoneInfo.Utc, 15, 32, 56, 490);
             var serializer = new DynamicSerializer<TimeOfDay>(format);
 

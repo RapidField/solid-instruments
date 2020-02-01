@@ -14,7 +14,10 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
     /// <summary>
     /// Represents a sequence of positive integers that have no positive divisors other than one and themselves.
     /// </summary>
-    public sealed class PrimeNumberSequence : InfiniteSequence<BigInteger>
+    /// <remarks>
+    /// <see cref="PrimeNumberSequence" /> is the default implementation of <see cref="IPrimeNumberSequence" />.
+    /// </remarks>
+    public class PrimeNumberSequence : InfiniteSequence<BigInteger>, IPrimeNumberSequence
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PrimeNumberSequence" /> class.
@@ -72,6 +75,6 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <summary>
         /// Represents a static collection of prime numbers.
         /// </summary>
-        public static readonly PrimeNumberSequence Instance = new PrimeNumberSequence();
+        public static readonly IPrimeNumberSequence Instance = new PrimeNumberSequence();
     }
 }
