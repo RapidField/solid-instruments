@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
 {
     /// <summary>
-    /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading
-    /// encryption and decryption.
+    /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading encryption
+    /// and decryption.
     /// </summary>
     public interface ICascadingSymmetricKey : IDisposable
     {
