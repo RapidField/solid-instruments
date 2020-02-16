@@ -52,15 +52,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         Task PersistSnapshotAsync(DurableMessageQueueSnapshot snapshot);
 
         /// <summary>
-        /// Asynchronously persists a thread-safe snapshot of the associated queue and, optionally, flattens the persistent operation
-        /// records preceding it.
+        /// Asynchronously persists a thread-safe snapshot of the associated queue and, optionally, flattens the persistent
+        /// operation records preceding it.
         /// </summary>
         /// <param name="snapshot">
         /// The snapshot to persist.
         /// </param>
         /// <param name="flattenOperationRecords">
-        /// A value indicating whether or not all persisted operation records preceding the snapshot state are destroyed. The default
-        /// value is <see langword="true" />.
+        /// A value indicating whether or not all persisted operation records preceding the snapshot state are destroyed. The
+        /// default value is <see langword="true" />.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
