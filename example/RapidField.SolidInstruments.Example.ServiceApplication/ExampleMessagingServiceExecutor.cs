@@ -42,20 +42,20 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void AddSubscriptions(IMessageSubscriptionProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        protected override void AddSubscriptions(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
         {
             try
             {
-                // Add queue subscribers.
-                subscriptionProfile.AddQueueSubscriber<ApplicationStartedEventMessage>();
-                subscriptionProfile.AddQueueSubscriber<ApplicationStoppedEventMessage>();
-                subscriptionProfile.AddQueueSubscriber<ExceptionRaisedEventMessage>();
+                // Add queue listeners.
+                subscriptionProfile.AddQueueListener<ApplicationStartedEventMessage>();
+                subscriptionProfile.AddQueueListener<ApplicationStoppedEventMessage>();
+                subscriptionProfile.AddQueueListener<ExceptionRaisedEventMessage>();
 
-                // Add topic subscribers.
-                subscriptionProfile.AddTopicSubscriber<HeartbeatMessage>();
+                // Add topic listeners.
+                subscriptionProfile.AddTopicListener<HeartbeatMessage>();
 
-                // Add request subscribers.
-                subscriptionProfile.AddRequestSubscriber<PingRequestMessage, PingResponseMessage>();
+                // Add request listeners.
+                subscriptionProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
             }
             finally
             {
@@ -82,10 +82,10 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         }
 
         /// <summary>
-        /// Configures the service to publish heartbeat messages.
+        /// Configures the service to transmit heartbeat messages.
         /// </summary>
         /// <param name="heartbeatSchedule">
-        /// An object that defines how the service publishes heartbeat messages.
+        /// An object that defines how the service transmits heartbeat messages.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.

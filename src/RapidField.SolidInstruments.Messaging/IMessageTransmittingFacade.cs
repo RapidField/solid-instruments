@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates implementation-specific publishing operations for a message bus.
+    /// Facilitates implementation-specific transmission operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -20,48 +20,24 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    public interface IMessagePublishingFacade<TSender, TReceiver, TAdaptedMessage> : IMessagePublishingFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageTransmittingFacade<TSender, TReceiver, TAdaptedMessage> : IMessageTransmittingFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
     {
     }
 
     /// <summary>
-    /// Facilitates implementation-specific publishing operations for a message bus.
+    /// Facilitates implementation-specific transmission operations for a message bus.
     /// </summary>
-    public interface IMessagePublishingFacade : IMessagingFacade
+    public interface IMessageTransmittingFacade : IMessagingFacade
     {
         /// <summary>
-        /// Asynchronously publishes the specified message to a queue.
+        /// Asynchronously transmits the specified message to a queue.
         /// </summary>
         /// <typeparam name="TMessage">
-        /// The type of the message to publish.
+        /// The type of the message to transmit.
         /// </typeparam>
         /// <param name="message">
-        /// The message to publish.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="message" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="message" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        Task PublishToQueueAsync<TMessage>(TMessage message)
-            where TMessage : class, IMessageBase;
-
-        /// <summary>
-        /// Asynchronously publishes the specified message to a queue.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message to publish.
-        /// </typeparam>
-        /// <param name="message">
-        /// The message to publish.
+        /// The message to transmit.
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
@@ -76,23 +52,23 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit <paramref name="message" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task PublishToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+        Task TransmitToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
             where TMessage : class, IMessageBase;
 
         /// <summary>
-        /// Asynchronously publishes the specified message to a topic.
+        /// Asynchronously transmits the specified message to a queue.
         /// </summary>
         /// <typeparam name="TMessage">
-        /// The type of the message to publish.
+        /// The type of the message to transmit.
         /// </typeparam>
         /// <param name="message">
-        /// The message to publish.
+        /// The message to transmit.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
@@ -100,23 +76,23 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit <paramref name="message" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task PublishToTopicAsync<TMessage>(TMessage message)
+        Task TransmitToQueueAsync<TMessage>(TMessage message)
             where TMessage : class, IMessageBase;
 
         /// <summary>
-        /// Asynchronously publishes the specified message to a topic.
+        /// Asynchronously transmits the specified message to a topic.
         /// </summary>
         /// <typeparam name="TMessage">
-        /// The type of the message to publish.
+        /// The type of the message to transmit.
         /// </typeparam>
         /// <param name="message">
-        /// The message to publish.
+        /// The message to transmit.
         /// </param>
         /// <param name="pathTokens">
         /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
@@ -131,13 +107,37 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish <paramref name="message" />.
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit <paramref name="message" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task PublishToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+        Task TransmitToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
+            where TMessage : class, IMessageBase;
+
+        /// <summary>
+        /// Asynchronously transmits the specified message to a topic.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message to transmit.
+        /// </typeparam>
+        /// <param name="message">
+        /// The message to transmit.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit <paramref name="message" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Task TransmitToTopicAsync<TMessage>(TMessage message)
             where TMessage : class, IMessageBase;
     }
 }

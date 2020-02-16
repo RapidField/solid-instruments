@@ -49,28 +49,28 @@ namespace RapidField.SolidInstruments.Messaging.Service
         {
             LazyHeartbeatSchedule = new Lazy<HeartbeatSchedule>(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyHeartbeatTimers = new Lazy<IList<Timer>>(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
-            LazySubscriptionProfile = new Lazy<IMessageSubscriptionProfile>(CreateSubscriptionProfile, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyListeningProfile = new Lazy<IMessageListeningProfile>(CreateListeningProfile, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
         /// Adds message subscriptions to the service.
         /// </summary>
-        /// <param name="subscriptionProfile">
+        /// <param name="listeningProfile">
         /// An object that is used to add subscriptions.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected virtual void AddSubscriptions(IMessageSubscriptionProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        protected virtual void AddSubscriptions(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
         {
             return;
         }
 
         /// <summary>
-        /// Configures the service to publish heartbeat messages.
+        /// Configures the service to transmit heartbeat messages.
         /// </summary>
         /// <param name="heartbeatSchedule">
-        /// An object that defines how the service publishes heartbeat messages.
+        /// An object that defines how the service transmits heartbeat messages.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
 
                 try
                 {
-                    AddSubscriptions(SubscriptionProfile, ApplicationConfiguration);
+                    AddSubscriptions(ListeningProfile, ApplicationConfiguration);
                     StartHeartbeats();
                     executionLifetime.KeepAlive();
                 }
@@ -178,65 +178,21 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Creates the subscription profile for the service.
+        /// Creates the listening profile for the service.
         /// </summary>
         /// <returns>
-        /// The subscription profile for the service.
+        /// The listening profile for the service.
         /// </returns>
         [DebuggerHidden]
-        private IMessageSubscriptionProfile CreateSubscriptionProfile()
+        private IMessageListeningProfile CreateListeningProfile()
         {
             var dependencyScope = CreateDependencyScope();
             ReferenceManager.AddObject(dependencyScope);
-            return new MessageSubscriptionProfile(dependencyScope);
+            return new MessageListeningProfile(dependencyScope);
         }
 
         /// <summary>
-        /// Asynchronously publishes a heartbeat message using the specified schedule item.
-        /// </summary>
-        /// <param name="scheduleItem">
-        /// A schedule item that defines characteristics of the message.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish the heartbeat message.
-        /// </exception>
-        [DebuggerHidden]
-        private Task PublishHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
-        {
-            try
-            {
-                var dependencyScope = CreateDependencyScope();
-
-                try
-                {
-                    var messagePublishingFacade = dependencyScope.Resolve<IMessagePublishingFacade>();
-
-                    return scheduleItem.PublishHeartbeatMessageAsync(messagePublishingFacade).ContinueWith(publishHeartbeatMessageTask =>
-                    {
-                        dependencyScope.Dispose();
-                    });
-                }
-                catch
-                {
-                    dependencyScope.Dispose();
-                    throw;
-                }
-            }
-            catch (MessagePublishingException)
-            {
-                throw;
-            }
-            catch (Exception exception)
-            {
-                throw new MessagePublishingException(typeof(HeartbeatMessage), exception);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new timer that publishes messages according to the supplied specifications.
+        /// Creates a new timer that transmits messages according to the supplied specifications.
         /// </summary>
         /// <param name="heartbeatScheduleItem">
         /// Specifications for the heartbeat.
@@ -244,7 +200,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         [DebuggerHidden]
         private void ScheduleHeartbeat(IHeartbeatScheduleItem heartbeatScheduleItem)
         {
-            var timerCallback = new TimerCallback((state) => PublishHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
+            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
             var timer = new Timer(timerCallback, heartbeatScheduleItem, TimeSpan.Zero, TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds));
             HeartbeatTimers.Add(timer);
             ReferenceManager.AddObject(timer);
@@ -276,22 +232,66 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
+        /// Asynchronously transmits a heartbeat message using the specified schedule item.
+        /// </summary>
+        /// <param name="scheduleItem">
+        /// A schedule item that defines characteristics of the message.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit the heartbeat message.
+        /// </exception>
+        [DebuggerHidden]
+        private Task TransmitHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
+        {
+            try
+            {
+                var dependencyScope = CreateDependencyScope();
+
+                try
+                {
+                    var messageTransmittingFacade = dependencyScope.Resolve<IMessageTransmittingFacade>();
+
+                    return scheduleItem.TransmitHeartbeatMessageAsync(messageTransmittingFacade).ContinueWith(transmitHeartbeatMessageTask =>
+                    {
+                        dependencyScope.Dispose();
+                    });
+                }
+                catch
+                {
+                    dependencyScope.Dispose();
+                    throw;
+                }
+            }
+            catch (MessageTransmissionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new MessageTransmissionException(typeof(HeartbeatMessage), exception);
+            }
+        }
+
+        /// <summary>
         /// Gets the heartbeat message schedule for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HeartbeatSchedule HeartbeatSchedule => LazyHeartbeatSchedule.Value;
 
         /// <summary>
-        /// Gets a collection of timers that control heartbeat publishing.
+        /// Gets a collection of timers that control heartbeat transmission.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private IList<Timer> HeartbeatTimers => LazyHeartbeatTimers.Value;
 
         /// <summary>
-        /// Gets the subscription profile for the service.
+        /// Gets the listening profile for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IMessageSubscriptionProfile SubscriptionProfile => LazySubscriptionProfile.Value;
+        private IMessageListeningProfile ListeningProfile => LazyListeningProfile.Value;
 
         /// <summary>
         /// Represents the lazily-initialized heartbeat message schedule for the service.
@@ -300,15 +300,15 @@ namespace RapidField.SolidInstruments.Messaging.Service
         private readonly Lazy<HeartbeatSchedule> LazyHeartbeatSchedule;
 
         /// <summary>
-        /// Represents a lazily-initialized collection of timers that control heartbeat publishing.
+        /// Represents a lazily-initialized collection of timers that control heartbeat transmission.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<IList<Timer>> LazyHeartbeatTimers;
 
         /// <summary>
-        /// Represents the lazily-initialized
+        /// Represents the lazily-initialized listening profile for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IMessageSubscriptionProfile> LazySubscriptionProfile;
+        private readonly Lazy<IMessageListeningProfile> LazyListeningProfile;
     }
 }

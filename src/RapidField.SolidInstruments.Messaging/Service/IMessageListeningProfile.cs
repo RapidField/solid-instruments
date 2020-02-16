@@ -8,10 +8,10 @@ using System.Collections.Generic;
 namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
-    /// Manages the subscriber types that are supported by a
+    /// Manages the listener types that are supported by a
     /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
     /// </summary>
-    public interface IMessageSubscriptionProfile
+    public interface IMessageListeningProfile
     {
         /// <summary>
         /// Adds support for the specified queue message type.
@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        void AddQueueSubscriber<TMessage>()
+        void AddQueueListener<TMessage>()
             where TMessage : class, IMessage;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TRequestMessage" /> was already added.
         /// </exception>
-        void AddRequestSubscriber<TRequestMessage, TResponseMessage>()
+        void AddRequestListener<TRequestMessage, TResponseMessage>()
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        void AddTopicSubscriber<TMessage>()
+        void AddTopicListener<TMessage>()
             where TMessage : class, IMessage;
 
         /// <summary>

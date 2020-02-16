@@ -68,10 +68,10 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
             configurator.AddScoped<IMessageAdapter<AzureServiceBusMessage>, AzureServiceBusMessageAdapter>((serviceProvider) => serviceProvider.GetService<AzureServiceBusMessageAdapter>());
             configurator.AddScoped<AzureServiceBusClientFactory>();
             configurator.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>((serviceProvider) => serviceProvider.GetService<AzureServiceBusClientFactory>());
-            configurator.AddScoped<AzureServiceBusPublishingFacade>();
-            configurator.AddScoped<IMessagePublishingFacade, AzureServiceBusPublishingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusPublishingFacade>());
-            configurator.AddSingleton<AzureServiceBusSubscribingFacade>();
-            configurator.AddSingleton<IMessageSubscribingFacade, AzureServiceBusSubscribingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusSubscribingFacade>());
+            configurator.AddScoped<AzureServiceBusTransmittingFacade>();
+            configurator.AddScoped<IMessageTransmittingFacade, AzureServiceBusTransmittingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusTransmittingFacade>());
+            configurator.AddSingleton<AzureServiceBusListeningFacade>();
+            configurator.AddSingleton<IMessageListeningFacade, AzureServiceBusListeningFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusListeningFacade>());
             configurator.AddSingleton<AzureServiceBusRequestingFacade>();
             configurator.AddSingleton<IMessageRequestingFacade, AzureServiceBusRequestingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusRequestingFacade>());
         }

@@ -4,34 +4,39 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Messaging;
-using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
-namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Subscribes to and processes <see cref="ApplicationStoppedEventMessage" /> instances.
+    /// Transmits messages to a topic.
     /// </summary>
-    public sealed class ApplicationStoppedEventMessageSubscriber : QueueSubscriber<ApplicationStoppedEventMessage>
+    /// <typeparam name="TMessage">
+    /// The type of the message that is transmitted by the transmitter.
+    /// </typeparam>
+    public class TopicTransmitter<TMessage> : MessageTransmitter<TMessage>
+        where TMessage : class, IMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStoppedEventMessageSubscriber" /> class.
+        /// Initializes a new instance of the <see cref="TopicTransmitter{TMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific message transmission operations.
+        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        public ApplicationStoppedEventMessageSubscriber(ICommandMediator mediator)
-            : base(mediator)
+        public TopicTransmitter(ICommandMediator mediator, IMessageTransmittingFacade facade)
+            : base(mediator, facade, MessagingEntityType.Topic)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="ApplicationStoppedEventMessageSubscriber" />.
+        /// Releases all resources consumed by the current <see cref="TopicTransmitter{TMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -51,6 +56,6 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(ApplicationStoppedEventMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => Console.WriteLine($"{command.Event.Description}{Environment.NewLine}");
+        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
     }
 }

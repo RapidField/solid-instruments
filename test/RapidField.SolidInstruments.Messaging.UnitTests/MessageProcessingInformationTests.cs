@@ -68,11 +68,11 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
             // Arrange.
             var retryCount = 3;
             var baseDelayDurationInSeconds = 1;
-            var durationScale = MessageSubscribingRetryDurationScale.Fibonacci;
-            var retryPolicy = new MessageSubscribingRetryPolicy(retryCount, baseDelayDurationInSeconds, durationScale);
-            var secondaryFailureBehavior = MessageSubscribingSecondaryFailureBehavior.Discard;
-            var publishExceptionRaisedMessage = true;
-            var failurePolicy = new MessageSubscribingFailurePolicy(retryPolicy, secondaryFailureBehavior, publishExceptionRaisedMessage);
+            var durationScale = MessageListeningRetryDurationScale.Fibonacci;
+            var retryPolicy = new MessageListeningRetryPolicy(retryCount, baseDelayDurationInSeconds, durationScale);
+            var secondaryFailureBehavior = MessageListeningSecondaryFailureBehavior.Discard;
+            var transmitExceptionRaisedMessage = true;
+            var failurePolicy = new MessageListeningFailurePolicy(retryPolicy, secondaryFailureBehavior, transmitExceptionRaisedMessage);
             var target = new MessageProcessingInformation(failurePolicy);
             var attemptEndTimeStamp = DateTime.UtcNow;
             var attemptStartTimeStamp = (DateTime?)null;
@@ -94,7 +94,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
             deserializedResult.AttemptResults.Single().AttemptStartTimeStamp.Should().Be(attemptStartTimeStamp);
             deserializedResult.AttemptResults.Single().ExceptionStackTrace.Should().Be(exceptionStackTrace);
             deserializedResult.FailurePolicy.Should().NotBeNull();
-            deserializedResult.FailurePolicy.PublishExceptionRaisedEventMessage.Should().Be(publishExceptionRaisedMessage);
+            deserializedResult.FailurePolicy.TransmitExceptionRaisedEventMessage.Should().Be(transmitExceptionRaisedMessage);
             deserializedResult.FailurePolicy.RetryPolicy.Should().NotBeNull();
             deserializedResult.FailurePolicy.RetryPolicy.BaseDelayDurationInSeconds.Should().Be(baseDelayDurationInSeconds);
             deserializedResult.FailurePolicy.RetryPolicy.DurationScale.Should().Be(durationScale);

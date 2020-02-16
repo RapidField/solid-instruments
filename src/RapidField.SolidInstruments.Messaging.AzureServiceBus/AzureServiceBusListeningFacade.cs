@@ -15,27 +15,27 @@ using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
 namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 {
     /// <summary>
-    /// Facilitates subscribing operations for Azure Service Bus queues.
+    /// Facilitates listening operations for Azure Service Bus queues.
     /// </summary>
-    public sealed class AzureServiceBusSubscribingFacade : MessageSubscribingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusPublishingFacade>
+    public sealed class AzureServiceBusListeningFacade : MessageListeningFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage, AzureServiceBusTransmittingFacade>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusSubscribingFacade" /> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusListeningFacade" /> class.
         /// </summary>
-        /// <param name="publishingFacade">
-        /// An implementation-specific messaging facade that is used to publish response messages.
+        /// <param name="transmittingFacade">
+        /// An implementation-specific messaging facade that is used to transmit response messages.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="publishingFacade" /> is <see langword="null" />.
+        /// <paramref name="transmittingFacade" /> is <see langword="null" />.
         /// </exception>
-        public AzureServiceBusSubscribingFacade(AzureServiceBusPublishingFacade publishingFacade)
-            : base(publishingFacade)
+        public AzureServiceBusListeningFacade(AzureServiceBusTransmittingFacade transmittingFacade)
+            : base(transmittingFacade)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="AzureServiceBusSubscribingFacade" />.
+        /// Releases all resources consumed by the current <see cref="AzureServiceBusListeningFacade" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -66,11 +66,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 
                     if (lockToken is null)
                     {
-                        throw new MessageSubscribingException("The message cannot be processed because the lock token is invalid.");
+                        throw new MessageListeningException("The message cannot be processed because the lock token is invalid.");
                     }
                     else if (receiveClient.IsClosedOrClosing)
                     {
-                        throw new MessageSubscribingException("The message cannot be processed because the receive client is unavailable.");
+                        throw new MessageListeningException("The message cannot be processed because the receive client is unavailable.");
                     }
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -96,10 +96,10 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="AggregateException">
-        /// An exception was raised while trying to publish an <see cref="ExceptionRaisedEventMessage" />.
+        /// An exception was raised while trying to transmit an <see cref="ExceptionRaisedEventMessage" />.
         /// </exception>
         [DebuggerHidden]
-        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask;
+        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // TODO
 
         /// <summary>
         /// Gets options that specify how receive clients handle messages.

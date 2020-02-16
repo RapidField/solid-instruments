@@ -8,20 +8,16 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Processes request messages as a subscriber.
+    /// Processes queue messages as a listener.
     /// </summary>
-    /// <typeparam name="TRequestMessage">
-    /// The type of the request message that is processed by the subscriber.
+    /// <typeparam name="TMessage">
+    /// The type of the message that is listened for.
     /// </typeparam>
-    /// <typeparam name="TResponseMessage">
-    /// The type of the response message that is published in response to the request.
-    /// </typeparam>
-    public abstract class RequestSubscriber<TRequestMessage, TResponseMessage> : MessageSubscriber<TRequestMessage, TResponseMessage>
-        where TRequestMessage : class, IRequestMessage<TResponseMessage>
-        where TResponseMessage : class, IResponseMessage
+    public abstract class QueueListener<TMessage> : MessageListener<TMessage>
+        where TMessage : class, IMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RequestSubscriber{TRequestMessage, TResponseMessage}" /> class.
+        /// Initializes a new instance of the <see cref="QueueListener{TMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
@@ -29,14 +25,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        protected RequestSubscriber(ICommandMediator mediator)
-            : base(mediator)
+        protected QueueListener(ICommandMediator mediator)
+            : base(mediator, MessagingEntityType.Queue)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="RequestSubscriber{TRequestMessage, TResponseMessage}" />.
+        /// Releases all resources consumed by the current <see cref="QueueListener{TMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

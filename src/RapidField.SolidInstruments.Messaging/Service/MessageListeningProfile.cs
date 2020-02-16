@@ -12,16 +12,16 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
-    /// Manages the subscriber types that are supported by an
+    /// Manages the listener types that are supported by an
     /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
     /// </summary>
     /// <remarks>
-    /// <see cref="MessageSubscriptionProfile" /> is the default implementation of <see cref="IMessageSubscriptionProfile" />.
+    /// <see cref="MessageListeningProfile" /> is the default implementation of <see cref="IMessageListeningProfile" />.
     /// </remarks>
-    public sealed class MessageSubscriptionProfile : IMessageSubscriptionProfile
+    public sealed class MessageListeningProfile : IMessageListeningProfile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageSubscriptionProfile" /> class.
+        /// Initializes a new instance of the <see cref="MessageListeningProfile" /> class.
         /// </summary>
         /// <param name="rootDependencyScope">
         /// A dependency scope that spans the full lifetime of execution for the associated
@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <paramref name="rootDependencyScope" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal MessageSubscriptionProfile(IDependencyScope rootDependencyScope)
+        internal MessageListeningProfile(IDependencyScope rootDependencyScope)
             : base()
         {
             RootDependencyScope = rootDependencyScope.RejectIf().IsNull(nameof(rootDependencyScope)).TargetArgument;
@@ -46,8 +46,8 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        public void AddQueueSubscriber<TMessage>()
-            where TMessage : class, IMessage => AddSubscriber<TMessage>(MessagingEntityType.Queue);
+        public void AddQueueListener<TMessage>()
+            where TMessage : class, IMessage => AddListener<TMessage>(MessagingEntityType.Queue);
 
         /// <summary>
         /// Adds support for the specified request message type.
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TRequestMessage" /> was already added.
         /// </exception>
-        public void AddRequestSubscriber<TRequestMessage, TResponseMessage>()
+        public void AddRequestListener<TRequestMessage, TResponseMessage>()
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage
         {
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
 
             SupportedMessageTypesReference.Add(requestMessageType);
-            RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
+            RootDependencyScope.Resolve<IMessageListeningFacade>().RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>((requestMessage) => HandleRequestMessage<TRequestMessage, TResponseMessage>(requestMessage));
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        public void AddTopicSubscriber<TMessage>()
-            where TMessage : class, IMessage => AddSubscriber<TMessage>(MessagingEntityType.Topic);
+        public void AddTopicListener<TMessage>()
+            where TMessage : class, IMessage => AddListener<TMessage>(MessagingEntityType.Topic);
 
         /// <summary>
         /// Adds support for the specified message type.
@@ -104,7 +104,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
         [DebuggerHidden]
-        private void AddSubscriber<TMessage>(MessagingEntityType entityType)
+        private void AddListener<TMessage>(MessagingEntityType entityType)
             where TMessage : class, IMessage
         {
             var messageType = typeof(TMessage);
@@ -120,12 +120,12 @@ namespace RapidField.SolidInstruments.Messaging.Service
             {
                 case MessagingEntityType.Queue:
 
-                    RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterQueueMessageHandler<TMessage>((message) => HandleMessage(message));
+                    RootDependencyScope.Resolve<IMessageListeningFacade>().RegisterQueueMessageHandler<TMessage>((message) => HandleMessage(message));
                     break;
 
                 case MessagingEntityType.Topic:
 
-                    RootDependencyScope.Resolve<IMessageSubscribingFacade>().RegisterTopicMessageHandler<TMessage>((message) => HandleMessage(message));
+                    RootDependencyScope.Resolve<IMessageListeningFacade>().RegisterTopicMessageHandler<TMessage>((message) => HandleMessage(message));
                     break;
 
                 default:
@@ -151,19 +151,19 @@ namespace RapidField.SolidInstruments.Messaging.Service
             {
                 using (var dependencyScope = RootDependencyScope.CreateChildScope())
                 {
-                    using (var subscriber = dependencyScope.Resolve<IMessageSubscriber<TMessage>>())
+                    using (var listener = dependencyScope.Resolve<IMessageListener<TMessage>>())
                     {
-                        subscriber.Process(message);
+                        listener.Process(message);
                     }
                 }
             }
-            catch (MessageSubscribingException)
+            catch (MessageListeningException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new MessageSubscribingException(typeof(TMessage), exception);
+                throw new MessageListeningException(typeof(TMessage), exception);
             }
         }
 
@@ -188,19 +188,19 @@ namespace RapidField.SolidInstruments.Messaging.Service
             {
                 using (var dependencyScope = RootDependencyScope.CreateChildScope())
                 {
-                    using (var subscriber = dependencyScope.Resolve<IMessageSubscriber<TRequestMessage, TResponseMessage>>())
+                    using (var listener = dependencyScope.Resolve<IMessageListener<TRequestMessage, TResponseMessage>>())
                     {
-                        return subscriber.Process(requestMessage);
+                        return listener.Process(requestMessage);
                     }
                 }
             }
-            catch (MessageSubscribingException)
+            catch (MessageListeningException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new MessageSubscribingException(typeof(TRequestMessage), exception);
+                throw new MessageListeningException(typeof(TRequestMessage), exception);
             }
         }
 

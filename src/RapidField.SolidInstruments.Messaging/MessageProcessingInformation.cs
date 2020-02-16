@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
         /// </summary>
         public MessageProcessingInformation()
-            : this(MessageSubscribingFailurePolicy.Default)
+            : this(MessageListeningFailurePolicy.Default)
         {
             return;
         }
@@ -29,13 +29,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
         /// </summary>
         /// <param name="failurePolicy">
-        /// Instructions that guide failure behavior for the subscriber. The default value is
-        /// <see cref="MessageSubscribingFailurePolicy.Default" />.
+        /// Instructions that guide failure behavior for the listener. The default value is
+        /// <see cref="MessageListeningFailurePolicy.Default" />.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="failurePolicy" /> is <see langword="null" />.
         /// </exception>
-        public MessageProcessingInformation(MessageSubscribingFailurePolicy failurePolicy)
+        public MessageProcessingInformation(MessageListeningFailurePolicy failurePolicy)
         {
             AttemptResults = new Collection<MessageProcessingAttemptResult>();
             FailurePolicy = failurePolicy.RejectIf().IsNull(nameof(failurePolicy));
@@ -60,10 +60,10 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets or sets instructions that guide failure behavior for the subscriber.
+        /// Gets or sets instructions that guide failure behavior for the listener.
         /// </summary>
         [DataMember]
-        public MessageSubscribingFailurePolicy FailurePolicy
+        public MessageListeningFailurePolicy FailurePolicy
         {
             get;
             set;

@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Represents information about the result of a message processing attempt by a subscriber.
+    /// Represents information about the result of a message processing attempt by a listener.
     /// </summary>
     [DataContract]
     public sealed class MessageProcessingAttemptResult

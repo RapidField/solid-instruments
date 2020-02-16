@@ -12,25 +12,25 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Publishes messages.
+    /// Transmits messages.
     /// </summary>
     /// <remarks>
-    /// <see cref="MessagePublisher{TMessage}" /> is the default implementation of <see cref="IMessagePublisher{TMessage}" />.
+    /// <see cref="MessageTransmitter{TMessage}" /> is the default implementation of <see cref="IMessageTransmitter{TMessage}" />.
     /// </remarks>
     /// <typeparam name="TMessage">
-    /// The type of the message that is published by the publisher.
+    /// The type of the message that is transmitted by the transmitter.
     /// </typeparam>
-    public abstract class MessagePublisher<TMessage> : MessageHandler<TMessage>, IMessagePublisher<TMessage>
+    public abstract class MessageTransmitter<TMessage> : MessageHandler<TMessage>, IMessageTransmitter<TMessage>
         where TMessage : class, IMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagePublisher{TMessage}" /> class.
+        /// Initializes a new instance of the <see cref="MessageTransmitter{TMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
         /// <param name="facade">
-        /// An appliance that facilitates implementation-specific message publishing operations.
+        /// An appliance that facilitates implementation-specific message transmission operations.
         /// </param>
         /// <param name="entityType">
         /// The targeted entity type.
@@ -41,14 +41,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="entityType" /> is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
-        protected MessagePublisher(ICommandMediator mediator, IMessagePublishingFacade facade, MessagingEntityType entityType)
-            : base(mediator, MessageHandlerRole.Publisher, entityType)
+        protected MessageTransmitter(ICommandMediator mediator, IMessageTransmittingFacade facade, MessagingEntityType entityType)
+            : base(mediator, MessageHandlerRole.Transmitter, entityType)
         {
             Facade = facade.RejectIf().IsNull(nameof(facade)).TargetArgument;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="MessagePublisher{TMessage}" />.
+        /// Releases all resources consumed by the current <see cref="MessageTransmitter{TMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -74,12 +74,12 @@ namespace RapidField.SolidInstruments.Messaging
             {
                 case MessagingEntityType.Queue:
 
-                    controlToken.AttachTask(Facade.PublishToQueueAsync(command));
+                    controlToken.AttachTask(Facade.TransmitToQueueAsync(command));
                     break;
 
                 case MessagingEntityType.Topic:
 
-                    controlToken.AttachTask(Facade.PublishToTopicAsync(command));
+                    controlToken.AttachTask(Facade.TransmitToTopicAsync(command));
                     break;
 
                 default:
@@ -89,54 +89,54 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets the type of the message that the current <see cref="MessagePublisher{TMessage}" /> publishes.
+        /// Gets the type of the message that the current <see cref="MessageTransmitter{TMessage}" /> transmits.
         /// </summary>
         public Type MessageType => typeof(TMessage);
 
         /// <summary>
-        /// Represents an appliance that facilitates implementation-specific message publishing operations.
+        /// Represents an appliance that facilitates implementation-specific message transmission operations.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IMessagePublishingFacade Facade;
+        private readonly IMessageTransmittingFacade Facade;
     }
 
     /// <summary>
-    /// Publishes request messages.
+    /// Transmits request messages.
     /// </summary>
     /// <remarks>
-    /// <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" /> is the default implementation of
-    /// <see cref="IMessagePublisher{TRequestMessage, TResponseMessage}" />.
+    /// <see cref="MessageTransmitter{TRequestMessage, TResponseMessage}" /> is the default implementation of
+    /// <see cref="IMessageTransmitter{TRequestMessage, TResponseMessage}" />.
     /// </remarks>
     /// <typeparam name="TRequestMessage">
-    /// The type of the request message that is published by the publisher.
+    /// The type of the request message that is transmitted by the transmitter.
     /// </typeparam>
     /// <typeparam name="TResponseMessage">
-    /// The type of the response message that is published in response to the request.
+    /// The type of the response message that is transmitted in response to the request.
     /// </typeparam>
-    public abstract class MessagePublisher<TRequestMessage, TResponseMessage> : MessageHandler<TRequestMessage, TResponseMessage>, IMessagePublisher<TRequestMessage, TResponseMessage>
+    public abstract class MessageTransmitter<TRequestMessage, TResponseMessage> : MessageHandler<TRequestMessage, TResponseMessage>, IMessageTransmitter<TRequestMessage, TResponseMessage>
         where TRequestMessage : class, IRequestMessage<TResponseMessage>
         where TResponseMessage : class, IResponseMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" /> class.
+        /// Initializes a new instance of the <see cref="MessageTransmitter{TRequestMessage, TResponseMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
         /// <param name="facade">
-        /// An appliance that facilitates implementation-specific request message publishing operations.
+        /// An appliance that facilitates implementation-specific request message transmission operations.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        protected MessagePublisher(ICommandMediator mediator, IMessageRequestingFacade facade)
-            : base(mediator, MessageHandlerRole.Publisher, Message.RequestEntityType)
+        protected MessageTransmitter(ICommandMediator mediator, IMessageRequestingFacade facade)
+            : base(mediator, MessageHandlerRole.Transmitter, Message.RequestEntityType)
         {
             Facade = facade.RejectIf().IsNull(nameof(facade)).TargetArgument;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" />.
+        /// Releases all resources consumed by the current <see cref="MessageTransmitter{TRequestMessage, TResponseMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -169,13 +169,13 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets the type of the message that the current <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" />
-        /// publishes.
+        /// Gets the type of the message that the current <see cref="MessageTransmitter{TRequestMessage, TResponseMessage}" />
+        /// transmits.
         /// </summary>
         public Type MessageType => typeof(TRequestMessage);
 
         /// <summary>
-        /// Represents an appliance that facilitates implementation-specific message publishing operations.
+        /// Represents an appliance that facilitates implementation-specific message transmission operations.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly IMessageRequestingFacade Facade;

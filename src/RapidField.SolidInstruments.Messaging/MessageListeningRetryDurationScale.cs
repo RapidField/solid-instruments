@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Represents the retry duration scaling behavior employed by a subscriber in response to message processing failure.
+    /// Represents the retry duration scaling behavior employed by a listener in response to message processing failure.
     /// </summary>
     [DataContract]
-    public enum MessageSubscribingRetryDurationScale : Int32
+    public enum MessageListeningRetryDurationScale : Int32
     {
         /// <summary>
         /// The retry duration scaling behavior is not specified.

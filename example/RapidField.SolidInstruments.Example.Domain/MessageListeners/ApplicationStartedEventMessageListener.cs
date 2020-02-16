@@ -4,39 +4,34 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Messaging;
+using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
-namespace RapidField.SolidInstruments.Messaging
+namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
 {
     /// <summary>
-    /// Publishes messages to a queue.
+    /// Listens for and processes <see cref="ApplicationStartedEventMessage" /> instances.
     /// </summary>
-    /// <typeparam name="TMessage">
-    /// The type of the message that is published by the publisher.
-    /// </typeparam>
-    public class QueuePublisher<TMessage> : MessagePublisher<TMessage>
-        where TMessage : class, IMessage
+    public sealed class ApplicationStartedEventMessageListener : QueueListener<ApplicationStartedEventMessage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueuePublisher{TMessage}" /> class.
+        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessageListener" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="facade">
-        /// An appliance that facilitates implementation-specific message publishing operations.
-        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        public QueuePublisher(ICommandMediator mediator, IMessagePublishingFacade facade)
-            : base(mediator, facade, MessagingEntityType.Queue)
+        public ApplicationStartedEventMessageListener(ICommandMediator mediator)
+            : base(mediator)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="QueuePublisher{TMessage}" />.
+        /// Releases all resources consumed by the current <see cref="ApplicationStartedEventMessageListener" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -56,6 +51,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
+        protected override void Process(ApplicationStartedEventMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => Console.WriteLine($"{command.Event.Description}{Environment.NewLine}");
     }
 }

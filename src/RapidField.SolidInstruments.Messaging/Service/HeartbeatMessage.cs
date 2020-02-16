@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
-    /// Represents a message that is published at a regular interval.
+    /// Represents a message that is transmitted at a regular interval.
     /// </summary>
     [DataContract]
     public class HeartbeatMessage : Message
@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Initializes a new instance of the <see cref="HeartbeatMessage" /> class.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="intervalInSeconds" /> is less than or equal to zero.
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Initializes a new instance of the <see cref="HeartbeatMessage" /> class.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="label">
         /// The label, if any, that is associated with the message. This argument can be null.
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Gets or sets the regular interval, in seconds, at which the message is published.
+        /// Gets or sets the regular interval, in seconds, at which the message is transmitted.
         /// </summary>
         [DataMember]
         public Int32 IntervalInSeconds

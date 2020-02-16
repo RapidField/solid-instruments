@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Represents behavior that is employed by a message subscriber after the associated retry policy is exhausted.
+    /// Represents behavior that is employed by a message listener after the associated retry policy is exhausted.
     /// </summary>
     [DataContract]
-    public enum MessageSubscribingSecondaryFailureBehavior : Int32
+    public enum MessageListeningSecondaryFailureBehavior : Int32
     {
         /// <summary>
         /// The secondary failure behavior is not specified.

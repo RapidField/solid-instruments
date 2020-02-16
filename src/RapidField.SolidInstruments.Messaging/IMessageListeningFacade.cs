@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Facilitates implementation-specific subscribing operations for a message bus.
+    /// Facilitates implementation-specific listening operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -19,17 +19,17 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    /// <typeparam name="TPublishingFacade">
-    /// The type of the implementation-specific messaging facade that is used to publish request messages.
+    /// <typeparam name="TTransmittingFacade">
+    /// The type of the implementation-specific messaging facade that is used to transmit request messages.
     /// </typeparam>
-    public interface IMessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade> : IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageListeningFacade<TSender, TReceiver, TAdaptedMessage, TTransmittingFacade> : IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
-        where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TTransmittingFacade : MessageTransmittingFacade<TSender, TReceiver, TAdaptedMessage>
     {
     }
 
     /// <summary>
-    /// Facilitates implementation-specific subscribing operations for a message bus.
+    /// Facilitates implementation-specific listening operations for a message bus.
     /// </summary>
     /// <typeparam name="TSender">
     /// The type of the implementation-specific send client.
@@ -40,15 +40,15 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    public interface IMessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage> : IMessageSubscribingFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageListeningFacade<TSender, TReceiver, TAdaptedMessage> : IMessageListeningFacade, IMessagingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
     {
     }
 
     /// <summary>
-    /// Facilitates implementation-specific subscribing operations for a message bus.
+    /// Facilitates implementation-specific listening operations for a message bus.
     /// </summary>
-    public interface IMessageSubscribingFacade : IMessagingFacade
+    public interface IMessageListeningFacade : IMessagingFacade
     {
         /// <summary>
         /// Registers the specified queue message handler with the bus.
@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="requestMessageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while attempting to register <paramref name="requestMessageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -136,7 +136,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -164,7 +164,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageHandler" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while attempting to register <paramref name="messageHandler" />.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -174,10 +174,10 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class, IMessage;
 
         /// <summary>
-        /// Gets the collection of message types for which the current <see cref="IMessageSubscribingFacade" /> has one or more
+        /// Gets the collection of message types for which the current <see cref="IMessageListeningFacade" /> has one or more
         /// registered handlers.
         /// </summary>
-        IEnumerable<Type> SubscribedMessageTypes
+        IEnumerable<Type> ListenedMessageTypes
         {
             get;
         }

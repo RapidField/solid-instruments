@@ -4,36 +4,43 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
-using RapidField.SolidInstruments.Messaging;
-using RapidField.SolidInstruments.Messaging.Service;
 using System;
-using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Subscribes to and processes <see cref="HeartbeatMessage" /> instances.
+    /// Transmits request messages.
     /// </summary>
-    public sealed class HeartbeatMessageSubscriber : TopicSubscriber<HeartbeatMessage>
+    /// <typeparam name="TRequestMessage">
+    /// The type of the request message that is transmitted by the transmitter.
+    /// </typeparam>
+    /// <typeparam name="TResponseMessage">
+    /// The type of the response message that is transmitted in response to the request.
+    /// </typeparam>
+    public class RequestTransmitter<TRequestMessage, TResponseMessage> : MessageTransmitter<TRequestMessage, TResponseMessage>
+        where TRequestMessage : class, IRequestMessage<TResponseMessage>
+        where TResponseMessage : class, IResponseMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeartbeatMessageSubscriber" /> class.
+        /// Initializes a new instance of the <see cref="MessageTransmitter{TRequestMessage, TResponseMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
+        /// <param name="facade">
+        /// An appliance that facilitates implementation-specific request message transmission operations.
+        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
         /// </exception>
-        public HeartbeatMessageSubscriber(ICommandMediator mediator)
-            : base(mediator)
+        public RequestTransmitter(ICommandMediator mediator, IMessageRequestingFacade facade)
+            : base(mediator, facade)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="HeartbeatMessageSubscriber" />.
+        /// Releases all resources consumed by the current <see cref="RequestTransmitter{TRequestMessage, TResponseMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -53,21 +60,9 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(HeartbeatMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
-        {
-            var pingRequest = new PingRequestMessage();
-            var pingResponse = (PingResponseMessage)null;
-            var stopwatch = Stopwatch.StartNew();
-            pingResponse = mediator.Process<PingResponseMessage>(pingRequest);
-            stopwatch.Stop();
-
-            if (pingResponse is null == false && pingResponse.RequestMessageIdentifier == pingRequest.Identifier)
-            {
-                Console.WriteLine($"Success! The round trip ping operation completed in {stopwatch.ElapsedMilliseconds} milliseconds.");
-                return;
-            }
-
-            Console.WriteLine("The round trip ping operation failed.");
-        }
+        /// <returns>
+        /// The result that is emitted when processing the command.
+        /// </returns>
+        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
     }
 }

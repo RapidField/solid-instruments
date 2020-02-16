@@ -8,15 +8,15 @@ using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
-namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
+namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
 {
     /// <summary>
-    /// Subscribes to and processes <see cref="ApplicationStartedEventMessage" /> instances.
+    /// Listens for and processes <see cref="ExceptionRaisedEventMessage" /> instances.
     /// </summary>
-    public sealed class ApplicationStartedEventMessageSubscriber : QueueSubscriber<ApplicationStartedEventMessage>
+    public sealed class ExceptionRaisedEventMessageListener : QueueListener<ExceptionRaisedEventMessage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessageSubscriber" /> class.
+        /// Initializes a new instance of the <see cref="ExceptionRaisedEventMessageListener" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
@@ -24,14 +24,14 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        public ApplicationStartedEventMessageSubscriber(ICommandMediator mediator)
+        public ExceptionRaisedEventMessageListener(ICommandMediator mediator)
             : base(mediator)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="ApplicationStartedEventMessageSubscriber" />.
+        /// Releases all resources consumed by the current <see cref="ExceptionRaisedEventMessageListener" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -51,6 +51,6 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageSubscribers
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(ApplicationStartedEventMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => Console.WriteLine($"{command.Event.Description}{Environment.NewLine}");
+        protected override void Process(ExceptionRaisedEventMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => Console.WriteLine($"{command.Event.Description}{Environment.NewLine}");
     }
 }

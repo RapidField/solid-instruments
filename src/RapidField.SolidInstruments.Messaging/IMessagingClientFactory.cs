@@ -32,7 +32,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentException">
         /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -75,7 +75,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
-        /// <exception cref="MessagePublishingException">
+        /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentException">
         /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
+        /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -127,7 +127,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -161,7 +161,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="MessageSubscribingException">
+        /// <exception cref="MessageListeningException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -179,7 +179,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
-        /// <exception cref="MessagePublishingException">
+        /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
@@ -204,7 +204,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentException">
         /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
+        /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
         /// </exception>
         /// <exception cref="ObjectDisposedException">

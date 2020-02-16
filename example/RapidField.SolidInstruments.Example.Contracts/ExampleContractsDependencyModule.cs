@@ -44,15 +44,15 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// </param>
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
-            // Register queue publishers.
-            configurator.AddTransient<ICommandHandler<ApplicationStartedEventMessage>, QueuePublisher<ApplicationStartedEventMessage>>();
-            configurator.AddTransient<ICommandHandler<ApplicationStoppedEventMessage>, QueuePublisher<ApplicationStoppedEventMessage>>();
+            // Register queue transmitters.
+            configurator.AddTransient<ICommandHandler<ApplicationStartedEventMessage>, QueueTransmitter<ApplicationStartedEventMessage>>();
+            configurator.AddTransient<ICommandHandler<ApplicationStoppedEventMessage>, QueueTransmitter<ApplicationStoppedEventMessage>>();
 
-            // Register topic publishers.
-            configurator.AddTransient<ICommandHandler<ExceptionRaisedEventMessage>, TopicPublisher<ExceptionRaisedEventMessage>>();
+            // Register topic transmitters.
+            configurator.AddTransient<ICommandHandler<ExceptionRaisedEventMessage>, TopicTransmitter<ExceptionRaisedEventMessage>>();
 
-            // Register request publishers.
-            configurator.AddTransient<ICommandHandler<PingRequestMessage>, RequestPublisher<PingRequestMessage, PingResponseMessage>>();
+            // Register request transmitters.
+            configurator.AddTransient<ICommandHandler<PingRequestMessage>, RequestTransmitter<PingRequestMessage, PingResponseMessage>>();
         }
     }
 }

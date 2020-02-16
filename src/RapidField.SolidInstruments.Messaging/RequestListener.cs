@@ -8,16 +8,20 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Processes queue messages as a subscriber.
+    /// Processes request messages as a listener.
     /// </summary>
-    /// <typeparam name="TMessage">
-    /// The type of the message that is subscribed to.
+    /// <typeparam name="TRequestMessage">
+    /// The type of the request message that is processed by the listener.
     /// </typeparam>
-    public abstract class QueueSubscriber<TMessage> : MessageSubscriber<TMessage>
-        where TMessage : class, IMessage
+    /// <typeparam name="TResponseMessage">
+    /// The type of the response message that is transmitted in response to the request.
+    /// </typeparam>
+    public abstract class RequestListener<TRequestMessage, TResponseMessage> : MessageListener<TRequestMessage, TResponseMessage>
+        where TRequestMessage : class, IRequestMessage<TResponseMessage>
+        where TResponseMessage : class, IResponseMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueueSubscriber{TMessage}" /> class.
+        /// Initializes a new instance of the <see cref="RequestListener{TRequestMessage, TResponseMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
@@ -25,14 +29,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        protected QueueSubscriber(ICommandMediator mediator)
-            : base(mediator, MessagingEntityType.Queue)
+        protected RequestListener(ICommandMediator mediator)
+            : base(mediator)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="QueueSubscriber{TMessage}" />.
+        /// Releases all resources consumed by the current <see cref="RequestListener{TRequestMessage, TResponseMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

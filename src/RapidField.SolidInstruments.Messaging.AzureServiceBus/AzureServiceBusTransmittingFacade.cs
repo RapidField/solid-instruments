@@ -11,12 +11,12 @@ using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
 namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 {
     /// <summary>
-    /// Facilitates publishing operations for Azure Service Bus queues.
+    /// Facilitates transmission operations for Azure Service Bus queues.
     /// </summary>
-    public sealed class AzureServiceBusPublishingFacade : MessagePublishingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage>
+    public sealed class AzureServiceBusTransmittingFacade : MessageTransmittingFacade<ISenderClient, IReceiverClient, AzureServiceBusMessage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureServiceBusPublishingFacade" /> class.
+        /// Initializes a new instance of the <see cref="AzureServiceBusTransmittingFacade" /> class.
         /// </summary>
         /// <param name="clientFactory">
         /// An appliance that creates manages implementation-specific messaging clients.
@@ -28,14 +28,14 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <paramref name="clientFactory" /> is <see langword="null" /> -or- <paramref name="messageAdapter" /> is
         /// <see langword="null" />.
         /// </exception>
-        public AzureServiceBusPublishingFacade(IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage> clientFactory, IMessageAdapter<AzureServiceBusMessage> messageAdapter)
+        public AzureServiceBusTransmittingFacade(IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage> clientFactory, IMessageAdapter<AzureServiceBusMessage> messageAdapter)
             : base(clientFactory, messageAdapter)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="AzureServiceBusPublishingFacade" />.
+        /// Releases all resources consumed by the current <see cref="AzureServiceBusTransmittingFacade" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -43,10 +43,10 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Asynchronously publishes the specified message to a bus.
+        /// Asynchronously transmits the specified message to a bus.
         /// </summary>
         /// <param name="message">
-        /// The message to publish.
+        /// The message to transmit.
         /// </param>
         /// <param name="sendClient">
         /// An implementation-specific receive client.
@@ -57,6 +57,6 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PublishAsync(AzureServiceBusMessage message, ISenderClient sendClient, ConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
+        protected sealed override Task TransmitAsync(AzureServiceBusMessage message, ISenderClient sendClient, ConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
     }
 }

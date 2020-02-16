@@ -4,43 +4,34 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Messaging;
+using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
-namespace RapidField.SolidInstruments.Messaging
+namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
 {
     /// <summary>
-    /// Publishes request messages.
+    /// Listens for and processes <see cref="ApplicationStoppedEventMessage" /> instances.
     /// </summary>
-    /// <typeparam name="TRequestMessage">
-    /// The type of the request message that is published by the publisher.
-    /// </typeparam>
-    /// <typeparam name="TResponseMessage">
-    /// The type of the response message that is published in response to the request.
-    /// </typeparam>
-    public class RequestPublisher<TRequestMessage, TResponseMessage> : MessagePublisher<TRequestMessage, TResponseMessage>
-        where TRequestMessage : class, IRequestMessage<TResponseMessage>
-        where TResponseMessage : class, IResponseMessage
+    public sealed class ApplicationStoppedEventMessageListener : QueueListener<ApplicationStoppedEventMessage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagePublisher{TRequestMessage, TResponseMessage}" /> class.
+        /// Initializes a new instance of the <see cref="ApplicationStoppedEventMessageListener" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
-        /// <param name="facade">
-        /// An appliance that facilitates implementation-specific request message publishing operations.
-        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="facade" /> is <see langword="null" />.
+        /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        public RequestPublisher(ICommandMediator mediator, IMessageRequestingFacade facade)
-            : base(mediator, facade)
+        public ApplicationStoppedEventMessageListener(ICommandMediator mediator)
+            : base(mediator)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="RequestPublisher{TRequestMessage, TResponseMessage}" />.
+        /// Releases all resources consumed by the current <see cref="ApplicationStoppedEventMessageListener" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -60,9 +51,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        /// <returns>
-        /// The result that is emitted when processing the command.
-        /// </returns>
-        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
+        protected override void Process(ApplicationStoppedEventMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => Console.WriteLine($"{command.Event.Description}{Environment.NewLine}");
     }
 }

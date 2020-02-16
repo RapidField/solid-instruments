@@ -8,12 +8,12 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Processes messages as a subscriber.
+    /// Processes messages as a listener.
     /// </summary>
-    public interface IMessageSubscriber
+    public interface IMessageListener
     {
         /// <summary>
-        /// Gets the type of the message that the current <see cref="IMessageSubscriber" /> processes.
+        /// Gets the type of the message that the current <see cref="IMessageListener" /> processes.
         /// </summary>
         Type MessageType
         {
@@ -22,26 +22,26 @@ namespace RapidField.SolidInstruments.Messaging
     }
 
     /// <summary>
-    /// Processes messages as a subscriber.
+    /// Processes messages as a listener.
     /// </summary>
     /// <typeparam name="TMessage">
-    /// The type of the message that is subscribed to.
+    /// The type of the message that is listened for.
     /// </typeparam>
-    public interface IMessageSubscriber<TMessage> : IMessageSubscriber, IMessageHandler<TMessage>, ICommandHandler<TMessage>
+    public interface IMessageListener<TMessage> : IMessageListener, IMessageHandler<TMessage>, ICommandHandler<TMessage>
         where TMessage : class, IMessage
     {
     }
 
     /// <summary>
-    /// Processes messages as a subscriber.
+    /// Processes messages as a listener.
     /// </summary>
     /// <typeparam name="TRequestMessage">
-    /// The type of the request message that is processed by the subscriber.
+    /// The type of the request message that is processed by the listener.
     /// </typeparam>
     /// <typeparam name="TResponseMessage">
-    /// The type of the response message that is published in response to the request.
+    /// The type of the response message that is transmitted in response to the request.
     /// </typeparam>
-    public interface IMessageSubscriber<TRequestMessage, TResponseMessage> : IMessageSubscriber, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>
+    public interface IMessageListener<TRequestMessage, TResponseMessage> : IMessageListener, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>
         where TRequestMessage : class, IRequestMessage<TResponseMessage>
         where TResponseMessage : class, IResponseMessage
     {

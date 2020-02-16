@@ -8,16 +8,16 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Processes topic messages as a subscriber.
+    /// Processes topic messages as a listener.
     /// </summary>
     /// <typeparam name="TMessage">
-    /// The type of the message that is subscribed to.
+    /// The type of the message that is listened for.
     /// </typeparam>
-    public abstract class TopicSubscriber<TMessage> : MessageSubscriber<TMessage>
+    public abstract class TopicListener<TMessage> : MessageListener<TMessage>
         where TMessage : class, IMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TopicSubscriber{TMessage}" /> class.
+        /// Initializes a new instance of the <see cref="TopicListener{TMessage}" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
@@ -25,14 +25,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        protected TopicSubscriber(ICommandMediator mediator)
+        protected TopicListener(ICommandMediator mediator)
             : base(mediator, MessagingEntityType.Topic)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="TopicSubscriber{TMessage}" />.
+        /// Releases all resources consumed by the current <see cref="TopicListener{TMessage}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

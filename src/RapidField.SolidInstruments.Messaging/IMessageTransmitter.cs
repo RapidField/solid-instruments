@@ -8,12 +8,12 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Publishes messages.
+    /// Transmits messages.
     /// </summary>
-    public interface IMessagePublisher
+    public interface IMessageTransmitter
     {
         /// <summary>
-        /// Gets the type of the message that the current <see cref="IMessagePublisher" /> publishes.
+        /// Gets the type of the message that the current <see cref="IMessageTransmitter" /> transmits.
         /// </summary>
         Type MessageType
         {
@@ -22,26 +22,26 @@ namespace RapidField.SolidInstruments.Messaging
     }
 
     /// <summary>
-    /// Publishes messages.
+    /// Transmits messages.
     /// </summary>
     /// <typeparam name="TMessage">
-    /// The type of the message that is published by the publisher.
+    /// The type of the message that is transmitted by the transmitter.
     /// </typeparam>
-    public interface IMessagePublisher<TMessage> : IMessagePublisher, IMessageHandler<TMessage>, ICommandHandler<TMessage>
+    public interface IMessageTransmitter<TMessage> : IMessageTransmitter, IMessageHandler<TMessage>, ICommandHandler<TMessage>
         where TMessage : class, IMessage
     {
     }
 
     /// <summary>
-    /// Publishes messages.
+    /// Transmits messages.
     /// </summary>
     /// <typeparam name="TRequestMessage">
-    /// The type of the request message that is published by the publisher.
+    /// The type of the request message that is transmitted by the transmitter.
     /// </typeparam>
     /// <typeparam name="TResponseMessage">
-    /// The type of the response message that is published in response to the request.
+    /// The type of the response message that is transmitted in response to the request.
     /// </typeparam>
-    public interface IMessagePublisher<TRequestMessage, TResponseMessage> : IMessagePublisher, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>
+    public interface IMessageTransmitter<TRequestMessage, TResponseMessage> : IMessageTransmitter, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>
         where TRequestMessage : class, IRequestMessage<TResponseMessage>
         where TResponseMessage : class, IResponseMessage
     {

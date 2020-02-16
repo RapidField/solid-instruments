@@ -17,13 +17,13 @@ namespace RapidField.SolidInstruments.Messaging
         Unspecified = 0,
 
         /// <summary>
-        /// The handler is a publisher.
+        /// The handler is a transmitter.
         /// </summary>
-        Publisher = 1,
+        Transmitter = 1,
 
         /// <summary>
-        /// The handler is a subscriber.
+        /// The handler is a listener.
         /// </summary>
-        Subscriber = 2
+        Listener = 2
     }
 }

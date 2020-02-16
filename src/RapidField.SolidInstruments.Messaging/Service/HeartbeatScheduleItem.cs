@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
-    /// Specifies a message type, entity type, interval and label for a regularly-published heartbeat message.
+    /// Specifies a message type, entity type, interval and label for a regularly-transmitted heartbeat message.
     /// </summary>
     /// <remarks>
     /// <see cref="HeartbeatScheduleItem{TMessage}" /> is the default implementation of <see cref="IHeartbeatScheduleItem" />.
@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Initializes a new instance of the <see cref="HeartbeatScheduleItem{TMessage}" /> class.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="intervalInSeconds" /> is less than or equal to zero.
@@ -42,10 +42,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Initializes a new instance of the <see cref="HeartbeatScheduleItem{TMessage}" /> class.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
@@ -63,10 +63,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Initializes a new instance of the <see cref="HeartbeatScheduleItem{TMessage}" /> class.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <param name="label">
@@ -268,24 +268,24 @@ namespace RapidField.SolidInstruments.Messaging.Service
         public override Int32 GetHashCode() => ((IntervalInSeconds ^ (Int32)EntityType) ^ ((Label is null ? 0 : Label.GetHashCode()) ^ MessageType.FullName.GetHashCode()));
 
         /// <summary>
-        /// Asynchronously publishes a single heartbeat message with characteristics defined by the current
+        /// Asynchronously transmits a single heartbeat message with characteristics defined by the current
         /// <see cref="IHeartbeatScheduleItem" />.
         /// </summary>
-        /// <param name="messagePublishingFacade">
-        /// An appliance that facilitates message publishing operations.
+        /// <param name="messageTransmittingFacade">
+        /// An appliance that facilitates message transmitting operations.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="messagePublishingFacade" /> is null.
+        /// <paramref name="messageTransmittingFacade" /> is null.
         /// </exception>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish the heartbeat message.
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit the heartbeat message.
         /// </exception>
-        public Task PublishHeartbeatMessageAsync(IMessagePublishingFacade messagePublishingFacade)
+        public Task TransmitHeartbeatMessageAsync(IMessageTransmittingFacade messageTransmittingFacade)
         {
-            messagePublishingFacade = messagePublishingFacade.RejectIf().IsNull(nameof(messagePublishingFacade)).TargetArgument;
+            messageTransmittingFacade = messageTransmittingFacade.RejectIf().IsNull(nameof(messageTransmittingFacade)).TargetArgument;
 
             try
             {
@@ -297,23 +297,23 @@ namespace RapidField.SolidInstruments.Messaging.Service
 
                 return EntityType switch
                 {
-                    MessagingEntityType.Queue => messagePublishingFacade.PublishToQueueAsync(message),
-                    MessagingEntityType.Topic => messagePublishingFacade.PublishToTopicAsync(message),
+                    MessagingEntityType.Queue => messageTransmittingFacade.TransmitToQueueAsync(message),
+                    MessagingEntityType.Topic => messageTransmittingFacade.TransmitToTopicAsync(message),
                     _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
                 };
             }
-            catch (MessagePublishingException)
+            catch (MessageTransmissionException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new MessagePublishingException(typeof(HeartbeatMessage), exception);
+                throw new MessageTransmissionException(typeof(HeartbeatMessage), exception);
             }
         }
 
         /// <summary>
-        /// Gets the messaging entity type that is used when publishing the message.
+        /// Gets the messaging entity type that is used when transmitting the message.
         /// </summary>
         public MessagingEntityType EntityType
         {
@@ -321,7 +321,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Gets the regular interval, in seconds, at which the message is published.
+        /// Gets the regular interval, in seconds, at which the message is transmitted.
         /// </summary>
         public Int32 IntervalInSeconds
         {
@@ -342,7 +342,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         public Type MessageType => typeof(TMessage);
 
         /// <summary>
-        /// Represents the default messaging entity type that is used when publishing messages.
+        /// Represents the default messaging entity type that is used when transmitting messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const MessagingEntityType DefaultEntityType = MessagingEntityType.Topic;
