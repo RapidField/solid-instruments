@@ -184,7 +184,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <returns>
         /// A string representation of the current <see cref="InfiniteSequence{T}" />.
         /// </returns>
-        public override String ToString() => $"Calculated term count: {CalculatedTermCount}";
+        public override String ToString() => $"Calculated term count: {CalculatedTermCount}, Last term: {CalculatedTerms.Last()}";
 
         /// <summary>
         /// Calculates the next term in the sequence.

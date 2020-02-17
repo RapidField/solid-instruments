@@ -470,8 +470,8 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public override String ToString()
         {
-            Int32? twelveHourClockFormatHourValue = null;
-            String meridiemStringFragment = null;
+            Int32? twelveHourClockFormatHourValue;
+            String meridiemStringFragment;
 
             switch (Hour)
             {
