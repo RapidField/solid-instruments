@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="TBlock">
     /// The type of the data block objects underlying the hash tree.
     /// </typeparam>
-    public interface IHashTree<TBlock> : IAsyncDisposable, IDisposable
+    public interface IHashTree<TBlock> : IHashTree
         where TBlock : class
     {
         /// <summary>
@@ -46,9 +46,16 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// An exception was raised during hashing or serialization.
         /// </exception>
         void AddBlockRange(IEnumerable<TBlock> blocks);
+    }
 
+    /// <summary>
+    /// Represents hash values for an ordered series of data block objects and produces a deterministic root hash using a Merkle
+    /// tree.
+    /// </summary>
+    public interface IHashTree : IAsyncDisposable, IDisposable
+    {
         /// <summary>
-        /// Gets the number of leaf nodes in the current <see cref="HashTree{TBlock}" />.
+        /// Gets the number of leaf nodes in the current <see cref="IHashTree" />.
         /// </summary>
         Int32 LeafCount
         {
@@ -56,7 +63,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         }
 
         /// <summary>
-        /// Gets the root node for the current <see cref="HashTree{TBlock}" />.
+        /// Gets the root node for the current <see cref="IHashTree" />.
         /// </summary>
         ITreeNode<Byte[]> RootNode
         {

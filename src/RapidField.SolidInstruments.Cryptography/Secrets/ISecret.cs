@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <typeparam name="TValue">
     /// The type of the value.
     /// </typeparam>
-    public interface ISecret<TValue> : IReadOnlySecret<TValue>
+    public interface ISecret<TValue> : IReadOnlySecret<TValue>, ISecret
     {
         /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.
@@ -30,5 +30,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
         void Write(Func<TValue> writeFunction);
+    }
+
+    /// <summary>
+    /// Represents a named secret value that is pinned in memory and encrypted at rest.
+    /// </summary>
+    public interface ISecret : IReadOnlySecret
+    {
     }
 }

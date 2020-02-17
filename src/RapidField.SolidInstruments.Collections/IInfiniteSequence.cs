@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The element type of the sequence.
     /// </typeparam>
-    public interface IInfiniteSequence<T> : ICalculatedSequence<T>
+    public interface IInfiniteSequence<T> : ICalculatedSequence<T>, IInfiniteSequence
     {
         /// <summary>
         /// Gets the term at the specified index.
@@ -30,9 +30,15 @@ namespace RapidField.SolidInstruments.Collections
         {
             get;
         }
+    }
 
+    /// <summary>
+    /// Represents a thread-safe, infinite sequence of calculated values.
+    /// </summary>
+    public interface IInfiniteSequence : ICalculatedSequence
+    {
         /// <summary>
-        /// Clears the terms in the current <see cref="IInfiniteSequence{T}" />, leaving in place the seed terms.
+        /// Clears the terms in the current <see cref="IInfiniteSequence" />, leaving in place the seed terms.
         /// </summary>
         void Reset();
     }

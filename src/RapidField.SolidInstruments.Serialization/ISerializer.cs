@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Serialization
     /// <typeparam name="T">
     /// The type of the serializable object.
     /// </typeparam>
-    public interface ISerializer<T>
+    public interface ISerializer<T> : ISerializer
         where T : class
     {
         /// <summary>
@@ -42,7 +42,13 @@ namespace RapidField.SolidInstruments.Serialization
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
         Byte[] Serialize(T target);
+    }
 
+    /// <summary>
+    /// Performs serialization and deserialization for a given type.
+    /// </summary>
+    public interface ISerializer
+    {
         /// <summary>
         /// Gets the format to use for serialization and deserialization.
         /// </summary>

@@ -13,46 +13,8 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="T">
     /// The type of the object that can be hashed.
     /// </typeparam>
-    public interface IHashingProcessor<T>
+    public interface IHashingProcessor<T> : IHashingProcessor
     {
-        /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
-        /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
-        /// </param>
-        /// <param name="algorithm">
-        /// The algorithm specification used to transform the plaintext.
-        /// </param>
-        /// <returns>
-        /// The resulting hash value.
-        /// </returns>
-        /// <exception cref="SecurityException">
-        /// An exception was raised during hashing or serialization.
-        /// </exception>
-        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm);
-
-        /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
-        /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
-        /// </param>
-        /// <param name="algorithm">
-        /// The algorithm specification used to transform the plaintext.
-        /// </param>
-        /// <param name="salt">
-        /// The salt to apply to the plaintext, or <see langword="null" /> if the plaintext is unsalted. The default value is
-        /// <see langword="null" />.
-        /// </param>
-        /// <returns>
-        /// The resulting hash value.
-        /// </returns>
-        /// <exception cref="SecurityException">
-        /// An exception was raised during hashing or serialization.
-        /// </exception>
-        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt);
-
         /// <summary>
         /// Calculates a hash value for the specified plaintext object.
         /// </summary>
@@ -96,5 +58,49 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// An exception was raised during hashing or serialization.
         /// </exception>
         Boolean EvaluateHash(Byte[] hash, T plaintextObject, HashingAlgorithmSpecification algorithm, SaltingMode saltingMode);
+    }
+
+    /// <summary>
+    /// Provides facilities for hashing typed objects and binary arrays.
+    /// </summary>
+    public interface IHashingProcessor
+    {
+        /// <summary>
+        /// Calculates a hash value for the specified plaintext binary array.
+        /// </summary>
+        /// <param name="plaintextBinaryArray">
+        /// The plaintext binary array to hash.
+        /// </param>
+        /// <param name="algorithm">
+        /// The algorithm specification used to transform the plaintext.
+        /// </param>
+        /// <returns>
+        /// The resulting hash value.
+        /// </returns>
+        /// <exception cref="SecurityException">
+        /// An exception was raised during hashing or serialization.
+        /// </exception>
+        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm);
+
+        /// <summary>
+        /// Calculates a hash value for the specified plaintext binary array.
+        /// </summary>
+        /// <param name="plaintextBinaryArray">
+        /// The plaintext binary array to hash.
+        /// </param>
+        /// <param name="algorithm">
+        /// The algorithm specification used to transform the plaintext.
+        /// </param>
+        /// <param name="salt">
+        /// The salt to apply to the plaintext, or <see langword="null" /> if the plaintext is unsalted. The default value is
+        /// <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// The resulting hash value.
+        /// </returns>
+        /// <exception cref="SecurityException">
+        /// An exception was raised during hashing or serialization.
+        /// </exception>
+        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt);
     }
 }

@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The element type of the collection.
     /// </typeparam>
-    public interface ICircularBuffer<T> : IAsyncDisposable, IDisposable, IEnumerable<T>, IEnumerable
+    public interface ICircularBuffer<T> : ICircularBuffer, IEnumerable<T>
     {
         /// <summary>
         /// Gets the element at the specified index.
@@ -67,9 +67,15 @@ namespace RapidField.SolidInstruments.Collections
         /// <paramref name="permitOverwrite" /> is <see langword="false" /> and the write operation would have caused overwrite.
         /// </exception>
         void Write(T element, Boolean permitOverwrite);
+    }
 
+    /// <summary>
+    /// Represents a thread-safe, contiguous, generic collection of elements.
+    /// </summary>
+    public interface ICircularBuffer : IAsyncDisposable, IDisposable, IEnumerable
+    {
         /// <summary>
-        /// Gets the maximum number of elements that the current <see cref="ICircularBuffer{T}" /> can accommodate.
+        /// Gets the maximum number of elements that the current <see cref="ICircularBuffer" /> can accommodate.
         /// </summary>
         Int32 Capacity
         {
@@ -77,7 +83,7 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets the number of elements contained by the current <see cref="ICircularBuffer{T}" />.
+        /// Gets the number of elements contained by the current <see cref="ICircularBuffer" />.
         /// </summary>
         Int32 Length
         {

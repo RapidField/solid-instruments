@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The element type of the sequence.
     /// </typeparam>
-    public interface ICalculatedSequence<T>
+    public interface ICalculatedSequence<T> : ICalculatedSequence
     {
         /// <summary>
         /// Calculates the next term in the sequence.
@@ -46,7 +46,13 @@ namespace RapidField.SolidInstruments.Collections
         /// An array containing the calculated terms in the specified range.
         /// </returns>
         T[] ToArray(Int32 startIndex, Int32 count);
+    }
 
+    /// <summary>
+    /// Represents a sequence of calculated terms.
+    /// </summary>
+    public interface ICalculatedSequence
+    {
         /// <summary>
         /// Gets the number of terms that have been calculated.
         /// </summary>

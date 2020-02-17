@@ -36,29 +36,13 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The value type of the node.
     /// </typeparam>
-    public interface ITreeNode<T> : IEnumerable<ITreeNode<T>>, IEnumerable
+    public interface ITreeNode<T> : IEnumerable<ITreeNode<T>>, ITreeNode
     {
         /// <summary>
         /// Gets the child elements of the node, or an empty collection if the current <see cref="ITreeNode{T}" /> is a terminal
         /// node.
         /// </summary>
         IEnumerable<ITreeNode<T>> Children
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the number of connections from the tree's root node to the current <see cref="ITreeNode{T}" />.
-        /// </summary>
-        Int32 Depth
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the number of connections on the longest path between the current <see cref="ITreeNode{T}" /> and a leaf node.
-        /// </summary>
-        Int32 Height
         {
             get;
         }
@@ -101,6 +85,28 @@ namespace RapidField.SolidInstruments.Collections
         {
             get;
             set;
+        }
+    }
+
+    /// <summary>
+    /// Represents a node in a tree structure.
+    /// </summary>
+    public interface ITreeNode : IEnumerable
+    {
+        /// <summary>
+        /// Gets the number of connections from the tree's root node to the current <see cref="ITreeNode" />.
+        /// </summary>
+        Int32 Depth
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the number of connections on the longest path between the current <see cref="ITreeNode" /> and a leaf node.
+        /// </summary>
+        Int32 Height
+        {
+            get;
         }
     }
 }
