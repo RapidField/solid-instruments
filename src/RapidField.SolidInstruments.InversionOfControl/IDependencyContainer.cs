@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
     /// <summary>
     /// Represents an abstraction for a utility that creates, destroys, and manages scoping for dependencies.
     /// </summary>
-    public interface IDependencyContainer : IDisposable
+    public interface IDependencyContainer : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Creates a new initialization and disposal scope for the current <see cref="IDependencyContainer" />.

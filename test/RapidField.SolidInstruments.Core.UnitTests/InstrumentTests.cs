@@ -45,6 +45,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
 
             using (target = new SimulatedInstrument(stateControlMode))
             {
+                // Act.
                 target.StoreIntegerValue(integerValue);
             }
 
@@ -74,14 +75,15 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 {
                     for (var i = 0; i < taskCount; i++)
                     {
-                        var task = new Task(() => target.SimulateThreadSafeOperation());
-                        tasks[i] = task;
-                        task.Start();
+                        // Act.
+                        tasks[i] = Task.Factory.StartNew(target.SimulateThreadSafeOperation);
                     }
 
+                    // Act.
                     Task.WaitAll(tasks);
 
                     // Assert.
+                    target.IsBusy.Should().BeFalse();
                     tasks.Count(task => task.Status == TaskStatus.RanToCompletion).Should().Be(taskCount);
                     target.StateIsVolatile.Should().BeFalse();
                 }
@@ -107,14 +109,15 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 {
                     for (var i = 0; i < taskCount; i++)
                     {
-                        var task = new Task(() => target.SimulateThreadSafeOperation());
-                        tasks[i] = task;
-                        task.Start();
+                        // Act.
+                        tasks[i] = Task.Factory.StartNew(target.SimulateThreadSafeOperation);
                     }
 
+                    // Act.
                     Task.WaitAll(tasks);
 
                     // Assert.
+                    target.IsBusy.Should().BeFalse();
                     tasks.Count(task => task.Status == TaskStatus.RanToCompletion).Should().Be(taskCount);
                     target.StateIsVolatile.Should().BeFalse();
                 }

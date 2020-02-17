@@ -11,7 +11,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading encryption
     /// and decryption.
     /// </summary>
-    public interface ICascadingSymmetricKey : IDisposable
+    public interface ICascadingSymmetricKey : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Converts the value of the current <see cref="ICascadingSymmetricKey" /> to its equivalent binary representation.

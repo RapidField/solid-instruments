@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Command
     /// <summary>
     /// Serves as a dependency resolver and processing intermediary for commands.
     /// </summary>
-    public interface ICommandMediator : IDisposable
+    public interface ICommandMediator : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Processes the specified <see cref="ICommand{TResult}" />.

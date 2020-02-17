@@ -245,7 +245,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <summary>
     /// Performs data access operations for a specified entity type.
     /// </summary>
-    public interface IDataAccessRepository : IDisposable
+    public interface IDataAccessRepository : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Determines whether or not any entities exist in the current <see cref="IDataAccessRepository" />.

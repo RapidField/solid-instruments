@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a named read-only secret value that is pinned in memory and encrypted at rest.
     /// </summary>
-    public interface IReadOnlySecret : IDisposable
+    public interface IReadOnlySecret : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Decrypts the secret value, pins it in memory and performs the specified read operation against the resulting bytes as a

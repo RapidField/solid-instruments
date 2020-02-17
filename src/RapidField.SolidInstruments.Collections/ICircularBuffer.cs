@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The element type of the collection.
     /// </typeparam>
-    public interface ICircularBuffer<T> : IDisposable, IEnumerable<T>, IEnumerable
+    public interface ICircularBuffer<T> : IAsyncDisposable, IDisposable, IEnumerable<T>, IEnumerable
     {
         /// <summary>
         /// Gets the element at the specified index.

@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
     /// <summary>
     /// Represents a shared initialization and disposal scope for container-resolved objects.
     /// </summary>
-    public interface IDependencyScope : IDisposable
+    public interface IDependencyScope : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Creates a new child initialization and disposal scope for the current <see cref="IDependencyScope" />.

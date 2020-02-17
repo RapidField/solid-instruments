@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Cryptography
     /// <summary>
     /// Represents a fixed-length bit field that is pinned in memory and encrypted at rest.
     /// </summary>
-    public interface ISecureBuffer : IDisposable
+    public interface ISecureBuffer : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Decrypts the buffer, performs the specified operation against the pinned plaintext and encrypts the buffer as a

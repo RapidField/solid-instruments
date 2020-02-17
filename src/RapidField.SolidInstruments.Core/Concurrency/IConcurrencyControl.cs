@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     /// <summary>
     /// Represents a concurrency control mechanism.
     /// </summary>
-    public interface IConcurrencyControl : IDisposable
+    public interface IConcurrencyControl : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consume a resource.
@@ -36,5 +36,13 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// The object is disposed.
         /// </exception>
         void Exit(ConcurrencyControlToken token);
+
+        /// <summary>
+        /// Gets the consumption state of the current <see cref="IConcurrencyControl" />.
+        /// </summary>
+        ConcurrencyControlConsumptionState ConsumptionState
+        {
+            get;
+        }
     }
 }

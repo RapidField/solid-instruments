@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Service
     /// <summary>
     /// Prepares for and performs execution of a service.
     /// </summary>
-    public interface IServiceExecutor : IDisposable
+    public interface IServiceExecutor : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Begins execution of the service and performs the service operations.

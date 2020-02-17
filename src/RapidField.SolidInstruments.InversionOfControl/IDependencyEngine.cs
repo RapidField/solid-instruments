@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
     /// <summary>
     /// Represents a configurable dependency resolution system.
     /// </summary>
-    public interface IDependencyEngine : IDisposable
+    public interface IDependencyEngine : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Gets the engine's dependency container.

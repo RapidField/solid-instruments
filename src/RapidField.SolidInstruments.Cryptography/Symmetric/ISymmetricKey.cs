@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// Represents a symmetric-key algorithm and source bits for a derived key, encapsulates key derivation operations and secures
     /// key bits in memory.
     /// </summary>
-    public interface ISymmetricKey : IDisposable
+    public interface ISymmetricKey : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Converts the value of the current <see cref="ISymmetricKey" /> to its equivalent binary representation.

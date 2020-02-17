@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +11,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// <summary>
     /// Manages object creation, storage, resolution and disposal for a related group of object instances.
     /// </summary>
-    public interface IObjectContainer : IDisposable
+    public interface IObjectContainer : IInstrument
     {
         /// <summary>
         /// Returns the instance of specified type that is managed by the current <see cref="IObjectContainer" />.

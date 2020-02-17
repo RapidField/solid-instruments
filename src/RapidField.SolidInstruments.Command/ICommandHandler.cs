@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Command
     /// <typeparam name="TCommand">
     /// The type of the command that is processed by the handler.
     /// </typeparam>
-    public interface ICommandHandler<in TCommand> : IDisposable
+    public interface ICommandHandler<in TCommand> : IAsyncDisposable, IDisposable
         where TCommand : class, ICommandBase
     {
     }

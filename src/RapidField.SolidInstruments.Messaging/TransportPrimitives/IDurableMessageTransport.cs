@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Supports message exchange for a collection of queues and topics.
     /// </summary>
-    public interface IDurableMessageTransport : IDisposable
+    public interface IDurableMessageTransport : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// </summary>

@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents a durable message queue.
     /// </summary>
-    public interface IDurableMessageQueue : IDisposable
+    public interface IDurableMessageQueue : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Asynchronously notifies the queue that a locked message was not processed and can be made available for processing by

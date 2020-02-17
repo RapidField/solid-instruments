@@ -34,10 +34,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
         /// </summary>
-        protected sealed override void EnterWithoutTimeout()
-        {
-            return;
-        }
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="UnconstrainedControl" />.
+        /// </returns>
+        protected sealed override ConcurrencyControlConsumptionState EnterWithoutTimeout() => ConcurrencyControlConsumptionState.Unclaimed;
 
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource and
@@ -46,10 +46,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="blockTimeoutThreshold">
         /// The maximum length of time to block a thread before raising an exception.
         /// </param>
-        protected sealed override void EnterWithTimeout(TimeSpan blockTimeoutThreshold)
-        {
-            return;
-        }
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="UnconstrainedControl" />.
+        /// </returns>
+        protected sealed override ConcurrencyControlConsumptionState EnterWithTimeout(TimeSpan blockTimeoutThreshold) => ConcurrencyControlConsumptionState.Unclaimed;
 
         /// <summary>
         /// Informs the control that a thread is exiting a block of code or has finished consuming a resource.
@@ -57,6 +57,13 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="exitedSuccessfully">
         /// A value indicating whether or not the exit operation was successful. The initial value is <see langword="false" />.
         /// </param>
-        protected sealed override void Exit(ref Boolean exitedSuccessfully) => exitedSuccessfully = true;
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="UnconstrainedControl" />.
+        /// </returns>
+        protected sealed override ConcurrencyControlConsumptionState Exit(ref Boolean exitedSuccessfully)
+        {
+            exitedSuccessfully = true;
+            return ConcurrencyControlConsumptionState.Unclaimed;
+        }
     }
 }

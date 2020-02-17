@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a secure container for named secret values which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretVault : IDisposable
+    public interface ISecretVault : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret

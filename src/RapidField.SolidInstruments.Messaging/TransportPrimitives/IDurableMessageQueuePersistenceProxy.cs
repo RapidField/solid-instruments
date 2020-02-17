@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Manages persistent state for <see cref="IDurableMessageQueue" /> instances.
     /// </summary>
-    public interface IDurableMessageQueuePersistenceProxy : IDisposable
+    public interface IDurableMessageQueuePersistenceProxy : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Asynchronously persists the specified operation record.

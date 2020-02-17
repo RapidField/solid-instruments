@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Core
     /// <typeparam name="TResult">
     /// The output type that results from the invocation of <see cref="IObjectBuilder{TResult}.ToResult" />.
     /// </typeparam>
-    public interface IObjectBuilder<TResult> : IDisposable
+    public interface IObjectBuilder<TResult> : IAsyncDisposable, IDisposable
         where TResult : class
     {
         /// <summary>

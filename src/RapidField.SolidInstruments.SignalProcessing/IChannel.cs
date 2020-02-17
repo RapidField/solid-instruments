@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Threading.Tasks;
 
@@ -145,7 +146,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Represents a streaming data signal.
     /// </summary>
-    public interface IChannel : IDisposable
+    public interface IChannel : IInstrument
     {
         /// <summary>
         /// Changes the channel's status to <see cref="ChannelStatus.Live" /> if it is currently silent, otherwise changes the

@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// <summary>
     /// Encapsulates creation of new object instances using explicit types.
     /// </summary>
-    public interface IObjectFactory : IDisposable
+    public interface IObjectFactory : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Creates a new instance of an object of the specified type.

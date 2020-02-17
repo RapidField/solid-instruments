@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="TBlock">
     /// The type of the data block objects underlying the hash tree.
     /// </typeparam>
-    public interface IHashTree<TBlock> : IDisposable
+    public interface IHashTree<TBlock> : IAsyncDisposable, IDisposable
         where TBlock : class
     {
         /// <summary>

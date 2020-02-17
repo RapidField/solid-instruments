@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
-    public interface IReadOnlyPinnedBuffer : IDisposable
+    public interface IReadOnlyPinnedBuffer : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Gets a value indicating whether or not the buffer is empty.

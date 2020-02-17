@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Service
     /// <summary>
     /// Provides control over the lifetime of execution for a service.
     /// </summary>
-    public interface IServiceExecutionLifetime : IDisposable
+    public interface IServiceExecutionLifetime : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Unblocks waiting threads and ends the execution lifetime.

@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <summary>
     /// Fulfills the unit of work pattern for data access operations.
     /// </summary>
-    public interface IDataAccessTransaction : IDisposable
+    public interface IDataAccessTransaction : IInstrument
     {
         /// <summary>
         /// Initiates the current <see cref="IDataAccessTransaction" />.

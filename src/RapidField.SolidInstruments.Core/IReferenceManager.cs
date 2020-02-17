@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Tracks a collection of related object references and manages disposal of them.
     /// </summary>
-    public interface IReferenceManager : IDisposable
+    public interface IReferenceManager : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Instructs the current <see cref="IReferenceManager" /> to manage the specified object.
