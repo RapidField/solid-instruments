@@ -47,6 +47,14 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="MessageHandler{TMessage}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageHandler{TMessage}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(EntityType)}: {EntityType}, {nameof(Role)}: {Role} }}";
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage}" />.
         /// </summary>
         /// <param name="disposing">
@@ -112,6 +120,15 @@ namespace RapidField.SolidInstruments.Messaging
             EntityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType));
             Role = role.RejectIf().IsEqualToValue(MessageHandlerRole.Unspecified, nameof(role));
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageHandler{TMessage, TResult}" /> to its equivalent string
+        /// representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageHandler{TMessage, TResult}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(EntityType)}: {EntityType}, {nameof(Role)}: {Role} }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage, TResult}" />.

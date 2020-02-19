@@ -334,7 +334,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// A string representation of the current <see cref="Event" />.
         /// </returns>
-        public override String ToString() => Description;
+        public override String ToString() => $"{{ {nameof(Description)}: \"{Description}\" }}";
 
         /// <summary>
         /// Gets or sets the category of the event.

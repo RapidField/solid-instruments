@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <returns>
         /// A string representation of the current <see cref="CircularBuffer{T}" />.
         /// </returns>
-        public override String ToString() => $"Capacity: {Capacity}, Length: {Length}";
+        public override String ToString() => $"{{ {nameof(Capacity)}: {Capacity}, {nameof(Length)}: {Length} }}";
 
         /// <summary>
         /// Writes an element at the tail of the current <see cref="CircularBuffer{T}" />.

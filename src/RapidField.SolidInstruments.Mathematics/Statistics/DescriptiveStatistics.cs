@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics
         /// <returns>
         /// A string representation of the current <see cref="DescriptiveStatistics" />.
         /// </returns>
-        public override String ToString() => $"Size: {Size}, Mean: {Mean.RoundedTo(3)}, StDev: {StandardDeviation.RoundedTo(3)}";
+        public override String ToString() => $"{{ {nameof(Size)}: {Size}, {nameof(Mean)}: {Mean.RoundedTo(3)}, {nameof(StandardDeviation)}: {StandardDeviation.RoundedTo(3)} }}";
 
         /// <summary>
         /// Represents the highest value of the numeric collection represented by the current <see cref="DescriptiveStatistics" />.

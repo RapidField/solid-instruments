@@ -86,6 +86,17 @@ namespace RapidField.SolidInstruments.Service
         }
 
         /// <summary>
+        /// Converts the value of the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> to its equivalent string
+        /// representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(ServiceName)}: \"{ServiceName}\" }}";
+
+        /// <summary>
         /// Builds the application configuration for the service.
         /// </summary>
         /// <param name="configurationBuilder">

@@ -397,7 +397,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A string representation of the current <see cref="ConcurrencyControlToken" />.
         /// </returns>
-        public override String ToString() => $"{(IsActive ? "Active" : "Inactive")} ({Identifier})";
+        public override String ToString() => $"{{ {nameof(Identifier)}: {Identifier}, {nameof(IsActive)}: {IsActive} }}";
 
         /// <summary>
         /// Informs the issuing control that the associated thread is finished consuming the resource.

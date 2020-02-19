@@ -2528,6 +2528,14 @@ namespace RapidField.SolidInstruments.SignalProcessing
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
+        /// Converts the value of the current <see cref="ChannelCollection" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ChannelCollection" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(Identifier)}: {Identifier.ToSerializedString()}, {nameof(Count)}: {Count} }}";
+
+        /// <summary>
         /// Gets the number of channels in the collection.
         /// </summary>
         public Int32 Count

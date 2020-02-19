@@ -274,7 +274,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A string representation of the current <see cref="DurableMessageLockToken" />.
         /// </returns>
-        public sealed override String ToString() => $"{Identifier.ToSerializedString()} | {ExpirationDateTime.ToSerializedString()}";
+        public sealed override String ToString() => $"{{ {nameof(Identifier)}: {Identifier.ToSerializedString()}, {nameof(ExpirationDateTime)}: {ExpirationDateTime.ToSerializedString()} }}";
 
         /// <summary>
         /// Represents the date and time of expiration for the lock, after which the message will become available for processing.

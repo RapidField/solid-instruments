@@ -477,7 +477,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A string representation of the current <see cref="DurableMessageQueue" />.
         /// </returns>
-        public sealed override String ToString() => Path;
+        public sealed override String ToString() => $"{{ {nameof(Path)}: {Path} }}";
 
         /// <summary>
         /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to

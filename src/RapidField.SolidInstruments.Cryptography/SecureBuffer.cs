@@ -117,6 +117,14 @@ namespace RapidField.SolidInstruments.Cryptography
         public override Int32 GetHashCode() => Ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
 
         /// <summary>
+        /// Converts the value of the current <see cref="SecureBuffer" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="SecureBuffer" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(LengthInBytes)}: {LengthInBytes} }}";
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureBuffer" />.
         /// </summary>
         /// <param name="disposing">

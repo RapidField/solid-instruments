@@ -211,7 +211,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A string representation of the current <see cref="Secret{TValue}" />.
         /// </returns>
-        public override String ToString() => Name;
+        public override String ToString() => $"{{ {nameof(Name)}: {Name} }}";
 
         /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.

@@ -431,6 +431,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task ReadAsync(String name, Action<X509Certificate2> readAction) => ReadAsync<X509Certificate2>(name, readAction.RejectIf().IsNull(nameof(readAction)));
 
         /// <summary>
+        /// Converts the value of the current <see cref="SecretVault" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="SecretVault" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(Count)}: {Count} }}";
+
+        /// <summary>
         /// Attempts to remove a secret with the specified name.
         /// </summary>
         /// <param name="name">

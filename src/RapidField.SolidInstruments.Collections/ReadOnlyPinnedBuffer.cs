@@ -192,6 +192,14 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="ReadOnlyPinnedBuffer{T}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(Length)}: {Length}, {nameof(LengthInBytes)}: {LengthInBytes} }}";
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedBuffer{T}" />.
         /// </summary>
         /// <param name="disposing">

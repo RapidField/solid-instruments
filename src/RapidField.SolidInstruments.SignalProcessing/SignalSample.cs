@@ -79,6 +79,14 @@ namespace RapidField.SolidInstruments.SignalProcessing
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="SignalSample{T}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="SignalSample{T}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(UnitOfOutput)}: {UnitOfOutput} }}";
+
+        /// <summary>
         /// Gets a range of discrete units of output following <see cref="UnitOfOutput" /> in the channel's output stream, or an
         /// empty range if look-ahead was not requested.
         /// </summary>

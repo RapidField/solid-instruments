@@ -166,6 +166,14 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="ObjectFactory{TProductBase}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ObjectFactory{TProductBase}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(ProductBaseType)}: {ProductBaseType.FullName} }}";
+
+        /// <summary>
         /// Returns a collection of supported product types paired with functions to create them.
         /// </summary>
         /// <exception cref="ObjectConfigurationException">

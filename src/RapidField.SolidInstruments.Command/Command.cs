@@ -28,6 +28,14 @@ namespace RapidField.SolidInstruments.Command
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="Command{TResult}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="Command{TResult}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(ResultType)}: {ResultType.FullName} }}";
+
+        /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
         public Type ResultType => ResultTypeReference;
@@ -54,6 +62,14 @@ namespace RapidField.SolidInstruments.Command
         {
             return;
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Command" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="Command" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(ResultType)}: {ResultType.FullName} }}";
 
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.

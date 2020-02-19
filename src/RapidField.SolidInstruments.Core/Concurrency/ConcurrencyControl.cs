@@ -184,6 +184,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="ConcurrencyControl" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ConcurrencyControl" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(ConsumptionState)}: {ConsumptionState} }}";
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
         /// </summary>
         /// <param name="disposing">
