@@ -268,6 +268,15 @@ namespace RapidField.SolidInstruments.Messaging.Service
         public override Int32 GetHashCode() => ((IntervalInSeconds ^ (Int32)EntityType) ^ ((Label is null ? 0 : Label.GetHashCode()) ^ MessageType.FullName.GetHashCode()));
 
         /// <summary>
+        /// Converts the value of the current <see cref="HeartbeatScheduleItem{TMessage}" /> to its equivalent string
+        /// representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="HeartbeatScheduleItem{TMessage}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(EntityType)}: {EntityType}, {nameof(MessageType)}: {MessageType.FullName}, {nameof(IntervalInSeconds)}: {IntervalInSeconds}, {nameof(Label)}: \"{Label}\" }}";
+
+        /// <summary>
         /// Asynchronously transmits a single heartbeat message with characteristics defined by the current
         /// <see cref="IHeartbeatScheduleItem" />.
         /// </summary>

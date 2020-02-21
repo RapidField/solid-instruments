@@ -85,6 +85,14 @@ namespace RapidField.SolidInstruments.Serialization
         public Byte[] Serialize(T target) => Serialize(target.RejectIf().IsNull(nameof(target)), Format);
 
         /// <summary>
+        /// Converts the value of the current <see cref="DynamicSerializer{T}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="DynamicSerializer{T}" />.
+        /// </returns>
+        public override String ToString() => $"{{ {nameof(Format)}: {Format}, {nameof(ContractType)}: {ContractType.FullName} }}";
+
+        /// <summary>
         /// Converts the specified buffer to its typed equivalent.
         /// </summary>
         /// <param name="buffer">

@@ -321,6 +321,6 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="Model" />.
         /// </returns>
-        public override String ToString() => GetHashCode().ToString();
+        public override String ToString() => Convert.ToBase64String(GetHashCode().ToByteArray());
     }
 }
