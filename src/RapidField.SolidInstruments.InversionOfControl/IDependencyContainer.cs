@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.InversionOfControl
@@ -9,7 +10,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
     /// <summary>
     /// Represents an abstraction for a utility that creates, destroys, and manages scoping for dependencies.
     /// </summary>
-    public interface IDependencyContainer : IAsyncDisposable, IDisposable
+    public interface IDependencyContainer : IInstrument
     {
         /// <summary>
         /// Creates a new initialization and disposal scope for the current <see cref="IDependencyContainer" />.

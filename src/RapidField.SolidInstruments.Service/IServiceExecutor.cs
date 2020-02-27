@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.Service
@@ -9,7 +10,7 @@ namespace RapidField.SolidInstruments.Service
     /// <summary>
     /// Prepares for and performs execution of a service.
     /// </summary>
-    public interface IServiceExecutor : IAsyncDisposable, IDisposable
+    public interface IServiceExecutor : IInstrument
     {
         /// <summary>
         /// Begins execution of the service and performs the service operations.

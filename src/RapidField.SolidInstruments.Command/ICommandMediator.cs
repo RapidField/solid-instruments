@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace RapidField.SolidInstruments.Command
     /// <summary>
     /// Serves as a dependency resolver and processing intermediary for commands.
     /// </summary>
-    public interface ICommandMediator : IAsyncDisposable, IDisposable
+    public interface ICommandMediator : IInstrument
     {
         /// <summary>
         /// Processes the specified <see cref="ICommand{TResult}" />.
