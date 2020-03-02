@@ -83,15 +83,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="message">
         /// The message to transmit.
         /// </param>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
@@ -102,8 +103,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task TransmitToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
-            where TMessage : class, IMessageBase => TransmitAsync(message, pathTokens, MessagingEntityType.Queue);
+        public Task TransmitToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
+            where TMessage : class, IMessageBase => TransmitAsync(message, pathLabels, MessagingEntityType.Queue);
 
         /// <summary>
         /// Asynchronously transmits the specified message to a topic.
@@ -138,15 +139,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="message">
         /// The message to transmit.
         /// </param>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
@@ -157,8 +159,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task TransmitToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens)
-            where TMessage : class, IMessageBase => TransmitAsync(message, pathTokens, MessagingEntityType.Topic);
+        public Task TransmitToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
+            where TMessage : class, IMessageBase => TransmitAsync(message, pathLabels, MessagingEntityType.Topic);
 
         /// <summary>
         /// Asynchronously transmits the specified message to a bus.
@@ -169,9 +171,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="message">
         /// The message to transmit.
         /// </param>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <param name="entityType">
         /// The targeted entity type.
@@ -180,7 +182,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// A task representing the asynchronous operation.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
@@ -195,7 +198,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        internal Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathTokens, MessagingEntityType entityType)
+        internal Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
@@ -208,8 +211,8 @@ namespace RapidField.SolidInstruments.Messaging
 
                 sendClient = entityType switch
                 {
-                    MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathTokens),
-                    MessagingEntityType.Topic => ClientFactory.GetTopicSender<TMessage>(pathTokens),
+                    MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathLabels),
+                    MessagingEntityType.Topic => ClientFactory.GetTopicSender<TMessage>(pathLabels),
                     _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
                 };
 

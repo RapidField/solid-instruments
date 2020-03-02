@@ -210,9 +210,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets the unique textual path that identifies the current <see cref="IDurableMessageQueue" />.
+        /// Gets a unique textual path that identifies the current <see cref="IDurableMessageQueue" />.
         /// </summary>
-        String Path
+        IMessagingEntityPath Path
         {
             get;
         }

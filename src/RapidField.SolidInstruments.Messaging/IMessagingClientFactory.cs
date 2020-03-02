@@ -47,15 +47,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="MessageListeningException">
         /// An exception was raised while creating the client.
@@ -63,7 +64,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetQueueReceiver<TMessage>(IEnumerable<String> pathTokens)
+        TReceiver GetQueueReceiver<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -90,15 +91,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
@@ -106,7 +108,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetQueueSender<TMessage>(IEnumerable<String> pathTokens)
+        TSender GetQueueSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -145,9 +147,9 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="receiverIdentifier">
         /// A unique textual identifier for the message receiver.
         /// </param>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message receiver.
@@ -156,7 +158,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="receiverIdentifier" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="receiverIdentifier" /> is <see langword="null" />.
@@ -167,7 +170,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathTokens)
+        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -194,15 +197,16 @@ namespace RapidField.SolidInstruments.Messaging
         /// <typeparam name="TMessage">
         /// The type of the message that the client handles.
         /// </typeparam>
-        /// <param name="pathTokens">
-        /// An ordered collection of non-null, non-empty alphanumeric string tokens from which to construct the path, or
-        /// <see langword="null" /> to omit path tokens. The default value is <see langword="null" />.
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
         /// </param>
         /// <returns>
         /// The managed, implementation-specific message sender.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="pathTokens" /> contains one or more null or empty tokens and/or tokens with non-alphanumeric characters.
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
         /// </exception>
         /// <exception cref="MessageTransmissionException">
         /// An exception was raised while creating the client.
@@ -210,7 +214,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetTopicSender<TMessage>(IEnumerable<String> pathTokens)
+        TSender GetTopicSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
     }
 }

@@ -216,10 +216,10 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void StressTest_ShouldProduceDesiredResults()
         {
             // Arrange.
-            var testCount = 30;
-            var repititionCount = 30;
+            var testCount = 1;
+            var repititionCount = 3;
             var concurrencyControlMode = ConcurrencyControlMode.ProcessorCountSemaphore;
-            var blockTimeoutThreshold = TimeSpan.FromSeconds(10);
+            var blockTimeoutThreshold = TimeSpan.FromSeconds(5);
 
             using (var stateControl = ConcurrencyControl.New(concurrencyControlMode, blockTimeoutThreshold))
             {
@@ -232,7 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         for (var repititionIndex = 0; repititionIndex < repititionCount; repititionIndex++)
                         {
                             // Assert.
-                            controlToken.AttachTask(Task.Factory.StartNew(() => ToBuffer_ShouldBeReversible(target)));
+                            controlToken.AttachTask(() => ToBuffer_ShouldBeReversible(target));
                         }
                     }
                 }

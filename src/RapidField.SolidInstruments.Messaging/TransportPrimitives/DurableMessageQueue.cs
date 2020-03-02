@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Collections.Concurrent;
@@ -58,7 +57,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </exception>
         [DebuggerHidden]
         internal DurableMessageQueue(Guid identifier, IDurableMessageQueuePersistenceProxy persistenceProxy)
-            : this(identifier, $"{identifier.ToSerializedString()}", persistenceProxy)
+            : this(identifier, new MessagingEntityPath(), persistenceProxy)
         {
             return;
         }
@@ -70,14 +69,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
         /// <see langword="null" />.
@@ -86,7 +82,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy)
+        internal DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy)
             : this(identifier, path, persistenceProxy, DurableMessageQueueOperationalState.Ready)
         {
             return;
@@ -99,7 +95,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
@@ -107,9 +103,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="operationalState">
         /// The operational state of the queue. The default value is <see cref="DurableMessageQueueOperationalState.Ready" />.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
         /// <see langword="null" />.
@@ -119,7 +112,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// to <see cref="DurableMessageQueueOperationalState.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState)
+        internal DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState)
             : this(identifier, path, persistenceProxy, operationalState, DefaultMessageBodySerializationFormat)
         {
             return;
@@ -132,7 +125,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
@@ -144,9 +137,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The format that is used to serialize enqueued message bodies. The default value is
         /// <see cref="SerializationFormat.CompressedJson" />.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
         /// <see langword="null" />.
@@ -157,7 +147,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat)
+        internal DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat)
             : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, DefaultMessageLockExpirationThreshold)
         {
             return;
@@ -170,7 +160,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
@@ -186,9 +176,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The length of time that a locked message is held before abandoning the associated token and making the message available
         /// for processing. The default value is three minutes.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
         /// <see langword="null" />.
@@ -200,7 +187,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="messageLockExpirationThreshold" /> is less than eight seconds.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold)
+        internal DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold)
             : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, DefaultEnqueueTimeoutThreshold)
         {
             return;
@@ -213,7 +200,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
@@ -233,9 +220,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The maximum length of time to wait for a message to be enqueued before raising an exception. The default value is eight
         /// seconds.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is
         /// <see langword="null" />.
@@ -248,7 +232,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
-        internal DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
+        internal DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
             : this(identifier, path, persistenceProxy, operationalState, messageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold, Array.Empty<DurableMessage>(), new Dictionary<DurableMessageLockToken, DurableMessage>())
         {
             return;
@@ -261,7 +245,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A unique identifier for the queue.
         /// </param>
         /// <param name="path">
-        /// The unique textual path that identifies the queue.
+        /// A unique textual path that identifies the queue.
         /// </param>
         /// <param name="persistenceProxy">
         /// An object that manages thread-safe persistence for the queue.
@@ -287,9 +271,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="lockedMessages">
         /// The underlying first-in first-out collection that contains messages that are locked for processing.
         /// </param>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="path" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="persistenceProxy" /> is <see langword="null" />
         /// -or- <paramref name="messages" /> is <see langword="null" /> -or- <paramref name="lockedMessages" /> is
@@ -303,7 +284,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <paramref name="enqueueTimeoutThreshold" /> is less than two seconds.
         /// </exception>
         [DebuggerHidden]
-        private DurableMessageQueue(Guid identifier, String path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold, IEnumerable<DurableMessage> messages, IDictionary<DurableMessageLockToken, DurableMessage> lockedMessages)
+        private DurableMessageQueue(Guid identifier, IMessagingEntityPath path, IDurableMessageQueuePersistenceProxy persistenceProxy, DurableMessageQueueOperationalState operationalState, SerializationFormat messageBodySerializationFormat, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold, IEnumerable<DurableMessage> messages, IDictionary<DurableMessageLockToken, DurableMessage> lockedMessages)
             : base()
         {
             EnqueueTimeoutThreshold = enqueueTimeoutThreshold.RejectIf().IsLessThan(EnqueueTimeoutThresholdFloor, nameof(enqueueTimeoutThreshold));
@@ -313,7 +294,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
             MessageLockExpirationThreshold = messageLockExpirationThreshold.RejectIf().IsLessThan(MessageLockExpirationThresholdFloor, nameof(messageLockExpirationThreshold));
             OperationalState = operationalState.RejectIf().IsEqualToValue(DurableMessageQueueOperationalState.Unspecified, nameof(operationalState));
-            Path = path.RejectIf().IsNullOrEmpty(nameof(path));
+            Path = path.RejectIf().IsNull(nameof(path)).TargetArgument;
             PersistenceProxy = persistenceProxy.RejectIf().IsNull(nameof(persistenceProxy)).TargetArgument;
         }
 
@@ -894,9 +875,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets the unique textual path that identifies the current <see cref="DurableMessageQueue" />.
+        /// Gets a unique textual path that identifies the current <see cref="DurableMessageQueue" />.
         /// </summary>
-        public String Path
+        public IMessagingEntityPath Path
         {
             get;
             internal set;

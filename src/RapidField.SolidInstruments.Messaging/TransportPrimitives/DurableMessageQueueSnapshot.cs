@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             MessageLockExpirationThreshold = messageQueue.MessageLockExpirationThreshold;
             Messages = new List<DurableMessage>(messageQueue.Messages.ToArray());
             OperationalState = messageQueue.OperationalState;
-            Path = messageQueue.Path;
+            Path = messageQueue.Path.ToString();
             TimeStamp = Core.TimeStamp.Current;
         }
 
@@ -117,7 +117,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets or sets the unique textual path that identifies the associated <see cref="IDurableMessageQueue" />.
+        /// Gets or sets a unique textual path that identifies the associated <see cref="IDurableMessageQueue" />.
         /// </summary>
         [DataMember]
         public String Path

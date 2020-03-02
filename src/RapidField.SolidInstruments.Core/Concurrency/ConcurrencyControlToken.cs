@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     /// <summary>
     /// Represents exclusive or semi-exclusive control of a resource or block of code by a single thread.
     /// </summary>
-    public sealed class ConcurrencyControlToken : IComparable<ConcurrencyControlToken>, IEquatable<ConcurrencyControlToken>, IDisposable
+    public sealed class ConcurrencyControlToken : IAsyncDisposable, IComparable<ConcurrencyControlToken>, IEquatable<ConcurrencyControlToken>, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyControlToken" /> class.
@@ -160,6 +160,21 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Instructs the current <see cref="ConcurrencyControlToken" /> to wait for the specified task to complete before releasing
         /// control to another thread.
         /// </summary>
+        /// <param name="action">
+        /// An action to wait upon.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="IsActive" /> is <see langword="false" />.
+        /// </exception>
+        public void AttachTask(Action action) => AttachTask(Task.Factory.StartNew(action.RejectIf().IsNull(nameof(action))));
+
+        /// <summary>
+        /// Instructs the current <see cref="ConcurrencyControlToken" /> to wait for the specified task to complete before releasing
+        /// control to another thread.
+        /// </summary>
         /// <param name="task">
         /// A task to wait upon.
         /// </param>
@@ -216,6 +231,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 GC.SuppressFinalize(this);
             }
         }
+
+        /// <summary>
+        /// Asynchronously releases all resources consumed by the current <see cref="ConcurrencyControlToken" />.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
 
         /// <summary>
         /// Determines whether or not the current <see cref="ConcurrencyControlToken" /> is equal to the specified

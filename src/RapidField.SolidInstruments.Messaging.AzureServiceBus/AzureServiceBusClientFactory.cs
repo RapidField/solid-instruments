@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates receive operations.
         /// </returns>
-        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName) => entityType switch
+        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, IMessagingEntityPath entityPath, String subscriptionName) => entityType switch
         {
             MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
             MessagingEntityType.Topic => CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName),
@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates send operations.
         /// </returns>
-        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath) => entityType switch
+        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, IMessagingEntityPath entityPath) => entityType switch
         {
             MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
             MessagingEntityType.Topic => CreateTopicClient<TMessage>(connection, entityPath),
@@ -113,11 +113,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection, String queuePath)
+        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath queuePath)
             where TMessage : class
         {
             EnsureQueueExistanceAsync(queuePath).Wait();
-            return new QueueClient(connection, queuePath, ReceiveBehavior, RetryBehavior);
+            return new QueueClient(connection, queuePath.ToString(), ReceiveBehavior, RetryBehavior);
         }
 
         /// <summary>
@@ -142,11 +142,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection, String topicPath, String subscriptionName)
+        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath topicPath, String subscriptionName)
             where TMessage : class
         {
             EnsureSubscriptionExistanceAsync(topicPath, subscriptionName).Wait();
-            return new SubscriptionClient(connection, topicPath, subscriptionName, ReceiveBehavior, RetryBehavior);
+            return new SubscriptionClient(connection, topicPath.ToString(), subscriptionName, ReceiveBehavior, RetryBehavior);
         }
 
         /// <summary>
@@ -168,11 +168,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection, String topicPath)
+        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath topicPath)
             where TMessage : class
         {
             EnsureTopicExistanceAsync(topicPath).Wait();
-            return new TopicClient(connection, topicPath, RetryBehavior);
+            return new TopicClient(connection, topicPath.ToString(), RetryBehavior);
         }
 
         /// <summary>
@@ -185,9 +185,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureQueueExistanceAsync(String queuePath) => ManagementClient.QueueExistsAsync(queuePath).ContinueWith(queueExistsTask =>
+        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(queueExistsTask =>
         {
-            return queueExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateQueueAsync(queuePath);
+            return queueExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateQueueAsync(queuePath.ToString());
         });
 
         /// <summary>
@@ -203,11 +203,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureSubscriptionExistanceAsync(String topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(ensureTopicExistenceTask =>
+        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(ensureTopicExistenceTask =>
         {
-            return ManagementClient.SubscriptionExistsAsync(topicPath, subscriptionName).ContinueWith(subscriptionExistsTask =>
+            return ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(subscriptionExistsTask =>
             {
-                return subscriptionExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateSubscriptionAsync(topicPath, subscriptionName);
+                return subscriptionExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName);
             });
         });
 
@@ -221,9 +221,9 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureTopicExistanceAsync(String topicPath) => ManagementClient.TopicExistsAsync(topicPath).ContinueWith(topicExistsTask =>
+        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(topicExistsTask =>
         {
-            return topicExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateTopicAsync(topicPath);
+            return topicExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateTopicAsync(topicPath.ToString());
         });
 
         /// <summary>
