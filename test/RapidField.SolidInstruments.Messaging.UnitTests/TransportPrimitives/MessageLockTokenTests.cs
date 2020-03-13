@@ -11,7 +11,7 @@ using System;
 namespace RapidField.SolidInstruments.Messaging.UnitTests.TransportPrimitives
 {
     [TestClass]
-    public class DurableMessageTests
+    public class MessageLockTokenTests
     {
         [TestMethod]
         public void ShouldBeSerializable_UsingBinaryFormat()
@@ -66,28 +66,21 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests.TransportPrimitives
         private static void ShouldBeSerializable(SerializationFormat format)
         {
             // Arrange.
-            var correlationIdentifier = Guid.Parse("4aaadf09-0a66-41dc-bfc8-f8520f4aeaf8");
-            var testObject = SimulatedObject.Random();
-            var simulatedMessage = new SimulatedMessage(correlationIdentifier, testObject);
             var expirationDateTime = DateTime.UtcNow;
-            var lockTokenIdentifier = Guid.Parse("037d702f-9b07-4686-a09c-29073ef29a85");
-            var lockToken = new DurableMessageLockToken(lockTokenIdentifier, simulatedMessage.Identifier, expirationDateTime);
-            var lockKey = Guid.Parse("c7692faa-6cdb-402a-ae65-2f2831e599b8");
-            var durableMessage = new DurableMessage(simulatedMessage, lockToken);
-            var serializer = new DynamicSerializer<DurableMessage>(format);
+            var messageIdentifier = Guid.Parse("c1572900-0080-4460-a5ef-d43e3e651d7c");
+            var identifier = Guid.Parse("7f18e63b-4d27-46e4-b6d5-0926169044fd");
+            var target = new MessageLockToken(identifier, messageIdentifier, expirationDateTime);
+            var serializer = new DynamicSerializer<MessageLockToken>(format);
 
             // Act.
-            var serializedTarget = serializer.Serialize(durableMessage);
+            var serializedTarget = serializer.Serialize(target);
             var deserializedResult = serializer.Deserialize(serializedTarget);
 
             // Assert.
             deserializedResult.Should().NotBeNull();
-            deserializedResult.CorrelationIdentifier.Should().Be(correlationIdentifier);
-            deserializedResult.GetBody<SimulatedMessage>().TestObject.Should().Be(testObject);
-            deserializedResult.LockToken.Should().NotBeNull();
-            deserializedResult.LockToken.ExpirationDateTime.Should().Be(expirationDateTime);
-            deserializedResult.LockToken.MessageIdentifier.Should().Be(simulatedMessage.Identifier);
-            deserializedResult.LockToken.Identifier.Should().Be(lockTokenIdentifier);
+            deserializedResult.ExpirationDateTime.Should().Be(expirationDateTime);
+            deserializedResult.Identifier.Should().Be(identifier);
+            deserializedResult.MessageIdentifier.Should().Be(messageIdentifier);
         }
     }
 }

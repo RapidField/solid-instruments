@@ -15,23 +15,23 @@ using System.Text;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents a durable, serializable message.
+    /// Represents a serializable message.
     /// </summary>
     [DataContract]
-    public sealed class DurableMessage
+    public sealed class PrimitiveMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DurableMessage" /> class.
+        /// Initializes a new instance of the <see cref="PrimitiveMessage" /> class.
         /// </summary>
         [DebuggerHidden]
-        internal DurableMessage()
+        internal PrimitiveMessage()
             : this(null, null)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DurableMessage" /> class.
+        /// Initializes a new instance of the <see cref="PrimitiveMessage" /> class.
         /// </summary>
         /// <param name="body">
         /// The message body.
@@ -40,14 +40,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// An exclusive lock key for the current message, which can be used to complete or abandon processing.
         /// </param>
         [DebuggerHidden]
-        internal DurableMessage(IMessageBase body, DurableMessageLockToken lockToken)
+        internal PrimitiveMessage(IMessageBase body, MessageLockToken lockToken)
             : this(body, lockToken, DefaultBodySerializationFormat)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DurableMessage" /> class.
+        /// Initializes a new instance of the <see cref="PrimitiveMessage" /> class.
         /// </summary>
         /// <param name="body">
         /// The message body.
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see cref="SerializationFormat.CompressedJson" />.
         /// </param>
         [DebuggerHidden]
-        internal DurableMessage(IMessageBase body, DurableMessageLockToken lockToken, SerializationFormat bodySerializationFormat)
+        internal PrimitiveMessage(IMessageBase body, MessageLockToken lockToken, SerializationFormat bodySerializationFormat)
         {
             Body = body;
             BodyTypeName = body?.GetType().FullName;
@@ -69,10 +69,10 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="DurableMessage" /> to its equivalent string representation.
+        /// Converts the value of the current <see cref="PrimitiveMessage" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
-        /// A string representation of the current <see cref="DurableMessage" />.
+        /// A string representation of the current <see cref="PrimitiveMessage" />.
         /// </returns>
         public sealed override String ToString() => BodyTypeName.IsNullOrEmpty() ? $"{Identifier.ToSerializedString()}" : $"{Identifier.ToSerializedString()} | {BodyTypeName}";
 
@@ -187,7 +187,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Guid Identifier => Body.Identifier;
 
         /// <summary>
-        /// Gets instructions and contextual information relating to processing for the current <see cref="DurableMessage" />.
+        /// Gets instructions and contextual information relating to processing for the current <see cref="PrimitiveMessage" />.
         /// </summary>
         [IgnoreDataMember]
         public MessageProcessingInformation ProcessingInformation => Body.ProcessingInformation;
@@ -197,7 +197,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see langword="null" /> if the message is not locked.
         /// </summary>
         [DataMember(Order = 4)]
-        internal DurableMessageLockToken LockToken
+        internal MessageLockToken LockToken
         {
             get;
             set;

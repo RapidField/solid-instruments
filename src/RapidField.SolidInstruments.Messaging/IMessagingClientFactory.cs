@@ -20,9 +20,29 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    public interface IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessagingClientFactory<TSender, TReceiver, TAdaptedMessage> : IAsyncDisposable, IDisposable
         where TAdaptedMessage : class
     {
+        /// <summary>
+        /// Returns a queue entity path for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A queue entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
+        /// </exception>
+        IMessagingEntityPath GetQueuePath<TMessage>(IEnumerable<String> pathLabels)
+             where TMessage : class;
+
         /// <summary>
         /// Gets a shared, managed, implementation-specific message receiver for a type-defined queue.
         /// </summary>
@@ -110,6 +130,51 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         TSender GetQueueSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
+
+        /// <summary>
+        /// Returns a subscription name for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique textual identifier for the message receiver, or <see langword="null" /> if the receiver is unspecified.
+        /// </param>
+        /// <param name="entityPath">
+        /// The unique path for the entity.
+        /// </param>
+        /// <returns>
+        /// A subscription name for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="receiverIdentifier" /> is <see langword="null" /> -or- <paramref name="entityPath" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        public String GetSubscriptionName<TMessage>(String receiverIdentifier, IMessagingEntityPath entityPath)
+            where TMessage : class;
+
+        /// <summary>
+        /// Returns a topic entity path for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A topic entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
+        /// </exception>
+        IMessagingEntityPath GetTopicPath<TMessage>(IEnumerable<String> pathLabels)
+             where TMessage : class;
 
         /// <summary>
         /// Gets a shared, managed, implementation-specific message receiver for a type-defined topic.

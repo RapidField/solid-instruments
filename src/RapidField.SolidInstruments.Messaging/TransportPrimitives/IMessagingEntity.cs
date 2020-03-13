@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents a durable message queue.
+    /// Represents a messaging entity.
     /// </summary>
-    public interface IDurableMessageQueue : IAsyncDisposable, IDisposable
+    internal interface IMessagingEntity : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Asynchronously notifies the queue that a locked message was not processed and can be made available for processing by
-        /// other consumers.
+        /// Asynchronously notifies the current <see cref="IMessagingEntity" /> that a locked message was not processed and can be
+        /// made available for processing by other consumers.
         /// </summary>
         /// <param name="lockToken">
         /// A lock token corresponding to a message that was not processed.
@@ -24,14 +24,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="lockToken" /> does not reference an existing locked message.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="lockToken" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -39,10 +36,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task ConveyFailureAsync(DurableMessageLockToken lockToken);
+        Task ConveyFailureAsync(MessageLockToken lockToken);
 
         /// <summary>
-        /// Asynchronously notifies the queue that a locked message was processed successfully and can be destroyed permanently.
+        /// Asynchronously notifies the current <see cref="IMessagingEntity" /> that a locked message was processed successfully and
+        /// can be destroyed permanently.
         /// </summary>
         /// <param name="lockToken">
         /// A lock token corresponding to a message that was processed successfully.
@@ -50,44 +48,16 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="lockToken" /> does not reference an existing locked message.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="lockToken" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message.
         /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task ConveySuccessAsync(DurableMessageLockToken lockToken);
-
-        /// <summary>
-        /// Asynchronously and non-destructively returns the next available messages from the queue, if any, up to the specified
-        /// maximum count.
-        /// </summary>
-        /// <param name="count">
-        /// The maximum number of messages to read from the queue.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation and containing the next available messages from the queue, or an empty
-        /// collection if no messages are available.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="count" /> is less than zero.
-        /// </exception>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        /// <exception cref="TimeoutException">
-        /// The operation timed out.
-        /// </exception>
-        Task<IEnumerable<DurableMessage>> DequeueAsync(Int32 count);
+        Task ConveySuccessAsync(MessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously enqueues the specified message.
@@ -101,22 +71,18 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="DurableMessageQueuePersistenceException">
-        /// An exception was raised while attempting to persist the snapshot.
-        /// </exception>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task EnqueueAsync(IMessageBase message);
+        Task EnqueueAsync(PrimitiveMessage message);
 
         /// <summary>
-        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
-        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />, or to
-        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
-        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />.
+        /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
+        /// <see cref="MessagingEntityOperationalState.EnqueueOnly" />, or to <see cref="MessagingEntityOperationalState.Paused" />
+        /// if the previous state was <see cref="MessagingEntityOperationalState.DequeueOnly" />.
         /// </summary>
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
@@ -124,10 +90,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         Boolean TryDisableDequeues();
 
         /// <summary>
-        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
-        /// <see cref="DurableMessageQueueOperationalState.DequeueOnly" />, or to
-        /// <see cref="DurableMessageQueueOperationalState.Paused" /> if the previous state was
-        /// <see cref="DurableMessageQueueOperationalState.EnqueueOnly" />.
+        /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
+        /// <see cref="MessagingEntityOperationalState.DequeueOnly" />, or to <see cref="MessagingEntityOperationalState.Paused" />
+        /// if the previous state was <see cref="MessagingEntityOperationalState.EnqueueOnly" />.
         /// </summary>
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
@@ -135,8 +100,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         Boolean TryDisableEnqueues();
 
         /// <summary>
-        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
-        /// <see cref="DurableMessageQueueOperationalState.Paused" />.
+        /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
+        /// <see cref="MessagingEntityOperationalState.Paused" />.
         /// </summary>
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
@@ -144,21 +109,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         Boolean TryPause();
 
         /// <summary>
-        /// Attempts to set the operational state of the current <see cref="IDurableMessageQueue" /> to
-        /// <see cref="DurableMessageQueueOperationalState.Ready" />.
+        /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
+        /// <see cref="MessagingEntityOperationalState.Ready" />.
         /// </summary>
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
         /// </returns>
         Boolean TryResume();
-
-        /// <summary>
-        /// Gets the number of messages in the current <see cref="IDurableMessageQueue" />.
-        /// </summary>
-        Int32 Depth
-        {
-            get;
-        }
 
         /// <summary>
         /// Gets the maximum length of time to wait for a message to be enqueued before raising an exception.
@@ -169,7 +126,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets a unique identifier for the current <see cref="IDurableMessageQueue" />.
+        /// Gets the messaging entity type of the current <see cref="IMessagingEntity" />.
+        /// </summary>
+        MessagingEntityType EntityType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a unique identifier for the current <see cref="IMessagingEntity" />.
         /// </summary>
         Guid Identifier
         {
@@ -177,9 +142,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the current <see cref="IDurableMessageQueue" /> is empty.
+        /// Gets a value indicating whether or not the current <see cref="IMessagingEntity" /> is empty.
         /// </summary>
         Boolean IsEmpty
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a collection of exclusive processing locks for messages contained by the current <see cref="IMessagingEntity" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        IEnumerable<MessageLockToken> LockTokens
         {
             get;
         }
@@ -188,6 +164,14 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets the format that is used to serialize enqueued message bodies.
         /// </summary>
         SerializationFormat MessageBodySerializationFormat
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the number of messages in the current <see cref="IMessagingEntity" />.
+        /// </summary>
+        Int32 MessageCount
         {
             get;
         }
@@ -202,15 +186,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets the operational state of the current <see cref="IDurableMessageQueue" />.
+        /// Gets the operational state of the current <see cref="IMessagingEntity" />.
         /// </summary>
-        DurableMessageQueueOperationalState OperationalState
+        MessagingEntityOperationalState OperationalState
         {
             get;
         }
 
         /// <summary>
-        /// Gets a unique textual path that identifies the current <see cref="IDurableMessageQueue" />.
+        /// Gets a unique textual path that identifies the current <see cref="IMessagingEntity" />.
         /// </summary>
         IMessagingEntityPath Path
         {

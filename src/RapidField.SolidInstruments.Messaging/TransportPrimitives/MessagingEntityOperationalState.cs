@@ -8,43 +8,43 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents the operational state of an <see cref="IDurableMessageQueue" />.
+    /// Represents the operational state of an <see cref="IMessagingEntity" />.
     /// </summary>
     [DataContract]
-    public enum DurableMessageQueueOperationalState : Int32
+    internal enum MessagingEntityOperationalState : Int32
     {
         /// <summary>
-        /// The queue's operational state is not specified.
+        /// The entity's operational state is not specified.
         /// </summary>
         [EnumMember]
         Unspecified = 0,
 
         /// <summary>
-        /// The queue is enabled for both enqueue and dequeue operations.
+        /// The entity is enabled for both enqueue and dequeue operations.
         /// </summary>
         [EnumMember]
         Ready = 1,
 
         /// <summary>
-        /// The queue is enabled for dequeue operations only.
+        /// The entity is enabled for dequeue operations only.
         /// </summary>
         [EnumMember]
         DequeueOnly = 2,
 
         /// <summary>
-        /// The queue is enabled for enqueue operations only.
+        /// The entity is enabled for enqueue operations only.
         /// </summary>
         [EnumMember]
         EnqueueOnly = 3,
 
         /// <summary>
-        /// The queue is temporarily disabled.
+        /// The entity is temporarily disabled.
         /// </summary>
         [EnumMember]
         Paused = 4,
 
         /// <summary>
-        /// The queue is permanently disabled.
+        /// entity is permanently disabled.
         /// </summary>
         [EnumMember]
         Disabled = 5

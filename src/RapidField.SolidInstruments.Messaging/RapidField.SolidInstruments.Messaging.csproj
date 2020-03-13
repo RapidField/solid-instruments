@@ -47,7 +47,4 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="TransportPrimitives\Operations\" />
-    </ItemGroup>
 </Project>

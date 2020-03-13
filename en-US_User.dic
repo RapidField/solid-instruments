@@ -60,6 +60,7 @@ Decrypts
 deliverables
 dependabot
 dequeue
+dequeued
 deserialization
 Deserialize
 deserialized
@@ -188,6 +189,7 @@ releasenotes
 reportable
 Repos
 requeue
+requeued
 requeues
 reveived
 rhnyj

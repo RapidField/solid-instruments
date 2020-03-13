@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Messaging
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
     /// <typeparam name="TConnection">
-    /// The type of the connection
+    /// The type of the connection.
     /// </typeparam>
     /// <remarks>
     /// <see cref="MessagingClientFactory{TSender, TReceiver, TAdaptedMessage, TConnection}" /> is the default implementation of
@@ -51,6 +51,26 @@ namespace RapidField.SolidInstruments.Messaging
         {
             Connection = connection.RejectIf().IsNull(nameof(connection));
         }
+
+        /// <summary>
+        /// Returns a queue entity path for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A queue entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
+        /// </exception>
+        public IMessagingEntityPath GetQueuePath<TMessage>(IEnumerable<String> pathLabels)
+             where TMessage : class => GetEntityPath(EntityPathQueuePrefix, typeof(TMessage), pathLabels);
 
         /// <summary>
         /// Gets a shared, managed, implementation-specific message receiver for a type-defined queue.
@@ -139,6 +159,56 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public TSender GetQueueSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class => GetMessageSender<TMessage>(MessagingEntityType.Queue, pathLabels);
+
+        /// <summary>
+        /// Returns a subscription name for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="receiverIdentifier">
+        /// A unique textual identifier for the message receiver, or <see langword="null" /> if the receiver is unspecified.
+        /// </param>
+        /// <param name="entityPath">
+        /// The unique path for the entity.
+        /// </param>
+        /// <returns>
+        /// A subscription name for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="receiverIdentifier" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="receiverIdentifier" /> is <see langword="null" /> -or- <paramref name="entityPath" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        public String GetSubscriptionName<TMessage>(String receiverIdentifier, IMessagingEntityPath entityPath)
+            where TMessage : class
+        {
+            var prefix = SubscriptionNamePrefix.IsNullOrEmpty() ? String.Empty : $"{SubscriptionNamePrefix}{MessagingEntityPath.DelimitingCharacterForPrefix}";
+            var suffix = $"{MessagingEntityPath.DelimitingCharacterForLabelToken}{new ZBase32Encoding().GetString(entityPath.RejectIf().IsNull(nameof(entityPath)).GetHashCode().ToByteArray())}";
+            return $"{prefix}{receiverIdentifier.RejectIf().IsNullOrEmpty(nameof(receiverIdentifier))}{suffix}";
+        }
+
+        /// <summary>
+        /// Returns a topic entity path for the specified message type.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
+        /// </param>
+        /// <returns>
+        /// A topic entity path for the specified message type.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
+        /// or contains more than three elements.
+        /// </exception>
+        public IMessagingEntityPath GetTopicPath<TMessage>(IEnumerable<String> pathLabels)
+             where TMessage : class => GetEntityPath(EntityPathTopicPrefix, typeof(TMessage), pathLabels);
 
         /// <summary>
         /// Gets a shared, managed, implementation-specific message receiver for a type-defined topic.
@@ -408,9 +478,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 try
                 {
-                    var subscriptionNamePrefix = SubscriptionNamePrefix.IsNullOrEmpty() ? String.Empty : $"{SubscriptionNamePrefix}{MessagingEntityPath.DelimitingCharacterForPrefix}";
-                    var entityPathHashSuffix = $"{MessagingEntityPath.DelimitingCharacterForLabelToken}{new ZBase32Encoding().GetString(entityPath.GetHashCode().ToByteArray())}";
-                    var subscriptionName = receiverIdentifier.IsNullOrEmpty() ? null : $"{subscriptionNamePrefix}{receiverIdentifier}{entityPathHashSuffix}";
+                    var subscriptionName = receiverIdentifier.IsNullOrEmpty() ? null : GetSubscriptionName<TMessage>(receiverIdentifier, entityPath);
                     receiver = CreateMessageReceiver<TMessage>(Connection, entityType, entityPath, subscriptionName);
                 }
                 catch (Exception exception)
@@ -477,48 +545,6 @@ namespace RapidField.SolidInstruments.Messaging
                 return sender;
             }
         }
-
-        /// <summary>
-        /// Returns a queue entity path for the specified message type.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message.
-        /// </typeparam>
-        /// <param name="pathLabels">
-        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
-        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
-        /// </param>
-        /// <returns>
-        /// A queue entity path for the specified message type.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
-        /// or contains more than three elements.
-        /// </exception>
-        [DebuggerHidden]
-        private IMessagingEntityPath GetQueuePath<TMessage>(IEnumerable<String> pathLabels)
-             where TMessage : class => GetEntityPath(EntityPathQueuePrefix, typeof(TMessage), pathLabels);
-
-        /// <summary>
-        /// Returns a topic entity path for the specified message type.
-        /// </summary>
-        /// <typeparam name="TMessage">
-        /// The type of the message.
-        /// </typeparam>
-        /// <param name="pathLabels">
-        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
-        /// <see langword="null" /> to omit path labels. The default value is <see langword="null" />.
-        /// </param>
-        /// <returns>
-        /// A topic entity path for the specified message type.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
-        /// or contains more than three elements.
-        /// </exception>
-        [DebuggerHidden]
-        private IMessagingEntityPath GetTopicPath<TMessage>(IEnumerable<String> pathLabels)
-             where TMessage : class => GetEntityPath(EntityPathTopicPrefix, typeof(TMessage), pathLabels);
 
         /// <summary>
         /// Gets an entity path prefix for queues.

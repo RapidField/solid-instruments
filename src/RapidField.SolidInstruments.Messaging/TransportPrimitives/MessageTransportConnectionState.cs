@@ -7,24 +7,23 @@ using System;
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
     /// <summary>
-    /// Represents an operation performed against an <see cref="IDurableMessageQueue" />.
+    /// Represents the state of an <see cref="IMessageTransportConnection" />.
     /// </summary>
-    public interface IDurableMessageQueueOperation
+    internal enum MessageTransportConnectionState : Int32
     {
         /// <summary>
-        /// Gets an identifier for the most recent <see cref="DurableMessageQueueSnapshot" /> to which this operation applies.
+        /// The connection's state is not specified.
         /// </summary>
-        Guid SnapshotIdentifier
-        {
-            get;
-        }
+        Unspecified = 0,
 
         /// <summary>
-        /// Gets the date and time when the operation was recorded.
+        /// The connection is open and available for use.
         /// </summary>
-        DateTime TimeStamp
-        {
-            get;
-        }
+        Open = 1,
+
+        /// <summary>
+        /// The connection is closed and unavailable for use.
+        /// </summary>
+        Closed = 2
     }
 }
