@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents a client connection to an <see cref="IMessageTransport" />.
     /// </summary>
-    internal interface IMessageTransportConnection : IAsyncDisposable, IDisposable
+    public interface IMessageTransportConnection : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Closes the current <see cref="IMessageTransportConnection" /> as an idempotent operation.
@@ -35,6 +35,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the associated <see cref="IMessageTransport" />.
         /// </summary>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The connection is closed.
+        /// </exception>
         IMessageTransport Transport
         {
             get;

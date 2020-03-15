@@ -3,9 +3,13 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Serialization;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
@@ -13,8 +17,37 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Supports message exchange for a collection of queues and topics.
     /// </summary>
-    public interface IMessageTransport : IInstrument
+    /// <remarks>
+    /// <see cref="MessageTransport" /> is the default implementation of <see cref="IMessageTransport" />.
+    /// </remarks>
+    internal sealed class MessageTransport : Instrument, IMessageTransport
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        internal MessageTransport()
+            : this(PrimitiveMessage.DefaultBodySerializationFormat)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        /// <param name="messageBodySerializationFormat">
+        /// The format that is used to serialize enqueued message bodies.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal MessageTransport(SerializationFormat messageBodySerializationFormat)
+            : base()
+        {
+            MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
+        }
+
         /// <summary>
         /// Closes the specified connection as an idempotent operation.
         /// </summary>
@@ -24,18 +57,38 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ArgumentNullException">
         /// <paramref name="connection" /> is <see langword="null" />.
         /// </exception>
-        void CloseConnection(IMessageTransportConnection connection);
+        public void CloseConnection(IMessageTransportConnection connection)
+        {
+            if (ConnectionDictionary.ContainsKey(connection.RejectIf().IsNull(nameof(connection)).TargetArgument.Identifier))
+            {
+                if (ConnectionDictionary.TryRemove(connection.Identifier, out _))
+                {
+                    connection.Dispose();
+                }
+            }
+        }
 
         /// <summary>
-        /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current <see cref="IMessageTransport" />.
+        /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current <see cref="MessageTransport" />.
         /// </summary>
         /// <returns>
-        /// A new <see cref="IMessageTransportConnection" /> to the current <see cref="IMessageTransport" />.
+        /// A new <see cref="IMessageTransportConnection" /> to the current <see cref="MessageTransport" />.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IMessageTransportConnection CreateConnection();
+        public IMessageTransportConnection CreateConnection()
+        {
+            RejectIfDisposed();
+            var connection = new MessageTransportConnection(this);
+
+            if (ConnectionDictionary.TryAdd(connection.Identifier, connection))
+            {
+                return connection;
+            }
+
+            return connection;
+        }
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -55,7 +108,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path);
+        public Task CreateQueueAsync(IMessagingEntityPath path) => CreateQueueAsync(path, MessagingEntity.DefaultMessageLockExpirationThreshold);
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -82,7 +135,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold) => CreateQueueAsync(path, messageLockExpirationThreshold, MessagingEntity.DefaultEnqueueTimeoutThreshold);
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -114,7 +167,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryCreateQueue(path.RejectIf().IsNull(nameof(path)).TargetArgument, messageLockExpirationThreshold.RejectIf().IsLessThan(MessagingEntity.MessageLockExpirationThresholdFloor, nameof(messageLockExpirationThreshold)), enqueueTimeoutThreshold.RejectIf().IsLessThan(MessagingEntity.EnqueueTimeoutThresholdFloor, nameof(enqueueTimeoutThreshold))))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"The specified queue, \"{path}\", already exists");
+        });
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -134,7 +197,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path);
+        public Task CreateTopicAsync(IMessagingEntityPath path) => CreateTopicAsync(path, MessagingEntity.DefaultMessageLockExpirationThreshold);
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -161,7 +224,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold) => CreateTopicAsync(path, messageLockExpirationThreshold, MessagingEntity.DefaultEnqueueTimeoutThreshold);
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -193,7 +256,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryCreateTopic(path.RejectIf().IsNull(nameof(path)).TargetArgument, messageLockExpirationThreshold.RejectIf().IsLessThan(MessagingEntity.MessageLockExpirationThresholdFloor, nameof(messageLockExpirationThreshold)), enqueueTimeoutThreshold.RejectIf().IsLessThan(MessagingEntity.EnqueueTimeoutThresholdFloor, nameof(enqueueTimeoutThreshold))))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"The specified topic, \"{path}\", already exists");
+        });
 
         /// <summary>
         /// Asynchronously destroys the specified queue.
@@ -213,7 +286,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified entity does not exist.
         /// </exception>
-        Task DestroyQueueAsync(IMessagingEntityPath path);
+        public Task DestroyQueueAsync(IMessagingEntityPath path) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryDestroyQueue(path.RejectIf().IsNull(nameof(path)).TargetArgument))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"The specified queue, \"{path}\", does not exist.");
+        });
 
         /// <summary>
         /// Asynchronously destroys the specified topic.
@@ -233,7 +316,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified entity does not exist.
         /// </exception>
-        Task DestroyTopicAsync(IMessagingEntityPath path);
+        public Task DestroyTopicAsync(IMessagingEntityPath path) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryDestroyTopic(path.RejectIf().IsNull(nameof(path)).TargetArgument))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"The specified topic, \"{path}\", does not exist.");
+        });
 
         /// <summary>
         /// Returns a value indicating whether or not the specified queue exists.
@@ -250,7 +343,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean QueueExists(IMessagingEntityPath path);
+        public Boolean QueueExists(IMessagingEntityPath path)
+        {
+            RejectIfDisposed();
+            return QueuePaths.Any(queuePath => queuePath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+        }
 
         /// <summary>
         /// Returns a value indicating whether or not the specified topic exists.
@@ -267,7 +364,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean TopicExists(IMessagingEntityPath path);
+        public Boolean TopicExists(IMessagingEntityPath path) => TopicPaths.Any(topciPath => topciPath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -278,7 +375,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path);
+        public Boolean TryCreateQueue(IMessagingEntityPath path) => TryCreateQueue(path, MessagingEntity.DefaultMessageLockExpirationThreshold);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -293,7 +390,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold) => TryCreateQueue(path, messageLockExpirationThreshold, MessagingEntity.DefaultEnqueueTimeoutThreshold);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -312,7 +409,30 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
+        {
+            if (IsDisposedOrDisposing || path is null || messageLockExpirationThreshold < MessagingEntity.MessageLockExpirationThresholdFloor || enqueueTimeoutThreshold < MessagingEntity.EnqueueTimeoutThresholdFloor)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+
+                var queue = new MessageQueue(Guid.NewGuid(), path, MessagingEntityOperationalState.Ready, MessageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold);
+
+                if (QueueDictionary.TryAdd(path, queue))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -323,7 +443,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path);
+        public Boolean TryCreateTopic(IMessagingEntityPath path) => TryCreateTopic(path, MessagingEntity.DefaultMessageLockExpirationThreshold);
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -338,7 +458,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold) => TryCreateTopic(path, messageLockExpirationThreshold, MessagingEntity.DefaultEnqueueTimeoutThreshold);
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -357,7 +477,30 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold)
+        {
+            if (IsDisposedOrDisposing || path is null || messageLockExpirationThreshold < MessagingEntity.MessageLockExpirationThresholdFloor || enqueueTimeoutThreshold < MessagingEntity.EnqueueTimeoutThresholdFloor)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+
+                var topic = new MessageTopic(Guid.NewGuid(), path, MessagingEntityOperationalState.Ready, MessageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold);
+
+                if (TopicDictionary.TryAdd(path, topic))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Attempts to destroy the specified queue.
@@ -368,7 +511,29 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroyQueue(IMessagingEntityPath path);
+        public Boolean TryDestroyQueue(IMessagingEntityPath path)
+        {
+            if (IsDisposedOrDisposing || path is null)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+
+                if (QueueDictionary.TryRemove(path, out var queue))
+                {
+                    queue?.Dispose();
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Attempts to destroy the specified topic.
@@ -379,62 +544,195 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroyTopic(IMessagingEntityPath path);
-
-        /// <summary>
-        /// Gets the number of active connections to the current <see cref="IMessageTransport" />.
-        /// </summary>
-        Int32 ConnectionCount
+        public Boolean TryDestroyTopic(IMessagingEntityPath path)
         {
-            get;
+            if (IsDisposedOrDisposing || path is null)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+
+                if (TopicDictionary.TryRemove(path, out var topic))
+                {
+                    topic?.Dispose();
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
-        /// Gets a collection of active connections to the current <see cref="IMessageTransport" />.
+        /// Releases all resources consumed by the current <see cref="MessageTransport" />.
         /// </summary>
-        IEnumerable<IMessageTransportConnection> Connections
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing)
         {
-            get;
+            try
+            {
+                if (disposing)
+                {
+                    while (TopicCount > 0 || QueueCount > 0 || ConnectionCount > 0)
+                    {
+                        DestroyAllTopics();
+                        DestroyAllQueues();
+                        DestroyAllConnections();
+                    }
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
         }
+
+        /// <summary>
+        /// Closes and disposes of all connections to the current <see cref="MessageTransport" />.
+        /// </summary>
+        [DebuggerHidden]
+        private void DestroyAllConnections()
+        {
+            var destroyConnectionTasks = new List<Task>();
+
+            while (ConnectionDictionary.Any())
+            {
+                var connectionIdentifier = ConnectionDictionary.Keys.FirstOrDefault();
+
+                if (connectionIdentifier == default)
+                {
+                    continue;
+                }
+                else if (ConnectionDictionary.TryRemove(connectionIdentifier, out var connection))
+                {
+                    destroyConnectionTasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        connection.Dispose();
+                    }));
+                }
+            }
+
+            Task.WaitAll(destroyConnectionTasks.ToArray());
+        }
+
+        /// <summary>
+        /// Removes and disposes of all queues within the current <see cref="MessageTransport" />.
+        /// </summary>
+        [DebuggerHidden]
+        private void DestroyAllQueues()
+        {
+            var destroyQueueTasks = new List<Task>();
+
+            while (QueueDictionary.Any())
+            {
+                var queuePath = QueueDictionary.Keys.First();
+
+                if (queuePath is null)
+                {
+                    continue;
+                }
+                else if (QueueDictionary.TryRemove(queuePath, out var queue))
+                {
+                    destroyQueueTasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        queue.Dispose();
+                    }));
+                }
+            }
+
+            Task.WaitAll(destroyQueueTasks.ToArray());
+        }
+
+        /// <summary>
+        /// Removes and disposes of all topics within the current <see cref="MessageTransport" />.
+        /// </summary>
+        [DebuggerHidden]
+        private void DestroyAllTopics()
+        {
+            var destroyTopicTasks = new List<Task>();
+
+            while (TopicDictionary.Any())
+            {
+                var topicPath = TopicDictionary.Keys.First();
+
+                if (topicPath is null)
+                {
+                    continue;
+                }
+                else if (TopicDictionary.TryRemove(topicPath, out var topic))
+                {
+                    destroyTopicTasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        topic.Dispose();
+                    }));
+                }
+            }
+
+            Task.WaitAll(destroyTopicTasks.ToArray());
+        }
+
+        /// <summary>
+        /// Gets the number of active connections to the current <see cref="MessageTransport" />.
+        /// </summary>
+        public Int32 ConnectionCount => Connections.Count();
+
+        /// <summary>
+        /// Gets a collection of active connections to the current <see cref="MessageTransport" />.
+        /// </summary>
+        public IEnumerable<IMessageTransportConnection> Connections => ConnectionDictionary.Values;
 
         /// <summary>
         /// Gets the format that is used to serialize enqueued message bodies.
         /// </summary>
-        SerializationFormat MessageBodySerializationFormat
+        public SerializationFormat MessageBodySerializationFormat
         {
             get;
         }
 
         /// <summary>
-        /// Gets the number of queues within the current <see cref="IMessageTransport" />.
+        /// Gets the number of queues within the current <see cref="MessageTransport" />.
         /// </summary>
-        Int32 QueueCount
-        {
-            get;
-        }
+        public Int32 QueueCount => QueuePaths.Count();
 
         /// <summary>
-        /// Gets a collection of available queue paths for the current <see cref="IMessageTransport" />.
+        /// Gets a collection of available queue paths for the current <see cref="MessageTransport" />.
         /// </summary>
-        IEnumerable<IMessagingEntityPath> QueuePaths
-        {
-            get;
-        }
+        public IEnumerable<IMessagingEntityPath> QueuePaths => QueueDictionary.Keys;
 
         /// <summary>
-        /// Gets the number of topics within the current <see cref="IMessageTransport" />.
+        /// Gets the number of topics within the current <see cref="MessageTransport" />.
         /// </summary>
-        Int32 TopicCount
-        {
-            get;
-        }
+        public Int32 TopicCount => TopicPaths.Count();
 
         /// <summary>
-        /// Gets a collection of available topic paths for the current <see cref="IMessageTransport" />.
+        /// Gets a collection of available topic paths for the current <see cref="MessageTransport" />.
         /// </summary>
-        IEnumerable<IMessagingEntityPath> TopicPaths
-        {
-            get;
-        }
+        public IEnumerable<IMessagingEntityPath> TopicPaths => TopicDictionary.Keys;
+
+        /// <summary>
+        /// Represents a collection of active connections to the current <see cref="MessageTransport" />, which are keyed by
+        /// identifier.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new ConcurrentDictionary<Guid, IMessageTransportConnection>();
+
+        /// <summary>
+        /// Represents a collection of available queues for the current <see cref="MessageTransport" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageQueue> QueueDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageQueue>();
+
+        /// <summary>
+        /// Represents a collection of available topics for the current <see cref="MessageTransport" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageTopic> TopicDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageTopic>();
     }
 }

@@ -3,6 +3,8 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
@@ -224,7 +226,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task CreateSubscriptionAsync(String subscriptionName) => throw new NotImplementedException();
+        public Task CreateSubscriptionAsync(String subscriptionName) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (SubscriptionQueues.ContainsKey(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))) == false)
+            {
+                var subscriptionQueue = new MessageQueue(Guid.NewGuid(), Path, OperationalState, MessageBodySerializationFormat, MessageLockExpirationThreshold, EnqueueTimeoutThreshold);
+
+                if (SubscriptionQueues.TryAdd(subscriptionName, subscriptionQueue))
+                {
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException($"A subscription with the name \"{subscriptionName}\" already exists.");
+        });
 
         /// <summary>
         /// Asynchronously and non-destructively returns the next available messages from the current <see cref="MessageTopic" />,
@@ -255,7 +272,10 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public Task<IEnumerable<PrimitiveMessage>> DequeueAsync(String subscriptionName, Int32 count) => throw new NotImplementedException();
+        public Task<IEnumerable<PrimitiveMessage>> DequeueAsync(String subscriptionName, Int32 count) => Task.Factory.StartNew(() =>
+        {
+            return Dequeue(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)), count);
+        });
 
         /// <summary>
         /// Asynchronously destroys the specified subscription to the current <see cref="MessageTopic" />.
@@ -278,7 +298,25 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task DestroySubscriptionAsync(String subscriptionName) => throw new NotImplementedException();
+        public Task DestroySubscriptionAsync(String subscriptionName) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (SubscriptionQueues.ContainsKey(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            {
+                if (SubscriptionQueues.TryRemove(subscriptionName, out var subscriptionQueue))
+                {
+                    if (subscriptionQueue.TryDisableEnqueues())
+                    {
+                        subscriptionQueue.Dispose();
+                    }
+
+                    return;
+                }
+            }
+
+            throw new InvalidOperationException($"A subscription with the name \"{subscriptionName}\" does not exist.");
+        });
 
         /// <summary>
         /// Attempts to add the specified message to a list of locked messages.
@@ -414,6 +452,47 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
             message = null;
             return false;
+        }
+
+        /// <summary>
+        /// Releases all resources consumed by the current <see cref="MessageTopic" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    while (SubscriptionCount > 0)
+                    {
+                        var subscriptionNames = SubscriptionQueues.Keys.ToArray();
+                        var subscriptionCount = subscriptionNames.Length;
+                        var disposeQueueTasks = new List<Task>(subscriptionCount);
+
+                        for (var i = 0; i < subscriptionCount; i++)
+                        {
+                            var subscriptionName = subscriptionNames[i];
+
+                            if (SubscriptionQueues.TryRemove(subscriptionName, out var subscriptionQueue))
+                            {
+                                disposeQueueTasks.Add(Task.Factory.StartNew(() => subscriptionQueue.Dispose()));
+                            }
+                        }
+
+                        if (disposeQueueTasks.Any())
+                        {
+                            Task.WaitAll(disposeQueueTasks.ToArray());
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
         }
 
         /// <summary>

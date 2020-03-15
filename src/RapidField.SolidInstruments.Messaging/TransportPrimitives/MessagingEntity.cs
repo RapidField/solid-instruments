@@ -799,23 +799,36 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         private Boolean CurrentStatePermitsEnqueue => OperationalState == MessagingEntityOperationalState.EnqueueOnly || OperationalState == MessagingEntityOperationalState.Ready;
 
         /// <summary>
-        /// Represents the default format that is used to serialize enqueued message bodies.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const SerializationFormat DefaultMessageBodySerializationFormat = PrimitiveMessage.DefaultBodySerializationFormat;
-
-        /// <summary>
         /// Represents the default length of time to wait for a message to be enqueued before raising an exception.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan DefaultEnqueueTimeoutThreshold = TimeSpan.FromSeconds(11);
+        internal static readonly TimeSpan DefaultEnqueueTimeoutThreshold = TimeSpan.FromSeconds(11);
 
         /// <summary>
         /// Represents the default length of time that a locked message is held before abandoning the associated token and making
         /// the message available for processing.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan DefaultMessageLockExpirationThreshold = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan DefaultMessageLockExpirationThreshold = TimeSpan.FromMinutes(3);
+
+        /// <summary>
+        /// Represents the minimum permissible length of time to wait for a message to be enqueued before raising an exception.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly TimeSpan EnqueueTimeoutThresholdFloor = TimeSpan.FromSeconds(2);
+
+        /// <summary>
+        /// Represents the minimum permissible length of time that a locked message is held before abandoning the associated token
+        /// and making the message available for processing.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly TimeSpan MessageLockExpirationThresholdFloor = TimeSpan.FromSeconds(8);
+
+        /// <summary>
+        /// Represents the default format that is used to serialize enqueued message bodies.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const SerializationFormat DefaultMessageBodySerializationFormat = PrimitiveMessage.DefaultBodySerializationFormat;
 
         /// <summary>
         /// Represents the length of time that <see cref="EnqueueAsync(PrimitiveMessage)" /> waits between attempts when the entity
@@ -823,18 +836,5 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly TimeSpan EnqueueDelayDuration = TimeSpan.FromMilliseconds(3);
-
-        /// <summary>
-        /// Represents the minimum permissible length of time to wait for a message to be enqueued before raising an exception.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan EnqueueTimeoutThresholdFloor = TimeSpan.FromSeconds(2);
-
-        /// <summary>
-        /// Represents the minimum permissible length of time that a locked message is held before abandoning the associated token
-        /// and making the message available for processing.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly TimeSpan MessageLockExpirationThresholdFloor = TimeSpan.FromSeconds(8);
     }
 }

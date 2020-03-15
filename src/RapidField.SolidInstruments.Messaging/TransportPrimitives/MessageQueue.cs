@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
@@ -314,6 +315,36 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Releases all resources consumed by the current <see cref="MessageQueue" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    var disposalAttemptCount = 0;
+
+                    while (MessageCount > 0 && disposalAttemptCount < MaximumDisposalAttemptCount)
+                    {
+                        Thread.Sleep(EnqueueTimeoutThreshold);
+                        disposalAttemptCount++;
+                    }
+
+                    LockedMessages.Clear();
+                    Messages.Clear();
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
         /// Returns a collection of exclusive processing locks for messages contained by the current <see cref="MessageQueue" />.
         /// </summary>
         /// <returns>
@@ -333,6 +364,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets the messaging entity type of the current <see cref="MessageQueue" />.
         /// </summary>
         public override MessagingEntityType EntityType => MessagingEntityType.Queue;
+
+        /// <summary>
+        /// Represents the maximum number of times that <see cref="MessageQueue" /> instances will attempt to wait for natural
+        /// clearance before discarding outstanding messages during disposal.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 MaximumDisposalAttemptCount = 3;
 
         /// <summary>
         /// Represents the underlying first-in first-out collection that contains messages that are locked for processing.

@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents the state of an <see cref="IMessageTransportConnection" />.
     /// </summary>
-    internal enum MessageTransportConnectionState : Int32
+    public enum MessageTransportConnectionState : Int32
     {
         /// <summary>
         /// The connection's state is not specified.
