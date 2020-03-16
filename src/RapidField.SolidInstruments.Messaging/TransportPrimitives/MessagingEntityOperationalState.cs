@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents the operational state of an <see cref="IMessagingEntity" />.
     /// </summary>
-    internal enum MessagingEntityOperationalState : Int32
+    public enum MessagingEntityOperationalState : Int32
     {
         /// <summary>
         /// The entity's operational state is not specified.

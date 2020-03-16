@@ -11,7 +11,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents a message queue.
     /// </summary>
-    internal interface IMessageQueue : IMessagingEntity
+    public interface IMessageQueue : IMessagingEntity
     {
         /// <summary>
         /// Asynchronously and non-destructively returns the next available messages from the current <see cref="IMessageQueue" />,

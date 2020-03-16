@@ -185,9 +185,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(queueExistsTask =>
+        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(async queueExistsTask =>
         {
-            return queueExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateQueueAsync(queuePath.ToString());
+            if (queueExistsTask.Result == false)
+            {
+                await ManagementClient.CreateQueueAsync(queuePath.ToString()).ConfigureAwait(false);
+            }
         });
 
         /// <summary>
@@ -203,12 +206,15 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(ensureTopicExistenceTask =>
+        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(async ensureTopicExistenceTask =>
         {
-            return ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(subscriptionExistsTask =>
+            await ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(async subscriptionExistsTask =>
             {
-                return subscriptionExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName);
-            });
+                if (subscriptionExistsTask.Result == false)
+                {
+                    await ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
         });
 
         /// <summary>
@@ -221,9 +227,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(topicExistsTask =>
+        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(async topicExistsTask =>
         {
-            return topicExistsTask.Result ? Task.CompletedTask : ManagementClient.CreateTopicAsync(topicPath.ToString());
+            if (topicExistsTask.Result == false)
+            {
+                await ManagementClient.CreateTopicAsync(topicPath.ToString()).ConfigureAwait(false);
+            }
         });
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents a message topic.
     /// </summary>
-    internal interface IMessageTopic : IMessagingEntity
+    public interface IMessageTopic : IMessagingEntity
     {
         /// <summary>
         /// Asynchronously creates a new subscription to the current <see cref="IMessageTopic" />.
@@ -90,6 +90,28 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The object is disposed.
         /// </exception>
         Task DestroySubscriptionAsync(String subscriptionName);
+
+        /// <summary>
+        /// Attempts to create a new subscription to the current <see cref="IMessageTopic" />.
+        /// </summary>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully created, otherwise <see langword="false" />.
+        /// </returns>
+        Boolean TryCreateSubscription(String subscriptionName);
+
+        /// <summary>
+        /// Attempts to destroy the specified subscription to the current <see cref="IMessageTopic" />.
+        /// </summary>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
+        /// </returns>
+        Boolean TryDestroySubscription(String subscriptionName);
 
         /// <summary>
         /// Gets the number of subscriptions to the current <see cref="IMessageTopic" />.

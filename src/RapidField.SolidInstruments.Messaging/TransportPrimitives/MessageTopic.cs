@@ -4,7 +4,6 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
@@ -230,14 +229,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (SubscriptionQueues.ContainsKey(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))) == false)
+            if (TryCreateSubscription(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
             {
-                var subscriptionQueue = new MessageQueue(Guid.NewGuid(), Path, OperationalState, MessageBodySerializationFormat, MessageLockExpirationThreshold, EnqueueTimeoutThreshold);
-
-                if (SubscriptionQueues.TryAdd(subscriptionName, subscriptionQueue))
-                {
-                    return;
-                }
+                return;
             }
 
             throw new InvalidOperationException($"A subscription with the name \"{subscriptionName}\" already exists.");
@@ -302,7 +296,58 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (SubscriptionQueues.ContainsKey(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            if (TryDestroySubscription(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"A subscription with the name \"{subscriptionName}\" does not exist.");
+        });
+
+        /// <summary>
+        /// Attempts to create a new subscription to the current <see cref="MessageTopic" />.
+        /// </summary>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully created, otherwise <see langword="false" />.
+        /// </returns>
+        public Boolean TryCreateSubscription(String subscriptionName)
+        {
+            if (IsDisposedOrDisposing || subscriptionName.IsNullOrEmpty())
+            {
+                return false;
+            }
+            else if (SubscriptionQueues.ContainsKey(subscriptionName) == false)
+            {
+                var subscriptionQueue = new MessageQueue(Guid.NewGuid(), Path, OperationalState, MessageBodySerializationFormat, MessageLockExpirationThreshold, EnqueueTimeoutThreshold);
+
+                if (SubscriptionQueues.TryAdd(subscriptionName, subscriptionQueue))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to destroy the specified subscription to the current <see cref="MessageTopic" />.
+        /// </summary>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
+        /// </returns>
+        public Boolean TryDestroySubscription(String subscriptionName)
+        {
+            if (IsDisposedOrDisposing || subscriptionName.IsNullOrEmpty())
+            {
+                return false;
+            }
+            else if (SubscriptionQueues.ContainsKey(subscriptionName))
             {
                 if (SubscriptionQueues.TryRemove(subscriptionName, out var subscriptionQueue))
                 {
@@ -311,12 +356,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                         subscriptionQueue.Dispose();
                     }
 
-                    return;
+                    return true;
                 }
             }
 
-            throw new InvalidOperationException($"A subscription with the name \"{subscriptionName}\" does not exist.");
-        });
+            return false;
+        }
 
         /// <summary>
         /// Attempts to add the specified message to a list of locked messages.

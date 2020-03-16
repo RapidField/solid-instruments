@@ -180,6 +180,43 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         });
 
         /// <summary>
+        /// Asynchronously creates a new subscription.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="subscriptionName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="subscriptionName" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified subscription already exists.
+        /// </exception>
+        public Task CreateSubscriptionAsync(IMessagingEntityPath path, String subscriptionName) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryCreateSubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"The specified subscription, \"{subscriptionName}\", already exists");
+        });
+
+        /// <summary>
         /// Asynchronously creates a new topic.
         /// </summary>
         /// <param name="path">
@@ -265,7 +302,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return;
             }
 
-            throw new InvalidOperationException($"The specified topic, \"{path}\", already exists");
+            throw new InvalidOperationException($"Failed to create topic. The specified topic, \"{path}\", already exists");
         });
 
         /// <summary>
@@ -284,7 +321,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The object is disposed.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// The specified entity does not exist.
+        /// The specified queue does not exist.
         /// </exception>
         public Task DestroyQueueAsync(IMessagingEntityPath path) => Task.Factory.StartNew(() =>
         {
@@ -295,7 +332,44 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return;
             }
 
-            throw new InvalidOperationException($"The specified queue, \"{path}\", does not exist.");
+            throw new InvalidOperationException($"Failed to destroy queue. The specified queue, \"{path}\", does not exist.");
+        });
+
+        /// <summary>
+        /// Asynchronously destroys the specified subscription.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="subscriptionName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="subscriptionName" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified subscription does not exist.
+        /// </exception>
+        public Task DestroySubscriptionAsync(IMessagingEntityPath path, String subscriptionName) => Task.Factory.StartNew(() =>
+        {
+            RejectIfDisposed();
+
+            if (TryDestroySubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            {
+                return;
+            }
+
+            throw new InvalidOperationException($"Failed to destroy subscription. The specified subscription, \"{subscriptionName}\", does not exist.");
         });
 
         /// <summary>
@@ -314,7 +388,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The object is disposed.
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        /// The specified entity does not exist.
+        /// The specified topic does not exist.
         /// </exception>
         public Task DestroyTopicAsync(IMessagingEntityPath path) => Task.Factory.StartNew(() =>
         {
@@ -325,7 +399,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return;
             }
 
-            throw new InvalidOperationException($"The specified topic, \"{path}\", does not exist.");
+            throw new InvalidOperationException($"Failed to destroy topic. The specified topic, \"{path}\", does not exist.");
         });
 
         /// <summary>
@@ -350,6 +424,189 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Asynchronously requests the specified number of messages from the specified queue.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <param name="count">
+        /// The maximum number of messages to read from the queue.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the dequeued messages, if any.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="count" /> is less than zero.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified queue does not exist.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count)
+        {
+            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
+            {
+                return queue.DequeueAsync(count);
+            }
+
+            throw new InvalidOperationException($"Failed to receive message(s). The specified queue, \"{path}\", does not exist.");
+        }
+
+        /// <summary>
+        /// Asynchronously requests the specified number of messages from the specified topic.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <param name="count">
+        /// The maximum number of messages to read from the topic.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the dequeued messages, if any.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="subscriptionName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="subscriptionName" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="count" /> is less than zero.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified topic does not exist.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count)
+        {
+            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            {
+                return topic.DequeueAsync(subscriptionName, count);
+            }
+
+            throw new InvalidOperationException($"Failed to receive message(s). The specified topic, \"{path}\", does not exist.");
+        }
+
+        /// <summary>
+        /// Asynchronously sends the specified message to the specified queue.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <param name="message">
+        /// The message to send.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified queue does not exist.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        public Task SendToQueueAsync(IMessagingEntityPath path, PrimitiveMessage message)
+        {
+            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
+            {
+                return queue.EnqueueAsync(message);
+            }
+
+            throw new InvalidOperationException($"Failed to send message. The specified queue, \"{path}\", does not exist.");
+        }
+
+        /// <summary>
+        /// Asynchronously sends the specified message to the specified topic.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <param name="message">
+        /// The message to send.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="message" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified topic does not exist.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        public Task SendToTopicAsync(IMessagingEntityPath path, PrimitiveMessage message)
+        {
+            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            {
+                return topic.EnqueueAsync(message);
+            }
+
+            throw new InvalidOperationException($"Failed to send message. The specified topic, \"{path}\", does not exist.");
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether or not the specified subscription exists.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription exists, otherwise <see langword="false" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="subscriptionName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="subscriptionName" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Boolean SubscriptionExists(IMessagingEntityPath path, String subscriptionName)
+        {
+            RejectIfDisposed();
+
+            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            {
+                return topic.SubscriptionNames.Contains(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)));
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Returns a value indicating whether or not the specified topic exists.
         /// </summary>
         /// <param name="path">
@@ -364,7 +621,11 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Boolean TopicExists(IMessagingEntityPath path) => TopicPaths.Any(topciPath => topciPath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+        public Boolean TopicExists(IMessagingEntityPath path)
+        {
+            RejectIfDisposed();
+            return TopicPaths.Any(topciPath => topciPath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+        }
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -428,6 +689,48 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 if (QueueDictionary.TryAdd(path, queue))
                 {
                     return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to create a new subscription.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully created, otherwise <see langword="false" />.
+        /// </returns>
+        public Boolean TryCreateSubscription(IMessagingEntityPath path, String subscriptionName)
+        {
+            if (IsDisposedOrDisposing || path is null || subscriptionName is null)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+                else if (TopicExists(path) == false)
+                {
+                    if (TryCreateTopic(path) == false)
+                    {
+                        return false;
+                    }
+                }
+
+                if (TopicDictionary.TryGetValue(path, out var topic))
+                {
+                    return topic.TryCreateSubscription(subscriptionName);
                 }
             }
 
@@ -529,6 +832,41 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 {
                     queue?.Dispose();
                     return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to destroy the specified subscription.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
+        /// </returns>
+        public Boolean TryDestroySubscription(IMessagingEntityPath path, String subscriptionName)
+        {
+            if (IsDisposedOrDisposing || path is null || subscriptionName is null)
+            {
+                return false;
+            }
+
+            using (var controlToken = StateControl.Enter())
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return false;
+                }
+
+                if (TopicDictionary.TryGetValue(path, out var topic))
+                {
+                    return topic.TryDestroySubscription(subscriptionName);
                 }
             }
 

@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
     /// <summary>
     /// Represents a messaging entity.
     /// </summary>
-    internal interface IMessagingEntity : IAsyncDisposable, IDisposable
+    public interface IMessagingEntity : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Asynchronously notifies the current <see cref="IMessagingEntity" /> that a locked message was not processed and can be
