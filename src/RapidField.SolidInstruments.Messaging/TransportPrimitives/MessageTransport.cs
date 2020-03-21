@@ -4,12 +4,14 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
@@ -25,16 +27,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageTransport" /> class.
         /// </summary>
-        [DebuggerHidden]
-        internal MessageTransport()
-            : this(PrimitiveMessage.DefaultBodySerializationFormat)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
-        /// </summary>
         /// <param name="messageBodySerializationFormat">
         /// The format that is used to serialize enqueued message bodies.
         /// </param>
@@ -46,6 +38,16 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             : base()
         {
             MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private MessageTransport()
+            : this(PrimitiveMessage.DefaultBodySerializationFormat)
+        {
+            return;
         }
 
         /// <summary>
@@ -933,6 +935,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Initializes a new in-memory <see cref="IMessageTransport" /> instance.
+        /// </summary>
+        /// <returns>
+        /// A new in-memory <see cref="IMessageTransport" /> instance.
+        /// </returns>
+        [DebuggerHidden]
+        private static IMessageTransport InitializeInstance() => new MessageTransport();
+
+        /// <summary>
         /// Closes and disposes of all connections to the current <see cref="MessageTransport" />.
         /// </summary>
         [DebuggerHidden]
@@ -1053,6 +1064,24 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets a collection of available topic paths for the current <see cref="MessageTransport" />.
         /// </summary>
         public IEnumerable<IMessagingEntityPath> TopicPaths => TopicDictionary.Keys;
+
+        /// <summary>
+        /// Gets an in-memory <see cref="IMessageTransport" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static IMessageTransport Instance => LazyInstance.Value;
+
+        /// <summary>
+        /// Represents a finalizer for static members of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(LazyInstance.Dispose);
+
+        /// <summary>
+        /// Represents a lazily-initialized in-memory <see cref="IMessageTransport" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Lazy<IMessageTransport> LazyInstance = new Lazy<IMessageTransport>(InitializeInstance, LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents a collection of active connections to the current <see cref="MessageTransport" />, which are keyed by

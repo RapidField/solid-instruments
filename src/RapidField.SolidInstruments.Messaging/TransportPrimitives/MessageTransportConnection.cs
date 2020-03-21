@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
@@ -35,6 +37,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             Handlers = new List<Handler>();
             Identifier = Guid.NewGuid();
+            LazyPollTimer = new Lazy<Timer>(InitializePollTimer, LazyThreadSafetyMode.ExecutionAndPublication);
             State = MessageTransportConnectionState.Open;
             TransportReference = transport.RejectIf().IsNull(nameof(transport)).TargetArgument;
         }
@@ -42,15 +45,27 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Closes the current <see cref="MessageTransportConnection" /> as an idempotent operation.
         /// </summary>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while closing the transport connection.
+        /// </exception>
         public void Close()
         {
             if (State == MessageTransportConnectionState.Open)
             {
                 State = MessageTransportConnectionState.Closed;
 
-                if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                try
                 {
-                    TransportReference.CloseConnection(this);
+                    if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                    {
+                        TransportReference.CloseConnection(this);
+                    }
+
+                    LazyPollTimer.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    throw new MessagingException("An exception was raised while closing a transport connection. See inner exception.", exception);
                 }
             }
         }
@@ -81,6 +96,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             if (Transport.QueueExists(queuePath))
             {
                 Handlers.Add(new Handler(queuePath, MessagingEntityType.Queue, null, handleMessageAction));
+                BeginPolling();
                 return;
             }
 
@@ -119,6 +135,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             if (Transport.SubscriptionExists(topicPath, subscriptionName))
             {
                 Handlers.Add(new Handler(topicPath, MessagingEntityType.Topic, subscriptionName, handleMessageAction));
+                BeginPolling();
                 return;
             }
 
@@ -131,6 +148,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
         /// </param>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while closing the transport connection.
+        /// </exception>
         protected override void Dispose(Boolean disposing)
         {
             try
@@ -143,6 +163,300 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             finally
             {
                 base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
+        /// Ensures (as an idempotent operation) that the current <see cref="MessageTransportConnection" /> is actively polling the
+        /// transport.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The transport connection is in an invalid state.
+        /// </exception>
+        [DebuggerHidden]
+        private void BeginPolling()
+        {
+            if (PollTimer is null)
+            {
+                throw new InvalidOperationException("The transport connection is in an invalid state.");
+            }
+        }
+
+        /// <summary>
+        /// Initializes a timer that is used to poll <see cref="Transport" /> for receive operations.
+        /// </summary>
+        /// <returns>
+        /// A timer that is used to poll <see cref="Transport" /> for receive operations.
+        /// </returns>
+        [DebuggerHidden]
+        private Timer InitializePollTimer()
+        {
+            var timerCallback = new TimerCallback((state) => Poll(state as ICollection<Handler>));
+            return new Timer(timerCallback, Handlers, TimeSpan.Zero, TimeSpan.FromSeconds(PollingIntervalInMilliseconds));
+        }
+
+        /// <summary>
+        /// Polls <see cref="Transport" /> and performs message handling operations against received messages, if any.
+        /// </summary>
+        /// <param name="handlers">
+        /// A collection of actions that is performed upon message receipt from specific entities.
+        /// </param>
+        /// <exception cref="MessagingException">
+        /// One or more message handling operations failed.
+        /// </exception>
+        [DebuggerHidden]
+        private void Poll(IEnumerable<Handler> handlers)
+        {
+            if (handlers.Any())
+            {
+                try
+                {
+                    var pollQueuesTask = Task.Factory.StartNew(async () => await PollQueuesAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Queue)).ConfigureAwait(false));
+                    var pollTopicsTask = Task.Factory.StartNew(async () => await PollTopicsAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Topic)).ConfigureAwait(false));
+                    Task.WaitAll(pollQueuesTask, pollTopicsTask);
+                }
+                catch (AggregateException exception)
+                {
+                    throw new MessagingException("One or more exceptions were raised while performing message handling operations. See inner exception(s).", exception);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously polls the specified queue and performs messaging handling operations against received messages, if any.
+        /// </summary>
+        /// <param name="queuePath">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <param name="handleMessageActions">
+        /// A collection of actions that are performed upon message receipt from the specified queue.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// An exception was raised while performing messaging handling operations.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified queue does not exist.
+        /// </exception>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The transport connection is closed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task PollQueueAsync(IMessagingEntityPath queuePath, IEnumerable<Action<PrimitiveMessage>> handleMessageActions)
+        {
+            var messageBatch = await Transport.ReceiveFromQueueAsync(queuePath, MessageReceiptBatchSize).ConfigureAwait(false);
+
+            if (messageBatch.Any())
+            {
+                var handleMessageTasks = new List<Task>();
+
+                foreach (var message in messageBatch)
+                {
+                    foreach (var handleMessageAction in handleMessageActions)
+                    {
+                        handleMessageTasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            handleMessageAction(message);
+                        }));
+                    }
+                }
+
+                await Task.WhenAll(handleMessageTasks.ToArray()).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously polls available queues and performs message handling operations against received messages, if any.
+        /// </summary>
+        /// <param name="queueHandlers">
+        /// A collection of actions that are performed upon message receipt from specific queues.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// An exception was raised while performing messaging handling operations.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// One or more of the specified queues does not exist.
+        /// </exception>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The transport connection is closed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task PollQueuesAsync(IEnumerable<Handler> queueHandlers)
+        {
+            if (queueHandlers.Any())
+            {
+                var handlerGroups = queueHandlers.GroupBy(handler => handler.Path);
+                var pollTasks = new List<Task>();
+
+                foreach (var handlerGroup in handlerGroups)
+                {
+                    pollTasks.Add(Task.Factory.StartNew(async () =>
+                    {
+                        await PollQueueAsync(handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)).ConfigureAwait(false);
+                    }));
+                }
+
+                await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously polls the specified subscription and performs messaging handling operations against received messages, if
+        /// any.
+        /// </summary>
+        /// <param name="topicPath">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <param name="handleMessageActions">
+        /// A collection of actions that are performed upon message receipt from the specified subscription.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// An exception was raised while performing messaging handling operations.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified subscription does not exist.
+        /// </exception>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The transport connection is closed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task PollSubscriptionAsync(IMessagingEntityPath topicPath, String subscriptionName, IEnumerable<Action<PrimitiveMessage>> handleMessageActions)
+        {
+            var messageBatch = await Transport.ReceiveFromTopicAsync(topicPath, subscriptionName, MessageReceiptBatchSize).ConfigureAwait(false);
+
+            if (messageBatch.Any())
+            {
+                var handleMessageTasks = new List<Task>();
+
+                foreach (var message in messageBatch)
+                {
+                    foreach (var handleMessageAction in handleMessageActions)
+                    {
+                        handleMessageTasks.Add(Task.Factory.StartNew(() =>
+                        {
+                            handleMessageAction(message);
+                        }));
+                    }
+                }
+
+                await Task.WhenAll(handleMessageTasks.ToArray()).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously polls the specified topic and performs messaging handling operations against received messages, if any.
+        /// </summary>
+        /// <param name="topicPath">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <param name="subscriptionHandlers">
+        /// A collection of actions that are performed upon message receipt from specific subscriptions.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// An exception was raised while performing messaging handling operations.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The specified topic does not exist.
+        /// </exception>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The transport connection is closed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task PollTopicAsync(IMessagingEntityPath topicPath, IEnumerable<Handler> subscriptionHandlers)
+        {
+            var handlerGroups = subscriptionHandlers.GroupBy(handler => handler.SubscriptionName);
+            var pollTasks = new List<Task>();
+
+            foreach (var handlerGroup in handlerGroups)
+            {
+                pollTasks.Add(Task.Factory.StartNew(async () =>
+                {
+                    await PollSubscriptionAsync(topicPath, handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)).ConfigureAwait(false);
+                }));
+            }
+
+            await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Asynchronously polls available topics and performs message handling operations against received messages, if any.
+        /// </summary>
+        /// <param name="subscriptionHandlers">
+        /// A collection of actions that are performed upon message receipt from specific topics.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="AggregateException">
+        /// An exception was raised while performing messaging handling operations.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// One or more of the specified topics does not exist.
+        /// </exception>
+        /// <exception cref="MessageTransportConnectionClosedException">
+        /// The transport connection is closed.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task PollTopicsAsync(IEnumerable<Handler> subscriptionHandlers)
+        {
+            if (subscriptionHandlers.Any())
+            {
+                var handlerGroups = subscriptionHandlers.GroupBy(handler => handler.Path);
+                var pollTasks = new List<Task>();
+
+                foreach (var handlerGroup in handlerGroups)
+                {
+                    pollTasks.Add(Task.Factory.StartNew(async () =>
+                    {
+                        await PollTopicAsync(handlerGroup.Key, handlerGroup).ConfigureAwait(false);
+                    }));
+                }
+
+                await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
             }
         }
 
@@ -172,10 +486,34 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public IMessageTransport Transport => State == MessageTransportConnectionState.Open ? TransportReference : throw new MessageTransportConnectionClosedException($"Connection {Identifier.ToSerializedString()} is closed.");
 
         /// <summary>
+        /// Gets a timer that is used to poll <see cref="Transport" /> for receive operations.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Timer PollTimer => LazyPollTimer.Value;
+
+        /// <summary>
+        /// Represents the maximum number of messages to dequeue from each entity during a single polling permutation.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 MessageReceiptBatchSize = 34;
+
+        /// <summary>
+        /// Represents the interval, in milliseconds, at which <see cref="Transport" /> is polled for receive operations.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 PollingIntervalInMilliseconds = 233;
+
+        /// <summary>
         /// Represents a collection of actions that is performed upon message receipt from specific entities.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ICollection<Handler> Handlers;
+
+        /// <summary>
+        /// Represents a lazily-initialized timer that is used to poll <see cref="Transport" /> for receive operations.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Lazy<Timer> LazyPollTimer;
 
         /// <summary>
         /// Represents the associated <see cref="IMessageTransport" />.

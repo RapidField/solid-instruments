@@ -15,6 +15,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Closes the current <see cref="IMessageTransportConnection" /> as an idempotent operation.
         /// </summary>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while closing the transport connection.
+        /// </exception>
         void Close();
 
         /// <summary>
