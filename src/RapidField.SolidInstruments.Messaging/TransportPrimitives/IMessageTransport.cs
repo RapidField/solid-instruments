@@ -27,6 +27,112 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         void CloseConnection(IMessageTransportConnection connection);
 
         /// <summary>
+        /// Asynchronously notifies the specified queue that a locked message was not processed and can be made available for
+        /// processing by other consumers.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was not processed.
+        /// </param>
+        /// <param name="path">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" /> -or- <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message -or- <paramref name="path" /> does not
+        /// reference an existing queue.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        Task ConveyFailureToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+
+        /// <summary>
+        /// Asynchronously notifies the specified subscription that a locked message was not processed and can be made available for
+        /// processing by other consumers.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was not processed.
+        /// </param>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" /> -or- <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message -or- <paramref name="path" /> does not
+        /// reference an existing topic.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        Task ConveyFailureToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+
+        /// <summary>
+        /// Asynchronously notifies the specified queue that a locked message was processed successfully and can be destroyed
+        /// permanently.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was processed successfully.
+        /// </param>
+        /// <param name="path">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" /> -or- <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message -or- <paramref name="path" /> does not
+        /// reference an existing queue.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Task ConveySuccessToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+
+        /// <summary>
+        /// Asynchronously notifies the specified subscription that a locked message was processed successfully and can be destroyed
+        /// permanently.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was processed successfully.
+        /// </param>
+        /// <param name="path">
+        /// A unique textual path that identifies the subscription topic.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" /> -or- <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message -or- <paramref name="path" /> does not
+        /// reference an existing topic.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        Task ConveySuccessToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+
+        /// <summary>
         /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current <see cref="IMessageTransport" />.
         /// </summary>
         /// <returns>

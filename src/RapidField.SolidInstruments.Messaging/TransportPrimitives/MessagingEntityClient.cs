@@ -43,6 +43,61 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Asynchronously notifies the associated <see cref="IMessagingEntity" /> that a locked message was not processed and can
+        /// be made available for processing by other consumers.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was not processed.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The operation timed out.
+        /// </exception>
+        public Task ConveyFailureAsync(MessageLockToken lockToken) => EntityType switch
+        {
+            MessagingEntityType.Queue => Connection.Transport.ConveyFailureToQueueAsync(lockToken, Path),
+            MessagingEntityType.Topic => Connection.Transport.ConveyFailureToSubscriptionAsync(lockToken, Path),
+            _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+        };
+
+        /// <summary>
+        /// Asynchronously notifies the associated <see cref="IMessagingEntity" /> that a locked message was processed successfully
+        /// and can be destroyed permanently.
+        /// </summary>
+        /// <param name="lockToken">
+        /// A lock token corresponding to a message that was processed successfully.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="lockToken" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <paramref name="lockToken" /> does not reference an existing locked message.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task ConveySuccessAsync(MessageLockToken lockToken) => EntityType switch
+        {
+            MessagingEntityType.Queue => Connection.Transport.ConveySuccessToQueueAsync(lockToken, Path),
+            MessagingEntityType.Topic => Connection.Transport.ConveySuccessToSubscriptionAsync(lockToken, Path),
+            _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+        };
+
+        /// <summary>
         /// Registers the specified message handler for the associated <see cref="IMessagingEntity" />.
         /// </summary>
         /// <param name="handleMessageAction">
