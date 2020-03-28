@@ -28,4 +28,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.InMemory\RapidField.SolidInstruments.Messaging.InMemory.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Messages\" />
+      <Folder Include="MessageListeners\" />
+    </ItemGroup>
 </Project>
