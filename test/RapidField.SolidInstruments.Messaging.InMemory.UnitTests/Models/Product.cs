@@ -78,7 +78,5 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models
             get;
             set;
         }
-
-        internal static Product Widget => new Product(Guid.Parse(""))
     }
 }
