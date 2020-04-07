@@ -5,7 +5,6 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Collections.UnitTests
 {
