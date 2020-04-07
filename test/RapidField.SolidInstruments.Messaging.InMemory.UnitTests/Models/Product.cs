@@ -34,10 +34,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models
         /// The name of the product.
         /// </param>
         public Product(Guid identifier, String name)
-            : base(identifier)
+            : this(identifier, name, null)
         {
-            Name = name;
-            Price = null;
+            return;
         }
 
         /// <summary>
@@ -50,9 +49,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models
         /// The name of the product.
         /// </param>
         /// <param name="price">
-        /// The price of the product.
+        /// The price of the product, or <see langword="null" /> if the price is unknown.
         /// </param>
-        public Product(Guid identifier, String name, Decimal price)
+        public Product(Guid identifier, String name, Decimal? price)
             : base(identifier)
         {
             Name = name;

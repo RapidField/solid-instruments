@@ -5,9 +5,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Messaging.TransportPrimitives;
 using RapidField.SolidInstruments.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
 {
@@ -26,6 +23,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
                 {
                     using (var target = new InMemoryClientFactory(connection))
                     {
+                        // Act.
                     }
                 }
             }
