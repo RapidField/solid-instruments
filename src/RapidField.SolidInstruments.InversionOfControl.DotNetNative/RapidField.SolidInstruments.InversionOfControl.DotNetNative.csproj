@@ -37,9 +37,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" Version="$(BuildVersion)" />
