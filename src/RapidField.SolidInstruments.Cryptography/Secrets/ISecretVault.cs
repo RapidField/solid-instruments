@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, Byte[] secret);
+        public void AddOrUpdate(String name, Byte[] secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, String secret);
+        public void AddOrUpdate(String name, String secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, Guid secret);
+        public void AddOrUpdate(String name, Guid secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -99,7 +99,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, Double secret);
+        public void AddOrUpdate(String name, Double secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -120,7 +120,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, SymmetricKey secret);
+        public void AddOrUpdate(String name, SymmetricKey secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -141,7 +141,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, CascadingSymmetricKey secret);
+        public void AddOrUpdate(String name, CascadingSymmetricKey secret);
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="ISecretVault" />, or updates it if a secret
@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(String name, X509Certificate2 secret);
+        public void AddOrUpdate(String name, X509Certificate2 secret);
 
         /// <summary>
         /// Removes and safely disposes of all secrets that are stored by the current <see cref="ISecretVault" />.
@@ -170,7 +170,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Clear();
+        public void Clear();
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<IReadOnlyPinnedBuffer<Byte>> readAction);
+        public Task ReadAsync(String name, Action<IReadOnlyPinnedBuffer<Byte>> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -232,7 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<String> readAction);
+        public Task ReadAsync(String name, Action<String> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -263,7 +263,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<Guid> readAction);
+        public Task ReadAsync(String name, Action<Guid> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -294,7 +294,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<Double> readAction);
+        public Task ReadAsync(String name, Action<Double> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -325,7 +325,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<SymmetricKey> readAction);
+        public Task ReadAsync(String name, Action<SymmetricKey> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -356,7 +356,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<CascadingSymmetricKey> readAction);
+        public Task ReadAsync(String name, Action<CascadingSymmetricKey> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -387,7 +387,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        Task ReadAsync(String name, Action<X509Certificate2> readAction);
+        public Task ReadAsync(String name, Action<X509Certificate2> readAction);
 
         /// <summary>
         /// Attempts to remove a secret with the specified name.
@@ -407,7 +407,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean TryRemove(String name);
+        public Boolean TryRemove(String name);
 
         /// <summary>
         /// Gets the number of secrets that are stored by the current <see cref="ISecretVault" />.
@@ -415,7 +415,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Int32 Count
+        public Int32 Count
         {
             get;
         }
@@ -426,7 +426,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IEnumerable<String> Names
+        public IEnumerable<String> Names
         {
             get;
         }

@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task CreateSubscriptionAsync(String subscriptionName);
+        public Task CreateSubscriptionAsync(String subscriptionName);
 
         /// <summary>
         /// Asynchronously and non-destructively returns the next available messages from the current <see cref="IMessageTopic" />,
@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task<IEnumerable<PrimitiveMessage>> DequeueAsync(String subscriptionName, Int32 count);
+        public Task<IEnumerable<PrimitiveMessage>> DequeueAsync(String subscriptionName, Int32 count);
 
         /// <summary>
         /// Asynchronously destroys the specified subscription to the current <see cref="IMessageTopic" />.
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task DestroySubscriptionAsync(String subscriptionName);
+        public Task DestroySubscriptionAsync(String subscriptionName);
 
         /// <summary>
         /// Attempts to create a new subscription to the current <see cref="IMessageTopic" />.
@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the subscription was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateSubscription(String subscriptionName);
+        public Boolean TryCreateSubscription(String subscriptionName);
 
         /// <summary>
         /// Attempts to destroy the specified subscription to the current <see cref="IMessageTopic" />.
@@ -111,12 +111,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroySubscription(String subscriptionName);
+        public Boolean TryDestroySubscription(String subscriptionName);
 
         /// <summary>
         /// Gets the number of subscriptions to the current <see cref="IMessageTopic" />.
         /// </summary>
-        Int32 SubscriptionCount
+        public Int32 SubscriptionCount
         {
             get;
         }
@@ -124,7 +124,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the unique names of the subscriptions to the current <see cref="IMessageTopic" />.
         /// </summary>
-        IEnumerable<String> SubscriptionNames
+        public IEnumerable<String> SubscriptionNames
         {
             get;
         }

@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the type of the message that the current <see cref="IMessageListener" /> processes.
         /// </summary>
-        Type MessageType
+        public Type MessageType
         {
             get;
         }

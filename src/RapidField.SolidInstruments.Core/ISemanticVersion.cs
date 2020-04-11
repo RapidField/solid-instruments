@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets the build metadata, <see langword="null" /> if there is no metadata.
         /// </summary>
-        String BuildMetadata
+        public String BuildMetadata
         {
             get;
         }
@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> includes build metadata.
         /// </summary>
-        Boolean HasBuildMetadata
+        public Boolean HasBuildMetadata
         {
             get;
         }
@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> represents a new major version (eg.
         /// x.0.0).
         /// </summary>
-        Boolean IsMajor
+        public Boolean IsMajor
         {
             get;
         }
@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> represents a new minor version (eg.
         /// x.x.0).
         /// </summary>
-        Boolean IsMinor
+        public Boolean IsMinor
         {
             get;
         }
@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> represents a patch version (
         /// <see cref="PatchVersion" /> is greater than zero).
         /// </summary>
-        Boolean IsPatch
+        public Boolean IsPatch
         {
             get;
         }
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> represents a pre-release version.
         /// </summary>
-        Boolean IsPreRelease
+        public Boolean IsPreRelease
         {
             get;
         }
@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="ISemanticVersion" /> represents a stable version.
         /// </summary>
-        Boolean IsStable
+        public Boolean IsStable
         {
             get;
         }
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets the major version number, which is incremented for compatibility-breaking feature changes.
         /// </summary>
-        UInt64 MajorVersion
+        public UInt64 MajorVersion
         {
             get;
         }
@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets the minor version number, which is incremented for compatibility-retaining feature changes.
         /// </summary>
-        UInt64 MinorVersion
+        public UInt64 MinorVersion
         {
             get;
         }
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets the patch version number, which is incremented for compatibility-retaining bug fix changes.
         /// </summary>
-        UInt64 PatchVersion
+        public UInt64 PatchVersion
         {
             get;
         }
@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets the pre-release label, or <see langword="null" /> if there is no label.
         /// </summary>
-        String PreReleaseLabel
+        public String PreReleaseLabel
         {
             get;
         }

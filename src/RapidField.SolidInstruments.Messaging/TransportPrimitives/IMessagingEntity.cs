@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task ConveyFailureAsync(MessageLockToken lockToken);
+        public Task ConveyFailureAsync(MessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously notifies the current <see cref="IMessagingEntity" /> that a locked message was processed successfully and
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task ConveySuccessAsync(MessageLockToken lockToken);
+        public Task ConveySuccessAsync(MessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously enqueues the specified message.
@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task EnqueueAsync(PrimitiveMessage message);
+        public Task EnqueueAsync(PrimitiveMessage message);
 
         /// <summary>
         /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
         /// </returns>
-        Boolean TryDisableDequeues();
+        public Boolean TryDisableDequeues();
 
         /// <summary>
         /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
         /// </returns>
-        Boolean TryDisableEnqueues();
+        public Boolean TryDisableEnqueues();
 
         /// <summary>
         /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
@@ -106,7 +106,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
         /// </returns>
-        Boolean TryPause();
+        public Boolean TryPause();
 
         /// <summary>
         /// Attempts to set the operational state of the current <see cref="IMessagingEntity" /> to
@@ -115,12 +115,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// True if the operational state was successfully set, otherwise false.
         /// </returns>
-        Boolean TryResume();
+        public Boolean TryResume();
 
         /// <summary>
         /// Gets the maximum length of time to wait for a message to be enqueued before raising an exception.
         /// </summary>
-        TimeSpan EnqueueTimeoutThreshold
+        public TimeSpan EnqueueTimeoutThreshold
         {
             get;
         }
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the messaging entity type of the current <see cref="IMessagingEntity" />.
         /// </summary>
-        MessagingEntityType EntityType
+        public MessagingEntityType EntityType
         {
             get;
         }
@@ -136,7 +136,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a unique identifier for the current <see cref="IMessagingEntity" />.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
         }
@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="IMessagingEntity" /> is empty.
         /// </summary>
-        Boolean IsEmpty
+        public Boolean IsEmpty
         {
             get;
         }
@@ -155,7 +155,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IEnumerable<MessageLockToken> LockTokens
+        public IEnumerable<MessageLockToken> LockTokens
         {
             get;
         }
@@ -163,7 +163,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the format that is used to serialize enqueued message bodies.
         /// </summary>
-        SerializationFormat MessageBodySerializationFormat
+        public SerializationFormat MessageBodySerializationFormat
         {
             get;
         }
@@ -171,7 +171,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of messages in the current <see cref="IMessagingEntity" />.
         /// </summary>
-        Int32 MessageCount
+        public Int32 MessageCount
         {
             get;
         }
@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets the length of time that a locked message is held before abandoning the associated token and making the message
         /// available for processing.
         /// </summary>
-        TimeSpan MessageLockExpirationThreshold
+        public TimeSpan MessageLockExpirationThreshold
         {
             get;
         }
@@ -188,7 +188,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the operational state of the current <see cref="IMessagingEntity" />.
         /// </summary>
-        MessagingEntityOperationalState OperationalState
+        public MessagingEntityOperationalState OperationalState
         {
             get;
         }
@@ -196,7 +196,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a unique textual path that identifies the current <see cref="IMessagingEntity" />.
         /// </summary>
-        IMessagingEntityPath Path
+        public IMessagingEntityPath Path
         {
             get;
         }

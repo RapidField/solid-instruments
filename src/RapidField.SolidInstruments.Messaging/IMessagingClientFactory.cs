@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
         /// or contains more than three elements.
         /// </exception>
-        IMessagingEntityPath GetQueuePath<TMessage>(IEnumerable<String> pathLabels)
+        public IMessagingEntityPath GetQueuePath<TMessage>(IEnumerable<String> pathLabels)
              where TMessage : class;
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetQueueReceiver<TMessage>()
+        public TReceiver GetQueueReceiver<TMessage>()
             where TMessage : class;
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetQueueReceiver<TMessage>(IEnumerable<String> pathLabels)
+        public TReceiver GetQueueReceiver<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetQueueSender<TMessage>()
+        public TSender GetQueueSender<TMessage>()
             where TMessage : class;
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetQueueSender<TMessage>(IEnumerable<String> pathLabels)
+        public TSender GetQueueSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="pathLabels" /> contains one or more null or empty labels and/or labels with non-alphanumeric characters,
         /// or contains more than three elements.
         /// </exception>
-        IMessagingEntityPath GetTopicPath<TMessage>(IEnumerable<String> pathLabels)
+        public IMessagingEntityPath GetTopicPath<TMessage>(IEnumerable<String> pathLabels)
              where TMessage : class;
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier)
+        public TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier)
             where TMessage : class;
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathLabels)
+        public TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathLabels)
             where TMessage : class;
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetTopicSender<TMessage>()
+        public TSender GetTopicSender<TMessage>()
             where TMessage : class;
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TSender GetTopicSender<TMessage>(IEnumerable<String> pathLabels)
+        public TSender GetTopicSender<TMessage>(IEnumerable<String> pathLabels)
             where TMessage : class;
     }
 }

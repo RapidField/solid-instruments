@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task<TResponseMessage> RequestAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
+        public Task<TResponseMessage> RequestAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
     }

@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        void AddBlock(TBlock block);
+        public void AddBlock(TBlock block);
 
         /// <summary>
         /// Calculates hash values for the specified ordered data block collection and adds them to the tree.
@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        void AddBlockRange(IEnumerable<TBlock> blocks);
+        public void AddBlockRange(IEnumerable<TBlock> blocks);
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Gets the number of leaf nodes in the current <see cref="IHashTree" />.
         /// </summary>
-        Int32 LeafCount
+        public Int32 LeafCount
         {
             get;
         }
@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Gets the root node for the current <see cref="IHashTree" />.
         /// </summary>
-        ITreeNode<Byte[]> RootNode
+        public ITreeNode<Byte[]> RootNode
         {
             get;
         }

@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while configuring the container.
         /// </exception>
-        IDependencyContainer Container
+        public IDependencyContainer Container
         {
             get;
         }
@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while configuring the container.
         /// </exception>
-        IServiceProvider Provider
+        public IServiceProvider Provider
         {
             get;
         }

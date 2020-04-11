@@ -29,6 +29,6 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while injecting the service descriptors.
         /// </exception>
-        void Inject(TConfigurator configurator);
+        public void Inject(TConfigurator configurator);
     }
 }

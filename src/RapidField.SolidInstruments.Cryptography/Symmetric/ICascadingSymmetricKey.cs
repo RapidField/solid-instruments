@@ -19,12 +19,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A binary representation of the current <see cref="ICascadingSymmetricKey" />.
         /// </returns>
-        ISecureBuffer ToBuffer();
+        public ISecureBuffer ToBuffer();
 
         /// <summary>
         /// Gets the number of layers of encryption that a resulting transform will apply.
         /// </summary>
-        Int32 Depth
+        public Int32 Depth
         {
             get;
         }
@@ -32,7 +32,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <summary>
         /// Gets the ordered array of keys comprising the cascading key.
         /// </summary>
-        IEnumerable<ISymmetricKey> Keys
+        public IEnumerable<ISymmetricKey> Keys
         {
             get;
         }

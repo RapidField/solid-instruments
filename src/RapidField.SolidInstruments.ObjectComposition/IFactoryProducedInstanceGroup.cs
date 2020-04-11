@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Lazy<T> GetLazy<T>()
+        public Lazy<T> GetLazy<T>()
             where T : class;
     }
 }

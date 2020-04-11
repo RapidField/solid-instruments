@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="IndexOutOfRangeException">
         /// <paramref name="index" /> is less than zero.
         /// </exception>
-        T this[Int32 index]
+        public T this[Int32 index]
         {
             get;
         }
@@ -40,6 +40,6 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Clears the terms in the current <see cref="IInfiniteSequence" />, leaving in place the seed terms.
         /// </summary>
-        void Reset();
+        public void Reset();
     }
 }

@@ -28,12 +28,12 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="MessageTransmissionException">
         /// An exception was raised while attempting to transmit the heartbeat message.
         /// </exception>
-        Task TransmitHeartbeatMessageAsync(IMessageTransmittingFacade messageTransmittingFacade);
+        public Task TransmitHeartbeatMessageAsync(IMessageTransmittingFacade messageTransmittingFacade);
 
         /// <summary>
         /// Gets the messaging entity type that is used when transmitting the message.
         /// </summary>
-        MessagingEntityType EntityType
+        public MessagingEntityType EntityType
         {
             get;
         }
@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <summary>
         /// Gets the regular interval, in seconds, at which the message is transmitted.
         /// </summary>
-        Int32 IntervalInSeconds
+        public Int32 IntervalInSeconds
         {
             get;
         }
@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <summary>
         /// Gets the label, if any, that is associated with the message.
         /// </summary>
-        String Label
+        public String Label
         {
             get;
         }
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <summary>
         /// Gets the type of the associated heartbeat message.
         /// </summary>
-        Type MessageType
+        public Type MessageType
         {
             get;
         }

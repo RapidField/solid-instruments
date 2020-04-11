@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Core
         /// Interrogate this property to determine if the instrument is immediately available to perform an operation that reserves
         /// state control. This is useful for cases in which another resource may be utilized to perform the same operation.
         /// </remarks>
-        Boolean IsBusy
+        public Boolean IsBusy
         {
             get;
         }

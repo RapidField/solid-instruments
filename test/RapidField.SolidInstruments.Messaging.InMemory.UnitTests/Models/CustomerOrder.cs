@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,39 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models
             Customer = null;
             PlacementTimeStamp = default;
             Products = new List<Product>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomerOrder" /> class.
+        /// </summary>
+        /// <param name="identifier">
+        /// A value that uniquely identifies the model. The default value is equal to the default instance of <see cref="Guid" />.
+        /// </param>
+        /// <param name="name">
+        /// The customer that placed the order.
+        /// </param>
+        public CustomerOrder(Guid identifier, Customer customer)
+            : this(identifier, customer, TimeStamp.Current)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomerOrder" /> class.
+        /// </summary>
+        /// <param name="identifier">
+        /// A value that uniquely identifies the model. The default value is equal to the default instance of <see cref="Guid" />.
+        /// </param>
+        /// <param name="name">
+        /// The customer that placed the order.
+        /// </param>
+        /// <param name="placementTimeStamp">
+        /// The date and time when the order was placed.
+        /// </param>
+        public CustomerOrder(Guid identifier, Customer customer, DateTime placementTimeStamp)
+            : this(identifier, customer, placementTimeStamp, null)
+        {
+            return;
         }
 
         /// <summary>

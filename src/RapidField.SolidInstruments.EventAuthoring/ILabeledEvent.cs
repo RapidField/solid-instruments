@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// Gets a collection of textual labels that provide categorical and/or contextual information about the current
         /// <see cref="ILabeledEvent" />.
         /// </summary>
-        ICollection<String> Labels
+        public ICollection<String> Labels
         {
             get;
         }

@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the unique textual identifier for the current <see cref="IMessagingFacade" />.
         /// </summary>
-        String Identifier
+        public String Identifier
         {
             get;
         }

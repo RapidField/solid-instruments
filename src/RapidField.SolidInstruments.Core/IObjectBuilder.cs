@@ -24,6 +24,6 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised during finalization of the builder.
         /// </exception>
-        TResult ToResult();
+        public TResult ToResult();
     }
 }

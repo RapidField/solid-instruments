@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IDependencyScope CreateChildScope();
+        public IDependencyScope CreateChildScope();
 
         /// <summary>
         /// Requests an object of specified type from the associated container for the current <see cref="IDependencyScope" />.
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Object Resolve(Type type);
+        public Object Resolve(Type type);
 
         /// <summary>
         /// Requests an object of specified type from the associated container for the current <see cref="IDependencyScope" />.
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        T Resolve<T>()
+        public T Resolve<T>()
             where T : class;
     }
 }

@@ -42,6 +42,6 @@ namespace RapidField.SolidInstruments.Mathematics.Data
         /// <exception cref="InterpolationException">
         /// An exception was raised while attempting to interpolate a y-axis value for <paramref name="xAxisValue" />.
         /// </exception>
-        TYAxis GetYAxisValue(TXAxis xAxisValue, InterpolationMode interpolationMode);
+        public TYAxis GetYAxisValue(TXAxis xAxisValue, InterpolationMode interpolationMode);
     }
 }

@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets or sets a unique identifier that is assigned to related messages.
         /// </summary>
-        Guid CorrelationIdentifier
+        public Guid CorrelationIdentifier
         {
             get;
             set;
@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets or sets a unique identifier for the message.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
             set;
@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets or sets instructions and contextual information relating to processing for the current <see cref="IMessageBase" />.
         /// </summary>
-        MessageProcessingInformation ProcessingInformation
+        public MessageProcessingInformation ProcessingInformation
         {
             get;
             set;

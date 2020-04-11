@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <summary>
         /// Gets the constant difference between the terms in the sequence.
         /// </summary>
-        Double CommonDifference
+        public Double CommonDifference
         {
             get;
         }

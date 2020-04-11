@@ -15,6 +15,6 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// An <see cref="IEvent" /> representing information about the current object.
         /// </returns>
-        IEvent ComposeEvent();
+        public IEvent ComposeEvent();
     }
 }

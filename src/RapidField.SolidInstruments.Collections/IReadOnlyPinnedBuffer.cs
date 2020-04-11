@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="IndexOutOfRangeException">
         /// The specified index is out of range.
         /// </exception>
-        T this[Int32 index]
+        public T this[Int32 index]
         {
             get;
         }
@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        ReadOnlySpan<T> ReadOnlySpan
+        public ReadOnlySpan<T> ReadOnlySpan
         {
             get;
         }
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets a value indicating whether or not the buffer is empty.
         /// </summary>
-        Boolean IsEmpty
+        public Boolean IsEmpty
         {
             get;
         }
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the number of elements comprising the buffer.
         /// </summary>
-        Int32 Length
+        public Int32 Length
         {
             get;
         }
@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the length of the buffer, in bytes.
         /// </summary>
-        Int32 LengthInBytes
+        public Int32 LengthInBytes
         {
             get;
         }

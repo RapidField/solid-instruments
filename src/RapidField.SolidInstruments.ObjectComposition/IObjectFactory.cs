@@ -33,13 +33,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectProductionException">
         /// An exception was raised during object production.
         /// </exception>
-        TProduct Produce<TProduct>()
+        public TProduct Produce<TProduct>()
             where TProduct : class, ProductTBase;
 
         /// <summary>
         /// Gets the base type from which all produced types derive.
         /// </summary>
-        Type ProductBaseType
+        public Type ProductBaseType
         {
             get;
         }
@@ -71,7 +71,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectProductionException">
         /// An exception was raised during object production.
         /// </exception>
-        Object Produce(Type type);
+        public Object Produce(Type type);
 
         /// <summary>
         /// Gets the types that can be produced by the current <see cref="IObjectFactory{TProductBase}" />.
@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IEnumerable<Type> SupportedProductTypes
+        public IEnumerable<Type> SupportedProductTypes
         {
             get;
         }

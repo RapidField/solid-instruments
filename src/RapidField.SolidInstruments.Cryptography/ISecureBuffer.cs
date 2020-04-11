@@ -25,12 +25,12 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Access(Action<PinnedBuffer> action);
+        public void Access(Action<PinnedBuffer> action);
 
         /// <summary>
         /// Gets the length of the buffer, in bytes.
         /// </summary>
-        Int32 LengthInBytes
+        public Int32 LengthInBytes
         {
             get;
         }

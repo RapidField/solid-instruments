@@ -18,12 +18,12 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ServiceExectuionException">
         /// An exception was raised during execution of the service.
         /// </exception>
-        void Execute();
+        public void Execute();
 
         /// <summary>
         /// Gets the name of the service.
         /// </summary>
-        String ServiceName
+        public String ServiceName
         {
             get;
         }

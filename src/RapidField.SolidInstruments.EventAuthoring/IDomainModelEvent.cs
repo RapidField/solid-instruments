@@ -2,31 +2,31 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using System;
+using RapidField.SolidInstruments.Core.Domain;
 
 namespace RapidField.SolidInstruments.EventAuthoring
 {
     /// <summary>
-    /// Represents information about an error event.
+    /// Represents information about an event related to an object that models a domain construct.
     /// </summary>
-    public interface IErrorEvent : IEvent
+    public interface IDomainModelEvent<TModel> : IDomainEvent
+        where TModel : class, IDomainModel
     {
         /// <summary>
-        /// Gets or sets a name or value that uniquely identifies the application in which the associated error occurred.
+        /// Gets a classification that describes the effect of a the current <see cref="IDomainModelEvent{TModel}" /> upon
+        /// <see cref="Model" />.
         /// </summary>
-        public String ApplicationIdentity
+        public DomainModelEventClassification Classification
         {
             get;
-            set;
         }
 
         /// <summary>
-        /// Gets or sets textual diagnostic information about the associated error.
+        /// Gets the resulting state of the associated domain model.
         /// </summary>
-        public String DiagnosticDetails
+        public TModel Model
         {
             get;
-            set;
         }
     }
 }

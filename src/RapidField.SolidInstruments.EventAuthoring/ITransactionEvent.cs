@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets the outcome of the current <see cref="ITransactionEvent" />.
         /// </summary>
-        TransactionEventOutcome Outcome
+        public TransactionEventOutcome Outcome
         {
             get;
             set;

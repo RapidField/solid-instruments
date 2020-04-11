@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="StringArgumentPatternException">
         /// The specified value is invalid.
         /// </exception>
-        String LabelOne
+        public String LabelOne
         {
             get;
             set;
@@ -32,7 +32,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="StringArgumentPatternException">
         /// The specified value is invalid.
         /// </exception>
-        String LabelThree
+        public String LabelThree
         {
             get;
             set;
@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="StringArgumentPatternException">
         /// The specified value is invalid.
         /// </exception>
-        String LabelTwo
+        public String LabelTwo
         {
             get;
             set;
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="StringArgumentPatternException">
         /// The specified value is invalid.
         /// </exception>
-        String MessageType
+        public String MessageType
         {
             get;
             set;
@@ -76,7 +76,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="StringArgumentPatternException">
         /// The specified value is invalid.
         /// </exception>
-        String Prefix
+        public String Prefix
         {
             get;
             set;

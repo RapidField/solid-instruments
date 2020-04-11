@@ -17,12 +17,12 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// An array of bytes representing the current <see cref="IEvent" />.
         /// </returns>
-        Byte[] ToByteArray();
+        public Byte[] ToByteArray();
 
         /// <summary>
         /// Gets or sets the category of the event.
         /// </summary>
-        EventCategory Category
+        public EventCategory Category
         {
             get;
             set;
@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a textual description of the event.
         /// </summary>
-        String Description
+        public String Description
         {
             get;
             set;
@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a <see cref="DateTime" /> that indicates when the event occurred.
         /// </summary>
-        DateTime TimeStamp
+        public DateTime TimeStamp
         {
             get;
             set;
@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets the verbosity level of the event.
         /// </summary>
-        EventVerbosity Verbosity
+        public EventVerbosity Verbosity
         {
             get;
             set;

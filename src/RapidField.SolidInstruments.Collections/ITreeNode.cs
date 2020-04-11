@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="InvalidOperationException">
         /// The state of the node or the associated tree was changed during the destroy operation.
         /// </exception>
-        void Destroy();
+        public void Destroy();
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Gets the child elements of the node, or an empty collection if the current <see cref="ITreeNode{T}" /> is a terminal
         /// node.
         /// </summary>
-        IEnumerable<ITreeNode<T>> Children
+        public IEnumerable<ITreeNode<T>> Children
         {
             get;
         }
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Children" /> is an empty collection.
         /// </remarks>
-        Boolean IsLeaf
+        public Boolean IsLeaf
         {
             get;
         }
@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Parent" /> is a null reference.
         /// </remarks>
-        Boolean IsRoot
+        public Boolean IsRoot
         {
             get;
         }
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Gets the parent element of the node, or <see langword="null" /> if the current <see cref="ITreeNode{T}" /> is a root
         /// node.
         /// </summary>
-        ITreeNode<T> Parent
+        public ITreeNode<T> Parent
         {
             get;
         }
@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets or sets the value of the current node.
         /// </summary>
-        T Value
+        public T Value
         {
             get;
             set;
@@ -96,7 +96,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the number of connections from the tree's root node to the current <see cref="ITreeNode" />.
         /// </summary>
-        Int32 Depth
+        public Int32 Depth
         {
             get;
         }
@@ -104,7 +104,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the number of connections on the longest path between the current <see cref="ITreeNode" /> and a leaf node.
         /// </summary>
-        Int32 Height
+        public Int32 Height
         {
             get;
         }

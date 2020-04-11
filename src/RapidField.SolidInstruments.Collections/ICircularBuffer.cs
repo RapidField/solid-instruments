@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="IndexOutOfRangeException">
         /// The specified index is out of range.
         /// </exception>
-        T this[Int32 index]
+        public T this[Int32 index]
         {
             get;
         }
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="InvalidOperationException">
         /// The buffer is empty.
         /// </exception>
-        T Read();
+        public T Read();
 
         /// <summary>
         /// Writes an element at the tail of the current <see cref="ICircularBuffer{T}" />.
@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <param name="element">
         /// The element to write to the buffer.
         /// </param>
-        void Write(T element);
+        public void Write(T element);
 
         /// <summary>
         /// Writes an element at the tail of the current <see cref="ICircularBuffer{T}" />.
@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="InvalidOperationException">
         /// <paramref name="permitOverwrite" /> is <see langword="false" /> and the write operation would have caused overwrite.
         /// </exception>
-        void Write(T element, Boolean permitOverwrite);
+        public void Write(T element, Boolean permitOverwrite);
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the maximum number of elements that the current <see cref="ICircularBuffer" /> can accommodate.
         /// </summary>
-        Int32 Capacity
+        public Int32 Capacity
         {
             get;
         }
@@ -85,7 +85,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the number of elements contained by the current <see cref="ICircularBuffer" />.
         /// </summary>
-        Int32 Length
+        public Int32 Length
         {
             get;
         }

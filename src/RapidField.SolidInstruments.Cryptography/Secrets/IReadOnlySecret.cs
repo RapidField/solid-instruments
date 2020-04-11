@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        void Read(Action<TValue> readAction);
+        public void Read(Action<TValue> readAction);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        void Read(Action<IReadOnlyPinnedBuffer<Byte>> readAction);
+        public void Read(Action<IReadOnlyPinnedBuffer<Byte>> readAction);
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="IReadOnlySecret{TValue}" /> has a value.
@@ -76,7 +76,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <summary>
         /// Gets a textual name that uniquely identifies the current <see cref="IReadOnlySecret{TValue}" />.
         /// </summary>
-        String Name
+        public String Name
         {
             get;
         }
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <summary>
         /// Gets the type of the secret value.
         /// </summary>
-        Type ValueType
+        public Type ValueType
         {
             get;
         }

@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets or sets a value that uniquely identifies the current <see cref="IModel{TIdentifier}" />.
         /// </summary>
-        TIdentifier Identifier
+        public TIdentifier Identifier
         {
             get;
         }

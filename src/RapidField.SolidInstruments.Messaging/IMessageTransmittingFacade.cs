@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task TransmitToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
+        public Task TransmitToQueueAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
             where TMessage : class, IMessageBase;
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task TransmitToQueueAsync<TMessage>(TMessage message)
+        public Task TransmitToQueueAsync<TMessage>(TMessage message)
             where TMessage : class, IMessageBase;
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task TransmitToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
+        public Task TransmitToTopicAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels)
             where TMessage : class, IMessageBase;
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task TransmitToTopicAsync<TMessage>(TMessage message)
+        public Task TransmitToTopicAsync<TMessage>(TMessage message)
             where TMessage : class, IMessageBase;
     }
 }

@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        T Deserialize(Byte[] buffer);
+        public T Deserialize(Byte[] buffer);
 
         /// <summary>
         /// Converts the specified object to a serialized buffer.
@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <exception cref="ArgumentNullException">
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
-        Byte[] Serialize(T target);
+        public Byte[] Serialize(T target);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <summary>
         /// Gets the format to use for serialization and deserialization.
         /// </summary>
-        SerializationFormat Format
+        public SerializationFormat Format
         {
             get;
         }

@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler)
+        public void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler)
             where TMessage : class, IMessage;
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathLabels)
+        public void RegisterQueueMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathLabels)
             where TMessage : class, IMessage;
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
+        public void RegisterRequestMessageHandler<TRequestMessage, TResponseMessage>(Func<TRequestMessage, TResponseMessage> requestMessageHandler)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
+        public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler)
             where TMessage : class, IMessage;
 
         /// <summary>
@@ -172,14 +172,14 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathLabels)
+        public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathLabels)
             where TMessage : class, IMessage;
 
         /// <summary>
         /// Gets the collection of message types for which the current <see cref="IMessageListeningFacade" /> has one or more
         /// registered handlers.
         /// </summary>
-        IEnumerable<Type> ListenedMessageTypes
+        public IEnumerable<Type> ListenedMessageTypes
         {
             get;
         }

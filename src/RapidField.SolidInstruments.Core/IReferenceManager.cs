@@ -23,13 +23,13 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddObject<T>(T reference)
+        public void AddObject<T>(T reference)
             where T : class;
 
         /// <summary>
         /// Gets the number of objects that are managed by the current <see cref="IReferenceManager" />.
         /// </summary>
-        Int32 ObjectCount
+        public Int32 ObjectCount
         {
             get;
         }

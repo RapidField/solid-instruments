@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ArgumentNullException">
         /// <paramref name="connection" /> is <see langword="null" />.
         /// </exception>
-        void CloseConnection(IMessageTransportConnection connection);
+        public void CloseConnection(IMessageTransportConnection connection);
 
         /// <summary>
         /// Asynchronously notifies the specified queue that a locked message was not processed and can be made available for
@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task ConveyFailureToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+        public Task ConveyFailureToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously notifies the specified subscription that a locked message was not processed and can be made available for
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task ConveyFailureToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+        public Task ConveyFailureToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously notifies the specified queue that a locked message was processed successfully and can be destroyed
@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task ConveySuccessToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+        public Task ConveySuccessToQueueAsync(MessageLockToken lockToken, IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously notifies the specified subscription that a locked message was processed successfully and can be destroyed
@@ -130,7 +130,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task ConveySuccessToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
+        public Task ConveySuccessToSubscriptionAsync(MessageLockToken lockToken, IMessagingEntityPath path);
 
         /// <summary>
         /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current <see cref="IMessageTransport" />.
@@ -141,7 +141,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IMessageTransportConnection CreateConnection();
+        public IMessageTransportConnection CreateConnection();
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -161,7 +161,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path);
+        public Task CreateQueueAsync(IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -188,7 +188,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
 
         /// <summary>
         /// Asynchronously creates a new queue.
@@ -220,7 +220,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Task CreateQueueAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
 
         /// <summary>
         /// Asynchronously creates a new subscription.
@@ -247,7 +247,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified subscription already exists.
         /// </exception>
-        Task CreateSubscriptionAsync(IMessagingEntityPath path, String subscriptionName);
+        public Task CreateSubscriptionAsync(IMessagingEntityPath path, String subscriptionName);
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -267,7 +267,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path);
+        public Task CreateTopicAsync(IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -294,7 +294,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
 
         /// <summary>
         /// Asynchronously creates a new topic.
@@ -326,7 +326,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// An entity with the specified path already exists.
         /// </exception>
-        Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Task CreateTopicAsync(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
 
         /// <summary>
         /// Asynchronously destroys the specified queue.
@@ -346,7 +346,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified entity does not exist.
         /// </exception>
-        Task DestroyQueueAsync(IMessagingEntityPath path);
+        public Task DestroyQueueAsync(IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously destroys the specified subscription.
@@ -373,7 +373,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified subscription does not exist.
         /// </exception>
-        Task DestroySubscriptionAsync(IMessagingEntityPath path, String subscriptionName);
+        public Task DestroySubscriptionAsync(IMessagingEntityPath path, String subscriptionName);
 
         /// <summary>
         /// Asynchronously destroys the specified topic.
@@ -393,7 +393,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="InvalidOperationException">
         /// The specified entity does not exist.
         /// </exception>
-        Task DestroyTopicAsync(IMessagingEntityPath path);
+        public Task DestroyTopicAsync(IMessagingEntityPath path);
 
         /// <summary>
         /// Returns a value indicating whether or not the specified queue exists.
@@ -410,7 +410,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean QueueExists(IMessagingEntityPath path);
+        public Boolean QueueExists(IMessagingEntityPath path);
 
         /// <summary>
         /// Asynchronously requests the specified number of messages from the specified queue.
@@ -439,7 +439,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count);
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count);
 
         /// <summary>
         /// Asynchronously requests the specified number of messages from the specified topic.
@@ -475,7 +475,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count);
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count);
 
         /// <summary>
         /// Asynchronously sends the specified message to the specified queue.
@@ -501,7 +501,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task SendToQueueAsync(IMessagingEntityPath path, PrimitiveMessage message);
+        public Task SendToQueueAsync(IMessagingEntityPath path, PrimitiveMessage message);
 
         /// <summary>
         /// Asynchronously sends the specified message to the specified topic.
@@ -527,7 +527,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task SendToTopicAsync(IMessagingEntityPath path, PrimitiveMessage message);
+        public Task SendToTopicAsync(IMessagingEntityPath path, PrimitiveMessage message);
 
         /// <summary>
         /// Returns a value indicating whether or not the specified subscription exists.
@@ -551,7 +551,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean SubscriptionExists(IMessagingEntityPath path, String subscriptionName);
+        public Boolean SubscriptionExists(IMessagingEntityPath path, String subscriptionName);
 
         /// <summary>
         /// Returns a value indicating whether or not the specified topic exists.
@@ -568,7 +568,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean TopicExists(IMessagingEntityPath path);
+        public Boolean TopicExists(IMessagingEntityPath path);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -579,7 +579,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path);
+        public Boolean TryCreateQueue(IMessagingEntityPath path);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -594,7 +594,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
 
         /// <summary>
         /// Attempts to create a new queue.
@@ -613,7 +613,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Boolean TryCreateQueue(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
 
         /// <summary>
         /// Attempts to create a new subscription.
@@ -627,7 +627,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the subscription was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateSubscription(IMessagingEntityPath path, String subscriptionName);
+        public Boolean TryCreateSubscription(IMessagingEntityPath path, String subscriptionName);
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -638,7 +638,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path);
+        public Boolean TryCreateTopic(IMessagingEntityPath path);
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -653,7 +653,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
+        public Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold);
 
         /// <summary>
         /// Attempts to create a new topic.
@@ -672,7 +672,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully created, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
+        public Boolean TryCreateTopic(IMessagingEntityPath path, TimeSpan messageLockExpirationThreshold, TimeSpan enqueueTimeoutThreshold);
 
         /// <summary>
         /// Attempts to destroy the specified queue.
@@ -683,7 +683,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the queue was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroyQueue(IMessagingEntityPath path);
+        public Boolean TryDestroyQueue(IMessagingEntityPath path);
 
         /// <summary>
         /// Attempts to destroy the specified subscription.
@@ -697,7 +697,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroySubscription(IMessagingEntityPath path, String subscriptionName);
+        public Boolean TryDestroySubscription(IMessagingEntityPath path, String subscriptionName);
 
         /// <summary>
         /// Attempts to destroy the specified topic.
@@ -708,12 +708,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the topic was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryDestroyTopic(IMessagingEntityPath path);
+        public Boolean TryDestroyTopic(IMessagingEntityPath path);
 
         /// <summary>
         /// Gets the number of active connections to the current <see cref="IMessageTransport" />.
         /// </summary>
-        Int32 ConnectionCount
+        public Int32 ConnectionCount
         {
             get;
         }
@@ -721,7 +721,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a collection of active connections to the current <see cref="IMessageTransport" />.
         /// </summary>
-        IEnumerable<IMessageTransportConnection> Connections
+        public IEnumerable<IMessageTransportConnection> Connections
         {
             get;
         }
@@ -729,7 +729,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the format that is used to serialize enqueued message bodies.
         /// </summary>
-        SerializationFormat MessageBodySerializationFormat
+        public SerializationFormat MessageBodySerializationFormat
         {
             get;
         }
@@ -737,7 +737,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of queues within the current <see cref="IMessageTransport" />.
         /// </summary>
-        Int32 QueueCount
+        public Int32 QueueCount
         {
             get;
         }
@@ -745,7 +745,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a collection of available queue paths for the current <see cref="IMessageTransport" />.
         /// </summary>
-        IEnumerable<IMessagingEntityPath> QueuePaths
+        public IEnumerable<IMessagingEntityPath> QueuePaths
         {
             get;
         }
@@ -753,7 +753,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of topics within the current <see cref="IMessageTransport" />.
         /// </summary>
-        Int32 TopicCount
+        public Int32 TopicCount
         {
             get;
         }
@@ -761,7 +761,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets a collection of available topic paths for the current <see cref="IMessageTransport" />.
         /// </summary>
-        IEnumerable<IMessagingEntityPath> TopicPaths
+        public IEnumerable<IMessagingEntityPath> TopicPaths
         {
             get;
         }

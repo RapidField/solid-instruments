@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        void AddQueueListener<TMessage>()
+        public void AddQueueListener<TMessage>()
             where TMessage : class, IMessage;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TRequestMessage" /> was already added.
         /// </exception>
-        void AddRequestListener<TRequestMessage, TResponseMessage>()
+        public void AddRequestListener<TRequestMessage, TResponseMessage>()
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
@@ -50,14 +50,14 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <exception cref="InvalidOperationException">
         /// <typeparamref name="TMessage" /> was already added.
         /// </exception>
-        void AddTopicListener<TMessage>()
+        public void AddTopicListener<TMessage>()
             where TMessage : class, IMessage;
 
         /// <summary>
         /// Gets a collection of message types that are supported by the associated
         /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
         /// </summary>
-        IEnumerable<Type> SupportedMessageTypes
+        public IEnumerable<Type> SupportedMessageTypes
         {
             get;
         }

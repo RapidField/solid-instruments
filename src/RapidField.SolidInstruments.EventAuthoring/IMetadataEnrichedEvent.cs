@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets a dictionary of metadata for the current <see cref="IMetadataEnrichedEvent" />.
         /// </summary>
-        IDictionary<String, String> Metadata
+        public IDictionary<String, String> Metadata
         {
             get;
         }

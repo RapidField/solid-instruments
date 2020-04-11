@@ -30,6 +30,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The connection is closed.
         /// </exception>
-        Task SendAsync(PrimitiveMessage message);
+        public Task SendAsync(PrimitiveMessage message);
     }
 }

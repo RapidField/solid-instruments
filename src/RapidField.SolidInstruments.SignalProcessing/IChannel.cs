@@ -32,7 +32,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        T this[Int32 index]
+        public T this[Int32 index]
         {
             get;
         }
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<IDiscreteUnitOfOutput<T>> ReadAsync(Int32 index);
+        public Task<IDiscreteUnitOfOutput<T>> ReadAsync(Int32 index);
 
         /// <summary>
         /// Asynchronously reads a sample from the channel's output stream at the specified index.
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength);
+        public Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength);
 
         /// <summary>
         /// Asynchronously reads a sample from the channel's output stream at the specified index.
@@ -109,7 +109,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="ChannelReadException">
         /// An exception was raised while performing the read operation, or the channel was unavailable.
         /// </exception>
-        Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength, Int32 lookAheadLength);
+        public Task<ISignalSample<T>> ReadAsync(Int32 index, Int32 lookBehindLength, Int32 lookAheadLength);
 
         /// <summary>
         /// Returns a discrete unit that represents a silent or empty signal.
@@ -117,7 +117,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// A discrete unit that represents a silent or empty signal.
         /// </returns>
-        T ReadSilence();
+        public T ReadSilence();
 
         /// <summary>
         /// Returns a discrete unit that represents a silent or empty signal.
@@ -132,12 +132,12 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <see cref="InvalidReadBehavior" /> is equal to <see cref="InvalidReadBehavior.RaiseException" /> and
         /// <paramref name="index" /> is less than zero.
         /// </exception>
-        IDiscreteUnitOfOutput<T> ReadSilence(Int32 index);
+        public IDiscreteUnitOfOutput<T> ReadSilence(Int32 index);
 
         /// <summary>
         /// Gets the behavior of the channel when an out-of-range read request is made.
         /// </summary>
-        InvalidReadBehavior InvalidReadBehavior
+        public InvalidReadBehavior InvalidReadBehavior
         {
             get;
         }
@@ -156,12 +156,12 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="InvalidOperationException">
         /// The channel's status is equal to <see cref="ChannelStatus.Unavailable" />.
         /// </exception>
-        void Toggle();
+        public void Toggle();
 
         /// <summary>
         /// Gets a unique identifier for the current <see cref="IChannel" />.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
         }
@@ -169,7 +169,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the name of the current <see cref="IChannel" />.
         /// </summary>
-        String Name
+        public String Name
         {
             get;
         }
@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// Gets the number of discrete units in the output stream for the current <see cref="IChannel" />, or -1 if the length is
         /// not fixed.
         /// </summary>
-        Int32 OutputLength
+        public Int32 OutputLength
         {
             get;
         }
@@ -186,7 +186,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets a value indicating whether or not the output stream for the current <see cref="IChannel" /> has a fixed length.
         /// </summary>
-        Boolean OutputLengthIsFixed
+        public Boolean OutputLengthIsFixed
         {
             get;
         }
@@ -194,7 +194,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the type of a discrete unit of output value for the current <see cref="IChannel" />.
         /// </summary>
-        Type OutputType
+        public Type OutputType
         {
             get;
         }
@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the status of the current <see cref="IChannel" />.
         /// </summary>
-        ChannelStatus Status
+        public ChannelStatus Status
         {
             get;
         }

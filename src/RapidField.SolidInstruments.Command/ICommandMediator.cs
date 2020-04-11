@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TResult Process<TResult>(ICommand<TResult> command);
+        public TResult Process<TResult>(ICommand<TResult> command);
 
         /// <summary>
         /// Asynchronously processes the specified <see cref="ICommand{TResult}" />.
@@ -57,6 +57,6 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command);
+        public Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command);
     }
 }

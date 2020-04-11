@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="IndexOutOfRangeException">
         /// The specified index is out of range.
         /// </exception>
-        new T this[Int32 index]
+        public new T this[Int32 index]
         {
             get;
             set;
@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Span<T> Span
+        public Span<T> Span
         {
             get;
         }
@@ -57,6 +57,6 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void OverwriteWithZeros();
+        public void OverwriteWithZeros();
     }
 }

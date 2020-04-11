@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the unique name of the associated subscription.
         /// </summary>
-        String SubscriptionName
+        public String SubscriptionName
         {
             get;
         }

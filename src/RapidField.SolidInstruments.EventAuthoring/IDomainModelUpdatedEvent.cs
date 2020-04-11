@@ -2,22 +2,15 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using System;
+using RapidField.SolidInstruments.Core.Domain;
 
-namespace RapidField.SolidInstruments.Messaging
+namespace RapidField.SolidInstruments.EventAuthoring
 {
     /// <summary>
-    /// Represents a message that serves as a response to an <see cref="IMessage{TResponseMessage}" />.
+    /// Represents information about an update to an object that models a domain construct.
     /// </summary>
-    public interface IResponseMessage : IMessage
+    public interface IDomainModelUpdatedEvent<TModel> : IDomainModelEvent<TModel>
+        where TModel : class, IDomainModel
     {
-        /// <summary>
-        /// Gets or sets the identifier for the associated request message.
-        /// </summary>
-        public Guid RequestMessageIdentifier
-        {
-            get;
-            set;
-        }
     }
 }

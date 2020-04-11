@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Begin();
+        public void Begin();
 
         /// <summary>
         /// Asynchronously initiates the current <see cref="IDataAccessTransaction" />.
@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task BeginAsync();
+        public Task BeginAsync();
 
         /// <summary>
         /// Commits all changes made within the scope of the current <see cref="IDataAccessTransaction" />.
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Commit();
+        public void Commit();
 
         /// <summary>
         /// Asynchronously commits all changes made within the scope of the current <see cref="IDataAccessTransaction" />.
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task CommitAsync();
+        public Task CommitAsync();
 
         /// <summary>
         /// Rejects all changes made within the scope of the current <see cref="IDataAccessTransaction" />.
@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Reject();
+        public void Reject();
 
         /// <summary>
         /// Asynchronously rejects all changes made within the scope of the current <see cref="IDataAccessTransaction" />.
@@ -86,12 +86,12 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task RejectAsync();
+        public Task RejectAsync();
 
         /// <summary>
         /// Gets the state of the current <see cref="IDataAccessTransaction" />.
         /// </summary>
-        DataAccessTransactionState State
+        public DataAccessTransactionState State
         {
             get;
         }

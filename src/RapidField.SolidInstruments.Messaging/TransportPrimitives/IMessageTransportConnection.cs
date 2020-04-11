@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessagingException">
         /// An exception was raised while closing the transport connection.
         /// </exception>
-        void Close();
+        public void Close();
 
         /// <summary>
         /// Registers the specified message handler for the specified queue.
@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterQueueHandler(IMessagingEntityPath queuePath, Action<PrimitiveMessage> handleMessageAction);
+        public void RegisterQueueHandler(IMessagingEntityPath queuePath, Action<PrimitiveMessage> handleMessageAction);
 
         /// <summary>
         /// Registers the specified message handler for the specified topic subscription.
@@ -66,12 +66,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RegisterSubscriptionHandler(IMessagingEntityPath topicPath, String subscriptionName, Action<PrimitiveMessage> handleMessageAction);
+        public void RegisterSubscriptionHandler(IMessagingEntityPath topicPath, String subscriptionName, Action<PrimitiveMessage> handleMessageAction);
 
         /// <summary>
         /// Gets a value that uniquely identifies the current <see cref="IMessageTransportConnection" />.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
         }
@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the state of the current <see cref="IMessageTransportConnection" />.
         /// </summary>
-        MessageTransportConnectionState State
+        public MessageTransportConnectionState State
         {
             get;
         }
@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The connection is closed.
         /// </exception>
-        IMessageTransport Transport
+        public IMessageTransport Transport
         {
             get;
         }

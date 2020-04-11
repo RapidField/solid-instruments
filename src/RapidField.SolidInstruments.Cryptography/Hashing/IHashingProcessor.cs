@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        Byte[] CalculateHash(T plaintextObject, HashingAlgorithmSpecification algorithm, SaltingMode saltingMode);
+        public Byte[] CalculateHash(T plaintextObject, HashingAlgorithmSpecification algorithm, SaltingMode saltingMode);
 
         /// <summary>
         /// Calculates a hash value for the specified plaintext object and compares the result with the specified hash value.
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        Boolean EvaluateHash(Byte[] hash, T plaintextObject, HashingAlgorithmSpecification algorithm, SaltingMode saltingMode);
+        public Boolean EvaluateHash(Byte[] hash, T plaintextObject, HashingAlgorithmSpecification algorithm, SaltingMode saltingMode);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm);
+        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm);
 
         /// <summary>
         /// Calculates a hash value for the specified plaintext binary array.
@@ -101,6 +101,6 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt);
+        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt);
     }
 }

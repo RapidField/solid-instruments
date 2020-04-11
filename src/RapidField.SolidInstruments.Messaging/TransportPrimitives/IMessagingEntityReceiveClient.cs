@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task ConveyFailureAsync(MessageLockToken lockToken);
+        public Task ConveyFailureAsync(MessageLockToken lockToken);
 
         /// <summary>
         /// Asynchronously notifies the associated <see cref="IMessagingEntity" /> that a locked message was processed successfully
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task ConveySuccessAsync(MessageLockToken lockToken);
+        public Task ConveySuccessAsync(MessageLockToken lockToken);
 
         /// <summary>
         /// Registers the specified message handler for the associated <see cref="IMessagingEntity" />.
@@ -69,6 +69,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The connection is closed.
         /// </exception>
-        void RegisterMessageHandler(Action<PrimitiveMessage> handleMessageAction);
+        public void RegisterMessageHandler(Action<PrimitiveMessage> handleMessageAction);
     }
 }

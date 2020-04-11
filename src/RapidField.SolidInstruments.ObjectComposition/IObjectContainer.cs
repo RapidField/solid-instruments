@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectProductionException">
         /// An exception was raised during object production.
         /// </exception>
-        T Get<T>()
+        public T Get<T>()
             where T : class;
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectProductionException">
         /// An exception was raised during object production.
         /// </exception>
-        T GetNew<T>()
+        public T GetNew<T>()
             where T : class;
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        IEnumerable<Type> InstanceTypes
+        public IEnumerable<Type> InstanceTypes
         {
             get;
         }

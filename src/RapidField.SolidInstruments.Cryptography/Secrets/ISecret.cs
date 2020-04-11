@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
-        void Write(Func<TValue> writeFunction);
+        public void Write(Func<TValue> writeFunction);
     }
 
     /// <summary>

@@ -33,6 +33,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        Task<IEnumerable<PrimitiveMessage>> DequeueAsync(Int32 count);
+        public Task<IEnumerable<PrimitiveMessage>> DequeueAsync(Int32 count);
     }
 }

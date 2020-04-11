@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the operational settings for the current <see cref="ISignalProcessor{TOutput, TSettings}" />.
         /// </summary>
-        TSettings Settings
+        public TSettings Settings
         {
             get;
         }
@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the input channels for the current <see cref="ISignalProcessor" />.
         /// </summary>
-        IChannelCollection InputChannels
+        public IChannelCollection InputChannels
         {
             get;
         }

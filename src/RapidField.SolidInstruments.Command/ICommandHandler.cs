@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TResult Process(TCommand command);
+        public TResult Process(TCommand command);
     }
 
     /// <summary>

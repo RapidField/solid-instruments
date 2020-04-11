@@ -27,6 +27,6 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to configure the container.
         /// </exception>
-        void Configure(TConfigurator configurator);
+        public void Configure(TConfigurator configurator);
     }
 }

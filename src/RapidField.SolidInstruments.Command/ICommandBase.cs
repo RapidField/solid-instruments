@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
-        Type ResultType
+        public Type ResultType
         {
             get;
         }

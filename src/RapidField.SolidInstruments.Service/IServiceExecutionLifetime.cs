@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void End();
+        public void End();
 
         /// <summary>
         /// Blocks the current thread until <see cref="End" /> or <see cref="IDisposable.Dispose()" /> is invoked.
@@ -28,12 +28,12 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void KeepAlive();
+        public void KeepAlive();
 
         /// <summary>
         /// Gets a value that indicates whether or not the service is operational.
         /// </summary>
-        Boolean IsAlive
+        public Boolean IsAlive
         {
             get;
         }
