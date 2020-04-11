@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// Gets the zero-based index for the current <see cref="IDiscreteUnitOfOutput{T}" /> within the associated channel's output
         /// stream.
         /// </summary>
-        public public Int32 ChannelReadIndex
+        public Int32 ChannelReadIndex
         {
             get;
         }
@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the output value.
         /// </summary>
-        public public T Value
+        public T Value
         {
             get;
         }
