@@ -99,7 +99,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while trying to transmit an <see cref="ExceptionRaisedEventMessage" />.
         /// </exception>
         [DebuggerHidden]
-        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // TODO
+        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // TODO Handle receiver exceptions.
 
         /// <summary>
         /// Gets options that specify how receive clients handle messages.

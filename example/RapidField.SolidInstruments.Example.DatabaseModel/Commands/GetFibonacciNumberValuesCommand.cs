@@ -6,12 +6,14 @@ using RapidField.SolidInstruments.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Example.DatabaseModel.Commands
 {
     /// <summary>
     /// Represents a data access command that returns the numeric values for the Fibonacci series.
     /// </summary>
+    [DataContract]
     public sealed class GetFibonacciNumberValuesCommand : DataAccessCommand<IEnumerable<Int64>>
     {
         /// <summary>

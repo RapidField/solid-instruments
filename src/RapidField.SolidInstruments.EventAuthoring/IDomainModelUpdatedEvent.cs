@@ -9,6 +9,9 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <summary>
     /// Represents information about an update to an object that models a domain construct.
     /// </summary>
+    /// <typeparam name="TModel">
+    /// The type of the associated domain model.
+    /// </typeparam>
     public interface IDomainModelUpdatedEvent<TModel> : IDomainModelEvent<TModel>
         where TModel : class, IDomainModel
     {

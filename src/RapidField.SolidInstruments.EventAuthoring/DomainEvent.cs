@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public DomainEvent(IEnumerable<String> labels, EventVerbosity verbosity, String description, DateTime timeStamp)
             : base(StaticCategory, verbosity, description, timeStamp)
         {
-            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
+            LabelsReference = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
         }
 
         /// <summary>
@@ -123,7 +123,16 @@ namespace RapidField.SolidInstruments.EventAuthoring
         [DataMember]
         public ICollection<String> Labels
         {
-            get;
+            get
+            {
+                if (LabelsReference is null)
+                {
+                    // This is necessary to accommodate specific serialization scenarios.
+                    LabelsReference = new List<String>();
+                }
+
+                return LabelsReference;
+            }
         }
 
         /// <summary>
@@ -131,5 +140,12 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const EventCategory StaticCategory = EventCategory.Domain;
+
+        /// <summary>
+        /// Represents a collection of textual labels that provide categorical and/or contextual information about the current
+        /// <see cref="DomainEvent" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ICollection<String> LabelsReference;
     }
 }

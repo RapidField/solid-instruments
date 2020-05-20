@@ -696,7 +696,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <remarks>
         /// The author acknowledges that obscurity does not ensure security. Encrypting sensitive information with a known key does
         /// not secure it. This is intended to stand up a barrier against unsophisticated attacks targeting users who have
-        /// mistakenly exposed their key source.
+        /// mistakenly exposed their key source. This sequence is fairly arbitrary and can be modified if needed, but there are
+        /// probably few good reasons to.
         /// </remarks>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly PinnedBuffer BufferEncryptionKey = new PinnedBuffer(new Byte[]
@@ -714,9 +715,14 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" /> is
         /// equal to <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
         /// </summary>
+        /// <remarks>
+        /// This sequence is deliberately and carefully balanced. Modifications can introduce severe security flaws and break the
+        /// class functionally. Do not modify without very careful consideration and extremely good reason.
+        /// </remarks>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Byte[] SubstitutionBox =
         {
+            // IMPORTANT Read the remarks above. Inform senior members of the team if a pull request introduces changes here.
             0xff, 0xf0, 0xfd, 0xf2, 0xfb, 0xf4, 0xf9, 0xf6, 0xf7, 0xf8, 0xf5, 0xfa, 0xf3, 0xfc, 0xf1, 0xfe,
             0x0f, 0x00, 0x0d, 0x02, 0x0b, 0x04, 0x09, 0x06, 0x07, 0x08, 0x05, 0x0a, 0x03, 0x0c, 0x01, 0x0e,
             0x4f, 0x40, 0x4d, 0x42, 0x4b, 0x44, 0x49, 0x46, 0x47, 0x48, 0x45, 0x4a, 0x43, 0x4c, 0x41, 0x4e,

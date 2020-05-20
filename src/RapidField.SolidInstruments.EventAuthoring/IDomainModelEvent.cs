@@ -3,12 +3,16 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.Domain;
+using System;
 
 namespace RapidField.SolidInstruments.EventAuthoring
 {
     /// <summary>
     /// Represents information about an event related to an object that models a domain construct.
     /// </summary>
+    /// <typeparam name="TModel">
+    /// The type of the associated domain model.
+    /// </typeparam>
     public interface IDomainModelEvent<TModel> : IDomainEvent
         where TModel : class, IDomainModel
     {
@@ -25,6 +29,14 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// Gets the resulting state of the associated domain model.
         /// </summary>
         public TModel Model
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the type of the associated domain model.
+        /// </summary>
+        public Type ModelType
         {
             get;
         }

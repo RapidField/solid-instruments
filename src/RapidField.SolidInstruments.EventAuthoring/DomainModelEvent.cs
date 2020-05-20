@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.EventAuthoring
@@ -16,6 +17,9 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <remarks>
     /// <see cref="DomainModelEvent{TModel}" /> is the default implementation of <see cref="IDomainModelEvent{TModel}" />.
     /// </remarks>
+    /// <typeparam name="TModel">
+    /// The type of the associated domain model.
+    /// </typeparam>
     [DataContract]
     public class DomainModelEvent<TModel> : DomainEvent, IDomainModelEvent<TModel>
         where TModel : class, IDomainModel
@@ -97,7 +101,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" />.
         /// </exception>
         public DomainModelEvent(TModel model, DomainModelEventClassification classification, IEnumerable<String> labels, EventVerbosity verbosity)
-            : this(model, classification, labels, verbosity, null)
+            : this(model, classification, labels, verbosity, GetDescription(model, classification))
         {
             return;
         }
@@ -135,6 +139,38 @@ namespace RapidField.SolidInstruments.EventAuthoring
         }
 
         /// <summary>
+        /// Returns a description for the current <see cref="DomainModelEvent{TModel}" />.
+        /// </summary>
+        /// <param name="model">
+        /// The resulting state of the associated domain model.
+        /// </param>
+        /// <param name="classification">
+        /// A classification that describes the effect of a the event upon <paramref name="model" />.
+        /// </param>
+        /// <returns>
+        /// A description for the current <see cref="DomainModelEvent{TModel}" />.
+        /// </returns>
+        [DebuggerHidden]
+        private static String GetDescription(IDomainModel model, DomainModelEventClassification classification)
+        {
+            if (model is null)
+            {
+                return null;
+            }
+
+            var modelTypeName = model.GetType().FullName;
+
+            return classification switch
+            {
+                DomainModelEventClassification.Associated => $"An event occurred that was associated with a model of type {modelTypeName}.",
+                DomainModelEventClassification.Created => $"A model of type {modelTypeName} was created.",
+                DomainModelEventClassification.Deleted => $"A model of type {modelTypeName} was deleted.",
+                DomainModelEventClassification.Updated => $"A model of type {modelTypeName} was updated.",
+                _ => null,
+            };
+        }
+
+        /// <summary>
         /// Gets or sets a classification that describes the effect of a the current <see cref="DomainModelEvent{TModel}" /> upon
         /// <see cref="Model" />.
         /// </summary>
@@ -154,5 +190,11 @@ namespace RapidField.SolidInstruments.EventAuthoring
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets the type of the associated domain model.
+        /// </summary>
+        [IgnoreDataMember]
+        public Type ModelType => typeof(TModel);
     }
 }

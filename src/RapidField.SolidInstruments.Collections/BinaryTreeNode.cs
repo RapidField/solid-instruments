@@ -13,12 +13,12 @@ namespace RapidField.SolidInstruments.Collections
     /// Represents a node in a binary tree structure.
     /// </summary>
     /// <remarks>
-    /// <see cref="BinaryTreeNode{T}" /> is the default implementation of <see cref="BinaryTreeNode{T}" />.
+    /// <see cref="BinaryTreeNode{T}" /> is the default implementation of <see cref="IBinaryTreeNode{T}" />.
     /// </remarks>
     /// <typeparam name="T">
     /// The value type of the node.
     /// </typeparam>
-    public class BinaryTreeNode<T> : TreeNode<T, BinaryTreeNode<T>>, ITreeNode<T, IBinaryTreeNode<T>>
+    public class BinaryTreeNode<T> : TreeNode<T, BinaryTreeNode<T>>, IBinaryTreeNode<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryTreeNode{T}" /> class.

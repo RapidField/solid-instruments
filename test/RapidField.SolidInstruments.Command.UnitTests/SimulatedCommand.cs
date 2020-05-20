@@ -3,12 +3,14 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Command.UnitTests
 {
     /// <summary>
     /// Represents a <see cref="Command" /> derivative that is used for testing.
     /// </summary>
+    [DataContract]
     internal class SimulatedCommand : Command
     {
         /// <summary>
@@ -24,6 +26,7 @@ namespace RapidField.SolidInstruments.Command.UnitTests
         /// <summary>
         /// Gets or sets an identifier for the command.
         /// </summary>
+        [DataMember]
         public Guid Identifier
         {
             get;
@@ -33,6 +36,7 @@ namespace RapidField.SolidInstruments.Command.UnitTests
         /// <summary>
         /// Gets or sets a value indicating whether or not the current <see cref="SimulatedCommand" /> has been processed.
         /// </summary>
+        [DataMember]
         public Boolean IsProcessed
         {
             get;

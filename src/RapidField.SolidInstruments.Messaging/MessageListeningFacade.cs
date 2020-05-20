@@ -594,8 +594,8 @@ namespace RapidField.SolidInstruments.Messaging
             {
                 throw failurePolicy.SecondaryFailureBehavior switch
                 {
-                    MessageListeningSecondaryFailureBehavior.Discard => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO
-                    MessageListeningSecondaryFailureBehavior.RouteToDeadLetterQueue => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO
+                    MessageListeningSecondaryFailureBehavior.Discard => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO Implement discard failure behavior.
+                    MessageListeningSecondaryFailureBehavior.RouteToDeadLetterQueue => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO Implement DLQ failure behavior.
                     _ => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.")
                 };
             }

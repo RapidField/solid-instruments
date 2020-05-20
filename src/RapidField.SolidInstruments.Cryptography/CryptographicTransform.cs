@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     blockAsByteList.Add(Convert.ToByte(paddingLengthInBytes));
                     break;
 
-                case PaddingModePcks7:
+                case PaddingModePkcs7:
 
                     while (blockAsByteList.Count < blockSizeInBytes)
                     {
@@ -261,7 +261,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
                     break;
 
-                case PaddingModePcks7:
+                case PaddingModePkcs7:
 
                     for (var i = startPosition; i >= 0; i--)
                     {
@@ -450,7 +450,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the <see cref="PaddingMode.PKCS7" /> padding mode.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const PaddingMode PaddingModePcks7 = PaddingMode.PKCS7;
+        internal const PaddingMode PaddingModePkcs7 = PaddingMode.PKCS7;
 
         /// <summary>
         /// Represents the <see cref="PaddingMode.Zeros" /> padding mode.

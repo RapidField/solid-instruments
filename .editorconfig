@@ -2,6 +2,12 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# All files
+[*]
+
+# Editor guidelines
+guidelines = 132 1.5px dashed 24608b4e
+
 # C# files
 [*.cs]
 

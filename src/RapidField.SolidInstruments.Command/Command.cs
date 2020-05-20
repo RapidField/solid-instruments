@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Command
 {
@@ -17,6 +18,7 @@ namespace RapidField.SolidInstruments.Command
     /// <typeparam name="TResult">
     /// The type of the result that is emitted when processing the command.
     /// </typeparam>
+    [DataContract]
     public abstract class Command<TResult> : ICommand<TResult>
     {
         /// <summary>
@@ -38,6 +40,7 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
+        [IgnoreDataMember]
         public Type ResultType => ResultTypeReference;
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace RapidField.SolidInstruments.Command
     /// <remarks>
     /// <see cref="Command" /> is the default implementation of <see cref="ICommand" />.
     /// </remarks>
+    [DataContract]
     public abstract class Command : ICommand
     {
         /// <summary>
@@ -74,6 +78,7 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
-        public Type ResultType => Nix.Type;
+        [IgnoreDataMember]
+        public virtual Type ResultType => Nix.Type;
     }
 }

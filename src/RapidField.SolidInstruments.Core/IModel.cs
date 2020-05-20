@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
     {
         /// <summary>
-        /// Gets or sets a value that uniquely identifies the current <see cref="IModel{TIdentifier}" />.
+        /// Gets a value that uniquely identifies the current <see cref="IModel{TIdentifier}" />.
         /// </summary>
         public TIdentifier Identifier
         {

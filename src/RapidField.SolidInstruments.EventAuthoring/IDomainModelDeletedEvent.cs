@@ -9,6 +9,9 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <summary>
     /// Represents information about the deletion of an object that models a domain construct.
     /// </summary>
+    /// <typeparam name="TModel">
+    /// The type of the associated domain model.
+    /// </typeparam>
     public interface IDomainModelDeletedEvent<TModel> : IDomainModelEvent<TModel>
         where TModel : class, IDomainModel
     {

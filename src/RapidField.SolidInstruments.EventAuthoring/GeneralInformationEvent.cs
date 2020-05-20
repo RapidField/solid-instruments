@@ -113,8 +113,8 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public GeneralInformationEvent(IEnumerable<String> labels, EventVerbosity verbosity, String description, DateTime timeStamp)
             : base(StaticCategory, verbosity, description, timeStamp)
         {
-            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
-            Metadata = new Dictionary<String, String>();
+            LabelsReference = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            MetadataReference = new Dictionary<String, String>();
         }
 
         /// <summary>
@@ -124,7 +124,16 @@ namespace RapidField.SolidInstruments.EventAuthoring
         [DataMember]
         public ICollection<String> Labels
         {
-            get;
+            get
+            {
+                if (LabelsReference is null)
+                {
+                    // This is necessary to accommodate specific serialization scenarios.
+                    LabelsReference = new List<String>();
+                }
+
+                return LabelsReference;
+            }
         }
 
         /// <summary>
@@ -133,7 +142,16 @@ namespace RapidField.SolidInstruments.EventAuthoring
         [DataMember]
         public IDictionary<String, String> Metadata
         {
-            get;
+            get
+            {
+                if (MetadataReference is null)
+                {
+                    // This is necessary to accommodate specific serialization scenarios.
+                    MetadataReference = new Dictionary<String, String>();
+                }
+
+                return MetadataReference;
+            }
         }
 
         /// <summary>
@@ -141,5 +159,18 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const EventCategory StaticCategory = EventCategory.GeneralInformation;
+
+        /// <summary>
+        /// Represents a collection of textual labels that provide categorical and/or contextual information about the current
+        /// <see cref="GeneralInformationEvent" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ICollection<String> LabelsReference;
+
+        /// <summary>
+        /// Represents a dictionary of metadata for the current <see cref="GeneralInformationEvent" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private IDictionary<String, String> MetadataReference;
     }
 }

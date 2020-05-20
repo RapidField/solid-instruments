@@ -21,25 +21,25 @@ namespace RapidField.SolidInstruments.EventAuthoring
         Unspecified = 0,
 
         /// <summary>
-        /// The event relates to the model, but does not otherwise cause a change to its characteristics.
+        /// The event relates to the model, but does not otherwise represent a change to its characteristics.
         /// </summary>
         [EnumMember]
         Associated = 1,
 
         /// <summary>
-        /// The event causes the model to be created.
+        /// The event represents creation of the model.
         /// </summary>
         [EnumMember]
         Created = 2,
 
         /// <summary>
-        /// The event causes the model to be deleted.
+        /// The event represents deletion of the model.
         /// </summary>
         [EnumMember]
         Deleted = 3,
 
         /// <summary>
-        /// The event causes the model to be updated.
+        /// The event represents an update to the model.
         /// </summary>
         [EnumMember]
         Updated = 4
