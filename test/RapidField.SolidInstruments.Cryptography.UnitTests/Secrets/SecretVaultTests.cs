@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                     // Assert.
                     target.Count.Should().Be(1);
                     target.Names.Should().Contain(secretOneName);
-                    target.ReadAsync(secretOneName, (IReadOnlyPinnedBuffer<Byte> value) =>
+                    target.ReadAsync(secretOneName, (IReadOnlyPinnedMemory<Byte> value) =>
                     {
                         value.Should().BeEquivalentTo(secretOne);
                     }).Wait();
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                     target.Count.Should().Be(2);
                     target.Names.Should().Contain(secretOneName);
                     target.Names.Should().Contain(secretTwoName);
-                    target.ReadAsync(secretTwoName, (IReadOnlyPinnedBuffer<Byte> value) =>
+                    target.ReadAsync(secretTwoName, (IReadOnlyPinnedMemory<Byte> value) =>
                     {
                         value.Should().BeEquivalentTo(secretTwo);
                     }).Wait();
@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                     // Assert.
                     target.Count.Should().Be(2);
                     target.Names.Should().Contain(secretOneName);
-                    target.ReadAsync(secretOneName, (IReadOnlyPinnedBuffer<Byte> value) =>
+                    target.ReadAsync(secretOneName, (IReadOnlyPinnedMemory<Byte> value) =>
                     {
                         value.Should().BeEquivalentTo(secretThree);
                     }).Wait();

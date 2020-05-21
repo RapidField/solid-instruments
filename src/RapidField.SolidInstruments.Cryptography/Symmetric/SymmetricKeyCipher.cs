@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal PinnedBuffer Decrypt(PinnedBuffer ciphertext, PinnedBuffer privateKey)
+        internal PinnedMemory Decrypt(PinnedMemory ciphertext, PinnedMemory privateKey)
         {
             ciphertext.RejectIf().IsNull(nameof(ciphertext)).OrIf(argument => argument.Count() < BlockSizeInBytes, nameof(ciphertext), "The length of the specified ciphertext is invalid for the algorithm.");
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         ///  <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal PinnedBuffer Encrypt(PinnedBuffer plaintext, PinnedBuffer privateKey, PinnedBuffer initializationVector)
+        internal PinnedMemory Encrypt(PinnedMemory plaintext, PinnedMemory privateKey, PinnedMemory initializationVector)
         {
             plaintext.RejectIf().IsNull(nameof(plaintext));
             privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
@@ -153,13 +153,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The plaintext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer DecryptInCbcMode(PinnedBuffer ciphertext, PinnedBuffer privateKey)
+        private PinnedMemory DecryptInCbcMode(PinnedMemory ciphertext, PinnedMemory privateKey)
         {
-            using (var initializationVector = new PinnedBuffer(BlockSizeInBytes, true))
+            using (var initializationVector = new PinnedMemory(BlockSizeInBytes, true))
             {
                 Array.Copy(ciphertext, 0, initializationVector, 0, BlockSizeInBytes);
 
-                using (var cipherTextSansInitializationVector = new PinnedBuffer((ciphertext.Length - BlockSizeInBytes), true))
+                using (var cipherTextSansInitializationVector = new PinnedMemory((ciphertext.Length - BlockSizeInBytes), true))
                 {
                     Array.Copy(ciphertext, BlockSizeInBytes, cipherTextSansInitializationVector, 0, cipherTextSansInitializationVector.Length);
 
@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 {
                                     cryptographicStream.Write(cipherTextSansInitializationVector, 0, cipherTextSansInitializationVector.Length);
                                     cryptographicStream.FlushFinalBlock();
-                                    return new PinnedBuffer(memoryStream.ToArray(), false);
+                                    return new PinnedMemory(memoryStream.ToArray(), false);
                                 }
                             }
                         }
@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The plaintext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer DecryptInEcbMode(PinnedBuffer ciphertext, PinnedBuffer privateKey)
+        private PinnedMemory DecryptInEcbMode(PinnedMemory ciphertext, PinnedMemory privateKey)
         {
             using (var encryptionProvider = InitializeProvider())
             {
@@ -220,7 +220,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(ciphertext, 0, ciphertext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedBuffer(memoryStream.ToArray(), false);
+                            return new PinnedMemory(memoryStream.ToArray(), false);
                         }
                     }
                 }
@@ -249,7 +249,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="initializationVector" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private PinnedBuffer EncryptInCbcMode(PinnedBuffer plaintext, PinnedBuffer privateKey, PinnedBuffer initializationVector)
+        private PinnedMemory EncryptInCbcMode(PinnedMemory plaintext, PinnedMemory privateKey, PinnedMemory initializationVector)
         {
             initializationVector.RejectIf().IsNull(nameof(initializationVector)).OrIf(argument => argument.Count() != BlockSizeInBytes, nameof(privateKey), "The length of the specified initialization vector is invalid for the algorithm.");
 
@@ -270,7 +270,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(plaintext, 0, plaintext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedBuffer(initializationVector.Concat(memoryStream.ToArray()).ToArray(), false);
+                            return new PinnedMemory(initializationVector.Concat(memoryStream.ToArray()).ToArray(), false);
                         }
                     }
                 }
@@ -290,7 +290,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The ciphertext result of the algorithm.
         /// </returns>
         [DebuggerHidden]
-        private PinnedBuffer EncryptInEcbMode(PinnedBuffer plaintext, PinnedBuffer privateKey)
+        private PinnedMemory EncryptInEcbMode(PinnedMemory plaintext, PinnedMemory privateKey)
         {
             using (var encryptionProvider = InitializeProvider())
             {
@@ -308,7 +308,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(plaintext, 0, plaintext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedBuffer(memoryStream.ToArray(), false);
+                            return new PinnedMemory(memoryStream.ToArray(), false);
                         }
                     }
                 }

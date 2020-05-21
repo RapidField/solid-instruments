@@ -132,7 +132,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
 
                 using (var hashAlgorithm = algorithm.ToHashAlgorithm())
                 {
-                    Array.Copy(hashAlgorithm.ComputeHash(plaintextBinaryArray), hashValue, digestLengthInBytes);
+                    Array.Copy(hashAlgorithm.ComputeHash(plaintextBuffer), hashValue, digestLengthInBytes);
                 }
 
                 if (applySalt)

@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        public Task ReadAsync(String name, Action<IReadOnlyPinnedBuffer<Byte>> readAction);
+        public Task ReadAsync(String name, Action<IReadOnlyPinnedMemory<Byte>> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read

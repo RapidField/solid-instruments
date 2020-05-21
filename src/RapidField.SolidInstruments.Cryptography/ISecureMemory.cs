@@ -8,12 +8,12 @@ using System;
 namespace RapidField.SolidInstruments.Cryptography
 {
     /// <summary>
-    /// Represents a fixed-length bit field that is pinned in memory and encrypted at rest.
+    /// Represents a fixed-length bit field that is pinned in bit field and encrypted at rest.
     /// </summary>
-    public interface ISecureBuffer : IAsyncDisposable, IDisposable
+    public interface ISecureMemory : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Decrypts the buffer, performs the specified operation against the pinned plaintext and encrypts the buffer as a
+        /// Decrypts the bit field, performs the specified operation against the pinned plaintext and encrypts the bit field as a
         /// thread-safe, atomic operation.
         /// </summary>
         /// <param name="action">
@@ -25,10 +25,10 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Access(Action<PinnedBuffer> action);
+        public void Access(Action<PinnedMemory> action);
 
         /// <summary>
-        /// Gets the length of the buffer, in bytes.
+        /// Gets the length of the bit field, in bytes.
         /// </summary>
         public Int32 LengthInBytes
         {

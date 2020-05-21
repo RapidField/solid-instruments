@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Creates a <see cref="X509Certificate2" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="X509Certificate2" />.
+        /// Pinned memory representing a <see cref="X509Certificate2" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -73,11 +73,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="X509Certificate2" />.
         /// </returns>
-        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
+        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -86,9 +86,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(X509Certificate2 value, ConcurrencyControlToken controlToken) => new PinnedBuffer(value.RawData);
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(X509Certificate2 value, ConcurrencyControlToken controlToken) => new PinnedMemory(value.RawData);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="X509CertificateSecret" />.

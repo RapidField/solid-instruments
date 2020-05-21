@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Creates a <see cref="String" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="String" />.
+        /// Pinned memory representing a <see cref="String" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -72,11 +72,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="String" />.
         /// </returns>
-        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
+        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -85,9 +85,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedBuffer(Encoding.Unicode.GetBytes(value), true);
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedMemory(Encoding.Unicode.GetBytes(value), true);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="StringSecret" />.

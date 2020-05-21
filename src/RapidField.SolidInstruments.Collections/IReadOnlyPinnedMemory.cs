@@ -11,9 +11,9 @@ namespace RapidField.SolidInstruments.Collections
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
     /// <typeparam name="T">
-    /// The element type of the buffer.
+    /// The element type of the memory field.
     /// </typeparam>
-    public interface IReadOnlyPinnedBuffer<T> : IEnumerable<T>, IReadOnlyPinnedBuffer
+    public interface IReadOnlyPinnedMemory<T> : IEnumerable<T>, IReadOnlyPinnedMemory
         where T : struct, IComparable<T>, IEquatable<T>
     {
         /// <summary>
@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -48,10 +48,10 @@ namespace RapidField.SolidInstruments.Collections
     /// <summary>
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
-    public interface IReadOnlyPinnedBuffer : IAsyncDisposable, IDisposable
+    public interface IReadOnlyPinnedMemory : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Gets a value indicating whether or not the buffer is empty.
+        /// Gets a value indicating whether or not the memory field is empty.
         /// </summary>
         public Boolean IsEmpty
         {
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets the number of elements comprising the buffer.
+        /// Gets the number of elements comprising the memory field.
         /// </summary>
         public Int32 Length
         {
@@ -67,7 +67,7 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets the length of the buffer, in bytes.
+        /// Gets the length of the memory field, in bytes.
         /// </summary>
         public Int32 LengthInBytes
         {

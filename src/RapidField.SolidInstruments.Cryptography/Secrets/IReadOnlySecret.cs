@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        public void Read(Action<IReadOnlyPinnedBuffer<Byte>> readAction);
+        public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction);
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="IReadOnlySecret{TValue}" /> has a value.

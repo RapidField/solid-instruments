@@ -9,7 +9,7 @@ using System;
 namespace RapidField.SolidInstruments.Collections.UnitTests
 {
     [TestClass]
-    public class PinnedBufferTests
+    public class PinnedMemoryTests
     {
         [TestMethod]
         public void Constructor_ShouldRaiseArgumentOutOfRangeException_ForNegativeLengthArgument()
@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             // Act.
             var action = new Action(() =>
             {
-                using (var target = new PinnedBuffer(length))
+                using (var target = new PinnedMemory(length))
                 {
                     return;
                 }
@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             // Act.
             var action = new Action(() =>
             {
-                using (var target = new PinnedBuffer(length))
+                using (var target = new PinnedMemory(length))
                 {
                     return;
                 }
@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             var length = 8;
             var field = new Byte[length];
 
-            using (var target = new PinnedBuffer(field, true))
+            using (var target = new PinnedMemory(field, true))
             {
                 // Assert.
                 ReferenceEquals(field, target).Should().BeFalse();
@@ -86,7 +86,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             var length = 8;
             var field = (Byte[])null;
 
-            using (var target = new PinnedBuffer(length, true))
+            using (var target = new PinnedMemory(length, true))
             {
                 // Arrange.
                 field = target;
@@ -119,7 +119,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             var length = 10;
             var field = new Int32[length];
 
-            using (var target = new PinnedBuffer<Int32>(field, false))
+            using (var target = new PinnedMemory<Int32>(field, false))
             {
                 // Assert.
                 target.LengthInBytes.Should().Be(length * 4);
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             var length = 8;
             var field = new Byte[length];
 
-            using (var target = new PinnedBuffer(field, false))
+            using (var target = new PinnedMemory(field, false))
             {
                 // Arrange.
                 target[0] = 0x01;
@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             // Arrange.
             var length = 8;
 
-            using (var target = new PinnedBuffer(length, false))
+            using (var target = new PinnedMemory(length, false))
             {
                 // Arrange.
                 target[0] = 0x01;

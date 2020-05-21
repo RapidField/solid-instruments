@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             var derivationMode = SymmetricKeyDerivationMode.Truncation;
             var keyLength = 3;
 
-            using (var keySource = new PinnedBuffer(keyLength))
+            using (var keySource = new PinnedMemory(keyLength))
             {
                 // Act.
                 var action = new Action(() =>
@@ -291,13 +291,13 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Act.
                 using (var buffer = target.ToBuffer())
                 {
-                    buffer.Access((plaintext =>
+                    buffer.Access(plaintext =>
                     {
                         // Assert.
                         plaintext.Should().NotBeNullOrEmpty();
                         plaintext.Length.Should().Be(keyLengthInBytes);
                         plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
-                    }));
+                    });
                 }
             }
         }

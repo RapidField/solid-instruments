@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        public static CascadingSymmetricKey FromBuffer(ISecureBuffer buffer)
+        public static CascadingSymmetricKey FromBuffer(ISecureMemory buffer)
         {
             buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
@@ -86,21 +86,21 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             {
                 var keys = (ISymmetricKey[])null;
 
-                buffer.Access(pinnedBuffer =>
+                buffer.Access(memory =>
                 {
                     // Interrogate the final 16 bits to determine the depth.
                     var keyLength = SymmetricKey.SerializedLength;
-                    var depth = BitConverter.ToUInt16(pinnedBuffer, (SerializedLength - sizeof(UInt16)));
+                    var depth = BitConverter.ToUInt16(memory, (SerializedLength - sizeof(UInt16)));
                     keys = new ISymmetricKey[depth];
 
                     for (var i = 0; i < depth; i++)
                     {
-                        using (var secureBuffer = new SecureBuffer(keyLength))
+                        using (var secureBuffer = new SecureMemory(keyLength))
                         {
-                            secureBuffer.Access(keyBuffer =>
+                            secureBuffer.Access(key =>
                             {
                                 // Copy out the key buffers.
-                                Array.Copy(pinnedBuffer, (keyLength * i), keyBuffer, 0, keyLength);
+                                Array.Copy(memory, (keyLength * i), key, 0, keyLength);
                             });
 
                             keys[i] = SymmetricKey.FromBuffer(secureBuffer);
@@ -339,9 +339,9 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A binary representation of the current <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        public ISecureBuffer ToBuffer()
+        public ISecureMemory ToBuffer()
         {
-            var result = new SecureBuffer(SerializedLength);
+            var result = new SecureMemory(SerializedLength);
 
             try
             {
@@ -357,10 +357,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             {
                                 using (var keyBuffer = Keys.ElementAt(i).ToBuffer())
                                 {
-                                    keyBuffer.Access(pinnedKeyBuffer =>
+                                    keyBuffer.Access(key =>
                                     {
                                         // Copy the key buffers out to the result buffer.
-                                        Array.Copy(pinnedKeyBuffer, 0, pinnedResultBuffer, (keyLength * i), keyLength);
+                                        Array.Copy(key, 0, pinnedResultBuffer, (keyLength * i), keyLength);
                                     });
                                 }
 
@@ -453,7 +453,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     var algorithm = algorithms[i];
 
-                    using (var keySource = new PinnedBuffer(keySourceBytes.Span.Slice(i * singleKeySourceLengthInBytes, singleKeySourceLengthInBytes).ToArray()))
+                    using (var keySource = new PinnedMemory(keySourceBytes.Span.Slice(i * singleKeySourceLengthInBytes, singleKeySourceLengthInBytes).ToArray()))
                     {
                         keys[i] = SymmetricKey.New(algorithm, derivationMode, keySource);
                     }

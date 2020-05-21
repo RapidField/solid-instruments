@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
-                using (var secureKeyBuffer = new SecureBuffer(key.Length))
+                using (var secureKeyBuffer = new SecureMemory(key.Length))
                 {
                     // Arrange.
                     var blockLengthInBytes = (blockLengthInBits / 8);

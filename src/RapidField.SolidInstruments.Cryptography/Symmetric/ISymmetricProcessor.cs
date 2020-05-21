@@ -67,7 +67,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm);
+        public T Decrypt(Byte[] ciphertext, ISecureMemory key, SymmetricAlgorithmSpecification algorithm);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -121,6 +121,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm);
+        public Byte[] Encrypt(T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm);
     }
 }

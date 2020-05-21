@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a named secret bit field that is pinned in memory and encrypted at rest.
     /// </summary>
-    public sealed class Secret : Secret<IReadOnlyPinnedBuffer<Byte>>
+    public sealed class Secret : Secret<IReadOnlyPinnedMemory<Byte>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Secret" /> class.
@@ -56,27 +56,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             value = value.RejectIf().IsNull(nameof(value));
             var secret = new Secret(name);
-            secret.Write(() => new PinnedBuffer<Byte>(value));
+            secret.Write(() => new PinnedMemory<Byte>(value));
             return secret;
         }
 
         /// <summary>
-        /// Creates a <see cref="IReadOnlyPinnedBuffer{T}" /> using the provided bytes.
+        /// Creates a <see cref="IReadOnlyPinnedMemory{T}" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer.
+        /// Pinned memory.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// The resulting <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// The resulting <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => bytes;
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => bytes;
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -85,9 +85,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(IReadOnlyPinnedBuffer<Byte> value, ConcurrencyControlToken controlToken) => value;
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(IReadOnlyPinnedMemory<Byte> value, ConcurrencyControlToken controlToken) => value;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret" />.
@@ -167,7 +167,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        public void Read(Action<IReadOnlyPinnedBuffer<Byte>> readAction)
+        public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction)
         {
             using (var controlToken = StateControl.Enter())
             {
@@ -241,7 +241,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Creates a <typeparamref name="TValue" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <typeparamref name="TValue" />.
+        /// Pinned memory representing a <typeparamref name="TValue" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -249,11 +249,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <typeparamref name="TValue" />.
         /// </returns>
-        protected abstract TValue ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken);
+        protected abstract TValue ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -262,9 +262,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected abstract IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(TValue value, ConcurrencyControlToken controlToken);
+        protected abstract IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(TValue value, ConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret{TValue}" />.
@@ -304,7 +304,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
         [DebuggerHidden]
-        private void Read(Action<IReadOnlyPinnedBuffer<Byte>> readAction, ConcurrencyControlToken controlToken)
+        private void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction, ConcurrencyControlToken controlToken)
         {
             if (HasValue == false)
             {
@@ -315,11 +315,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 if (SecureValueBuffer is null)
                 {
-                    using (var pinnedBuffer = new ReadOnlyPinnedBuffer<Byte>(0))
+                    using (var memory = new ReadOnlyPinnedMemory<Byte>(0))
                     {
                         // Because secure buffers cannot have length zero, this is here to handle cases in which write operations
                         // produce empty buffers.
-                        readAction(pinnedBuffer);
+                        readAction(memory);
                     }
 
                     return;
@@ -365,9 +365,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             try
             {
-                Read((pinnedBuffer) =>
+                Read((memory) =>
                 {
-                    readAction(ConvertBytesToValue(pinnedBuffer, controlToken));
+                    readAction(ConvertBytesToValue(memory, controlToken));
                 }, controlToken);
             }
             catch (ObjectDisposedException)
@@ -424,12 +424,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                     if (SecureValueBuffer is null)
                     {
-                        SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
+                        SecureValueBuffer = new SecureMemory(valueBuffer.LengthInBytes);
                     }
                     else if (SecureValueBuffer.LengthInBytes != valueBuffer.LengthInBytes)
                     {
                         SecureValueBuffer.Dispose();
-                        SecureValueBuffer = new SecureBuffer(valueBuffer.LengthInBytes);
+                        SecureValueBuffer = new SecureMemory(valueBuffer.LengthInBytes);
                     }
 
                     SecureValueBuffer.Access(secureBuffer =>
@@ -480,6 +480,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Represents the encrypted field in which the secure value is stored.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ISecureBuffer SecureValueBuffer;
+        private ISecureMemory SecureValueBuffer;
     }
 }

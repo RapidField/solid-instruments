@@ -31,10 +31,10 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().Be(target.GetHashCode());
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
-                target.ValueType.Should().Be(typeof(IReadOnlyPinnedBuffer<Byte>));
+                target.ValueType.Should().Be(typeof(IReadOnlyPinnedMemory<Byte>));
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueOne));
+                target.Write(() => new PinnedMemory(valueOne));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 });
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueTwo));
+                target.Write(() => new PinnedMemory(valueTwo));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 });
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueThree));
+                target.Write(() => new PinnedMemory(valueThree));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());

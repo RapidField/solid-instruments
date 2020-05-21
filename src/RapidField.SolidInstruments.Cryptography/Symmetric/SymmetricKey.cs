@@ -45,12 +45,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        private SymmetricKey(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource)
+        private SymmetricKey(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedMemory keySource)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
             Algorithm = algorithm.RejectIf().IsEqualToValue(SymmetricAlgorithmSpecification.Unspecified, nameof(algorithm));
             DerivationMode = derivationMode.RejectIf().IsEqualToValue(SymmetricKeyDerivationMode.Unspecified, nameof(derivationMode));
-            KeySource = new SecureBuffer(KeySourceLengthInBytes);
+            KeySource = new SecureMemory(KeySourceLengthInBytes);
             LazyPbkdf2Provider = new Lazy<Rfc2898DeriveBytes>(InitializePbkdf2Algorithm, LazyThreadSafetyMode.ExecutionAndPublication);
 
             // Gather information about the derived key.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentNullException">
         /// <paramref name="buffer" /> is <see langword="null" />.
         /// </exception>
-        public static SymmetricKey FromBuffer(ISecureBuffer buffer)
+        public static SymmetricKey FromBuffer(ISecureMemory buffer)
         {
             buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
 
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                 buffer.Access(pinnedCiphertext =>
                 {
-                    using (var plaintextBuffer = new PinnedBuffer(SerializedPlaintextLength, true))
+                    using (var plaintextBuffer = new PinnedMemory(SerializedPlaintextLength, true))
                     {
                         using (var cipher = BufferEncryptionAlgorithm.ToCipher(RandomnessProvider))
                         {
@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             }
                         }
 
-                        using (var keySource = new PinnedBuffer(KeySourceLengthInBytes, true))
+                        using (var keySource = new PinnedMemory(KeySourceLengthInBytes, true))
                         {
                             Array.Copy(plaintextBuffer, KeySourceBufferIndex, keySource, 0, KeySourceLengthInBytes);
                             var algorithm = (SymmetricAlgorithmSpecification)plaintextBuffer[AlgorithmBufferIndex];
@@ -246,7 +246,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// </exception>
         public static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
         {
-            using (var keySource = new PinnedBuffer(KeySourceLengthInBytes, true))
+            using (var keySource = new PinnedMemory(KeySourceLengthInBytes, true))
             {
                 RandomnessProvider.GetBytes(keySource);
                 return New(algorithm, derivationMode, keySource);
@@ -260,15 +260,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// A binary representation of the current <see cref="SymmetricKey" />.
         /// </returns>
         [DebuggerHidden]
-        public ISecureBuffer ToBuffer()
+        public ISecureMemory ToBuffer()
         {
-            var resultBuffer = new SecureBuffer(SerializedLength);
+            var resultBuffer = new SecureMemory(SerializedLength);
 
             try
             {
                 using (var controlToken = StateControl.Enter())
                 {
-                    using (var plaintextBuffer = new PinnedBuffer(SerializedPlaintextLength, true))
+                    using (var plaintextBuffer = new PinnedMemory(SerializedPlaintextLength, true))
                     {
                         KeySource.Access(pinnedKeySourceBuffer =>
                         {
@@ -280,7 +280,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
 
                         using (var cipher = BufferEncryptionAlgorithm.ToCipher(RandomnessProvider))
                         {
-                            using (var initializationVector = new PinnedBuffer(cipher.BlockSizeInBytes, true))
+                            using (var initializationVector = new PinnedMemory(cipher.BlockSizeInBytes, true))
                             {
                                 RandomnessProvider.GetBytes(initializationVector);
 
@@ -313,9 +313,9 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The derived key.
         /// </returns>
         [DebuggerHidden]
-        public ISecureBuffer ToDerivedKeyBytes()
+        public ISecureMemory ToDerivedKeyBytes()
         {
-            var result = new SecureBuffer(DerivedKeyLength);
+            var result = new SecureMemory(DerivedKeyLength);
 
             try
             {
@@ -325,11 +325,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         try
                         {
-                            result.Access((buffer) =>
+                            result.Access(memory =>
                             {
                                 // Perform PBKDF2 key-derivation.
                                 var keyBytes = new Span<Byte>(Pbkdf2Provider.GetBytes(DerivedKeyLength));
-                                keyBytes.CopyTo(buffer);
+                                keyBytes.CopyTo(memory);
                                 keyBytes.Clear();
                             });
                         }
@@ -341,15 +341,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         return result;
                     }
 
-                    using (var sourceWords = new PinnedBuffer<UInt32>(KeySourceWordCount, true))
+                    using (var sourceWords = new PinnedMemory<UInt32>(KeySourceWordCount, true))
                     {
-                        KeySource.Access((buffer) =>
+                        KeySource.Access(memory =>
                         {
                             // Convert the source buffer to an array of 32-bit words.
-                            Buffer.BlockCopy(buffer, 0, sourceWords, 0, KeySourceLengthInBytes);
+                            Buffer.BlockCopy(memory, 0, sourceWords, 0, KeySourceLengthInBytes);
                         });
 
-                        using (var transformedWords = new PinnedBuffer<UInt32>(BlockWordCount, true))
+                        using (var transformedWords = new PinnedMemory<UInt32>(BlockWordCount, true))
                         {
                             // Copy out the first block. If nothing further is done, this satisfies truncation mode.
                             Array.Copy(sourceWords, transformedWords, BlockWordCount);
@@ -391,12 +391,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                     throw new UnsupportedSpecificationException($"The specified key derivation mode, {DerivationMode}, is not supported.");
                             }
 
-                            result.Access((buffer) =>
+                            result.Access(memory =>
                             {
                                 // Copy out the key bits.
                                 var keyBytes = new Byte[DerivedKeyLength];
                                 Buffer.BlockCopy(transformedWords, 0, keyBytes, 0, DerivedKeyLength);
-                                keyBytes.CopyTo(buffer);
+                                keyBytes.CopyTo(memory);
 
                                 for (var i = 0; i < DerivedKeyLength; i++)
                                 {
@@ -441,16 +441,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="keySourceLengthInBytes" /> is less than or equal to zero.
         /// </exception>
         [DebuggerHidden]
-        internal static PinnedBuffer DeriveKeySourceBytesFromPassword(String password, Int32 keySourceLengthInBytes)
+        internal static PinnedMemory DeriveKeySourceBytesFromPassword(String password, Int32 keySourceLengthInBytes)
         {
-            using (var passwordBytes = new ReadOnlyPinnedBuffer(PasswordEncoding.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)).OrIf(argument => argument.Length < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters."))))
+            using (var passwordBytes = new ReadOnlyPinnedMemory(PasswordEncoding.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)).OrIf(argument => argument.Length < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters."))))
             {
                 var hashingProcessor = new HashingBinaryProcessor(RandomnessProvider);
 
-                using (var saltBytes = new ReadOnlyPinnedBuffer(hashingProcessor.CalculateHash(passwordBytes, PasswordSaltHashingAlgorithm)))
+                using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(passwordBytes, PasswordSaltHashingAlgorithm)))
                 {
                     var pbkdf2Provider = new Rfc2898DeriveBytes(passwordBytes, saltBytes, Pbkdf2MinimumIterationCount);
-                    return new PinnedBuffer(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
+                    return new PinnedMemory(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedBuffer keySource) => new SymmetricKey(algorithm, derivationMode, keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length."));
+        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode, PinnedMemory keySource) => new SymmetricKey(algorithm, derivationMode, keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length."));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SymmetricKey" />.
@@ -700,7 +700,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// probably few good reasons to.
         /// </remarks>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly PinnedBuffer BufferEncryptionKey = new PinnedBuffer(new Byte[]
+        private static readonly PinnedMemory BufferEncryptionKey = new PinnedMemory(new Byte[]
         {
             0xaa, 0xf0, 0xcc, 0xff, 0x00, 0x33, 0x0f, 0x55, 0xff, 0xcc, 0xf0, 0xaa, 0x55, 0x0f, 0x33, 0x00
         });
@@ -769,7 +769,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents a buffer that is used to derive key bits from the current <see cref="SymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISecureBuffer KeySource;
+        private readonly ISecureMemory KeySource;
 
         /// <summary>
         /// Represents the lazily-initialized PBKDF2 algorithm provider for the current <see cref="SymmetricKey" />.

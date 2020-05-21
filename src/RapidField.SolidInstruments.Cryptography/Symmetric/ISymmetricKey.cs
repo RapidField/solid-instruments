@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A binary representation of the current <see cref="ISymmetricKey" />.
         /// </returns>
-        public ISecureBuffer ToBuffer();
+        public ISecureMemory ToBuffer();
 
         /// <summary>
         /// Converts the current <see cref="ISymmetricKey" /> to symmetric-key plaintext with correct bit-length for the encryption
@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// The derived key.
         /// </returns>
-        public ISecureBuffer ToDerivedKeyBytes();
+        public ISecureMemory ToDerivedKeyBytes();
 
         /// <summary>
         /// Gets the symmetric-key algorithm for which a key is derived.

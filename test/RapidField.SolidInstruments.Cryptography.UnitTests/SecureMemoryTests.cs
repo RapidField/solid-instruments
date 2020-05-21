@@ -9,7 +9,7 @@ using System;
 namespace RapidField.SolidInstruments.Cryptography.UnitTests
 {
     [TestClass]
-    public class SecureBufferTests
+    public class SecureMemoryTests
     {
         [TestMethod]
         public void Constructor_ShouldRaiseArgumentOutOfRangeException_ForNegativePlaintextLengthArgument()
@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             // Act.
             var action = new Action(() =>
             {
-                using (var target = new SecureBuffer(length))
+                using (var target = new SecureMemory(length))
                 {
                     return;
                 }
@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             // Act.
             var action = new Action(() =>
             {
-                using (var target = new SecureBuffer(length))
+                using (var target = new SecureMemory(length))
                 {
                     return;
                 }
@@ -54,45 +54,45 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
         {
             // Arrange.
             var length = 17;
-            var bufferReference = (Byte[])null;
-            var bufferSubsegment = new Byte[3];
+            var memoryReference = (Byte[])null;
+            var memorySubsegment = new Byte[3];
 
-            using (var target = new SecureBuffer(length))
+            using (var target = new SecureMemory(length))
             {
                 // Act.
-                target.Access((buffer =>
+                target.Access(memory =>
                 {
                     // Assert.
-                    buffer.Length.Should().Be(length);
-                    buffer.Should().OnlyContain(value => value == 0x00);
+                    memory.Length.Should().Be(length);
+                    memory.Should().OnlyContain(value => value == 0x00);
 
                     for (var i = 0; i < length; i++)
                     {
-                        buffer[i] = (Byte)i;
+                        memory[i] = (Byte)i;
                     }
 
                     // Arrange.
-                    bufferReference = buffer;
-                    Array.Copy(buffer, 1, bufferSubsegment, 0, 3);
-                }));
+                    memoryReference = memory;
+                    Array.Copy(memory, 1, memorySubsegment, 0, 3);
+                });
 
                 // Act.
-                target.Access((buffer =>
+                target.Access(memory =>
                 {
                     // Assert.
-                    buffer.Length.Should().Be(length);
-                    buffer[0].Should().Be(0x00);
-                    buffer[4].Should().Be(0x04);
-                    buffer[8].Should().Be(0x08);
-                }));
+                    memory.Length.Should().Be(length);
+                    memory[0].Should().Be(0x00);
+                    memory[4].Should().Be(0x04);
+                    memory[8].Should().Be(0x08);
+                });
             }
 
             // Assert.
-            bufferReference.Length.Should().Be(length);
-            bufferReference.Should().OnlyContain(value => value == 0x00);
-            bufferSubsegment[0].Should().Be(0x01);
-            bufferSubsegment[1].Should().Be(0x02);
-            bufferSubsegment[2].Should().Be(0x03);
+            memoryReference.Length.Should().Be(length);
+            memoryReference.Should().OnlyContain(value => value == 0x00);
+            memorySubsegment[0].Should().Be(0x01);
+            memorySubsegment[1].Should().Be(0x02);
+            memorySubsegment[2].Should().Be(0x03);
         }
 
         [TestMethod]
@@ -117,11 +117,11 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             var valueCountUpperBoundary = Convert.ToInt64(meanTarget + (Convert.ToDecimal(standardDeviationTarget) * curveTolerance));
 
             // Act.
-            using (var array = SecureBuffer.GenerateHardenedRandomBytes(Convert.ToInt32(length)))
+            using (var array = SecureMemory.GenerateHardenedRandomBytes(Convert.ToInt32(length)))
             {
-                array.Access(buffer =>
+                array.Access(memory =>
                 {
-                    target = new RandomByteArrayProfile(buffer);
+                    target = new RandomByteArrayProfile(memory);
                 });
             }
 
@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             for (var i = 0; i < iterationCount; i++)
             {
                 // Act.
-                using (var target = new SecureBuffer(length))
+                using (var target = new SecureMemory(length))
                 {
                     continue;
                 }

@@ -16,32 +16,32 @@ using System.Security.Cryptography;
 namespace RapidField.SolidInstruments.Cryptography
 {
     /// <summary>
-    /// Represents a fixed-length bit field that is pinned in memory and encrypted at rest.
+    /// Represents a fixed-length bit field that is pinned in bit field and encrypted at rest.
     /// </summary>
-    public class SecureBuffer : Instrument, ISecureBuffer
+    public class SecureMemory : Instrument, ISecureMemory
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecureBuffer" /> class.
+        /// Initializes a new instance of the <see cref="SecureMemory" /> class.
         /// </summary>
         /// <param name="lengthInBytes">
-        /// The length of the buffer, in bytes.
+        /// The length of the bit field, in bytes.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="lengthInBytes" /> is less than or equal to zero.
         /// </exception>
-        public SecureBuffer(Int32 lengthInBytes)
+        public SecureMemory(Int32 lengthInBytes)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
             Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
-            PrivateKey = new PinnedBuffer(Cipher.KeySizeInBytes, true);
+            PrivateKey = new PinnedMemory(Cipher.KeySizeInBytes, true);
             RandomnessProvider.GetBytes(PrivateKey);
 
-            using (var initializationVector = new PinnedBuffer(Cipher.BlockSizeInBytes, true))
+            using (var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true))
             {
                 RandomnessProvider.GetBytes(initializationVector);
 
-                using (var plaintext = new PinnedBuffer(lengthInBytes))
+                using (var plaintext = new PinnedMemory(lengthInBytes))
                 {
                     Ciphertext = Cipher.Encrypt(plaintext, PrivateKey, initializationVector);
                 }
@@ -49,30 +49,30 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
-        /// Generates cryptographically secure pseudo-random bytes that are pinned in memory and encrypted at rest.
+        /// Generates cryptographically secure pseudo-random bytes that are pinned in bit field and encrypted at rest.
         /// </summary>
         /// <remarks>
         /// This method is useful for generating keys and other sensitive random values.
         /// </remarks>
         /// <param name="lengthInBytes">
-        /// The length of the random buffer, in bytes.
+        /// The length of the random bit field, in bytes.
         /// </param>
         /// <returns>
         /// A cryptographically secure pseudo-random byte array of specified length.
         /// </returns>
-        public static ISecureBuffer GenerateHardenedRandomBytes(Int32 lengthInBytes)
+        public static ISecureMemory GenerateHardenedRandomBytes(Int32 lengthInBytes)
         {
-            var hardenedRandomBytes = new SecureBuffer(lengthInBytes);
-            hardenedRandomBytes.Access((pinnedBuffer) =>
+            var hardenedRandomBytes = new SecureMemory(lengthInBytes);
+            hardenedRandomBytes.Access((memory) =>
             {
-                RandomnessProvider.GetBytes(pinnedBuffer);
+                RandomnessProvider.GetBytes(memory);
             });
 
             return hardenedRandomBytes;
         }
 
         /// <summary>
-        /// Decrypts the buffer, performs the specified operation against the pinned plaintext and encrypts the buffer as a
+        /// Decrypts the bit field, performs the specified operation against the pinned plaintext and encrypts the bit field as a
         /// thread-safe, atomic operation.
         /// </summary>
         /// <param name="action">
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Access(Action<PinnedBuffer> action)
+        public void Access(Action<PinnedMemory> action)
         {
             action = action.RejectIf().IsNull(nameof(action));
 
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Cryptography
             {
                 RejectIfDisposed();
 
-                using (var plaintext = new PinnedBuffer(LengthInBytes, true))
+                using (var plaintext = new PinnedMemory(LengthInBytes, true))
                 {
                     DecryptField(plaintext);
 
@@ -117,15 +117,15 @@ namespace RapidField.SolidInstruments.Cryptography
         public override Int32 GetHashCode() => Ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
 
         /// <summary>
-        /// Converts the value of the current <see cref="SecureBuffer" /> to its equivalent string representation.
+        /// Converts the value of the current <see cref="SecureMemory" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
-        /// A string representation of the current <see cref="SecureBuffer" />.
+        /// A string representation of the current <see cref="SecureMemory" />.
         /// </returns>
         public override String ToString() => $"{{ {nameof(LengthInBytes)}: {LengthInBytes} }}";
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="SecureBuffer" />.
+        /// Releases all resources consumed by the current <see cref="SecureMemory" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -148,30 +148,30 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
-        /// Decrypts the current buffer and writes the result to the specified buffer.
+        /// Decrypts the current bit field and writes the result to the specified bit field.
         /// </summary>
         /// <param name="plaintext">
-        /// The buffer to which the plaintext result is written.
+        /// The bit field to which the plaintext result is written.
         /// </param>
         [DebuggerHidden]
-        private void DecryptField(PinnedBuffer plaintext)
+        private void DecryptField(PinnedMemory plaintext)
         {
-            using (var buffer = Cipher.Decrypt(Ciphertext, PrivateKey))
+            using (var memory = Cipher.Decrypt(Ciphertext, PrivateKey))
             {
-                buffer.Span.CopyTo(plaintext);
+                memory.Span.CopyTo(plaintext);
             }
         }
 
         /// <summary>
-        /// Encrypts the specified plaintext and writes the result to the current buffer.
+        /// Encrypts the specified plaintext and writes the result to the current bit field.
         /// </summary>
         /// <param name="plaintext">
-        /// The buffer containing the plaintext to encrypt.
+        /// The bit field containing the plaintext to encrypt.
         /// </param>
         [DebuggerHidden]
-        private void EncryptField(PinnedBuffer plaintext)
+        private void EncryptField(PinnedMemory plaintext)
         {
-            using (var initializationVector = new PinnedBuffer(Cipher.BlockSizeInBytes, true))
+            using (var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true))
             {
                 RandomnessProvider.GetBytes(initializationVector);
 
@@ -189,7 +189,7 @@ namespace RapidField.SolidInstruments.Cryptography
         public static RandomNumberGenerator RandomnessProvider => HardenedRandomNumberGenerator.Instance;
 
         /// <summary>
-        /// Gets the length of the buffer, in bytes.
+        /// Gets the length of the bit field, in bytes.
         /// </summary>
         public Int32 LengthInBytes
         {
@@ -197,21 +197,21 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
-        /// Represents a cipher that is used to encrypt and decrypt the buffer field.
+        /// Represents a cipher that is used to encrypt and decrypt the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly SymmetricKeyCipher Cipher;
 
         /// <summary>
-        /// Represents the ciphertext bits for the buffer.
+        /// Represents the ciphertext bits for the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly PinnedBuffer Ciphertext;
+        private readonly PinnedMemory Ciphertext;
 
         /// <summary>
-        /// Represents a private key that is used to encrypt and decrypt the buffer field.
+        /// Represents a private key that is used to encrypt and decrypt the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly PinnedBuffer PrivateKey;
+        private readonly PinnedMemory PrivateKey;
     }
 }

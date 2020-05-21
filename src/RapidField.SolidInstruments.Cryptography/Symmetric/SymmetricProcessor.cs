@@ -130,15 +130,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm)
+        public T Decrypt(Byte[] ciphertext, ISecureMemory key, SymmetricAlgorithmSpecification algorithm)
         {
             try
             {
                 var plaintext = default(T);
 
-                key.Access(keyBuffer =>
+                key.Access(memory =>
                 {
-                    plaintext = Decrypt(ciphertext, keyBuffer, algorithm);
+                    plaintext = Decrypt(ciphertext, memory, algorithm);
                 });
 
                 return plaintext;
@@ -254,7 +254,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
+        public Byte[] Encrypt(T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -278,7 +278,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, ISecureBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        public Byte[] Encrypt(T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
             try
             {
@@ -313,11 +313,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting plaintext object.
         /// </returns>
         [DebuggerHidden]
-        private T Decrypt(Byte[] ciphertext, PinnedBuffer key, SymmetricAlgorithmSpecification algorithm)
+        private T Decrypt(Byte[] ciphertext, PinnedMemory key, SymmetricAlgorithmSpecification algorithm)
         {
             using (var cipher = algorithm.ToCipher(RandomnessProvider))
             {
-                using (var pinnedCiphertext = new PinnedBuffer(ciphertext, false))
+                using (var pinnedCiphertext = new PinnedMemory(ciphertext, false))
                 {
                     using (var plaintext = cipher.Decrypt(pinnedCiphertext, key))
                     {
@@ -347,12 +347,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting ciphertext.
         /// </returns>
         [DebuggerHidden]
-        private Byte[] Encrypt(T plaintextObject, PinnedBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        private Byte[] Encrypt(T plaintextObject, PinnedMemory key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
             var plaintext = BinarySerializer.Serialize(plaintextObject);
             var plaintextLength = plaintext.Length;
 
-            using (var pinnedPlaintext = new PinnedBuffer(plaintextLength, true))
+            using (var pinnedPlaintext = new PinnedMemory(plaintextLength, true))
             {
                 Array.Copy(plaintext, pinnedPlaintext, plaintextLength);
 
@@ -362,7 +362,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         case CryptographicTransform.CipherModeCbc:
 
-                            using (var processedInitializationVector = new PinnedBuffer(cipher.BlockSizeInBytes, true))
+                            using (var processedInitializationVector = new PinnedMemory(cipher.BlockSizeInBytes, true))
                             {
                                 if (initializationVector is null)
                                 {

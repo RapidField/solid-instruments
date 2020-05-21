@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A binary representation of the current <see cref="ICascadingSymmetricKey" />.
         /// </returns>
-        public ISecureBuffer ToBuffer();
+        public ISecureMemory ToBuffer();
 
         /// <summary>
         /// Gets the number of layers of encryption that a resulting transform will apply.

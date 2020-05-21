@@ -19,12 +19,12 @@ namespace RapidField.SolidInstruments.Collections
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
     /// <remarks>
-    /// <see cref="ReadOnlyPinnedBuffer" /> is the default implementation of <see cref="IReadOnlyPinnedBuffer" />.
+    /// <see cref="ReadOnlyPinnedMemory" /> is the default implementation of <see cref="IReadOnlyPinnedMemory" />.
     /// </remarks>
-    public class ReadOnlyPinnedBuffer : ReadOnlyPinnedBuffer<Byte>
+    public class ReadOnlyPinnedMemory : ReadOnlyPinnedMemory<Byte>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlyPinnedBuffer" /> class.
+        /// Initializes a new instance of the <see cref="ReadOnlyPinnedMemory" /> class.
         /// </summary>
         /// <param name="length">
         /// The length of the array.
@@ -32,29 +32,29 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="length" /> is less than zero.
         /// </exception>
-        public ReadOnlyPinnedBuffer(Int32 length)
+        public ReadOnlyPinnedMemory(Int32 length)
             : base(length)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlyPinnedBuffer" /> class.
+        /// Initializes a new instance of the <see cref="ReadOnlyPinnedMemory" /> class.
         /// </summary>
         /// <param name="field">
-        /// The structure collection comprising the buffer.
+        /// The structure collection comprising the memory field.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="field" /> is <see langword="null" />.
         /// </exception>
-        public ReadOnlyPinnedBuffer(Byte[] field)
+        public ReadOnlyPinnedMemory(Byte[] field)
             : base(field)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedBuffer" />.
+        /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedMemory" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -66,16 +66,16 @@ namespace RapidField.SolidInstruments.Collections
     /// Represents a read-only, fixed-length bit field that is pinned in memory.
     /// </summary>
     /// <remarks>
-    /// <see cref="ReadOnlyPinnedBuffer{T}" /> is the default implementation of <see cref="IReadOnlyPinnedBuffer{T}" />.
+    /// <see cref="ReadOnlyPinnedMemory{T}" /> is the default implementation of <see cref="IReadOnlyPinnedMemory{T}" />.
     /// </remarks>
     /// <typeparam name="T">
-    /// The element type of the buffer.
+    /// The element type of the memory field.
     /// </typeparam>
-    public class ReadOnlyPinnedBuffer<T> : Instrument, IReadOnlyPinnedBuffer<T>
+    public class ReadOnlyPinnedMemory<T> : Instrument, IReadOnlyPinnedMemory<T>
         where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlyPinnedBuffer{T}" /> class.
+        /// Initializes a new instance of the <see cref="ReadOnlyPinnedMemory{T}" /> class.
         /// </summary>
         /// <param name="length">
         /// The length of the array.
@@ -83,22 +83,22 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="length" /> is less than zero.
         /// </exception>
-        public ReadOnlyPinnedBuffer(Int32 length)
+        public ReadOnlyPinnedMemory(Int32 length)
             : this(new T[length.RejectIf().IsLessThan(0, nameof(length))])
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReadOnlyPinnedBuffer{T}" /> class.
+        /// Initializes a new instance of the <see cref="ReadOnlyPinnedMemory{T}" /> class.
         /// </summary>
         /// <param name="field">
-        /// The structure collection comprising the buffer.
+        /// The structure collection comprising the memory field.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="field" /> is <see langword="null" />.
         /// </exception>
-        public ReadOnlyPinnedBuffer(T[] field)
+        public ReadOnlyPinnedMemory(T[] field)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
             Handle = GCHandle.Alloc(field.RejectIf().IsNull(nameof(field)).TargetArgument, GCHandleType.Pinned);
@@ -123,34 +123,34 @@ namespace RapidField.SolidInstruments.Collections
         public T this[Int32 index] => Field[index];
 
         /// <summary>
-        /// Facilitates implicit <typeparamref name="T" /> array to <see cref="ReadOnlyPinnedBuffer{T}" /> casting.
+        /// Facilitates implicit <typeparamref name="T" /> array to <see cref="ReadOnlyPinnedMemory{T}" /> casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator ReadOnlyPinnedBuffer<T>(T[] target) => target is null ? null : new ReadOnlyPinnedBuffer<T>(target);
+        public static implicit operator ReadOnlyPinnedMemory<T>(T[] target) => target is null ? null : new ReadOnlyPinnedMemory<T>(target);
 
         /// <summary>
-        /// Facilitates implicit <see cref="ReadOnlyPinnedBuffer{T}" /> to <see cref="ReadOnlySpan{T}" /> casting.
+        /// Facilitates implicit <see cref="ReadOnlyPinnedMemory{T}" /> to <see cref="ReadOnlySpan{T}" /> casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator ReadOnlySpan<T>(ReadOnlyPinnedBuffer<T> target) => target is null ? ReadOnlySpan<T>.Empty : target.ReadOnlySpan;
+        public static implicit operator ReadOnlySpan<T>(ReadOnlyPinnedMemory<T> target) => target is null ? ReadOnlySpan<T>.Empty : target.ReadOnlySpan;
 
         /// <summary>
-        /// Facilitates implicit <see cref="ReadOnlyPinnedBuffer{T}" /> to <typeparamref name="T" /> array casting.
+        /// Facilitates implicit <see cref="ReadOnlyPinnedMemory{T}" /> to <typeparamref name="T" /> array casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator T[](ReadOnlyPinnedBuffer<T> target) => target?.Field;
+        public static implicit operator T[](ReadOnlyPinnedMemory<T> target) => target?.Field;
 
         /// <summary>
-        /// Returns an enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// Returns an enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <returns>
-        /// An enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// An enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </returns>
         public IEnumerator<T> GetEnumerator()
         {
@@ -161,10 +161,10 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// Returns an enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <returns>
-        /// An enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// An enumerator that iterates through the elements of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -182,9 +182,9 @@ namespace RapidField.SolidInstruments.Collections
             {
                 hashCode ^= element.GetHashCode() ^ 0x66666666;
 
-                using (var buffer = new ReadOnlyPinnedBuffer(hashCode.ToByteArray()))
+                using (var memory = new ReadOnlyPinnedMemory(hashCode.ToByteArray()))
                 {
-                    hashCode = buffer.ComputeThirtyTwoBitHash() ^ 0x33333333;
+                    hashCode = memory.ComputeThirtyTwoBitHash() ^ 0x33333333;
                 }
             }
 
@@ -192,15 +192,15 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="ReadOnlyPinnedBuffer{T}" /> to its equivalent string representation.
+        /// Converts the value of the current <see cref="ReadOnlyPinnedMemory{T}" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
-        /// A string representation of the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// A string representation of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </returns>
         public override String ToString() => $"{{ {nameof(Length)}: {Length}, {nameof(LengthInBytes)}: {LengthInBytes} }}";
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -228,12 +228,12 @@ namespace RapidField.SolidInstruments.Collections
         private Memory<T> InitializeFieldMemory() => new Memory<T>(Field);
 
         /// <summary>
-        /// Gets a value indicating whether or not the buffer is empty.
+        /// Gets a value indicating whether or not the memory field is empty.
         /// </summary>
         public Boolean IsEmpty => Length == 0;
 
         /// <summary>
-        /// Gets the number of elements comprising the buffer.
+        /// Gets the number of elements comprising the memory field.
         /// </summary>
         public Int32 Length
         {
@@ -241,12 +241,12 @@ namespace RapidField.SolidInstruments.Collections
         }
 
         /// <summary>
-        /// Gets the length of the buffer, in bytes.
+        /// Gets the length of the memory field, in bytes.
         /// </summary>
         public Int32 LengthInBytes => (Length * StructureSize);
 
         /// <summary>
-        /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="ReadOnlyPinnedBuffer{T}" />.
+        /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
