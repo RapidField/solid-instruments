@@ -16,7 +16,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     /// <summary>
     /// Represents exclusive or semi-exclusive control of a resource or block of code by a single thread.
     /// </summary>
-    public sealed class ConcurrencyControlToken : IAsyncDisposable, IComparable<ConcurrencyControlToken>, IEquatable<ConcurrencyControlToken>, IDisposable
+    /// <remarks>
+    /// <see cref="ConcurrencyControlToken" /> is the default implementation of <see cref="IConcurrencyControlToken" />.
+    /// </remarks>
+    public sealed class ConcurrencyControlToken : IAsyncDisposable, IComparable<ConcurrencyControlToken>, IConcurrencyControlToken, IEquatable<ConcurrencyControlToken>, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyControlToken" /> class.

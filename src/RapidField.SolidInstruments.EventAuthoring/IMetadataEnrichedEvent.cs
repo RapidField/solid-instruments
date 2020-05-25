@@ -2,22 +2,14 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using System;
-using System.Collections.Generic;
+using RapidField.SolidInstruments.Core;
 
 namespace RapidField.SolidInstruments.EventAuthoring
 {
     /// <summary>
     /// Represents an event that is enriched with metadata information.
     /// </summary>
-    public interface IMetadataEnrichedEvent : IEvent
+    public interface IMetadataEnrichedEvent : IEvent, IMetadataEnrichedObject
     {
-        /// <summary>
-        /// Gets a dictionary of metadata for the current <see cref="IMetadataEnrichedEvent" />.
-        /// </summary>
-        public IDictionary<String, String> Metadata
-        {
-            get;
-        }
     }
 }

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace RapidField.SolidInstruments.DataAccess
@@ -15,7 +14,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <typeparam name="TEntity">
     /// The type of the entity.
     /// </typeparam>
-    public interface IDataAccessRepository<TEntity> : IDataAccessRepository
+    public interface IDataAccessRepository<TEntity> : IReadOnlyDataAccessRepository<TEntity>
         where TEntity : class
     {
         /// <summary>
@@ -81,89 +80,6 @@ namespace RapidField.SolidInstruments.DataAccess
         /// The object is disposed.
         /// </exception>
         public void AddRange(IEnumerable<TEntity> entities);
-
-        /// <summary>
-        /// Returns all entities from the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <returns>
-        /// All entities within the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public IQueryable<TEntity> All();
-
-        /// <summary>
-        /// Determines whether or not the specified entity exists in the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="entity">
-        /// The entity to evaluate.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if the specified entity exists in the current <see cref="IDataAccessRepository{TEntity}" />,
-        /// otherwise <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="entity" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Boolean Contains(TEntity entity);
-
-        /// <summary>
-        /// Determines whether or not any entities matching the specified predicate exist in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if any entities matching the specified predicate exist in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />, otherwise <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Boolean ContainsWhere(Expression<Func<TEntity, Boolean>> predicate);
-
-        /// <summary>
-        /// Returns the number of entities matching the specified predicate in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// The number of entities matching the specified predicate in the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate);
-
-        /// <summary>
-        /// Returns all entities matching the specified predicate from the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// All entities matching the specified predicate within the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate);
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="IDataAccessRepository{TEntity}" />.
