@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Command
@@ -58,46 +57,30 @@ namespace RapidField.SolidInstruments.Command
         public TextualCommand(String value, IEnumerable<String> labels)
             : base()
         {
-            LabelsReference = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
-            MetadataReference = new Dictionary<String, String>();
+            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Metadata = new Dictionary<String, String>();
             Value = value.RejectIf().IsNull(nameof(value));
         }
 
         /// <summary>
-        /// Gets a collection of textual labels that provide categorical and/or contextual information about the current
+        /// Gets or sets a collection of textual labels that provide categorical and/or contextual information about the current
         /// <see cref="TextualCommand" />.
         /// </summary>
         [DataMember]
         public ICollection<String> Labels
         {
-            get
-            {
-                if (LabelsReference is null)
-                {
-                    // This is necessary to accommodate specific serialization scenarios.
-                    LabelsReference = new List<String>();
-                }
-
-                return LabelsReference;
-            }
+            get;
+            set;
         }
 
         /// <summary>
-        /// Gets a dictionary of metadata for the current <see cref="TextualCommand" />.
+        /// Gets or sets a dictionary of metadata for the current <see cref="TextualCommand" />.
         /// </summary>
         [DataMember]
         public IDictionary<String, String> Metadata
         {
-            get
-            {
-                if (MetadataReference is null)
-                {
-                    // This is necessary to accommodate specific serialization scenarios.
-                    MetadataReference = new Dictionary<String, String>();
-                }
-
-                return MetadataReference;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -109,18 +92,5 @@ namespace RapidField.SolidInstruments.Command
             get;
             set;
         }
-
-        /// <summary>
-        /// Represents a collection of textual labels that provide categorical and/or contextual information about the current
-        /// <see cref="TextualCommand" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ICollection<String> LabelsReference;
-
-        /// <summary>
-        /// Represents a dictionary of metadata for the current <see cref="TextualCommand" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IDictionary<String, String> MetadataReference;
     }
 }

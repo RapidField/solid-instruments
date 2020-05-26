@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// A string representation of the current <see cref="DiscreteUnitOfOutput{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(ChannelReadIndex)}: {ChannelReadIndex}, {nameof(Value)}: {Value} }}";
+        public override String ToString() => $"{{ \"{nameof(ChannelReadIndex)}\": {ChannelReadIndex}, \"{nameof(Value)}\": \"{Value}\" }}";
 
         /// <summary>
         /// Gets the zero-based index for the current <see cref="DiscreteUnitOfOutput{T}" /> within the associated channel's output

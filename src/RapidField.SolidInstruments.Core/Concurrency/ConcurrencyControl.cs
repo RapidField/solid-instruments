@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public ConcurrencyControlToken Enter()
+        public IConcurrencyControlToken Enter()
         {
             RejectIfDisposed();
 
@@ -153,7 +153,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Exit(ConcurrencyControlToken token)
+        public void Exit(IConcurrencyControlToken token)
         {
             RejectIfDisposed();
 
@@ -189,7 +189,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A string representation of the current <see cref="ConcurrencyControl" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(ConsumptionState)}: {ConsumptionState} }}";
+        public override String ToString() => $"{{ \"{nameof(ConsumptionState)}\": \"{ConsumptionState}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
@@ -269,7 +269,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// The <see cref="IConcurrencyControl" /> is in an invalid state.
         /// </exception>
         [DebuggerHidden]
-        private ConcurrencyControlToken GetNextToken(SynchronizationContext context, Thread granteeThread, TimeSpan expirationThreshold, Stopwatch expirationStopwatch)
+        private IConcurrencyControlToken GetNextToken(SynchronizationContext context, Thread granteeThread, TimeSpan expirationThreshold, Stopwatch expirationStopwatch)
         {
             var identifier = Interlocked.Increment(ref NextTokenIdentifier);
             Interlocked.CompareExchange(ref NextTokenIdentifier, 0, MaximumTokenIdentifier);
@@ -330,7 +330,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents currently-in-use tokens that were issued by the current <see cref="ConcurrencyControl" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<Int32, ConcurrencyControlToken> Tokens = new ConcurrentDictionary<Int32, ConcurrencyControlToken>();
+        private readonly ConcurrentDictionary<Int32, IConcurrencyControlToken> Tokens = new ConcurrentDictionary<Int32, IConcurrencyControlToken>();
 
         /// <summary>
         /// Represents the consumption state of the current <see cref="ConcurrencyControl" />.

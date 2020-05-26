@@ -146,6 +146,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public IDictionary<String, String> Metadata
         {
             get;
+            set;
         }
 
         /// <summary>

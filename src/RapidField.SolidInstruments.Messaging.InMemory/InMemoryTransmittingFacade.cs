@@ -56,6 +56,6 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task TransmitAsync(PrimitiveMessage message, IMessagingEntitySendClient sendClient, ConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
+        protected sealed override Task TransmitAsync(PrimitiveMessage message, IMessagingEntitySendClient sendClient, IConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
     }
 }

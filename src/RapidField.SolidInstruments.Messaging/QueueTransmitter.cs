@@ -56,6 +56,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
+        protected override void Process(TMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
     }
 }

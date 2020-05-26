@@ -73,6 +73,6 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// The configured <typeparamref name="TResult" /> instance.
         /// </returns>
-        protected abstract TResult ToResult(ConcurrencyControlToken controlToken);
+        protected abstract TResult ToResult(IConcurrencyControlToken controlToken);
     }
 }

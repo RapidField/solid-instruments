@@ -61,7 +61,7 @@ public class SubtractionCommandHandler : CommandHandler<SubtractionCommand, int>
     {
     }
 
-    protected override int Process(SubtractionCommand command, ConcurrencyControlToken controlToken)
+    protected override int Process(SubtractionCommand command, IConcurrencyControlToken controlToken)
     {
         return (command.Minuend - command.Subtrahend);
     }

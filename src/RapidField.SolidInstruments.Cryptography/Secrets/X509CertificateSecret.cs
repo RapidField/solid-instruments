@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="X509Certificate2" />.
         /// </returns>
-        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
+        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(X509Certificate2 value, ConcurrencyControlToken controlToken) => new PinnedMemory(value.RawData);
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(X509Certificate2 value, IConcurrencyControlToken controlToken) => new PinnedMemory(value.RawData);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="X509CertificateSecret" />.

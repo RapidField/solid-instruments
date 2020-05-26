@@ -3,8 +3,6 @@
 // =================================================================================================================================
 
 using System;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.ObjectComposition
 {
@@ -12,21 +10,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// Represents a collection of definitions that control the behavior of an <see cref="ObjectContainer" /> when resolving
     /// requested objects.
     /// </summary>
-    /// <remarks>
-    /// <see cref="ObjectContainerConfigurationDefinitions" /> is the default implementation of
-    /// <see cref="IObjectContainerConfigurationDefinitions" />.
-    /// </remarks>
-    public sealed class ObjectContainerConfigurationDefinitions : IObjectContainerConfigurationDefinitions
+    public interface IObjectContainerConfigurationDefinitions
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectContainerConfigurationDefinitions" /> class.
-        /// </summary>
-        [DebuggerHidden]
-        internal ObjectContainerConfigurationDefinitions()
-        {
-            Registrations = new ConcurrentDictionary<Type, IObjectContainerDefinition>();
-        }
-
         /// <summary>
         /// Registers the specified product type with the associated <see cref="IObjectContainer" />.
         /// </summary>
@@ -41,18 +26,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// </exception>
         public IObjectContainerConfigurationDefinitions Add<TRequest, TProduct>()
             where TRequest : class
-            where TProduct : class, TRequest
-        {
-            var requestType = typeof(TRequest);
-            var productType = typeof(TProduct);
-
-            if (Registrations.TryAdd(requestType, new ObjectContainerDefinition(requestType, productType)))
-            {
-                return this;
-            }
-
-            throw new ArgumentException($"A definition already exists for the specified request type, {requestType.FullName}.", nameof(TRequest));
-        }
+            where TProduct : class, TRequest;
 
         /// <summary>
         /// Registers the specified product type with the associated <see cref="IObjectContainer" />.
@@ -64,12 +38,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// A definition already exists for <typeparamref name="TProduct" />.
         /// </exception>
         public IObjectContainerConfigurationDefinitions Add<TProduct>()
-            where TProduct : class => Add<TProduct, TProduct>();
-
-        /// <summary>
-        /// Represents a collection of request-product type pairs that constitute the definitions.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly ConcurrentDictionary<Type, IObjectContainerDefinition> Registrations;
+            where TProduct : class;
     }
 }

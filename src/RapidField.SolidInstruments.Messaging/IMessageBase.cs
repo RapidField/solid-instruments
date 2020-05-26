@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets or sets instructions and contextual information relating to processing for the current <see cref="IMessageBase" />.
         /// </summary>
-        public MessageProcessingInformation ProcessingInformation
+        public IMessageProcessingInformation ProcessingInformation
         {
             get;
             set;

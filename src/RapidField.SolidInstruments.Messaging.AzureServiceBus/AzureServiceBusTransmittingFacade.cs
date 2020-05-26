@@ -57,6 +57,6 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task TransmitAsync(AzureServiceBusMessage message, ISenderClient sendClient, ConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
+        protected sealed override Task TransmitAsync(AzureServiceBusMessage message, ISenderClient sendClient, IConcurrencyControlToken controlToken) => sendClient.SendAsync(message);
     }
 }

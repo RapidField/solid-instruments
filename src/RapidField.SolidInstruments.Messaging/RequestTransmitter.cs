@@ -63,6 +63,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
+        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => base.Process(command, mediator, controlToken);
     }
 }

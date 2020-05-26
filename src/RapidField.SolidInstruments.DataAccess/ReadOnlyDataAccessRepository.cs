@@ -186,7 +186,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// All entities within the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
         /// </returns>
-        protected abstract IQueryable<TEntity> All(ConcurrencyControlToken controlToken);
+        protected abstract IQueryable<TEntity> All(IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Determines whether or not any entities matching the specified predicate exist in the current
@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <see langword="true" /> if any entities matching the specified predicate exist in the current
         /// <see cref="ReadOnlyDataAccessRepository{TEntity}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected abstract Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken);
+        protected abstract Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Determines whether or not the specified entity exists in the current
@@ -218,7 +218,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <see langword="true" /> if the specified entity exists in the current
         /// <see cref="ReadOnlyDataAccessRepository{TEntity}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected abstract Boolean Contains(TEntity entity, ConcurrencyControlToken controlToken);
+        protected abstract Boolean Contains(TEntity entity, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Returns the number of entities in the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The number of entities in the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
         /// </returns>
-        protected abstract Int64 Count(ConcurrencyControlToken controlToken);
+        protected abstract Int64 Count(IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Returns the number of entities matching the specified predicate in the current
@@ -245,7 +245,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// The number of entities matching the specified predicate in the current
         /// <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
         /// </returns>
-        protected abstract Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken);
+        protected abstract Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
@@ -268,7 +268,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// All entities matching the specified predicate within the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
         /// </returns>
-        protected abstract IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken);
+        protected abstract IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Gets the entity type of the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.

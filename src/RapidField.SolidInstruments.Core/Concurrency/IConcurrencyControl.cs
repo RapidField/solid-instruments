@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public ConcurrencyControlToken Enter();
+        public IConcurrencyControlToken Enter();
 
         /// <summary>
         /// Informs the control that a thread is exiting a block of code or has finished consuming a resource.
@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Exit(ConcurrencyControlToken token);
+        public void Exit(IConcurrencyControlToken token);
 
         /// <summary>
         /// Gets the consumption state of the current <see cref="IConcurrencyControl" />.

@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="String" />.
         /// </returns>
-        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
+        protected sealed override String ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => Encoding.Unicode.GetString(bytes.ReadOnlySpan);
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(String value, ConcurrencyControlToken controlToken) => new PinnedMemory(Encoding.Unicode.GetBytes(value), true);
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(String value, IConcurrencyControlToken controlToken) => new PinnedMemory(Encoding.Unicode.GetBytes(value), true);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="StringSecret" />.

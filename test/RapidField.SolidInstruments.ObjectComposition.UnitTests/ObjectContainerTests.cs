@@ -3,7 +3,6 @@
 // =================================================================================================================================
 
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.Concurrency;
@@ -44,7 +43,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -68,11 +67,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -120,7 +119,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -142,11 +141,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -194,7 +193,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -218,11 +217,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForEquivalentRequestType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -272,7 +271,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -296,11 +295,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Get_ShouldReturnSameObjectInstance_ForRepeatedCallsForSameRequestType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -350,7 +349,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -374,11 +373,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldRaiseArgumentException_ForUnsupportedType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -428,7 +427,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -452,11 +451,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldReturnDifferentObjectInstances_ForRepeatedCallsForSameRequestType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -504,7 +503,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -526,11 +525,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void GetNew_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -576,7 +575,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             // Arrange.
             var objectFactory = new SimulatedInstrumentFactory();
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()
@@ -598,11 +597,11 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void InstanceTypes_ShouldReturnConfiguredTypes_UsingManualConfiguration()
         {
             // Arrange.
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 functions.Add(() => new SimulatedInstrument(ConcurrencyControlMode.SingleThreadLock));
             });
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 definitions
                     .Add<SimulatedInstrument>()

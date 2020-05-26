@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <returns>
         /// A string representation of the current <see cref="DynamicSerializer{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Format)}: {Format}, {nameof(ContractType)}: {ContractType.FullName} }}";
+        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\", {nameof(ContractType)}\": \"{ContractType.FullName}\" }}";
 
         /// <summary>
         /// Converts the specified buffer to its typed equivalent.
@@ -384,7 +384,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <returns>
         /// A string representation of the current <see cref="DynamicSerializer" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Format)}: {Format} }}";
+        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\" }}";
 
         /// <summary>
         /// Converts the specified buffer to its typed equivalent.

@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(HeartbeatMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected override void Process(HeartbeatMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             var pingRequest = new PingRequestMessage();
             var pingResponse = (PingResponseMessage)null;

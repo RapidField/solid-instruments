@@ -190,7 +190,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Gets instructions and contextual information relating to processing for the current <see cref="PrimitiveMessage" />.
         /// </summary>
         [IgnoreDataMember]
-        public MessageProcessingInformation ProcessingInformation => Body.ProcessingInformation;
+        public IMessageProcessingInformation ProcessingInformation => Body.ProcessingInformation;
 
         /// <summary>
         /// Gets or sets an exclusive lock token for the current message, which can be used to complete or abandon processing, or

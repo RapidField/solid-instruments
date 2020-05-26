@@ -260,6 +260,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected abstract Task TransmitAsync(TAdaptedMessage message, TSender sendClient, ConcurrencyControlToken controlToken);
+        protected abstract Task TransmitAsync(TAdaptedMessage message, TSender sendClient, IConcurrencyControlToken controlToken);
     }
 }

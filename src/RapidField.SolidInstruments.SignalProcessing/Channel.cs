@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
-using RapidField.SolidInstruments.TextEncoding.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -438,7 +437,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// A string representation of the current <see cref="Channel{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Identifier)}: {Identifier.ToSerializedString()}, {nameof(Name)}: {Name} }}";
+        public override String ToString() => $"{{ \"{nameof(Identifier)}\": \"{Identifier.ToSerializedString()}\", {nameof(Name)}\": \"{Name}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Channel{T}" />.

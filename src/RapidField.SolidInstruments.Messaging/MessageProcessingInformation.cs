@@ -3,8 +3,9 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -13,8 +14,11 @@ namespace RapidField.SolidInstruments.Messaging
     /// <summary>
     /// Represents instructions and contextual information relating to processing for an <see cref="IMessageBase" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="MessageProcessingInformation" /> is the default implementation of <see cref="IMessageProcessingInformation" />.
+    /// </remarks>
     [DataContract]
-    public sealed class MessageProcessingInformation
+    public sealed class MessageProcessingInformation : IMessageProcessingInformation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
@@ -37,9 +41,17 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public MessageProcessingInformation(MessageListeningFailurePolicy failurePolicy)
         {
-            AttemptResults = new Collection<MessageProcessingAttemptResult>();
+            AttemptResults = new List<MessageProcessingAttemptResult>();
             FailurePolicy = failurePolicy.RejectIf().IsNull(nameof(failurePolicy));
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageProcessingInformation" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageProcessingInformation" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(IsSuccessfullyProcessed)}\": {IsSuccessfullyProcessed.ToSerializedString()}, \"{nameof(AttemptCount)}\": {AttemptCount} }}";
 
         /// <summary>
         /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not
@@ -49,14 +61,14 @@ namespace RapidField.SolidInstruments.Messaging
         public Int32 AttemptCount => AttemptResults.Count();
 
         /// <summary>
-        /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if
+        /// Gets or sets an ordered collection of processing attempt results for the associated message, or an empty collection if
         /// processing has not yet been attempted.
         /// </summary>
         [DataMember]
-        public Collection<MessageProcessingAttemptResult> AttemptResults
+        public ICollection<MessageProcessingAttemptResult> AttemptResults
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

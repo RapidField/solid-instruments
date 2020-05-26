@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void RegisterMessageHandler(Action<PrimitiveMessage> messageHandler, IMessagingEntityReceiveClient receiveClient, ConcurrencyControlToken controlToken)
+        protected sealed override void RegisterMessageHandler(Action<PrimitiveMessage> messageHandler, IMessagingEntityReceiveClient receiveClient, IConcurrencyControlToken controlToken)
         {
             var messageHandlerAction = new Action<PrimitiveMessage>((message) =>
             {

@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected override void Process(TMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             switch (EntityType)
             {
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected override TResponseMessage Process(TRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             using (var requestTask = Facade.RequestAsync<TRequestMessage, TResponseMessage>(command))
             {

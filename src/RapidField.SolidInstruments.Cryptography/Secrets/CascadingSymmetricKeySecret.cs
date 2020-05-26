@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        protected sealed override CascadingSymmetricKey ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken)
+        protected sealed override CascadingSymmetricKey ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken)
         {
             var result = (CascadingSymmetricKey)null;
 
@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as a pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(CascadingSymmetricKey value, ConcurrencyControlToken controlToken)
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(CascadingSymmetricKey value, IConcurrencyControlToken controlToken)
         {
             var result = (ReadOnlyPinnedMemory)null;
 

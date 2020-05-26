@@ -111,6 +111,14 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="MessageProcessingAttemptResult" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageProcessingAttemptResult" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(WasSuccessful)}\": {WasSuccessful.ToSerializedString()}, \"{nameof(AttemptEndTimeStamp)}\": \"{AttemptEndTimeStamp.ToSerializedString()}\" }}";
+
+        /// <summary>
         /// Gets or sets the date and time when the associated attempt ended, successfully or otherwise.
         /// </summary>
         [DataMember]

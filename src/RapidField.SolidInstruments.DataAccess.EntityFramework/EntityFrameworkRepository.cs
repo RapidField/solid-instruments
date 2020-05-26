@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Add(TEntity entity, ConcurrencyControlToken controlToken) => Set.Add(entity);
+        protected override void Add(TEntity entity, IConcurrencyControlToken controlToken) => Set.Add(entity);
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void AddRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.AddRange(entities);
+        protected override void AddRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.AddRange(entities);
 
         /// <summary>
         /// Returns all entities from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// All entities within the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override IQueryable<TEntity> All(ConcurrencyControlToken controlToken) => Set.AsQueryable();
+        protected override IQueryable<TEntity> All(IConcurrencyControlToken controlToken) => Set.AsQueryable();
 
         /// <summary>
         /// Determines whether or not any entities matching the specified predicate exist in the current
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <see langword="true" /> if any entities matching the specified predicate exist in the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => Set.AsNoTracking().Any(predicate);
+        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.AsNoTracking().Any(predicate);
 
         /// <summary>
         /// Determines whether or not the specified entity exists in the current
@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <see langword="true" /> if the specified entity exists in the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected override Boolean Contains(TEntity entity, ConcurrencyControlToken controlToken)
+        protected override Boolean Contains(TEntity entity, IConcurrencyControlToken controlToken)
         {
             var entityType = Context.Model.FindEntityType(typeof(TEntity));
             var primaryKey = entityType.FindPrimaryKey();
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// The number of entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override Int64 Count(ConcurrencyControlToken controlToken) => Set.AsNoTracking().Count();
+        protected override Int64 Count(IConcurrencyControlToken controlToken) => Set.AsNoTracking().Count();
 
         /// <summary>
         /// Returns the number of entities matching the specified predicate in the current
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The number of entities matching the specified predicate in the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => Set.AsNoTracking().Count(predicate);
+        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.AsNoTracking().Count(predicate);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// All entities matching the specified predicate within the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => Set.Where(predicate);
+        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.Where(predicate);
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -194,7 +194,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Remove(TEntity entity, ConcurrencyControlToken controlToken) => Set.Remove(entity);
+        protected override void Remove(TEntity entity, IConcurrencyControlToken controlToken) => Set.Remove(entity);
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void RemoveRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.RemoveRange(entities);
+        protected override void RemoveRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.RemoveRange(entities);
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Update(TEntity entity, ConcurrencyControlToken controlToken) => Set.Update(entity);
+        protected override void Update(TEntity entity, IConcurrencyControlToken controlToken) => Set.Update(entity);
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -227,7 +227,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void UpdateRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken) => Set.UpdateRange(entities);
+        protected override void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.UpdateRange(entities);
 
         /// <summary>
         /// Represents the database session for the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.

@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Command.UnitTests
         /// <returns>
         /// The result that is emitted by processing the command.
         /// </returns>
-        protected sealed override Guid Process(SimulatedCommandWithResult command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected sealed override Guid Process(SimulatedCommandWithResult command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             command.IsProcessed = true;
             return command.Identifier;

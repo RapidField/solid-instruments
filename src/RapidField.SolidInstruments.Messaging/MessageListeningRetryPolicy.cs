@@ -87,6 +87,14 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="MessageListeningRetryPolicy" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageListeningRetryPolicy" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(RetryCount)}\": {RetryCount}, \"{nameof(BaseDelayDurationInSeconds)}\": {BaseDelayDurationInSeconds}, \"{nameof(DurationScale)}\": \"{DurationScale}\" }}";
+
+        /// <summary>
         /// Gets or sets the number of seconds to wait between retries, or the duration, in seconds, from which to scale
         /// non-linearly.
         /// </summary>

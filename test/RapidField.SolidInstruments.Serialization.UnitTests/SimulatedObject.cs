@@ -7,7 +7,6 @@ using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.TextEncoding;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -26,8 +25,8 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         /// </summary>
         public SimulatedObject()
         {
-            DecimalValues = new Collection<Decimal>();
-            NestedObjects = new Collection<SimulatedObject>();
+            DecimalValues = new List<Decimal>();
+            NestedObjects = new List<SimulatedObject>();
         }
 
         /// <summary>
@@ -291,10 +290,10 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         /// Gets or sets a collection of <see cref="Decimal" /> values.
         /// </summary>
         [DataMember]
-        public Collection<Decimal> DecimalValues
+        public ICollection<Decimal> DecimalValues
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -311,7 +310,7 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         /// Gets or sets a collection of nested <see cref="SimulatedObject" />.
         /// </summary>
         [DataMember]
-        public Collection<SimulatedObject> NestedObjects
+        public ICollection<SimulatedObject> NestedObjects
         {
             get;
             set;

@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <returns>
         /// A string representation of the current <see cref="SecureMemory" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(LengthInBytes)}: {LengthInBytes} }}";
+        public override String ToString() => $"{{ \"{nameof(LengthInBytes)}\": {LengthInBytes} }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureMemory" />.

@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <summary>
         /// Gets a collection of supported request-product type pairs for the associated <see cref="ObjectContainer" />.
         /// </summary>
-        public ObjectContainerConfigurationDefinitions Definitions
+        public IObjectContainerConfigurationDefinitions Definitions
         {
             get;
         }

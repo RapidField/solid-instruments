@@ -268,7 +268,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <returns>
         /// A string representation of the current <see cref="TreeNode{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Depth)}: {Depth}, {nameof(Height)}: {Height}, {nameof(Value)}: {Value} }}";
+        public override String ToString() => $"{{ \"{nameof(Depth)}\": {Depth}, \"{nameof(Height)}\": {Height}, \"{nameof(Value)}\": \"{Value}\" }}";
 
         /// <summary>
         /// Adds the specified node to <see cref="Children" /> and sets its <see cref="Parent" /> to the current node.

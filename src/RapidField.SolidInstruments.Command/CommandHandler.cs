@@ -94,7 +94,7 @@ namespace RapidField.SolidInstruments.Command
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken);
+        protected abstract void Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Represents processing intermediary that is used to process sub-commands.
@@ -195,7 +195,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected abstract TResult Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken);
+        protected abstract TResult Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Represents processing intermediary that is used to process sub-commands.

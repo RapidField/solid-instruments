@@ -436,7 +436,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A string representation of the current <see cref="SecretVault" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Count)}: {Count} }}";
+        public override String ToString() => $"{{ \"{nameof(Count)}\": {Count} }}";
 
         /// <summary>
         /// Attempts to remove a secret with the specified name.

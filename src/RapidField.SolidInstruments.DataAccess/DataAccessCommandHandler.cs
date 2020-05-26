@@ -91,7 +91,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected sealed override void Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             if (Transaction.State == DataAccessTransactionState.Ready)
             {
@@ -136,7 +136,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken);
+        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.
@@ -237,7 +237,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected sealed override TResult Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected sealed override TResult Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             if (Transaction.State == DataAccessTransactionState.Ready)
             {
@@ -285,7 +285,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken);
+        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.

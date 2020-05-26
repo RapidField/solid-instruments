@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// A string representation of the current <see cref="Command{TResult}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(ResultType)}: {ResultType.FullName} }}";
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
 
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// A string representation of the current <see cref="Command" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(ResultType)}: {ResultType.FullName} }}";
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
 
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.

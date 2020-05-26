@@ -197,7 +197,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <returns>
         /// A string representation of the current <see cref="ReadOnlyPinnedMemory{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Length)}: {Length}, {nameof(LengthInBytes)}: {LengthInBytes} }}";
+        public override String ToString() => $"{{ \"{nameof(Length)}\": {Length}, \"{nameof(LengthInBytes)}\": {LengthInBytes} }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReadOnlyPinnedMemory{T}" />.

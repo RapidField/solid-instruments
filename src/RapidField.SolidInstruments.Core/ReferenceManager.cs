@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="ReferenceManager" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(ObjectCount)}: {ObjectCount} }}";
+        public override String ToString() => $"{{ \"{nameof(ObjectCount)}\": {ObjectCount} }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReferenceManager" />.

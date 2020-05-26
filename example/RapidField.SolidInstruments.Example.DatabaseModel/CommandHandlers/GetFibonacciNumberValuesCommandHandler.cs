@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected sealed override IEnumerable<Int64> Process(GetFibonacciNumberValuesCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken)
+        protected sealed override IEnumerable<Int64> Process(GetFibonacciNumberValuesCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
         {
             var numberSeriesNumberRepository = repositories.Get<NumberSeriesNumberRepository>();
             return numberSeriesNumberRepository.FindWhere(entity => entity.NumberSeries.Identifier == NumberSeries.Named.Fibonacci.Identifier).Select(entity => entity.Number.Value).ToList();

@@ -45,6 +45,6 @@ namespace RapidField.SolidInstruments.Command.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void Process(SimulatedCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken) => command.IsProcessed = true;
+        protected sealed override void Process(SimulatedCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => command.IsProcessed = true;
     }
 }

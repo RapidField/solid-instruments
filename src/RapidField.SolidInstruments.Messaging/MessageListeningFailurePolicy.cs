@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Diagnostics;
@@ -93,6 +94,14 @@ namespace RapidField.SolidInstruments.Messaging
             SecondaryFailureBehavior = secondaryFailureBehavior.RejectIf().IsEqualToValue(MessageListeningSecondaryFailureBehavior.Unspecified, nameof(secondaryFailureBehavior));
             TransmitExceptionRaisedEventMessage = transmitExceptionRaisedEventMessage;
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageListeningFailurePolicy" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageListeningFailurePolicy" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(TransmitExceptionRaisedEventMessage)}\": {TransmitExceptionRaisedEventMessage.ToSerializedString()}, \"{nameof(SecondaryFailureBehavior)}\": \"{SecondaryFailureBehavior}\" }}";
 
         /// <summary>
         /// Gets or sets information that defines retry behavior that is employed before employing secondary failure behavior.

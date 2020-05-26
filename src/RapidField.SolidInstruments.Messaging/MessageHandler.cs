@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A string representation of the current <see cref="MessageHandler{TMessage}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(EntityType)}: {EntityType}, {nameof(Role)}: {Role} }}";
+        public override String ToString() => $"{{ \"{nameof(EntityType)}\": {EntityType}, \"{nameof(Role)}\": \"{Role}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage}" />.
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A string representation of the current <see cref="MessageHandler{TMessage, TResult}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(EntityType)}: {EntityType}, {nameof(Role)}: {Role} }}";
+        public override String ToString() => $"{{ \"{nameof(EntityType)}\": {EntityType}, \"{nameof(Role)}\": \"{Role}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage, TResult}" />.

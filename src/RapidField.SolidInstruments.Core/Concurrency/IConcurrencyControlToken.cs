@@ -11,7 +11,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     /// <summary>
     /// Represents exclusive or semi-exclusive control of a resource or block of code by a single thread.
     /// </summary>
-    public interface IConcurrencyControlToken
+    public interface IConcurrencyControlToken : IAsyncDisposable, IComparable<IConcurrencyControlToken>, IDisposable, IEquatable<IConcurrencyControlToken>
     {
         /// <summary>
         /// Instructs the current <see cref="IConcurrencyControlToken" /> to wait for the specified task to complete before
@@ -96,6 +96,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <paramref name="raiseExceptionIfExpired" /> is equal to <see langword="true" /> and the token is inactive.
         /// </exception>
         public Boolean Poll(Boolean raiseExceptionIfInactive, Boolean raiseExceptionIfExpired);
+
+        /// <summary>
+        /// Gets a unique value that identifies the token within the context of the issuing control.
+        /// </summary>
+        public Int32 Identifier
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the associated thread currently has control of the resource.

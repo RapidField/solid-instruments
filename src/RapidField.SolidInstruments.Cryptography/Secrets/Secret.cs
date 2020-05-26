@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </returns>
-        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken) => bytes;
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => bytes;
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(IReadOnlyPinnedMemory<Byte> value, ConcurrencyControlToken controlToken) => value;
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(IReadOnlyPinnedMemory<Byte> value, IConcurrencyControlToken controlToken) => value;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret" />.
@@ -211,7 +211,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A string representation of the current <see cref="Secret{TValue}" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(Name)}: {Name} }}";
+        public override String ToString() => $"{{ \"{nameof(Name)}\": \"{Name}\" }}";
 
         /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.
@@ -249,7 +249,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <typeparamref name="TValue" />.
         /// </returns>
-        protected abstract TValue ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, ConcurrencyControlToken controlToken);
+        protected abstract TValue ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
@@ -264,7 +264,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected abstract IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(TValue value, ConcurrencyControlToken controlToken);
+        protected abstract IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(TValue value, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Secret{TValue}" />.
@@ -304,7 +304,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
         [DebuggerHidden]
-        private void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction, ConcurrencyControlToken controlToken)
+        private void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction, IConcurrencyControlToken controlToken)
         {
             if (HasValue == false)
             {
@@ -361,7 +361,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
         [DebuggerHidden]
-        private void Read(Action<TValue> readAction, ConcurrencyControlToken controlToken)
+        private void Read(Action<TValue> readAction, IConcurrencyControlToken controlToken)
         {
             try
             {
@@ -400,7 +400,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
         [DebuggerHidden]
-        private void Write(Func<TValue> writeFunction, ConcurrencyControlToken controlToken)
+        private void Write(Func<TValue> writeFunction, IConcurrencyControlToken controlToken)
         {
             try
             {

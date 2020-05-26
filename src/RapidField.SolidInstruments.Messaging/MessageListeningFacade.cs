@@ -487,7 +487,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see langword="true" /> if the specified message type was added; <see langword="false" /> if it was already present.
         /// </returns>
         [DebuggerHidden]
-        internal Boolean TryAddListenedMessageType<TMessage>(ConcurrencyControlToken controlToken)
+        internal Boolean TryAddListenedMessageType<TMessage>(IConcurrencyControlToken controlToken)
             where TMessage : IMessageBase
         {
             var messageType = typeof(TMessage);
@@ -522,7 +522,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, ConcurrencyControlToken controlToken);
+        protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Asynchronously transmits the specified <see cref="ExceptionRaisedEventMessage" /> instance.

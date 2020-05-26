@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken) => ListeningFacade.RegisterTopicMessageHandler(responseHandler);
+        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, IConcurrencyControlToken controlToken) => ListeningFacade.RegisterTopicMessageHandler(responseHandler);
 
         /// <summary>
         /// Asynchronously transmits the specified request message to a bus.
@@ -240,7 +240,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken)
+        protected abstract void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, IConcurrencyControlToken controlToken)
             where TResponseMessage : class, IResponseMessage;
 
         /// <summary>

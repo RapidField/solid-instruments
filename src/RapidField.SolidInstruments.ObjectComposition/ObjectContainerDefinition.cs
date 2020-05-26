@@ -6,13 +6,17 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.ObjectComposition
 {
     /// <summary>
     /// Represents information about how an <see cref="ObjectContainer" /> resolves requests for objects.
     /// </summary>
-    internal class ObjectContainerDefinition : IComparable<ObjectContainerDefinition>, IEquatable<ObjectContainerDefinition>
+    /// <remarks>
+    /// <see cref="ObjectContainerDefinition" /> is the default implementation of <see cref="IObjectContainerDefinition" />.
+    /// </remarks>
+    internal class ObjectContainerDefinition : IObjectContainerDefinition
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectContainerDefinition" /> class.
@@ -30,70 +34,71 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="UnsupportedTypeArgumentException">
         /// <paramref name="productType" /> is not a subclass or implementation of <paramref name="requestType" />.
         /// </exception>
-        public ObjectContainerDefinition(Type requestType, Type productType)
+        [DebuggerHidden]
+        internal ObjectContainerDefinition(Type requestType, Type productType)
         {
             RequestType = requestType.RejectIf().IsNull(nameof(requestType)).OrIf().IsNotSupportedType(requestType);
             ProductType = productType.RejectIf().IsNull(nameof(productType));
         }
 
         /// <summary>
-        /// Determines whether or not two specified <see cref="ObjectContainerDefinition" /> instances are not equal.
+        /// Determines whether or not two specified <see cref="IObjectContainerDefinition" /> instances are not equal.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ObjectContainerDefinition a, ObjectContainerDefinition b) => (a == b) == false;
+        public static Boolean operator !=(ObjectContainerDefinition a, IObjectContainerDefinition b) => (a == b) == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is less than another specified
         /// instance.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(ObjectContainerDefinition a, ObjectContainerDefinition b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) == -1;
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is less than or equal to another
-        /// supplied instance.
+        /// Determines whether or not a specified <see cref="IObjectContainerDefinition" /> instance is less than or equal to
+        /// another supplied instance.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(ObjectContainerDefinition a, ObjectContainerDefinition b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) < 1;
 
         /// <summary>
-        /// Determines whether or not two specified <see cref="ObjectContainerDefinition" /> instances are equal.
+        /// Determines whether or not two specified <see cref="IObjectContainerDefinition" /> instances are equal.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public static Boolean operator ==(ObjectContainerDefinition a, ObjectContainerDefinition b)
+        public static Boolean operator ==(ObjectContainerDefinition a, IObjectContainerDefinition b)
         {
             if ((Object)a is null && (Object)b is null)
             {
@@ -108,48 +113,48 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is greater than another
+        /// Determines whether or not a specified <see cref="IObjectContainerDefinition" /> instance is greater than another
         /// specified instance.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(ObjectContainerDefinition a, ObjectContainerDefinition b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) == 1;
 
         /// <summary>
-        /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is greater than or equal to
+        /// Determines whether or not a specified <see cref="IObjectContainerDefinition" /> instance is greater than or equal to
         /// another supplied instance.
         /// </summary>
         /// <param name="a">
-        /// The first <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The first <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <param name="b">
-        /// The second <see cref="ObjectContainerDefinition" /> instance to compare.
+        /// The second <see cref="IObjectContainerDefinition" /> instance to compare.
         /// </param>
         /// <returns>
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(ObjectContainerDefinition a, ObjectContainerDefinition b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) > -1;
 
         /// <summary>
         /// Compares the current <see cref="ObjectContainerDefinition" /> to the specified object and returns an indication of their
         /// relative values.
         /// </summary>
         /// <param name="other">
-        /// The <see cref="ObjectContainerDefinition" /> to compare to this instance.
+        /// The <see cref="IObjectContainerDefinition" /> to compare to this instance.
         /// </param>
         /// <returns>
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(ObjectContainerDefinition other)
+        public Int32 CompareTo(IObjectContainerDefinition other)
         {
             var thisInstanceHashCode = GetHashCode();
             var otherInstancHashCode = other.GetHashCode();
@@ -184,24 +189,24 @@ namespace RapidField.SolidInstruments.ObjectComposition
             {
                 return false;
             }
-            else if (obj is ObjectContainerDefinition)
+            else if (obj is IObjectContainerDefinition)
             {
-                return Equals((ObjectContainerDefinition)obj);
+                return Equals((IObjectContainerDefinition)obj);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Determines whether or not two specified <see cref="ObjectContainerDefinition" /> instances are equal.
+        /// Determines whether or not two specified <see cref="IObjectContainerDefinition" /> instances are equal.
         /// </summary>
         /// <param name="other">
-        /// The <see cref="ObjectContainerDefinition" /> to compare to this instance.
+        /// The <see cref="IObjectContainerDefinition" /> to compare to this instance.
         /// </param>
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(ObjectContainerDefinition other)
+        public Boolean Equals(IObjectContainerDefinition other)
         {
             if ((Object)other is null)
             {
@@ -251,7 +256,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A string representation of the current <see cref="ObjectContainerDefinition" />.
         /// </returns>
-        public override String ToString() => $"{{ {nameof(RequestType)}: {RequestType.FullName}, {nameof(ProductType)}: {ProductType.FullName} }}";
+        public override String ToString() => $"{{ \"{nameof(RequestType)}\": \"{RequestType.FullName}\", {nameof(ProductType)}\": \"{ProductType.FullName}\" }}";
 
         /// <summary>
         /// Gets the type that is produced as a result of a request for <see cref="RequestType" />.

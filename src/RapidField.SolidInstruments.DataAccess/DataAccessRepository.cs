@@ -277,7 +277,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Add(TEntity entity, ConcurrencyControlToken controlToken);
+        protected abstract void Add(TEntity entity, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="DataAccessRepository{TEntity}" />.
@@ -288,7 +288,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void AddRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken);
+        protected abstract void AddRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DataAccessRepository{TEntity}" />.
@@ -307,7 +307,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Remove(TEntity entity, ConcurrencyControlToken controlToken);
+        protected abstract void Remove(TEntity entity, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="DataAccessRepository{TEntity}" />.
@@ -318,7 +318,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void RemoveRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken);
+        protected abstract void RemoveRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="DataAccessRepository{TEntity}" />.
@@ -329,7 +329,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Update(TEntity entity, ConcurrencyControlToken controlToken);
+        protected abstract void Update(TEntity entity, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="DataAccessRepository{TEntity}" />.
@@ -340,6 +340,6 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void UpdateRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken);
+        protected abstract void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken);
     }
 }

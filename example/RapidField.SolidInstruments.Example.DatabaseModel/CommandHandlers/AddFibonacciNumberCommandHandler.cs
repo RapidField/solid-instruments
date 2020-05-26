@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(AddFibonacciNumberCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken)
+        protected override void Process(AddFibonacciNumberCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
         {
             var fibonacciNumberSeries = NumberSeries.Named.Fibonacci;
             var numberRepository = repositories.Get<NumberRepository>();
