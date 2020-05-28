@@ -64,6 +64,12 @@ namespace RapidField.SolidInstruments.Core
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Finalizes static members of the <see cref="TimeStamp" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private static void FinalizeStaticMembers() => Instance.Dispose();
+
+        /// <summary>
         /// Produces the current date and time.
         /// </summary>
         /// <returns>
@@ -83,7 +89,7 @@ namespace RapidField.SolidInstruments.Core
         public static DateTime Current => Instance.Produce();
 
         /// <summary>
-        /// Represents a singleton instance of <see cref="TimeStamp" />.
+        /// Represents a singleton instance of the <see cref="TimeStamp" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static readonly TimeStamp Instance = new TimeStamp();
@@ -104,7 +110,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a finalizer for static members of the <see cref="TimeStamp" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(Instance.Dispose);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents the <see cref="DateTimeKind" /> that is used by the current <see cref="TimeStamp" /> when producing the

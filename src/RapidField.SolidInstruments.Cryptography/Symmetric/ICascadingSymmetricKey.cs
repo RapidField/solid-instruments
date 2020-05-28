@@ -14,12 +14,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     public interface ICascadingSymmetricKey : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Converts the value of the current <see cref="ICascadingSymmetricKey" /> to its equivalent binary representation.
+        /// Converts the value of the current <see cref="ICascadingSymmetricKey" /> to a secure bit field.
         /// </summary>
         /// <returns>
-        /// A binary representation of the current <see cref="ICascadingSymmetricKey" />.
+        /// A secure bit field containing a representation of the current <see cref="ICascadingSymmetricKey" />.
         /// </returns>
-        public ISecureMemory ToBuffer();
+        public ISecureMemory ToSecureMemory();
 
         /// <summary>
         /// Gets the number of layers of encryption that a resulting transform will apply.

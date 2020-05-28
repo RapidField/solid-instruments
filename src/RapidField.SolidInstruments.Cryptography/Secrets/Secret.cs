@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
@@ -126,7 +127,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             HasValue = false;
             Name = name.RejectIf().IsNullOrEmpty(nameof(name));
-            SecureValueBuffer = null;
+            SecureValueMemory = null;
         }
 
         /// <summary>
@@ -139,9 +140,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             var hashCode = (Name?.GetHashCode() ?? 0) ^ (ValueType?.FullName.GetHashCode() ?? 0);
 
-            if (HasValue && SecureValueBuffer is null == false)
+            if (HasValue && SecureValueMemory is null == false)
             {
-                hashCode ^= SecureValueBuffer.GetHashCode();
+                hashCode ^= SecureValueMemory.GetHashCode();
             }
 
             return hashCode;
@@ -206,6 +207,56 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Asynchronously decrypts the secret value, pins it in memory and performs the specified read operation against the
+        /// resulting bytes as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="readAction">
+        /// The read operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="readAction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The secret does not have a value. This exception can be avoided by evaluating <see cref="HasValue" /> before invoking
+        /// the method.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="readAction" /> raised an exception.
+        /// </exception>
+        public Task ReadAsync(Action<IReadOnlyPinnedMemory<Byte>> readAction) => Task.Factory.StartNew(() => Read(readAction));
+
+        /// <summary>
+        /// Asynchronously decrypts the secret value, pins a copy of it in memory and performs the specified read operation against
+        /// it as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="readAction">
+        /// The read operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="readAction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The secret does not have a value. This exception can be avoided by evaluating <see cref="IReadOnlySecret.HasValue" />
+        /// before invoking the method.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="readAction" /> raised an exception.
+        /// </exception>
+        public Task ReadAsync(Action<TValue> readAction) => Task.Factory.StartNew(() => Read(readAction));
+
+        /// <summary>
         /// Converts the value of the current <see cref="Secret{TValue}" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
@@ -236,6 +287,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
             }
         }
+
+        /// <summary>
+        /// Asynchronously performs the specified write operation and encrypts the resulting value as a thread-safe, atomic
+        /// operation.
+        /// </summary>
+        /// <param name="writeFunction">
+        /// The write operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="writeFunction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
+        /// </exception>
+        public Task WriteAsync(Func<TValue> writeFunction) => Task.Factory.StartNew(() => Write(writeFunction));
 
         /// <summary>
         /// Creates a <typeparamref name="TValue" /> using the provided bytes.
@@ -278,7 +350,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 if (disposing)
                 {
-                    SecureValueBuffer?.Dispose();
+                    SecureValueMemory?.Dispose();
                 }
             }
             finally
@@ -313,19 +385,19 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
             try
             {
-                if (SecureValueBuffer is null)
+                if (SecureValueMemory is null)
                 {
                     using (var memory = new ReadOnlyPinnedMemory<Byte>(0))
                     {
-                        // Because secure buffers cannot have length zero, this is here to handle cases in which write operations
-                        // produce empty buffers.
+                        // Because secure memory cannot have length zero, this is here to handle cases in which write operations
+                        // produce empty memory.
                         readAction(memory);
                     }
 
                     return;
                 }
 
-                SecureValueBuffer.Access((buffer) =>
+                SecureValueMemory.Access(buffer =>
                 {
                     readAction(buffer);
                 });
@@ -365,7 +437,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             try
             {
-                Read((memory) =>
+                Read(memory =>
                 {
                     readAction(ConvertBytesToValue(memory, controlToken));
                 }, controlToken);
@@ -411,30 +483,30 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                     throw new SecretAccessException("The specified write function produced a null secret value.");
                 }
 
-                using (var valueBuffer = ConvertValueToBytes(value, controlToken))
+                using (var valueMemory = ConvertValueToBytes(value, controlToken))
                 {
-                    if (valueBuffer.IsEmpty)
+                    if (valueMemory.IsEmpty)
                     {
-                        // Secure buffers cannot be empty.
-                        SecureValueBuffer?.Dispose();
-                        SecureValueBuffer = null;
+                        // Secure memory cannot be empty.
+                        SecureValueMemory?.Dispose();
+                        SecureValueMemory = null;
                         HasValue = true;
                         return;
                     }
 
-                    if (SecureValueBuffer is null)
+                    if (SecureValueMemory is null)
                     {
-                        SecureValueBuffer = new SecureMemory(valueBuffer.LengthInBytes);
+                        SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
                     }
-                    else if (SecureValueBuffer.LengthInBytes != valueBuffer.LengthInBytes)
+                    else if (SecureValueMemory.LengthInBytes != valueMemory.LengthInBytes)
                     {
-                        SecureValueBuffer.Dispose();
-                        SecureValueBuffer = new SecureMemory(valueBuffer.LengthInBytes);
+                        SecureValueMemory.Dispose();
+                        SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
                     }
 
-                    SecureValueBuffer.Access(secureBuffer =>
+                    SecureValueMemory.Access(memory =>
                     {
-                        valueBuffer.ReadOnlySpan.CopyTo(secureBuffer.Span);
+                        valueMemory.ReadOnlySpan.CopyTo(memory.Span);
                     });
 
                     HasValue = true;
@@ -480,6 +552,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Represents the encrypted field in which the secure value is stored.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ISecureMemory SecureValueBuffer;
+        private ISecureMemory SecureValueMemory;
     }
 }

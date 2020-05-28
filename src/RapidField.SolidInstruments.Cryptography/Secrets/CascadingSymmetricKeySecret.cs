@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                     bytes.ReadOnlySpan.CopyTo(memory);
                 });
 
-                result = CascadingSymmetricKey.FromBuffer(secureMemory);
+                result = CascadingSymmetricKey.FromSecureMemory(secureMemory);
             }
 
             return result;
@@ -107,7 +107,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             var result = (ReadOnlyPinnedMemory)null;
 
-            using (var secureMemory = value.ToBuffer())
+            using (var secureMemory = value.ToSecureMemory())
             {
                 secureMemory.Access(memory =>
                 {

@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Collections;
 using System;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
@@ -36,6 +37,31 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
         public void Read(Action<TValue> readAction);
+
+        /// <summary>
+        /// Asynchronously decrypts the secret value, pins a copy of it in memory and performs the specified read operation against
+        /// it as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="readAction">
+        /// The read operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="readAction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The secret does not have a value. This exception can be avoided by evaluating <see cref="IReadOnlySecret.HasValue" />
+        /// before invoking the method.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="readAction" /> raised an exception.
+        /// </exception>
+        public Task ReadAsync(Action<TValue> readAction);
     }
 
     /// <summary>
@@ -64,6 +90,31 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
         public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction);
+
+        /// <summary>
+        /// Asynchronously decrypts the secret value, pins it in memory and performs the specified read operation against the
+        /// resulting bytes as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="readAction">
+        /// The read operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="readAction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The secret does not have a value. This exception can be avoided by evaluating <see cref="HasValue" /> before invoking
+        /// the method.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="readAction" /> raised an exception.
+        /// </exception>
+        public Task ReadAsync(Action<IReadOnlyPinnedMemory<Byte>> readAction);
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="IReadOnlySecret{TValue}" /> has a value.

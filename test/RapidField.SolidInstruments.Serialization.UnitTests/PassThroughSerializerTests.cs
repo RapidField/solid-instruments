@@ -12,16 +12,16 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
     public class PassThroughSerializerTests
     {
         [TestMethod]
-        public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
+        public void Deserialize_ShouldRaiseArgumentNullException_ForNullSerializedObjectArgument()
         {
             // Arrange.
             var target = new PassThroughSerializer();
-            var buffer = (Byte[])null;
+            var serializedObject = (Byte[])null;
 
             // Act.
             var action = new Action(() =>
             {
-                var result = target.Deserialize(buffer);
+                var result = target.Deserialize(serializedObject);
             });
 
             // Assert.
@@ -29,19 +29,19 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         }
 
         [TestMethod]
-        public void Deserialize_ShouldReturnBufferArgument_ForNonNullBufferArgument()
+        public void Deserialize_ShouldReturnSerializedObjectArgument_ForNonNullSerializedObjectArgument()
         {
             // Arrange.
             var target = new PassThroughSerializer();
-            var buffer = new Byte[] { 0x03 };
+            var serializedObject = new Byte[] { 0x03 };
 
             // Act.
-            var result = target.Deserialize(buffer);
+            var result = target.Deserialize(serializedObject);
 
             // Assert.
             result.Should().NotBeNull();
-            result.Length.Should().Be(buffer.Length);
-            result[0].Should().Be(buffer[0]);
+            result.Length.Should().Be(serializedObject.Length);
+            result[0].Should().Be(serializedObject[0]);
         }
 
         [TestMethod]

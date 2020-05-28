@@ -10,7 +10,6 @@ using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
 {
@@ -232,7 +231,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                         for (var repititionIndex = 0; repititionIndex < repititionCount; repititionIndex++)
                         {
                             // Assert.
-                            controlToken.AttachTask(() => ToBuffer_ShouldBeReversible(target));
+                            controlToken.AttachTask(() => ToSecureMemory_ShouldBeReversible(target));
                         }
                     }
                 }
@@ -240,7 +239,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         }
 
         [TestMethod]
-        public void ToBuffer_ShouldBeReversible_WithFourLayers()
+        public void ToSecureMemory_ShouldBeReversible_WithFourLayers()
         {
             // Arrange.
             var derivationMode = SymmetricKeyDerivationMode.Truncation;
@@ -252,12 +251,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var target = CascadingSymmetricKey.New(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm))
             {
                 // Assert.
-                ToBuffer_ShouldBeReversible(target);
+                ToSecureMemory_ShouldBeReversible(target);
             }
         }
 
         [TestMethod]
-        public void ToBuffer_ShouldBeReversible_WithThreeLayers()
+        public void ToSecureMemory_ShouldBeReversible_WithThreeLayers()
         {
             // Arrange.
             var derivationMode = SymmetricKeyDerivationMode.Truncation;
@@ -268,12 +267,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var target = CascadingSymmetricKey.New(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm))
             {
                 // Assert.
-                ToBuffer_ShouldBeReversible(target);
+                ToSecureMemory_ShouldBeReversible(target);
             }
         }
 
         [TestMethod]
-        public void ToBuffer_ShouldBeReversible_WithTwoLayers()
+        public void ToSecureMemory_ShouldBeReversible_WithTwoLayers()
         {
             // Arrange.
             var derivationMode = SymmetricKeyDerivationMode.Truncation;
@@ -283,12 +282,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var target = CascadingSymmetricKey.New(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm))
             {
                 // Assert.
-                ToBuffer_ShouldBeReversible(target);
+                ToSecureMemory_ShouldBeReversible(target);
             }
         }
 
         [TestMethod]
-        public void ToBuffer_ShouldReturnValidResult()
+        public void ToSecureMemory_ShouldReturnValidResult()
         {
             // Arrange.
             var cascadingKeyLengthInBytes = 1666;
@@ -301,9 +300,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var target = CascadingSymmetricKey.New(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm))
             {
                 // Act.
-                using (var buffer = target.ToBuffer())
+                using (var secureMemory = target.ToSecureMemory())
                 {
-                    buffer.Access((plaintext =>
+                    secureMemory.Access((plaintext =>
                     {
                         // Assert.
                         plaintext.Should().NotBeNullOrEmpty();
@@ -314,7 +313,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             }
         }
 
-        private static void ToBuffer_ShouldBeReversible(CascadingSymmetricKey target)
+        private static void ToSecureMemory_ShouldBeReversible(CascadingSymmetricKey target)
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
@@ -326,9 +325,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var ciphertext = processor.Encrypt(plaintextObject, target);
 
                 // Act.
-                using (var buffer = target.ToBuffer())
+                using (var secureMemory = target.ToSecureMemory())
                 {
-                    using (var parityKey = CascadingSymmetricKey.FromBuffer(buffer))
+                    using (var parityKey = CascadingSymmetricKey.FromSecureMemory(secureMemory))
                     {
                         // Arrange.
                         var result = processor.Decrypt(ciphertext, parityKey);

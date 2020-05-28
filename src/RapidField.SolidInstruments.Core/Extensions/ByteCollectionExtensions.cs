@@ -114,6 +114,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <param name="bitShiftCount">
         /// The number of bits to shift by.
         /// </param>
+        /// <returns>
+        /// The resulting shifted bit field.
+        /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// The value of <paramref name="direction" /> is equal to <see cref="BitShiftDirection.Unspecified" /> and/or the value of
         /// <paramref name="bitShiftCount" /> is less than zero.
@@ -298,7 +301,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Represents the binary 128-bit hash for an empty collection.
+        /// Represents the 128-bit hash for an empty collection.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Byte[] EmptyCollectionTwoHundredFiftySixBitHash =

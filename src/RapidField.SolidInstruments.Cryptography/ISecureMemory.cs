@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Collections;
 using System;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography
 {
@@ -26,6 +27,24 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The object is disposed.
         /// </exception>
         public void Access(Action<PinnedMemory> action);
+
+        /// <summary>
+        /// Asynchronously decrypts the bit field, performs the specified operation against the pinned plaintext and encrypts the
+        /// bit field as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="action">
+        /// The operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task AccessAsync(Action<PinnedMemory> action);
 
         /// <summary>
         /// Gets the length of the bit field, in bytes.

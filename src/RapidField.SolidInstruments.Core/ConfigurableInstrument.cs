@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Core
     /// The type of the configuration information for the instrument.
     /// </typeparam>
     public abstract class ConfigurableInstrument<TConfiguration> : Instrument
-        where TConfiguration : InstrumentConfiguration, new()
+        where TConfiguration : IInstrumentConfiguration, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.

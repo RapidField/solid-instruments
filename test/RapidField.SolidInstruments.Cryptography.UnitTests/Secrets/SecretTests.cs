@@ -47,16 +47,16 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 });
 
                 // Act.
-                target.Write(() => new PinnedMemory(valueTwo));
+                target.WriteAsync(() => new PinnedMemory(valueTwo)).Wait();
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
-                target.Read(secret =>
+                target.ReadAsync(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueTwo);
-                });
+                }).Wait();
 
                 // Act.
                 target.Write(() => new PinnedMemory(valueThree));

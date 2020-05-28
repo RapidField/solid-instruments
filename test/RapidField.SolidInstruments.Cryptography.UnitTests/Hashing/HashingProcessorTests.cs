@@ -65,8 +65,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var binarySerializer = new PassThroughSerializer();
-                var target = new HashingProcessor<Byte[]>(randomnessProvider, binarySerializer);
+                var serializer = new PassThroughSerializer();
+                var target = new HashingProcessor<Byte[]>(randomnessProvider, serializer);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
 
                 // Act.
@@ -103,8 +103,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var binarySerializer = new PassThroughSerializer();
-                var target = new HashingProcessor<Byte[]>(randomnessProvider, binarySerializer);
+                var serializer = new PassThroughSerializer();
+                var target = new HashingProcessor<Byte[]>(randomnessProvider, serializer);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
                 var matchingHashValue = target.CalculateHash(plaintextObject, algorithm, saltingMode);
                 var nonMatchingHashValue = matchingHashValue.PerformCircularBitShift(Core.BitShiftDirection.Left, 16);

@@ -64,59 +64,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Creates a new instance of a <see cref="CascadingSymmetricKey" /> using the specified buffer.
-        /// </summary>
-        /// <param name="buffer">
-        /// A binary representation of a <see cref="CascadingSymmetricKey" />.
-        /// </param>
-        /// <returns>
-        /// A new instance of a <see cref="CascadingSymmetricKey" />.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="buffer" /> is invalid.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="buffer" /> is <see langword="null" />.
-        /// </exception>
-        public static CascadingSymmetricKey FromBuffer(ISecureMemory buffer)
-        {
-            buffer.RejectIf().IsNull(nameof(buffer)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(buffer), "The specified buffer is invalid.");
-
-            try
-            {
-                var keys = (ISymmetricKey[])null;
-
-                buffer.Access(memory =>
-                {
-                    // Interrogate the final 16 bits to determine the depth.
-                    var keyLength = SymmetricKey.SerializedLength;
-                    var depth = BitConverter.ToUInt16(memory, (SerializedLength - sizeof(UInt16)));
-                    keys = new ISymmetricKey[depth];
-
-                    for (var i = 0; i < depth; i++)
-                    {
-                        using (var secureBuffer = new SecureMemory(keyLength))
-                        {
-                            secureBuffer.Access(key =>
-                            {
-                                // Copy out the key buffers.
-                                Array.Copy(memory, (keyLength * i), key, 0, keyLength);
-                            });
-
-                            keys[i] = SymmetricKey.FromBuffer(secureBuffer);
-                        }
-                    }
-                });
-
-                return new CascadingSymmetricKey(keys);
-            }
-            catch
-            {
-                throw new ArgumentException("The specified buffer is invalid.", nameof(buffer));
-            }
-        }
-
-        /// <summary>
         /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
         /// </summary>
         /// <param name="password">
@@ -247,6 +194,59 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm });
 
         /// <summary>
+        /// Creates a new instance of a <see cref="CascadingSymmetricKey" /> using the specified secure bit field.
+        /// </summary>
+        /// <param name="secureMemory">
+        /// A secure bit field containing a <see cref="CascadingSymmetricKey" />.
+        /// </param>
+        /// <returns>
+        /// A new instance of a <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="secureMemory" /> is invalid.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secureMemory" /> is <see langword="null" />.
+        /// </exception>
+        public static CascadingSymmetricKey FromSecureMemory(ISecureMemory secureMemory)
+        {
+            secureMemory.RejectIf().IsNull(nameof(secureMemory)).OrIf(argument => argument.LengthInBytes != SerializedLength, nameof(secureMemory), "The specified memory field is invalid.");
+
+            try
+            {
+                var keys = (ISymmetricKey[])null;
+
+                secureMemory.Access(memory =>
+                {
+                    // Interrogate the final 16 bits to determine the depth.
+                    var keyLength = SymmetricKey.SerializedLength;
+                    var depth = BitConverter.ToUInt16(memory, (SerializedLength - sizeof(UInt16)));
+                    keys = new ISymmetricKey[depth];
+
+                    for (var i = 0; i < depth; i++)
+                    {
+                        using (var secureMemory = new SecureMemory(keyLength))
+                        {
+                            secureMemory.Access(key =>
+                            {
+                                // Copy out the key buffers.
+                                Array.Copy(memory, (keyLength * i), key, 0, keyLength);
+                            });
+
+                            keys[i] = SymmetricKey.FromSecureMemory(secureMemory);
+                        }
+                    }
+                });
+
+                return new CascadingSymmetricKey(keys);
+            }
+            catch
+            {
+                throw new ArgumentException("The specified memory field is invalid.", nameof(secureMemory));
+            }
+        }
+
+        /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKey" />.
         /// </summary>
         /// <remarks>
@@ -334,20 +334,20 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         public static CascadingSymmetricKey New(SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm);
 
         /// <summary>
-        /// Converts the value of the current <see cref="CascadingSymmetricKey" /> to its equivalent binary representation.
+        /// Converts the value of the current <see cref="CascadingSymmetricKey" /> to a secure bit field.
         /// </summary>
         /// <returns>
-        /// A binary representation of the current <see cref="CascadingSymmetricKey" />.
+        /// A secure bit field containing a representation of the current <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        public ISecureMemory ToBuffer()
+        public ISecureMemory ToSecureMemory()
         {
-            var result = new SecureMemory(SerializedLength);
+            var secureMemory = new SecureMemory(SerializedLength);
 
             try
             {
                 using (var controlToken = StateControl.Enter())
                 {
-                    result.Access(pinnedResultBuffer =>
+                    secureMemory.Access(pinnedMemory =>
                     {
                         var keyLength = SymmetricKey.SerializedLength;
 
@@ -355,12 +355,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             if (i < Depth)
                             {
-                                using (var keyBuffer = Keys.ElementAt(i).ToBuffer())
+                                using (var keyMemory = Keys.ElementAt(i).ToSecureMemory())
                                 {
-                                    keyBuffer.Access(key =>
+                                    keyMemory.Access(key =>
                                     {
                                         // Copy the key buffers out to the result buffer.
-                                        Array.Copy(key, 0, pinnedResultBuffer, (keyLength * i), keyLength);
+                                        Array.Copy(key, 0, pinnedMemory, (keyLength * i), keyLength);
                                     });
                                 }
 
@@ -370,19 +370,19 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             // Fill the unused segments with random bytes.
                             var randomBytes = new Byte[keyLength];
                             HardenedRandomNumberGenerator.Instance.GetBytes(randomBytes);
-                            Array.Copy(randomBytes, 0, pinnedResultBuffer, (keyLength * i), keyLength);
+                            Array.Copy(randomBytes, 0, pinnedMemory, (keyLength * i), keyLength);
                         }
 
                         // Append the depth as a 16-bit integer.
-                        Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedResultBuffer, (SerializedLength - sizeof(UInt16)), sizeof(UInt16));
+                        Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedMemory, (SerializedLength - sizeof(UInt16)), sizeof(UInt16));
                     });
 
-                    return result;
+                    return secureMemory;
                 }
             }
             catch
             {
-                result.Dispose();
+                secureMemory.Dispose();
                 throw new SecurityException("Key serialization failed.");
             }
         }

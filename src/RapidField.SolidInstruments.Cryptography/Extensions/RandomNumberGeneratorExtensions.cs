@@ -1667,13 +1667,13 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             var characterEncoding = permitNonLatin ? Encoding.Unicode : Encoding.ASCII;
             var characterByteLength = permitNonLatin ? UnicodeCharByteLength : AsciiCharByteLength;
-            var buffer = new Byte[characterByteLength * CharacterBufferLengthMultiplier];
-            var singlePassIterationCount = (buffer.Length - characterByteLength);
-            target.GetBytes(buffer);
+            var characterBytes = new Byte[characterByteLength * CharacterBytesLengthMultiplier];
+            var singlePassIterationCount = (characterBytes.Length - characterByteLength);
+            target.GetBytes(characterBytes);
 
-            while (PermuteCharacterGeneration(buffer, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) == false)
+            while (PermuteCharacterGeneration(characterBytes, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) == false)
             {
-                target.GetBytes(buffer);
+                target.GetBytes(characterBytes);
             }
         }
 
@@ -2215,8 +2215,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <summary>
         /// Executes a single pass of the character generation operation.
         /// </summary>
-        /// <param name="buffer">
-        /// A buffer containing the randomly-generated character bytes.
+        /// <param name="characterBytes">
+        /// A byte array containing the randomly-generated character bytes.
         /// </param>
         /// <param name="iterationCount">
         /// The number of iterations to execute.
@@ -2255,19 +2255,19 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <see langword="true" /> if the random character was generated successfully, otherwise <see langword="false" />.
         /// </returns>
         [DebuggerHidden]
-        private static Boolean PermuteCharacterGeneration(Byte[] buffer, Int32 iterationCount, Int32 characterByteLength, Encoding characterEncoding, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl, out Char randomValue)
+        private static Boolean PermuteCharacterGeneration(Byte[] characterBytes, Int32 iterationCount, Int32 characterByteLength, Encoding characterEncoding, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl, out Char randomValue)
         {
             var operationIsSuccessful = false;
 
             for (var i = 0; i < iterationCount; i++)
             {
-                if (permitNonLatin == false && buffer[i] > 0x7f)
+                if (permitNonLatin == false && characterBytes[i] > 0x7f)
                 {
                     // 0x7f is the last valid ASCII character.
                     continue;
                 }
 
-                randomValue = characterEncoding.GetChars(buffer, i, characterByteLength).First();
+                randomValue = characterEncoding.GetChars(characterBytes, i, characterByteLength).First();
                 operationIsSuccessful = operationIsSuccessful || (permitLowercaseAlphabetic && randomValue.IsLowercaseAlphabetic());
                 operationIsSuccessful = operationIsSuccessful || (permitUppercaseAlphabetic && randomValue.IsUppercaseAlphabetic());
                 operationIsSuccessful = operationIsSuccessful || (permitNumeric && randomValue.IsNumeric());
@@ -2338,7 +2338,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <see cref="GenerateChar(RandomNumberGenerator, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, out Char)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 CharacterBufferLengthMultiplier = 2;
+        private const Int32 CharacterBytesLengthMultiplier = 2;
 
         /// <summary>
         /// Represents the byte length of a <see cref="Decimal" />.

@@ -1081,6 +1081,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
+        /// Finalizes static members of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private static void FinalizeStaticMembers() => LazyInstance.Dispose();
+
+        /// <summary>
         /// Initializes a new in-memory <see cref="IMessageTransport" /> instance.
         /// </summary>
         /// <returns>
@@ -1218,16 +1224,16 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         internal static IMessageTransport Instance => LazyInstance.Value;
 
         /// <summary>
-        /// Represents a finalizer for static members of the <see cref="MessageTransport" /> class.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(LazyInstance.Dispose);
-
-        /// <summary>
         /// Represents a lazily-initialized in-memory <see cref="IMessageTransport" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Lazy<IMessageTransport> LazyInstance = new Lazy<IMessageTransport>(InitializeInstance, LazyThreadSafetyMode.ExecutionAndPublication);
+
+        /// <summary>
+        /// Represents a finalizer for static members of the <see cref="MessageTransport" /> class.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents a collection of active connections to the current <see cref="MessageTransport" />, which are keyed by

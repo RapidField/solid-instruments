@@ -64,8 +64,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The plaintext result of the algorithm.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// The binary length of <paramref name="ciphertext" /> is invalid -or- the binary length of <paramref name="privateKey" />
-        /// is invalid.
+        /// The byte length of <paramref name="ciphertext" /> is invalid -or- the byte length of <paramref name="privateKey" /> is
+        /// invalid.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="ciphertext" /> is <see langword="null" /> -or- <paramref name="privateKey" /> is
@@ -101,8 +101,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The ciphertext result of the algorithm.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// The binary length of <paramref name="privateKey" /> is invalid -or- the cipher mode is <see cref="CipherMode.CBC" /> and
-        /// the binary length of <paramref name="initializationVector" /> is invalid.
+        /// The byte length of <paramref name="privateKey" /> is invalid -or- the cipher mode is <see cref="CipherMode.CBC" /> and
+        /// the byte length of <paramref name="initializationVector" /> is invalid.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="plaintext" /> is <see langword="null" /> -or- <paramref name="privateKey" /> is <see langword="null" />
@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The ciphertext result of the algorithm.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// The binary length of <paramref name="initializationVector" /> is invalid.
+        /// The byte length of <paramref name="initializationVector" /> is invalid.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="initializationVector" /> is <see langword="null" />.

@@ -8,6 +8,13 @@ using System.Security;
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
 {
     /// <summary>
+    /// Provides facilities for encrypting and decrypting byte arrays.
+    /// </summary>
+    public interface ISymmetricProcessor : ISymmetricProcessor<Byte[]>
+    {
+    }
+
+    /// <summary>
     /// Provides facilities for encrypting and decrypting typed objects.
     /// </summary>
     /// <typeparam name="T">

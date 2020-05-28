@@ -7,11 +7,14 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
+using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using RapidField.SolidInstruments.Cryptography.Symmetric.Aes;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography
 {
@@ -34,8 +37,10 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
-            PrivateKey = new PinnedMemory(Cipher.KeySizeInBytes, true);
-            RandomnessProvider.GetBytes(PrivateKey);
+            PrivateKeySource = new PinnedMemory(PrivateKeySourceLengthInBytes, true);
+            PrivateKeySourceBitShiftDirection = RandomnessProvider.GetBoolean() ? BitShiftDirection.Left : BitShiftDirection.Right;
+            PrivateKeySourceBitShiftCount = BitConverter.GetBytes(RandomnessProvider.GetUInt16()).Max();
+            RandomnessProvider.GetBytes(PrivateKeySource);
 
             using (var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true))
             {
@@ -43,7 +48,10 @@ namespace RapidField.SolidInstruments.Cryptography
 
                 using (var plaintext = new PinnedMemory(lengthInBytes))
                 {
-                    Ciphertext = Cipher.Encrypt(plaintext, PrivateKey, initializationVector);
+                    using (var privateKey = DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes))
+                    {
+                        Ciphertext = Cipher.Encrypt(plaintext, privateKey, initializationVector);
+                    }
                 }
             }
         }
@@ -109,6 +117,24 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Asynchronously decrypts the bit field, performs the specified operation against the pinned plaintext and encrypts the
+        /// bit field as a thread-safe, atomic operation.
+        /// </summary>
+        /// <param name="action">
+        /// The operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task AccessAsync(Action<PinnedMemory> action) => Task.Factory.StartNew(() => Access(action));
+
+        /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>
@@ -117,12 +143,50 @@ namespace RapidField.SolidInstruments.Cryptography
         public override Int32 GetHashCode() => Ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
 
         /// <summary>
+        /// Regenerates and replaces the source bytes for the private key that is used to secure the current
+        /// <see cref="SecureMemory" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void RegeneratePrivateKey()
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+
+                using (var plaintext = new PinnedMemory(LengthInBytes, true))
+                {
+                    DecryptField(plaintext);
+
+                    try
+                    {
+                        RandomnessProvider.GetBytes(PrivateKeySource);
+                    }
+                    finally
+                    {
+                        EncryptField(plaintext);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts the value of the current <see cref="SecureMemory" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
         /// A string representation of the current <see cref="SecureMemory" />.
         /// </returns>
         public override String ToString() => $"{{ \"{nameof(LengthInBytes)}\": {LengthInBytes} }}";
+
+        /// <summary>
+        /// Derives a private key from <see cref="PrivateKeySource" />.
+        /// </summary>
+        /// <returns>
+        /// The resulting private key.
+        /// </returns>
+        [DebuggerHidden]
+        internal PinnedMemory DerivePrivateKey() => DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.BlockSizeInBytes);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureMemory" />.
@@ -138,7 +202,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 {
                     Cipher.Dispose();
                     Ciphertext.Dispose();
-                    PrivateKey.Dispose();
+                    PrivateKeySource.Dispose();
                 }
             }
             finally
@@ -146,6 +210,31 @@ namespace RapidField.SolidInstruments.Cryptography
                 base.Dispose(disposing);
             }
         }
+
+        /// <summary>
+        /// Derives a private key from the specified source bytes.
+        /// </summary>
+        /// <remarks>
+        /// This doesn't ensure security of the private key. It exists to complicate the engineering challenge for would-be
+        /// attackers and to increase the computational expense of an attack to improve the chance that it will be evident to users.
+        /// </remarks>
+        /// <param name="privateKeySource">
+        /// A field of random bits from which the private key is derived.
+        /// </param>
+        /// <param name="bitShiftDirection">
+        /// The circular bit shift direction to use when deriving the key.
+        /// </param>
+        /// <param name="bitShiftCount">
+        /// The circular bit shift count to use when deriving the key.
+        /// </param>
+        /// <param name="keyLengthInBytes">
+        /// The length of the derived key, in bytes.
+        /// </param>
+        /// <returns>
+        /// The resulting private key.
+        /// </returns>
+        [DebuggerHidden]
+        private static PinnedMemory DerivePrivateKey(Byte[] privateKeySource, BitShiftDirection bitShiftDirection, Int32 bitShiftCount, Int32 keyLengthInBytes) => new PinnedMemory(new Span<Byte>(privateKeySource.PerformCircularBitShift(bitShiftDirection, bitShiftCount)).Slice(0, keyLengthInBytes).ToArray(), true);
 
         /// <summary>
         /// Decrypts the current bit field and writes the result to the specified bit field.
@@ -156,9 +245,12 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void DecryptField(PinnedMemory plaintext)
         {
-            using (var memory = Cipher.Decrypt(Ciphertext, PrivateKey))
+            using (var privateKey = DerivePrivateKey())
             {
-                memory.Span.CopyTo(plaintext);
+                using (var buffer = Cipher.Decrypt(Ciphertext, privateKey))
+                {
+                    buffer.Span.CopyTo(plaintext);
+                }
             }
         }
 
@@ -175,9 +267,12 @@ namespace RapidField.SolidInstruments.Cryptography
             {
                 RandomnessProvider.GetBytes(initializationVector);
 
-                using (var ciphertext = Cipher.Encrypt(plaintext, PrivateKey, initializationVector))
+                using (var privateKey = DerivePrivateKey())
                 {
-                    ciphertext.Span.CopyTo(Ciphertext);
+                    using (var buffer = Cipher.Encrypt(plaintext, privateKey, initializationVector))
+                    {
+                        buffer.Span.CopyTo(Ciphertext);
+                    }
                 }
             }
         }
@@ -197,6 +292,12 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Gets the length, in bytes, of <see cref="PrivateKeySource" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Int32 PrivateKeySourceLengthInBytes => Cipher.KeySizeInBytes + 16;
+
+        /// <summary>
         /// Represents a cipher that is used to encrypt and decrypt the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -209,9 +310,21 @@ namespace RapidField.SolidInstruments.Cryptography
         private readonly PinnedMemory Ciphertext;
 
         /// <summary>
-        /// Represents a private key that is used to encrypt and decrypt the bit field.
+        /// Represents a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly PinnedMemory PrivateKey;
+        private readonly PinnedMemory PrivateKeySource;
+
+        /// <summary>
+        /// Represents the circular bit shift count to use when deriving a private key from <see cref="PrivateKeySource" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Byte PrivateKeySourceBitShiftCount;
+
+        /// <summary>
+        /// Represents the circular bit shift direction to use when deriving a private key from <see cref="PrivateKeySource" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly BitShiftDirection PrivateKeySourceBitShiftDirection;
     }
 }

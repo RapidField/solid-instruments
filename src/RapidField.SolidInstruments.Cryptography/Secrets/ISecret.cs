@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
@@ -30,6 +31,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
         public void Write(Func<TValue> writeFunction);
+
+        /// <summary>
+        /// Asynchronously performs the specified write operation and encrypts the resulting value as a thread-safe, atomic
+        /// operation.
+        /// </summary>
+        /// <param name="writeFunction">
+        /// The write operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="writeFunction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
+        /// </exception>
+        public Task WriteAsync(Func<TValue> writeFunction);
     }
 
     /// <summary>

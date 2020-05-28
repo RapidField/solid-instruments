@@ -8,7 +8,7 @@ using System.Security;
 namespace RapidField.SolidInstruments.Cryptography.Hashing
 {
     /// <summary>
-    /// Provides facilities for hashing typed objects and binary arrays.
+    /// Provides facilities for hashing typed objects and byte arrays.
     /// </summary>
     /// <typeparam name="T">
     /// The type of the object that can be hashed.
@@ -61,15 +61,15 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     }
 
     /// <summary>
-    /// Provides facilities for hashing typed objects and binary arrays.
+    /// Provides facilities for hashing typed objects and byte arrays.
     /// </summary>
     public interface IHashingProcessor
     {
         /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
+        /// Calculates a hash value for the specified plaintext byte array.
         /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
+        /// <param name="plaintext">
+        /// The plaintext byte array to hash.
         /// </param>
         /// <param name="algorithm">
         /// The algorithm specification used to transform the plaintext.
@@ -80,13 +80,13 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm);
+        public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm);
 
         /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
+        /// Calculates a hash value for the specified plaintext byte array.
         /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
+        /// <param name="plaintext">
+        /// The plaintext byte array to hash.
         /// </param>
         /// <param name="algorithm">
         /// The algorithm specification used to transform the plaintext.
@@ -101,6 +101,6 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt);
+        public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm, Byte[] salt);
     }
 }

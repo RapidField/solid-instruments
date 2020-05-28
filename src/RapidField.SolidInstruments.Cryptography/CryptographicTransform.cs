@@ -289,10 +289,10 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
-        /// Transform the supplied binary range.
+        /// Transform the supplied byte range.
         /// </summary>
         /// <param name="range">
-        /// The binary data to be transformed.
+        /// The data to be transformed.
         /// </param>
         /// <param name="transform">
         /// The cryptographic transform that performs the operation.

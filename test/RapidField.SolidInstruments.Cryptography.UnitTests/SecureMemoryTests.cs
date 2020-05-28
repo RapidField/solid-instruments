@@ -85,6 +85,16 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                     memory[4].Should().Be(0x04);
                     memory[8].Should().Be(0x08);
                 });
+
+                // Act.
+                target.AccessAsync(memory =>
+                {
+                    // Assert.
+                    memory.Length.Should().Be(length);
+                    memory[0].Should().Be(0x00);
+                    memory[4].Should().Be(0x04);
+                    memory[8].Should().Be(0x08);
+                }).Wait();
             }
 
             // Assert.
@@ -145,6 +155,61 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                 // Assert.
                 record.Count.Should().BeLessOrEqualTo(valueCountUpperBoundary);
                 record.Count.Should().BeGreaterOrEqualTo(valueCountLowerBoundary);
+            }
+        }
+
+        [TestMethod]
+        public void RegeneratePrivateKey_ShouldProduceDesiredResults()
+        {
+            // Arrange.
+            var length = 32;
+            var referenceByte = (Byte)0x3f;
+            var referenceBytePosition = 21;
+
+            using (var target = new SecureMemory(length))
+            {
+                // Arrange.
+                using (var privateKeyOne = target.DerivePrivateKey())
+                {
+                    target.Access(memory =>
+                    {
+                        // Arrange.
+                        memory[referenceBytePosition] = referenceByte;
+                    });
+
+                    // Act.
+                    target.RegeneratePrivateKey();
+
+                    using (var privateKeyTwo = target.DerivePrivateKey())
+                    {
+                        target.Access(memory =>
+                        {
+                            // Assert.
+                            memory[referenceBytePosition].Should().Be(referenceByte);
+                            memory[referenceBytePosition - 1].Should().Be(0x00);
+                            memory[referenceBytePosition + 1].Should().Be(0x00);
+                        });
+
+                        // Act.
+                        target.RegeneratePrivateKey();
+
+                        using (var privateKeyThree = target.DerivePrivateKey())
+                        {
+                            target.Access(memory =>
+                            {
+                                // Assert.
+                                memory[referenceBytePosition].Should().Be(referenceByte);
+                                memory[referenceBytePosition - 1].Should().Be(0x00);
+                                memory[referenceBytePosition + 1].Should().Be(0x00);
+                            });
+
+                            // Assert.
+                            privateKeyOne.Should().NotBeEquivalentTo(privateKeyTwo);
+                            privateKeyOne.Should().NotBeEquivalentTo(privateKeyThree);
+                            privateKeyTwo.Should().NotBeEquivalentTo(privateKeyThree);
+                        }
+                    }
+                }
             }
         }
 

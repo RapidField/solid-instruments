@@ -13,21 +13,8 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents configuration information for a <see cref="ConfigurableInstrument{TConfiguration}" /> instance.
     /// </summary>
-    /// <remarks>
-    /// <see cref="InstrumentConfiguration" /> is the default implementation of <see cref="IInstrumentConfiguration" />.
-    /// </remarks>
-    public abstract class InstrumentConfiguration : IInstrumentConfiguration
+    public interface IInstrumentConfiguration
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InstrumentConfiguration" /> class.
-        /// </summary>
-        protected InstrumentConfiguration()
-        {
-            Application = null;
-            StateControlMode = Instrument.DefaultStateControlMode;
-            StateControlTimeoutThreshold = Instrument.DefaultStateControlTimeoutThreshold;
-        }
-
         /// <summary>
         /// Gets or sets configuration information for the application.
         /// </summary>

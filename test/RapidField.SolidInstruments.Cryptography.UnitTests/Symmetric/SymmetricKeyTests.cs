@@ -251,58 +251,6 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         }
 
         [TestMethod]
-        public void ToBuffer_ShouldBeReversible()
-        {
-            using (var randomnessProvider = RandomNumberGenerator.Create())
-            {
-                // Arrange.
-                var processor = new SymmetricStringProcessor(randomnessProvider);
-                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-
-                using (var target = SymmetricKey.New())
-                {
-                    // Arrange.
-                    var ciphertext = processor.Encrypt(plaintextObject, target);
-
-                    // Act.
-                    using (var buffer = target.ToBuffer())
-                    {
-                        using (var parityKey = SymmetricKey.FromBuffer(buffer))
-                        {
-                            // Arrange.
-                            var result = processor.Decrypt(ciphertext, parityKey);
-
-                            // Assert.
-                            result.Should().Be(plaintextObject);
-                        }
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void ToBuffer_ShouldReturnValidResult()
-        {
-            // Arrange.
-            var keyLengthInBytes = 416;
-
-            using (var target = SymmetricKey.New())
-            {
-                // Act.
-                using (var buffer = target.ToBuffer())
-                {
-                    buffer.Access(plaintext =>
-                    {
-                        // Assert.
-                        plaintext.Should().NotBeNullOrEmpty();
-                        plaintext.Length.Should().Be(keyLengthInBytes);
-                        plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
-                    });
-                }
-            }
-        }
-
-        [TestMethod]
         public void ToDerivedKeyBytes_ShouldReturnValidResult_ForAes128Cbc()
         {
             // Arrange.
@@ -340,6 +288,58 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
 
             // Assert.
             ToDerivedKeyBytes_ShouldReturnValidResult(algorithm);
+        }
+
+        [TestMethod]
+        public void ToSecureMemory_ShouldBeReversible()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var processor = new SymmetricStringProcessor(randomnessProvider);
+                var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
+
+                using (var target = SymmetricKey.New())
+                {
+                    // Arrange.
+                    var ciphertext = processor.Encrypt(plaintextObject, target);
+
+                    // Act.
+                    using (var secureMemory = target.ToSecureMemory())
+                    {
+                        using (var parityKey = SymmetricKey.FromSecureMemory(secureMemory))
+                        {
+                            // Arrange.
+                            var result = processor.Decrypt(ciphertext, parityKey);
+
+                            // Assert.
+                            result.Should().Be(plaintextObject);
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ToSecureMemory_ShouldReturnValidResult()
+        {
+            // Arrange.
+            var keyLengthInBytes = 416;
+
+            using (var target = SymmetricKey.New())
+            {
+                // Act.
+                using (var secureMemory = target.ToSecureMemory())
+                {
+                    secureMemory.Access(plaintext =>
+                    {
+                        // Assert.
+                        plaintext.Should().NotBeNullOrEmpty();
+                        plaintext.Length.Should().Be(keyLengthInBytes);
+                        plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
+                    });
+                }
+            }
         }
 
         private static void ToDerivedKeyBytes_ShouldReturnValidResult(SymmetricAlgorithmSpecification algorithm)

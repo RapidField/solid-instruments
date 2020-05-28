@@ -126,7 +126,7 @@ namespace RapidField.SolidInstruments.TextEncoding
             bytes.RejectIf().IsNull(nameof(bytes));
             byteIndex.RejectIf().IsLessThan(0, nameof(byteIndex)).OrIf().IsGreaterThanOrEqualTo(bytes.Length, nameof(byteIndex));
 
-            Byte[] bufferArray;
+            Byte[] characterBytes;
 
             {
                 var buffer = new BigInteger();
@@ -146,12 +146,12 @@ namespace RapidField.SolidInstruments.TextEncoding
                     buffer += key;
                 }
 
-                bufferArray = buffer.ToByteArray();
+                characterBytes = buffer.ToByteArray();
             }
 
             // Copy the buffer to the output stream.
-            var encodedByteCount = Math.Min((bytes.Length - byteIndex), bufferArray.Length);
-            Array.Copy(bufferArray, 0, bytes, byteIndex, encodedByteCount);
+            var encodedByteCount = Math.Min((bytes.Length - byteIndex), characterBytes.Length);
+            Array.Copy(characterBytes, 0, bytes, byteIndex, encodedByteCount);
             return encodedByteCount;
         }
 

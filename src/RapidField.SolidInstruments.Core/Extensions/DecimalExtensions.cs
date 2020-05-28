@@ -75,9 +75,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
             var bytes = new List<Byte>();
 
             {
-                var binaryComponents = Decimal.GetBits(target);
+                var components = Decimal.GetBits(target);
 
-                foreach (var integer in binaryComponents)
+                foreach (var integer in components)
                 {
                     bytes.AddRange(BitConverter.GetBytes(integer));
                 }

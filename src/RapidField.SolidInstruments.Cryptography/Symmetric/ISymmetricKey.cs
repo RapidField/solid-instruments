@@ -13,14 +13,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     public interface ISymmetricKey : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Converts the value of the current <see cref="ISymmetricKey" /> to its equivalent binary representation.
-        /// </summary>
-        /// <returns>
-        /// A binary representation of the current <see cref="ISymmetricKey" />.
-        /// </returns>
-        public ISecureMemory ToBuffer();
-
-        /// <summary>
         /// Converts the current <see cref="ISymmetricKey" /> to symmetric-key plaintext with correct bit-length for the encryption
         /// mode specified by <see cref="Algorithm" />.
         /// </summary>
@@ -28,6 +20,14 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The derived key.
         /// </returns>
         public ISecureMemory ToDerivedKeyBytes();
+
+        /// <summary>
+        /// Converts the value of the current <see cref="ISymmetricKey" /> to a secure bit field.
+        /// </summary>
+        /// <returns>
+        /// A secure bit field containing a representation of the current <see cref="ISymmetricKey" />.
+        /// </returns>
+        public ISecureMemory ToSecureMemory();
 
         /// <summary>
         /// Gets the symmetric-key algorithm for which a key is derived.

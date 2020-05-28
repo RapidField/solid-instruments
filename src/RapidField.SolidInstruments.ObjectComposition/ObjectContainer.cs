@@ -109,7 +109,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             DefinitionConfigurator = definitionConfigurator.RejectIf().IsNull(nameof(definitionConfigurator));
             Factory = factory.RejectIf().IsNull(nameof(factory)).TargetArgument;
             LazyInstanceDictionary = new Lazy<IDictionary<Type, Object>>(InitializeInstanceDictionary, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyInstanceGroup = new Lazy<FactoryProducedInstanceGroup>(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
+            LazyInstanceGroup = new Lazy<IFactoryProducedInstanceGroup>(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
             ManagesFactory = managesFactory;
         }
 
@@ -330,7 +330,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An object that manages creation and lifetime of instances for the current <see cref="ObjectContainer" />.
         /// </returns>
         [DebuggerHidden]
-        private FactoryProducedInstanceGroup InitializeInstanceGroup() => new FactoryProducedInstanceGroup(Factory);
+        private IFactoryProducedInstanceGroup InitializeInstanceGroup() => new FactoryProducedInstanceGroup(Factory);
 
         /// <summary>
         /// Gets the types of the instances that are managed by the current <see cref="ObjectContainer" />.
@@ -369,7 +369,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Gets an object that manages creation and lifetime of instances for the current <see cref="ObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private FactoryProducedInstanceGroup InstanceGroup => LazyInstanceGroup.Value;
+        private IFactoryProducedInstanceGroup InstanceGroup => LazyInstanceGroup.Value;
 
         /// <summary>
         /// Represents an action that configures the request-product type pair definitions for the container.
@@ -394,7 +394,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see cref="ObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<FactoryProducedInstanceGroup> LazyInstanceGroup;
+        private readonly Lazy<IFactoryProducedInstanceGroup> LazyInstanceGroup;
 
         /// <summary>
         /// Represents a valued that indicates whether or not the current <see cref="ObjectContainer" /> manages
