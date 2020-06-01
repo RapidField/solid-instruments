@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
@@ -31,6 +32,33 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
             Secrets = new Dictionary<String, IReadOnlySecret>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecretVault" /> class.
+        /// </summary>
+        /// <param name="password">
+        /// A 13+ character password from which a master key is derived, which is used as the default encryption key for exported
+        /// secrets. A random master key is generated on demand if the parameterless constructor is used.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="password" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="password" /> is shorter than thirteen characters.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="password" /> is <see langword="null" />.
+        /// </exception>
+        public SecretVault(String password)
+            : this()
+        {
+            using (var masterKey = CascadingSymmetricKey.FromPassword(password))
+            {
+                var masterKeySecret = CascadingSymmetricKeySecret.FromValue(MasterKeyName, masterKey);
+                ReferenceManager.AddObject(masterKeySecret);
+                Secrets.Add(masterKeySecret.Name, masterKeySecret);
+            }
         }
 
         /// <summary>
@@ -210,6 +238,238 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 {
                     Secrets.Clear();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the vault's master key.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported encrypted secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        public Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(String name) => ExportEncryptedSecretAsync(name, MasterKeyName);
+
+        /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the specified key.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <param name="keyName">
+        /// The name of the secret associated with a key that is used to encrypt the exported secret.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported encrypted secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty -or- <paramref name="keyName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name -or- the secret vault does not contain a key with the
+        /// specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        public async Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(String name, String keyName)
+        {
+            RejectIfDisposed();
+
+            if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+            {
+                var exportedSecret = await ExportSecretAsync(name).ConfigureAwait(false);
+
+                try
+                {
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                        {
+                            return await ExportEncryptedSecretAsync(exportedSecret, Secrets[keyName]).ConfigureAwait(false);
+                        }
+                        else if (keyName == MasterKeyName)
+                        {
+                            using (var masterKey = CascadingSymmetricKey.New())
+                            {
+                                var masterKeySecret = CascadingSymmetricKeySecret.FromValue(keyName, masterKey);
+                                AddOrUpdate(MasterKeyName, masterKeySecret, controlToken);
+                                return await ExportEncryptedSecretAsync(exportedSecret, masterKeySecret).ConfigureAwait(false);
+                            }
+                        }
+
+                        throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+                    }
+                }
+                finally
+                {
+                    exportedSecret.ClearValue();
+                }
+            }
+
+            throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
+        }
+
+        /// <summary>
+        /// Asynchronously exports the specified secret in plaintext form.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported plaintext secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task<ExportedSecret> ExportSecretAsync(String name) => Task.Factory.StartNew(() =>
+        {
+            return ExportSecret(name);
+        });
+
+        /// <summary>
+        /// Decrypts the specified secret using the vault's master key and imports it.
+        /// </summary>
+        /// <remarks>
+        /// When using this method, note that the master key of the current <see cref="ISecretVault" /> must match the key that was
+        /// used when exporting the secret. If the exporting vault is not the current vault, the master keys will need to have been
+        /// synchronized beforehand.
+        /// </remarks>
+        /// <param name="secret">
+        /// The encrypted secret to import.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during decryption or deserialization.
+        /// </exception>
+        public void ImportEncryptedSecret(IEncryptedExportedSecret secret) => ImportEncryptedSecret(secret, MasterKeyName);
+
+        /// <summary>
+        /// Decrypts the specified secret using the specified key and imports it.
+        /// </summary>
+        /// <param name="secret">
+        /// The encrypted secret to import.
+        /// </param>
+        /// <param name="keyName">
+        /// The name of the secret associated with a key that was used to encrypt the exported secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a key with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during decryption or deserialization.
+        /// </exception>
+        public void ImportEncryptedSecret(IEncryptedExportedSecret secret, String keyName)
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+
+                if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                {
+                    var keySecret = Secrets[keyName];
+
+                    try
+                    {
+                        if (keySecret.ValueType == typeof(SymmetricKey))
+                        {
+                            ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                            {
+                                ImportSecret(secret.ToPlaintextModel(key), controlToken);
+                            }).Wait();
+                            return;
+                        }
+                        else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+                        {
+                            ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                            {
+                                ImportSecret(secret.ToPlaintextModel(key), controlToken);
+                            }).Wait();
+                            return;
+                        }
+
+                        throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                    }
+                    catch (AggregateException exception)
+                    {
+                        throw new SecretAccessException($"The specified key, \"{keyName}\", could not be used to import the specified secret. Decryption or deserialization failed.", exception);
+                    }
+                }
+                else if (keyName == MasterKeyName)
+                {
+                    throw new SecretAccessException("The encrypted secret cannot be imported without specifying an explicit key because the secret vault does not have a master key.");
+                }
+
+                throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+            }
+        }
+
+        /// <summary>
+        /// Imports the specified secret in plaintext form.
+        /// </summary>
+        /// <param name="secret">
+        /// The plaintext secret to import.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void ImportSecret(IExportedSecret secret)
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                ImportSecret(secret, controlToken);
             }
         }
 
@@ -531,19 +791,134 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
+                AddOrUpdate(name, secret, controlToken);
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
+        /// with the same name already exists.
+        /// </summary>
+        /// <param name="name">
+        /// A textual name that uniquely identifies <paramref name="secret" />.
+        /// </param>
+        /// <param name="secret">
+        /// The secret value.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private void AddOrUpdate(String name, IReadOnlySecret secret, IConcurrencyControlToken controlToken)
+        {
+            if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+            {
+                if (Secrets.Remove(name, out var oldSecret))
+                {
+                    oldSecret?.Dispose();
+                }
+            }
+
+            ReferenceManager.AddObject(secret);
+            Secrets.Add(name, secret.RejectIf().IsNull(nameof(secret)).TargetArgument);
+        }
+
+        /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the specified key.
+        /// </summary>
+        /// <param name="exportedSecret">
+        /// The secret to export.
+        /// </param>
+        /// <param name="keySecret">
+        /// The key secret that is used to encrypt the exported secret.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// The specified key secret is not a valid key.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        [DebuggerHidden]
+        private async Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(ExportedSecret exportedSecret, IReadOnlySecret keySecret)
+        {
+            var encryptedExportedSecret = (EncryptedExportedSecret)null;
+            var keyName = keySecret.Name;
+
+            if (keySecret.ValueType == typeof(SymmetricKey))
+            {
+                await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                {
+                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                }).ConfigureAwait(false);
+            }
+            else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+            {
+                await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                {
+                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                }).ConfigureAwait(false);
+            }
+
+            return encryptedExportedSecret ?? throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret));
+        }
+
+        /// <summary>
+        /// Exports the specified secret.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <returns>
+        /// The exported plaintext secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        private ExportedSecret ExportSecret(String name)
+        {
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
 
                 if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
                 {
-                    if (Secrets.Remove(name, out var oldSecret))
-                    {
-                        oldSecret?.Dispose();
-                    }
+                    return new ExportedSecret(Secrets[name]);
                 }
 
-                ReferenceManager.AddObject(secret);
-                Secrets.Add(name, secret.RejectIf().IsNull(nameof(secret)).TargetArgument);
+                throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
             }
         }
+
+        /// <summary>
+        /// Imports the specified secret in plaintext form.
+        /// </summary>
+        /// <param name="secret">
+        /// The plaintext secret to import.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private void ImportSecret(IExportedSecret secret, IConcurrencyControlToken controlToken) => AddOrUpdate(secret.RejectIf().IsNull(nameof(secret)).TargetArgument.Name, secret.ToSecret(), controlToken);
 
         /// <summary>
         /// Decrypts the specified named secret, pins a copy of it in memory, and performs the specified read operation against it
@@ -591,10 +966,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                         return;
                     }
 
-                    throw new SecretAccessException("The secret vault does not contain a valid secret of the specified type.");
+                    throw new SecretAccessException($"The secret vault does not contain a valid secret of the specified type, \"{typeof(T).FullName}\".");
                 }
 
-                throw new ArgumentException("The secret vault does not contain a secret with the specified name.", nameof(name));
+                throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
             }
         }
 
@@ -686,6 +1061,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private IReferenceManager ReferenceManager => LazyReferenceManager.Value;
+
+        /// <summary>
+        /// Represents the name of the master key stored within every <see cref="SecretVault" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String MasterKeyName = "__MasterKey";
 
         /// <summary>
         /// Represents the lazily-initialized utility that disposes of the secrets that are managed by the current

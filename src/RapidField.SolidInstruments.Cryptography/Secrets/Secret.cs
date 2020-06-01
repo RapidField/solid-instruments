@@ -310,6 +310,24 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task WriteAsync(Func<TValue> writeFunction) => Task.Factory.StartNew(() => Write(writeFunction));
 
         /// <summary>
+        /// Writes and encrypts the specified value.
+        /// </summary>
+        /// <param name="value">
+        /// The value to write and encrypt.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal void Write(Byte[] value)
+        {
+            using (var valueMemory = new ReadOnlyPinnedMemory(value))
+            {
+                Write(valueMemory: valueMemory);
+            }
+        }
+
+        /// <summary>
         /// Creates a <typeparamref name="TValue" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
@@ -457,6 +475,45 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Writes and encrypts the specified value memory.
+        /// </summary>
+        /// <param name="valueMemory">
+        /// The memory to write and encrypt.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="valueMemory" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private void Write(IReadOnlyPinnedMemory<Byte> valueMemory)
+        {
+            if (valueMemory.RejectIf().IsNull(nameof(valueMemory)).TargetArgument.IsEmpty)
+            {
+                // Secure memory cannot be empty.
+                SecureValueMemory?.Dispose();
+                SecureValueMemory = null;
+                HasValue = true;
+                return;
+            }
+
+            if (SecureValueMemory is null)
+            {
+                SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
+            }
+            else if (SecureValueMemory.LengthInBytes != valueMemory.LengthInBytes)
+            {
+                SecureValueMemory.Dispose();
+                SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
+            }
+
+            SecureValueMemory.Access(memory =>
+            {
+                valueMemory.ReadOnlySpan.CopyTo(memory.Span);
+            });
+
+            HasValue = true;
+        }
+
+        /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.
         /// </summary>
         /// <param name="writeFunction">
@@ -485,31 +542,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                 using (var valueMemory = ConvertValueToBytes(value, controlToken))
                 {
-                    if (valueMemory.IsEmpty)
-                    {
-                        // Secure memory cannot be empty.
-                        SecureValueMemory?.Dispose();
-                        SecureValueMemory = null;
-                        HasValue = true;
-                        return;
-                    }
-
-                    if (SecureValueMemory is null)
-                    {
-                        SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
-                    }
-                    else if (SecureValueMemory.LengthInBytes != valueMemory.LengthInBytes)
-                    {
-                        SecureValueMemory.Dispose();
-                        SecureValueMemory = new SecureMemory(valueMemory.LengthInBytes);
-                    }
-
-                    SecureValueMemory.Access(memory =>
-                    {
-                        valueMemory.ReadOnlySpan.CopyTo(memory.Span);
-                    });
-
-                    HasValue = true;
+                    Write(valueMemory);
                 }
             }
             catch (ObjectDisposedException)

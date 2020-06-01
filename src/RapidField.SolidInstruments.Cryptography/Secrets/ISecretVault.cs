@@ -173,6 +173,147 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void Clear();
 
         /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the vault's master key.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported encrypted secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        public Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(String name);
+
+        /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the specified key.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <param name="keyName">
+        /// The name of the secret associated with a key that is used to encrypt the exported secret.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported encrypted secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty -or- <paramref name="keyName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name -or- the secret vault does not contain a key with the
+        /// specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        public Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(String name, String keyName);
+
+        /// <summary>
+        /// Asynchronously exports the specified secret in plaintext form.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name of the secret to export.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the exported plaintext secret.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Task<ExportedSecret> ExportSecretAsync(String name);
+
+        /// <summary>
+        /// Decrypts the specified secret using the vault's master key and imports it.
+        /// </summary>
+        /// <remarks>
+        /// When using this method, note that the master key of the current <see cref="ISecretVault" /> must match the key that was
+        /// used when exporting the secret. If the exporting vault is not the current vault, the master keys will need to have been
+        /// synchronized beforehand.
+        /// </remarks>
+        /// <param name="secret">
+        /// The encrypted secret to import.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during decryption or deserialization.
+        /// </exception>
+        public void ImportEncryptedSecret(IEncryptedExportedSecret secret);
+
+        /// <summary>
+        /// Decrypts the specified secret using the specified key and imports it.
+        /// </summary>
+        /// <param name="secret">
+        /// The encrypted secret to import.
+        /// </param>
+        /// <param name="keyName">
+        /// The name of the secret associated with a key that was used to encrypt the exported secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault does not contain a key with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during decryption or deserialization.
+        /// </exception>
+        public void ImportEncryptedSecret(IEncryptedExportedSecret secret, String keyName);
+
+        /// <summary>
+        /// Imports the specified secret in plaintext form.
+        /// </summary>
+        /// <param name="secret">
+        /// The plaintext secret to import.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="secret" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void ImportSecret(IExportedSecret secret);
+
+        /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
         /// operation against it as a thread-safe, atomic operation.
         /// </summary>
