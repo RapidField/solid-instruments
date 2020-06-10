@@ -47,9 +47,27 @@ namespace RapidField.SolidInstruments.Cryptography
         public Task AccessAsync(Action<PinnedMemory> action);
 
         /// <summary>
+        /// Regenerates and replaces the source bytes for the private key that is used to secure the current
+        /// <see cref="ISecureMemory" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        internal void RegeneratePrivateKey();
+
+        /// <summary>
         /// Gets the length of the bit field, in bytes.
         /// </summary>
         public Int32 LengthInBytes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the current zero-based ordinal version of the bits comprising the private key that is used to secure the current
+        /// <see cref="ISecureMemory" />.
+        /// </summary>
+        internal UInt32 PrivateKeyVersion
         {
             get;
         }

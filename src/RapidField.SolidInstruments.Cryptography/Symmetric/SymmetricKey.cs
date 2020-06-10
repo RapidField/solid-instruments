@@ -9,7 +9,9 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Cryptography.Hashing;
+using RapidField.SolidInstruments.Cryptography.Secrets;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security;
@@ -72,16 +74,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="SymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="password" /> is <see langword="null" />.
         /// </exception>
-        public static SymmetricKey FromPassword(String password) => FromPassword(password, DefaultAlgorithm);
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static SymmetricKey FromPassword(IPassword password) => FromPassword(password, DefaultAlgorithm);
 
         /// <summary>
         /// Derives a new <see cref="SymmetricKey" /> from the specified password.
@@ -96,9 +98,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="SymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -108,7 +107,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
-        public static SymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm) => FromPassword(password, algorithm, DefaultDerivationMode);
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static SymmetricKey FromPassword(IPassword password, SymmetricAlgorithmSpecification algorithm) => FromPassword(password, algorithm, DefaultDerivationMode);
 
         /// <summary>
         /// Derives a new <see cref="SymmetricKey" /> from the specified password.
@@ -126,9 +128,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="SymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -139,7 +138,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
         /// </exception>
-        public static SymmetricKey FromPassword(String password, SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static SymmetricKey FromPassword(IPassword password, SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
         {
             using (var keySource = DeriveKeySourceBytesFromPassword(password, KeySourceLengthInBytes))
             {
@@ -275,7 +277,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             result.Access(memory =>
                             {
-                                // Perform PBKDF2 key-derivation.
+                                // Perform PBKDF2 key derivation.
                                 var keyBytes = new Span<Byte>(Pbkdf2Provider.GetBytes(DerivedKeyLength));
                                 keyBytes.CopyTo(memory);
                                 keyBytes.Clear();
@@ -428,9 +430,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// The key source bytes.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -440,12 +439,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="keySourceLengthInBytes" /> is less than or equal to zero.
         /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
         [DebuggerHidden]
-        internal static PinnedMemory DeriveKeySourceBytesFromPassword(String password, Int32 keySourceLengthInBytes)
+        internal static PinnedMemory DeriveKeySourceBytesFromPassword(IPassword password, Int32 keySourceLengthInBytes)
         {
-            using (var passwordBytes = new ReadOnlyPinnedMemory(PasswordEncoding.GetBytes(password.RejectIf().IsNullOrEmpty(nameof(password)).OrIf(argument => argument.Length < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters."))))
+            password.RejectIf().IsNull(nameof(password)).OrIf(argument => argument.GetCharacterLength() < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters.");
+            using (var passwordBytes = new ReadOnlyPinnedMemory(Password.GetPasswordPlaintextBytes(password)))
             {
-                var hashingProcessor = new HashingBinaryProcessor(RandomnessProvider);
+                var hashingProcessor = new HashingProcessor(RandomnessProvider);
 
                 using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(passwordBytes, PasswordSaltHashingAlgorithm)))
                 {
@@ -563,6 +566,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         {
             get;
         }
+
+        /// <summary>
+        /// Gets the substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" /> is
+        /// equal to <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// </summary>
+        /// <remarks>
+        /// This property is exposed for testing.
+        /// </remarks>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static IEnumerable<Byte> SubstitutionBoxBytes => SubstitutionBox;
 
         /// <summary>
         /// Gets the PBKDF2 algorithm provider for the current <see cref="SymmetricKey" />.
@@ -718,8 +731,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
 
         /// <summary>
-        /// Represents substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" /> is
-        /// equal to <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
+        /// Represents the substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" />
+        /// is equal to <see cref="SymmetricKeyDerivationMode.XorLayeringWithSubstitution" />.
         /// </summary>
         /// <remarks>
         /// This sequence is deliberately and carefully balanced. Modifications can introduce severe security flaws and break the

@@ -9,7 +9,7 @@ using System.IO;
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a serializable <see cref="ISecret" /> that was exported from an <see cref="ISecretVault" />.
+    /// Represents a serializable <see cref="ISecret" /> that was exported from an <see cref="ISecretManager" />.
     /// </summary>
     public interface IExportedSecret : IModel
     {

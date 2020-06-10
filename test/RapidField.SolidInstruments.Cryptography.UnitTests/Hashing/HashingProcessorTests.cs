@@ -6,7 +6,6 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Hashing;
-using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
@@ -17,40 +16,64 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
     public class HashingProcessorTests
     {
         [TestMethod]
-        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Sha256() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Md5() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Md5);
 
         [TestMethod]
-        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Sha384() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Pbkdf2() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
 
         [TestMethod]
-        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Sha512() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo256() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
 
         [TestMethod]
-        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Sha256() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo384() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
 
         [TestMethod]
-        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Sha384() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo512() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
 
         [TestMethod]
-        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Sha512() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Md5() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Md5);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Sha256() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Pbkdf2() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Sha384() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_ShaTwo256() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Sha512() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_ShaTwo384() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Sha256() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_ShaTwo512() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Sha384() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Md5() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Md5);
 
         [TestMethod]
-        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Sha512() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Pbkdf2() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_ShaTwo256() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_ShaTwo384() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_ShaTwo512() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Md5() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Md5);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Pbkdf2() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_ShaTwo256() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_ShaTwo384() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo384);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_ShaTwo512() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
 
         private static void CalculateHash_ShouldBeDeterministic(HashingAlgorithmSpecification algorithm, SaltingMode saltingMode) => CalculateHash_ValidateDeterminism(algorithm, saltingMode, true);
 
@@ -65,8 +88,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var serializer = new PassThroughSerializer();
-                var target = new HashingProcessor<Byte[]>(randomnessProvider, serializer);
+                var target = new HashingProcessor(randomnessProvider);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
 
                 // Act.
@@ -88,12 +110,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
                 if (shouldBeDeterministic)
                 {
                     // Assert.
-                    firstHashValue.ComputeThirtyTwoBitHash().Should().Be(secondHashValue.ComputeThirtyTwoBitHash());
+                    firstHashValue.Should().BeEquivalentTo(secondHashValue);
                 }
                 else
                 {
                     // Assert.
-                    firstHashValue.ComputeThirtyTwoBitHash().Should().NotBe(secondHashValue.ComputeThirtyTwoBitHash());
+                    firstHashValue.Should().NotBeEquivalentTo(secondHashValue);
                 }
             }
         }
@@ -103,8 +125,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var serializer = new PassThroughSerializer();
-                var target = new HashingProcessor<Byte[]>(randomnessProvider, serializer);
+                var target = new HashingProcessor(randomnessProvider);
                 var plaintextObject = new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
                 var matchingHashValue = target.CalculateHash(plaintextObject, algorithm, saltingMode);
                 var nonMatchingHashValue = matchingHashValue.PerformCircularBitShift(Core.BitShiftDirection.Left, 16);
@@ -131,6 +152,11 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
                 case HashingAlgorithmSpecification.Md5:
 
                     hashValue.Length.Should().Be(16 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
+                    break;
+
+                case HashingAlgorithmSpecification.Pbkdf2:
+
+                    hashValue.Length.Should().Be(32 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
                     break;
 
                 case HashingAlgorithmSpecification.ShaTwo256:

@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Cryptography.Extensions;
+using RapidField.SolidInstruments.Cryptography.Secrets;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Arrange.
                 var processor = new SymmetricStringProcessor(randomnessProvider);
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
                 // Act.
                 using (var targetOne = CascadingSymmetricKey.FromPassword(password))
@@ -59,7 +60,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var fourthLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
                 var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
                 // Act.
                 using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm))
@@ -93,7 +94,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
                 var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
                 // Act.
                 using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm))
@@ -126,7 +127,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
                 var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
                 // Act.
                 using (var targetOne = CascadingSymmetricKey.FromPassword(password, derivationMode, firstLayerAlgorithm, secondLayerAlgorithm))

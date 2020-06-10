@@ -5,8 +5,8 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Collections;
-using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Cryptography.Extensions;
+using RapidField.SolidInstruments.Cryptography.Secrets;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
                 var derivationMode = SymmetricKeyDerivationMode.XorLayering;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
-                var password = randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
                 // Act.
                 using (var targetOne = SymmetricKey.FromPassword(password, algorithm, derivationMode))
@@ -50,34 +50,12 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         }
 
         [TestMethod]
-        public void FromPassword_ShouldRaiseArgumentEmptyException_ForEmptyPassword()
-        {
-            using (var randomnessProvider = RandomNumberGenerator.Create())
-            {
-                // Arrange.
-                var password = String.Empty;
-
-                // Act.
-                var action = new Action(() =>
-                {
-                    using (var target = SymmetricKey.FromPassword(password))
-                    {
-                        return;
-                    }
-                });
-
-                // Assert.
-                action.Should().Throw<ArgumentEmptyException>();
-            }
-        }
-
-        [TestMethod]
         public void FromPassword_ShouldRaiseArgumentException_ForInvalidPasswordLength()
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var password = randomnessProvider.GetString((SymmetricKey.MinimumPasswordLength - 1), true, true, true, true, true, true, false);
+                using var password = Password.FromUnicodeString(randomnessProvider.GetString(12, true, true, true, true, true, true, false));
 
                 // Act.
                 var action = new Action(() =>
@@ -99,7 +77,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
                 // Arrange.
-                var password = (String)null;
+                var password = (Password)null;
 
                 // Act.
                 var action = new Action(() =>
@@ -120,7 +98,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
-            var password = "zmDsQ5b58pE7p";
+            using var password = Password.FromAsciiString("zmDsQ5b58pE7p");
 
             // Act.
             using (var target = SymmetricKey.FromPassword(password, algorithm))
@@ -135,7 +113,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
-            var password = "zmDsQ5b58pE7p";
+            using var password = Password.FromAsciiString("zmDsQ5b58pE7p");
 
             // Act.
             using (var target = SymmetricKey.FromPassword(password, algorithm))
@@ -150,7 +128,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-            var password = "zmDsQ5b58pE7p";
+            using var password = Password.FromAsciiString("zmDsQ5b58pE7p");
 
             // Act.
             using (var target = SymmetricKey.FromPassword(password, algorithm))
@@ -165,7 +143,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
-            var password = "zmDsQ5b58pE7p";
+            using var password = Password.FromAsciiString("zmDsQ5b58pE7p");
 
             // Act.
             using (var target = SymmetricKey.FromPassword(password, algorithm))
@@ -248,6 +226,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Assert.
                 target.Should().NotBeNull();
             }
+        }
+
+        [TestMethod]
+        public void SubstitutionBoxBytes_ShouldBeValid()
+        {
+            // Arrange.
+            var substitutionBoxBytes = SymmetricKey.SubstitutionBoxBytes;
+
+            // Assert.
+            substitutionBoxBytes.Should().NotBeNullOrEmpty();
+            substitutionBoxBytes.Count().Should().Be(256);
+            substitutionBoxBytes.Should().OnlyHaveUniqueItems();
         }
 
         [TestMethod]

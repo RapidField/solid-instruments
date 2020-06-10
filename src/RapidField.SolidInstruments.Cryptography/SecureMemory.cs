@@ -37,23 +37,19 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
-            PrivateKeySource = new PinnedMemory(PrivateKeySourceLengthInBytes, true);
+            PrivateKeySourceField = new InflatedField(PrivateKeySourceLengthInBytes, PrivateKeySourceFieldMultiplier, RandomnessProvider);
             PrivateKeySourceBitShiftDirection = RandomnessProvider.GetBoolean() ? BitShiftDirection.Left : BitShiftDirection.Right;
             PrivateKeySourceBitShiftCount = BitConverter.GetBytes(RandomnessProvider.GetUInt16()).Max();
-            RandomnessProvider.GetBytes(PrivateKeySource);
+            PrivateKeyVersionValue = 0;
 
-            using (var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true))
-            {
-                RandomnessProvider.GetBytes(initializationVector);
+            using var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true);
+            RandomnessProvider.GetBytes(initializationVector);
 
-                using (var plaintext = new PinnedMemory(lengthInBytes))
-                {
-                    using (var privateKey = DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes))
-                    {
-                        Ciphertext = Cipher.Encrypt(plaintext, privateKey, initializationVector);
-                    }
-                }
-            }
+            using var plaintext = new PinnedMemory(lengthInBytes);
+            using var privateKey = DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
+            using var ciphertext = Cipher.Encrypt(plaintext, privateKey, initializationVector);
+            CiphertextField = new InflatedField(ciphertext.Length, CiphertextFieldMultiplier, RandomnessProvider);
+            ciphertext.ReadOnlySpan.CopyTo(Ciphertext);
         }
 
         /// <summary>
@@ -71,6 +67,7 @@ namespace RapidField.SolidInstruments.Cryptography
         public static ISecureMemory GenerateHardenedRandomBytes(Int32 lengthInBytes)
         {
             var hardenedRandomBytes = new SecureMemory(lengthInBytes);
+
             hardenedRandomBytes.Access((memory) =>
             {
                 RandomnessProvider.GetBytes(memory);
@@ -96,23 +93,19 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             action = action.RejectIf().IsNull(nameof(action));
 
-            using (var controlToken = StateControl.Enter())
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
+
+            using var plaintext = new PinnedMemory(LengthInBytes, true);
+            DecryptField(plaintext);
+
+            try
             {
-                RejectIfDisposed();
-
-                using (var plaintext = new PinnedMemory(LengthInBytes, true))
-                {
-                    DecryptField(plaintext);
-
-                    try
-                    {
-                        action(plaintext);
-                    }
-                    finally
-                    {
-                        EncryptField(plaintext);
-                    }
-                }
+                action(plaintext);
+            }
+            finally
+            {
+                EncryptField(plaintext);
             }
         }
 
@@ -149,7 +142,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void RegeneratePrivateKey()
+        void ISecureMemory.RegeneratePrivateKey()
         {
             using (var controlToken = StateControl.Enter())
             {
@@ -161,10 +154,12 @@ namespace RapidField.SolidInstruments.Cryptography
 
                     try
                     {
-                        RandomnessProvider.GetBytes(PrivateKeySource);
+                        CiphertextField.Scramble();
+                        PrivateKeySourceField.Scramble();
                     }
                     finally
                     {
+                        PrivateKeyVersionValue = PrivateKeyVersionValue == UInt32.MaxValue ? 0 : PrivateKeyVersionValue + 1;
                         EncryptField(plaintext);
                     }
                 }
@@ -186,7 +181,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The resulting private key.
         /// </returns>
         [DebuggerHidden]
-        internal PinnedMemory DerivePrivateKey() => DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.BlockSizeInBytes);
+        internal PinnedMemory DerivePrivateKey() => DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureMemory" />.
@@ -201,8 +196,8 @@ namespace RapidField.SolidInstruments.Cryptography
                 if (disposing)
                 {
                     Cipher.Dispose();
-                    Ciphertext.Dispose();
-                    PrivateKeySource.Dispose();
+                    CiphertextField.Dispose();
+                    PrivateKeySourceField.Dispose();
                 }
             }
             finally
@@ -245,13 +240,9 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void DecryptField(PinnedMemory plaintext)
         {
-            using (var privateKey = DerivePrivateKey())
-            {
-                using (var buffer = Cipher.Decrypt(Ciphertext, privateKey))
-                {
-                    buffer.Span.CopyTo(plaintext);
-                }
-            }
+            using var privateKey = DerivePrivateKey();
+            using var buffer = Cipher.Decrypt(Ciphertext, privateKey);
+            buffer.Span.CopyTo(plaintext);
         }
 
         /// <summary>
@@ -263,18 +254,12 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void EncryptField(PinnedMemory plaintext)
         {
-            using (var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true))
-            {
-                RandomnessProvider.GetBytes(initializationVector);
+            using var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true);
+            RandomnessProvider.GetBytes(initializationVector);
 
-                using (var privateKey = DerivePrivateKey())
-                {
-                    using (var buffer = Cipher.Encrypt(plaintext, privateKey, initializationVector))
-                    {
-                        buffer.Span.CopyTo(Ciphertext);
-                    }
-                }
-            }
+            using var privateKey = DerivePrivateKey();
+            using var buffer = Cipher.Encrypt(plaintext, privateKey, initializationVector);
+            buffer.Span.CopyTo(Ciphertext);
         }
 
         /// <summary>
@@ -292,10 +277,40 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Gets the current zero-based ordinal version of the bits comprising the private key that is used to secure the current
+        /// <see cref="SecureMemory" />.
+        /// </summary>
+        UInt32 ISecureMemory.PrivateKeyVersion => PrivateKeyVersionValue;
+
+        /// <summary>
+        /// Gets the ciphertext bits for the bit field.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private PinnedMemory Ciphertext => CiphertextField.TargetField;
+
+        /// <summary>
+        /// Gets a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private PinnedMemory PrivateKeySource => PrivateKeySourceField.TargetField;
+
+        /// <summary>
         /// Gets the length, in bytes, of <see cref="PrivateKeySource" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Int32 PrivateKeySourceLengthInBytes => Cipher.KeySizeInBytes + 16;
+
+        /// <summary>
+        /// Represents the length multiplier for <see cref="CiphertextField" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 CiphertextFieldMultiplier = 2;
+
+        /// <summary>
+        /// Represents the length multiplier for <see cref="PrivateKeySourceField" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 PrivateKeySourceFieldMultiplier = 4;
 
         /// <summary>
         /// Represents a cipher that is used to encrypt and decrypt the bit field.
@@ -307,13 +322,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the ciphertext bits for the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly PinnedMemory Ciphertext;
-
-        /// <summary>
-        /// Represents a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly PinnedMemory PrivateKeySource;
+        private readonly InflatedField CiphertextField;
 
         /// <summary>
         /// Represents the circular bit shift count to use when deriving a private key from <see cref="PrivateKeySource" />.
@@ -326,5 +335,150 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly BitShiftDirection PrivateKeySourceBitShiftDirection;
+
+        /// <summary>
+        /// Represents a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly InflatedField PrivateKeySourceField;
+
+        /// <summary>
+        /// Represents the current zero-based ordinal version of the bits comprising <see cref="PrivateKeySource" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private UInt32 PrivateKeyVersionValue;
+
+        /// <summary>
+        /// Represents a pinned memory field, the length of which is inflated by an integer multiplier.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="InflatedField" /> exposes diversionary bit fields in memory and increases the computational expense of memory
+        /// attacks upon <see cref="SecureMemory" /> instances.
+        /// </remarks>
+        private sealed class InflatedField : Instrument
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InflatedField" /> class.
+            /// </summary>
+            /// <param name="length">
+            /// The length, in bytes, of the target field.
+            /// </param>
+            /// <param name="multiplier">
+            /// The total number of fields to allocate.
+            /// </param>
+            /// <param name="randomnessProvider">
+            /// A random number generator that is used to scramble the inflated field.
+            /// </param>
+            /// <exception cref="ArgumentNullException">
+            /// <paramref name="randomnessProvider" /> is <see langword="null" />.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// <paramref name="length" /> is less than or equal to zero -or- <paramref name="multiplier" /> is less than or equal
+            /// to one.
+            /// </exception>
+            [DebuggerHidden]
+            internal InflatedField(Int32 length, Int32 multiplier, RandomNumberGenerator randomnessProvider)
+                : base()
+            {
+                Fields = new PinnedMemory[multiplier.RejectIf().IsLessThanOrEqualTo(1, nameof(multiplier))];
+                RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
+                ReferenceKey = RandomnessProvider.GetUInt64();
+
+                for (var i = 0; i < multiplier; i++)
+                {
+                    var field = new PinnedMemory(length, true);
+                    RandomnessProvider.GetBytes(field);
+                    Fields[i] = field;
+                }
+            }
+
+            /// <summary>
+            /// Fills the current <see cref="InflatedField" /> with random bits and generates a new, random reference key.
+            /// </summary>
+            /// <exception cref="ObjectDisposedException">
+            /// The object is disposed.
+            /// </exception>
+            [DebuggerHidden]
+            internal void Scramble()
+            {
+                using var controlToken = StateControl.Enter();
+                RejectIfDisposed();
+                ReferenceKey = RandomnessProvider.GetUInt64();
+
+                foreach (var field in Fields)
+                {
+                    RandomnessProvider.GetBytes(field);
+                }
+            }
+
+            /// <summary>
+            /// Releases all resources consumed by the current <see cref="InflatedField" />.
+            /// </summary>
+            /// <param name="disposing">
+            /// A value indicating whether or not managed resources should be released.
+            /// </param>
+            protected override void Dispose(Boolean disposing)
+            {
+                try
+                {
+                    if (disposing)
+                    {
+                        ReferenceKey = default;
+
+                        foreach (var field in Fields)
+                        {
+                            field?.Dispose();
+                        }
+                    }
+                }
+                finally
+                {
+                    base.Dispose(disposing);
+                }
+            }
+
+            /// <summary>
+            /// Gets the target field.
+            /// </summary>
+            /// <exception cref="ObjectDisposedException">
+            /// The object is disposed.
+            /// </exception>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            internal PinnedMemory TargetField
+            {
+                [DebuggerHidden]
+                get
+                {
+                    using var controlToken = StateControl.Enter();
+                    RejectIfDisposed();
+                    return Fields[Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Convert.ToUInt64(Multiplier)))];
+                }
+            }
+
+            /// <summary>
+            /// Represents the total number of fields allocated by the current <see cref="InflatedField" />.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private Int32 Multiplier => Fields.Length;
+
+            /// <summary>
+            /// Represents the underlying collection of pinned memory fields.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly PinnedMemory[] Fields;
+
+            /// <summary>
+            /// Represents a random number generator that is used to scramble the inflated field.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly RandomNumberGenerator RandomnessProvider;
+
+            /// <summary>
+            /// Represents a 64-bit key that defines the location of the target field within the current
+            /// <see cref="InflatedField" />.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private UInt64 ReferenceKey;
+        }
     }
 }

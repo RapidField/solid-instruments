@@ -6,8 +6,12 @@ using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
+using RapidField.SolidInstruments.Cryptography.Extensions;
+using RapidField.SolidInstruments.Cryptography.Hashing;
 using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
@@ -126,6 +130,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             : base()
         {
             HasValue = false;
+            InMemoryKeyTimeStampValue = TimeStamp.Current;
             Name = name.RejectIf().IsNullOrEmpty(nameof(name));
             SecureValueMemory = null;
         }
@@ -136,17 +141,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode()
-        {
-            var hashCode = (Name?.GetHashCode() ?? 0) ^ (ValueType?.FullName.GetHashCode() ?? 0);
-
-            if (HasValue && SecureValueMemory is null == false)
-            {
-                hashCode ^= SecureValueMemory.GetHashCode();
-            }
-
-            return hashCode;
-        }
+        public override Int32 GetHashCode() => IsDisposedOrDisposing ? 0 : GetDerivedIdentity().GetHashCode();
 
         /// <summary>
         /// Decrypts the secret value, pins it in memory and performs the specified read operation against the resulting bytes as a
@@ -170,11 +165,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction)
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
-            }
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
+            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
         }
 
         /// <summary>
@@ -199,11 +192,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Read(Action<TValue> readAction)
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
-            }
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
+            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
         }
 
         /// <summary>
@@ -257,6 +248,28 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task ReadAsync(Action<TValue> readAction) => Task.Factory.StartNew(() => Read(readAction));
 
         /// <summary>
+        /// Regenerates and replaces the in-memory key that is used to secure the current <see cref="Secret{TValue}" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        void IReadOnlySecret.RegenerateInMemoryKey()
+        {
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
+
+            try
+            {
+                SecureValueMemory.RegeneratePrivateKey();
+            }
+            finally
+            {
+                InMemoryKeyTimeStampValue = TimeStamp.Current;
+            }
+        }
+
+        /// <summary>
         /// Converts the value of the current <see cref="Secret{TValue}" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
@@ -281,11 +294,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Write(Func<TValue> writeFunction)
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
-            }
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
+            Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
         }
 
         /// <summary>
@@ -310,6 +321,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task WriteAsync(Func<TValue> writeFunction) => Task.Factory.StartNew(() => Write(writeFunction));
 
         /// <summary>
+        /// Generates a new, unique textual identifier.
+        /// </summary>
+        /// <returns>
+        /// A new, unique textual identifier.
+        /// </returns>
+        [DebuggerHidden]
+        internal static String NewRandomSemanticIdentifier() => HardenedRandomNumberGenerator.Instance.GetString(8, false, true, false, true, false, false, false);
+
+        /// <summary>
         /// Writes and encrypts the specified value.
         /// </summary>
         /// <param name="value">
@@ -321,10 +341,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         internal void Write(Byte[] value)
         {
-            using (var valueMemory = new ReadOnlyPinnedMemory(value))
-            {
-                Write(valueMemory: valueMemory);
-            }
+            using var valueMemory = new ReadOnlyPinnedMemory(value);
+            Write(valueMemory: valueMemory);
         }
 
         /// <summary>
@@ -369,12 +387,63 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 if (disposing)
                 {
                     SecureValueMemory?.Dispose();
+                    SecureValueMemory = null;
                 }
             }
             finally
             {
                 base.Dispose(disposing);
             }
+        }
+
+        /// <summary>
+        /// Gets a globally unique identifier that is derived from a cryptographically secure hash of the secret value and secret
+        /// name.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Guid" /> that is derived from a cryptographically secure hash of the secret value and secret name.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        private Guid GetDerivedIdentity()
+        {
+            RejectIfDisposed();
+            var algorithm = DerivedIdentityHashingAlgorithm;
+            var hashLengthInBytes = algorithm.ToDigestBitLength() / 8;
+            var hashPairLengthInBytes = hashLengthInBytes * 2;
+
+            using var hashPair = new PinnedMemory(hashPairLengthInBytes, true);
+
+            if (Name.IsNullOrEmpty())
+            {
+                DerivedIdentityEmptyValueHashBytes.CopyTo(hashPair, 0);
+            }
+            else
+            {
+                HashingProcessor.Instance.CalculateHash(Name.ToByteArray(Encoding.Unicode), algorithm).CopyTo(hashPair, 0);
+            }
+
+            if (HasValue)
+            {
+                Read((IReadOnlyPinnedMemory<Byte> value) =>
+                {
+                    if (value.IsNullOrEmpty())
+                    {
+                        DerivedIdentityEmptyValueHashBytes.CopyTo(hashPair, hashLengthInBytes);
+                        return;
+                    }
+
+                    HashingProcessor.Instance.CalculateHash(value.ReadOnlySpan.ToArray(), algorithm).CopyTo(hashPair, hashLengthInBytes);
+                });
+            }
+            else
+            {
+                DerivedIdentityEmptyValueHashBytes.CopyTo(hashPair, hashLengthInBytes);
+            }
+
+            return hashPair.GenerateChecksumIdentity();
         }
 
         /// <summary>
@@ -405,13 +474,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 if (SecureValueMemory is null)
                 {
-                    using (var memory = new ReadOnlyPinnedMemory<Byte>(0))
-                    {
-                        // Because secure memory cannot have length zero, this is here to handle cases in which write operations
-                        // produce empty memory.
-                        readAction(memory);
-                    }
-
+                    // Because secure memory cannot have length zero, this is here to handle cases in which write operations produce
+                    // empty memory.
+                    using var memory = new ReadOnlyPinnedMemory<Byte>(0);
+                    readAction(memory);
                     return;
                 }
 
@@ -540,10 +606,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                     throw new SecretAccessException("The specified write function produced a null secret value.");
                 }
 
-                using (var valueMemory = ConvertValueToBytes(value, controlToken))
-                {
-                    Write(valueMemory);
-                }
+                using var valueMemory = ConvertValueToBytes(value, controlToken);
+                Write(valueMemory);
             }
             catch (ObjectDisposedException)
             {
@@ -560,6 +624,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Gets a globally unique identifier that is derived from a cryptographically secure hash of the secret value and secret
+        /// name.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Guid DerivedIdentity => GetDerivedIdentity();
+
+        /// <summary>
         /// Gets a value indicating whether or not the current <see cref="Secret{TValue}" /> has a value.
         /// </summary>
         public Boolean HasValue
@@ -567,6 +640,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets the date and time when the in-memory key that is used to secure the current <see cref="Secret{TValue}" /> was
+        /// generated.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        DateTime IReadOnlySecret.InMemoryKeyTimeStamp => InMemoryKeyTimeStampValue;
 
         /// <summary>
         /// Gets a textual name that uniquely identifies the current <see cref="Secret{TValue}" />.
@@ -580,6 +660,33 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Gets the type of the secret value.
         /// </summary>
         public Type ValueType => typeof(TValue);
+
+        /// <summary>
+        /// Represents the hashing algorithm that is used to produce <see cref="DerivedIdentity" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const HashingAlgorithmSpecification DerivedIdentityHashingAlgorithm = HashingAlgorithmSpecification.Pbkdf2;
+
+        /// <summary>
+        /// Represents an array of bytes that are used in place of plaintext bytes for producing <see cref="DerivedIdentity" /> when
+        /// the plaintext is empty.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Byte[] DerivedIdentityEmptyValueBytes = new Byte[] { 0xf0, 0x55, 0xcc, 0x99, 0x0f, 0xaa, 0x33, 0x66 };
+
+        /// <summary>
+        /// Represents an array of bytes that are used in place of ciphertext bytes for producing <see cref="DerivedIdentity" />
+        /// when the plaintext is empty.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Byte[] DerivedIdentityEmptyValueHashBytes = HashingProcessor.Instance.CalculateHash(DerivedIdentityEmptyValueBytes, DerivedIdentityHashingAlgorithm);
+
+        /// <summary>
+        /// Represents the date and time when the in-memory key that is used to secure the current <see cref="Secret{TValue}" /> was
+        /// generated.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private DateTime InMemoryKeyTimeStampValue;
 
         /// <summary>
         /// Represents the encrypted field in which the secure value is stored.

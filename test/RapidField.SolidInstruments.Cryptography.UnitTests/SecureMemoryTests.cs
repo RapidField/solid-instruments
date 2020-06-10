@@ -177,8 +177,14 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                         memory[referenceBytePosition] = referenceByte;
                     });
 
+                    // Assert.
+                    ((ISecureMemory)target).PrivateKeyVersion.Should().Be(0);
+
                     // Act.
-                    target.RegeneratePrivateKey();
+                    ((ISecureMemory)target).RegeneratePrivateKey();
+
+                    // Assert.
+                    ((ISecureMemory)target).PrivateKeyVersion.Should().Be(1);
 
                     using (var privateKeyTwo = target.DerivePrivateKey())
                     {
@@ -191,7 +197,10 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                         });
 
                         // Act.
-                        target.RegeneratePrivateKey();
+                        ((ISecureMemory)target).RegeneratePrivateKey();
+
+                        // Assert.
+                        ((ISecureMemory)target).PrivateKeyVersion.Should().Be(2);
 
                         using (var privateKeyThree = target.DerivePrivateKey())
                         {

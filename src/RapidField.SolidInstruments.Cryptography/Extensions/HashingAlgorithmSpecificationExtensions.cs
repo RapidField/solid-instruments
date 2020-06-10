@@ -2,7 +2,9 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Cryptography.Hashing;
+using RapidField.SolidInstruments.Cryptography.Hashing.Pbkdf2;
 using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -28,10 +30,11 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             HashingAlgorithmSpecification.Unspecified => default,
             HashingAlgorithmSpecification.Md5 => 128,
+            HashingAlgorithmSpecification.Pbkdf2 => Pbkdf2HashAlgorithm.DigestLengthInBits,
             HashingAlgorithmSpecification.ShaTwo256 => 256,
             HashingAlgorithmSpecification.ShaTwo384 => 384,
             HashingAlgorithmSpecification.ShaTwo512 => 512,
-            _ => throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target))
+            _ => throw new UnsupportedSpecificationException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.")
         };
 
         /// <summary>
@@ -48,10 +51,31 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             HashingAlgorithmSpecification.Unspecified => null,
             HashingAlgorithmSpecification.Md5 => MD5.Create(),
+            HashingAlgorithmSpecification.Pbkdf2 => Pbkdf2HashAlgorithm.Create(),
             HashingAlgorithmSpecification.ShaTwo256 => SHA256.Create(),
             HashingAlgorithmSpecification.ShaTwo384 => SHA384.Create(),
             HashingAlgorithmSpecification.ShaTwo512 => SHA512.Create(),
-            _ => throw new ArgumentException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.", nameof(target))
+            _ => throw new UnsupportedSpecificationException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.")
+        };
+
+        /// <summary>
+        /// Returns a new <see cref="HashAlgorithmName" /> matching the current <see cref="HashingAlgorithmSpecification" />.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="HashingAlgorithmSpecification" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="HashAlgorithmName" /> matching the current <see cref="HashingAlgorithmSpecification" />.
+        /// </returns>
+        [DebuggerHidden]
+        internal static HashAlgorithmName ToHashAlgorithmName(this HashingAlgorithmSpecification target) => target switch
+        {
+            HashingAlgorithmSpecification.Unspecified => default,
+            HashingAlgorithmSpecification.Md5 => HashAlgorithmName.MD5,
+            HashingAlgorithmSpecification.ShaTwo256 => HashAlgorithmName.SHA256,
+            HashingAlgorithmSpecification.ShaTwo384 => HashAlgorithmName.SHA384,
+            HashingAlgorithmSpecification.ShaTwo512 => HashAlgorithmName.SHA512,
+            _ => throw new UnsupportedSpecificationException($"{target} is not a supported {nameof(HashingAlgorithmSpecification)}.")
         };
     }
 }

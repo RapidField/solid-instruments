@@ -71,15 +71,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricProcessor{T}" /> class.
         /// </summary>
-        public SymmetricProcessor()
-            : this(HardenedRandomNumberGenerator.Instance)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SymmetricProcessor{T}" /> class.
-        /// </summary>
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate initialization vectors.
         /// </param>
@@ -109,6 +100,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         {
             Serializer = serializer.RejectIf().IsNull(nameof(serializer)).TargetArgument;
             RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricProcessor{T}" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        internal SymmetricProcessor()
+            : this(HardenedRandomNumberGenerator.Instance)
+        {
+            return;
         }
 
         /// <summary>

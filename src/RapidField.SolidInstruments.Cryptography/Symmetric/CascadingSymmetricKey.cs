@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Cryptography.Secrets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -72,16 +73,16 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="password" /> is <see langword="null" />.
         /// </exception>
-        public static CascadingSymmetricKey FromPassword(String password) => FromPassword(password, DefaultDerivationMode, DefaultFirstLayerAlgorithm, DefaultSecondLayerAlgorithm);
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(IPassword password) => FromPassword(password, DefaultDerivationMode, DefaultFirstLayerAlgorithm, DefaultSecondLayerAlgorithm);
 
         /// <summary>
         /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
@@ -103,9 +104,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -116,7 +114,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
         /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
-        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm });
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(IPassword password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm });
 
         /// <summary>
         /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
@@ -139,9 +140,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -152,7 +150,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
         /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
-        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm });
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(IPassword password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm });
 
         /// <summary>
         /// Derives a new <see cref="CascadingSymmetricKey" /> from the specified password.
@@ -178,9 +179,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -191,7 +189,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
         /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
-        public static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm });
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
+        public static CascadingSymmetricKey FromPassword(IPassword password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => FromPassword(password, derivationMode, new SymmetricAlgorithmSpecification[] { firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm });
 
         /// <summary>
         /// Creates a new instance of a <see cref="CascadingSymmetricKey" /> using the specified secure bit field.
@@ -426,9 +427,6 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="password" /> is empty -or- <paramref name="algorithms" /> is empty.
-        /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="password" /> is shorter than thirteen characters.
         /// </exception>
@@ -439,8 +437,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" /> -or- one or more
         /// algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="password" /> is disposed.
+        /// </exception>
         [DebuggerHidden]
-        private static CascadingSymmetricKey FromPassword(String password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification[] algorithms)
+        private static CascadingSymmetricKey FromPassword(IPassword password, SymmetricKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification[] algorithms)
         {
             var keyDepth = algorithms.RejectIf().IsNullOrEmpty(nameof(algorithms)).TargetArgument.Length;
             var singleKeySourceLengthInBytes = SymmetricKey.KeySourceLengthInBytes;

@@ -15,7 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a serializable <see cref="ISecret" /> that was exported from an <see cref="ISecretVault" />.
+    /// Represents a serializable <see cref="ISecret" /> that was exported from an <see cref="ISecretManager" />.
     /// </summary>
     /// <remarks>
     /// <see cref="ExportedSecret" /> is the default implementation of <see cref="IExportedSecret" />.

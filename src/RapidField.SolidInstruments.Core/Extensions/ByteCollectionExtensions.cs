@@ -233,6 +233,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
+        /// Converts the current <see cref="IEnumerable{Byte}" /> to its textual Base64 representation.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{Byte}" />.
+        /// </param>
+        /// <returns>
+        /// A Base64 string representation of the byte collection.
+        /// </returns>
+        public static String ToBase64String(this IEnumerable<Byte> target) => Convert.ToBase64String(target.ToArray());
+
+        /// <summary>
         /// Computes a 128-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
         /// <param name="target">

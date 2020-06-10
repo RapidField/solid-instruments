@@ -22,18 +22,24 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         Md5 = 0x01,
 
         /// <summary>
+        /// Specifies the PBKDF2 key-derivation function (PRF: 512-bit SHA-2, 256-bit salt) using 17,711 iterations to produce a
+        /// 256-bit digest.
+        /// </summary>
+        Pbkdf2 = 0x02,
+
+        /// <summary>
         /// Specifies the SHA-2 hashing algorithm using a 256-bit digest.
         /// </summary>
-        ShaTwo256 = 0x02,
+        ShaTwo256 = 0x03,
 
         /// <summary>
         /// Specifies the SHA-2 hashing algorithm using a 384-bit digest.
         /// </summary>
-        ShaTwo384 = 0x03,
+        ShaTwo384 = 0x04,
 
         /// <summary>
         /// Specifies the SHA-2 hashing algorithm using a 512-bit digest.
         /// </summary>
-        ShaTwo512 = 0x04
+        ShaTwo512 = 0x05
     }
 }

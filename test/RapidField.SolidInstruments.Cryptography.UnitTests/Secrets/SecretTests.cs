@@ -22,6 +22,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             var valueTwo = Array.Empty<Byte>();
             var valueThree = new Byte[] { 0xcc, 0xff };
             var hashCode = 0;
+            var derivedIdentity = Guid.Empty;
 
             using (var target = new Secret(name))
             {
@@ -32,6 +33,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
                 target.ValueType.Should().Be(typeof(IReadOnlyPinnedMemory<Byte>));
+                derivedIdentity = target.DerivedIdentity;
+                derivedIdentity.Should().NotBe(Guid.Empty);
 
                 // Act.
                 target.Write(() => new PinnedMemory(valueOne));
@@ -41,6 +44,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
                 target.HasValue.Should().BeTrue();
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
                 target.Read(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueOne);
@@ -53,6 +58,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
                 target.ReadAsync(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueTwo);
@@ -65,6 +72,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
                 target.Read(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueThree);

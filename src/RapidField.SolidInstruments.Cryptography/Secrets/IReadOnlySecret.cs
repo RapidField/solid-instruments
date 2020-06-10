@@ -117,6 +117,23 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task ReadAsync(Action<IReadOnlyPinnedMemory<Byte>> readAction);
 
         /// <summary>
+        /// Regenerates and replaces the in-memory key that is used to secure the current <see cref="IReadOnlySecret{TValue}" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        internal void RegenerateInMemoryKey();
+
+        /// <summary>
+        /// Gets a globally unique identifier that is derived from a cryptographically secure hash of the secret value, or
+        /// <see cref="Guid.Empty" /> if <see cref="HasValue" /> is <see langword="false" />.
+        /// </summary>
+        public Guid DerivedIdentity
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not the current <see cref="IReadOnlySecret{TValue}" /> has a value.
         /// </summary>
         public Boolean HasValue
@@ -136,6 +153,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Gets the type of the secret value.
         /// </summary>
         public Type ValueType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the date and time when the in-memory key that is used to secure the current <see cref="IReadOnlySecret{TValue}" />
+        /// was generated.
+        /// </summary>
+        internal DateTime InMemoryKeyTimeStamp
         {
             get;
         }
