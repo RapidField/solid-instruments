@@ -165,9 +165,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+            }
         }
 
         /// <summary>
@@ -192,9 +194,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Read(Action<TValue> readAction)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+            }
         }
 
         /// <summary>
@@ -256,16 +260,18 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         void IReadOnlySecret.RegenerateInMemoryKey()
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
 
-            try
-            {
-                SecureValueMemory.RegeneratePrivateKey();
-            }
-            finally
-            {
-                InMemoryKeyTimeStampValue = TimeStamp.Current;
+                try
+                {
+                    SecureValueMemory.RegeneratePrivateKey();
+                }
+                finally
+                {
+                    InMemoryKeyTimeStampValue = TimeStamp.Current;
+                }
             }
         }
 
@@ -294,9 +300,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Write(Func<TValue> writeFunction)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-            Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
+            }
         }
 
         /// <summary>

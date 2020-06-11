@@ -4,7 +4,6 @@
 
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections;
@@ -99,7 +98,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <paramref name="field" /> is <see langword="null" />.
         /// </exception>
         public ReadOnlyPinnedMemory(T[] field)
-            : base(ConcurrencyControlMode.SingleThreadLock)
+            : base()
         {
             Handle = GCHandle.Alloc(field.RejectIf().IsNull(nameof(field)).TargetArgument, GCHandleType.Pinned);
             Field = (T[])Handle.Target;

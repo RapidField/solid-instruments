@@ -31,6 +31,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Initializes a new instance of the <see cref="SecretVault" /> class.
         /// </summary>
         public SecretVault()
+            : base()
         {
             LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
             Secrets = new Dictionary<String, IReadOnlySecret>();
@@ -41,11 +42,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Initializes a new instance of the <see cref="SecretVault" /> class.
         /// </summary>
         /// <param name="masterPassword">
-        /// A 13+ character password from which a master key is derived, which is used as the default encryption key for exported
-        /// secrets. A random master key is generated on demand if the parameterless constructor is used.
+        /// A <see cref="PasswordCompositionRequirements.Strict" /> compliant password from which to derive the master key, which is
+        /// used as the default encryption key for exported secrets. A master key is generated on demand if the parameterless
+        /// constructor is used.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// <paramref name="masterPassword" /> contains a string value that is shorter than thirteen characters.
+        /// <paramref name="masterPassword" /> does not comply with <see cref="PasswordCompositionRequirements.Strict" />.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="masterPassword" /> is <see langword="null" />.
@@ -56,10 +58,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public SecretVault(IPassword masterPassword)
             : this()
         {
-            using var masterKey = CascadingSymmetricKey.FromPassword(masterPassword);
-            var masterKeySecret = CascadingSymmetricKeySecret.FromValue(MasterKeyName, masterKey);
-            ReferenceManager.AddObject(masterKeySecret);
-            Secrets.Add(masterKeySecret.Name, masterKeySecret);
+            _ = CreateMasterKey(masterPassword);
         }
 
         /// <summary>
@@ -217,26 +216,28 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void Clear()
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
-            try
+            using (var controlToken = StateControl.Enter())
             {
-                foreach (var secret in Secrets.Values)
+                RejectIfDisposed();
+
+                try
                 {
-                    try
+                    foreach (var secret in Secrets.Values)
                     {
-                        secret?.Dispose();
-                    }
-                    catch
-                    {
-                        continue;
+                        try
+                        {
+                            secret?.Dispose();
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
-            }
-            finally
-            {
-                Secrets.Clear();
+                finally
+                {
+                    Secrets.Clear();
+                }
             }
         }
 
@@ -290,22 +291,22 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             }
 
             var exportedSecretVault = new ExportedSecretVault(Identifier, secrets);
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
 
-            if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+            using (var controlToken = StateControl.Enter())
             {
-                return await ExportEncryptedSecretVaultAsync(exportedSecretVault, Secrets[keyName]).ConfigureAwait(false);
-            }
-            else if (keyName == MasterKeyName)
-            {
-                using var masterKey = CascadingSymmetricKey.New();
-                var masterKeySecret = CascadingSymmetricKeySecret.FromValue(keyName, masterKey);
-                AddOrUpdate(MasterKeyName, masterKeySecret, controlToken);
-                return await ExportEncryptedSecretVaultAsync(exportedSecretVault, masterKeySecret).ConfigureAwait(false);
-            }
+                RejectIfDisposed();
 
-            throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+                if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                {
+                    return await ExportEncryptedSecretVaultAsync(exportedSecretVault, Secrets[keyName]).ConfigureAwait(false);
+                }
+                else if (keyName == MasterKeyName)
+                {
+                    return await ExportEncryptedSecretVaultAsync(exportedSecretVault, CreateMasterKey()).ConfigureAwait(false);
+                }
+
+                throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+            }
         }
 
         /// <summary>
@@ -372,22 +373,21 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                 try
                 {
-                    using var controlToken = StateControl.Enter();
-                    RejectIfDisposed();
-
-                    if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                    using (var controlToken = StateControl.Enter())
                     {
-                        return await ExportEncryptedSecretAsync(exportedSecret, Secrets[keyName]).ConfigureAwait(false);
-                    }
-                    else if (keyName == MasterKeyName)
-                    {
-                        using var masterKey = CascadingSymmetricKey.New();
-                        var masterKeySecret = CascadingSymmetricKeySecret.FromValue(keyName, masterKey);
-                        AddOrUpdate(MasterKeyName, masterKeySecret, controlToken);
-                        return await ExportEncryptedSecretAsync(exportedSecret, masterKeySecret).ConfigureAwait(false);
-                    }
+                        RejectIfDisposed();
 
-                    throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+                        if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                        {
+                            return await ExportEncryptedSecretAsync(exportedSecret, Secrets[keyName]).ConfigureAwait(false);
+                        }
+                        else if (keyName == MasterKeyName)
+                        {
+                            return await ExportEncryptedSecretAsync(exportedSecret, CreateMasterKey()).ConfigureAwait(false);
+                        }
+
+                        throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+                    }
                 }
                 finally
                 {
@@ -416,13 +416,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 return ExportSecretAsync(MasterKeyName);
             }
 
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
-            using var masterKey = CascadingSymmetricKey.New();
-            var masterKeySecret = CascadingSymmetricKeySecret.FromValue(MasterKeyName, masterKey);
-            AddOrUpdate(MasterKeyName, masterKeySecret, controlToken);
-            return Task.FromResult(new ExportedSecret(masterKeySecret));
+            return Task.Factory.StartNew(() =>
+            {
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    return new ExportedSecret(CreateMasterKey());
+                }
+            });
         }
 
         /// <summary>
@@ -499,45 +500,53 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void ImportEncryptedSecret(IEncryptedExportedSecret secret, String keyName)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
+            _ = secret.RejectIf().IsNull(nameof(secret));
 
-            if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+            using (var controlToken = StateControl.Enter())
             {
-                var keySecret = Secrets[keyName];
+                RejectIfDisposed();
 
-                try
+                if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
                 {
-                    if (keySecret.ValueType == typeof(SymmetricKey))
+                    var exportedSecret = (IExportedSecret)null;
+                    var keySecret = Secrets[keyName];
+
+                    try
                     {
-                        ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                        if (keySecret.ValueType == typeof(SymmetricKey))
                         {
-                            ImportSecret(secret.ToPlaintextModel(key), controlToken);
-                        }).Wait();
-                        return;
+                            ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                            {
+                                exportedSecret = secret.ToPlaintextModel(key);
+                            }).Wait();
+                        }
+                        else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+                        {
+                            ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                            {
+                                exportedSecret = secret.ToPlaintextModel(key);
+                            }).Wait();
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                        }
                     }
-                    else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+                    catch (AggregateException exception)
                     {
-                        ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
-                        {
-                            ImportSecret(secret.ToPlaintextModel(key), controlToken);
-                        }).Wait();
-                        return;
+                        throw new SecretAccessException($"The specified key, \"{keyName}\", could not be used to import the specified secret. Decryption or deserialization failed.", exception);
                     }
 
-                    throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                    ImportSecret(exportedSecret, controlToken);
+                    return;
                 }
-                catch (AggregateException exception)
+                else if (keyName == MasterKeyName)
                 {
-                    throw new SecretAccessException($"The specified key, \"{keyName}\", could not be used to import the specified secret. Decryption or deserialization failed.", exception);
+                    throw new SecretAccessException("The encrypted secret cannot be imported without specifying an explicit key because the secret vault does not have a master key.");
                 }
-            }
-            else if (keyName == MasterKeyName)
-            {
-                throw new SecretAccessException("The encrypted secret cannot be imported without specifying an explicit key because the secret vault does not have a master key.");
-            }
 
-            throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+                throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+            }
         }
 
         /// <summary>
@@ -588,6 +597,59 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void ImportEncryptedSecretVault(IEncryptedExportedSecretVault secretVault, String keyName)
         {
+            _ = secretVault.RejectIf().IsNull(nameof(secretVault));
+
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+
+                if (Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
+                {
+                    var keySecret = Secrets[keyName];
+                    var exportedVault = (IExportedSecretVault)null;
+
+                    try
+                    {
+                        if (keySecret.ValueType == typeof(SymmetricKey))
+                        {
+                            ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                            {
+                                exportedVault = secretVault.ToPlaintextModel(key);
+                            }).Wait();
+                        }
+                        else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+                        {
+                            ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                            {
+                                exportedVault = secretVault.ToPlaintextModel(key);
+                            }).Wait();
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                        }
+                    }
+                    catch (AggregateException exception)
+                    {
+                        throw new SecretAccessException($"The specified key, \"{keyName}\", could not be used to import the specified secret vault. Decryption or deserialization failed.", exception);
+                    }
+
+                    var exportedSecrets = exportedVault.GetExportedSecrets();
+
+                    foreach (var exportedSecret in exportedSecrets)
+                    {
+                        ImportSecret(exportedSecret, controlToken);
+                    }
+
+                    return;
+                }
+                else if (keyName == MasterKeyName)
+                {
+                    throw new SecretAccessException("The encrypted secret cannot be imported without specifying an explicit key because the secret vault does not have a master key.");
+                }
+
+                throw new ArgumentException($"The secret vault does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
+            }
         }
 
         /// <summary>
@@ -604,9 +666,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public void ImportSecret(IExportedSecret secret)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-            ImportSecret(secret, controlToken);
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                ImportSecret(secret, controlToken);
+            }
         }
 
         /// <summary>
@@ -854,19 +918,21 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public Boolean TryRemove(String name)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
-            if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+            using (var controlToken = StateControl.Enter())
             {
-                if (Secrets.Remove(name, out var secret))
-                {
-                    secret?.Dispose();
-                    return true;
-                }
-            }
+                RejectIfDisposed();
 
-            return false;
+                if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+                {
+                    if (Secrets.Remove(name, out var secret))
+                    {
+                        secret?.Dispose();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         /// <summary>
@@ -883,7 +949,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 {
                     try
                     {
-                        using var controlToken = StateControl.Enter();
                         LazyReferenceManager.Dispose();
                     }
                     finally
@@ -920,9 +985,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private void AddOrUpdate(String name, IReadOnlySecret secret)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-            AddOrUpdate(name, secret, controlToken);
+            using (var controlToken = StateControl.Enter())
+            {
+                RejectIfDisposed();
+                AddOrUpdate(name, secret, controlToken);
+            }
         }
 
         /// <summary>
@@ -957,6 +1024,57 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
             ReferenceManager.AddObject(secret);
             Secrets.Add(name, secret.RejectIf().IsNull(nameof(secret)).TargetArgument);
+        }
+
+        /// <summary>
+        /// Creates and stores a new master key for the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <returns>
+        /// The resulting master key secret.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        private IReadOnlySecret CreateMasterKey()
+        {
+            using var masterPassword = Password.NewRandomStrongPassword();
+            return CreateMasterKey(masterPassword);
+        }
+
+        /// <summary>
+        /// Creates and stores a new master key for the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <param name="masterPassword">
+        /// A <see cref="PasswordCompositionRequirements.Strict" /> compliant password from which to derive the master key.
+        /// </param>
+        /// <returns>
+        /// The resulting master key secret.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="masterPassword" /> does not comply with <see cref="PasswordCompositionRequirements.Strict" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="masterPassword" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        private IReadOnlySecret CreateMasterKey(IPassword masterPassword)
+        {
+            RejectIfDisposed();
+
+            if (masterPassword.MeetsRequirements(MasterKeyPasswordCompositionRequirements))
+            {
+                using var masterKey = CascadingSymmetricKey.FromPassword(masterPassword);
+                var masterKeySecret = CascadingSymmetricKeySecret.FromValue(MasterKeyName, masterKey);
+                ReferenceManager.AddObject(masterKeySecret);
+                Secrets.Add(masterKeySecret.Name, masterKeySecret);
+                return masterKeySecret;
+            }
+
+            throw new ArgumentException("The specified password does not comply with the composition requirements for secret vault master keys.", nameof(masterPassword));
         }
 
         /// <summary>
@@ -1061,15 +1179,17 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private ExportedSecret ExportSecret(String name)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
-            if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+            using (var controlToken = StateControl.Enter())
             {
-                return new ExportedSecret(Secrets[name]);
-            }
+                RejectIfDisposed();
 
-            throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
+                if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
+                {
+                    return new ExportedSecret(Secrets[name]);
+                }
+
+                throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
+            }
         }
 
         /// <summary>
@@ -1091,15 +1211,18 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Uses a probabilistic method to randomly regenerate and replace the in-memory keys that are used to secure the secrets
         /// stored by the current <see cref="SecretVault" />, with a probability that scales toward 1 as the keys age.
         /// </summary>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        private void ProbabilisticallyRegenerateInMemoryKeys()
+        private void ProbabilisticallyRegenerateInMemoryKeys(IConcurrencyControlToken controlToken)
         {
             if (Convert.ToDouble(HardenedRandomNumberGenerator.Instance.GetUInt16()) / Convert.ToDouble(UInt16.MaxValue) < InMemoryKeyRegenerationProbability)
             {
-                RegenerateInMemoryKeys();
+                RegenerateInMemoryKeys(controlToken);
             }
         }
 
@@ -1135,7 +1258,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private void Read<T>(String name, Action<T> readAction)
         {
-            using var controlToken = StateControl.Enter();
             RejectIfDisposed();
 
             try
@@ -1157,7 +1279,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             }
             finally
             {
-                controlToken.AttachTask(ProbabilisticallyRegenerateInMemoryKeys);
+                using (var controlToken = StateControl.Enter())
+                {
+                    ProbabilisticallyRegenerateInMemoryKeys(controlToken);
+                }
             }
         }
 
@@ -1208,15 +1333,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Regenerates and replaces the in-memory keys that are used to secure the secrets stored by the current
         /// <see cref="SecretVault" />.
         /// </summary>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        private void RegenerateInMemoryKeys()
+        private void RegenerateInMemoryKeys(IConcurrencyControlToken controlToken)
         {
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
             foreach (var secret in Secrets.Values)
             {
                 controlToken.AttachTask(secret.RegenerateInMemoryKey);
@@ -1233,7 +1358,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             get
             {
-                using var controlToken = StateControl.Enter();
                 RejectIfDisposed();
                 return Secrets.Count;
             }
@@ -1254,7 +1378,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             get
             {
-                using var controlToken = StateControl.Enter();
                 RejectIfDisposed();
 
                 foreach (var name in Secrets.Keys)
@@ -1301,6 +1424,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const String MasterKeyNamePrefix = "__MasterKey-";
+
+        /// <summary>
+        /// Represents the composition requirements for password-derived master keys.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly IPasswordCompositionRequirements MasterKeyPasswordCompositionRequirements = PasswordCompositionRequirements.Strict;
 
         /// <summary>
         /// Gets the length of time, in seconds, for expiration of in-memory keys at which the probability of a key regeneration and

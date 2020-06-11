@@ -20,19 +20,158 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
         [TestMethod]
         public void ExportAsync_ShouldBeReversible_UsingExplicitCascadingSymmetricKey()
         {
-            // TODO Write this test.
+            // Arrange.
+            var exportKeyName = "ExportKey";
+            var secretOneName = "SecretOne";
+            var secretTwoName = "SecretTwo";
+            var secretNames = new String[] { exportKeyName, secretOneName, secretTwoName };
+            var secretOneValue = "foo";
+            var secretTwoValue = 123.456d;
+            using var exportKey = CascadingSymmetricKey.New();
+            using var targetOne = new SecretVault();
+            using var targetTwo = new SecretVault();
+            targetOne.AddOrUpdate(exportKeyName, exportKey);
+            targetOne.AddOrUpdate(secretOneName, secretOneValue);
+            targetOne.AddOrUpdate(secretTwoName, secretTwoValue);
+            targetTwo.AddOrUpdate(exportKeyName, exportKey);
+
+            // Act.
+            targetOne.ExportAsync(exportKeyName).ContinueWith(exportTask =>
+            {
+                targetTwo.ImportEncryptedSecretVault(exportTask.Result, exportKeyName);
+            }).Wait();
+
+            // Assert.
+            targetOne.Count.Should().Be(3);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetTwo.Count.Should().Be(3);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetTwo.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetTwo.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
+
+            // Arrange.
+            secretOneValue = "bar";
+            secretTwoValue = 654.321d;
+            targetTwo.AddOrUpdate(secretOneName, secretOneValue);
+            targetTwo.AddOrUpdate(secretTwoName, secretTwoValue);
+
+            // Act.
+            targetTwo.ExportAsync(exportKeyName).ContinueWith(exportTask =>
+            {
+                targetOne.ImportEncryptedSecretVault(exportTask.Result, exportKeyName);
+            }).Wait();
+
+            // Assert.
+            targetTwo.Count.Should().Be(3);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetOne.Count.Should().Be(3);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetOne.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetOne.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
         }
 
         [TestMethod]
         public void ExportAsync_ShouldBeReversible_UsingExplicitSymmetricKey()
         {
-            // TODO Write this test.
+            // Arrange.
+            var exportKeyName = "ExportKey";
+            var secretOneName = "SecretOne";
+            var secretTwoName = "SecretTwo";
+            var secretNames = new String[] { exportKeyName, secretOneName, secretTwoName };
+            var secretOneValue = "foo";
+            var secretTwoValue = 123.456d;
+            using var exportKey = SymmetricKey.New();
+            using var targetOne = new SecretVault();
+            using var targetTwo = new SecretVault();
+            targetOne.AddOrUpdate(exportKeyName, exportKey);
+            targetOne.AddOrUpdate(secretOneName, secretOneValue);
+            targetOne.AddOrUpdate(secretTwoName, secretTwoValue);
+            targetTwo.AddOrUpdate(exportKeyName, exportKey);
+
+            // Act.
+            targetOne.ExportAsync(exportKeyName).ContinueWith(exportTask =>
+            {
+                targetTwo.ImportEncryptedSecretVault(exportTask.Result, exportKeyName);
+            }).Wait();
+
+            // Assert.
+            targetOne.Count.Should().Be(3);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetTwo.Count.Should().Be(3);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetTwo.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetTwo.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
+
+            // Arrange.
+            secretOneValue = "bar";
+            secretTwoValue = 654.321d;
+            targetTwo.AddOrUpdate(secretOneName, secretOneValue);
+            targetTwo.AddOrUpdate(secretTwoName, secretTwoValue);
+
+            // Act.
+            targetTwo.ExportAsync(exportKeyName).ContinueWith(exportTask =>
+            {
+                targetOne.ImportEncryptedSecretVault(exportTask.Result, exportKeyName);
+            }).Wait();
+
+            // Assert.
+            targetTwo.Count.Should().Be(3);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetOne.Count.Should().Be(3);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetOne.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetOne.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
         }
 
         [TestMethod]
         public void ExportAsync_ShouldBeReversible_UsingMasterKey()
         {
-            // TODO Write this test.
+            // Arrange.
+            var secretOneName = "SecretOne";
+            var secretTwoName = "SecretTwo";
+            var secretNames = new String[] { secretOneName, secretTwoName };
+            var secretOneValue = "foo";
+            var secretTwoValue = 123.456d;
+            using var masterPassword = Password.NewRandomStrongPassword();
+            using var exportKey = SymmetricKey.New();
+            using var targetOne = new SecretVault(masterPassword);
+            using var targetTwo = new SecretVault(masterPassword);
+            targetOne.AddOrUpdate(secretOneName, secretOneValue);
+            targetOne.AddOrUpdate(secretTwoName, secretTwoValue);
+
+            // Act.
+            targetOne.ExportAsync().ContinueWith(exportTask =>
+            {
+                targetTwo.ImportEncryptedSecretVault(exportTask.Result);
+            }).Wait();
+
+            // Assert.
+            targetOne.Count.Should().Be(3);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetTwo.Count.Should().Be(4);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetTwo.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetTwo.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
+
+            // Arrange.
+            secretOneValue = "bar";
+            secretTwoValue = 654.321d;
+            targetTwo.AddOrUpdate(secretOneName, secretOneValue);
+            targetTwo.AddOrUpdate(secretTwoName, secretTwoValue);
+
+            // Act.
+            targetTwo.ExportAsync().ContinueWith(exportTask =>
+            {
+                targetOne.ImportEncryptedSecretVault(exportTask.Result);
+            }).Wait();
+
+            // Assert.
+            targetTwo.Count.Should().Be(4);
+            targetTwo.SecretNames.Should().Contain(secretNames);
+            targetOne.Count.Should().Be(4);
+            targetOne.SecretNames.Should().Contain(secretNames);
+            targetOne.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
+            targetOne.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
         }
 
         [TestMethod]

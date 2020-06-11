@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
@@ -33,7 +32,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <paramref name="lengthInBytes" /> is less than or equal to zero.
         /// </exception>
         public SecureMemory(Int32 lengthInBytes)
-            : base(ConcurrencyControlMode.SingleThreadLock)
+            : base()
         {
             Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
@@ -93,19 +92,21 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             action = action.RejectIf().IsNull(nameof(action));
 
-            using var controlToken = StateControl.Enter();
-            RejectIfDisposed();
-
-            using var plaintext = new PinnedMemory(LengthInBytes, true);
-            DecryptField(plaintext);
-
-            try
+            using (var controlToken = StateControl.Enter())
             {
-                action(plaintext);
-            }
-            finally
-            {
-                EncryptField(plaintext);
+                RejectIfDisposed();
+
+                using var plaintext = new PinnedMemory(LengthInBytes, true);
+                DecryptField(plaintext);
+
+                try
+                {
+                    action(plaintext);
+                }
+                finally
+                {
+                    EncryptField(plaintext);
+                }
             }
         }
 
@@ -401,13 +402,15 @@ namespace RapidField.SolidInstruments.Cryptography
             [DebuggerHidden]
             internal void Scramble()
             {
-                using var controlToken = StateControl.Enter();
-                RejectIfDisposed();
-                ReferenceKey = RandomnessProvider.GetUInt64();
-
-                foreach (var field in Fields)
+                using (var controlToken = StateControl.Enter())
                 {
-                    RandomnessProvider.GetBytes(field);
+                    RejectIfDisposed();
+                    ReferenceKey = RandomnessProvider.GetUInt64();
+
+                    foreach (var field in Fields)
+                    {
+                        RandomnessProvider.GetBytes(field);
+                    }
                 }
             }
 
@@ -440,26 +443,42 @@ namespace RapidField.SolidInstruments.Cryptography
             /// <summary>
             /// Gets the target field.
             /// </summary>
+            /// <returns>
+            /// The target field.
+            /// </returns>
+            /// <exception cref="ObjectDisposedException">
+            /// The object is disposed.
+            /// </exception>
+            [DebuggerHidden]
+            private PinnedMemory GetTargetField()
+            {
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    return Fields[TargetFieldIndex];
+                }
+            }
+
+            /// <summary>
+            /// Gets the target field.
+            /// </summary>
             /// <exception cref="ObjectDisposedException">
             /// The object is disposed.
             /// </exception>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal PinnedMemory TargetField
-            {
-                [DebuggerHidden]
-                get
-                {
-                    using var controlToken = StateControl.Enter();
-                    RejectIfDisposed();
-                    return Fields[Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Convert.ToUInt64(Multiplier)))];
-                }
-            }
+            internal PinnedMemory TargetField => GetTargetField();
 
             /// <summary>
             /// Represents the total number of fields allocated by the current <see cref="InflatedField" />.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private Int32 Multiplier => Fields.Length;
+
+            /// <summary>
+            /// Gets the zero-based index of the target field within <see cref="Fields" />.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private Int32 TargetFieldIndex => Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Convert.ToUInt64(Multiplier)));
 
             /// <summary>
             /// Represents the underlying collection of pinned memory fields.
