@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -674,6 +676,180 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Imports all valid certificates from the current user's personal certificate store.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates() => ImportStoreCertificates(StoreName.My);
+
+        /// <summary>
+        /// Imports all valid certificates from the specified local certificate store.
+        /// </summary>
+        /// <param name="storeName">
+        /// The name of the store from which the certificates are imported. The default value is <see cref="StoreName.My" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="storeName" /> is not a valid store name.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates(StoreName storeName) => ImportStoreCertificates(storeName, StoreLocation.CurrentUser);
+
+        /// <summary>
+        /// Imports all valid certificates from the specified local certificate store.
+        /// </summary>
+        /// <param name="storeName">
+        /// The name of the store from which the certificates are imported. The default value is <see cref="StoreName.My" />.
+        /// </param>
+        /// <param name="storeLocation">
+        /// The location of the store from which the certificates are imported. The default value is
+        /// <see cref="StoreLocation.CurrentUser" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="storeName" /> is not a valid store name -or- <paramref name="storeLocation" /> is not a valid store
+        /// location.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates(StoreName storeName, StoreLocation storeLocation)
+        {
+            RejectIfDisposed();
+            using var certificateStore = new X509Store(storeName, storeLocation);
+
+            try
+            {
+                certificateStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+            }
+            catch (CryptographicException exception)
+            {
+                throw new SecurityException("Failed to import store certificates. The specified store is unreadable.", exception);
+            }
+            catch (SecurityException exception)
+            {
+                throw new SecurityException("Failed to import store certificates. The user does not have permission to access the specified store.", exception);
+            }
+
+            var certificates = certificateStore.Certificates.Find(X509FindType.FindByTimeValid, DateTime.Now, true);
+
+            foreach (var certificate in certificates)
+            {
+                try
+                {
+                    if (certificate.Verify())
+                    {
+                        AddOrUpdate(X509CertificateSecret.NewX509CertificateSecretName(certificate.Thumbprint), certificate);
+                    }
+                }
+                catch (CryptographicException exception)
+                {
+                    throw new SecurityException($"Failed to import store certificates. Certificate \"{certificate.Thumbprint}\" is unreadable.", exception);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="CascadingSymmetricKeySecret" /> and returns its assigned name.
+        /// </summary>
+        /// <returns>
+        /// The textual name assigned to the new secret.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public String NewCascadingSymmetricKey()
+        {
+            var secret = CascadingSymmetricKeySecret.New();
+            AddOrUpdate(secret.Name, secret);
+            return secret.Name;
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="CascadingSymmetricKeySecret" /> with the specified name.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name to assign to the new secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault already contains a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void NewCascadingSymmetricKey(String name)
+        {
+            if (SecretNames.Contains(name.RejectIf().IsNullOrEmpty(name)))
+            {
+                throw new ArgumentException($"Failed to generate a new cascading symmetric key. The secret vault already contains a secret with the name \"{name}\".", nameof(name));
+            }
+
+            using var value = CascadingSymmetricKey.New();
+            AddOrUpdate(name, CascadingSymmetricKeySecret.FromValue(name, value));
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="SymmetricKeySecret" /> and returns its assigned name.
+        /// </summary>
+        /// <returns>
+        /// The textual name assigned to the new secret.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public String NewSymmetricKey()
+        {
+            var secret = SymmetricKeySecret.New();
+            AddOrUpdate(secret.Name, secret);
+            return secret.Name;
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="SymmetricKeySecret" /> with the specified name.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name to assign to the new secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The secret vault already contains a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void NewSymmetricKey(String name)
+        {
+            if (SecretNames.Contains(name.RejectIf().IsNullOrEmpty(name)))
+            {
+                throw new ArgumentException($"Failed to generate a new symmetric key. The secret vault already contains a secret with the name \"{name}\".", nameof(name));
+            }
+
+            using var value = SymmetricKey.New();
+            AddOrUpdate(name, SymmetricKeySecret.FromValue(name, value));
+        }
+
+        /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
         /// operation against it as a thread-safe, atomic operation.
         /// </summary>
@@ -896,7 +1072,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A string representation of the current <see cref="SecretVault" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(Count)}\": {Count} }}";
+        public override String ToString() => $"{{ \"{nameof(SecretCount)}\": {SecretCount} }}";
 
         /// <summary>
         /// Attempts to remove a secret with the specified name.
@@ -1038,7 +1214,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private IReadOnlySecret CreateMasterKey()
         {
-            using var masterPassword = Password.NewRandomStrongPassword();
+            using var masterPassword = Password.NewStrongPassword();
             return CreateMasterKey(masterPassword);
         }
 
@@ -1349,12 +1525,17 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Gets the unique semantic identifier for the current <see cref="SecretVault" />.
+        /// </summary>
+        public String Identifier => Secret.GetPrefixedSemanticIdentifier(SecretVaultIdentifierPrefix, SemanticIdentity);
+
+        /// <summary>
         /// Gets the number of secrets that are stored by the current <see cref="SecretVault" />.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Int32 Count
+        public Int32 SecretCount
         {
             get
             {
@@ -1362,11 +1543,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 return Secrets.Count;
             }
         }
-
-        /// <summary>
-        /// Gets the unique semantic identifier for the current <see cref="SecretVault" />.
-        /// </summary>
-        public String Identifier => $"{IdentifierPrefix}{SemanticIdentity}";
 
         /// <summary>
         /// Gets the textual names that uniquely identify the secrets that are stored by the current <see cref="SecretVault" />.
@@ -1379,11 +1555,56 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             get
             {
                 RejectIfDisposed();
+                return Secrets.Keys.ToArray();
+            }
+        }
 
-                foreach (var name in Secrets.Keys)
-                {
-                    yield return name;
-                }
+        /// <summary>
+        /// Gets the number of <see cref="SymmetricKeySecret" /> and <see cref="CascadingSymmetricKeySecret" /> objects that are
+        /// stored by the <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Int32 SymmetricKeySecretCount => SymmetricKeySecretNames.Count();
+
+        /// <summary>
+        /// Gets the textual names that uniquely identify the <see cref="SymmetricKeySecret" /> and
+        /// <see cref="CascadingSymmetricKeySecret" /> objects that are stored by the <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public IEnumerable<String> SymmetricKeySecretNames
+        {
+            get
+            {
+                RejectIfDisposed();
+                return Secrets.Where(secret => secret.Value.ValueType == typeof(SymmetricKey) || secret.Value.ValueType == typeof(CascadingSymmetricKey)).Select(secret => secret.Key).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of <see cref="X509CertificateSecret" /> objects that are stored by the <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Int32 X509CertificateSecretCount => X509CertificateSecretNames.Count();
+
+        /// <summary>
+        /// Gets the textual names that uniquely identify the <see cref="X509CertificateSecret" /> objects that are stored by the
+        /// <see cref="ISecretVault" />.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public IEnumerable<String> X509CertificateSecretNames
+        {
+            get
+            {
+                RejectIfDisposed();
+                return Secrets.Where(secret => secret.Value.ValueType == typeof(X509Certificate2)).Select(secret => secret.Key).ToArray();
             }
         }
 
@@ -1391,7 +1612,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Gets the name of the master key stored within the current <see cref="SecretVault" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal String MasterKeyName => $"{MasterKeyNamePrefix}{SemanticIdentity}";
+        internal String MasterKeyName => Secret.GetPrefixedSemanticIdentifier(MasterKeyNamePrefix, SemanticIdentity);
 
         /// <summary>
         /// Gets the length of time since the oldest in-memory key in the current <see cref="SecretVault" /> was generated, or
@@ -1414,16 +1635,16 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         private IReferenceManager ReferenceManager => LazyReferenceManager.Value;
 
         /// <summary>
-        /// Represents the textual prefix for the semantic identifier of every <see cref="SecretVault" /> instance.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String IdentifierPrefix = "__SecretVault-";
-
-        /// <summary>
         /// Represents the textual prefix for the name of the master key stored within every <see cref="SecretVault" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String MasterKeyNamePrefix = "__MasterKey-";
+        internal const String MasterKeyNamePrefix = "MasterKey";
+
+        /// <summary>
+        /// Represents the textual prefix for the semantic identifier of every <see cref="SecretVault" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String SecretVaultIdentifierPrefix = "SecretVault";
 
         /// <summary>
         /// Represents the composition requirements for password-derived master keys.

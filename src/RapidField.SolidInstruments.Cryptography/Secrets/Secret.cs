@@ -66,6 +66,28 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Returns a standard-format, prefixed, unique textual identifier.
+        /// </summary>
+        /// <param name="prefix">
+        /// An alphanumeric prefix for the textual identifier.
+        /// </param>
+        /// <param name="uniqueSemanticIdentity">
+        /// The unique portion of the textual identifier.
+        /// </param>
+        /// <returns>
+        /// A standard-format, prefixed, unique textual identifier.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="prefix" /> is empty -or- <paramref name="uniqueSemanticIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="prefix" /> is <see langword="null" /> -or- <paramref name="uniqueSemanticIdentity" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static String GetPrefixedSemanticIdentifier(String prefix, String uniqueSemanticIdentity) => $"__{prefix.RejectIf().IsNullOrEmpty(nameof(prefix)).TargetArgument}-{uniqueSemanticIdentity.RejectIf().IsNullOrEmpty(nameof(uniqueSemanticIdentity)).TargetArgument}";
+
+        /// <summary>
         /// Creates a <see cref="IReadOnlyPinnedMemory{T}" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">

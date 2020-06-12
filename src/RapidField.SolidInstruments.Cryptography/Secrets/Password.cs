@@ -176,12 +176,12 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public static Password FromUtf8String(String password, String name) => FromString(password, name, Encoding.UTF8);
 
         /// <summary>
-        /// Generates a random, strong password that complies with <see cref="PasswordCompositionRequirements.Strict" />.
+        /// Generates a strong password that complies with <see cref="PasswordCompositionRequirements.Strict" />.
         /// </summary>
         /// <returns>
-        /// A new random, strong password.
+        /// A new strong password.
         /// </returns>
-        public static Password NewRandomStrongPassword()
+        public static Password NewStrongPassword()
         {
             while (true)
             {
@@ -450,13 +450,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A new, unique default password name.
         /// </returns>
         [DebuggerHidden]
-        private static String NewDefaultPasswordName() => $"{DefaultPasswordNamePrefix}{NewRandomSemanticIdentifier()}";
+        private static String NewDefaultPasswordName() => Secret.GetPrefixedSemanticIdentifier(DefaultPasswordNamePrefix, NewRandomSemanticIdentifier());
 
         /// <summary>
         /// Represents the default textual prefix for <see cref="Password" /> names.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String DefaultPasswordNamePrefix = "__Password-";
+        internal const String DefaultPasswordNamePrefix = "Password";
 
         /// <summary>
         /// Represents the hashing algorithm that is used to produce cryptographically secure digests for <see cref="Password" />

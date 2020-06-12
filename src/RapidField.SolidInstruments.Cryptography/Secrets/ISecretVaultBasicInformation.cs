@@ -14,20 +14,20 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     public interface ISecretVaultBasicInformation : IAsyncDisposable, IDisposable
     {
         /// <summary>
-        /// Gets the number of secrets that are stored by the <see cref="ISecretVault" />.
+        /// Gets the unique semantic identifier for the <see cref="ISecretVault" />.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Int32 Count
+        public String Identifier
         {
             get;
         }
 
         /// <summary>
-        /// Gets the unique semantic identifier for the <see cref="ISecretVault" />.
+        /// Gets the number of secrets that are stored by the <see cref="ISecretVault" />.
         /// </summary>
-        public String Identifier
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public Int32 SecretCount
         {
             get;
         }

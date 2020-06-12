@@ -30,9 +30,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                     Password.FromAsciiString("foo"),
                     Password.FromAsciiString("bar"),
                     Password.FromAsciiString("baz"),
-                    Password.NewRandomStrongPassword(),
-                    Password.NewRandomStrongPassword(),
-                    Password.NewRandomStrongPassword()
+                    Password.NewStrongPassword(),
+                    Password.NewStrongPassword(),
+                    Password.NewStrongPassword()
                 };
                 var passwordHashStringsOne = new String[]
                 {
@@ -116,9 +116,9 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                     Password.FromAsciiString("foo"),
                     Password.FromAsciiString("bar"),
                     Password.FromAsciiString("baz"),
-                    Password.NewRandomStrongPassword(),
-                    Password.NewRandomStrongPassword(),
-                    Password.NewRandomStrongPassword()
+                    Password.NewStrongPassword(),
+                    Password.NewStrongPassword(),
+                    Password.NewStrongPassword()
                 };
                 var passwordHashValuesOne = new IReadOnlyPinnedMemory<Byte>[]
                 {
@@ -285,7 +285,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
         }
 
         [TestMethod]
-        public void NewRandomStrongPassword_ShouldProduceDesiredResults()
+        public void NewStrongPassword_ShouldProduceDesiredResults()
         {
             // Arrange.
             var iterationCount = 30;
@@ -293,7 +293,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             for (var i = 0; i < iterationCount; i++)
             {
                 // Act.
-                using var password = Password.NewRandomStrongPassword();
+                using var password = Password.NewStrongPassword();
 
                 // Assert.
                 password.MeetsRequirements(PasswordCompositionRequirements.Strict).Should().BeTrue();

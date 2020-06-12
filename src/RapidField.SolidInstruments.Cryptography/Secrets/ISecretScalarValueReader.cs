@@ -2,7 +2,6 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core;
 using System;
 using System.Threading.Tasks;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a read facility for named secret values which are encrypted and pinned in memory at rest.
+    /// Represents a read facility for named scalar values which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretReader : ISecretScalarValueReader, ISecretSymmetricKeyReader, ISecretVaultBasicInformation, ISecretX509CertificateReader
+    public interface ISecretScalarValueReader : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -43,7 +42,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        public Task ReadAsync(String name, Action<IReadOnlyPinnedMemory<Byte>> readAction);
+        public Task ReadAsync(String name, Action<Guid> readAction);
 
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -74,6 +73,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
         /// specified type.
         /// </exception>
-        public Task ReadAsync(String name, Action<String> readAction);
+        public Task ReadAsync(String name, Action<Double> readAction);
     }
 }

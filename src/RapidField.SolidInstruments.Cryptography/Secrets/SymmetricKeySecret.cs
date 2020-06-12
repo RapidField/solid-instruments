@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
@@ -60,6 +61,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             secret.Write(() => value);
             return secret;
         }
+
+        /// <summary>
+        /// Generates a new named <see cref="SymmetricKey" />.
+        /// </summary>
+        /// <returns>
+        /// A new named <see cref="SymmetricKey" />.
+        /// </returns>
+        [DebuggerHidden]
+        internal static SymmetricKeySecret New() => FromValue(NewDefaultSymmetricKeySecretName(), SymmetricKey.New());
 
         /// <summary>
         /// Creates a <see cref="SymmetricKey" /> using the provided bytes.
@@ -125,5 +135,20 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A value indicating whether or not managed resources should be released.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Generates a new, unique default symmetric key name.
+        /// </summary>
+        /// <returns>
+        /// A new, unique default symmetric key name.
+        /// </returns>
+        [DebuggerHidden]
+        private static String NewDefaultSymmetricKeySecretName() => Secret.GetPrefixedSemanticIdentifier(DefaultSymmetricKeySecretNamePrefix, NewRandomSemanticIdentifier());
+
+        /// <summary>
+        /// Represents the default textual prefix for <see cref="SymmetricKeySecret" /> names.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String DefaultSymmetricKeySecretNamePrefix = "SymmetricKey";
     }
 }
