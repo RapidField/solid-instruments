@@ -153,8 +153,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             targetOne.SymmetricKeySecretCount.Should().Be(1);
             targetOne.SecretCount.Should().Be(3);
             targetOne.SecretNames.Should().Contain(secretNames);
-            targetTwo.SymmetricKeySecretCount.Should().Be(2);
-            targetTwo.SecretCount.Should().Be(4);
+            targetTwo.SymmetricKeySecretCount.Should().Be(1);
+            targetTwo.SecretCount.Should().Be(3);
             targetTwo.SecretNames.Should().Contain(secretNames);
             targetTwo.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
             targetTwo.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();
@@ -172,11 +172,11 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             }).Wait();
 
             // Assert.
-            targetOne.SymmetricKeySecretCount.Should().Be(2);
-            targetTwo.SecretCount.Should().Be(4);
+            targetOne.SymmetricKeySecretCount.Should().Be(1);
+            targetTwo.SecretCount.Should().Be(3);
             targetTwo.SecretNames.Should().Contain(secretNames);
-            targetTwo.SymmetricKeySecretCount.Should().Be(2);
-            targetOne.SecretCount.Should().Be(4);
+            targetTwo.SymmetricKeySecretCount.Should().Be(1);
+            targetOne.SecretCount.Should().Be(3);
             targetOne.SecretNames.Should().Contain(secretNames);
             targetOne.ReadAsync(secretOneName, (String value) => { value.Should().Be(secretOneValue); }).Wait();
             targetOne.ReadAsync(secretTwoName, (Double value) => { value.Should().Be(secretTwoValue); }).Wait();

@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a read facility for named secret values which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretReader : ISecretScalarValueReader, ISecretSymmetricKeyReader, ISecretVaultBasicInformation, ISecretX509CertificateReader
+    public interface ISecretReader : ISecretScalarValueReader, ISecretSymmetricKeyReader, ISecretX509CertificateReader
     {
         /// <summary>
         /// Asynchronously decrypts the specified named secret, pins a copy of it in memory, and performs the specified read
@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a secret with the specified name.
+        /// The <see cref="ISecretStore" /> does not contain a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="readAction" /> is <see langword="null" />.
@@ -40,8 +40,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         /// <exception cref="SecretAccessException">
-        /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
-        /// specified type.
+        /// <paramref name="readAction" /> raised an exception -or- the <see cref="ISecretStore" /> does not contain a valid secret
+        /// of the specified type.
         /// </exception>
         public Task ReadAsync(String name, Action<IReadOnlyPinnedMemory<Byte>> readAction);
 
@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a secret with the specified name.
+        /// The <see cref="ISecretStore" /> does not contain a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="readAction" /> is <see langword="null" />.
@@ -71,8 +71,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         /// <exception cref="SecretAccessException">
-        /// <paramref name="readAction" /> raised an exception -or- the secret vault does not contain a valid secret of the
-        /// specified type.
+        /// <paramref name="readAction" /> raised an exception -or- the <see cref="ISecretStore" /> does not contain a valid secret
+        /// of the specified type.
         /// </exception>
         public Task ReadAsync(String name, Action<String> readAction);
     }

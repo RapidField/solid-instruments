@@ -12,10 +12,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a write facility for named secret values which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretWriter : ISecretVaultBasicInformation
+    public interface ISecretWriter : ISecretStore
     {
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, Byte[] secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, String secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, Guid secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -99,7 +99,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, Double secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -120,7 +120,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, SymmetricKey secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">
@@ -141,7 +141,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public void AddOrUpdate(String name, CascadingSymmetricKey secret);
 
         /// <summary>
-        /// Adds the specified secret using the specified name to the <see cref="ISecretVault" />, or updates it if a secret with
+        /// Adds the specified secret using the specified name to the <see cref="ISecretStore" />, or updates it if a secret with
         /// the same name already exists.
         /// </summary>
         /// <param name="name">

@@ -13,18 +13,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <summary>
     /// Represents a management facility for named secret values which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretManager : ISecretVaultBasicInformation
+    public interface ISecretManager : ISecretStore
     {
         /// <summary>
-        /// Removes and safely disposes of all secrets that are stored by the current <see cref="ISecretManager" />.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public void Clear();
-
-        /// <summary>
-        /// Asynchronously exports the specified secret and encrypts it using the vault's master key.
+        /// Asynchronously exports the specified secret and encrypts it using the master key for the current
+        /// <see cref="ISecretManager" />.
         /// </summary>
         /// <param name="name">
         /// The textual name of the secret to export.
@@ -36,7 +29,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a secret with the specified name.
+        /// The <see cref="ISecretManager" /> does not contain a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
@@ -65,8 +58,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty -or- <paramref name="keyName" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a secret with the specified name -or- the secret vault does not contain a key with the
-        /// specified name.
+        /// The <see cref="ISecretManager" /> does not contain a secret with the specified name -or- the
+        /// <see cref="ISecretManager" /> does not contain a key with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
@@ -80,7 +73,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(String name, String keyName);
 
         /// <summary>
-        /// Asynchronously exports the vault's master key in plaintext form.
+        /// Asynchronously exports the master key for the <see cref="ISecretManager" /> in plaintext form.
         /// </summary>
         /// <returns>
         /// A task representing the asynchronous operation and containing the exported master key.
@@ -103,7 +96,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a secret with the specified name.
+        /// The <see cref="ISecretManager" /> does not contain a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
@@ -148,7 +141,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="keyName" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a key with the specified name.
+        /// The <see cref="ISecretManager" /> does not contain a key with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="secret" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
@@ -196,7 +189,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="keyName" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault does not contain a key with the specified name.
+        /// The <see cref="ISecretManager" /> does not contain a key with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="secretVault" /> is <see langword="null" /> -or- <paramref name="keyName" /> is <see langword="null" />.
@@ -294,7 +287,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault already contains a secret with the specified name.
+        /// The <see cref="ISecretManager" /> already contains a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
@@ -325,7 +318,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="name" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// The secret vault already contains a secret with the specified name.
+        /// The <see cref="ISecretManager" /> already contains a secret with the specified name.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
@@ -334,25 +327,5 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         public void NewSymmetricKey(String name);
-
-        /// <summary>
-        /// Attempts to remove a secret with the specified name.
-        /// </summary>
-        /// <param name="name">
-        /// A textual name that uniquely identifies the target secret.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if the secret was removed, otherwise <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="name" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Boolean TryRemove(String name);
     }
 }

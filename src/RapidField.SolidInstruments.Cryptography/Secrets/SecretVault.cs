@@ -33,11 +33,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Initializes a new instance of the <see cref="SecretVault" /> class.
         /// </summary>
         public SecretVault()
-            : base()
+            : this(semanticIdentity: null)
         {
-            LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
-            Secrets = new Dictionary<String, IReadOnlySecret>();
-            SemanticIdentity = Secret.NewRandomSemanticIdentifier();
+            return;
         }
 
         /// <summary>
@@ -58,7 +56,55 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <paramref name="masterPassword" /> is disposed.
         /// </exception>
         public SecretVault(IPassword masterPassword)
-            : this()
+            : this(masterPassword?.DerivedIdentity.ToSerializedString(), masterPassword)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecretVault" /> class.
+        /// </summary>
+        /// <param name="semanticIdentity">
+        /// The unique, lowercase alphanumeric portion of the semantic identifier for the secret vault, or <see langword="null" />
+        /// to generate a random identity.
+        /// </param>
+        /// <exception cref="StringArgumentPatternException">
+        /// <paramref name="semanticIdentity" /> is not null or empty -and- is not a lowercase alphanumeric string.
+        /// </exception>
+        public SecretVault(String semanticIdentity)
+            : base()
+        {
+            LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
+            Secrets = new Dictionary<String, IReadOnlySecret>();
+            SemanticIdentity = semanticIdentity.IsNullOrEmpty() ? Secret.NewRandomSemanticIdentifier() : semanticIdentity.RejectIf().DoesNotMatchRegularExpression(SemanticIdentityRegularExpression, nameof(semanticIdentity));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecretVault" /> class.
+        /// </summary>
+        /// <param name="semanticIdentity">
+        /// The unique, lowercase alphanumeric portion of the semantic identifier for the secret vault, or <see langword="null" />
+        /// to generate a random identity.
+        /// </param>
+        /// <param name="masterPassword">
+        /// A <see cref="PasswordCompositionRequirements.Strict" /> compliant password from which to derive the master key, which is
+        /// used as the default encryption key for exported secrets. A master key is generated on demand if the parameterless
+        /// constructor is used.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="masterPassword" /> does not comply with <see cref="PasswordCompositionRequirements.Strict" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="masterPassword" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// <paramref name="masterPassword" /> is disposed.
+        /// </exception>
+        /// <exception cref="StringArgumentPatternException">
+        /// <paramref name="semanticIdentity" /> is not null or empty -and- is not a lowercase alphanumeric string.
+        /// </exception>
+        public SecretVault(String semanticIdentity, IPassword masterPassword)
+            : this(semanticIdentity)
         {
             _ = CreateMasterKey(masterPassword);
         }
@@ -1112,6 +1158,22 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Creates and stores a new master key for the current <see cref="SecretVault" />.
+        /// </summary>
+        /// <returns>
+        /// The resulting master key secret.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        internal IReadOnlySecret CreateMasterKey()
+        {
+            using var masterPassword = Password.NewStrongPassword();
+            return CreateMasterKey(masterPassword);
+        }
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="SecretVault" />.
         /// </summary>
         /// <param name="disposing">
@@ -1200,22 +1262,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
             ReferenceManager.AddObject(secret);
             Secrets.Add(name, secret.RejectIf().IsNull(nameof(secret)).TargetArgument);
-        }
-
-        /// <summary>
-        /// Creates and stores a new master key for the current <see cref="SecretVault" />.
-        /// </summary>
-        /// <returns>
-        /// The resulting master key secret.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        [DebuggerHidden]
-        private IReadOnlySecret CreateMasterKey()
-        {
-            using var masterPassword = Password.NewStrongPassword();
-            return CreateMasterKey(masterPassword);
         }
 
         /// <summary>
@@ -1653,6 +1699,18 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         internal static readonly IPasswordCompositionRequirements MasterKeyPasswordCompositionRequirements = PasswordCompositionRequirements.Strict;
 
         /// <summary>
+        /// Represents a collection of secrets that are stored by the current <see cref="SecretVault" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal readonly IDictionary<String, IReadOnlySecret> Secrets;
+
+        /// <summary>
+        /// Represents the unique portion of the semantic identifier for the current <see cref="SecretVault" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal readonly String SemanticIdentity;
+
+        /// <summary>
         /// Gets the length of time, in seconds, for expiration of in-memory keys at which the probability of a key regeneration and
         /// replacement event becomes 1 (100%).
         /// </summary>
@@ -1660,22 +1718,16 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         private const Int32 InMemoryKeyAgeRegenerationThresholdInSeconds = 180;
 
         /// <summary>
+        /// Represents a regular expression that is used to validate <see cref="SemanticIdentity" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String SemanticIdentityRegularExpression = "^[0-9a-z]*$";
+
+        /// <summary>
         /// Represents the lazily-initialized utility that disposes of the secrets that are managed by the current
         /// <see cref="SecretVault" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<IReferenceManager> LazyReferenceManager;
-
-        /// <summary>
-        /// Represents a collection of secrets that are stored by the current <see cref="SecretVault" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IDictionary<String, IReadOnlySecret> Secrets;
-
-        /// <summary>
-        /// Represents the unique portion of the semantic identifier for the current <see cref="SecretVault" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly String SemanticIdentity;
     }
 }

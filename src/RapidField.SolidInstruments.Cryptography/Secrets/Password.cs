@@ -344,7 +344,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 lowercaseAlphabeticCharacterCount = plaintextPassword.Count(character => character.IsLowercaseAlphabetic());
                 uppercaseAlphabeticCharacterCount = plaintextPassword.Count(character => character.IsUppercaseAlphabetic());
                 numericCharacterCount = plaintextPassword.Count(character => character.IsNumeric());
-                nonAlphanumericCharacterCount = plaintextPassword.Count(character => character.IsSymbolic() || character.IsWhiteSpaceCharacter());
+                nonAlphanumericCharacterCount = plaintextPassword.Count(character => character.IsPunctuation() || character.IsSymbolic() || character.IsWhiteSpaceCharacter());
                 matchesCaseInsensitiveCommonBreachedPassword = PasswordCompositionRequirements.CommonBreachedPasswords.Contains(plaintextPassword.ToLower());
             });
 
