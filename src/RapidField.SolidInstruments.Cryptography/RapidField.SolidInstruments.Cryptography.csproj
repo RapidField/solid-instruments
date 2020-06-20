@@ -37,6 +37,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
+    </ItemGroup>
+    <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Collections\RapidField.SolidInstruments.Collections.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Mathematics\RapidField.SolidInstruments.Mathematics.csproj" Version="$(BuildVersion)" />

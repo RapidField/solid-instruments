@@ -419,6 +419,39 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Generates private key source bytes using the specified, arbitrary length bit field.
+        /// </summary>
+        /// <param name="keyMaterial">
+        /// A non-empty byte array from which the symmetric key is derived.
+        /// </param>
+        /// <param name="keySourceLengthInBytes">
+        /// The desired number of key source bytes.
+        /// </param>
+        /// <returns>
+        /// The key source bytes.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMaterial" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMaterial" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keySourceLengthInBytes" /> is less than or equal to zero.
+        /// </exception>
+        [DebuggerHidden]
+        internal static PinnedMemory DeriveKeySourceBytesFromKeyMaterial(Byte[] keyMaterial, Int32 keySourceLengthInBytes)
+        {
+            var hashingProcessor = new HashingProcessor(RandomnessProvider);
+
+            using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(keyMaterial, PasswordSaltHashingAlgorithm)))
+            {
+                var pbkdf2Provider = new Rfc2898DeriveBytes(keyMaterial, saltBytes, Pbkdf2MinimumIterationCount);
+                return new PinnedMemory(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
+            }
+        }
+
+        /// <summary>
         /// Generates private key source bytes using the specified password.
         /// </summary>
         /// <param name="password">
@@ -445,16 +478,89 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         [DebuggerHidden]
         internal static PinnedMemory DeriveKeySourceBytesFromPassword(IPassword password, Int32 keySourceLengthInBytes)
         {
-            password.RejectIf().IsNull(nameof(password)).OrIf(argument => argument.GetCharacterLength() < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters.");
+            _ = password.RejectIf().IsNull(nameof(password)).OrIf(argument => argument.GetCharacterLength() < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters.");
+
             using (var passwordBytes = new ReadOnlyPinnedMemory(Password.GetPasswordPlaintextBytes(password)))
             {
-                var hashingProcessor = new HashingProcessor(RandomnessProvider);
+                return DeriveKeySourceBytesFromKeyMaterial(passwordBytes, keySourceLengthInBytes);
+            }
+        }
 
-                using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(passwordBytes, PasswordSaltHashingAlgorithm)))
-                {
-                    var pbkdf2Provider = new Rfc2898DeriveBytes(passwordBytes, saltBytes, Pbkdf2MinimumIterationCount);
-                    return new PinnedMemory(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
-                }
+        /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified, arbitrary length bit field.
+        /// </summary>
+        /// <param name="keyMaterial">
+        /// A non-empty byte array from which the symmetric key is derived.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMaterial" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMaterial" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static SymmetricKey FromKeyMaterial(Byte[] keyMaterial) => FromKeyMaterial(keyMaterial, DefaultAlgorithm);
+
+        /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified, arbitrary length bit field.
+        /// </summary>
+        /// <param name="keyMaterial">
+        /// A non-empty byte array from which the symmetric key is derived.
+        /// </param>
+        /// <param name="algorithm">
+        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMaterial" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMaterial" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static SymmetricKey FromKeyMaterial(Byte[] keyMaterial, SymmetricAlgorithmSpecification algorithm) => FromKeyMaterial(keyMaterial, algorithm, DefaultDerivationMode);
+
+        /// <summary>
+        /// Derives a new <see cref="SymmetricKey" /> from the specified, arbitrary length bit field.
+        /// </summary>
+        /// <param name="keyMaterial">
+        /// A non-empty byte array from which the symmetric key is derived.
+        /// </param>
+        /// <param name="algorithm">
+        /// The symmetric-key algorithm that the generated key is derived to interoperate with. The default value is
+        /// <see cref="SymmetricAlgorithmSpecification.Aes256Cbc" />.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the generated key. The default value is <see cref="SymmetricKeyDerivationMode.Pbkdf2" />.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="SymmetricKey" />.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMaterial" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMaterial" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> -or-
+        /// <paramref name="derivationMode" /> is equal to <see cref="SymmetricKeyDerivationMode.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static SymmetricKey FromKeyMaterial(Byte[] keyMaterial, SymmetricAlgorithmSpecification algorithm, SymmetricKeyDerivationMode derivationMode)
+        {
+            using (var keySource = DeriveKeySourceBytesFromKeyMaterial(keyMaterial, KeySourceLengthInBytes))
+            {
+                return New(algorithm.RejectIf().IsEqualToValue(SymmetricAlgorithmSpecification.Unspecified, nameof(algorithm)), derivationMode.RejectIf().IsEqualToValue(SymmetricKeyDerivationMode.Unspecified, nameof(derivationMode)), keySource);
             }
         }
 
