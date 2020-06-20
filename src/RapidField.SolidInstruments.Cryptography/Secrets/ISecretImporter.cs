@@ -5,9 +5,9 @@
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
     /// <summary>
-    /// Represents a management facility for named secret values which are encrypted and pinned in memory at rest.
+    /// Represents an import facility for named secrets which are encrypted and pinned in memory at rest.
     /// </summary>
-    public interface ISecretManager : ISecretExporter, ISecretImporter, ISecretKeyProducer, ISecretStore
+    public interface ISecretImporter : ISecretCertificateImporter, ISecretValueImporter, ISecretVaultImporter
     {
     }
 }

@@ -11,6 +11,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using SystemTimeoutException = System.TimeoutException;
 
 namespace RapidField.SolidInstruments.Cryptography
@@ -746,6 +747,71 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Imports all valid certificates from the current user's personal certificate store.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates()
+        {
+            RejectIfDisposed();
+            InMemoryStore.ImportStoreCertificates();
+            PersistInMemoryStore();
+        }
+
+        /// <summary>
+        /// Imports all valid certificates from the specified local certificate store.
+        /// </summary>
+        /// <param name="storeName">
+        /// The name of the store from which the certificates are imported. The default value is <see cref="StoreName.My" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="storeName" /> is not a valid store name.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates(StoreName storeName)
+        {
+            RejectIfDisposed();
+            InMemoryStore.ImportStoreCertificates(storeName);
+            PersistInMemoryStore();
+        }
+
+        /// <summary>
+        /// Imports all valid certificates from the specified local certificate store.
+        /// </summary>
+        /// <param name="storeName">
+        /// The name of the store from which the certificates are imported. The default value is <see cref="StoreName.My" />.
+        /// </param>
+        /// <param name="storeLocation">
+        /// The location of the store from which the certificates are imported. The default value is
+        /// <see cref="StoreLocation.CurrentUser" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="storeName" /> is not a valid store name -or- <paramref name="storeLocation" /> is not a valid store
+        /// location.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised while trying to access or read the specified store or one of the certificates contained therein.
+        /// </exception>
+        public void ImportStoreCertificates(StoreName storeName, StoreLocation storeLocation)
+        {
+            RejectIfDisposed();
+            InMemoryStore.ImportStoreCertificates(storeName, storeLocation);
+            PersistInMemoryStore();
+        }
+
+        /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKeySecret" /> and returns its assigned name.
         /// </summary>
         /// <returns>
@@ -763,6 +829,31 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Generates a new <see cref="CascadingSymmetricKeySecret" /> with the specified name.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name to assign to the new secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The software security module already contains a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void NewCascadingSymmetricKey(String name)
+        {
+            RejectIfDisposed();
+            InMemoryStore.NewCascadingSymmetricKey(name);
+            PersistInMemoryStore();
+        }
+
+        /// <summary>
         /// Generates a new <see cref="SymmetricKeySecret" /> and returns its assigned name.
         /// </summary>
         /// <returns>
@@ -777,6 +868,31 @@ namespace RapidField.SolidInstruments.Cryptography
             var keyName = InMemoryStore.NewSymmetricKey();
             PersistInMemoryStore();
             return keyName;
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="SymmetricKeySecret" /> with the specified name.
+        /// </summary>
+        /// <param name="name">
+        /// The textual name to assign to the new secret.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="name" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The software security module already contains a secret with the specified name.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void NewSymmetricKey(String name)
+        {
+            RejectIfDisposed();
+            InMemoryStore.NewSymmetricKey(name);
+            PersistInMemoryStore();
         }
 
         /// <summary>

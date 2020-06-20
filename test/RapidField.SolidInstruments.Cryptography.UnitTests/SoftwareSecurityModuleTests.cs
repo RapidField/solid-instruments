@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Cryptography.Secrets;
 using System;
+using System.IO;
 using System.Security;
 using System.Security.Cryptography;
 
@@ -165,27 +166,30 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
         [TestMethod]
         public void FunctionalLifeSpanTest_ShouldProduceDesiredResults()
         {
+            // Arrange.
+            var plaintext = "foo";
+            var guidSecretValue = Guid.NewGuid();
+            var guidSecretName = "GuidSecret";
+            var ciphertextOne = (String)null;
+            var ciphertextTwo = (String)null;
+            var filePath = (String)null;
+            var keyName = (String)null;
+            var resultOne = (String)null;
+            var resultTwo = (String)null;
+
             using (var masterPassword = Password.NewStrongPassword())
             {
-                // Arrange.
-                var plaintext = "foo";
-                var guidSecretValue = Guid.NewGuid();
-                var guidSecretName = "GuidSecret";
-                var ciphertextOne = (String)null;
-                var ciphertextTwo = (String)null;
-                var keyName = (String)null;
-                var resultOne = (String)null;
-                var resultTwo = (String)null;
-
                 using (var target = new SoftwareSecurityModule(masterPassword, false))
                 {
                     // Act.
+                    filePath = target.PersistenceVehicle.FilePath;
                     keyName = target.NewSymmetricKey();
                     ciphertextOne = target.Encrypt(plaintext);
                     ciphertextTwo = target.Encrypt(plaintext, keyName);
                     target.AddOrUpdate(guidSecretName, guidSecretValue);
 
                     // Assert.
+                    filePath.Should().NotBeNullOrEmpty();
                     target.SecretCount.Should().Be(3);
                     target.SecretNames.Should().Contain(keyName);
                     target.SecretNames.Should().Contain(guidSecretName);
@@ -194,7 +198,10 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                     ciphertextOne.Should().NotBe(ciphertextTwo);
                 }
 
-                using (var target = new SoftwareSecurityModule(masterPassword, true))
+                // Assert.
+                File.Exists(filePath).Should().BeTrue();
+
+                using (var target = new SoftwareSecurityModule(masterPassword, false))
                 {
                     // Assert.
                     target.SecretCount.Should().Be(3);
@@ -204,17 +211,28 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                     // Act.
                     resultOne = target.Decrypt(ciphertextOne);
                     resultTwo = target.Decrypt(ciphertextTwo, keyName);
+                    target.ImportStoreCertificates();
 
                     // Assert.
                     target.SecretReader.ReadAsync(guidSecretName, (Guid secretValue) => { secretValue.Should().Be(guidSecretValue); }).Wait();
                 }
 
                 // Assert.
+                File.Exists(filePath).Should().BeTrue();
                 resultOne.Should().NotBeNullOrEmpty();
                 resultOne.Should().Be(plaintext);
                 resultTwo.Should().NotBeNullOrEmpty();
                 resultTwo.Should().Be(plaintext);
+
+                using (var target = new SoftwareSecurityModule(masterPassword, true))
+                {
+                    // Assert.
+                    target.SecretCount.Should().BeGreaterOrEqualTo(3);
+                }
             }
+
+            // Assert.
+            File.Exists(filePath).Should().BeFalse();
         }
     }
 }
