@@ -11,16 +11,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// Represents a series of <see cref="ISymmetricKey" /> instances that constitute instructions for applying cascading encryption
     /// and decryption.
     /// </summary>
-    public interface ICascadingSymmetricKey : IAsyncDisposable, IDisposable
+    public interface ICascadingSymmetricKey : ICryptographicKey
     {
-        /// <summary>
-        /// Converts the value of the current <see cref="ICascadingSymmetricKey" /> to a secure bit field.
-        /// </summary>
-        /// <returns>
-        /// A secure bit field containing a representation of the current <see cref="ICascadingSymmetricKey" />.
-        /// </returns>
-        public ISecureMemory ToSecureMemory();
-
         /// <summary>
         /// Gets the number of layers of encryption that a resulting transform will apply.
         /// </summary>

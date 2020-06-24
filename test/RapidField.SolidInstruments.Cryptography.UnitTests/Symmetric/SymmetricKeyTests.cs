@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Arrange.
                 var processor = new SymmetricStringProcessor(randomnessProvider);
                 var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
-                var derivationMode = SymmetricKeyDerivationMode.XorLayering;
+                var derivationMode = CryptographicKeyDerivationMode.XorLayering;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
                 using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
@@ -158,7 +158,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var keyLength = 3;
 
             using (var keySource = new PinnedMemory(keyLength))
@@ -182,7 +182,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Unspecified;
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
 
             // Act.
             var action = new Action(() =>
@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-            var derivationMode = SymmetricKeyDerivationMode.Unspecified;
+            var derivationMode = CryptographicKeyDerivationMode.Unspecified;
 
             // Act.
             var action = new Action(() =>

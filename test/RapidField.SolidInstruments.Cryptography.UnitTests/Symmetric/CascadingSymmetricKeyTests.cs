@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
                 var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
                 var fourthLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
-                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var derivationMode = CryptographicKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
                 using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
                 var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
                 var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
-                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var derivationMode = CryptographicKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
                 using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var processor = new SymmetricStringProcessor(randomnessProvider);
                 var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
                 var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
-                var derivationMode = SymmetricKeyDerivationMode.XorLayeringWithSubstitution;
+                var derivationMode = CryptographicKeyDerivationMode.XorLayeringWithSubstitution;
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
                 using var password = Password.FromUnicodeString(randomnessProvider.GetString(SymmetricKey.MinimumPasswordLength, true, true, true, true, true, true, false));
 
@@ -153,7 +153,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldRaiseArgumentOutOfRangeException_ForUnspecifiedAlgorithm()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -176,7 +176,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldRaiseArgumentOutOfRangeException_ForUnspecifiedDerivationMode()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Unspecified;
+            var derivationMode = CryptographicKeyDerivationMode.Unspecified;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -199,7 +199,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void New_ShouldReturnValidKey_ForValidArguments()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToSecureMemory_ShouldBeReversible_WithFourLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -260,7 +260,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToSecureMemory_ShouldBeReversible_WithThreeLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
@@ -276,7 +276,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void ToSecureMemory_ShouldBeReversible_WithTwoLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
 
@@ -292,7 +292,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         {
             // Arrange.
             var cascadingKeyLengthInBytes = 1666;
-            var derivationMode = SymmetricKeyDerivationMode.Truncation;
+            var derivationMode = CryptographicKeyDerivationMode.Truncation;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;

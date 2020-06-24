@@ -4,12 +4,12 @@
 
 using System;
 
-namespace RapidField.SolidInstruments.Cryptography.Symmetric
+namespace RapidField.SolidInstruments.Cryptography
 {
     /// <summary>
-    /// Defines options for deriving key bits from an <see cref="ISymmetricKey" />.
+    /// Defines options for deriving key bits from an <see cref="ICryptographicKey{TAlgorithm}" />.
     /// </summary>
-    public enum SymmetricKeyDerivationMode : Byte
+    public enum CryptographicKeyDerivationMode : Byte
     {
         /// <summary>
         /// The derivation mode is not specified.
@@ -30,8 +30,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The key bit field is divided into blocks that are XORed sequentially, producing an output key of the desired length.
         /// </summary>
         /// <remarks>
-        /// No key bits are discarded. Some distinct <see cref="SymmetricKey" /> instances produce identical key outputs due to the
-        /// fact that patterned substitutions produce identical XOR outputs.
+        /// No key bits are discarded. Some distinct <see cref="ICryptographicKey{TAlgorithm}" /> instances produce identical key
+        /// outputs due to the fact that patterned substitutions produce identical XOR outputs.
         /// </remarks>
         XorLayering = 0x02,
 
