@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// <typeparam name="TPublicKey">
     /// The type of the public key.
     /// </typeparam>
-    public interface IDigitalSignatureKeyPair<TPrivateKey, TPublicKey> : IAsymmetricKeyPair<DigitalSignatureKey, TPrivateKey, TPublicKey>, IDigitalSignatureKeyPair
+    public interface IDigitalSignatureKeyPair<TPrivateKey, TPublicKey> : IAsymmetricKeyPair<DigitalSignatureAlgorithmSpecification, CryptographicKey, TPrivateKey, TPublicKey>, IDigitalSignatureKeyPair
         where TPrivateKey : DigitalSignaturePrivateKey
         where TPublicKey : DigitalSignaturePublicKey
     {

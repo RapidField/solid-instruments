@@ -9,5 +9,12 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// </summary>
     public interface IDigitalSignaturePublicKey : IAsymmetricPublicKey, IDigitalSignatureKey
     {
+        /// <summary>
+        /// Gets the asymmetric-key algorithm for which the key is used.
+        /// </summary>
+        public DigitalSignatureAlgorithmSpecification Algorithm
+        {
+            get;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
     /// <typeparam name="TPublicKey">
     /// The type of the public key.
     /// </typeparam>
-    public interface IKeyExchangeKeyPair<TPrivateKey, TPublicKey> : IAsymmetricKeyPair<KeyExchangeKey, TPrivateKey, TPublicKey>, IKeyExchangeKeyPair
+    public interface IKeyExchangeKeyPair<TPrivateKey, TPublicKey> : IAsymmetricKeyPair<KeyExchangeAlgorithmSpecification, CryptographicKey, TPrivateKey, TPublicKey>, IKeyExchangeKeyPair
         where TPrivateKey : KeyExchangePrivateKey
         where TPublicKey : KeyExchangePublicKey
     {

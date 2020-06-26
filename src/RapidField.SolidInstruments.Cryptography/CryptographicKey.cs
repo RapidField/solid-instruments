@@ -50,6 +50,12 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <param name="derivedKeyLengthInBits">
         /// The length of the derived key, in bits.
         /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="keySource" /> contains too many elements.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keySource" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to the default/unspecified value -or- <paramref name="derivedKeyLengthInBits" />
         /// is less than or equal to zero.
@@ -69,7 +75,7 @@ namespace RapidField.SolidInstruments.Cryptography
             BlockCount = (KeySourceWordCount / BlockWordCount);
 
             // Copy in the key source bits.
-            KeySource.Access(memory => Array.Copy(keySource, memory, memory.Length));
+            KeySource.Access(memory => Array.Copy(keySource.RejectIf().IsNull(nameof(keySource)).OrIf(argument => argument.Length > KeySourceLengthInBytes, nameof(keySource), "The specified key source contains too many elements.").TargetArgument, memory, keySource.Length));
         }
 
         /// <summary>
@@ -189,6 +195,14 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="CryptographicKey{TAlgorithm}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="CryptographicKey{TAlgorithm}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(Algorithm)}\": {Algorithm} }}";
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="CryptographicKey{TAlgorithm}" />.
         /// </summary>
         /// <param name="disposing">
@@ -218,7 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// A secure bit field containing a representation of the current <see cref="CryptographicKey" />.
+        /// A secure bit field containing a representation of the current <see cref="CryptographicKey{TAlgorithm}" />.
         /// </returns>
         protected sealed override ISecureMemory ToSecureMemory(IConcurrencyControlToken controlToken)
         {
@@ -507,8 +521,7 @@ namespace RapidField.SolidInstruments.Cryptography
     }
 
     /// <summary>
-    /// Represents a cryptographic algorithm and source bits for a derived key, encapsulates key derivation operations and secures
-    /// key bits in memory.
+    /// Represents a cryptographic algorithm and key bits.
     /// </summary>
     /// <remarks>
     /// <see cref="CryptographicKey" /> is the default implementation of <see cref="ICryptographicKey" />.
@@ -660,6 +673,18 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const Int32 SecureMemoryEncryptionAlgorithmBlockSizeInBytes = 16;
+
+        /// <summary>
+        /// Represents the default lifespan for a cryptographic key.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly TimeSpan DefaultLifespanDuration = TimeSpan.FromDays(90);
+
+        /// <summary>
+        /// Represents the minimum allowable lifespan for a cryptographic key.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly TimeSpan MinimumLifespanDuration = TimeSpan.FromSeconds(8);
 
         /// <summary>
         /// Represents the encoding that is used when evaluating passwords.

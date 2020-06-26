@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Security.Cryptography;
 
 namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
 {
@@ -10,53 +11,53 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// Represents an asymmetric digital signature algorithm and the key bits for an asymmetric key pair.
     /// </summary>
     /// <remarks>
-    /// <see cref="DigitalSignatureKeyPair{TPrivateKey, TPublicKey}" /> is the default implementation of
+    /// <see cref="DigitalSignatureKeyPair{TProvider, TPrivateKey, TPublicKey}" /> is the default implementation of
     /// <see cref="IDigitalSignatureKeyPair{TPrivateKey, TPublicKey}" />.
     /// </remarks>
+    /// <typeparam name="TProvider">
+    /// The type of the asymmetric algorithm provider that facilitates cryptographic operations for the key pair.
+    /// </typeparam>
     /// <typeparam name="TPrivateKey">
     /// The type of the private key.
     /// </typeparam>
     /// <typeparam name="TPublicKey">
     /// The type of the public key.
     /// </typeparam>
-    public abstract class DigitalSignatureKeyPair<TPrivateKey, TPublicKey> : AsymmetricKeyPair<DigitalSignatureKey, TPrivateKey, TPublicKey>, IDigitalSignatureKeyPair<TPrivateKey, TPublicKey>
+    public abstract class DigitalSignatureKeyPair<TProvider, TPrivateKey, TPublicKey> : AsymmetricKeyPair<DigitalSignatureAlgorithmSpecification, TProvider, CryptographicKey, TPrivateKey, TPublicKey>, IDigitalSignatureKeyPair<TPrivateKey, TPublicKey>
+        where TProvider : AsymmetricAlgorithm
         where TPrivateKey : DigitalSignaturePrivateKey
         where TPublicKey : DigitalSignaturePublicKey
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DigitalSignatureKeyPair{TPrivateKey, TPublicKey}" /> class.
+        /// Initializes a new instance of the <see cref="DigitalSignatureKeyPair{TProvider, TPrivateKey, TPublicKey}" /> class.
         /// </summary>
+        /// <param name="identifier">
+        /// The globally unique identifier for the key pair.
+        /// </param>
         /// <param name="algorithm">
         /// The asymmetric-key algorithm for which the key is used.
         /// </param>
+        /// <param name="keyLifespanDuration">
+        /// The length of time for which the paired keys are valid.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="algorithm" /> is equal to <see cref="AsymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal to
+        /// <see cref="DigitalSignatureAlgorithmSpecification.Unspecified" /> -or- <paramref name="keyLifespanDuration" /> is less
+        /// than eight seconds.
         /// </exception>
-        protected DigitalSignatureKeyPair(AsymmetricAlgorithmSpecification algorithm)
-            : base(algorithm)
+        protected DigitalSignatureKeyPair(Guid identifier, DigitalSignatureAlgorithmSpecification algorithm, TimeSpan keyLifespanDuration)
+            : base(identifier, algorithm, keyLifespanDuration)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="DigitalSignatureKeyPair{TPrivateKey, TPublicKey}" />.
+        /// Releases all resources consumed by the current
+        /// <see cref="DigitalSignatureKeyPair{TProvider, TPrivateKey, TPublicKey}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
         /// </param>
-        protected override void Dispose(Boolean disposing)
-        {
-            try
-            {
-                if (disposing)
-                {
-                    throw new NotImplementedException();
-                }
-            }
-            finally
-            {
-                base.Dispose(disposing);
-            }
-        }
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
     }
 }

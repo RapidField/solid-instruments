@@ -7,7 +7,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// <summary>
     /// Represents an asymmetric digital signature algorithm and the private key bits for an asymmetric key pair.
     /// </summary>
-    public interface IDigitalSignaturePrivateKey : IAsymmetricPrivateKey, IDigitalSignatureKey
+    public interface IDigitalSignaturePrivateKey : IAsymmetricPrivateKey<DigitalSignatureAlgorithmSpecification>, IDigitalSignatureKey
     {
     }
 }

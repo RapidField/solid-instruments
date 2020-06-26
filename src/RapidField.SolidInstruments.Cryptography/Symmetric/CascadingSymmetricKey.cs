@@ -456,7 +456,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             var totalSourceLengthInBytes = singleKeySourceLengthInBytes * keyDepth;
             var keys = new ISymmetricKey[keyDepth];
 
-            using (var keySourceBytes = CryptographicKey.DeriveKeySourceBytesFromPassword(password, totalSourceLengthInBytes))
+            using (var keySourceBytes = DeriveKeySourceBytesFromPassword(password, totalSourceLengthInBytes))
             {
                 for (var i = 0; i < keyDepth; i++)
                 {

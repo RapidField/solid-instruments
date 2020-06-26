@@ -7,13 +7,23 @@ using System;
 namespace RapidField.SolidInstruments.Cryptography.Asymmetric
 {
     /// <summary>
-    /// Defines distinct combinations of asymmetric key encryption algorithms, key bit-lengths and operational modes.
+    /// Defines the purpose of an <see cref="IAsymmetricKey" />.
     /// </summary>
-    public enum AsymmetricAlgorithmSpecification : Byte
+    public enum AsymmetricKeyPurpose : Byte
     {
         /// <summary>
-        /// The asymmetric algorithm is not specified.
+        /// The asymmetric key purpose is not specified.
         /// </summary>
-        Unspecified = 0x00
+        Unspecified = 0x00,
+
+        /// <summary>
+        /// The key is used for digitally signing data.
+        /// </summary>
+        DigitalSignature = 0x01,
+
+        /// <summary>
+        /// The key is used for securely exchanging symmetric keys.
+        /// </summary>
+        KeyExchange = 0x02
     }
 }

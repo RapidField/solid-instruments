@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Collections;
 using System;
 using System.Diagnostics;
 
@@ -15,15 +16,29 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature.E
         /// <summary>
         /// Initializes a new instance of the <see cref="EcdsaPrivateKey" /> class.
         /// </summary>
+        /// <param name="keyPairIdentifier">
+        /// The globally unique identifier for the key pair to which the key belongs.
+        /// </param>
         /// <param name="algorithm">
         /// The asymmetric-key algorithm for which the key is used.
         /// </param>
+        /// <param name="keySource">
+        /// A bit field that is used to derive key bits.
+        /// </param>
+        /// <param name="lifespanDuration">
+        /// The length of time for which the key is valid.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keySource" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="algorithm" /> is equal to <see cref="AsymmetricAlgorithmSpecification.Unspecified" />.
+        /// <paramref name="keyPairIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal
+        /// to <see cref="DigitalSignatureAlgorithmSpecification.Unspecified" /> -or- <paramref name="lifespanDuration" /> is less
+        /// than eight seconds.
         /// </exception>
         [DebuggerHidden]
-        internal EcdsaPrivateKey(AsymmetricAlgorithmSpecification algorithm)
-            : base(algorithm)
+        internal EcdsaPrivateKey(Guid keyPairIdentifier, DigitalSignatureAlgorithmSpecification algorithm, PinnedMemory keySource, TimeSpan lifespanDuration)
+            : base(keyPairIdentifier, algorithm, KeyDerivationMode, keySource, lifespanDuration)
         {
             return;
         }
@@ -34,19 +49,12 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature.E
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
         /// </param>
-        protected override void Dispose(Boolean disposing)
-        {
-            try
-            {
-                if (disposing)
-                {
-                    throw new NotImplementedException();
-                }
-            }
-            finally
-            {
-                base.Dispose(disposing);
-            }
-        }
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Represents the key derivation mode for <see cref="EcdsaPrivateKey" /> instances.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const CryptographicKeyDerivationMode KeyDerivationMode = CryptographicKeyDerivationMode.Truncation;
     }
 }

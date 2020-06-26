@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Cryptography
         public ISecureMemory ToDerivedKeyBytes();
 
         /// <summary>
-        /// Gets the symmetric-key algorithm for which a key is derived.
+        /// Gets the cryptographic algorithm for which a key is derived.
         /// </summary>
         public TAlgorithm Algorithm
         {
@@ -38,8 +38,7 @@ namespace RapidField.SolidInstruments.Cryptography
     }
 
     /// <summary>
-    /// Represents a cryptographic algorithm and source bits for a derived key, encapsulates key derivation operations and secures
-    /// key bits in memory.
+    /// Represents a cryptographic algorithm and key bits.
     /// </summary>
     public interface ICryptographicKey : IAsyncDisposable, IDisposable
     {

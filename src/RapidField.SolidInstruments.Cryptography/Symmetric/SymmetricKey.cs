@@ -33,6 +33,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <param name="keySource">
         /// A bit field that is used to derive key bits.
         /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="keySource" /> contains too many elements.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keySource" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" /> or
         /// <paramref name="derivationMode" /> is equal to <see cref="CryptographicKeyDerivationMode.Unspecified" />.

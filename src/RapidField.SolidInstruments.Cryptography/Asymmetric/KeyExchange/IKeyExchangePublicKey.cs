@@ -9,5 +9,12 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
     /// </summary>
     public interface IKeyExchangePublicKey : IAsymmetricPublicKey, IKeyExchangeKey
     {
+        /// <summary>
+        /// Gets the asymmetric-key algorithm for which the key is used.
+        /// </summary>
+        public KeyExchangeAlgorithmSpecification Algorithm
+        {
+            get;
+        }
     }
 }
