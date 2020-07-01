@@ -318,7 +318,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Represents a node in a hash tree.
         /// </summary>
-        private class HashTreeNode : BinaryTreeNode<Byte[]>
+        private sealed class HashTreeNode : BinaryTreeNode<Byte[]>
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="HashTreeNode" /> class.

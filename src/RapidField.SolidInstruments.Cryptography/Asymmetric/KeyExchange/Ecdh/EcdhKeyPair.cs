@@ -32,6 +32,37 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         }
 
         /// <summary>
+        /// Derives material bytes that are used to create a new symmetric key that can be used to secure communications with a
+        /// second party by whom the specified public key was provided.
+        /// </summary>
+        /// <param name="provider">
+        /// The asymmetric algorithm provider that facilitates key material derivation.
+        /// </param>
+        /// <param name="firstPartyPrivateKey">
+        /// The private key which, in combination with the second party public key, is used to derive the symmetric key material.
+        /// </param>
+        /// <param name="secondPartyPublicKey">
+        /// The public key which, in combination with the first party private key, is used to derive the symmetric key material.
+        /// </param>
+        /// <returns>
+        /// The resulting key material bytes.
+        /// </returns>
+        protected sealed override ISecureMemory DeriveSymmetricKeyMaterial(ECDiffieHellman provider, EcdhPrivateKey firstPartyPrivateKey, Span<Byte> secondPartyPublicKey)
+        {
+            using (var keyMaterialMemory = new PinnedMemory(provider.DeriveKeyMaterial(new SecondPartyEcdhPublicKey(secondPartyPublicKey.ToArray())), true))
+            {
+                var keyMaterial = new SecureMemory(keyMaterialMemory.LengthInBytes);
+
+                keyMaterial.Access(memory =>
+                {
+                    keyMaterialMemory.ReadOnlySpan.CopyTo(memory.Span);
+                });
+
+                return keyMaterial;
+            }
+        }
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="EcdhKeyPair" />.
         /// </summary>
         /// <param name="disposing">
@@ -91,5 +122,29 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static readonly TimeSpan DefaultKeyLifespanDuration = TimeSpan.FromHours(8);
+
+        /// <summary>
+        /// Represents an implementation of <see cref="ECDiffieHellmanPublicKey" /> which supports reconstitution of a second party
+        /// public key.
+        /// </summary>
+        private sealed class SecondPartyEcdhPublicKey : ECDiffieHellmanPublicKey
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SecondPartyEcdhPublicKey" /> class.
+            /// </summary>
+            /// <param name="keyBlob">
+            /// Public key bytes which, in combination with first party private key bytes, are used to derive symmetric key
+            /// material.
+            /// </param>
+            /// <exception cref="ArgumentNullException">
+            /// <paramref name="keyBlob" /> is <see langword="null" />.
+            /// </exception>
+            [DebuggerHidden]
+            internal SecondPartyEcdhPublicKey(Byte[] keyBlob)
+                : base(keyBlob)
+            {
+                return;
+            }
+        }
     }
 }

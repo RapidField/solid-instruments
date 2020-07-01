@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// Converts the current <see cref="DigitalSignaturePublicKey" /> to its textual Base64 representation.
         /// </summary>
         /// <returns>
-        /// A Base64 string representation of the byte collection.
+        /// A Base64 string representation of the public key.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -117,12 +117,89 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         }
 
         /// <summary>
+        /// Converts the current <see cref="DigitalSignaturePublicKey" /> to a serializable model.
+        /// </summary>
+        /// <returns>
+        /// A serializable model representation of the public key.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public AsymmetricPublicKeyModel ToModel() => new AsymmetricPublicKeyModel(KeyPairIdentifier, ToBase64String(), ExpirationTimeStamp);
+
+        /// <summary>
         /// Converts the value of the current <see cref="DigitalSignaturePublicKey" /> to its equivalent string representation.
         /// </summary>
         /// <returns>
         /// A string representation of the current <see cref="DigitalSignaturePublicKey" />.
         /// </returns>
         public override String ToString() => $"{{ \"{nameof(Purpose)}\": {Purpose}, \"{nameof(Algorithm)}\": {Algorithm}, \"{nameof(KeyPairIdentifier)}\": {KeyPairIdentifier.ToSerializedString()} }}";
+
+        /// <summary>
+        /// Extracts the key memory bytes from the specified, Base64-encoded public key.
+        /// </summary>
+        /// <param name="publicKey">
+        /// A Base64 string representation of the public key.
+        /// </param>
+        /// <returns>
+        /// The public key memory bytes.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="publicKey" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The length of <paramref name="publicKey" /> is invalid.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="publicKey" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="publicKey" /> is not a valid Base64 string.
+        /// </exception>
+        [DebuggerHidden]
+        internal static DigitalSignatureAlgorithmSpecification ExtractAlgorithm(String publicKey)
+        {
+            var publicKeyMemory = new Memory<Byte>(Convert.FromBase64String(publicKey.RejectIf().IsNullOrEmpty(nameof(publicKey))));
+            var keyCompositionInformation = new AsymmetricPublicKeyCompositionInformation(publicKeyMemory, AsymmetricKeyPurpose.DigitalSignature);
+            var algorithmBytes = publicKeyMemory.Slice(AsymmetricPublicKeyCompositionInformation.AlgorithmStartIndex, keyCompositionInformation.AlgorithmLengthInBytes).ToArray();
+
+            return algorithmBytes.Length switch
+            {
+                1 => (DigitalSignatureAlgorithmSpecification)algorithmBytes[0],
+                2 => (DigitalSignatureAlgorithmSpecification)BitConverter.ToInt16(algorithmBytes),
+                4 => (DigitalSignatureAlgorithmSpecification)BitConverter.ToInt32(algorithmBytes),
+                _ => throw new UnsupportedSpecificationException($"The bit length of {nameof(DigitalSignatureAlgorithmSpecification)} is invalid."),
+            };
+        }
+
+        /// <summary>
+        /// Extracts the key memory bytes from the specified, Base64-encoded public key.
+        /// </summary>
+        /// <param name="publicKey">
+        /// A Base64 string representation of the public key.
+        /// </param>
+        /// <returns>
+        /// The public key memory bytes.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="publicKey" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The length of <paramref name="publicKey" /> is invalid.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="publicKey" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="publicKey" /> is not a valid Base64 string.
+        /// </exception>
+        [DebuggerHidden]
+        internal static Span<Byte> ExtractKeyMemory(String publicKey)
+        {
+            var publicKeyMemory = new Memory<Byte>(Convert.FromBase64String(publicKey.RejectIf().IsNullOrEmpty(nameof(publicKey))));
+            var keyCompositionInformation = new AsymmetricPublicKeyCompositionInformation(publicKeyMemory, AsymmetricKeyPurpose.DigitalSignature);
+            return publicKeyMemory.Slice(keyCompositionInformation.KeyMemoryStartIndex, keyCompositionInformation.KeyMemoryLengthInBytes).Span;
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DigitalSignaturePublicKey" />.
@@ -156,22 +233,16 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// </returns>
         protected sealed override ISecureMemory ToSecureMemory(IConcurrencyControlToken controlToken)
         {
-            var purposeLength = sizeof(AsymmetricKeyPurpose);
-            var purposeStartIndex = 0;
-            var algorithmLength = sizeof(DigitalSignatureAlgorithmSpecification);
-            var algorithmStartIndex = purposeStartIndex + purposeLength;
-            var keyMemoryLength = KeyMemory.LengthInBytes;
-            var keyMemoryStartIndex = algorithmStartIndex + algorithmLength;
-            var secureMemoryLength = purposeLength + algorithmLength + keyMemoryLength;
-            var secureMemory = new SecureMemory(secureMemoryLength);
+            var keyCompositionInformation = new AsymmetricPublicKeyCompositionInformation(KeyMemory.LengthInBytes, Purpose);
+            var secureMemory = new SecureMemory(keyCompositionInformation.TotalLengthInBytes);
 
             try
             {
                 secureMemory.Access(memory =>
                 {
-                    memory[purposeStartIndex] = Convert.ToByte(Purpose);
-                    memory[algorithmStartIndex] = Convert.ToByte(Algorithm);
-                    Array.Copy(KeyMemory, 0, memory, keyMemoryStartIndex, keyMemoryLength);
+                    memory[AsymmetricPublicKeyCompositionInformation.PurposeStartIndex] = Convert.ToByte(Purpose);
+                    memory[AsymmetricPublicKeyCompositionInformation.AlgorithmStartIndex] = Convert.ToByte(Algorithm);
+                    Array.Copy(KeyMemory, 0, memory, keyCompositionInformation.KeyMemoryStartIndex, keyCompositionInformation.KeyMemoryLengthInBytes);
                 });
 
                 return secureMemory;

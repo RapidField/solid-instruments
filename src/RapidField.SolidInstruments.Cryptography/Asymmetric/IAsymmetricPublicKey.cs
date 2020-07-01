@@ -15,11 +15,22 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// Converts the current <see cref="IAsymmetricPublicKey" /> to its textual Base64 representation.
         /// </summary>
         /// <returns>
-        /// A Base64 string representation of the byte collection.
+        /// A Base64 string representation of the public key.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
         public String ToBase64String();
+
+        /// <summary>
+        /// Converts the current <see cref="IAsymmetricPublicKey" /> to a serializable model.
+        /// </summary>
+        /// <returns>
+        /// A serializable model representation of the public key.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public AsymmetricPublicKeyModel ToModel();
     }
 }

@@ -316,7 +316,7 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
             action.Should().Throw<ArgumentNullException>($"because {nameof(childNode)} is null");
         }
 
-        private class TestTreeNode : TreeNode<Int32, TestTreeNode>
+        private sealed class TestTreeNode : TreeNode<Int32, TestTreeNode>
         {
             public TestTreeNode()
                 : base()
