@@ -16,6 +16,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
     public class HashingProcessorTests
     {
         [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Argon2idBalanced() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Argon2idIterativelyExpensive() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idIterativelyExpensive);
+
+        [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Argon2idMemoryExpensive() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idMemoryExpensive);
+
+        [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Argon2idThreadExpensive() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idThreadExpensive);
+
+        [TestMethod]
         public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Md5() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Md5);
 
         [TestMethod]
@@ -29,6 +41,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
 
         [TestMethod]
         public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo512() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+
+        [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Argon2idBalanced() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Argon2idIterativelyExpensive() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idIterativelyExpensive);
+
+        [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Argon2idMemoryExpensive() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idMemoryExpensive);
+
+        [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Argon2idThreadExpensive() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idThreadExpensive);
 
         [TestMethod]
         public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Md5() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Md5);
@@ -46,6 +70,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         public void CalculateHash_ShouldNotBeDeterministic_ForSalted_ShaTwo512() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
 
         [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Argon2idBalanced() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Argon2idIterativelyExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idIterativelyExpensive);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Argon2idMemoryExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idMemoryExpensive);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Argon2idThreadExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idThreadExpensive);
+
+        [TestMethod]
         public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_Md5() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.Md5);
 
         [TestMethod]
@@ -59,6 +95,18 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
 
         [TestMethod]
         public void EvaluateHash_ShouldProduceDesiredResults_ForSalted_ShaTwo512() => EvaluateHash_ShouldProduceDesiredResults_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Argon2idBalanced() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Argon2idIterativelyExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idIterativelyExpensive);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Argon2idMemoryExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idMemoryExpensive);
+
+        [TestMethod]
+        public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Argon2idThreadExpensive() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idThreadExpensive);
 
         [TestMethod]
         public void EvaluateHash_ShouldProduceDesiredResults_ForUnsalted_Md5() => EvaluateHash_ShouldProduceDesiredResults_ForUnsaltedHashing(HashingAlgorithmSpecification.Md5);
@@ -149,6 +197,26 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         {
             switch (algorithm)
             {
+                case HashingAlgorithmSpecification.Argon2idBalanced:
+
+                    hashValue.Length.Should().Be(32 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
+                    break;
+
+                case HashingAlgorithmSpecification.Argon2idIterativelyExpensive:
+
+                    hashValue.Length.Should().Be(32 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
+                    break;
+
+                case HashingAlgorithmSpecification.Argon2idMemoryExpensive:
+
+                    hashValue.Length.Should().Be(32 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
+                    break;
+
+                case HashingAlgorithmSpecification.Argon2idThreadExpensive:
+
+                    hashValue.Length.Should().Be(32 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));
+                    break;
+
                 case HashingAlgorithmSpecification.Md5:
 
                     hashValue.Length.Should().Be(16 + (saltingMode == SaltingMode.Salted ? saltLengthInBytes : 0));

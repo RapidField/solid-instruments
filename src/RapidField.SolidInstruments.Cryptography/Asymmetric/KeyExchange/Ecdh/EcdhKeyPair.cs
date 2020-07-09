@@ -21,12 +21,15 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// <param name="algorithm">
         /// The asymmetric-key algorithm for which the key is used.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="algorithm" /> is equal to <see cref="KeyExchangeAlgorithmSpecification.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal EcdhKeyPair(KeyExchangeAlgorithmSpecification algorithm)
-            : base(Guid.NewGuid(), algorithm, DefaultKeyLifespanDuration)
+        internal EcdhKeyPair(KeyExchangeAlgorithmSpecification algorithm, Boolean isReconstituted)
+            : base(Guid.NewGuid(), algorithm, DefaultKeyLifespanDuration, isReconstituted)
         {
             return;
         }
@@ -79,10 +82,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// <param name="provider">
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The private key.
         /// </returns>
-        protected sealed override EcdhPrivateKey InitializePrivateKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider)
+        protected sealed override EcdhPrivateKey InitializePrivateKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider, Boolean isReconstituted)
         {
             using var keySource = new PinnedMemory(provider.ExportECPrivateKey());
             return new EcdhPrivateKey(Identifier, algorithm, keySource, KeyLifespanDuration);
@@ -94,10 +100,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// <param name="algorithm">
         /// The asymmetric-key algorithm for which the key pair is used.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </returns>
-        protected sealed override ECDiffieHellman InitializeProvider(KeyExchangeAlgorithmSpecification algorithm) => ECDiffieHellman.Create(algorithm.ToCurve());
+        protected sealed override ECDiffieHellman InitializeProvider(KeyExchangeAlgorithmSpecification algorithm, Boolean isReconstituted) => ECDiffieHellman.Create(algorithm.ToCurve());
 
         /// <summary>
         /// Initializes the private key.
@@ -108,10 +117,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// <param name="provider">
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The private key.
         /// </returns>
-        protected sealed override EcdhPublicKey InitializePublicKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider)
+        protected sealed override EcdhPublicKey InitializePublicKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider, Boolean isReconstituted)
         {
             var keyMemory = provider.ExportSubjectPublicKeyInfo();
             return new EcdhPublicKey(Identifier, algorithm, keyMemory, KeyLifespanDuration);
@@ -121,7 +133,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// Represents the default length of time for which paired keys are valid.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly TimeSpan DefaultKeyLifespanDuration = TimeSpan.FromHours(8);
+        internal static readonly TimeSpan DefaultKeyLifespanDuration = TimeSpan.FromHours(36);
 
         /// <summary>
         /// Represents an implementation of <see cref="ECDiffieHellmanPublicKey" /> which supports reconstitution of a second party

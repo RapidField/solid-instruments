@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Cryptography
     /// <summary>
     /// Represents a symmetric key encryption facility that uses managed keys to perform cryptographic operations.
     /// </summary>
-    public interface IManagedKeyCipher : IAsyncDisposable, IDisposable
+    public interface IManagedKeyCipher : IAsyncDisposable, ICryptographicComponent, IDisposable
     {
         /// <summary>
         /// Decrypts the specified model using the master key.

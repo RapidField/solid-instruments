@@ -232,7 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </exception>
         [DebuggerHidden]
         private SoftwareSecurityModule(SecretStoreFilePersistenceVehicle persistenceVehicle)
-            : base(persistenceVehicle, String.IsNullOrEmpty(persistenceVehicle?.FilePath) ? false : File.Exists(persistenceVehicle.FilePath))
+            : base(persistenceVehicle, String.IsNullOrEmpty(persistenceVehicle?.FilePath) == false && File.Exists(persistenceVehicle.FilePath))
         {
             return;
         }
@@ -928,5 +928,35 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Gets the secret reading facility for the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" />.
         /// </summary>
         public ISecretReader SecretReader => InMemoryStore;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" /> can be
+        /// used to digitally sign information using asymmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsDigitalSignature => Usage.HasFlag(CryptographicComponentUsage.DigitalSignature);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" /> can be
+        /// used to produce hash values for plaintext information.
+        /// </summary>
+        public Boolean SupportsHashing => Usage.HasFlag(CryptographicComponentUsage.Hashing);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" /> can be
+        /// used to securely exchange symmetric keys with remote parties.
+        /// </summary>
+        public Boolean SupportsKeyExchange => Usage.HasFlag(CryptographicComponentUsage.KeyExchange);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" /> can be
+        /// used to encrypt or decrypt information using symmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsSymmetricKeyEncryption => Usage.HasFlag(CryptographicComponentUsage.SymmetricKeyEncryption);
+
+        /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current
+        /// <see cref="SoftwareSecurityModule{TPersistenceVehicle}" />.
+        /// </summary>
+        public CryptographicComponentUsage Usage => CryptographicComponentUsage.SymmetricKeyEncryption | CryptographicComponentUsage.DigitalSignature | CryptographicComponentUsage.KeyExchange;
     }
 }

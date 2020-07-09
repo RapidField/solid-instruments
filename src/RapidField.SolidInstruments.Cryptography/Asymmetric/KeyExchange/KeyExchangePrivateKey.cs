@@ -82,10 +82,45 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         /// eight seconds.
         /// </exception>
         protected KeyExchangePrivateKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, CryptographicKeyDerivationMode derivationMode, PinnedMemory keySource, TimeSpan lifespanDuration)
+            : this(keyPairIdentifier, algorithm, derivationMode, keySource, TimeStamp.Current.Add(lifespanDuration.RejectIf().IsLessThan(MinimumLifespanDuration, nameof(lifespanDuration))))
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyExchangePrivateKey" /> class.
+        /// </summary>
+        /// <param name="keyPairIdentifier">
+        /// The globally unique identifier for the key pair to which the key belongs.
+        /// </param>
+        /// <param name="algorithm">
+        /// The asymmetric-key algorithm for which the key is used.
+        /// </param>
+        /// <param name="derivationMode">
+        /// The mode used to derive the output key.
+        /// </param>
+        /// <param name="keySource">
+        /// A bit field that is used to derive key bits.
+        /// </param>
+        /// <param name="expirationTimeStamp">
+        /// The date and time when the key expires and is no longer valid for use.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="keySource" /> contains too many elements.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keySource" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keyPairIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal
+        /// to <see cref="KeyExchangeAlgorithmSpecification.Unspecified" /> -or- <paramref name="expirationTimeStamp" /> is equal to
+        /// <see cref="DateTime.MaxValue" />.
+        /// </exception>
+        protected KeyExchangePrivateKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, CryptographicKeyDerivationMode derivationMode, PinnedMemory keySource, DateTime expirationTimeStamp)
             : base(algorithm, derivationMode, keySource, algorithm.ToPrivateKeyBitLength())
         {
             Curve = algorithm.ToCurve();
-            ExpirationTimeStamp = TimeStamp.Current.Add(lifespanDuration.RejectIf().IsLessThan(MinimumLifespanDuration, nameof(lifespanDuration)));
+            ExpirationTimeStamp = expirationTimeStamp.RejectIf().IsEqualToValue(DateTime.MaxValue, nameof(expirationTimeStamp));
             KeyPairIdentifier = keyPairIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(keyPairIdentifier));
             Purpose = AsymmetricKeyPurpose.KeyExchange;
         }
@@ -134,6 +169,11 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="KeyExchangePrivateKey" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.KeyExchange;
 
         /// <summary>
         /// Represents an elliptic curve matching <see cref="CryptographicKey{TAlgorithm}.Algorithm" />.

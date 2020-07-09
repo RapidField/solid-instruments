@@ -37,7 +37,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, SymmetricKey key) => target.Decrypt(Convert.FromBase64String(ciphertext), key);
+        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, SymmetricKey key)
+            where T : class => target.Decrypt(Convert.FromBase64String(ciphertext), key);
 
         /// <summary>
         /// Decrypts the specified Base64 string ciphertext.
@@ -63,7 +64,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, CascadingSymmetricKey key) => target.Decrypt(Convert.FromBase64String(ciphertext), key);
+        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, CascadingSymmetricKey key)
+            where T : class => target.Decrypt(Convert.FromBase64String(ciphertext), key);
 
         /// <summary>
         /// Decrypts the specified Base64 string ciphertext.
@@ -92,7 +94,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, ISecureMemory key, SymmetricAlgorithmSpecification algorithm) => target.Decrypt(Convert.FromBase64String(ciphertext), key, algorithm);
+        public static T DecryptFromBase64String<T>(this ISymmetricProcessor<T> target, String ciphertext, ISecureMemory key, SymmetricAlgorithmSpecification algorithm)
+            where T : class => target.Decrypt(Convert.FromBase64String(ciphertext), key, algorithm);
 
         /// <summary>
         /// Encrypts the specified plaintext object to a Base64 string.
@@ -115,7 +118,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, SymmetricKey key) => Convert.ToBase64String(target.Encrypt(plaintextObject, key));
+        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, SymmetricKey key)
+            where T : class => Convert.ToBase64String(target.Encrypt(plaintextObject, key));
 
         /// <summary>
         /// Encrypts the specified plaintext object to a Base64 string.
@@ -138,7 +142,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, CascadingSymmetricKey key) => Convert.ToBase64String(target.Encrypt(plaintextObject, key));
+        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, CascadingSymmetricKey key)
+            where T : class => Convert.ToBase64String(target.Encrypt(plaintextObject, key));
 
         /// <summary>
         /// Encrypts the specified plaintext object to a Base64 string.
@@ -164,6 +169,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm) => Convert.ToBase64String(target.Encrypt(plaintextObject, key, algorithm));
+        public static String EncryptToBase64String<T>(this ISymmetricProcessor<T> target, T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm)
+            where T : class => Convert.ToBase64String(target.Encrypt(plaintextObject, key, algorithm));
     }
 }

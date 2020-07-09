@@ -360,6 +360,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="SymmetricKey" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.SymmetricKeyEncryption;
+
+        /// <summary>
         /// Represents the default symmetric-key algorithm specification for new keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

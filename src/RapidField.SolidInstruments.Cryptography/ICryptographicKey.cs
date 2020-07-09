@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Cryptography
     /// <summary>
     /// Represents a cryptographic algorithm and key bits.
     /// </summary>
-    public interface ICryptographicKey : IAsyncDisposable, IDisposable
+    public interface ICryptographicKey : IAsyncDisposable, ICryptographicComponent, IDisposable
     {
         /// <summary>
         /// Converts the value of the current <see cref="ICryptographicKey" /> to a secure bit field.
@@ -52,5 +52,32 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The object is disposed.
         /// </exception>
         public ISecureMemory ToSecureMemory();
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="ICryptographicKey" /> can be used to digitally sign
+        /// information using asymmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsDigitalSignature
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="ICryptographicKey" /> can be used to securely exchange
+        /// symmetric keys with remote parties.
+        /// </summary>
+        public Boolean SupportsKeyExchange
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="ICryptographicKey" /> can be used to encrypt or decrypt
+        /// information using symmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsSymmetricKeyEncryption
+        {
+            get;
+        }
     }
 }

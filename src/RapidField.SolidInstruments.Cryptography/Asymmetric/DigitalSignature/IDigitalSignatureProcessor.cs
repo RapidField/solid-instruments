@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// <summary>
     /// Provides facilities for digitally signing byte arrays.
     /// </summary>
-    public interface IDigitalSignatureProcessor : IDigitalSignatureProcessor<Byte[]>
+    public interface IDigitalSignatureProcessor : IAsymmetricProcessor, IDigitalSignatureProcessor<Byte[]>
     {
     }
 
@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// <typeparam name="T">
     /// The type of the object that can be digitally signed.
     /// </typeparam>
-    public interface IDigitalSignatureProcessor<T> : IAsymmetricProcessor
+    public interface IDigitalSignatureProcessor<T> : IAsymmetricProcessor<T>
         where T : class
     {
     }

@@ -198,7 +198,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the Argon2id
         /// algorithm and returns it as a Base64 string.
         /// </summary>
         /// <returns>
@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the Argon2id
         /// algorithm.
         /// </summary>
         /// <returns>
@@ -238,7 +238,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the Argon2id
         /// algorithm and compares the result with the specified Base64-encoded digest.
         /// </summary>
         /// <param name="hashString">
@@ -257,7 +257,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Boolean EvaluateSecureHashString(String hashString) => EvaluateSecureHashValue(Convert.FromBase64String(hashString.RejectIf().IsNullOrEmpty(nameof(hashString))));
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="Password" /> using the Argon2id
         /// algorithm and compares the result with the specified salted hash value.
         /// </summary>
         /// <param name="hashValue">
@@ -463,7 +463,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// instances.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const HashingAlgorithmSpecification HashingAlgorithm = HashingAlgorithmSpecification.Pbkdf2;
+        private const HashingAlgorithmSpecification HashingAlgorithm = HashingAlgorithmSpecification.Argon2idBalanced;
 
         /// <summary>
         /// Represents the lower boundary for the length of randomly-generated strong passwords.

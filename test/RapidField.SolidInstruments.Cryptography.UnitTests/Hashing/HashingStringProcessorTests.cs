@@ -16,7 +16,13 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
     public class HashingStringProcessorTests
     {
         [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Argon2idBalanced() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
         public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Md5() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Md5);
+
+        [TestMethod]
+        public void CalculateHash_ShouldBeDeterministic_ForUnsalted_Pbkdf2() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
 
         [TestMethod]
         public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo256() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo256);
@@ -28,7 +34,13 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         public void CalculateHash_ShouldBeDeterministic_ForUnsalted_ShaTwo512() => CalculateHash_ShouldBeDeterministic_ForUnsaltedHashing(HashingAlgorithmSpecification.ShaTwo512);
 
         [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Argon2idBalanced() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Argon2idBalanced);
+
+        [TestMethod]
         public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Md5() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Md5);
+
+        [TestMethod]
+        public void CalculateHash_ShouldNotBeDeterministic_ForSalted_Pbkdf2() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.Pbkdf2);
 
         [TestMethod]
         public void CalculateHash_ShouldNotBeDeterministic_ForSalted_ShaTwo256() => CalculateHash_ShouldNotBeDeterministic_ForSaltedHashing(HashingAlgorithmSpecification.ShaTwo256);

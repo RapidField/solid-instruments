@@ -20,7 +20,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// <typeparam name="T">
     /// The type of the object that can be encrypted and decrypted.
     /// </typeparam>
-    public interface ISymmetricProcessor<T>
+    public interface ISymmetricProcessor<T> : ICryptographicProcessor<T>
+        where T : class
     {
         /// <summary>
         /// Decrypts the specified ciphertext.

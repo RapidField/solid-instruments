@@ -21,7 +21,8 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="T">
     /// The type of the object that can be hashed.
     /// </typeparam>
-    public interface IHashingProcessor<T>
+    public interface IHashingProcessor<T> : ICryptographicProcessor<T>
+        where T : class
     {
         /// <summary>
         /// Calculates a hash value for the specified plaintext byte array.

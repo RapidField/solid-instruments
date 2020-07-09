@@ -82,10 +82,45 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         /// eight seconds.
         /// </exception>
         protected KeyExchangePublicKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, Byte[] keyMemory, TimeSpan lifespanDuration)
+            : this(keyPairIdentifier, algorithm, keyMemory, TimeStamp.Current.Add(lifespanDuration.RejectIf().IsLessThan(MinimumLifespanDuration, nameof(lifespanDuration))))
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyExchangePublicKey" /> class.
+        /// </summary>
+        /// <param name="keyPairIdentifier">
+        /// The globally unique identifier for the key pair to which the key belongs.
+        /// </param>
+        /// <param name="algorithm">
+        /// The asymmetric-key algorithm for which the key is used.
+        /// </param>
+        /// <param name="keyMemory">
+        /// The plaintext key bits for the public key.
+        /// </param>
+        /// <param name="expirationTimeStamp">
+        /// The date and time when the key expires and is no longer valid for use.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMemory" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The length of <paramref name="keyMemory" /> is invalid for <paramref name="algorithm" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMemory" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keyPairIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal
+        /// to <see cref="KeyExchangeAlgorithmSpecification.Unspecified" /> -or- <paramref name="expirationTimeStamp" /> is equal to
+        /// <see cref="DateTime.MaxValue" />.
+        /// </exception>
+        protected KeyExchangePublicKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, Byte[] keyMemory, DateTime expirationTimeStamp)
             : base()
         {
             Algorithm = algorithm.RejectIf().IsEqualToValue(KeyExchangeAlgorithmSpecification.Unspecified, nameof(algorithm));
-            ExpirationTimeStamp = TimeStamp.Current.Add(lifespanDuration.RejectIf().IsLessThan(MinimumLifespanDuration, nameof(lifespanDuration)));
+            ExpirationTimeStamp = expirationTimeStamp.RejectIf().IsEqualToValue(DateTime.MaxValue, nameof(expirationTimeStamp));
             KeyMemory = new PinnedMemory(keyMemory.RejectIf().IsNullOrEmpty(nameof(keyMemory)).OrIf(argument => argument.Length != (algorithm.ToPublicKeyBitLength() / 8), nameof(keyMemory), $"The length of the specified key is invalid for the specified algorithm, \"{algorithm}\"."), true);
             KeyPairIdentifier = keyPairIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(keyPairIdentifier));
             Purpose = AsymmetricKeyPurpose.KeyExchange;
@@ -290,6 +325,11 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="KeyExchangePublicKey" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.KeyExchange;
 
         /// <summary>
         /// Represents the plaintext key bits for the current <see cref="KeyExchangePublicKey" />.

@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
     public sealed class KeyExchangeProcessor : AsymmetricProcessor, IKeyExchangeProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsymmetricProcessor" /> class.
+        /// Initializes a new instance of the <see cref="KeyExchangeProcessor" /> class.
         /// </summary>
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate initialization vectors.
@@ -29,6 +29,11 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         {
             return;
         }
+
+        /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="KeyExchangeProcessor" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.KeyExchange;
 
         /// <summary>
         /// Represents a singleton instance of the <see cref="KeyExchangeProcessor" /> class.

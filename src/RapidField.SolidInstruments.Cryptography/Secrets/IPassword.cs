@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     public interface IPassword : IReadOnlySecret<String>
     {
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the Argon2id
         /// algorithm and returns it as a Base64 string.
         /// </summary>
         /// <returns>
@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public String CalculateSecureHashString();
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the Argon2id
         /// algorithm.
         /// </summary>
         /// <returns>
@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public IReadOnlyPinnedMemory<Byte> CalculateSecureHashValue();
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the Argon2id
         /// algorithm and compares the result with the specified Base64-encoded digest.
         /// </summary>
         /// <param name="hashString">
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public Boolean EvaluateSecureHashString(String hashString);
 
         /// <summary>
-        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the PBKDF2
+        /// Calculates a cryptographically secure salted hash value for the current <see cref="IPassword" /> using the Argon2id
         /// algorithm and compares the result with the specified salted hash value.
         /// </summary>
         /// <param name="hashValue">

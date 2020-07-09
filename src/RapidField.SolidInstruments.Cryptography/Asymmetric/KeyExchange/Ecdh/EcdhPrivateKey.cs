@@ -45,6 +45,36 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EcdhPrivateKey" /> class.
+        /// </summary>
+        /// <param name="keyPairIdentifier">
+        /// The globally unique identifier for the key pair to which the key belongs.
+        /// </param>
+        /// <param name="algorithm">
+        /// The asymmetric-key algorithm for which the key is used.
+        /// </param>
+        /// <param name="keySource">
+        /// A bit field that is used to derive key bits.
+        /// </param>
+        /// <param name="expirationTimeStamp">
+        /// The date and time when the key expires and is no longer valid for use.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keySource" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keyPairIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal
+        /// to <see cref="KeyExchangeAlgorithmSpecification.Unspecified" /> -or- <paramref name="expirationTimeStamp" /> is equal to
+        /// <see cref="DateTime.MaxValue" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal EcdhPrivateKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, PinnedMemory keySource, DateTime expirationTimeStamp)
+            : base(keyPairIdentifier, algorithm, KeyDerivationMode, keySource, expirationTimeStamp)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="EcdhPrivateKey" />.
         /// </summary>
         /// <param name="disposing">

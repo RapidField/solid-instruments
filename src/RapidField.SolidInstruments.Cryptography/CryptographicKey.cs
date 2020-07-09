@@ -645,6 +645,32 @@ namespace RapidField.SolidInstruments.Cryptography
         protected abstract ISecureMemory ToSecureMemory(IConcurrencyControlToken controlToken);
 
         /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="CryptographicKey" /> can be used to digitally sign
+        /// information using asymmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsDigitalSignature => Usage.HasFlag(CryptographicComponentUsage.DigitalSignature);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="CryptographicKey" /> can be used to securely exchange
+        /// symmetric keys with remote parties.
+        /// </summary>
+        public Boolean SupportsKeyExchange => Usage.HasFlag(CryptographicComponentUsage.KeyExchange);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="CryptographicKey" /> can be used to encrypt or decrypt
+        /// information using symmetric key cryptography.
+        /// </summary>
+        public Boolean SupportsSymmetricKeyEncryption => Usage.HasFlag(CryptographicComponentUsage.SymmetricKeyEncryption);
+
+        /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="CryptographicKey" />.
+        /// </summary>
+        public abstract CryptographicComponentUsage Usage
+        {
+            get;
+        }
+
+        /// <summary>
         /// Represents the minimum allowable length, in characters, of a password.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

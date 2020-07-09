@@ -74,5 +74,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value that specifies what the key pair is used for.
+        /// </summary>
+        public AsymmetricKeyPurpose Purpose
+        {
+            get;
+        }
     }
 }

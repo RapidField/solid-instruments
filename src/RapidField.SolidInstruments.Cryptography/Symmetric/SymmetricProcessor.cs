@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// <typeparam name="T">
     /// The type of the object that can be encrypted and decrypted.
     /// </typeparam>
-    public class SymmetricProcessor<T> : ISymmetricProcessor<T>
+    public class SymmetricProcessor<T> : CryptographicProcessor<T>, ISymmetricProcessor<T>
         where T : class
     {
         /// <summary>
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
         public SymmetricProcessor(RandomNumberGenerator randomnessProvider)
-            : this(randomnessProvider, DefaultSerializer)
+            : base(randomnessProvider)
         {
             return;
         }
@@ -97,9 +97,9 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <see langword="null" />.
         /// </exception>
         public SymmetricProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer)
+            : base(randomnessProvider, serializer)
         {
-            Serializer = serializer.RejectIf().IsNull(nameof(serializer)).TargetArgument;
-            RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
+            return;
         }
 
         /// <summary>
@@ -455,21 +455,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Represents the default serializer that is used to transform plaintext.
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="SymmetricProcessor{T}" />.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly ISerializer<T> DefaultSerializer = new CompressedJsonSerializer<T>();
-
-        /// <summary>
-        /// Represents a random number generator that is used to generate initialization vectors.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly RandomNumberGenerator RandomnessProvider;
-
-        /// <summary>
-        /// Represents a serializer that is used to transform plaintext.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISerializer<T> Serializer;
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.SymmetricKeyEncryption;
     }
 }

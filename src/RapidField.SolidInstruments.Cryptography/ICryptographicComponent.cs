@@ -2,19 +2,17 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Cryptography.Secrets;
-
 namespace RapidField.SolidInstruments.Cryptography
 {
     /// <summary>
-    /// Represents a centralized utility for performing cryptographic operations.
+    /// Represents a cryptographic key or instrument.
     /// </summary>
-    public interface ISecurityAppliance : ICryptographicComponent, IManagedKeyCipher, ISecretCertificateImporter, ISecretKeyProducer
+    public interface ICryptographicComponent
     {
         /// <summary>
-        /// Gets the secret reading facility for the current <see cref="ISecurityAppliance" />.
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="ICryptographicComponent" />.
         /// </summary>
-        public ISecretReader SecretReader
+        public CryptographicComponentUsage Usage
         {
             get;
         }

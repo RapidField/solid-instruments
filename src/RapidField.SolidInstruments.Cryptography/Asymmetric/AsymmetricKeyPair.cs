@@ -55,13 +55,17 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <param name="keyLifespanDuration">
         /// The length of time for which the paired keys are valid.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal to the
         /// default/unspecified value -or- <paramref name="keyLifespanDuration" /> is less than eight seconds.
         /// </exception>
-        protected AsymmetricKeyPair(Guid identifier, TAlgorithm algorithm, TimeSpan keyLifespanDuration)
+        protected AsymmetricKeyPair(Guid identifier, TAlgorithm algorithm, TimeSpan keyLifespanDuration, Boolean isReconstituted)
             : base(identifier, algorithm, keyLifespanDuration)
         {
+            IsReconstituted = isReconstituted;
             LazyPrivateKey = new Lazy<TPrivateKey>(InitializePrivateKey, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyProvider = new Lazy<TProvider>(InitializeProvider, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyPublicKey = new Lazy<TPublicKey>(InitializePublicKey, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -100,10 +104,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <param name="provider">
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The private key.
         /// </returns>
-        protected abstract TPrivateKey InitializePrivateKey(TAlgorithm algorithm, TProvider provider);
+        protected abstract TPrivateKey InitializePrivateKey(TAlgorithm algorithm, TProvider provider, Boolean isReconstituted);
 
         /// <summary>
         /// Initializes the algorithm provider that facilitates cryptographic operations for the key pair.
@@ -111,10 +118,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <param name="algorithm">
         /// The asymmetric-key algorithm for which the key pair is used.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </returns>
-        protected abstract TProvider InitializeProvider(TAlgorithm algorithm);
+        protected abstract TProvider InitializeProvider(TAlgorithm algorithm, Boolean isReconstituted);
 
         /// <summary>
         /// Initializes the private key.
@@ -125,10 +135,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <param name="provider">
         /// The algorithm provider that facilitates cryptographic operations for the key pair.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <returns>
         /// The private key.
         /// </returns>
-        protected abstract TPublicKey InitializePublicKey(TAlgorithm algorithm, TProvider provider);
+        protected abstract TPublicKey InitializePublicKey(TAlgorithm algorithm, TProvider provider, Boolean isReconstituted);
 
         /// <summary>
         /// Initializes the private key.
@@ -144,7 +157,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         {
             try
             {
-                return InitializePrivateKey(Algorithm, Provider);
+                return InitializePrivateKey(Algorithm, Provider, IsReconstituted);
             }
             catch (Exception exception)
             {
@@ -166,7 +179,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         {
             try
             {
-                return InitializeProvider(Algorithm);
+                return InitializeProvider(Algorithm, IsReconstituted);
             }
             catch (Exception exception)
             {
@@ -188,7 +201,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         {
             try
             {
-                return InitializePublicKey(Algorithm, Provider);
+                return InitializePublicKey(Algorithm, Provider, IsReconstituted);
             }
             catch (Exception exception)
             {
@@ -211,6 +224,14 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal TProvider Provider => LazyProvider.Value;
+
+        /// <summary>
+        /// Represents a value indicating whether or not the current
+        /// <see cref="AsymmetricKeyPair{TAlgorithm, TProvider, TKey, TPrivateKey, TPublicKey}" /> is constructed from serialized
+        /// memory bits.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Boolean IsReconstituted;
 
         /// <summary>
         /// Represents the lazily-initialized private key.
@@ -323,6 +344,14 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// Gets the globally unique identifier for the current <see cref="AsymmetricKeyPair" />.
         /// </summary>
         public Guid Identifier
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value that specifies what the key pair is used for.
+        /// </summary>
+        public abstract AsymmetricKeyPurpose Purpose
         {
             get;
         }

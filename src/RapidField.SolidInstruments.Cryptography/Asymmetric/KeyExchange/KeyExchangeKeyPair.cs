@@ -41,13 +41,16 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         /// <param name="keyLifespanDuration">
         /// The length of time for which the paired keys are valid.
         /// </param>
+        /// <param name="isReconstituted">
+        /// A value indicating whether or not the key pair is constructed from serialized memory bits.
+        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="identifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal to
         /// <see cref="KeyExchangeAlgorithmSpecification.Unspecified" /> -or- <paramref name="keyLifespanDuration" /> is less than
         /// eight seconds.
         /// </exception>
-        protected KeyExchangeKeyPair(Guid identifier, KeyExchangeAlgorithmSpecification algorithm, TimeSpan keyLifespanDuration)
-            : base(identifier, algorithm, keyLifespanDuration)
+        protected KeyExchangeKeyPair(Guid identifier, KeyExchangeAlgorithmSpecification algorithm, TimeSpan keyLifespanDuration, Boolean isReconstituted)
+            : base(identifier, algorithm, keyLifespanDuration, isReconstituted)
         {
             return;
         }
@@ -128,5 +131,10 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         /// A value indicating whether or not managed resources should be released.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Gets a value that specifies what the key pair is used for.
+        /// </summary>
+        public override sealed AsymmetricKeyPurpose Purpose => AsymmetricKeyPurpose.KeyExchange;
     }
 }

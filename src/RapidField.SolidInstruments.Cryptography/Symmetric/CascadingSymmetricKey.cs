@@ -486,6 +486,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="CascadingSymmetricKey" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.SymmetricKeyEncryption;
+
+        /// <summary>
         /// Represents the number of bytes comprising a serialized representation of a <see cref="CascadingSymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

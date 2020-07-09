@@ -51,6 +51,42 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EcdhPublicKey" /> class.
+        /// </summary>
+        /// <param name="keyPairIdentifier">
+        /// The globally unique identifier for the key pair to which the key belongs.
+        /// </param>
+        /// <param name="algorithm">
+        /// The asymmetric-key algorithm for which the key is used.
+        /// </param>
+        /// <param name="keyMemory">
+        /// The plaintext key bits for the public key.
+        /// </param>
+        /// <param name="expirationTimeStamp">
+        /// The date and time when the key expires and is no longer valid for use.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="keyMemory" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The length of <paramref name="keyMemory" /> is invalid for <paramref name="algorithm" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="keyMemory" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="keyPairIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="algorithm" /> is equal
+        /// to <see cref="KeyExchangeAlgorithmSpecification.Unspecified" /> -or- <paramref name="expirationTimeStamp" /> is equal to
+        /// <see cref="DateTime.MaxValue" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal EcdhPublicKey(Guid keyPairIdentifier, KeyExchangeAlgorithmSpecification algorithm, Byte[] keyMemory, DateTime expirationTimeStamp)
+            : base(keyPairIdentifier, algorithm, keyMemory, expirationTimeStamp)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Releases all resources consumed by the current <see cref="EcdhPublicKey" />.
         /// </summary>
         /// <param name="disposing">

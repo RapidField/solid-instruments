@@ -2,7 +2,6 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Diagnostics;
@@ -57,11 +56,14 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
     /// <remarks>
     /// <see cref="DigitalSignatureProcessor{T}" /> is the default implementation of <see cref="IDigitalSignatureProcessor{T}" />.
     /// </remarks>
-    public class DigitalSignatureProcessor<T> : AsymmetricProcessor, IDigitalSignatureProcessor<T>
+    /// <typeparam name="T">
+    /// The type of the object that can be digitally signed.
+    /// </typeparam>
+    public class DigitalSignatureProcessor<T> : AsymmetricProcessor<T>, IDigitalSignatureProcessor<T>
         where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsymmetricProcessor" /> class.
+        /// Initializes a new instance of the <see cref="DigitalSignatureProcessor{T}" /> class.
         /// </summary>
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate initialization vectors.
@@ -70,13 +72,13 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
         public DigitalSignatureProcessor(RandomNumberGenerator randomnessProvider)
-            : this(randomnessProvider, DefaultSerializer)
+            : base(randomnessProvider)
         {
             return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsymmetricProcessor" /> class.
+        /// Initializes a new instance of the <see cref="DigitalSignatureProcessor{T}" /> class.
         /// </summary>
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate initialization vectors.
@@ -89,9 +91,9 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// <see langword="null" />.
         /// </exception>
         public DigitalSignatureProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer)
-            : base(randomnessProvider)
+            : base(randomnessProvider, serializer)
         {
-            Serializer = serializer.RejectIf().IsNull(nameof(serializer)).TargetArgument;
+            return;
         }
 
         /// <summary>
@@ -99,21 +101,14 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// </summary>
         [DebuggerHidden]
         internal DigitalSignatureProcessor()
-            : this(HardenedRandomNumberGenerator.Instance)
+            : base()
         {
             return;
         }
 
         /// <summary>
-        /// Represents the default serializer that is used to transform plaintext.
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="DigitalSignatureProcessor{T}" />.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly ISerializer<T> DefaultSerializer = new CompressedJsonSerializer<T>();
-
-        /// <summary>
-        /// Represents a serializer that is used to transform plaintext.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISerializer<T> Serializer;
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.DigitalSignature;
     }
 }

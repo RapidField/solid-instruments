@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="T">
     /// The type of the object that can be hashed.
     /// </typeparam>
-    public class HashingProcessor<T> : IHashingProcessor<T>
+    public class HashingProcessor<T> : CryptographicProcessor<T>, IHashingProcessor<T>
         where T : class
     {
         /// <summary>
@@ -121,9 +121,8 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <paramref name="saltLengthInBytes" /> is less than one.
         /// </exception>
         public HashingProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer, Int32 saltLengthInBytes)
+            : base(randomnessProvider, serializer)
         {
-            Serializer = serializer.RejectIf().IsNull(nameof(serializer)).TargetArgument;
-            RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
             SaltLengthInBytes = saltLengthInBytes.RejectIf().IsLessThan(1, nameof(saltLengthInBytes));
         }
 
@@ -420,27 +419,14 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         }
 
         /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="HashingProcessor{T}" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.Hashing;
+
+        /// <summary>
         /// Represents the default salt length, in bytes, to use when calculating and evaluating hash values.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const Int32 DefaultSaltLengthInBytes = 16;
-
-        /// <summary>
-        /// Represents the default serializer that is used to transform plaintext.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly ISerializer<T> DefaultSerializer = new CompressedJsonSerializer<T>();
-
-        /// <summary>
-        /// Represents a random number generator that is used to generate salt values.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly RandomNumberGenerator RandomnessProvider;
-
-        /// <summary>
-        /// Represents a serializer that is used to transform plaintext.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISerializer<T> Serializer;
     }
 }
