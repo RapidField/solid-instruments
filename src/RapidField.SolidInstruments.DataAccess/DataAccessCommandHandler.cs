@@ -98,22 +98,13 @@ namespace RapidField.SolidInstruments.DataAccess
                 try
                 {
                     Transaction.Begin();
-                    Process(command, Repositories, Transaction, controlToken);
-
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.CommitAsync());
-                    }
-
+                    Process(command, Repositories);
+                    CommitTransaction(Transaction, controlToken);
                     return;
                 }
                 catch
                 {
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.RejectAsync());
-                    }
-
+                    AbortTransaction(Transaction, controlToken);
                     throw;
                 }
             }
@@ -130,13 +121,43 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
         /// </param>
+        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories);
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.
+        /// </summary>
         /// <param name="transaction">
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken);
+        [DebuggerHidden]
+        private static void AbortTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.RejectAsync());
+            }
+        }
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that commits all changes made within the scope of the specified transaction.
+        /// </summary>
+        /// <param name="transaction">
+        /// A transaction that is used to process the command.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        [DebuggerHidden]
+        private static void CommitTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.CommitAsync());
+            }
+        }
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.
@@ -244,22 +265,13 @@ namespace RapidField.SolidInstruments.DataAccess
                 try
                 {
                     Transaction.Begin();
-                    var result = Process(command, Repositories, Transaction, controlToken);
-
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.CommitAsync());
-                    }
-
+                    var result = Process(command, Repositories);
+                    CommitTransaction(Transaction, controlToken);
                     return result;
                 }
                 catch
                 {
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.RejectAsync());
-                    }
-
+                    AbortTransaction(Transaction, controlToken);
                     throw;
                 }
             }
@@ -276,16 +288,46 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
         /// </param>
+        /// <returns>
+        /// The result that is emitted when processing the command.
+        /// </returns>
+        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories);
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.
+        /// </summary>
         /// <param name="transaction">
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        /// <returns>
-        /// The result that is emitted when processing the command.
-        /// </returns>
-        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken);
+        [DebuggerHidden]
+        private static void AbortTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.RejectAsync());
+            }
+        }
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that commits all changes made within the scope of the specified transaction.
+        /// </summary>
+        /// <param name="transaction">
+        /// A transaction that is used to process the command.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        [DebuggerHidden]
+        private static void CommitTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.CommitAsync());
+            }
+        }
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.

@@ -276,9 +276,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is IModel)
+            else if (obj is IModel model)
             {
-                return Equals((IModel)obj);
+                return Equals(model);
             }
 
             return false;

@@ -3,8 +3,6 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Command;
-using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.DataAccess;
 using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
 using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
 using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
@@ -55,13 +53,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
         /// </param>
-        /// <param name="transaction">
-        /// A transaction that is used to process the command.
-        /// </param>
-        /// <param name="controlToken">
-        /// A token that represents and manages contextual thread safety.
-        /// </param>
-        protected override void Process(AddFibonacciNumberCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        protected override void Process(AddFibonacciNumberCommand command, IFactoryProducedInstanceGroup repositories)
         {
             var fibonacciNumberSeries = NumberSeries.Named.Fibonacci;
             var numberRepository = repositories.Get<NumberRepository>();
