@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Command;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
 
@@ -13,7 +14,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.Mode
     /// <summary>
     /// Represents a command to create a <see cref="DomainModel" />.
     /// </summary>
-    [DataContract(Name = "CreateCustomerEvent")]
+    [DataContract(Name = DataContractName)]
     internal sealed class CreateDomainModelCommand : CreateDomainModelCommand<DomainModel>
     {
         /// <summary>
@@ -117,5 +118,11 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.Mode
         {
             return;
         }
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "CreateCustomerEvent";
     }
 }

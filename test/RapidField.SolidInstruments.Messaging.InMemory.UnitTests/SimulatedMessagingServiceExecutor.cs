@@ -76,7 +76,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
                 subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>();
 
                 // Add request listeners.
-                //subscriptionProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
+                subscriptionProfile.AddRequestListener<Messages.RequestResponse.Ping.RequestMessage, Messages.RequestResponse.Ping.ResponseMessage>();
             }
             finally
             {

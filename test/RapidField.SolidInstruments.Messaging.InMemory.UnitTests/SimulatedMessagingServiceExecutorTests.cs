@@ -5,11 +5,14 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Command;
+using System;
 using System.Linq;
 using System.Threading;
 using CreateCustomerCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Customer.CreateDomainModelCommand;
 using CreateCustomerCommandMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Command.ModelState.Customer.CreateDomainModelCommandMessage;
 using CustomerModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
+using PingRequestMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.RequestResponse.Ping.RequestMessage;
+using PingResponseMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.RequestResponse.Ping.ResponseMessage;
 using UpdateCustomerCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Customer.UpdateDomainModelCommand;
 using UpdateCustomerCommandMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Command.ModelState.Customer.UpdateDomainModelCommandMessage;
 
@@ -58,6 +61,13 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             // Assert.
             Thread.Sleep(6765);
             SimulatedServiceState.Customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name.Should().Be(acmeCoCustomer.Name);
+
+            // Act.
+            var pingCorrelationIdentifier = Guid.NewGuid();
+            var response = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingCorrelationIdentifier));
+
+            // Assert.
+            response.CorrelationIdentifier.Should().Be(pingCorrelationIdentifier);
         }
     }
 }

@@ -86,6 +86,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             configurator.AddTransient<ICommandHandler<Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>, EventMessageTransmitter<Events.ModelState.Product.DomainModelDeletedEvent, Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>>();
             configurator.AddTransient<ICommandHandler<Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>, EventMessageTransmitter<Events.ModelState.Product.DomainModelUpdatedEvent, Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>>();
 
+            // Register request transmitters.
+            configurator.AddTransient<ICommandHandler<Messages.RequestResponse.Ping.RequestMessage>, RequestTransmitter<Messages.RequestResponse.Ping.RequestMessage, Messages.RequestResponse.Ping.ResponseMessage>>();
+
             // Register queue listeners.
             configurator.AddTransient<IMessageListener<Messages.Command.ModelState.Customer.CreateDomainModelCommandMessage>, CommandMessageListener<Commands.ModelState.Customer.CreateDomainModelCommand, Messages.Command.ModelState.Customer.CreateDomainModelCommandMessage>>();
             configurator.AddTransient<IMessageListener<Messages.Command.ModelState.Customer.DeleteDomainModelCommandMessage>, CommandMessageListener<Commands.ModelState.Customer.DeleteDomainModelCommand, Messages.Command.ModelState.Customer.DeleteDomainModelCommandMessage>>();
@@ -107,6 +110,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             configurator.AddTransient<IMessageListener<Messages.Event.ModelState.Product.DomainModelCreatedEventMessage>, EventMessageListener<Events.ModelState.Product.DomainModelCreatedEvent, Messages.Event.ModelState.Product.DomainModelCreatedEventMessage>>();
             configurator.AddTransient<IMessageListener<Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>, EventMessageListener<Events.ModelState.Product.DomainModelDeletedEvent, Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>>();
             configurator.AddTransient<IMessageListener<Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>, EventMessageListener<Events.ModelState.Product.DomainModelUpdatedEvent, Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>>();
+
+            // Register request listeners.
+            configurator.AddTransient<IMessageListener<Messages.RequestResponse.Ping.RequestMessage, Messages.RequestResponse.Ping.ResponseMessage>, MessageListeners.RequestResponse.Ping.RequestListener>();
 
             // Register command handlers.
             configurator.AddTransient<ICommandHandler<Commands.ModelState.Customer.CreateDomainModelCommand>, CommandHandlers.ModelState.Customer.CreateDomainModelCommandHandler>();

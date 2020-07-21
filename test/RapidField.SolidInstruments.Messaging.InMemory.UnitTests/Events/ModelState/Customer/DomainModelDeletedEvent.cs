@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.EventAuthoring;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
 
@@ -13,7 +14,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelS
     /// <summary>
     /// Represents information about the deletion of a <see cref="DomainModel" />.
     /// </summary>
-    [DataContract(Name = "CustomerDeletedEvent")]
+    [DataContract(Name = DataContractName)]
     internal sealed class DomainModelDeletedEvent : DomainModelDeletedEvent<DomainModel>
     {
         /// <summary>
@@ -169,5 +170,11 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelS
         {
             return;
         }
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "CustomerDeletedEvent";
     }
 }

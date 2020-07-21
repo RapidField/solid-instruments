@@ -31,6 +31,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// sum of the previous two delay durations.
         /// </summary>
         [EnumMember]
-        Fibonacci = 2
+        Decelerating = 2
     }
 }

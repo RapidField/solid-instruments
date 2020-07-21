@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.CustomerOrder.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.CustomerOrder.DeleteDomainModelCommand;
@@ -14,7 +15,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Comm
     /// <summary>
     /// Represents a message that contains a command to delete a <see cref="DomainModel" />.
     /// </summary>
-    [DataContract(Name = "DeleteCustomerOrderCommandMessage")]
+    [DataContract(Name = DataContractName)]
     internal sealed class DeleteDomainModelCommandMessage : DomainModelCommandMessage
     {
         /// <summary>
@@ -40,5 +41,11 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Comm
         {
             return;
         }
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "DeleteCustomerOrderCommandMessage";
     }
 }

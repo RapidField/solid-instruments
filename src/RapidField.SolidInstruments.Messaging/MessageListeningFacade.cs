@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Messaging
                             {
                                 var responseMessage = requestMessageHandler(message);
                                 TransmittingFacade.TransmitAsync(responseMessage, null, Message.ResponseEntityType).Wait();
-                            }, requestMessage).Wait();
+                            }, adaptedRequestMessage, requestMessage, null, requestEntityType).Wait();
                         }
                         catch (Exception exception)
                         {
@@ -348,15 +348,25 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="messageHandler">
         /// An action that handles a message.
         /// </param>
+        /// <param name="adaptedMessage">
+        /// The adapted message.
+        /// </param>
         /// <param name="message">
         /// A message to handle.
+        /// </param>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels.
+        /// </param>
+        /// <param name="entityType">
+        /// The targeted entity type.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        internal Task HandleMessageAsync<TMessage>(Action<TMessage> messageHandler, TMessage message)
-            where TMessage : IMessageBase
+        internal Task HandleMessageAsync<TMessage>(Action<TMessage> messageHandler, TAdaptedMessage adaptedMessage, TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+            where TMessage : class, IMessageBase
         {
             var attemptStartTimeStamp = TimeStamp.Current;
             Exception raisedException;
@@ -373,7 +383,7 @@ namespace RapidField.SolidInstruments.Messaging
                 raisedException = exception;
             }
 
-            return ExecuteFailurePolicyAsync(messageHandler, message, raisedException);
+            return ExecuteFailurePolicyAsync(messageHandler, adaptedMessage, message, pathLabels, entityType, raisedException);
         }
 
         /// <summary>
@@ -447,7 +457,7 @@ namespace RapidField.SolidInstruments.Messaging
                             message.ProcessingInformation.FailurePolicy = DefaultFailurePolicy;
                         }
 
-                        HandleMessageAsync(messageHandler, message).Wait();
+                        HandleMessageAsync(messageHandler, adaptedMessage, message, pathLabels, entityType).Wait();
                     }
                     catch (Exception exception)
                     {
@@ -525,18 +535,62 @@ namespace RapidField.SolidInstruments.Messaging
         protected abstract void RegisterMessageHandler(Action<TAdaptedMessage> adaptedMessageHandler, TReceiver receiveClient, IConcurrencyControlToken controlToken);
 
         /// <summary>
+        /// Asynchronously sends the specified message to a dead letter queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="adaptedMessage">
+        /// The adapted message.
+        /// </param>
+        /// <param name="message">
+        /// The message to route to a dead letter queue.
+        /// </param>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels.
+        /// </param>
+        /// <param name="entityType">
+        /// The targeted entity type.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected abstract Task RouteToDeadLetterQueueAsync<TMessage>(TAdaptedMessage adaptedMessage, TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+            where TMessage : class, IMessageBase;
+
+        /// <summary>
+        /// Asynchronously transmits a new <see cref="ExceptionRaisedEventMessage" /> instance for the specified exception.
+        /// </summary>
+        /// <param name="raisedException">
+        /// An exception for which to transmit a new message.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A correlation identifier for the message that could not be processed.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected Task TransmitReceiverExceptionAsync(Exception raisedException, Guid correlationIdentifier)
+        {
+            var exceptionRaisedEvent = new ExceptionRaisedEvent(ApplicationIdentity, raisedException, ExceptionRaisedMessageEventVerbosity, correlationIdentifier);
+            var exceptionRaisedEventMessage = new ExceptionRaisedEventMessage(exceptionRaisedEvent);
+            return TransmitReceiverExceptionAsync(exceptionRaisedEventMessage, ExceptionRaisedMessageEntityType);
+        }
+
+        /// <summary>
         /// Asynchronously transmits the specified <see cref="ExceptionRaisedEventMessage" /> instance.
         /// </summary>
         /// <param name="exceptionRaisedMessage">
         /// The message to transmit.
         /// </param>
-        /// <param name="messagingEntityType">
+        /// <param name="entityType">
         /// The messaging type to use when transmitting the message.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected abstract Task TransmitReceiverExceptionAsync(ExceptionRaisedEventMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType);
+        protected abstract Task TransmitReceiverExceptionAsync(ExceptionRaisedEventMessage exceptionRaisedMessage, MessagingEntityType entityType);
 
         /// <summary>
         /// Asynchronously executes the failure policy prescribed by the specified message.
@@ -547,8 +601,18 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="messageHandler">
         /// An action that handles a message.
         /// </param>
+        /// <param name="adaptedMessage">
+        /// The adapted message.
+        /// </param>
         /// <param name="message">
         /// A message that could not be processed.
+        /// </param>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels.
+        /// </param>
+        /// <param name="entityType">
+        /// The targeted entity type.
         /// </param>
         /// <param name="raisedException">
         /// An exception that was raised while attempting to process the message.
@@ -557,8 +621,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task ExecuteFailurePolicyAsync<TMessage>(Action<TMessage> messageHandler, TMessage message, Exception raisedException)
-            where TMessage : IMessageBase
+        private Task ExecuteFailurePolicyAsync<TMessage>(Action<TMessage> messageHandler, TAdaptedMessage adaptedMessage, TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType, Exception raisedException)
+            where TMessage : class, IMessageBase
         {
             var processingInformation = message?.ProcessingInformation;
 
@@ -582,21 +646,23 @@ namespace RapidField.SolidInstruments.Messaging
                 var baseDelayDurationInSeconds = retryPolicy.BaseDelayDurationInSeconds.AbsoluteValue();
                 var calculatedDelayDurationInSeconds = retryPolicy.DurationScale switch
                 {
-                    MessageListeningRetryDurationScale.Fibonacci => (Int32)new FibonacciSequence(0, baseDelayDurationInSeconds).ToArray(attemptCount, 1).First(),
+                    MessageListeningRetryDurationScale.Decelerating => (Int32)new FibonacciSequence(0, baseDelayDurationInSeconds).ToArray(attemptCount, 1).First(),
                     MessageListeningRetryDurationScale.Linear => baseDelayDurationInSeconds * processingInformation.AttemptCount,
                     _ => throw new UnsupportedSpecificationException($"The specified duration scale, {retryPolicy.DurationScale}, is not supported.")
                 };
 
-                failurePolicyTasks.Add(Task.Delay(TimeSpan.FromSeconds(calculatedDelayDurationInSeconds)));
-                failurePolicyTasks.Add(HandleMessageAsync(messageHandler, message));
+                failurePolicyTasks.Add(Task.Delay(TimeSpan.FromSeconds(calculatedDelayDurationInSeconds)).ContinueWith(delayTask =>
+                {
+                    HandleMessageAsync(messageHandler, adaptedMessage, message, pathLabels, entityType).Wait();
+                }));
             }
             else
             {
-                throw failurePolicy.SecondaryFailureBehavior switch
+                var secondaryFailureTask = failurePolicy.SecondaryFailureBehavior switch
                 {
-                    MessageListeningSecondaryFailureBehavior.Discard => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO Implement discard failure behavior.
-                    MessageListeningSecondaryFailureBehavior.RouteToDeadLetterQueue => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported."), // TODO Implement DLQ failure behavior.
-                    _ => new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.")
+                    MessageListeningSecondaryFailureBehavior.Discard => Task.CompletedTask,
+                    MessageListeningSecondaryFailureBehavior.RouteToDeadLetterQueue => RouteToDeadLetterQueueAsync(adaptedMessage, message, pathLabels, entityType),
+                    _ => throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.")
                 };
             }
 
@@ -606,26 +672,6 @@ namespace RapidField.SolidInstruments.Messaging
             }
 
             return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Asynchronously transmits a new <see cref="ExceptionRaisedEventMessage" /> instance for the specified exception.
-        /// </summary>
-        /// <param name="raisedException">
-        /// An exception for which to transmit a new message.
-        /// </param>
-        /// <param name="correlationIdentifier">
-        /// A correlation identifier for the message that could not be processed.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        [DebuggerHidden]
-        private Task TransmitReceiverExceptionAsync(Exception raisedException, Guid correlationIdentifier)
-        {
-            var exceptionRaisedEvent = new ExceptionRaisedEvent(ApplicationIdentity, raisedException, ExceptionRaisedMessageEventVerbosity, correlationIdentifier);
-            var exceptionRaisedEventMessage = new ExceptionRaisedEventMessage(exceptionRaisedEvent);
-            return TransmitReceiverExceptionAsync(exceptionRaisedEventMessage, ExceptionRaisedMessageEntityType);
         }
 
         /// <summary>

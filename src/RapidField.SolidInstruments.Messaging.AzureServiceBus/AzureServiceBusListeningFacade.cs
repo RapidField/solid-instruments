@@ -4,9 +4,11 @@
 
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,17 +75,98 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
                         throw new MessageListeningException("The message cannot be processed because the receive client is unavailable.");
                     }
 
-                    cancellationToken.ThrowIfCancellationRequested();
-                    messageHandler(message);
-                    return receiveClient.CompleteAsync(lockToken);
+                    return Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
+                            messageHandler(message);
+                        }
+                        catch (Exception exception)
+                        {
+                            receiveClient.AbandonAsync(lockToken).ContinueWith(abandonTask => { TransmitReceiverExceptionAsync(exception, ExtractCorrelationIdentifier(message)).Wait(); }).Wait();
+                        }
+                    }).ContinueWith(handleMessageTask =>
+                    {
+                        try
+                        {
+                            receiveClient.CompleteAsync(lockToken).Wait();
+                        }
+                        catch (AggregateException exception)
+                        {
+                            TransmitReceiverExceptionAsync(exception, ExtractCorrelationIdentifier(message)).Wait();
+                        }
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 }
-                catch
+                catch (MessageListeningException exception)
                 {
-                    return receiveClient.AbandonAsync(lockToken);
+                    return TransmitReceiverExceptionAsync(exception, ExtractCorrelationIdentifier(message));
                 }
             });
 
             receiveClient.RegisterMessageHandler(messageHandlerFunction, ReceiverOptions);
+        }
+
+        /// <summary>
+        /// Asynchronously sends the specified message to a dead letter queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="adaptedMessage">
+        /// The adapted message.
+        /// </param>
+        /// <param name="message">
+        /// The message to route to a dead letter queue.
+        /// </param>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels.
+        /// </param>
+        /// <param name="entityType">
+        /// The targeted entity type.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected sealed override Task RouteToDeadLetterQueueAsync<TMessage>(AzureServiceBusMessage adaptedMessage, TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+        {
+            var lockToken = adaptedMessage?.SystemProperties.LockToken;
+
+            if (lockToken is null)
+            {
+                return Task.CompletedTask;
+            }
+
+            var receiverClient = entityType switch
+            {
+                MessagingEntityType.Queue => ClientFactory.GetQueueReceiver<TMessage>(pathLabels),
+                MessagingEntityType.Topic => ClientFactory.GetTopicReceiver<TMessage>(Identifier, pathLabels),
+                _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
+            };
+
+            var messageType = typeof(TMessage);
+            return receiverClient.DeadLetterAsync(lockToken, $"The listener(s) exhausted the primary failure remediation steps for this message. Message type: {messageType.FullName}.");
+        }
+
+        /// <summary>
+        /// Extracts the correlation identifier from the specified message.
+        /// </summary>
+        /// <param name="message">
+        /// The message to evaluate.
+        /// </param>
+        /// <returns>
+        /// The resulting correlation identifier.
+        /// </returns>
+        [DebuggerHidden]
+        private static Guid ExtractCorrelationIdentifier(AzureServiceBusMessage message)
+        {
+            if (message?.CorrelationId is null == false && Guid.TryParse(message.CorrelationId, out var correlationIdentifier))
+            {
+                return correlationIdentifier;
+            }
+
+            return Guid.NewGuid();
         }
 
         /// <summary>
@@ -99,7 +182,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while trying to transmit an <see cref="ExceptionRaisedEventMessage" />.
         /// </exception>
         [DebuggerHidden]
-        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // TODO Handle receiver exceptions.
+        private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // The message handling function (defined above) handles exceptions internally.
 
         /// <summary>
         /// Gets options that specify how receive clients handle messages.

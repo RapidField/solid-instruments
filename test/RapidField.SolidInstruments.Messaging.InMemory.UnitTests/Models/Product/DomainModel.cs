@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Produc
     /// <summary>
     /// Represents an item of merchandise.
     /// </summary>
-    [DataContract]
+    [DataContract(Name = DataContractName)]
     internal sealed class DomainModel : BaseDomainModel, IAggregate
     {
         /// <summary>
@@ -72,6 +72,12 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Produc
             get => PriceValue;
             set => PriceValue = value?.RejectIf().IsLessThan(0, nameof(Price));
         }
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "Product";
 
         /// <summary>
         /// Represents the name of the current <see cref="DomainModel" />.

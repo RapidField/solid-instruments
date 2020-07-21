@@ -254,7 +254,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private Task PollQueueAsync(IMessagingEntityPath queuePath, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromQueueAsync(queuePath, MessageReceiptBatchSize).ContinueWith((receiveFromQueueTask) =>
+        private Task PollQueueAsync(IMessagingEntityPath queuePath, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromQueueAsync(queuePath, MessageReceiptBatchSize).ContinueWith(receiveFromQueueTask =>
         {
             var messageBatch = receiveFromQueueTask.Result;
 
@@ -351,7 +351,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private Task PollSubscriptionAsync(IMessagingEntityPath topicPath, String subscriptionName, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromTopicAsync(topicPath, subscriptionName, MessageReceiptBatchSize).ContinueWith((receiveFromTopicTask) =>
+        private Task PollSubscriptionAsync(IMessagingEntityPath topicPath, String subscriptionName, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromTopicAsync(topicPath, subscriptionName, MessageReceiptBatchSize).ContinueWith(receiveFromTopicTask =>
         {
             var messageBatch = receiveFromTopicTask.Result;
 

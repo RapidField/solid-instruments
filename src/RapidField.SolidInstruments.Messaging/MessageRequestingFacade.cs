@@ -195,7 +195,7 @@ namespace RapidField.SolidInstruments.Messaging
                 }
             }
 
-            return TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage).ContinueWith((transmitTask) =>
+            return TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage).ContinueWith(transmitTask =>
             {
                 RejectIfDisposed();
 
