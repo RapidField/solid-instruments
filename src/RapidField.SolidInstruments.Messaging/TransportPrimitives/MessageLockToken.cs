@@ -208,9 +208,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 return false;
             }
-            else if (obj is MessageLockToken)
+            else if (obj is MessageLockToken token)
             {
-                return Equals((MessageLockToken)obj);
+                return Equals(token);
             }
 
             return false;

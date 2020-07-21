@@ -13,22 +13,28 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <typeparam name="TModel">
     /// The type of the associated domain model.
     /// </typeparam>
-    public interface IDomainModelEvent<TModel> : IDomainEvent
+    public interface IDomainModelEvent<TModel> : IDomainModelEvent
         where TModel : class, IDomainModel
     {
-        /// <summary>
-        /// Gets a classification that describes the effect of a the current <see cref="IDomainModelEvent{TModel}" /> upon
-        /// <see cref="Model" />.
-        /// </summary>
-        public DomainModelEventClassification Classification
-        {
-            get;
-        }
-
         /// <summary>
         /// Gets the resulting state of the associated domain model.
         /// </summary>
         public TModel Model
+        {
+            get;
+        }
+    }
+
+    /// <summary>
+    /// Represents information about an event related to an object that models a domain construct.
+    /// </summary>
+    public interface IDomainModelEvent : IDomainEvent
+    {
+        /// <summary>
+        /// Gets a classification that describes the effect of a the current <see cref="IDomainModelEvent" /> upon the associated
+        /// model.
+        /// </summary>
+        public DomainModelEventClassification Classification
         {
             get;
         }

@@ -401,9 +401,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is Area)
+            else if (obj is Area area)
             {
-                return Equals((Area)obj);
+                return Equals(area);
             }
 
             return false;

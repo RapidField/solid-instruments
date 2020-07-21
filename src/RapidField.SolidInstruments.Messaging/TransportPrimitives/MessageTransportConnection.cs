@@ -192,7 +192,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         private Timer InitializePollTimer()
         {
             var timerCallback = new TimerCallback((state) => Poll(state as ICollection<Handler>));
-            return new Timer(timerCallback, Handlers, TimeSpan.Zero, TimeSpan.FromSeconds(PollingIntervalInMilliseconds));
+            return new Timer(timerCallback, Handlers, TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds), TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds));
         }
 
         /// <summary>
@@ -211,9 +211,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 try
                 {
-                    var pollQueuesTask = Task.Factory.StartNew(async () => await PollQueuesAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Queue)).ConfigureAwait(false));
-                    var pollTopicsTask = Task.Factory.StartNew(async () => await PollTopicsAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Topic)).ConfigureAwait(false));
-                    Task.WaitAll(pollQueuesTask, pollTopicsTask);
+                    using (var pollQueuesTask = PollQueuesAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Queue).ToArray()))
+                    {
+                        using (var pollTopicsTask = PollTopicsAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Topic).ToArray()))
+                        {
+                            Task.WaitAll(pollQueuesTask, pollTopicsTask);
+                        }
+                    }
                 }
                 catch (AggregateException exception)
                 {
@@ -250,9 +254,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task PollQueueAsync(IMessagingEntityPath queuePath, IEnumerable<Action<PrimitiveMessage>> handleMessageActions)
+        private Task PollQueueAsync(IMessagingEntityPath queuePath, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromQueueAsync(queuePath, MessageReceiptBatchSize).ContinueWith((receiveFromQueueTask) =>
         {
-            var messageBatch = await Transport.ReceiveFromQueueAsync(queuePath, MessageReceiptBatchSize).ConfigureAwait(false);
+            var messageBatch = receiveFromQueueTask.Result;
 
             if (messageBatch.Any())
             {
@@ -269,9 +273,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     }
                 }
 
-                await Task.WhenAll(handleMessageTasks.ToArray()).ConfigureAwait(false);
+                Task.WaitAll(handleMessageTasks.ToArray());
             }
-        }
+        });
 
         /// <summary>
         /// Asynchronously polls available queues and performs message handling operations against received messages, if any.
@@ -298,23 +302,21 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task PollQueuesAsync(IEnumerable<Handler> queueHandlers)
+        private Task PollQueuesAsync(IEnumerable<Handler> queueHandlers)
         {
             if (queueHandlers.Any())
             {
-                var handlerGroups = queueHandlers.GroupBy(handler => handler.Path);
                 var pollTasks = new List<Task>();
 
-                foreach (var handlerGroup in handlerGroups)
+                foreach (var handlerGroup in queueHandlers.GroupBy(handler => handler.Path))
                 {
-                    pollTasks.Add(Task.Factory.StartNew(async () =>
-                    {
-                        await PollQueueAsync(handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)).ConfigureAwait(false);
-                    }));
+                    pollTasks.Add(PollQueueAsync(handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)));
                 }
 
-                await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
+                return Task.WhenAll(pollTasks.ToArray());
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -349,9 +351,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task PollSubscriptionAsync(IMessagingEntityPath topicPath, String subscriptionName, IEnumerable<Action<PrimitiveMessage>> handleMessageActions)
+        private Task PollSubscriptionAsync(IMessagingEntityPath topicPath, String subscriptionName, IEnumerable<Action<PrimitiveMessage>> handleMessageActions) => Transport.ReceiveFromTopicAsync(topicPath, subscriptionName, MessageReceiptBatchSize).ContinueWith((receiveFromTopicTask) =>
         {
-            var messageBatch = await Transport.ReceiveFromTopicAsync(topicPath, subscriptionName, MessageReceiptBatchSize).ConfigureAwait(false);
+            var messageBatch = receiveFromTopicTask.Result;
 
             if (messageBatch.Any())
             {
@@ -368,9 +370,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     }
                 }
 
-                await Task.WhenAll(handleMessageTasks.ToArray()).ConfigureAwait(false);
+                Task.WaitAll(handleMessageTasks.ToArray());
             }
-        }
+        });
 
         /// <summary>
         /// Asynchronously polls the specified topic and performs messaging handling operations against received messages, if any.
@@ -400,20 +402,16 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task PollTopicAsync(IMessagingEntityPath topicPath, IEnumerable<Handler> subscriptionHandlers)
+        private Task PollTopicAsync(IMessagingEntityPath topicPath, IEnumerable<Handler> subscriptionHandlers)
         {
-            var handlerGroups = subscriptionHandlers.GroupBy(handler => handler.SubscriptionName);
             var pollTasks = new List<Task>();
 
-            foreach (var handlerGroup in handlerGroups)
+            foreach (var handlerGroup in subscriptionHandlers.GroupBy(handler => handler.SubscriptionName))
             {
-                pollTasks.Add(Task.Factory.StartNew(async () =>
-                {
-                    await PollSubscriptionAsync(topicPath, handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)).ConfigureAwait(false);
-                }));
+                pollTasks.Add(PollSubscriptionAsync(topicPath, handlerGroup.Key, handlerGroup.Select(handler => handler.HandleMessageAction)));
             }
 
-            await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
+            return Task.WhenAll(pollTasks.ToArray());
         }
 
         /// <summary>
@@ -441,23 +439,21 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// The operation timed out.
         /// </exception>
         [DebuggerHidden]
-        private async Task PollTopicsAsync(IEnumerable<Handler> subscriptionHandlers)
+        private Task PollTopicsAsync(IEnumerable<Handler> subscriptionHandlers)
         {
             if (subscriptionHandlers.Any())
             {
-                var handlerGroups = subscriptionHandlers.GroupBy(handler => handler.Path);
                 var pollTasks = new List<Task>();
 
-                foreach (var handlerGroup in handlerGroups)
+                foreach (var handlerGroup in subscriptionHandlers.GroupBy(handler => handler.Path))
                 {
-                    pollTasks.Add(Task.Factory.StartNew(async () =>
-                    {
-                        await PollTopicAsync(handlerGroup.Key, handlerGroup).ConfigureAwait(false);
-                    }));
+                    pollTasks.Add(PollTopicAsync(handlerGroup.Key, handlerGroup));
                 }
 
-                await Task.WhenAll(pollTasks.ToArray()).ConfigureAwait(false);
+                return Task.WhenAll(pollTasks.ToArray());
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -501,7 +497,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Represents the interval, in milliseconds, at which <see cref="Transport" /> is polled for receive operations.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 PollingIntervalInMilliseconds = 233;
+        private const Int32 PollingIntervalInMilliseconds = 987;
 
         /// <summary>
         /// Represents a collection of actions that is performed upon message receipt from specific entities.

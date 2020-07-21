@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
@@ -44,12 +43,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="handleMessageAction">
         /// An action to perform upon message receipt.
         /// </param>
-        protected override void RegisterMessageHandler(IMessageTransportConnection connection, Action<PrimitiveMessage> handleMessageAction) => Task.Factory.StartNew(async () =>
+        protected override void RegisterMessageHandler(IMessageTransportConnection connection, Action<PrimitiveMessage> handleMessageAction) => EnsureQueueExistanceAsync(Path).ContinueWith(ensureQueueExistenceTask =>
         {
-            await EnsureQueueExistanceAsync(Path).ContinueWith(ensureQueueExistenceTask =>
-            {
-                connection.RegisterQueueHandler(Path, handleMessageAction);
-            }).ConfigureAwait(false);
+            connection.RegisterQueueHandler(Path, handleMessageAction);
         }).Wait();
     }
 }

@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Example.WebApplication
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
 
         /// <summary>

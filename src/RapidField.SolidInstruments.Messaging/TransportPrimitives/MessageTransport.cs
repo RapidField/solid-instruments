@@ -568,7 +568,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean QueueExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return QueuePaths.Any(queuePath => queuePath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+            return QueueDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
         }
 
         /// <summary>
@@ -772,7 +772,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean TopicExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return TopicPaths.Any(topciPath => topciPath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+            return TopicDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
         }
 
         /// <summary>

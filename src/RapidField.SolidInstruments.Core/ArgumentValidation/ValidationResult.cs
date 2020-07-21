@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator TArgument(ValidationResult<TArgument> target) => target.TargetArgument;
+        public static implicit operator TArgument(ValidationResult<TArgument> target) => target is null ? default : target.TargetArgument;
 
         /// <summary>
         /// Returns the validation target to facilitate chained argument validation.

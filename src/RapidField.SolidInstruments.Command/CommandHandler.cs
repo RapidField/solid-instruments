@@ -74,7 +74,7 @@ namespace RapidField.SolidInstruments.Command
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="CommandHandler{TCommand, TResult}" />.
+        /// Releases all resources consumed by the current <see cref="CommandHandler{TCommand}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

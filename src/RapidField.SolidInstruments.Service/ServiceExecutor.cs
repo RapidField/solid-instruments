@@ -50,6 +50,7 @@ namespace RapidField.SolidInstruments.Service
         protected ServiceExecutor(String serviceName)
             : base()
         {
+            ExecutionLifetime = null;
             LazyApplicationConfiguration = new Lazy<IConfiguration>(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyDependencyEngine = new Lazy<IDependencyEngine>(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyRootDependencyScope = new Lazy<IDependencyScope>(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -69,6 +70,8 @@ namespace RapidField.SolidInstruments.Service
             {
                 using (var executionLifetime = new ServiceExecutionLifetime())
                 {
+                    ExecutionLifetime = executionLifetime;
+
                     using (var dependencyScope = CreateDependencyScope())
                     {
                         Execute(dependencyScope, ApplicationConfiguration, executionLifetime);
@@ -195,6 +198,18 @@ namespace RapidField.SolidInstruments.Service
         public String ServiceName
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets the execution lifetime object for the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />, or
+        /// <see langword="null" /> if execution has not yet started.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal IServiceExecutionLifetime ExecutionLifetime
+        {
+            get;
+            private set;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using RapidField.SolidInstruments.Core;
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using CommandNamespace = RapidField.SolidInstruments.Command;
+using SolidInstrumentsCommand = RapidField.SolidInstruments.Command.Command;
 
 namespace RapidField.SolidInstruments.DataAccess
 {
@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <see cref="DataAccessCommand" /> is the default implementation of <see cref="IDataAccessCommand" />.
     /// </remarks>
     [DataContract]
-    public abstract class DataAccessCommand : CommandNamespace.Command, IDataAccessCommand
+    public abstract class DataAccessCommand : SolidInstrumentsCommand, IDataAccessCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataAccessCommand" /> class.

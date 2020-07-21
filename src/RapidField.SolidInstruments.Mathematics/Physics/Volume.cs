@@ -412,9 +412,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is Volume)
+            else if (obj is Volume volume)
             {
-                return Equals((Volume)obj);
+                return Equals(volume);
             }
 
             return false;

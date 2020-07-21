@@ -623,8 +623,8 @@ namespace RapidField.SolidInstruments.Messaging
         [DebuggerHidden]
         private Task TransmitReceiverExceptionAsync(Exception raisedException, Guid correlationIdentifier)
         {
-            var exceptionRaisedEvent = new ExceptionRaisedEvent(ApplicationIdentity, raisedException, ExceptionRaisedMessageEventVerbosity);
-            var exceptionRaisedEventMessage = new ExceptionRaisedEventMessage(exceptionRaisedEvent, correlationIdentifier);
+            var exceptionRaisedEvent = new ExceptionRaisedEvent(ApplicationIdentity, raisedException, ExceptionRaisedMessageEventVerbosity, correlationIdentifier);
+            var exceptionRaisedEventMessage = new ExceptionRaisedEventMessage(exceptionRaisedEvent);
             return TransmitReceiverExceptionAsync(exceptionRaisedEventMessage, ExceptionRaisedMessageEntityType);
         }
 

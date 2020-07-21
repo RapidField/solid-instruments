@@ -429,9 +429,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is ISemanticVersion)
+            else if (obj is ISemanticVersion version)
             {
-                return Equals((ISemanticVersion)obj);
+                return Equals(version);
             }
 
             return false;

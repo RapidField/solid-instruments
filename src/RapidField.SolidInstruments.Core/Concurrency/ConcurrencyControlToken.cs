@@ -260,9 +260,9 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             {
                 return false;
             }
-            else if (obj is IConcurrencyControlToken)
+            else if (obj is IConcurrencyControlToken token)
             {
-                return Equals((IConcurrencyControlToken)obj);
+                return Equals(token);
             }
 
             return false;

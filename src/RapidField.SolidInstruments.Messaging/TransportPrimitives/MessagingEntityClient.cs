@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
@@ -167,22 +168,25 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The transport connection is closed.
         /// </exception>
-        protected Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath)
+        protected Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => Task.Factory.StartNew(() =>
         {
-            try
+            lock (EnsureQueueExistenceSyncRoot)
             {
-                if (Connection.Transport.QueueExists(queuePath))
+                try
                 {
-                    return Task.CompletedTask;
-                }
+                    if (Connection.Transport.QueueExists(queuePath))
+                    {
+                        return;
+                    }
 
-                return Connection.Transport.CreateQueueAsync(queuePath);
+                    Connection.Transport.CreateQueueAsync(queuePath).Wait();
+                }
+                catch (ObjectDisposedException exception)
+                {
+                    throw new MessageTransportConnectionClosedException("Failed to ensure queue existence. The connection is closed.", exception);
+                }
             }
-            catch (ObjectDisposedException exception)
-            {
-                throw new MessageTransportConnectionClosedException("Failed to ensure queue existence. The connection is closed.", exception);
-            }
-        }
+        });
 
         /// <summary>
         /// Asynchronously creates the specified subscription if it does not exist.
@@ -206,20 +210,23 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The transport connection is closed.
         /// </exception>
-        protected Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(async ensureTopicExistenceTask =>
+        protected Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(ensureTopicExistenceTask =>
         {
-            try
+            lock (EnsureSubscriptionExistenceSyncRoot)
             {
-                if (Connection.Transport.SubscriptionExists(topicPath, subscriptionName))
+                try
                 {
-                    return;
-                }
+                    if (Connection.Transport.SubscriptionExists(topicPath, subscriptionName))
+                    {
+                        return;
+                    }
 
-                await Connection.Transport.CreateSubscriptionAsync(topicPath, subscriptionName).ConfigureAwait(false);
-            }
-            catch (ObjectDisposedException exception)
-            {
-                throw new MessageTransportConnectionClosedException("Failed to ensure subscription existence. The connection is closed.", exception);
+                    Connection.Transport.CreateSubscriptionAsync(topicPath, subscriptionName).Wait();
+                }
+                catch (ObjectDisposedException exception)
+                {
+                    throw new MessageTransportConnectionClosedException("Failed to ensure subscription existence. The connection is closed.", exception);
+                }
             }
         });
 
@@ -238,22 +245,25 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="MessageTransportConnectionClosedException">
         /// The transport connection is closed.
         /// </exception>
-        protected Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath)
+        protected Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => Task.Factory.StartNew(() =>
         {
-            try
+            lock (EnsureTopicExistenceSyncRoot)
             {
-                if (Connection.Transport.TopicExists(topicPath))
+                try
                 {
-                    return Task.CompletedTask;
-                }
+                    if (Connection.Transport.TopicExists(topicPath))
+                    {
+                        return;
+                    }
 
-                return Connection.Transport.CreateTopicAsync(topicPath);
+                    Connection.Transport.CreateTopicAsync(topicPath).Wait();
+                }
+                catch (ObjectDisposedException exception)
+                {
+                    throw new MessageTransportConnectionClosedException("Failed to ensure topic existence. The connection is closed.", exception);
+                }
             }
-            catch (ObjectDisposedException exception)
-            {
-                throw new MessageTransportConnectionClosedException("Failed to ensure topic existence. The connection is closed.", exception);
-            }
-        }
+        });
 
         /// <summary>
         /// Registers the specified message handler for the associated <see cref="IMessagingEntity" />.
@@ -289,5 +299,26 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             get;
         }
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureQueueExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly Object EnsureQueueExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureSubscriptionExistanceAsync(IMessagingEntityPath, String)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly Object EnsureSubscriptionExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureTopicExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal static readonly Object EnsureTopicExistenceSyncRoot = new Object();
     }
 }

@@ -182,14 +182,17 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => Task.Factory.StartNew(async () =>
+        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => Task.Factory.StartNew(() =>
         {
-            if (Transport.QueueExists(queuePath))
+            lock (MessagingEntityClient.EnsureQueueExistenceSyncRoot)
             {
-                return;
-            }
+                if (Transport.QueueExists(queuePath))
+                {
+                    return;
+                }
 
-            await Transport.CreateQueueAsync(queuePath).ConfigureAwait(false);
+                Transport.CreateQueueAsync(queuePath).Wait();
+            }
         });
 
         /// <summary>
@@ -205,16 +208,19 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => Task.Factory.StartNew(async () =>
+        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => Task.Factory.StartNew(() =>
         {
-            await EnsureTopicExistanceAsync(topicPath).ConfigureAwait(false);
+            EnsureTopicExistanceAsync(topicPath).Wait();
 
-            if (Transport.SubscriptionExists(topicPath, subscriptionName))
+            lock (MessagingEntityClient.EnsureSubscriptionExistenceSyncRoot)
             {
-                return;
-            }
+                if (Transport.SubscriptionExists(topicPath, subscriptionName))
+                {
+                    return;
+                }
 
-            await Transport.CreateSubscriptionAsync(topicPath, subscriptionName).ConfigureAwait(false);
+                Transport.CreateSubscriptionAsync(topicPath, subscriptionName).Wait();
+            }
         });
 
         /// <summary>
@@ -227,14 +233,17 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => Task.Factory.StartNew(async () =>
+        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => Task.Factory.StartNew(() =>
         {
-            if (Transport.TopicExists(topicPath))
+            lock (MessagingEntityClient.EnsureTopicExistenceSyncRoot)
             {
-                return;
-            }
+                if (Transport.TopicExists(topicPath))
+                {
+                    return;
+                }
 
-            await Transport.CreateTopicAsync(topicPath).ConfigureAwait(false);
+                Transport.CreateTopicAsync(topicPath).Wait();
+            }
         });
 
         /// <summary>

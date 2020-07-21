@@ -45,11 +45,54 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <paramref name="serviceName" /> is <see langword="null" />.
         /// </exception>
         protected MessagingServiceExecutor(String serviceName)
+            : this(serviceName, DefaultRunsContinuouslyValue)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> class.
+        /// </summary>
+        /// <param name="serviceName">
+        /// The name of the service.
+        /// </param>
+        /// <param name="runsContinuously">
+        /// A value indicating whether or not the service should schedule heartbeat messages and stay running indefinitely. The
+        /// default value is <see langword="true" />.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="serviceName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="serviceName" /> is <see langword="null" />.
+        /// </exception>
+        protected MessagingServiceExecutor(String serviceName, Boolean runsContinuously)
             : base(serviceName)
         {
             LazyHeartbeatSchedule = new Lazy<HeartbeatSchedule>(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyHeartbeatTimers = new Lazy<IList<Timer>>(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
             LazyListeningProfile = new Lazy<IMessageListeningProfile>(CreateListeningProfile, LazyThreadSafetyMode.ExecutionAndPublication);
+            RunsContinuously = runsContinuously;
+        }
+
+        /// <summary>
+        /// Unlocks waiting threads and ends execution of the service.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        internal void EndExecution()
+        {
+            if (ExecutionLifetime is null)
+            {
+                return;
+            }
+            else if (ExecutionLifetime.IsAlive)
+            {
+                ExecutionLifetime.End();
+            }
         }
 
         /// <summary>
@@ -113,12 +156,19 @@ namespace RapidField.SolidInstruments.Messaging.Service
                 try
                 {
                     AddSubscriptions(ListeningProfile, ApplicationConfiguration);
-                    StartHeartbeats();
-                    executionLifetime.KeepAlive();
+
+                    if (RunsContinuously)
+                    {
+                        StartHeartbeats();
+                        executionLifetime.KeepAlive();
+                    }
                 }
                 finally
                 {
-                    StopHeartbeats();
+                    if (RunsContinuously)
+                    {
+                        StopHeartbeats();
+                    }
 
                     using (var childScope = dependencyScope.CreateChildScope())
                     {
@@ -294,6 +344,13 @@ namespace RapidField.SolidInstruments.Messaging.Service
         private IMessageListeningProfile ListeningProfile => LazyListeningProfile.Value;
 
         /// <summary>
+        /// Represents a default value indicating whether or not the service should schedule heartbeat messages and stay running
+        /// indefinitely. The
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Boolean DefaultRunsContinuouslyValue = true;
+
+        /// <summary>
         /// Represents the lazily-initialized heartbeat message schedule for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -310,5 +367,12 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<IMessageListeningProfile> LazyListeningProfile;
+
+        /// <summary>
+        /// Represents a value indicating whether or not the service should schedule heartbeat messages and stay running
+        /// indefinitely. The
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Boolean RunsContinuously;
     }
 }
