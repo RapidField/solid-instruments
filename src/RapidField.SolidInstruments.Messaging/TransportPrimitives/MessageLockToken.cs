@@ -56,7 +56,31 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </param>
         [DebuggerHidden]
         internal MessageLockToken(Guid identifier, Guid messageIdentifier, DateTime expirationDateTime)
+            : this(default, identifier, messageIdentifier, expirationDateTime)
         {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageLockToken" /> class.
+        /// </summary>
+        /// <param name="deliveryTag">
+        /// A transport-issued tracking identifier, or <see langword="default" /> if the implementation does not utilize delivery
+        /// tags.
+        /// </param>
+        /// <param name="identifier">
+        /// A unique identifier for the lock token.
+        /// </param>
+        /// <param name="messageIdentifier">
+        /// The unique identifier for the associated, locked message.
+        /// </param>
+        /// <param name="expirationDateTime">
+        /// The date and time of expiration for the lock, after which the message will become available for processing.
+        /// </param>
+        [DebuggerHidden]
+        internal MessageLockToken(UInt64 deliveryTag, Guid identifier, Guid messageIdentifier, DateTime expirationDateTime)
+        {
+            DeliveryTag = deliveryTag;
             ExpirationDateTime = expirationDateTime;
             Identifier = identifier;
             MessageIdentifier = messageIdentifier;
@@ -235,6 +259,10 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 return false;
             }
+            else if (DeliveryTag != other.DeliveryTag)
+            {
+                return false;
+            }
             else if (MessageIdentifier != other.MessageIdentifier)
             {
                 return false;
@@ -262,6 +290,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             var bytes = new List<Byte>();
             bytes.AddRange(ExpirationDateTime.ToByteArray());
             bytes.AddRange(Identifier.ToByteArray());
+            bytes.AddRange(DeliveryTag.ToByteArray());
             bytes.AddRange(MessageIdentifier.ToByteArray());
             return bytes.ToArray();
         }
@@ -273,6 +302,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A string representation of the current <see cref="MessageLockToken" />.
         /// </returns>
         public sealed override String ToString() => $"{{ {nameof(Identifier)}: {Identifier.ToSerializedString()}, {nameof(ExpirationDateTime)}: {ExpirationDateTime.ToSerializedString()} }}";
+
+        /// <summary>
+        /// Represents a transport-issued tracking identifier, or <see langword="default" /> if the implementation does not utilize
+        /// delivery tags.
+        /// </summary>
+        [DataMember]
+        internal readonly UInt64 DeliveryTag;
 
         /// <summary>
         /// Represents the date and time of expiration for the lock, after which the message will become available for processing.

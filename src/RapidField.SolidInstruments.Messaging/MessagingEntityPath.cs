@@ -789,7 +789,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Gets a regular expression that is used to validate label tokens.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static String RegularExpressionPatternForLabelToken => $"[a-zA-Z0-9]{{1,{MaximumCharacterLengthForLabelToken}}}";
+        private static String RegularExpressionPatternForLabelToken => $"[a-zA-Z0-9{DelimitingCharacterForLabelTokenSubParts}]{{1,{MaximumCharacterLengthForLabelToken}}}";
 
         /// <summary>
         /// Gets a regular expression that is used to validate the second label.
@@ -844,6 +844,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const Char DelimitingCharacterForLabelToken = '_';
+
+        /// <summary>
+        /// Represents the delimiting character that is permitted for label token sub-parts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Char DelimitingCharacterForLabelTokenSubParts = '+';
 
         /// <summary>
         /// Represents the delimiting character that follows the prefix token.

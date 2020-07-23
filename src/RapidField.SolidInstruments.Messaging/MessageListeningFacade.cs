@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.Mathematics.Extensions;
 using RapidField.SolidInstruments.Mathematics.Sequences;
@@ -338,6 +339,33 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public void RegisterTopicMessageHandler<TMessage>(Action<TMessage> messageHandler, IEnumerable<String> pathLabels)
             where TMessage : class, IMessage => RegisterMessageHandler(messageHandler, pathLabels, MessagingEntityType.Topic);
+
+        /// <summary>
+        /// Appends the dead letter queue label to the specified path labels.
+        /// </summary>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> if path labels are omitted.
+        /// </param>
+        /// <returns>
+        /// The specified path labels with the dead letter label appended.
+        /// </returns>
+        [DebuggerHidden]
+        internal static IEnumerable<String> AppendDeadLetterQueueLabel(IEnumerable<String> pathLabels)
+        {
+            if (pathLabels.IsNullOrEmpty())
+            {
+                return new String[] { DeadLetterQueueLabel };
+            }
+
+            return (pathLabels.Count()) switch
+            {
+                1 => new String[] { pathLabels.ElementAt(0), DeadLetterQueueLabel },
+                2 => new String[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), DeadLetterQueueLabel },
+                3 => new String[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), $"{pathLabels.ElementAt(1)}{MessagingEntityPath.DelimitingCharacterForLabelTokenSubParts}{DeadLetterQueueLabel}" },
+                _ => throw new ArgumentException("The specified path label collection contains more than three elements.", nameof(pathLabels)),
+            };
+        }
 
         /// <summary>
         /// Asynchronously performs the specified action for the specified message and, upon failure, applies the execution policy.
@@ -705,6 +733,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static readonly MessageListeningFailurePolicy DefaultFailurePolicy = MessageListeningFailurePolicy.Default;
+
+        /// <summary>
+        /// Represents a label that is appended to dead letter queues.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DeadLetterQueueLabel = "DeadLetter";
 
         /// <summary>
         /// Represents the <see cref="IResponseMessage" /> type.

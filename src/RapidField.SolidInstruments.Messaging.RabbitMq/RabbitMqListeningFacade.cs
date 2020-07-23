@@ -8,15 +8,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RapidField.SolidInstruments.Messaging.InMemory
+namespace RapidField.SolidInstruments.Messaging.RabbitMq
 {
     /// <summary>
-    /// Facilitates listening operations for in-memory queues.
+    /// Facilitates listening operations for RabbitMQ queues.
     /// </summary>
-    public sealed class InMemoryListeningFacade : MessageListeningFacade<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage, InMemoryTransmittingFacade>
+    public sealed class RabbitMqListeningFacade : MessageListeningFacade<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage, RabbitMqTransmittingFacade>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryListeningFacade" /> class.
+        /// Initializes a new instance of the <see cref="RabbitMqListeningFacade" /> class.
         /// </summary>
         /// <param name="transmittingFacade">
         /// An implementation-specific messaging facade that is used to transmit response messages.
@@ -24,14 +24,14 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// <exception cref="ArgumentNullException">
         /// <paramref name="transmittingFacade" /> is <see langword="null" />.
         /// </exception>
-        public InMemoryListeningFacade(InMemoryTransmittingFacade transmittingFacade)
+        public RabbitMqListeningFacade(RabbitMqTransmittingFacade transmittingFacade)
             : base(transmittingFacade)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="InMemoryListeningFacade" />.
+        /// Releases all resources consumed by the current <see cref="RabbitMqListeningFacade" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.

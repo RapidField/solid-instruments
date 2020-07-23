@@ -2,52 +2,177 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RabbitMQ.Client;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
+using RapidField.SolidInstruments.Messaging.TransportPrimitives;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using IRabbitMqChannel = RabbitMQ.Client.IModel;
+using IRabbitMqConnection = RabbitMQ.Client.IConnection;
+using IRabbitMqConnectionFactory = RabbitMQ.Client.IConnectionFactory;
+using RabbitMqConnectionFactory = RabbitMQ.Client.ConnectionFactory;
 
-namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
+namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 {
     /// <summary>
-    /// Supports message exchange for a collection of queues and topics.
+    /// Supports message exchange for RabbitMQ queues and topics.
     /// </summary>
-    /// <remarks>
-    /// <see cref="MessageTransport" /> is the default implementation of <see cref="IMessageTransport" />.
-    /// </remarks>
-    internal sealed class MessageTransport : Instrument, IMessageTransport
+    internal sealed class RabbitMqMessageTransport : Instrument, IMessageTransport
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
         /// </summary>
-        /// <param name="messageBodySerializationFormat">
-        /// The format that is used to serialize enqueued message bodies.
+        [DebuggerHidden]
+        internal RabbitMqMessageTransport()
+            : this(DefaultConnectionHostName, null, null, null, null)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
+        /// </summary>
+        /// <param name="connectionUri">
+        /// The connection URI for the target RabbitMQ instance.
         /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="connectionUri" /> is not valid for AMQP connections.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="connectionUri" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal RabbitMqMessageTransport(Uri connectionUri)
+            : this(connectionUri, PrimitiveMessage.DefaultBodySerializationFormat)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
+        /// </summary>
+        /// <param name="connectionUri">
+        /// The connection URI for the target RabbitMQ instance.
+        /// </param>
+        /// <param name="messageBodySerializationFormat">
+        /// The format that is used to serialize enqueued message bodies. The default value is
+        /// <see cref="SerializationFormat.CompressedJson" />.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="connectionUri" /> is not valid for AMQP connections.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="connectionUri" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal MessageTransport(SerializationFormat messageBodySerializationFormat)
-            : base()
+        internal RabbitMqMessageTransport(Uri connectionUri, SerializationFormat messageBodySerializationFormat)
+            : this(CreateConnectionFactory(connectionUri), messageBodySerializationFormat)
         {
-            MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
+            return;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageTransport" /> class.
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
         /// </summary>
+        /// <param name="hostName">
+        /// The name of the host to connect to. The default value is "localhost".
+        /// </param>
+        /// <param name="portNumber">
+        /// The port number to connect to, or <see langword="null" /> to use the default port number (5672).
+        /// </param>
+        /// <param name="virtualHost">
+        /// The name of the virtual host to connect to, or <see langword="null" /> to omit a virtual host.
+        /// </param>
+        /// <param name="userName">
+        /// The user name for the connection, or <see langword="null" /> to use the default user name ("guest").
+        /// </param>
+        /// <param name="password">
+        /// The password for the connection, or <see langword="null" /> to use the default password ("guest").
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="hostName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hostName" /> is <see langword="null" />.
+        /// </exception>
         [DebuggerHidden]
-        private MessageTransport()
-            : this(PrimitiveMessage.DefaultBodySerializationFormat)
+        internal RabbitMqMessageTransport(String hostName, Int32? portNumber, String virtualHost, String userName, String password)
+            : this(hostName, portNumber, virtualHost, userName, password, PrimitiveMessage.DefaultBodySerializationFormat)
         {
             return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
+        /// </summary>
+        /// <param name="hostName">
+        /// The name of the host to connect to. The default value is "localhost".
+        /// </param>
+        /// <param name="portNumber">
+        /// The port number to connect to, or <see langword="null" /> to use the default port number (5672).
+        /// </param>
+        /// <param name="virtualHost">
+        /// The name of the virtual host to connect to, or <see langword="null" /> to omit a virtual host.
+        /// </param>
+        /// <param name="userName">
+        /// The user name for the connection, or <see langword="null" /> to use the default user name ("guest").
+        /// </param>
+        /// <param name="password">
+        /// The password for the connection, or <see langword="null" /> to use the default password ("guest").
+        /// </param>
+        /// <param name="messageBodySerializationFormat">
+        /// The format that is used to serialize enqueued message bodies. The default value is
+        /// <see cref="SerializationFormat.CompressedJson" />.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="hostName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hostName" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal RabbitMqMessageTransport(String hostName, Int32? portNumber, String virtualHost, String userName, String password, SerializationFormat messageBodySerializationFormat)
+            : this(CreateConnectionFactory(hostName, portNumber, virtualHost, userName, password), messageBodySerializationFormat)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
+        /// </summary>
+        /// <param name="connectionFactory">
+        /// A factory that contains connection information for the target RabbitMQ instance.
+        /// </param>
+        /// <param name="messageBodySerializationFormat">
+        /// The format that is used to serialize enqueued message bodies. The default value is
+        /// <see cref="SerializationFormat.CompressedJson" />.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="connectionFactory" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="messageBodySerializationFormat" /> is equal to <see cref="SerializationFormat.Unspecified" />.
+        /// </exception>
+        [DebuggerHidden]
+        private RabbitMqMessageTransport(IRabbitMqConnectionFactory connectionFactory, SerializationFormat messageBodySerializationFormat)
+            : base()
+        {
+            SharedConnection = connectionFactory.RejectIf().IsNull(nameof(connectionFactory)).TargetArgument.CreateConnection();
+            Channel = SharedConnection.CreateModel();
+            MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
         }
 
         /// <summary>
@@ -100,12 +225,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
+            return Task.Factory.StartNew(() =>
             {
-                return queue.ConveyFailureAsync(lockToken);
-            }
-
-            throw new InvalidOperationException($"Failed to convey failure. The specified queue, \"{path}\", does not exist.");
+                try
+                {
+                    Channel.BasicReject(lockToken.DeliveryTag, true);
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to convey failure. The specified queue, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
@@ -138,12 +268,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            return Task.Factory.StartNew(() =>
             {
-                return topic.ConveyFailureAsync(lockToken);
-            }
-
-            throw new InvalidOperationException($"Failed to convey failure. The specified topic, \"{path}\", does not exist.");
+                try
+                {
+                    Channel.BasicReject(lockToken.DeliveryTag, true);
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to convey failure. The specified topic, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
@@ -173,12 +308,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
+            return Task.Factory.StartNew(() =>
             {
-                return queue.ConveySuccessAsync(lockToken);
-            }
-
-            throw new InvalidOperationException($"Failed to convey success. The specified queue, \"{path}\", does not exist.");
+                try
+                {
+                    Channel.BasicAck(lockToken.DeliveryTag, false);
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to convey success. The specified queue, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
@@ -208,19 +348,25 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            return Task.Factory.StartNew(() =>
             {
-                return topic.ConveySuccessAsync(lockToken);
-            }
-
-            throw new InvalidOperationException($"Failed to convey success. The specified topic, \"{path}\", does not exist.");
+                try
+                {
+                    Channel.BasicAck(lockToken.DeliveryTag, false);
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to convey success. The specified topic, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
-        /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current <see cref="MessageTransport" />.
+        /// Opens and returns a new <see cref="IMessageTransportConnection" /> to the current
+        /// <see cref="RabbitMqMessageTransport" />.
         /// </summary>
         /// <returns>
-        /// A new <see cref="IMessageTransportConnection" /> to the current <see cref="MessageTransport" />.
+        /// A new <see cref="IMessageTransportConnection" /> to the current <see cref="RabbitMqMessageTransport" />.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
@@ -228,7 +374,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public IMessageTransportConnection CreateConnection()
         {
             RejectIfDisposed();
-            var connection = new MessageTransportConnection(this);
+            var connection = new RabbitMqMessageTransportConnection(this);
 
             if (ConnectionDictionary.TryAdd(connection.Identifier, connection))
             {
@@ -480,7 +626,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return;
             }
 
-            throw new InvalidOperationException($"Failed to destroy queue. The specified queue, \"{path}\", does not exist.");
+            throw new InvalidOperationException($"Failed to destroy queue. The specified queue, \"{path}\", does not exist or the RabbitMQ connection is unavailable.");
         });
 
         /// <summary>
@@ -517,7 +663,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return;
             }
 
-            throw new InvalidOperationException($"Failed to destroy subscription. The specified subscription, \"{subscriptionName}\", does not exist.");
+            throw new InvalidOperationException($"Failed to destroy subscription. The specified subscription, \"{subscriptionName}\", does not exist or the RabbitMQ connection is unavailable.");
         });
 
         /// <summary>
@@ -568,7 +714,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean QueueExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return QueueDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
+
+            try
+            {
+                DeclareAndBindQueue(path);
+                return true;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -598,15 +757,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count)
-        {
-            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
-            {
-                return queue.DequeueAsync(count);
-            }
-
-            throw new InvalidOperationException($"Failed to receive message(s). The specified queue, \"{path}\", does not exist.");
-        }
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count) => throw new NotImplementedException($"The RabbitMQ implementation does not use this abstraction.");
 
         /// <summary>
         /// Asynchronously requests the specified number of messages from the specified topic.
@@ -642,15 +793,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count)
-        {
-            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
-            {
-                return topic.DequeueAsync(subscriptionName, count);
-            }
-
-            throw new InvalidOperationException($"Failed to receive message(s). The specified topic, \"{path}\", does not exist.");
-        }
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count) => throw new NotImplementedException($"The RabbitMQ implementation does not use this abstraction.");
 
         /// <summary>
         /// Asynchronously sends the specified message to the specified queue.
@@ -678,12 +821,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </exception>
         public Task SendToQueueAsync(IMessagingEntityPath path, PrimitiveMessage message)
         {
-            if (QueueDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var queue))
-            {
-                return queue.EnqueueAsync(message);
-            }
+            var queueName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
+            _ = message.RejectIf().IsNull(nameof(message));
 
-            throw new InvalidOperationException($"Failed to send message. The specified queue, \"{path}\", does not exist.");
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
+                    Channel.BasicPublish(exchangeName, queueName, false, null, new ReadOnlyMemory<Byte>(serializer.Serialize(message)));
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to send message. The specified queue, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
@@ -712,12 +865,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </exception>
         public Task SendToTopicAsync(IMessagingEntityPath path, PrimitiveMessage message)
         {
-            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
-            {
-                return topic.EnqueueAsync(message);
-            }
+            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+            _ = message.RejectIf().IsNull(nameof(message));
 
-            throw new InvalidOperationException($"Failed to send message. The specified topic, \"{path}\", does not exist.");
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
+                    Channel.BasicPublish(exchangeName, null, false, null, new ReadOnlyMemory<Byte>(serializer.Serialize(message)));
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidOperationException($"Failed to send message. The specified topic, \"{path}\", does not exist or the RabbitMQ connection is unavailable.", exception);
+                }
+            });
         }
 
         /// <summary>
@@ -746,9 +909,25 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TopicDictionary.TryGetValue(path.RejectIf().IsNull(nameof(path)).TargetArgument, out var topic))
+            if (TopicExists(path))
             {
-                return topic.SubscriptionNames.Contains(subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)));
+                try
+                {
+                    DeclareAndBindSubscription(path, subscriptionName);
+                    return true;
+                }
+                catch (ArgumentEmptyException)
+                {
+                    throw;
+                }
+                catch (ArgumentNullException)
+                {
+                    throw;
+                }
+                catch
+                {
+                    return false;
+                }
             }
 
             return false;
@@ -772,7 +951,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean TopicExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return TopicDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
+
+            try
+            {
+                DeclareTopic(path);
+                return true;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -832,15 +1024,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     return false;
                 }
 
-                var queue = new MessageQueue(Guid.NewGuid(), path, MessagingEntityOperationalState.Ready, MessageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold);
-
-                if (QueueDictionary.TryAdd(path, queue))
-                {
-                    return true;
-                }
+                return QueueExists(path);
             }
-
-            return false;
         }
 
         /// <summary>
@@ -868,21 +1053,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 {
                     return false;
                 }
-                else if (TopicExists(path) == false)
-                {
-                    if (TryCreateTopic(path) == false)
-                    {
-                        return false;
-                    }
-                }
 
-                if (TopicDictionary.TryGetValue(path, out var topic))
-                {
-                    return topic.TryCreateSubscription(subscriptionName);
-                }
+                return SubscriptionExists(path, subscriptionName);
             }
-
-            return false;
         }
 
         /// <summary>
@@ -942,15 +1115,8 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     return false;
                 }
 
-                var topic = new MessageTopic(Guid.NewGuid(), path, MessagingEntityOperationalState.Ready, MessageBodySerializationFormat, messageLockExpirationThreshold, enqueueTimeoutThreshold);
-
-                if (TopicDictionary.TryAdd(path, topic))
-                {
-                    return true;
-                }
+                return TopicExists(path);
             }
-
-            return false;
         }
 
         /// <summary>
@@ -976,14 +1142,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     return false;
                 }
 
-                if (QueueDictionary.TryRemove(path, out var queue))
+                try
                 {
-                    queue?.Dispose();
+                    var queueName = path.ToString();
+                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
+                    Channel.QueueUnbind(queueName, exchangeName, queueName);
+                    Channel.QueueDelete(queueName);
+                    Channel.ExchangeDelete(exchangeName);
                     return true;
                 }
+                catch
+                {
+                    return false;
+                }
             }
-
-            return false;
         }
 
         /// <summary>
@@ -995,12 +1167,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="subscriptionName">
         /// The unique name of the subscription.
         /// </param>
+        /// **
         /// <returns>
         /// <see langword="true" /> if the subscription was successfully destroyed, otherwise <see langword="false" />.
         /// </returns>
         public Boolean TryDestroySubscription(IMessagingEntityPath path, String subscriptionName)
         {
-            if (IsDisposedOrDisposing || path is null || subscriptionName is null)
+            if (IsDisposedOrDisposing || path is null || subscriptionName.IsNullOrEmpty())
             {
                 return false;
             }
@@ -1012,13 +1185,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     return false;
                 }
 
-                if (TopicDictionary.TryGetValue(path, out var topic))
+                try
                 {
-                    return topic.TryDestroySubscription(subscriptionName);
+                    var topicName = path.ToString();
+                    var queueName = subscriptionName;
+                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+                    Channel.QueueUnbind(queueName, exchangeName, queueName);
+                    Channel.QueueDelete(queueName);
+                    return true;
+                }
+                catch
+                {
+                    return false;
                 }
             }
-
-            return false;
         }
 
         /// <summary>
@@ -1044,18 +1224,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                     return false;
                 }
 
-                if (TopicDictionary.TryRemove(path, out var topic))
+                try
                 {
-                    topic?.Dispose();
+                    var topicName = path.ToString();
+                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+                    Channel.ExchangeDelete(exchangeName);
                     return true;
                 }
+                catch
+                {
+                    return false;
+                }
             }
-
-            return false;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="MessageTransport" />.
+        /// Releases all resources consumed by the current <see cref="RabbitMqMessageTransport" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -1066,12 +1250,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 if (disposing)
                 {
-                    while (TopicCount > 0 || QueueCount > 0 || ConnectionCount > 0)
+                    while (ConnectionCount > 0)
                     {
-                        DestroyAllTopics();
-                        DestroyAllQueues();
                         DestroyAllConnections();
                     }
+
+                    Channel?.Dispose();
+                    SharedConnection?.Dispose();
                 }
             }
             finally
@@ -1081,22 +1266,161 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Finalizes static members of the <see cref="MessageTransport" /> class.
+        /// Creates and hydrates a connection factory using the specified connection information.
         /// </summary>
-        [DebuggerHidden]
-        private static void FinalizeStaticMembers() => LazyInstance.Dispose();
-
-        /// <summary>
-        /// Initializes a new in-memory <see cref="IMessageTransport" /> instance.
-        /// </summary>
+        /// <param name="connectionUri">
+        /// The connection URI for the target RabbitMQ instance.
+        /// </param>
         /// <returns>
-        /// A new in-memory <see cref="IMessageTransport" /> instance.
+        /// The resulting connection factory.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="connectionUri" /> is not valid for AMQP connections.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="connectionUri" /> is <see langword="null" />.
+        /// </exception>
         [DebuggerHidden]
-        private static IMessageTransport InitializeInstance() => new MessageTransport();
+        private static IRabbitMqConnectionFactory CreateConnectionFactory(Uri connectionUri) => new RabbitMqConnectionFactory()
+        {
+            Uri = connectionUri.RejectIf().IsNull(nameof(connectionUri)).OrIf(argument => argument.Scheme != AmqpUriScheme, nameof(connectionUri), "The specified connection URI is not valid for AMQP connections.")
+        };
 
         /// <summary>
-        /// Closes and disposes of all connections to the current <see cref="MessageTransport" />.
+        /// Creates and hydrates a connection factory using the specified connection information.
+        /// </summary>
+        /// <param name="hostName">
+        /// The name of the host to connect to.
+        /// </param>
+        /// <param name="portNumber">
+        /// The port number to connect to, or <see langword="null" /> to use the default port number (5672).
+        /// </param>
+        /// <param name="virtualHost">
+        /// The name of the virtual host to connect to, or <see langword="null" /> to omit a virtual host.
+        /// </param>
+        /// <param name="userName">
+        /// The user name for the connection, or <see langword="null" /> to use the default user name ("guest").
+        /// </param>
+        /// <param name="password">
+        /// The password for the connection, or <see langword="null" /> to use the default password ("guest").
+        /// </param>
+        /// <returns>
+        /// The resulting connection factory.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="hostName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hostName" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private static IRabbitMqConnectionFactory CreateConnectionFactory(String hostName, Int32? portNumber, String virtualHost, String userName, String password) => new RabbitMqConnectionFactory()
+        {
+            HostName = hostName.RejectIf().IsNullOrEmpty(nameof(hostName)),
+            Password = password.IsNullOrEmpty() ? DefaultConnectionPassword : password,
+            Port = portNumber ?? DefaultConnectionPortNumber,
+            UserName = userName.IsNullOrEmpty() ? DefaultConnectionUserName : userName,
+            VirtualHost = virtualHost.IsNullOrEmpty() ? null : virtualHost
+        };
+
+        /// <summary>
+        /// Declares a direct exchange-queue pair and binds them using specified queue path as an idempotent operation.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the queue.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while attempting to declare or bind the queue.
+        /// </exception>
+        [DebuggerHidden]
+        private void DeclareAndBindQueue(IMessagingEntityPath path)
+        {
+            var queueName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
+
+            try
+            {
+                Channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, true, false);
+                Channel.QueueDeclare(queueName, true, false, false);
+                Channel.QueueBind(queueName, exchangeName, queueName);
+            }
+            catch (Exception exception)
+            {
+                throw new MessagingException("Failed to declare and bind the specified queue. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Declares a subscription queue and binds it to the appropriate exchange using specified path and subscription name as an
+        /// idempotent operation.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <param name="subscriptionName">
+        /// The unique name of the subscription.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="subscriptionName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" /> -or- <paramref name="subscriptionName" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while attempting to declare or bind the subscription.
+        /// </exception>
+        [DebuggerHidden]
+        private void DeclareAndBindSubscription(IMessagingEntityPath path, String subscriptionName)
+        {
+            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var queueName = subscriptionName.RejectIf().IsNullOrEmpty(nameof(path));
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+
+            try
+            {
+                Channel.QueueDeclare(queueName, true, true, true);
+                Channel.QueueBind(queueName, exchangeName, queueName);
+            }
+            catch (Exception exception)
+            {
+                throw new MessagingException("Failed to declare and bind the specified subscription. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Declares a fanout exchange for the specified topic path as an idempotent operation.
+        /// </summary>
+        /// <param name="path">
+        /// A unique textual path that identifies the topic.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="path" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="MessagingException">
+        /// An exception was raised while attempting to declare the exchange.
+        /// </exception>
+        [DebuggerHidden]
+        private void DeclareTopic(IMessagingEntityPath path)
+        {
+            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+
+            try
+            {
+                Channel.ExchangeDeclare(exchangeName, ExchangeType.Fanout, true, false);
+            }
+            catch (Exception exception)
+            {
+                throw new MessagingException("Failed to declare the specified topic. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Closes and disposes of all connections to the current <see cref="RabbitMqMessageTransport" />.
         /// </summary>
         [DebuggerHidden]
         private void DestroyAllConnections()
@@ -1124,68 +1448,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Removes and disposes of all queues within the current <see cref="MessageTransport" />.
-        /// </summary>
-        [DebuggerHidden]
-        private void DestroyAllQueues()
-        {
-            var destroyQueueTasks = new List<Task>();
-
-            while (QueueDictionary.Any())
-            {
-                var queuePath = QueueDictionary.Keys.First();
-
-                if (queuePath is null)
-                {
-                    continue;
-                }
-                else if (QueueDictionary.TryRemove(queuePath, out var queue))
-                {
-                    destroyQueueTasks.Add(Task.Factory.StartNew(() =>
-                    {
-                        queue.Dispose();
-                    }));
-                }
-            }
-
-            Task.WaitAll(destroyQueueTasks.ToArray());
-        }
-
-        /// <summary>
-        /// Removes and disposes of all topics within the current <see cref="MessageTransport" />.
-        /// </summary>
-        [DebuggerHidden]
-        private void DestroyAllTopics()
-        {
-            var destroyTopicTasks = new List<Task>();
-
-            while (TopicDictionary.Any())
-            {
-                var topicPath = TopicDictionary.Keys.First();
-
-                if (topicPath is null)
-                {
-                    continue;
-                }
-                else if (TopicDictionary.TryRemove(topicPath, out var topic))
-                {
-                    destroyTopicTasks.Add(Task.Factory.StartNew(() =>
-                    {
-                        topic.Dispose();
-                    }));
-                }
-            }
-
-            Task.WaitAll(destroyTopicTasks.ToArray());
-        }
-
-        /// <summary>
-        /// Gets the number of active connections to the current <see cref="MessageTransport" />.
+        /// Gets the number of active connections to the current <see cref="RabbitMqMessageTransport" />.
         /// </summary>
         public Int32 ConnectionCount => Connections.Count();
 
         /// <summary>
-        /// Gets a collection of active connections to the current <see cref="MessageTransport" />.
+        /// Gets a collection of active connections to the current <see cref="RabbitMqMessageTransport" />.
         /// </summary>
         public IEnumerable<IMessageTransportConnection> Connections => ConnectionDictionary.Values;
 
@@ -1198,60 +1466,82 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         }
 
         /// <summary>
-        /// Gets the number of queues within the current <see cref="MessageTransport" />.
-        /// </summary>
-        public Int32 QueueCount => QueuePaths.Count();
-
-        /// <summary>
-        /// Gets a collection of available queue paths for the current <see cref="MessageTransport" />.
-        /// </summary>
-        public IEnumerable<IMessagingEntityPath> QueuePaths => QueueDictionary.Keys;
-
-        /// <summary>
-        /// Gets the number of topics within the current <see cref="MessageTransport" />.
-        /// </summary>
-        public Int32 TopicCount => TopicPaths.Count();
-
-        /// <summary>
-        /// Gets a collection of available topic paths for the current <see cref="MessageTransport" />.
-        /// </summary>
-        public IEnumerable<IMessagingEntityPath> TopicPaths => TopicDictionary.Keys;
-
-        /// <summary>
-        /// Gets an in-memory <see cref="IMessageTransport" /> instance.
+        /// Represents the delimiting character that follows the exchange prefix token.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static IMessageTransport Instance => LazyInstance.Value;
+        internal const Char DelimitingCharacterForExchangePrefix = '-';
 
         /// <summary>
-        /// Represents a lazily-initialized in-memory <see cref="IMessageTransport" /> instance.
+        /// Represents the entity path prefix for exchanges.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IMessageTransport> LazyInstance = new Lazy<IMessageTransport>(InitializeInstance, LazyThreadSafetyMode.ExecutionAndPublication);
+        internal const String EntityPathExchangePrefix = "Exc";
 
         /// <summary>
-        /// Represents a finalizer for static members of the <see cref="MessageTransport" /> class.
+        /// Represents the entity path prefix for queues.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        internal const String EntityPathQueuePrefix = "Que";
 
         /// <summary>
-        /// Represents a collection of active connections to the current <see cref="MessageTransport" />, which are keyed by
+        /// Represents the entity path prefix for topics.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String EntityPathTopicPrefix = "Top";
+
+        /// <summary>
+        /// Represents the name prefix for subscriptions.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String SubscriptionNamePrefix = "Sub";
+
+        /// <summary>
+        /// Represents the AMQP model that is used to manage the transport.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal readonly IRabbitMqChannel Channel;
+
+        /// <summary>
+        /// Represents the valid URI scheme for AMQP connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String AmqpUriScheme = "amqp";
+
+        /// <summary>
+        /// Represents the default host name for new connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DefaultConnectionHostName = "localhost";
+
+        /// <summary>
+        /// Represents the default password for new connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DefaultConnectionPassword = "guest";
+
+        /// <summary>
+        /// Represents the default port number for new connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 DefaultConnectionPortNumber = 5672;
+
+        /// <summary>
+        /// Represents the default user name for new connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DefaultConnectionUserName = "guest";
+
+        /// <summary>
+        /// Represents a collection of active connections to the current <see cref="RabbitMqMessageTransport" />, which are keyed by
         /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new ConcurrentDictionary<Guid, IMessageTransportConnection>();
 
         /// <summary>
-        /// Represents a collection of available queues for the current <see cref="MessageTransport" />.
+        /// Represents the shared connection to the target RabbitMQ instance through which all other connections communicate.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageQueue> QueueDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageQueue>();
-
-        /// <summary>
-        /// Represents a collection of available topics for the current <see cref="MessageTransport" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageTopic> TopicDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageTopic>();
+        private readonly IRabbitMqConnection SharedConnection;
     }
 }
