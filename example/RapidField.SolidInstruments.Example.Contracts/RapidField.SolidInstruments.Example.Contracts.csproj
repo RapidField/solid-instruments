@@ -14,12 +14,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Example.Contracts.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Example.Contracts.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\RapidField.SolidInstruments.Example.Contracts.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Example.Contracts.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>

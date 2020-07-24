@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>Solid Instruments contributors</Authors>
+        <Company>RapidField</Company>
+        <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
+        <Product>Solid Instruments</Product>
+        <Description>This library exposes the Autofac IoC integration for the Solid Instruments RabbitMQ messaging abstractions.</Description>
+        <Version>$(BuildVersion)</Version>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
+        <PackageIcon>Icon.Messaging.128w.png</PackageIcon>
+        <PackageTags>solid-instruments;messaging;service-bus;bus;request-response;pub-sub;eventing;rabbitmq;inversion-of-control;ioc;dependency-injection;di;autofac</PackageTags>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Messaging.Autofac.Rmq.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Messaging.Autofac.Rmq.xml</DocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="..\..\doc\images\Icon.Messaging.128w.png" Link="Icon.Messaging.128w.png" PackagePath="" />
+        <Content Include="..\..\doc\images\Label.Messaging.300w.png" Link="Label.Messaging.300w.png" PackagePath="" />
+        <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="5.2.0" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.5" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.InversionOfControl.Autofac\RapidField.SolidInstruments.InversionOfControl.Autofac.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Messaging.Autofac\RapidField.SolidInstruments.Messaging.Autofac.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Messaging.RabbitMq\RapidField.SolidInstruments.Messaging.RabbitMq.csproj" Version="$(BuildVersion)" />
+    </ItemGroup>
+</Project>

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
+using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.AzureServiceBus;
 using System;
@@ -47,7 +48,7 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register the configuration.
-            configurator.AddSingleton(applicationConfiguration);
+            configurator.AddApplicationConfiguration(applicationConfiguration);
 
             // Register the service bus connection.
             configurator.AddScoped((serviceProvider) =>

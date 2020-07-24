@@ -10,10 +10,13 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <summary>
     /// Processes a single <see cref="IEvent" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EventHandler{TEvent}" /> is the default implementation of <see cref="IEventHandler{TEvent}" />.
+    /// </remarks>
     /// <typeparam name="TEvent">
     /// The type of the event that is processed by the handler.
     /// </typeparam>
-    public abstract class EventHandler<TEvent> : CommandHandler<TEvent>
+    public abstract class EventHandler<TEvent> : CommandHandler<TEvent>, IEventHandler<TEvent>
         where TEvent : class, IEvent
     {
         /// <summary>
