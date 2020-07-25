@@ -4,6 +4,8 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl.Extensions;
 using System;
 
@@ -15,7 +17,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
     public static class IServiceCollectionExtensions
     {
         /// <summary>
-        /// Registers the specified <see cref="IConfiguration" /> instance as a singleton.
+        /// Registers the specified <see cref="IConfiguration" /> instance as a singleton as an idempotent, safe operation.
         /// </summary>
         /// <param name="target">
         /// The current <see cref="IServiceCollection" />.
@@ -26,7 +28,14 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
         /// <returns>
         /// The resulting <see cref="IServiceCollection" />.
         /// </returns>
-        public static IServiceCollection AddApplicationConfiguration(this IServiceCollection target, IConfiguration applicationConfiguration) => target.AddSingleton(applicationConfiguration);
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
+        /// </exception>
+        public static IServiceCollection AddApplicationConfiguration(this IServiceCollection target, IConfiguration applicationConfiguration)
+        {
+            target.TryAddSingleton(applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)));
+            return target;
+        }
 
         /// <summary>
         /// Registers an native .NET dependency engine and provider factory with the current <see cref="IServiceCollection" />.

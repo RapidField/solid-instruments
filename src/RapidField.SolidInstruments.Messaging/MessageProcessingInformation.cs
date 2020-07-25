@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// processing has not yet been attempted.
         /// </summary>
         [DataMember]
-        public ICollection<MessageProcessingAttemptResult> AttemptResults
+        public List<MessageProcessingAttemptResult> AttemptResults
         {
             get;
             set;

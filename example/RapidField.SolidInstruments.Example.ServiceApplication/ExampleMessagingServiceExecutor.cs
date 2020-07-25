@@ -41,12 +41,10 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         {
             try
             {
-                // Add queue listeners.
-                subscriptionProfile.AddQueueListener<ApplicationStartedEventMessage>();
-                subscriptionProfile.AddQueueListener<ApplicationStoppedEventMessage>();
-                subscriptionProfile.AddQueueListener<ExceptionRaisedEventMessage>();
-
                 // Add topic listeners.
+                subscriptionProfile.AddTopicListener<ApplicationStartedEventMessage>();
+                subscriptionProfile.AddTopicListener<ApplicationStoppedEventMessage>();
+                subscriptionProfile.AddTopicListener<ExceptionRaisedEventMessage>();
                 subscriptionProfile.AddTopicListener<HeartbeatMessage>();
 
                 // Add request listeners.

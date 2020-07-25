@@ -45,10 +45,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register unit-of-work types.
-            configurator.AddScoped<ExampleSqlServerContext>();
-            configurator.AddScoped<ExampleInMemoryContext>();
             configurator.AddScoped<ExampleContext, ExampleInMemoryContext>(provider => new ExampleInMemoryContext(provider.GetService<IConfiguration>(), "Example"));
-            configurator.AddScoped<ExampleTransaction>();
             configurator.AddScoped<ExampleRepositoryFactory>();
 
             // Register data access command handlers.

@@ -13,8 +13,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using IRabbitMqChannel = RabbitMQ.Client.IModel;
 using IRabbitMqConnection = RabbitMQ.Client.IConnection;
 using IRabbitMqConnectionFactory = RabbitMQ.Client.IConnectionFactory;
 using RabbitMqConnectionFactory = RabbitMQ.Client.ConnectionFactory;
@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
         /// </summary>
         /// <param name="connectionUri">
-        /// The connection URI for the target RabbitMQ instance.
+        /// The connection URI for the target RabbitMQ instance. The default value is "amqp://guest:guest@localhost:5672".
         /// </param>
         /// <exception cref="ArgumentException">
         /// <paramref name="connectionUri" /> is not valid for AMQP connections.
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// Initializes a new instance of the <see cref="RabbitMqMessageTransport" /> class.
         /// </summary>
         /// <param name="connectionUri">
-        /// The connection URI for the target RabbitMQ instance.
+        /// The connection URI for the target RabbitMQ instance. The default value is "amqp://guest:guest@localhost:5672".
         /// </param>
         /// <param name="messageBodySerializationFormat">
         /// The format that is used to serialize enqueued message bodies. The default value is
@@ -168,10 +168,11 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// </exception>
         [DebuggerHidden]
         private RabbitMqMessageTransport(IRabbitMqConnectionFactory connectionFactory, SerializationFormat messageBodySerializationFormat)
-            : base()
+            : base(Core.Concurrency.ConcurrencyControlMode.ProcessorCountSemaphore)
         {
+            connectionFactory.RequestedHeartbeat = HeartbeatFrequency;
+            connectionFactory.UseBackgroundThreadsForIO = true;
             SharedConnection = connectionFactory.RejectIf().IsNull(nameof(connectionFactory)).TargetArgument.CreateConnection();
-            Channel = SharedConnection.CreateModel();
             MessageBodySerializationFormat = messageBodySerializationFormat.RejectIf().IsEqualToValue(SerializationFormat.Unspecified, nameof(messageBodySerializationFormat));
         }
 
@@ -225,11 +226,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            return Task.Factory.StartNew(() =>
+            return AutoAcknowledgeIsEnabled ? Task.CompletedTask : Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Channel.BasicReject(lockToken.DeliveryTag, true);
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            channel.ConfirmSelect();
+                            channel.BasicReject(lockToken.DeliveryTag, true);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -268,11 +279,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            return Task.Factory.StartNew(() =>
+            return AutoAcknowledgeIsEnabled ? Task.CompletedTask : Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Channel.BasicReject(lockToken.DeliveryTag, true);
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            channel.ConfirmSelect();
+                            channel.BasicReject(lockToken.DeliveryTag, true);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -308,11 +329,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            return Task.Factory.StartNew(() =>
+            return AutoAcknowledgeIsEnabled ? Task.CompletedTask : Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Channel.BasicAck(lockToken.DeliveryTag, false);
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            channel.ConfirmSelect();
+                            channel.BasicAck(lockToken.DeliveryTag, false);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -348,11 +379,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            return Task.Factory.StartNew(() =>
+            return AutoAcknowledgeIsEnabled ? Task.CompletedTask : Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    Channel.BasicAck(lockToken.DeliveryTag, false);
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            channel.ConfirmSelect();
+                            channel.BasicAck(lockToken.DeliveryTag, false);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -502,7 +543,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TryCreateSubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            if (TryCreateSubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)).TargetArgument))
             {
                 return;
             }
@@ -658,7 +699,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TryDestroySubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            if (TryDestroySubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)).TargetArgument))
             {
                 return;
             }
@@ -714,20 +755,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         public Boolean QueueExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-
-            try
-            {
-                DeclareAndBindQueue(path);
-                return true;
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
-            catch
-            {
-                return false;
-            }
+            DeclareAndBindQueue(path);
+            return true;
         }
 
         /// <summary>
@@ -821,7 +850,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// </exception>
         public Task SendToQueueAsync(IMessagingEntityPath path, PrimitiveMessage message)
         {
-            var queueName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var queueName = path.RejectIf().IsNull(nameof(path)).TargetArgument.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
             _ = message.RejectIf().IsNull(nameof(message));
 
@@ -830,7 +859,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 try
                 {
                     var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
-                    Channel.BasicPublish(exchangeName, queueName, false, null, new ReadOnlyMemory<Byte>(serializer.Serialize(message)));
+                    var body = new ReadOnlyMemory<Byte>(serializer.Serialize(message));
+
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            var basicProperties = channel.CreateBasicProperties();
+                            basicProperties.Persistent = true;
+                            channel.ConfirmSelect();
+                            channel.BasicPublish(exchangeName, queueName, true, basicProperties, body);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -865,7 +908,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// </exception>
         public Task SendToTopicAsync(IMessagingEntityPath path, PrimitiveMessage message)
         {
-            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var topicName = path.RejectIf().IsNull(nameof(path)).TargetArgument.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
             _ = message.RejectIf().IsNull(nameof(message));
 
@@ -874,7 +917,21 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 try
                 {
                     var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
-                    Channel.BasicPublish(exchangeName, null, false, null, new ReadOnlyMemory<Byte>(serializer.Serialize(message)));
+                    var body = new ReadOnlyMemory<Byte>(serializer.Serialize(message));
+
+                    using (var controlToken = StateControl.Enter())
+                    {
+                        RejectIfDisposed();
+
+                        using (var channel = SharedConnection.CreateModel())
+                        {
+                            var basicProperties = channel.CreateBasicProperties();
+                            basicProperties.Persistent = true;
+                            channel.ConfirmSelect();
+                            channel.BasicPublish(exchangeName, topicName, true, basicProperties, body);
+                            channel.WaitForConfirmsOrDie();
+                        }
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -911,23 +968,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             if (TopicExists(path))
             {
-                try
-                {
-                    DeclareAndBindSubscription(path, subscriptionName);
-                    return true;
-                }
-                catch (ArgumentEmptyException)
-                {
-                    throw;
-                }
-                catch (ArgumentNullException)
-                {
-                    throw;
-                }
-                catch
-                {
-                    return false;
-                }
+                DeclareAndBindSubscription(path, subscriptionName);
+                return true;
             }
 
             return false;
@@ -951,20 +993,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         public Boolean TopicExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-
-            try
-            {
-                DeclareTopic(path);
-                return true;
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
-            }
-            catch
-            {
-                return false;
-            }
+            DeclareTopic(path);
+            return true;
         }
 
         /// <summary>
@@ -1017,15 +1047,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
-            {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
-
-                return QueueExists(path);
-            }
+            return QueueExists(path);
         }
 
         /// <summary>
@@ -1047,15 +1069,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
-            {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
-
-                return SubscriptionExists(path, subscriptionName);
-            }
+            return SubscriptionExists(path, subscriptionName);
         }
 
         /// <summary>
@@ -1108,15 +1122,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
-            {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
-
-                return TopicExists(path);
-            }
+            return TopicExists(path);
         }
 
         /// <summary>
@@ -1135,27 +1141,24 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
+            var queueName = path.ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
+
             using (var controlToken = StateControl.Enter())
             {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
+                RejectIfDisposed();
 
-                try
+                using (var channel = SharedConnection.CreateModel())
                 {
-                    var queueName = path.ToString();
-                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
-                    Channel.QueueUnbind(queueName, exchangeName, queueName);
-                    Channel.QueueDelete(queueName);
-                    Channel.ExchangeDelete(exchangeName);
-                    return true;
-                }
-                catch
-                {
-                    return false;
+                    channel.ConfirmSelect();
+                    channel.QueueUnbind(queueName, exchangeName, queueName);
+                    channel.QueueDelete(queueName);
+                    channel.ExchangeDelete(exchangeName);
+                    channel.WaitForConfirmsOrDie();
                 }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -1178,27 +1181,24 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
+            var topicName = path.ToString();
+            var queueName = subscriptionName;
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+
             using (var controlToken = StateControl.Enter())
             {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
+                RejectIfDisposed();
 
-                try
+                using (var channel = SharedConnection.CreateModel())
                 {
-                    var topicName = path.ToString();
-                    var queueName = subscriptionName;
-                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
-                    Channel.QueueUnbind(queueName, exchangeName, queueName);
-                    Channel.QueueDelete(queueName);
-                    return true;
-                }
-                catch
-                {
-                    return false;
+                    channel.ConfirmSelect();
+                    channel.QueueUnbind(queueName, exchangeName, queueName);
+                    channel.QueueDelete(queueName);
+                    channel.WaitForConfirmsOrDie();
                 }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -1217,25 +1217,22 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 return false;
             }
 
+            var topicName = path.ToString();
+            var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
+
             using (var controlToken = StateControl.Enter())
             {
-                if (IsDisposedOrDisposing)
-                {
-                    return false;
-                }
+                RejectIfDisposed();
 
-                try
+                using (var channel = SharedConnection.CreateModel())
                 {
-                    var topicName = path.ToString();
-                    var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
-                    Channel.ExchangeDelete(exchangeName);
-                    return true;
-                }
-                catch
-                {
-                    return false;
+                    channel.ConfirmSelect();
+                    channel.ExchangeDelete(exchangeName);
+                    channel.WaitForConfirmsOrDie();
                 }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -1255,7 +1252,6 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                         DestroyAllConnections();
                     }
 
-                    Channel?.Dispose();
                     SharedConnection?.Dispose();
                 }
             }
@@ -1338,14 +1334,33 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         [DebuggerHidden]
         private void DeclareAndBindQueue(IMessagingEntityPath path)
         {
-            var queueName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var queueName = path.RejectIf().IsNull(nameof(path)).TargetArgument.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
 
             try
             {
-                Channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, true, false);
-                Channel.QueueDeclare(queueName, true, false, false);
-                Channel.QueueBind(queueName, exchangeName, queueName);
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    var channel = SharedConnection.CreateModel();
+
+                    try
+                    {
+                        channel.ExchangeDeclare(exchangeName, ExchangeType.Direct, true, false);
+                        channel.QueueDeclare(queueName, true, false, false);
+                        channel.QueueBind(queueName, exchangeName, queueName);
+                        Task.Factory.StartNew(() =>
+                        {
+                            Thread.Sleep(ChannelKeepAliveDuration);
+                            channel.Dispose();
+                        });
+                    }
+                    catch
+                    {
+                        channel.Dispose();
+                        throw;
+                    }
+                }
             }
             catch (Exception exception)
             {
@@ -1376,14 +1391,33 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         [DebuggerHidden]
         private void DeclareAndBindSubscription(IMessagingEntityPath path, String subscriptionName)
         {
-            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var topicName = path.RejectIf().IsNull(nameof(path)).TargetArgument.ToString();
             var queueName = subscriptionName.RejectIf().IsNullOrEmpty(nameof(path));
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
 
             try
             {
-                Channel.QueueDeclare(queueName, true, true, true);
-                Channel.QueueBind(queueName, exchangeName, queueName);
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    var channel = SharedConnection.CreateModel();
+
+                    try
+                    {
+                        channel.QueueDeclare(queueName, true, true, true);
+                        channel.QueueBind(queueName, exchangeName, topicName);
+                        Task.Factory.StartNew(() =>
+                        {
+                            Thread.Sleep(ChannelKeepAliveDuration);
+                            channel.Dispose();
+                        });
+                    }
+                    catch
+                    {
+                        channel.Dispose();
+                        throw;
+                    }
+                }
             }
             catch (Exception exception)
             {
@@ -1406,12 +1440,31 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         [DebuggerHidden]
         private void DeclareTopic(IMessagingEntityPath path)
         {
-            var topicName = path.RejectIf().IsNull(nameof(path)).ToString();
+            var topicName = path.RejectIf().IsNull(nameof(path)).TargetArgument.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
 
             try
             {
-                Channel.ExchangeDeclare(exchangeName, ExchangeType.Fanout, true, false);
+                using (var controlToken = StateControl.Enter())
+                {
+                    RejectIfDisposed();
+                    var channel = SharedConnection.CreateModel();
+
+                    try
+                    {
+                        channel.ExchangeDeclare(exchangeName, ExchangeType.Fanout, true, false);
+                        Task.Factory.StartNew(() =>
+                        {
+                            Thread.Sleep(ChannelKeepAliveDuration);
+                            channel.Dispose();
+                        });
+                    }
+                    catch
+                    {
+                        channel.Dispose();
+                        throw;
+                    }
+                }
             }
             catch (Exception exception)
             {
@@ -1466,6 +1519,12 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         }
 
         /// <summary>
+        /// Represents a value indicating whether or not automatic acknowledgment is enabled.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Boolean AutoAcknowledgeIsEnabled = true;
+
+        /// <summary>
         /// Represents the delimiting character that follows the exchange prefix token.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1496,10 +1555,10 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         internal const String SubscriptionNamePrefix = "Sub";
 
         /// <summary>
-        /// Represents the AMQP model that is used to manage the transport.
+        /// Represents the shared connection to the target RabbitMQ instance through which all other connections communicate.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly IRabbitMqChannel Channel;
+        internal readonly IRabbitMqConnection SharedConnection;
 
         /// <summary>
         /// Represents the valid URI scheme for AMQP connections.
@@ -1532,16 +1591,22 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         private const String DefaultConnectionUserName = "guest";
 
         /// <summary>
+        /// Represents the length of time to keep channels alive after issuing non-publish calls.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly TimeSpan ChannelKeepAliveDuration = TimeSpan.FromMilliseconds(21);
+
+        /// <summary>
+        /// Represents the polling frequency used by RabbitMQ connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly TimeSpan HeartbeatFrequency = TimeSpan.FromSeconds(5);
+
+        /// <summary>
         /// Represents a collection of active connections to the current <see cref="RabbitMqMessageTransport" />, which are keyed by
         /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new ConcurrentDictionary<Guid, IMessageTransportConnection>();
-
-        /// <summary>
-        /// Represents the shared connection to the target RabbitMQ instance through which all other connections communicate.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IRabbitMqConnection SharedConnection;
     }
 }

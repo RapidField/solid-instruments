@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
     /// <summary>
     /// Listens for and processes <see cref="ApplicationStartedEventMessage" /> instances.
     /// </summary>
-    public sealed class ApplicationStartedEventMessageListener : QueueListener<ApplicationStartedEventMessage>
+    public sealed class ApplicationStartedEventMessageListener : TopicListener<ApplicationStartedEventMessage>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationStartedEventMessageListener" /> class.

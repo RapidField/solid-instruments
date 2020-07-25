@@ -304,11 +304,15 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public sealed override String ToString() => $"{{ {nameof(Identifier)}: {Identifier.ToSerializedString()}, {nameof(ExpirationDateTime)}: {ExpirationDateTime.ToSerializedString()} }}";
 
         /// <summary>
-        /// Represents a transport-issued tracking identifier, or <see langword="default" /> if the implementation does not utilize
-        /// delivery tags.
+        /// Gets or sets a transport-issued tracking identifier, or <see langword="default" /> if the implementation does not
+        /// utilize delivery tags.
         /// </summary>
         [DataMember]
-        internal readonly UInt64 DeliveryTag;
+        internal UInt64 DeliveryTag
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Represents the date and time of expiration for the lock, after which the message will become available for processing.

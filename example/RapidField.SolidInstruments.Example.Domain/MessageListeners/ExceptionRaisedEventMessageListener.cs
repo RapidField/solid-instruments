@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
     /// <summary>
     /// Listens for and processes <see cref="ExceptionRaisedEventMessage" /> instances.
     /// </summary>
-    public sealed class ExceptionRaisedEventMessageListener : QueueListener<ExceptionRaisedEventMessage>
+    public sealed class ExceptionRaisedEventMessageListener : TopicListener<ExceptionRaisedEventMessage>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionRaisedEventMessageListener" /> class.

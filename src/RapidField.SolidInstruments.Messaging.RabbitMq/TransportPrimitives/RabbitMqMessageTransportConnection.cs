@@ -37,6 +37,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         internal RabbitMqMessageTransportConnection(RabbitMqMessageTransport transport)
             : base()
         {
+            Channels = new List<IRabbitMqChannel>();
             Consumers = new List<IRabbitMqConsumer>();
             Identifier = Guid.NewGuid();
             State = MessageTransportConnectionState.Open;
@@ -57,9 +58,19 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
                 try
                 {
-                    if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                    try
                     {
-                        TransportReference.CloseConnection(this);
+                        foreach (var channel in Channels)
+                        {
+                            channel.Dispose();
+                        }
+                    }
+                    finally
+                    {
+                        if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                        {
+                            TransportReference.CloseConnection(this);
+                        }
                     }
                 }
                 catch (Exception exception)
@@ -90,54 +101,72 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// </exception>
         public void RegisterQueueHandler(IMessagingEntityPath queuePath, Action<PrimitiveMessage> handleMessageAction)
         {
-            RejectIfDisposed();
-
-            if (Transport.QueueExists(queuePath))
+            using (var controlToken = StateControl.Enter())
             {
-                _ = handleMessageAction.RejectIf().IsNull(nameof(handleMessageAction));
-                var queueName = queuePath.ToString();
-                var consumer = new RabbitMqConsumer(Channel);
-                consumer.Received += (model, eventArguments) =>
+                RejectIfDisposed();
+
+                if (Transport.QueueExists(queuePath))
                 {
+                    _ = handleMessageAction.RejectIf().IsNull(nameof(handleMessageAction));
+                    var queueName = queuePath.ToString();
+                    var channel = TransportReference.SharedConnection.CreateModel();
+                    channel.ConfirmSelect();
+
                     try
                     {
-                        var messageBytes = eventArguments.Body.ToArray();
-                        var serializer = new DynamicSerializer<PrimitiveMessage>(Transport.MessageBodySerializationFormat);
-                        var message = serializer.Deserialize(messageBytes);
+                        var consumer = new RabbitMqConsumer(channel);
+                        consumer.Received += (model, eventArguments) =>
+                        {
+                            try
+                            {
+                                var messageBytes = eventArguments.Body.ToArray();
+                                var serializer = new DynamicSerializer<PrimitiveMessage>(Transport.MessageBodySerializationFormat);
+                                var message = serializer.Deserialize(messageBytes);
+                                message.LockToken.DeliveryTag = eventArguments.DeliveryTag;
+
+                                try
+                                {
+                                    handleMessageAction(message);
+                                }
+                                catch (Exception exception)
+                                {
+                                    throw new MessageListeningException($"An exception was raised while processing a message from queue \"{queueName}\". Message identifier: {message?.Identifier.ToSerializedString() ?? "unknown"}.", exception);
+                                }
+                            }
+                            catch (MessageListeningException)
+                            {
+                                throw;
+                            }
+                            catch (SerializationException exception)
+                            {
+                                throw new MessageListeningException($"Failed to deserialize a message from queue \"{queueName}\". Expected format: {Transport.MessageBodySerializationFormat}.", exception);
+                            }
+                        };
 
                         try
                         {
-                            handleMessageAction(message);
+                            channel.BasicConsume(queueName, RabbitMqMessageTransport.AutoAcknowledgeIsEnabled, consumer);
+                            channel.WaitForConfirmsOrDie();
+                            Consumers.Add(consumer);
                         }
                         catch (Exception exception)
                         {
-                            throw new MessageListeningException($"An exception was raised while processing a message from queue \"{queueName}\". Message identifier: {message?.Identifier.ToSerializedString() ?? "unknown"}.", exception);
+                            throw new MessageListeningException($"An exception was raised while attempting to register a consumer for queue \"{queueName}\".", exception);
                         }
+
+                        Channels.Add(channel);
                     }
-                    catch (MessageListeningException)
+                    catch
                     {
+                        channel.Dispose();
                         throw;
                     }
-                    catch (SerializationException exception)
-                    {
-                        throw new MessageListeningException($"Failed to deserialize a message from queue \"{queueName}\". Expected format: {Transport.MessageBodySerializationFormat}.", exception);
-                    }
-                };
 
-                try
-                {
-                    Channel.BasicConsume(queueName, false, consumer);
-                    Consumers.Add(consumer);
-                }
-                catch (Exception exception)
-                {
-                    throw new MessageListeningException($"An exception was raised while attempting to register a consumer for queue \"{queueName}\".", exception);
+                    return;
                 }
 
-                return;
+                throw new InvalidOperationException($"Failed to register queue handler. The specified queue, \"{queuePath}\", does not exist.");
             }
-
-            throw new InvalidOperationException($"Failed to register queue handler. The specified queue, \"{queuePath}\", does not exist.");
         }
 
         /// <summary>
@@ -167,54 +196,72 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// </exception>
         public void RegisterSubscriptionHandler(IMessagingEntityPath topicPath, String subscriptionName, Action<PrimitiveMessage> handleMessageAction)
         {
-            RejectIfDisposed();
-
-            if (Transport.SubscriptionExists(topicPath, subscriptionName))
+            using (var controlToken = StateControl.Enter())
             {
-                _ = handleMessageAction.RejectIf().IsNull(nameof(handleMessageAction));
-                var topicName = topicPath.ToString();
-                var consumer = new RabbitMqConsumer(Channel);
-                consumer.Received += (model, eventArguments) =>
+                RejectIfDisposed();
+
+                if (Transport.SubscriptionExists(topicPath, subscriptionName))
                 {
+                    _ = handleMessageAction.RejectIf().IsNull(nameof(handleMessageAction));
+                    var topicName = topicPath.ToString();
+                    var channel = TransportReference.SharedConnection.CreateModel();
+                    channel.ConfirmSelect();
+
                     try
                     {
-                        var messageBytes = eventArguments.Body.ToArray();
-                        var serializer = new DynamicSerializer<PrimitiveMessage>(Transport.MessageBodySerializationFormat);
-                        var message = serializer.Deserialize(messageBytes);
+                        var consumer = new RabbitMqConsumer(channel);
+                        consumer.Received += (model, eventArguments) =>
+                        {
+                            try
+                            {
+                                var messageBytes = eventArguments.Body.ToArray();
+                                var serializer = new DynamicSerializer<PrimitiveMessage>(Transport.MessageBodySerializationFormat);
+                                var message = serializer.Deserialize(messageBytes);
+                                message.LockToken.DeliveryTag = eventArguments.DeliveryTag;
+
+                                try
+                                {
+                                    handleMessageAction(message);
+                                }
+                                catch (Exception exception)
+                                {
+                                    throw new MessageListeningException($"An exception was raised while processing a message from topic \"{topicName}\" for subscription \"{subscriptionName}\". Message identifier: {message?.Identifier.ToSerializedString() ?? "unknown"}.", exception);
+                                }
+                            }
+                            catch (MessageListeningException)
+                            {
+                                throw;
+                            }
+                            catch (SerializationException exception)
+                            {
+                                throw new MessageListeningException($"Failed to deserialize a message from topic \"{topicName}\" for subscription \"{subscriptionName}\". Expected format: {Transport.MessageBodySerializationFormat}.", exception);
+                            }
+                        };
 
                         try
                         {
-                            handleMessageAction(message);
+                            channel.BasicConsume(subscriptionName, RabbitMqMessageTransport.AutoAcknowledgeIsEnabled, consumer);
+                            channel.WaitForConfirmsOrDie();
+                            Consumers.Add(consumer);
                         }
                         catch (Exception exception)
                         {
-                            throw new MessageListeningException($"An exception was raised while processing a message from topic \"{topicName}\" for subscription \"{subscriptionName}\". Message identifier: {message?.Identifier.ToSerializedString() ?? "unknown"}.", exception);
+                            throw new MessageListeningException($"An exception was raised while attempting to register a consumer for topic \"{topicName}\" with subscription name \"{subscriptionName}\".", exception);
                         }
+
+                        Channels.Add(channel);
                     }
-                    catch (MessageListeningException)
+                    catch
                     {
+                        channel.Dispose();
                         throw;
                     }
-                    catch (SerializationException exception)
-                    {
-                        throw new MessageListeningException($"Failed to deserialize a message from topic \"{topicName}\" for subscription \"{subscriptionName}\". Expected format: {Transport.MessageBodySerializationFormat}.", exception);
-                    }
-                };
 
-                try
-                {
-                    Channel.BasicConsume(subscriptionName, false, consumer);
-                    Consumers.Add(consumer);
-                }
-                catch (Exception exception)
-                {
-                    throw new MessageListeningException($"An exception was raised while attempting to register a consumer for topic \"{topicName}\" with subscription name \"{subscriptionName}\".", exception);
+                    return;
                 }
 
-                return;
+                throw new InvalidOperationException($"Failed to register subscription handler. The specified subscription, \"{subscriptionName}\", does not exist.");
             }
-
-            throw new InvalidOperationException($"Failed to register subscription handler. The specified subscription, \"{subscriptionName}\", does not exist.");
         }
 
         /// <summary>
@@ -267,22 +314,11 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         public IMessageTransport Transport => State == MessageTransportConnectionState.Open ? TransportReference : throw new MessageTransportConnectionClosedException($"Connection {Identifier.ToSerializedString()} is closed.");
 
         /// <summary>
-        /// Gets the AMQP model that is used to manage the transport.
+        /// Represents a collection of channels that are registered with the current
+        /// <see cref="RabbitMqMessageTransportConnection" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IRabbitMqChannel Channel => TransportReference?.Channel;
-
-        /// <summary>
-        /// Represents the maximum number of messages to dequeue from each entity during a single polling permutation.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 MessageReceiptBatchSize = 34;
-
-        /// <summary>
-        /// Represents the interval, in milliseconds, at which <see cref="Transport" /> is polled for receive operations.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 PollingIntervalInMilliseconds = 987;
+        private readonly IList<IRabbitMqChannel> Channels;
 
         /// <summary>
         /// Represents a collection of consumers that are registered with the current
