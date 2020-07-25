@@ -43,6 +43,7 @@ $ChoclateyPackageNameForNodeJs = "nodejs";
 $ChoclateyPackageNameForOpenCover = "opencover.portable";
 $ChoclateyPackageNameForOpenSsl = "openssl.light";
 $ChoclateyPackageNameForPsake = "psake";
+$ChoclateyPackageNameForRabbitMq = "rabbitmq";
 
 # NPM package names
 $NpmPackageNameForHtmlMinifier = "html-minifier";
@@ -77,6 +78,7 @@ $SuppressPackageManagers = $false;
 $SuppressPoshGit = $true;
 $SuppressPowershellYaml = $false;
 $SuppressPsake = $false;
+$SuppressRabbitMq = $true;
 
 # Modules
 Import-Module $FilePathForCoreModule -Force;
@@ -209,6 +211,15 @@ Function GetPsakeInstallationStatus
 
 <#
 .Synopsis
+Returns a boolean value indicating whether or not RabbitMQ is installed in the current environment.
+#>
+Function GetRabbitMqInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForRabbitMq") });
+}
+
+<#
+.Synopsis
 Installs all of the available automation tools in the current environment.
 #>
 Function InstallAllAutomationTools
@@ -226,6 +237,7 @@ Function InstallAllAutomationTools
     InstallPoshGit;
     InstallPowershellYaml;
     InstallPsake;
+    InstallRabbitMq;
     ComposeFinish "Finished installing all automation tools.";
 }
 
@@ -250,6 +262,7 @@ Function InstallChocolatey
     Stop-Process -Name "$FileNameForChocoExe" -Force -ErrorAction Ignore;
     Set-ExecutionPolicy Bypass -Scope Process -Force;
     iex ((New-Object System.Net.WebClient).DownloadString($InstallScriptUriForChocolatey));
+    choco feature enable -n allowGlobalConfirmation;
     ComposeFinish "Finished installing Chocolatey.";
 }
 
@@ -571,6 +584,28 @@ Function InstallPsake
 
 <#
 .Synopsis
+Installs RabbitMQ in the current environment.
+#>
+Function InstallRabbitMq
+{
+    If ($SuppressRabbitMq -eq $true)
+    {
+        ComposeNormal "Suppressing installation of RabbitMQ.";
+        Return;
+    }
+    ElseIf (GetRabbitMqInstallationStatus)
+    {
+        ComposeNormal "RabbitMQ is already installed.";
+        Return;
+    }
+
+    ComposeStart "Installing RabbitMQ.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForRabbitMq";
+    ComposeFinish "Finished installing RabbitMQ.";
+}
+
+<#
+.Synopsis
 Exposes the path for the specified command using the specified environment target.
 #>
 Function MakeCommandPathAvailable
@@ -845,6 +880,18 @@ Function RestorePsake
 
 <#
 .Synopsis
+Uninstalls, if necessary, and installs RabbitMQ in the current environment.
+#>
+Function RestoreRabbitMq
+{
+    ComposeStart "Restoring RabbitMQ.";
+    UninstallRabbitMq;
+    InstallRabbitMq;
+    ComposeFinish "Finished restoring RabbitMQ.";
+}
+
+<#
+.Synopsis
 Uninstalls all available automation tools in the current environment.
 #>
 Function UninstallAllAutomationTools
@@ -861,6 +908,7 @@ Function UninstallAllAutomationTools
     UninstallPoshGit;
     UninstallPowershellYaml;
     UninstallPsake;
+    UninstallRabbitMq;
     ComposeFinish "Finished uninstalling all automation tools.";
 }
 
@@ -1108,6 +1156,25 @@ Function UninstallPsake
         ComposeStart "Uninstalling psake.";
         UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForPsake";
         ComposeFinish "Finished uninstalling psake.";
+    }
+}
+
+<#
+.Synopsis
+Uninstalls RabbitMQ in the current environment.
+#>
+Function UninstallRabbitMq
+{
+    If ($SuppressRabbitMq -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of RabbitMQ.";
+        Return;
+    }
+    ElseIf (GetRabbitMqInstallationStatus)
+    {
+        ComposeStart "Uninstalling RabbitMQ.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForRabbitMq";
+        ComposeFinish "Finished uninstalling RabbitMQ.";
     }
 }
 

@@ -402,9 +402,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is Length)
+            else if (obj is Length length)
             {
-                return Equals((Length)obj);
+                return Equals(length);
             }
 
             return false;

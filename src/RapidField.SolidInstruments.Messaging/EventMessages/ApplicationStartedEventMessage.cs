@@ -41,52 +41,6 @@ namespace RapidField.SolidInstruments.Messaging.EventMessages
         {
             return;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessage" /> class.
-        /// </summary>
-        /// <param name="eventObject">
-        /// The associated event.
-        /// </param>
-        /// <param name="correlationIdentifier">
-        /// A unique identifier that is assigned to related messages.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="eventObject" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
-        /// </exception>
-        public ApplicationStartedEventMessage(ApplicationStartedEvent eventObject, Guid correlationIdentifier)
-            : base(eventObject, correlationIdentifier)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessage" /> class.
-        /// </summary>
-        /// <param name="eventObject">
-        /// The associated event.
-        /// </param>
-        /// <param name="correlationIdentifier">
-        /// A unique identifier that is assigned to related messages.
-        /// </param>
-        /// <param name="identifier">
-        /// A unique identifier for the message.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="eventObject" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="identifier" /> is
-        /// equal to <see cref="Guid.Empty" />.
-        /// </exception>
-        public ApplicationStartedEventMessage(ApplicationStartedEvent eventObject, Guid correlationIdentifier, Guid identifier)
-            : base(eventObject, correlationIdentifier, identifier)
-        {
-            return;
-        }
     }
 
     /// <summary>
@@ -123,52 +77,6 @@ namespace RapidField.SolidInstruments.Messaging.EventMessages
         /// </exception>
         protected ApplicationStartedEventMessage(TEvent eventObject)
             : base(eventObject)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessage{TEvent}" /> class.
-        /// </summary>
-        /// <param name="eventObject">
-        /// The associated event.
-        /// </param>
-        /// <param name="correlationIdentifier">
-        /// A unique identifier that is assigned to related messages.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="eventObject" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
-        /// </exception>
-        protected ApplicationStartedEventMessage(TEvent eventObject, Guid correlationIdentifier)
-            : base(eventObject, correlationIdentifier)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStartedEventMessage{TEvent}" /> class.
-        /// </summary>
-        /// <param name="eventObject">
-        /// The associated event.
-        /// </param>
-        /// <param name="correlationIdentifier">
-        /// A unique identifier that is assigned to related messages.
-        /// </param>
-        /// <param name="identifier">
-        /// A unique identifier for the message.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="eventObject" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" /> -or- <paramref name="identifier" /> is
-        /// equal to <see cref="Guid.Empty" />.
-        /// </exception>
-        protected ApplicationStartedEventMessage(TEvent eventObject, Guid correlationIdentifier, Guid identifier)
-            : base(eventObject, correlationIdentifier, identifier)
         {
             return;
         }

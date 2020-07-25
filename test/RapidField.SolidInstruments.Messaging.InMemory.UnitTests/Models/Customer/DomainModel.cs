@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
     /// <summary>
     /// Represents a customer.
     /// </summary>
-    [DataContract]
+    [DataContract(Name = DataContractName)]
     internal sealed class DomainModel : BaseDomainModel, IAggregate
     {
         /// <summary>
@@ -56,6 +56,12 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
             get => NameValue;
             set => NameValue = value.RejectIf().IsNullOrEmpty(nameof(Name));
         }
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "Customer";
 
         /// <summary>
         /// Represents the name of the current <see cref="DomainModel" />.

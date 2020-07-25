@@ -216,9 +216,9 @@ namespace RapidField.SolidInstruments.Core
                 {
                     return false;
                 }
-                else if (obj is ManagedReference<T>)
+                else if (obj is ManagedReference<T> reference)
                 {
-                    return Equals((ManagedReference<T>)obj);
+                    return Equals(reference);
                 }
 
                 return false;

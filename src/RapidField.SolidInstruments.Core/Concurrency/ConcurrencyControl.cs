@@ -178,6 +178,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 {
                     return;
                 }
+
+#if DEBUG
+                if (Debugger.IsAttached)
+                {
+                    // Attaching a debugger during test execution breaks the expected behavior of Exit implementations. Leave this
+                    // here as a conditional exception to the safeguard defined above.
+                    return;
+                }
+#endif
             }
 
             throw new ConcurrencyControlOperationException("The specified token is not valid for release by the control. It was issued by a different control or it was already released.");

@@ -733,37 +733,5 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             get;
         }
-
-        /// <summary>
-        /// Gets the number of queues within the current <see cref="IMessageTransport" />.
-        /// </summary>
-        public Int32 QueueCount
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets a collection of available queue paths for the current <see cref="IMessageTransport" />.
-        /// </summary>
-        public IEnumerable<IMessagingEntityPath> QueuePaths
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the number of topics within the current <see cref="IMessageTransport" />.
-        /// </summary>
-        public Int32 TopicCount
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets a collection of available topic paths for the current <see cref="IMessageTransport" />.
-        /// </summary>
-        public IEnumerable<IMessagingEntityPath> TopicPaths
-        {
-            get;
-        }
     }
 }

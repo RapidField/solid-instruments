@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </param>
         /// <param name="durationScale">
         /// The retry duration scaling behavior employed by listener in response to message processing failure. The default value is
-        /// <see cref="MessageListeningRetryDurationScale.Fibonacci" />.
+        /// <see cref="MessageListeningRetryDurationScale.Decelerating" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="baseDelayDurationInSeconds" /> is less than zero -or- <paramref name="durationScale" /> is equal to
@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents the default retry duration scaling behavior employed by listener in response to message processing failure.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const MessageListeningRetryDurationScale DefaultDurationScale = MessageListeningRetryDurationScale.Fibonacci;
+        private const MessageListeningRetryDurationScale DefaultDurationScale = MessageListeningRetryDurationScale.Decelerating;
 
         /// <summary>
         /// Represents the default number of times that listener should try to process a failed message before employing secondary

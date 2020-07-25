@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if
         /// processing has not yet been attempted.
         /// </summary>
-        public ICollection<MessageProcessingAttemptResult> AttemptResults
+        public List<MessageProcessingAttemptResult> AttemptResults
         {
             get;
         }

@@ -185,11 +185,21 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(async queueExistsTask =>
+        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => Task.Factory.StartNew(() =>
         {
-            if (queueExistsTask.Result == false)
+            lock (EnsureQueueExistenceSyncRoot)
             {
-                await ManagementClient.CreateQueueAsync(queuePath.ToString()).ConfigureAwait(false);
+                ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(queueExistsTask =>
+                {
+                    var queueExists = queueExistsTask.Result;
+
+                    if (queueExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateQueueAsync(queuePath.ToString()).Wait();
+                }).Wait();
             }
         });
 
@@ -206,15 +216,24 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => EnsureTopicExistanceAsync(topicPath).ContinueWith(async ensureTopicExistenceTask =>
+        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => Task.Factory.StartNew(() =>
         {
-            await ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(async subscriptionExistsTask =>
+            EnsureTopicExistanceAsync(topicPath).Wait();
+
+            lock (EnsureSubscriptionExistenceSyncRoot)
             {
-                if (subscriptionExistsTask.Result == false)
+                ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(subscriptionExistsTask =>
                 {
-                    await ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName).ConfigureAwait(false);
-                }
-            }).ConfigureAwait(false);
+                    var subscriptionExists = subscriptionExistsTask.Result;
+
+                    if (subscriptionExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName).Wait();
+                }).Wait();
+            }
         });
 
         /// <summary>
@@ -227,11 +246,21 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(async topicExistsTask =>
+        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => Task.Factory.StartNew(() =>
         {
-            if (topicExistsTask.Result == false)
+            lock (EnsureTopicExistenceSyncRoot)
             {
-                await ManagementClient.CreateTopicAsync(topicPath.ToString()).ConfigureAwait(false);
+                ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(topicExistsTask =>
+                {
+                    var topicExists = topicExistsTask.Result;
+
+                    if (topicExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateTopicAsync(topicPath.ToString()).Wait();
+                }).Wait();
             }
         });
 
@@ -240,6 +269,27 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const ReceiveMode ReceiveBehavior = ReceiveMode.PeekLock;
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureQueueExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureQueueExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureSubscriptionExistanceAsync(IMessagingEntityPath, String)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureSubscriptionExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureTopicExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureTopicExistenceSyncRoot = new Object();
 
         /// <summary>
         /// Represents the behavior used by clients when retrying an operation.

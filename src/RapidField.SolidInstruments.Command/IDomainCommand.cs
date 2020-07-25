@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Command
     /// <typeparam name="TResult">
     /// The type of the result that is emitted when processing the command.
     /// </typeparam>
-    public interface IDomainommand<out TResult> : ILabeledCommand<TResult>
+    public interface IDomainCommand<out TResult> : ILabeledCommand<TResult>
     {
     }
 }

@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
             // Arrange.
             var retryCount = 3;
             var baseDelayDurationInSeconds = 1;
-            var durationScale = MessageListeningRetryDurationScale.Fibonacci;
+            var durationScale = MessageListeningRetryDurationScale.Decelerating;
             var retryPolicy = new MessageListeningRetryPolicy(retryCount, baseDelayDurationInSeconds, durationScale);
             var secondaryFailureBehavior = MessageListeningSecondaryFailureBehavior.Discard;
             var transmitExceptionRaisedMessage = true;

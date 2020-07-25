@@ -13,15 +13,6 @@ namespace RapidField.SolidInstruments.Messaging
     public interface IMessageBase : ICommandBase
     {
         /// <summary>
-        /// Gets or sets a unique identifier that is assigned to related messages.
-        /// </summary>
-        public Guid CorrelationIdentifier
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets a unique identifier for the message.
         /// </summary>
         public Guid Identifier

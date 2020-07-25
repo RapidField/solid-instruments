@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return topic.ConveySuccessAsync(lockToken);
             }
 
-            throw new InvalidOperationException($"Failed to convey failure. The specified topic, \"{path}\", does not exist.");
+            throw new InvalidOperationException($"Failed to convey success. The specified topic, \"{path}\", does not exist.");
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TryCreateSubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            if (TryCreateSubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)).TargetArgument))
             {
                 return;
             }
@@ -512,7 +512,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             RejectIfDisposed();
 
-            if (TryDestroySubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName))))
+            if (TryDestroySubscription(path.RejectIf().IsNull(nameof(path)).TargetArgument, subscriptionName.RejectIf().IsNullOrEmpty(nameof(subscriptionName)).TargetArgument))
             {
                 return;
             }
@@ -568,7 +568,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean QueueExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return QueuePaths.Any(queuePath => queuePath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+            return QueueDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
         }
 
         /// <summary>
@@ -772,7 +772,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         public Boolean TopicExists(IMessagingEntityPath path)
         {
             RejectIfDisposed();
-            return TopicPaths.Any(topciPath => topciPath == path.RejectIf().IsNull(nameof(path)).TargetArgument);
+            return TopicDictionary.ContainsKey(path.RejectIf().IsNull(nameof(path)).TargetArgument);
         }
 
         /// <summary>

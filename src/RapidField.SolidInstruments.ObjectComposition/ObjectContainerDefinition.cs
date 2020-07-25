@@ -189,9 +189,9 @@ namespace RapidField.SolidInstruments.ObjectComposition
             {
                 return false;
             }
-            else if (obj is IObjectContainerDefinition)
+            else if (obj is IObjectContainerDefinition definition)
             {
-                return Equals((IObjectContainerDefinition)obj);
+                return Equals(definition);
             }
 
             return false;

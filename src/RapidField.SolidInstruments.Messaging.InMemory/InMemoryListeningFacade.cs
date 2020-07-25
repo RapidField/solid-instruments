@@ -5,6 +5,8 @@
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Messaging.TransportPrimitives;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory
 {
@@ -77,6 +79,34 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
             });
 
             receiveClient.RegisterMessageHandler(messageHandlerAction);
+        }
+
+        /// <summary>
+        /// Asynchronously sends the specified message to a dead letter queue.
+        /// </summary>
+        /// <typeparam name="TMessage">
+        /// The type of the message.
+        /// </typeparam>
+        /// <param name="adaptedMessage">
+        /// The adapted message.
+        /// </param>
+        /// <param name="message">
+        /// The message to route to a dead letter queue.
+        /// </param>
+        /// <param name="pathLabels">
+        /// An ordered collection of as many as three non-null, non-empty alphanumeric textual labels to append to the path, or
+        /// <see langword="null" /> to omit path labels.
+        /// </param>
+        /// <param name="entityType">
+        /// The targeted entity type.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected sealed override Task RouteToDeadLetterQueueAsync<TMessage>(PrimitiveMessage adaptedMessage, TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+        {
+            var deadLetterQueueSender = ClientFactory.GetQueueSender<TMessage>(AppendDeadLetterQueueLabel(pathLabels));
+            return deadLetterQueueSender.SendAsync(adaptedMessage);
         }
     }
 }

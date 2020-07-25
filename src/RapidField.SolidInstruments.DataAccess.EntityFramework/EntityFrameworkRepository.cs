@@ -5,6 +5,7 @@
 using Microsoft.EntityFrameworkCore;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,78 @@ using System.Linq.Expressions;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
 {
+    /// <summary>
+    /// Performs data access operations against an Entity Framework data model type using a single transaction.
+    /// </summary>
+    /// <typeparam name="TIdentifier">
+    /// The type of the unique primary identifier for the data model.
+    /// </typeparam>
+    /// <typeparam name="TDataAccessModel">
+    /// The type of the data model.
+    /// </typeparam>
+    /// <typeparam name="TDomainModel">
+    /// The type of the domain model to which the data access model is mapped.
+    /// </typeparam>
+    /// <typeparam name="TContext">
+    /// The type of the database session for the repository.
+    /// </typeparam>
+    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext> : EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext>, IDomainModelRepository<TIdentifier, TDataAccessModel, TDomainModel>
+        where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
+        where TContext : DbContext
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="EntityFrameworkRepository{TIdentifier, TDataAccessModel, TDomainModel, TContext}" /> class.
+        /// </summary>
+        /// <param name="context">
+        /// The database session for the repository.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="context" /> is <see langword="null" />.
+        /// </exception>
+        public EntityFrameworkRepository(TContext context)
+            : base(context)
+        {
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Performs data access operations against an Entity Framework data model type using a single transaction.
+    /// </summary>
+    /// <typeparam name="TIdentifier">
+    /// The type of the unique primary identifier for the data model.
+    /// </typeparam>
+    /// <typeparam name="TDataAccessModel">
+    /// The type of the data model.
+    /// </typeparam>
+    /// <typeparam name="TContext">
+    /// The type of the database session for the repository.
+    /// </typeparam>
+    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext> : EntityFrameworkRepository<TDataAccessModel, TContext>, IDataAccessModelRepository<TIdentifier, TDataAccessModel>
+        where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+        where TDataAccessModel : class, IDataAccessModel<TIdentifier>
+        where TContext : DbContext
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepository{TIdentifier, TDataAccessModel, TContext}" />
+        /// class.
+        /// </summary>
+        /// <param name="context">
+        /// The database session for the repository.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="context" /> is <see langword="null" />.
+        /// </exception>
+        public EntityFrameworkRepository(TContext context)
+            : base(context)
+        {
+            return;
+        }
+    }
+
     /// <summary>
     /// Performs data access operations against an Entity Framework entity type using a single transaction.
     /// </summary>

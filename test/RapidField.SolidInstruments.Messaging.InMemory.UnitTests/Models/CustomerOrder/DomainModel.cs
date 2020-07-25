@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
     /// <summary>
     /// Represents an order placed by a customer.
     /// </summary>
-    [DataContract]
+    [DataContract(Name = DataContractName)]
     internal sealed class DomainModel : BaseDomainModel, IAggregate
     {
         /// <summary>
@@ -97,6 +97,12 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
         /// </summary>
         [IgnoreDataMember]
         public Decimal TotalCost => Products.Select(product => product.Price ?? 0m).Sum();
+
+        /// <summary>
+        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DataContractName = "CustomerOrder";
 
         /// <summary>
         /// Contains a collection of known <see cref="DomainModel" /> instances.

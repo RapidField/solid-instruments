@@ -84,9 +84,9 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
             {
                 return false;
             }
-            else if (obj is SimulatedObject)
+            else if (obj is SimulatedObject simulatedObject)
             {
-                return Equals((SimulatedObject)obj);
+                return Equals(simulatedObject);
             }
 
             return false;

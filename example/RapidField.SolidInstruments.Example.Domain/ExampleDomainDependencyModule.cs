@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.Example.Domain.MessageListeners;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Messaging;
+using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.Service;
 using System;
@@ -46,15 +46,15 @@ namespace RapidField.SolidInstruments.Example.Domain
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register queue listeners.
-            configurator.AddTransient<IMessageListener<ApplicationStartedEventMessage>, ApplicationStartedEventMessageListener>();
-            configurator.AddTransient<IMessageListener<ApplicationStoppedEventMessage>, ApplicationStoppedEventMessageListener>();
-            configurator.AddTransient<IMessageListener<ExceptionRaisedEventMessage>, ExceptionRaisedEventMessageListener>();
+            configurator.AddMessageListener<ApplicationStartedEventMessage, ApplicationStartedEventMessageListener>();
+            configurator.AddMessageListener<ApplicationStoppedEventMessage, ApplicationStoppedEventMessageListener>();
+            configurator.AddMessageListener<ExceptionRaisedEventMessage, ExceptionRaisedEventMessageListener>();
 
             // Register topic listeners.
-            configurator.AddTransient<IMessageListener<HeartbeatMessage>, HeartbeatMessageListener>();
+            configurator.AddMessageListener<HeartbeatMessage, HeartbeatMessageListener>();
 
             // Register request listeners.
-            configurator.AddTransient<IMessageListener<PingRequestMessage, PingResponseMessage>, PingRequestMessageListener>();
+            configurator.AddRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
         }
     }
 }

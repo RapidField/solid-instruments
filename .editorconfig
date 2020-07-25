@@ -229,3 +229,6 @@ dotnet_diagnostic.CA1027.severity = silent
 
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = silent
+
+# IDE0075: Simplify conditional expression
+dotnet_style_prefer_simplified_boolean_expressions = false : none

@@ -35,6 +35,21 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainModelCreatedEvent{TModel}" /> class.
         /// </summary>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public DomainModelCreatedEvent(Guid correlationIdentifier)
+            : base(correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainModelCreatedEvent{TModel}" /> class.
+        /// </summary>
         /// <param name="model">
         /// The resulting state of the associated domain model.
         /// </param>
@@ -43,6 +58,27 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public DomainModelCreatedEvent(TModel model)
             : this(model, Array.Empty<String>())
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainModelCreatedEvent{TModel}" /> class.
+        /// </summary>
+        /// <param name="model">
+        /// The resulting state of the associated domain model.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="model" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public DomainModelCreatedEvent(TModel model, Guid correlationIdentifier)
+            : this(model, Array.Empty<String>(), correlationIdentifier)
         {
             return;
         }
@@ -74,6 +110,30 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="labels">
         /// A collection of textual labels that provide categorical and/or contextual information about the event.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="model" /> is <see langword="null" /> -or- <paramref name="labels" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public DomainModelCreatedEvent(TModel model, IEnumerable<String> labels, Guid correlationIdentifier)
+            : this(model, labels, DefaultVerbosity, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainModelCreatedEvent{TModel}" /> class.
+        /// </summary>
+        /// <param name="model">
+        /// The resulting state of the associated domain model.
+        /// </param>
+        /// <param name="labels">
+        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
         /// </param>
@@ -85,6 +145,34 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public DomainModelCreatedEvent(TModel model, IEnumerable<String> labels, EventVerbosity verbosity)
             : base(model, DomainModelEventClassification.Created, labels, verbosity)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainModelCreatedEvent{TModel}" /> class.
+        /// </summary>
+        /// <param name="model">
+        /// The resulting state of the associated domain model.
+        /// </param>
+        /// <param name="labels">
+        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="model" /> is <see langword="null" /> -or- <paramref name="labels" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public DomainModelCreatedEvent(TModel model, IEnumerable<String> labels, EventVerbosity verbosity, Guid correlationIdentifier)
+            : base(model, DomainModelEventClassification.Created, labels, verbosity, correlationIdentifier)
         {
             return;
         }

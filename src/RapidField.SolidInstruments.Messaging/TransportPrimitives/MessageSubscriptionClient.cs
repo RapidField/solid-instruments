@@ -6,7 +6,6 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 {
@@ -53,12 +52,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <param name="handleMessageAction">
         /// An action to perform upon message receipt.
         /// </param>
-        protected override void RegisterMessageHandler(IMessageTransportConnection connection, Action<PrimitiveMessage> handleMessageAction) => Task.Factory.StartNew(async () =>
+        protected override void RegisterMessageHandler(IMessageTransportConnection connection, Action<PrimitiveMessage> handleMessageAction) => EnsureSubscriptionExistanceAsync(Path, SubscriptionName).ContinueWith(ensureSubscriptionExistenceTask =>
         {
-            await EnsureSubscriptionExistanceAsync(Path, SubscriptionName).ContinueWith(ensureSubscriptionExistenceTask =>
-            {
-                connection.RegisterSubscriptionHandler(Path, SubscriptionName, handleMessageAction);
-            }).ConfigureAwait(false);
+            connection.RegisterSubscriptionHandler(Path, SubscriptionName, handleMessageAction);
         }).Wait();
 
         /// <summary>

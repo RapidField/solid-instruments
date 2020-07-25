@@ -49,7 +49,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// A collection of labels, or an empty collection if there are no labels.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// <paramref name="labels" /> contains more than three elements.
+        /// <paramref name="labels" /> contains more than three elements -or- an exception was raised while evaluating the data
+        /// contract information for <paramref name="messageType" />.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="messageType" /> is <see langword="null" />.
@@ -62,7 +63,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         [DebuggerHidden]
         internal MessagingEntityPath(Type messageType, String prefix, params String[] labels)
-            : this(messageType.RejectIf().IsNull(nameof(messageType)).TargetArgument.Name, prefix, ExtractLabel(labels, 0), ExtractLabel(labels, 1), ExtractLabel(labels, 2))
+            : this(ExtractMessageTypeName(messageType), prefix, ExtractLabel(labels, 0), ExtractLabel(labels, 1), ExtractLabel(labels, 2))
         {
             if (labels.IsNullOrEmpty())
             {
@@ -340,9 +341,9 @@ namespace RapidField.SolidInstruments.Messaging
             {
                 return false;
             }
-            else if (obj is IMessagingEntityPath)
+            else if (obj is IMessagingEntityPath path)
             {
-                return Equals((IMessagingEntityPath)obj);
+                return Equals(path);
             }
 
             return false;
@@ -445,6 +446,43 @@ namespace RapidField.SolidInstruments.Messaging
 
             var label = labels[index].Trim();
             return label.IsNullOrEmpty() ? null : label;
+        }
+
+        /// <summary>
+        /// Determines an appropriate message type name for the specified message type.
+        /// </summary>
+        /// <param name="messageType">
+        /// The message type.
+        /// </param>
+        /// <returns>
+        /// The resulting message type name.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// An exception was raised while evaluating the data contract information for <paramref name="messageType" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="messageType" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private static String ExtractMessageTypeName(Type messageType)
+        {
+            try
+            {
+                if (messageType.RejectIf().IsNull(nameof(messageType)).TargetArgument.GetCustomAttributes(typeof(DataContractAttribute), false).FirstOrDefault() is DataContractAttribute dataContractAttribute && dataContractAttribute.Name.IsNullOrEmpty() == false)
+                {
+                    return dataContractAttribute.Name.Compress();
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new ArgumentException($"An exception was raised while evaluating the data contract information for {messageType.FullName}. See inner exception.", nameof(messageType), exception);
+            }
+
+            return messageType.Name;
         }
 
         /// <summary>
@@ -751,7 +789,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Gets a regular expression that is used to validate label tokens.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static String RegularExpressionPatternForLabelToken => $"[a-zA-Z0-9]{{1,{MaximumCharacterLengthForLabelToken}}}";
+        private static String RegularExpressionPatternForLabelToken => $"[a-zA-Z0-9{DelimitingCharacterForLabelTokenSubParts}]{{1,{MaximumCharacterLengthForLabelToken}}}";
 
         /// <summary>
         /// Gets a regular expression that is used to validate the second label.
@@ -806,6 +844,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const Char DelimitingCharacterForLabelToken = '_';
+
+        /// <summary>
+        /// Represents the delimiting character that is permitted for label token sub-parts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Char DelimitingCharacterForLabelTokenSubParts = '+';
 
         /// <summary>
         /// Represents the delimiting character that follows the prefix token.

@@ -25,16 +25,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative\RapidField.SolidInstruments.Messaging.DotNetNative.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.InMemory\RapidField.SolidInstruments.Messaging.InMemory.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Commands\ModelState\CustomerOrder\" />
-      <Folder Include="Commands\ModelState\Product\" />
-      <Folder Include="MessageHandlers\Listeners\" />
-      <Folder Include="MessageHandlers\Transmitters\" />
-      <Folder Include="Messages\Command\ModelState\Customer\" />
-      <Folder Include="Messages\Command\ModelState\CustomerOrder\" />
-      <Folder Include="Messages\Command\ModelState\Product\" />
     </ItemGroup>
 </Project>

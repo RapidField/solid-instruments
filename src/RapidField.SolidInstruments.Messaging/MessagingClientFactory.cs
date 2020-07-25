@@ -186,8 +186,8 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class
         {
             var prefix = SubscriptionNamePrefix.IsNullOrEmpty() ? String.Empty : $"{SubscriptionNamePrefix}{MessagingEntityPath.DelimitingCharacterForPrefix}";
-            var suffix = $"{MessagingEntityPath.DelimitingCharacterForLabelToken}{new ZBase32Encoding().GetString(entityPath.RejectIf().IsNull(nameof(entityPath)).GetHashCode().ToByteArray())}";
-            return $"{prefix}{receiverIdentifier.RejectIf().IsNullOrEmpty(nameof(receiverIdentifier))}{suffix}";
+            var suffix = $"{MessagingEntityPath.DelimitingCharacterForLabelToken}{new ZBase32Encoding().GetString(entityPath.RejectIf().IsNull(nameof(entityPath)).TargetArgument.GetHashCode().ToByteArray())}";
+            return $"{prefix}{receiverIdentifier.RejectIf().IsNullOrEmpty(nameof(receiverIdentifier)).TargetArgument}{suffix}";
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         public TReceiver GetTopicReceiver<TMessage>(String receiverIdentifier, IEnumerable<String> pathLabels)
-            where TMessage : class => GetMessageReceiver<TMessage>(MessagingEntityType.Topic, receiverIdentifier.RejectIf().IsNullOrEmpty(nameof(receiverIdentifier)), pathLabels);
+            where TMessage : class => GetMessageReceiver<TMessage>(MessagingEntityType.Topic, receiverIdentifier.RejectIf().IsNullOrEmpty(nameof(receiverIdentifier)).TargetArgument, pathLabels);
 
         /// <summary>
         /// Gets a shared, managed, implementation-specific message sender for a type-defined topic.

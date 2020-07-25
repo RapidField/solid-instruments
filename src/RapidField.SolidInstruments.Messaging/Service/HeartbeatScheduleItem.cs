@@ -240,9 +240,9 @@ namespace RapidField.SolidInstruments.Messaging.Service
             {
                 return false;
             }
-            else if (obj is IHeartbeatScheduleItem)
+            else if (obj is IHeartbeatScheduleItem item)
             {
-                return Equals((IHeartbeatScheduleItem)obj);
+                return Equals(item);
             }
 
             return false;

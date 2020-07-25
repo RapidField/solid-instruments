@@ -5,3 +5,5 @@
 using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.Autofac.Rmq")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.DotNetNative.Rmq")]
