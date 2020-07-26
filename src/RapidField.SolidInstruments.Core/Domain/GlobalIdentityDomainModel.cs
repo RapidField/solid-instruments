@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Core.Domain
     /// <see cref="GlobalIdentityDomainModel" /> is the default implementation of <see cref="IGlobalIdentityDomainModel" />.
     /// </remarks>
     [DataContract]
-    public abstract class GlobalIdentityDomainModel : GlobalIdentityModel, IGlobalIdentityDomainModel
+    public abstract class GlobalIdentityDomainModel : GlobalIdentityModel, IGlobalIdentityAggregateDomainModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GlobalIdentityDomainModel" /> class.

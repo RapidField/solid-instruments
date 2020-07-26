@@ -12,7 +12,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// <summary>
     /// Represents a collection of configured types and functions that produce them using an <see cref="ObjectFactory" />.
     /// </summary>
-    public sealed class ObjectFactoryConfigurationProductionFunctions : ObjectFactoryConfigurationProductionFunctions<Object>
+    /// <remarks>
+    /// <see cref="ObjectFactoryConfigurationProductionFunctions" /> is the default implementation of
+    /// <see cref="IObjectFactoryConfigurationProductionFunctions" />.
+    /// </remarks>
+    public sealed class ObjectFactoryConfigurationProductionFunctions : ObjectFactoryConfigurationProductionFunctions<Object>, IObjectFactoryConfigurationProductionFunctions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactoryConfigurationProductionFunctions" /> class.
@@ -31,8 +35,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Configured types that are wrapped by the new functions.
         /// </param>
         [DebuggerHidden]
-        internal ObjectFactoryConfigurationProductionFunctions(ObjectFactoryConfigurationProductionFunctions<Object> functions)
-            : base(functions.Dictionary)
+        internal ObjectFactoryConfigurationProductionFunctions(IObjectFactoryConfigurationProductionFunctions<Object> functions)
+            : base(((ObjectFactoryConfigurationProductionFunctions<Object>)functions).Dictionary)
         {
             return;
         }
@@ -42,17 +46,21 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// Represents a collection of configured types and functions that produce them using an
     /// <see cref="ObjectFactory{TProductBase}" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="ObjectFactoryConfigurationProductionFunctions{TProductBase}" /> is the default implementation of
+    /// <see cref="IObjectFactoryConfigurationProductionFunctions{TProductBase}" />.
+    /// </remarks>
     /// <typeparam name="TProductBase">
     /// The base type from which objects produced by the associated factory derive.
     /// </typeparam>
-    public class ObjectFactoryConfigurationProductionFunctions<TProductBase>
+    public class ObjectFactoryConfigurationProductionFunctions<TProductBase> : IObjectFactoryConfigurationProductionFunctions<TProductBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactoryConfigurationProductionFunctions{TProductBase}" /> class.
         /// </summary>
         [DebuggerHidden]
         internal ObjectFactoryConfigurationProductionFunctions()
-            : this(new ConcurrentDictionary<Type, ObjectFactoryProductionFunction>())
+            : this(new ConcurrentDictionary<Type, IObjectFactoryProductionFunction>())
         {
             return;
         }
@@ -67,7 +75,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="dictionary" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal ObjectFactoryConfigurationProductionFunctions(ConcurrentDictionary<Type, ObjectFactoryProductionFunction> dictionary)
+        internal ObjectFactoryConfigurationProductionFunctions(ConcurrentDictionary<Type, IObjectFactoryProductionFunction> dictionary)
         {
             Dictionary = dictionary.RejectIf().IsNull(nameof(dictionary));
         }
@@ -87,7 +95,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ArgumentNullException">
         /// <paramref name="function" /> is <see langword="null" />.
         /// </exception>
-        public ObjectFactoryConfigurationProductionFunctions<TProductBase> Add<TProduct>(Func<TProduct> function)
+        public IObjectFactoryConfigurationProductionFunctions<TProductBase> Add<TProduct>(Func<TProduct> function)
             where TProduct : class, TProductBase
         {
             var productType = typeof(TProduct);
@@ -104,6 +112,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Represents a collection of functions that produce an output.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly ConcurrentDictionary<Type, ObjectFactoryProductionFunction> Dictionary;
+        internal readonly ConcurrentDictionary<Type, IObjectFactoryProductionFunction> Dictionary;
     }
 }

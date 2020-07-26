@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
+using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 
 namespace RapidField.SolidInstruments.Example.WebApplication
 {
@@ -37,6 +38,6 @@ namespace RapidField.SolidInstruments.Example.WebApplication
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
-        protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration) => configurator.AddSingleton(applicationConfiguration);
+        protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration) => configurator.AddApplicationConfiguration(applicationConfiguration);
     }
 }

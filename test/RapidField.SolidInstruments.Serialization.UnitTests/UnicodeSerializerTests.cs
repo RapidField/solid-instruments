@@ -13,16 +13,16 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
     public class UnicodeSerializerTests
     {
         [TestMethod]
-        public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
+        public void Deserialize_ShouldRaiseArgumentNullException_ForNullSerializedObjectArgument()
         {
             // Arrange.
             var target = new UnicodeSerializer();
-            var buffer = (Byte[])null;
+            var serializedObject = (Byte[])null;
 
             // Act.
             var action = new Action(() =>
             {
-                var result = target.Deserialize(buffer);
+                var result = target.Deserialize(serializedObject);
             });
 
             // Assert.

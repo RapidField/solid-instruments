@@ -12,16 +12,16 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
     public class Base64SerializerTests
     {
         [TestMethod]
-        public void Deserialize_ShouldRaiseArgumentNullException_ForNullBufferArgument()
+        public void Deserialize_ShouldRaiseArgumentNullException_ForNullSerializedObjectArgument()
         {
             // Arrange.
             var target = new Base64Serializer();
-            var buffer = (Byte[])null;
+            var serializedObject = (Byte[])null;
 
             // Act.
             var action = new Action(() =>
             {
-                var result = target.Deserialize(buffer);
+                var result = target.Deserialize(serializedObject);
             });
 
             // Assert.

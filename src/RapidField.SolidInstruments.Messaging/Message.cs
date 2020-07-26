@@ -86,6 +86,7 @@ namespace RapidField.SolidInstruments.Messaging
     /// <see cref="Message" /> is the default implementation of <see cref="IMessage" />.
     /// </remarks>
     [DataContract]
+    [KnownType(typeof(MessageProcessingInformation))]
     public abstract class Message : IMessage
     {
         /// <summary>
@@ -182,7 +183,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// Gets or sets instructions and contextual information relating to processing for the current <see cref="Message" />.
         /// </summary>
         [DataMember]
-        public MessageProcessingInformation ProcessingInformation
+        public IMessageProcessingInformation ProcessingInformation
         {
             get
             {
@@ -203,13 +204,13 @@ namespace RapidField.SolidInstruments.Messaging
         public virtual Type ResultType => Nix.Type;
 
         /// <summary>
-        /// Represents the entity type that is used for publishing and subscribing to request messages.
+        /// Represents the entity type that is used for transmitting and listening for request messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static MessagingEntityType RequestEntityType = MessagingEntityType.Queue;
 
         /// <summary>
-        /// Represents the entity type that is used for publishing and subscribing to response messages.
+        /// Represents the entity type that is used for transmitting and listening for response messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static MessagingEntityType ResponseEntityType = MessagingEntityType.Topic;
@@ -233,6 +234,6 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [IgnoreDataMember]
-        private MessageProcessingInformation ProcessingInformationField;
+        private IMessageProcessingInformation ProcessingInformationField;
     }
 }

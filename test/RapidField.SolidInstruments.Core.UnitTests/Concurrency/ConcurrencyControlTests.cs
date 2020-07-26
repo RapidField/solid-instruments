@@ -152,7 +152,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
                             {
                                 controlToken.IsActive.Should().BeTrue();
                                 operation();
-                                controlToken.Release();
+                                ((ConcurrencyControlToken)controlToken).Release();
                                 controlToken.IsActive.Should().BeFalse();
                             }
                         });

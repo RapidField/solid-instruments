@@ -61,7 +61,7 @@ public class SubtractionCommandHandler : CommandHandler<SubtractionCommand, int>
     {
     }
 
-    protected override int Process(SubtractionCommand command, ConcurrencyControlToken controlToken)
+    protected override int Process(SubtractionCommand command, IConcurrencyControlToken controlToken)
     {
         return (command.Minuend - command.Subtrahend);
     }
@@ -95,3 +95,17 @@ public class Subtractor
 ```
 
 <br />
+
+### Namespaces
+
+#### [RapidField.SolidInstruments.Command.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Autofac.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>
+
+#### [RapidField.SolidInstruments.Command.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>

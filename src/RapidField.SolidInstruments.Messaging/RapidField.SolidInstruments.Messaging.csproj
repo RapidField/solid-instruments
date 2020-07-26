@@ -22,12 +22,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageTags>solid-instruments;messaging;service-bus;bus;request-response;pub-sub;eventing</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Messaging.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Messaging.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\RapidField.SolidInstruments.Messaging.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Messaging.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
@@ -46,8 +46,5 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\RapidField.SolidInstruments.Serialization\RapidField.SolidInstruments.Serialization.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="TransportPrimitives\Operations\" />
     </ItemGroup>
 </Project>

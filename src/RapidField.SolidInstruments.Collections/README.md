@@ -17,7 +17,7 @@ This library exposes useful collection types and features, including:
 
 - circular buffers
 - infinite sequences
-- pinned buffers
+- pinned memory
 - tree composition and traversal
 
 ## License

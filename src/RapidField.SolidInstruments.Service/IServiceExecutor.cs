@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.Service
@@ -9,7 +10,7 @@ namespace RapidField.SolidInstruments.Service
     /// <summary>
     /// Prepares for and performs execution of a service.
     /// </summary>
-    public interface IServiceExecutor : IDisposable
+    public interface IServiceExecutor : IInstrument
     {
         /// <summary>
         /// Begins execution of the service and performs the service operations.
@@ -17,12 +18,12 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ServiceExectuionException">
         /// An exception was raised during execution of the service.
         /// </exception>
-        void Execute();
+        public void Execute();
 
         /// <summary>
         /// Gets the name of the service.
         /// </summary>
-        String ServiceName
+        public String ServiceName
         {
             get;
         }

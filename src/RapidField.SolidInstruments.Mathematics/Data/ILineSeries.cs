@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
         /// <exception cref="ArgumentException">
         /// The specified x-axis value does not exist within the data set.
         /// </exception>
-        TYAxis GetYAxisValue(TXAxis xAxisValue);
+        public TYAxis GetYAxisValue(TXAxis xAxisValue);
 
         /// <summary>
         /// Attempts to get the y-axis value associated with the specified x-axis value.
@@ -44,6 +44,6 @@ namespace RapidField.SolidInstruments.Mathematics.Data
         /// <returns>
         /// <see langword="true" /> if the specified x-axis value exists, otherwise <see langword="false" />.
         /// </returns>
-        Boolean TryGetYAxisValue(TXAxis xAxisValue, out TYAxis yAxisValue);
+        public Boolean TryGetYAxisValue(TXAxis xAxisValue, out TYAxis yAxisValue);
     }
 }

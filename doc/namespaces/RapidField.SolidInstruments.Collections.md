@@ -110,9 +110,9 @@ public class ExampleClass
 
 <br />
 
-#### Pinned buffers
+#### Pinned memory
 
-[PinnedBuffer](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.PinnedBuffer.html) represents a fixed-length bit field that is pinned in memory.
+[PinnedMemory](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Collections.PinnedMemory.html) represents a fixed-length bit field that is pinned in memory.
 
 ###### C#
 
@@ -120,11 +120,11 @@ public class ExampleClass
 var field = new byte[8];
 var overwriteWithZerosOnDispose = true;
 
-using (var pinnedBuffer = new PinnedBuffer(field, overwriteWithZerosOnDispose))
+using (var pinnedMemory = new PinnedMemory(field, overwriteWithZerosOnDispose))
 {
     // The field is now pinned in memory and will not be paged to disk.
-    pinnedBuffer[3] = 0xf6;
-    pinnedBuffer[5] = 0x4a;
+    pinnedMemory[3] = 0xf6;
+    pinnedMemory[5] = 0x4a;
 }
 
 // Optionally, zeros are written over the field upon disposal to

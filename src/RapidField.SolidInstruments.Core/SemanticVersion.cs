@@ -429,9 +429,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is ISemanticVersion)
+            else if (obj is ISemanticVersion version)
             {
-                return Equals((ISemanticVersion)obj);
+                return Equals(version);
             }
 
             return false;
@@ -674,7 +674,20 @@ namespace RapidField.SolidInstruments.Core
 
             try
             {
-                var processedString = input.StartsWith(IgnoredPrefixWord, true, CultureInfo.InvariantCulture) ? input.Skip(IgnoredPrefixWord.Length).ToString().Solidify() : input.Solidify().TrimStart(IgnoredPrefixCharacters);
+                var solidifiedString = input.Solidify();
+                var processedString = solidifiedString.StartsWith(IgnoredPrefixWord, true, CultureInfo.InvariantCulture) ? solidifiedString.Skip(IgnoredPrefixWord.Length).ToString() : solidifiedString.TrimStart(IgnoredPrefixCharacters);
+
+                if (processedString.Length == 0)
+                {
+                    if (raiseExceptionOnFail)
+                    {
+                        throw new FormatException(ParseFormatExceptionMessage, new ArgumentException("The input string does not contain any version information.", nameof(input)));
+                    }
+
+                    result = default;
+                    return false;
+                }
+
                 var regularExpression = new Regex(RegularExpressionPatternForCompleteVersion);
                 var matchGroups = regularExpression.IsMatch(processedString) ? regularExpression.Match(processedString).Groups : null;
 

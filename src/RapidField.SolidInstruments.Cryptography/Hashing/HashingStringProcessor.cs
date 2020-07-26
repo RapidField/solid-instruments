@@ -27,5 +27,10 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         {
             return;
         }
+
+        /// <summary>
+        /// Represents a singleton instance of the <see cref="HashingStringProcessor" /> class.
+        /// </summary>
+        public static readonly IHashingProcessor<String> Instance = new HashingStringProcessor(HardenedRandomNumberGenerator.Instance);
     }
 }

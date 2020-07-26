@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
     /// Represents a collection of definitions that a
-    /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> uses to publish
+    /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> uses to transmit
     /// heartbeat messages.
     /// </summary>
     public sealed class HeartbeatSchedule : IEnumerable<IHeartbeatScheduleItem>
@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Adds the specified heartbeat schedule item to the schedule.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="intervalInSeconds" /> is less than or equal to zero.
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// The type of the associated heartbeat message.
         /// </typeparam>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="intervalInSeconds" /> is less than or equal to zero.
@@ -62,10 +62,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Adds the specified heartbeat schedule item to the schedule.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
@@ -84,10 +84,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// The type of the associated heartbeat message.
         /// </typeparam>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
@@ -104,10 +104,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Adds the specified heartbeat schedule item to the schedule.
         /// </summary>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <param name="label">
@@ -129,10 +129,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// The type of the associated heartbeat message.
         /// </typeparam>
         /// <param name="intervalInSeconds">
-        /// The regular interval, in seconds, at which the message is published.
+        /// The regular interval, in seconds, at which the message is transmitted.
         /// </param>
         /// <param name="entityType">
-        /// The messaging entity type that is used when publishing the message. The default value is
+        /// The messaging entity type that is used when transmitting the message. The default value is
         /// <see cref="MessagingEntityType.Topic" />.
         /// </param>
         /// <param name="label">
@@ -168,7 +168,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Adds the specified heartbeat schedule item to the schedule.
         /// </summary>
         /// <param name="item">
-        /// An item that specifies how a heartbeat message is published.
+        /// An item that specifies how a heartbeat message is transmitted.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="item" /> is <see langword="null" />.

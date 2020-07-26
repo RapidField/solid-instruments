@@ -22,12 +22,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageTags>solid-instruments;inversion-of-control;ioc;dependency-injection;di;container-abstraction</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.InversionOfControl.DotNetNative.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.InversionOfControl.DotNetNative.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\RapidField.SolidInstruments.InversionOfControl.DotNetNative.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.InversionOfControl.DotNetNative.xml</DocumentationFile>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <WarningsAsErrors>NU1605</WarningsAsErrors>
     </PropertyGroup>
@@ -37,9 +37,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" Version="$(BuildVersion)" />

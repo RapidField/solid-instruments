@@ -37,5 +37,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 | Version         | Notes                           | Source                                                                           | Release date | End of support |
 | :-------------- | :-----------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
+| 1.0.25-preview1 | [Read](releasenotes/v1.0.25.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.25-preview1) | 26 Jul 2020  | 31 Jul 2023    |
 | 1.0.24-preview1 | [Read](releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 31 Jul 2022    |
 | 1.0.23-preview1 | [Read](releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 31 Jul 2022    |

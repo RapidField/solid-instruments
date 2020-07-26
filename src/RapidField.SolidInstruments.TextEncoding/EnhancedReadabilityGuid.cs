@@ -243,9 +243,9 @@ namespace RapidField.SolidInstruments.TextEncoding
             {
                 return false;
             }
-            else if (obj is EnhancedReadabilityGuid)
+            else if (obj is EnhancedReadabilityGuid guid)
             {
-                return Equals((EnhancedReadabilityGuid)obj);
+                return Equals(guid);
             }
 
             return false;

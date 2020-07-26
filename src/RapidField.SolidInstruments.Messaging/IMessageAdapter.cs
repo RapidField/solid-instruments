@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        TAdaptedMessage ConvertForward<TMessage>(TMessage message)
+        public TAdaptedMessage ConvertForward<TMessage>(TMessage message)
             where TMessage : class, IMessageBase;
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="message" /> is <see langword="null" />.
         /// </exception>
-        TMessage ConvertReverse<TMessage>(TAdaptedMessage message)
+        public TMessage ConvertReverse<TMessage>(TAdaptedMessage message)
             where TMessage : class, IMessageBase;
 
         /// <summary>
         /// Gets the type of implementation-specific adapted messages.
         /// </summary>
-        Type AdaptedMessageType
+        public Type AdaptedMessageType
         {
             get;
         }
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the format that is used to serialize and deserialize messages.
         /// </summary>
-        SerializationFormat MessageSerializationFormat
+        public SerializationFormat MessageSerializationFormat
         {
             get;
         }

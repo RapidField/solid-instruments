@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="trackingBehavior">
         /// The query result tracking behavior for the context. The default value is <see cref="QueryTrackingBehavior.TrackAll" />.
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in

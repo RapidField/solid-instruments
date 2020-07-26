@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Core.Domain
     /// <see cref="NumericIdentityDomainModel" /> is the default implementation of <see cref="INumericIdentityDomainModel" />.
     /// </remarks>
     [DataContract]
-    public abstract class NumericIdentityDomainModel : NumericIdentityModel, INumericIdentityDomainModel
+    public abstract class NumericIdentityDomainModel : NumericIdentityModel, INumericIdentityAggregateDomainModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumericIdentityDomainModel" /> class.

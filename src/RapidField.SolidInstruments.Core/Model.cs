@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="Model" />.
         /// </returns>
-        public override String ToString() => Identifier.ToString();
+        public override String ToString() => $"{{ \"{nameof(Identifier)}\": \"{Identifier}\" }}";
 
         /// <summary>
         /// Gets or sets a value that uniquely identifies the current <see cref="Model{TIdentifier}" />.
@@ -276,9 +276,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is IModel)
+            else if (obj is IModel model)
             {
-                return Equals((IModel)obj);
+                return Equals(model);
             }
 
             return false;
@@ -321,6 +321,6 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="Model" />.
         /// </returns>
-        public override String ToString() => GetHashCode().ToString();
+        public override String ToString() => Convert.ToBase64String(GetHashCode().ToByteArray());
     }
 }

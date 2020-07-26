@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
     /// <summary>
     /// Represents exclusive or semi-exclusive control of a resource or block of code by a single thread.
     /// </summary>
-    public sealed class ConcurrencyControlToken : IComparable<ConcurrencyControlToken>, IEquatable<ConcurrencyControlToken>, IDisposable
+    /// <remarks>
+    /// <see cref="ConcurrencyControlToken" /> is the default implementation of <see cref="IConcurrencyControlToken" />.
+    /// </remarks>
+    public sealed class ConcurrencyControlToken : IConcurrencyControlToken
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConcurrencyControlToken" /> class.
@@ -66,7 +70,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ConcurrencyControlToken a, ConcurrencyControlToken b) => (a == b) == false;
+        public static Boolean operator !=(ConcurrencyControlToken a, IConcurrencyControlToken b) => (a == b) == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is less than another specified
@@ -81,7 +85,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(ConcurrencyControlToken a, ConcurrencyControlToken b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) == -1;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is less than or equal to another
@@ -97,7 +101,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(ConcurrencyControlToken a, ConcurrencyControlToken b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) < 1;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="ConcurrencyControlToken" /> instances are equal.
@@ -111,7 +115,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public static Boolean operator ==(ConcurrencyControlToken a, ConcurrencyControlToken b)
+        public static Boolean operator ==(ConcurrencyControlToken a, IConcurrencyControlToken b)
         {
             if (a is null && b is null)
             {
@@ -138,7 +142,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(ConcurrencyControlToken a, ConcurrencyControlToken b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) == 1;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is greater than or equal to
@@ -154,7 +158,22 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(ConcurrencyControlToken a, ConcurrencyControlToken b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) > -1;
+
+        /// <summary>
+        /// Instructs the current <see cref="ConcurrencyControlToken" /> to wait for the specified task to complete before releasing
+        /// control to another thread.
+        /// </summary>
+        /// <param name="action">
+        /// An action to wait upon.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="IsActive" /> is <see langword="false" />.
+        /// </exception>
+        public void AttachTask(Action action) => AttachTask(Task.Factory.StartNew(action.RejectIf().IsNull(nameof(action))));
 
         /// <summary>
         /// Instructs the current <see cref="ConcurrencyControlToken" /> to wait for the specified task to complete before releasing
@@ -191,7 +210,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(ConcurrencyControlToken other) => Identifier.CompareTo(other.Identifier);
+        public Int32 CompareTo(IConcurrencyControlToken other) => Identifier.CompareTo(other.Identifier);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
@@ -218,6 +237,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Asynchronously releases all resources consumed by the current <see cref="ConcurrencyControlToken" />.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+
+        /// <summary>
         /// Determines whether or not the current <see cref="ConcurrencyControlToken" /> is equal to the specified
         /// <see cref="Object" />.
         /// </summary>
@@ -233,9 +260,9 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             {
                 return false;
             }
-            else if (obj is ConcurrencyControlToken)
+            else if (obj is IConcurrencyControlToken token)
             {
-                return Equals((ConcurrencyControlToken)obj);
+                return Equals(token);
             }
 
             return false;
@@ -250,7 +277,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(ConcurrencyControlToken other) => (Identifier == other.Identifier);
+        public Boolean Equals(IConcurrencyControlToken other) => (Identifier == other.Identifier);
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -338,6 +365,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="ConcurrencyControlToken" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ConcurrencyControlToken" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(Identifier)}\": {Identifier}, \"{nameof(IsActive)}\": {IsActive.ToSerializedString()} }}";
+
+        /// <summary>
         /// Releases exclusive or semi-exclusive control of the associated resource if <see cref="IsActive" /> is
         /// <see langword="true" />.
         /// </summary>
@@ -350,7 +385,8 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ConcurrencyControlOperationException">
         /// The issuing <see cref="IConcurrencyControl" /> is in an invalid state.
         /// </exception>
-        public void Release()
+        [DebuggerHidden]
+        internal void Release()
         {
             if (Interlocked.Exchange(ref IsActiveValue, IsActiveFalse) == IsActiveTrue)
             {
@@ -392,14 +428,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="ConcurrencyControlToken" /> to its equivalent string representation.
-        /// </summary>
-        /// <returns>
-        /// A string representation of the current <see cref="ConcurrencyControlToken" />.
-        /// </returns>
-        public override String ToString() => $"{(IsActive ? "Active" : "Inactive")} ({Identifier})";
-
-        /// <summary>
         /// Informs the issuing control that the associated thread is finished consuming the resource.
         /// </summary>
         /// <param name="state">
@@ -416,6 +444,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         {
             var token = (ConcurrencyControlToken)state;
             token.Control.Exit(token);
+        }
+
+        /// <summary>
+        /// Gets a unique value that identifies the token within the context of the issuing control.
+        /// </summary>
+        public Int32 Identifier
+        {
+            get;
         }
 
         /// <summary>
@@ -439,12 +475,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly IConcurrencyControl Control;
-
-        /// <summary>
-        /// Represents a unique value that identifies the token within the context of the issuing control.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly Int32 Identifier;
 
         /// <summary>
         /// Represents an integer value indicating that the associated thread currently does not have control of the resource.

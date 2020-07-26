@@ -7,17 +7,20 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.ObjectComposition;
 using System;
-using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
 {
     /// <summary>
     /// Encapsulates creation of new Entity Framework <see cref="IDataAccessRepository" /> instances that map to database entities.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkRepositoryFactory{TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkRepositoryFactory{TContext}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session that is used by the produced repositories.
     /// </typeparam>
-    public abstract class EntityFrameworkRepositoryFactory<TContext> : DataAccessRepositoryFactory
+    public abstract class EntityFrameworkRepositoryFactory<TContext> : DataAccessRepositoryFactory, IEntityFrameworkRepositoryFactory<TContext>
         where TContext : DbContext
     {
         /// <summary>
@@ -82,9 +85,16 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Represents the database session that is used by the produced repositories.
+        /// Gets the database session that is used by the produced repositories.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly TContext Context;
+        public TContext Context
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the type of the database session that is used by the produced repositories.
+        /// </summary>
+        public Type ContextType => typeof(TContext);
     }
 }

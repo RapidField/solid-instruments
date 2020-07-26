@@ -361,9 +361,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is Mass)
+            else if (obj is Mass mass)
             {
-                return Equals((Mass)obj);
+                return Equals(mass);
             }
 
             return false;

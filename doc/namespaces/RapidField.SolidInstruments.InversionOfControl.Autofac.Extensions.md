@@ -7,7 +7,7 @@ summary: *content
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-Exposes extensions that support the **Autofac** implementation of the **Solid Instruments** inversion of control abstraction.
+Exposes extensions that support the [**Autofac**](https://autofac.org/) integration for the **Solid Instruments** inversion of control abstractions.
 
 <br />
 

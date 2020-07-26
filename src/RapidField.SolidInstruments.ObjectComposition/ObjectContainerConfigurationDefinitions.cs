@@ -12,7 +12,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// Represents a collection of definitions that control the behavior of an <see cref="ObjectContainer" /> when resolving
     /// requested objects.
     /// </summary>
-    public sealed class ObjectContainerConfigurationDefinitions
+    /// <remarks>
+    /// <see cref="ObjectContainerConfigurationDefinitions" /> is the default implementation of
+    /// <see cref="IObjectContainerConfigurationDefinitions" />.
+    /// </remarks>
+    public sealed class ObjectContainerConfigurationDefinitions : IObjectContainerConfigurationDefinitions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectContainerConfigurationDefinitions" /> class.
@@ -20,7 +24,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         [DebuggerHidden]
         internal ObjectContainerConfigurationDefinitions()
         {
-            Registrations = new ConcurrentDictionary<Type, ObjectContainerDefinition>();
+            Registrations = new ConcurrentDictionary<Type, IObjectContainerDefinition>();
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ArgumentException">
         /// A definition already exists for <typeparamref name="TRequest" />.
         /// </exception>
-        public ObjectContainerConfigurationDefinitions Add<TRequest, TProduct>()
+        public IObjectContainerConfigurationDefinitions Add<TRequest, TProduct>()
             where TRequest : class
             where TProduct : class, TRequest
         {
@@ -59,13 +63,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ArgumentException">
         /// A definition already exists for <typeparamref name="TProduct" />.
         /// </exception>
-        public ObjectContainerConfigurationDefinitions Add<TProduct>()
+        public IObjectContainerConfigurationDefinitions Add<TProduct>()
             where TProduct : class => Add<TProduct, TProduct>();
 
         /// <summary>
         /// Represents a collection of request-product type pairs that constitute the definitions.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly ConcurrentDictionary<Type, ObjectContainerDefinition> Registrations;
+        internal readonly ConcurrentDictionary<Type, IObjectContainerDefinition> Registrations;
     }
 }

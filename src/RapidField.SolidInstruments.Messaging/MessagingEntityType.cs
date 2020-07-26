@@ -7,7 +7,7 @@ using System;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Defines the targeted entity type for a message publishing or subscription operation.
+    /// Defines the targeted entity type for a message transmission or listening operation.
     /// </summary>
     public enum MessagingEntityType : Int32
     {

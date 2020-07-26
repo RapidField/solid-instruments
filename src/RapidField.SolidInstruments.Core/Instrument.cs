@@ -8,13 +8,17 @@ using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
     /// Represents a utility with disposable resources and exposes a lazily-loaded concurrency control mechanism.
     /// </summary>
-    public abstract class Instrument : IDisposable
+    /// <remarks>
+    /// <see cref="Instrument" /> is the default implementation of <see cref="IInstrument" />.
+    /// </remarks>
+    public abstract class Instrument : IInstrument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Instrument" /> class.
@@ -95,6 +99,14 @@ namespace RapidField.SolidInstruments.Core
 #pragma warning restore CA1063
 
         /// <summary>
+        /// Asynchronously releases all resources consumed by the current <see cref="Instrument" />.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+
+        /// <summary>
         /// Initializes a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.
         /// </summary>
         /// <returns>
@@ -131,6 +143,16 @@ namespace RapidField.SolidInstruments.Core
                 throw new ObjectDisposedException(ToString());
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="IInstrument" /> is fully occupied, as measured by thread
+        /// saturation for state-controlling operations.
+        /// </summary>
+        /// <remarks>
+        /// Interrogate this property to determine if the instrument is immediately available to perform an operation that reserves
+        /// state control. This is useful for cases in which another resource may be utilized to perform the same operation.
+        /// </remarks>
+        public Boolean IsBusy => StateControl.ConsumptionState == ConcurrencyControlConsumptionState.FullyClaimed;
 
         /// <summary>
         /// Gets a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.

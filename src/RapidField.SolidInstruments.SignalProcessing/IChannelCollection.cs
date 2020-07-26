@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -87,7 +87,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -119,7 +119,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -127,7 +127,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -135,7 +135,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -167,7 +167,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the twelfth channel in the collection.
         /// </summary>
-        TChannelL ChannelL
+        public TChannelL ChannelL
         {
             get;
         }
@@ -175,7 +175,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the thirteenth channel in the collection.
         /// </summary>
-        TChannelM ChannelM
+        public TChannelM ChannelM
         {
             get;
         }
@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourteenth channel in the collection.
         /// </summary>
-        TChannelN ChannelN
+        public TChannelN ChannelN
         {
             get;
         }
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifteenth channel in the collection.
         /// </summary>
-        TChannelO ChannelO
+        public TChannelO ChannelO
         {
             get;
         }
@@ -199,7 +199,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixteenth channel in the collection.
         /// </summary>
-        TChannelP ChannelP
+        public TChannelP ChannelP
         {
             get;
         }
@@ -273,7 +273,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -281,7 +281,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -289,7 +289,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -297,7 +297,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -305,7 +305,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -313,7 +313,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -321,7 +321,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -329,7 +329,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -337,7 +337,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -345,7 +345,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -353,7 +353,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -361,7 +361,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the twelfth channel in the collection.
         /// </summary>
-        TChannelL ChannelL
+        public TChannelL ChannelL
         {
             get;
         }
@@ -369,7 +369,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the thirteenth channel in the collection.
         /// </summary>
-        TChannelM ChannelM
+        public TChannelM ChannelM
         {
             get;
         }
@@ -377,7 +377,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourteenth channel in the collection.
         /// </summary>
-        TChannelN ChannelN
+        public TChannelN ChannelN
         {
             get;
         }
@@ -385,7 +385,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifteenth channel in the collection.
         /// </summary>
-        TChannelO ChannelO
+        public TChannelO ChannelO
         {
             get;
         }
@@ -455,7 +455,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -463,7 +463,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -471,7 +471,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -479,7 +479,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -487,7 +487,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -495,7 +495,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -503,7 +503,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -511,7 +511,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -519,7 +519,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -527,7 +527,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -535,7 +535,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -543,7 +543,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the twelfth channel in the collection.
         /// </summary>
-        TChannelL ChannelL
+        public TChannelL ChannelL
         {
             get;
         }
@@ -551,7 +551,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the thirteenth channel in the collection.
         /// </summary>
-        TChannelM ChannelM
+        public TChannelM ChannelM
         {
             get;
         }
@@ -559,7 +559,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourteenth channel in the collection.
         /// </summary>
-        TChannelN ChannelN
+        public TChannelN ChannelN
         {
             get;
         }
@@ -625,7 +625,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -633,7 +633,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -641,7 +641,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -649,7 +649,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -657,7 +657,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -665,7 +665,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -673,7 +673,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -681,7 +681,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -689,7 +689,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -697,7 +697,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -705,7 +705,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -713,7 +713,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the twelfth channel in the collection.
         /// </summary>
-        TChannelL ChannelL
+        public TChannelL ChannelL
         {
             get;
         }
@@ -721,7 +721,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the thirteenth channel in the collection.
         /// </summary>
-        TChannelM ChannelM
+        public TChannelM ChannelM
         {
             get;
         }
@@ -783,7 +783,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -791,7 +791,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -799,7 +799,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -807,7 +807,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -815,7 +815,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -823,7 +823,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -831,7 +831,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -839,7 +839,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -847,7 +847,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -855,7 +855,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -863,7 +863,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -871,7 +871,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the twelfth channel in the collection.
         /// </summary>
-        TChannelL ChannelL
+        public TChannelL ChannelL
         {
             get;
         }
@@ -929,7 +929,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -937,7 +937,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -945,7 +945,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -953,7 +953,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -961,7 +961,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -969,7 +969,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -977,7 +977,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -985,7 +985,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -993,7 +993,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -1001,7 +1001,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -1009,7 +1009,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eleventh channel in the collection.
         /// </summary>
-        TChannelK ChannelK
+        public TChannelK ChannelK
         {
             get;
         }
@@ -1063,7 +1063,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1071,7 +1071,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1079,7 +1079,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1087,7 +1087,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1095,7 +1095,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1103,7 +1103,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -1111,7 +1111,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -1119,7 +1119,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -1127,7 +1127,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -1135,7 +1135,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the tenth channel in the collection.
         /// </summary>
-        TChannelJ ChannelJ
+        public TChannelJ ChannelJ
         {
             get;
         }
@@ -1185,7 +1185,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1193,7 +1193,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1201,7 +1201,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1209,7 +1209,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1217,7 +1217,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1225,7 +1225,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -1233,7 +1233,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -1241,7 +1241,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -1249,7 +1249,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the ninth channel in the collection.
         /// </summary>
-        TChannelI ChannelI
+        public TChannelI ChannelI
         {
             get;
         }
@@ -1295,7 +1295,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1303,7 +1303,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1311,7 +1311,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1319,7 +1319,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1327,7 +1327,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1335,7 +1335,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -1343,7 +1343,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -1351,7 +1351,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the eighth channel in the collection.
         /// </summary>
-        TChannelH ChannelH
+        public TChannelH ChannelH
         {
             get;
         }
@@ -1393,7 +1393,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1401,7 +1401,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1409,7 +1409,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1417,7 +1417,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1425,7 +1425,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1433,7 +1433,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -1441,7 +1441,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the seventh channel in the collection.
         /// </summary>
-        TChannelG ChannelG
+        public TChannelG ChannelG
         {
             get;
         }
@@ -1479,7 +1479,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1487,7 +1487,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1495,7 +1495,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1503,7 +1503,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1511,7 +1511,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1519,7 +1519,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the sixth channel in the collection.
         /// </summary>
-        TChannelF ChannelF
+        public TChannelF ChannelF
         {
             get;
         }
@@ -1553,7 +1553,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1561,7 +1561,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1569,7 +1569,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1577,7 +1577,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1585,7 +1585,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fifth channel in the collection.
         /// </summary>
-        TChannelE ChannelE
+        public TChannelE ChannelE
         {
             get;
         }
@@ -1615,7 +1615,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1623,7 +1623,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1631,7 +1631,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1639,7 +1639,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the fourth channel in the collection.
         /// </summary>
-        TChannelD ChannelD
+        public TChannelD ChannelD
         {
             get;
         }
@@ -1665,7 +1665,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1673,7 +1673,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1681,7 +1681,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the third channel in the collection.
         /// </summary>
-        TChannelC ChannelC
+        public TChannelC ChannelC
         {
             get;
         }
@@ -1703,7 +1703,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1711,7 +1711,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the second channel in the collection.
         /// </summary>
-        TChannelB ChannelB
+        public TChannelB ChannelB
         {
             get;
         }
@@ -1729,7 +1729,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the first channel in the collection.
         /// </summary>
-        TChannelA ChannelA
+        public TChannelA ChannelA
         {
             get;
         }
@@ -1743,7 +1743,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets a unique identifier for the current <see cref="IChannelCollection" />.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
         }

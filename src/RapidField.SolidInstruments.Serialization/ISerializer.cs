@@ -12,41 +12,47 @@ namespace RapidField.SolidInstruments.Serialization
     /// <typeparam name="T">
     /// The type of the serializable object.
     /// </typeparam>
-    public interface ISerializer<T>
+    public interface ISerializer<T> : ISerializer
         where T : class
     {
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="buffer" /> is <see langword="null" />.
+        /// <paramref name="serializedObject" /> is <see langword="null" />.
         /// </exception>
-        T Deserialize(Byte[] buffer);
+        public T Deserialize(Byte[] serializedObject);
 
         /// <summary>
-        /// Converts the specified object to a serialized buffer.
+        /// Converts the specified object to a serialized bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
-        Byte[] Serialize(T target);
+        public Byte[] Serialize(T target);
+    }
 
+    /// <summary>
+    /// Performs serialization and deserialization for a given type.
+    /// </summary>
+    public interface ISerializer
+    {
         /// <summary>
         /// Gets the format to use for serialization and deserialization.
         /// </summary>
-        SerializationFormat Format
+        public SerializationFormat Format
         {
             get;
         }

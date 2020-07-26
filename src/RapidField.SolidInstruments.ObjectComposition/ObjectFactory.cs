@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         protected ObjectFactory(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
-            LazyProductionFunctions = new Lazy<ConcurrentDictionary<Type, ObjectFactoryProductionFunction>>(DefineProductionFunctions, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProductionFunctions = new Lazy<ConcurrentDictionary<Type, IObjectFactoryProductionFunction>>(DefineProductionFunctions, LazyThreadSafetyMode.ExecutionAndPublication);
             ProductBaseType = typeof(TProductBase);
         }
 
@@ -166,13 +166,21 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
+        /// Converts the value of the current <see cref="ObjectFactory{TProductBase}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ObjectFactory{TProductBase}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ProductBaseType)}\": \"{ProductBaseType.FullName}\" }}";
+
+        /// <summary>
         /// Returns a collection of supported product types paired with functions to create them.
         /// </summary>
         /// <exception cref="ObjectConfigurationException">
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerHidden]
-        internal virtual ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions() => Configuration.ProductionFunctions.Dictionary;
+        internal virtual ConcurrentDictionary<Type, IObjectFactoryProductionFunction> DefineProductionFunctions() => ((ObjectFactoryConfigurationProductionFunctions<TProductBase>)(Configuration.ProductionFunctions)).Dictionary;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory{TProductBase}" />.
@@ -221,7 +229,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal ConcurrentDictionary<Type, ObjectFactoryProductionFunction> ProductionFunctions => LazyProductionFunctions.Value;
+        internal ConcurrentDictionary<Type, IObjectFactoryProductionFunction> ProductionFunctions => LazyProductionFunctions.Value;
 
         /// <summary>
         /// Represents a lazily-initialized collection of type names and functions that produce the associated types.
@@ -230,6 +238,6 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<ConcurrentDictionary<Type, ObjectFactoryProductionFunction>> LazyProductionFunctions;
+        private readonly Lazy<ConcurrentDictionary<Type, IObjectFactoryProductionFunction>> LazyProductionFunctions;
     }
 }

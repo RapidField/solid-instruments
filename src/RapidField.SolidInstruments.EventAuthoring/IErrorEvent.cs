@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a name or value that uniquely identifies the application in which the associated error occurred.
         /// </summary>
-        String ApplicationIdentity
+        public String ApplicationIdentity
         {
             get;
             set;
@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets textual diagnostic information about the associated error.
         /// </summary>
-        String DiagnosticDetails
+        public String DiagnosticDetails
         {
             get;
             set;

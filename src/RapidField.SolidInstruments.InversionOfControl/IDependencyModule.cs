@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
     /// <typeparam name="TConfigurator">
     /// The type of the object that configures containers.
     /// </typeparam>
-    public interface IDependencyModule<TConfigurator>
+    public interface IDependencyModule<TConfigurator> : IDependencyModule
         where TConfigurator : class, new()
     {
         /// <summary>
@@ -27,6 +27,13 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to configure the container.
         /// </exception>
-        void Configure(TConfigurator configurator);
+        public void Configure(TConfigurator configurator);
+    }
+
+    /// <summary>
+    /// Encapsulates container configuration for a group of related dependencies.
+    /// </summary>
+    public interface IDependencyModule
+    {
     }
 }

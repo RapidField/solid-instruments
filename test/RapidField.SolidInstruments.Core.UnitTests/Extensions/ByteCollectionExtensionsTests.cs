@@ -219,5 +219,40 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
                 resultFive[i].Should().Be(targetFive[i]);
             }
         }
+
+        [TestMethod]
+        public void ToBase64String_ShouldReturnValidResult()
+        {
+            // Arrange.
+            var targetOne = Array.Empty<Byte>();
+            var targetTwo = new Byte[1] { 0x3f };
+            var targetThree = new Byte[2] { 0x7b, 0x80 };
+            var targetFour = new Byte[2] { 0xe1, 0x93 };
+            var targetFive = new Byte[4] { 0x68, 0xc5, 0x8a, 0x13 };
+            var expectedResultOne = Convert.ToBase64String(targetOne);
+            var expectedResultTwo = Convert.ToBase64String(targetTwo);
+            var expectedResultThree = Convert.ToBase64String(targetThree);
+            var expectedResultFour = Convert.ToBase64String(targetFour);
+            var expectedResultFive = Convert.ToBase64String(targetFive);
+
+            // Act.
+            var resultOne = targetOne.ToBase64String();
+            var resultTwo = targetTwo.ToBase64String();
+            var resultThree = targetThree.ToBase64String();
+            var resultFour = targetFour.ToBase64String();
+            var resultFive = targetFive.ToBase64String();
+
+            // Assert.
+            resultOne.Should().NotBeNull();
+            resultTwo.Should().NotBeNull();
+            resultThree.Should().NotBeNull();
+            resultFour.Should().NotBeNull();
+            resultFive.Should().NotBeNull();
+            resultOne.Should().Be(expectedResultOne);
+            resultTwo.Should().Be(expectedResultTwo);
+            resultThree.Should().Be(expectedResultThree);
+            resultFour.Should().Be(expectedResultFour);
+            resultFive.Should().Be(expectedResultFive);
+        }
     }
 }

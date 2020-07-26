@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Command;
 using System;
 
 namespace RapidField.SolidInstruments.EventAuthoring
@@ -9,7 +10,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <summary>
     /// Represents information about an event.
     /// </summary>
-    public interface IEvent : IComparable<IEvent>, IEquatable<IEvent>
+    public interface IEvent : ICommand, IComparable<IEvent>, IEquatable<IEvent>
     {
         /// <summary>
         /// Converts the current <see cref="IEvent" /> to an array of bytes.
@@ -17,12 +18,12 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// An array of bytes representing the current <see cref="IEvent" />.
         /// </returns>
-        Byte[] ToByteArray();
+        public Byte[] ToByteArray();
 
         /// <summary>
         /// Gets or sets the category of the event.
         /// </summary>
-        EventCategory Category
+        public EventCategory Category
         {
             get;
             set;
@@ -31,7 +32,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a textual description of the event.
         /// </summary>
-        String Description
+        public String Description
         {
             get;
             set;
@@ -40,7 +41,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a <see cref="DateTime" /> that indicates when the event occurred.
         /// </summary>
-        DateTime TimeStamp
+        public DateTime TimeStamp
         {
             get;
             set;
@@ -49,7 +50,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets the verbosity level of the event.
         /// </summary>
-        EventVerbosity Verbosity
+        public EventVerbosity Verbosity
         {
             get;
             set;

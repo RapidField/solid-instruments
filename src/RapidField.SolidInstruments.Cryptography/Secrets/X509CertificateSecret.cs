@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
@@ -62,10 +63,28 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Generates a new, unique X.509 certificate name.
+        /// </summary>
+        /// <param name="thumbprint">
+        /// The certificate thumbprint.
+        /// </param>
+        /// <returns>
+        /// A new, unique X.509 certificate name.
+        /// </returns>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="thumbprint" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="thumbprint" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static String NewX509CertificateSecretName(String thumbprint) => Secret.GetPrefixedSemanticIdentifier(X509CertificateSecretNamePrefix, thumbprint);
+
+        /// <summary>
         /// Creates a <see cref="X509Certificate2" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="X509Certificate2" />.
+        /// Pinned memory representing a <see cref="X509Certificate2" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -73,11 +92,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="X509Certificate2" />.
         /// </returns>
-        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
+        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -86,9 +105,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(X509Certificate2 value, ConcurrencyControlToken controlToken) => new PinnedBuffer(value.RawData);
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(X509Certificate2 value, IConcurrencyControlToken controlToken) => new PinnedMemory(value.RawData);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="X509CertificateSecret" />.
@@ -97,5 +116,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A value indicating whether or not managed resources should be released.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Represents the default textual prefix for <see cref="X509CertificateSecret" /> names.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String X509CertificateSecretNamePrefix = "X509Certificate";
     }
 }

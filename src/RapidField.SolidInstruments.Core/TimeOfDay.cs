@@ -373,7 +373,7 @@ namespace RapidField.SolidInstruments.Core
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Object obj) => obj is TimeOfDay ? CompareTo((TimeOfDay)obj) : GetType().FullName.CompareTo(obj.GetType().FullName);
+        public Int32 CompareTo(Object obj) => obj is TimeOfDay timeOfDay ? CompareTo(timeOfDay) : GetType().FullName.CompareTo(obj.GetType().FullName);
 
         /// <summary>
         /// Determines whether or not the current <see cref="TimeOfDay" /> is equal to the specified <see cref="Object" />.
@@ -390,9 +390,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is TimeOfDay)
+            else if (obj is TimeOfDay timeOfDay)
             {
-                return Equals((TimeOfDay)obj);
+                return Equals(timeOfDay);
             }
 
             return false;
@@ -470,8 +470,8 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public override String ToString()
         {
-            Int32? twelveHourClockFormatHourValue = null;
-            String meridiemStringFragment = null;
+            Int32? twelveHourClockFormatHourValue;
+            String meridiemStringFragment;
 
             switch (Hour)
             {
@@ -626,7 +626,7 @@ namespace RapidField.SolidInstruments.Core
                     break;
             }
 
-            return $"{twelveHourClockFormatHourValue.Value}:{Minute.ToString("00")}:{Second.ToString("00")}.{Millisecond.ToString("000")} {meridiemStringFragment} {Zone.Id}";
+            return $"{twelveHourClockFormatHourValue.Value}:{Minute:00}:{Second:00}.{Millisecond:000} {meridiemStringFragment} {Zone.Id}";
         }
 
         /// <summary>

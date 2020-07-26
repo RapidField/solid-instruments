@@ -137,11 +137,5 @@ namespace RapidField.SolidInstruments.Messaging
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const SerializationFormat DefaultMessageSerializationFormat = SerializationFormat.Binary;
-
-        /// <summary>
-        /// Represents the default concurrency control mode that is used to manage state.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const ConcurrencyControlMode DefaultStateControlMode = ConcurrencyControlMode.ProcessorCountSemaphore;
     }
 }

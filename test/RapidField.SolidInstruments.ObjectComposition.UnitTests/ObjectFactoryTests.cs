@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
                 var supportedProductTypes = target.SupportedProductTypes;
 
                 // Assert.
-                supportedProductTypes.Should().Contain(typeof(PinnedBuffer<Int16>));
+                supportedProductTypes.Should().Contain(typeof(PinnedMemory<Int16>));
                 supportedProductTypes.Should().Contain(typeof(CircularBuffer<Int32>));
             }
         }

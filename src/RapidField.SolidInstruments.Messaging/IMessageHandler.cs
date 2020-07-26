@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the targeted entity type for the current <see cref="IMessageHandler{TMessage, TResult}" />.
         /// </summary>
-        MessagingEntityType EntityType
+        public MessagingEntityType EntityType
         {
             get;
         }
@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the role of the current <see cref="IMessageHandler{TMessage, TResult}" />.
         /// </summary>
-        MessageHandlerRole Role
+        public MessageHandlerRole Role
         {
             get;
         }

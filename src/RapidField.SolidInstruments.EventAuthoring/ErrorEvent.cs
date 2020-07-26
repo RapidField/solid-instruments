@@ -31,6 +31,21 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
         /// </summary>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(Guid correlationIdentifier)
+            : this(DefaultApplicationIdentity, correlationIdentifier)
+        {
+            DiagnosticDetails = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
         /// <param name="exception">
         /// An associated exception.
         /// </param>
@@ -39,6 +54,27 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public ErrorEvent(Exception exception)
             : this(DefaultApplicationIdentity, exception)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="exception">
+        /// An associated exception.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="exception" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(Exception exception, Guid correlationIdentifier)
+            : this(DefaultApplicationIdentity, exception, correlationIdentifier)
         {
             return;
         }
@@ -67,6 +103,30 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="applicationIdentity">
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, Guid correlationIdentifier)
+            : this(applicationIdentity, diagnosticDetails: null, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
         /// <param name="exception">
         /// An associated exception.
         /// </param>
@@ -79,6 +139,34 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public ErrorEvent(String applicationIdentity, Exception exception)
             : this(applicationIdentity, exception.RejectIf().IsNull(nameof(exception)).TargetArgument.StackTrace, DefaultVerbosity, exception.Message)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
+        /// <param name="exception">
+        /// An associated exception.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" /> -or- <paramref name="exception" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, Exception exception, Guid correlationIdentifier)
+            : this(applicationIdentity, exception.RejectIf().IsNull(nameof(exception)).TargetArgument.StackTrace, DefaultVerbosity, exception.Message, correlationIdentifier)
         {
             return;
         }
@@ -113,6 +201,33 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="diagnosticDetails">
         /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, String diagnosticDetails, Guid correlationIdentifier)
+            : this(applicationIdentity, diagnosticDetails, DefaultVerbosity, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
+        /// <param name="diagnosticDetails">
+        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
         /// </param>
@@ -127,6 +242,37 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public ErrorEvent(String applicationIdentity, String diagnosticDetails, EventVerbosity verbosity)
             : this(applicationIdentity, diagnosticDetails, verbosity, null)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
+        /// <param name="diagnosticDetails">
+        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, String diagnosticDetails, EventVerbosity verbosity, Guid correlationIdentifier)
+            : this(applicationIdentity, diagnosticDetails, verbosity, null, correlationIdentifier)
         {
             return;
         }
@@ -176,6 +322,40 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="description">
         /// A textual description of the event. This argument can be <see langword="null" />.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, String diagnosticDetails, EventVerbosity verbosity, String description, Guid correlationIdentifier)
+            : this(applicationIdentity, diagnosticDetails, verbosity, description, DefaultTimeStamp, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
+        /// <param name="diagnosticDetails">
+        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
         /// <param name="timeStamp">
         /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
         /// </param>
@@ -190,6 +370,44 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public ErrorEvent(String applicationIdentity, String diagnosticDetails, EventVerbosity verbosity, String description, DateTime timeStamp)
             : base(StaticCategory, verbosity, description, timeStamp)
+        {
+            ApplicationIdentity = applicationIdentity.RejectIf().IsNullOrEmpty(nameof(applicationIdentity));
+            DiagnosticDetails = diagnosticDetails;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorEvent" /> class.
+        /// </summary>
+        /// <param name="applicationIdentity">
+        /// A name or value that uniquely identifies the application in which the associated error occurred.
+        /// </param>
+        /// <param name="diagnosticDetails">
+        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
+        /// <param name="timeStamp">
+        /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationIdentity" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationIdentity" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public ErrorEvent(String applicationIdentity, String diagnosticDetails, EventVerbosity verbosity, String description, DateTime timeStamp, Guid correlationIdentifier)
+            : base(StaticCategory, verbosity, description, timeStamp, correlationIdentifier)
         {
             ApplicationIdentity = applicationIdentity.RejectIf().IsNullOrEmpty(nameof(applicationIdentity));
             DiagnosticDetails = diagnosticDetails;

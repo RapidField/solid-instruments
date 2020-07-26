@@ -73,6 +73,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Boolean IsNumeric(this Char target) => Char.IsDigit(target);
 
         /// <summary>
+        /// Determines whether or not the current <see cref="Char" /> represents a Unicode punctuation character.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Char" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode punctuation character, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsPunctuation(this Char target) => Char.IsPunctuation(target);
+
+        /// <summary>
         /// Determines whether or not the current <see cref="Char" /> represents a Unicode symbolic character.
         /// </summary>
         /// <param name="target">

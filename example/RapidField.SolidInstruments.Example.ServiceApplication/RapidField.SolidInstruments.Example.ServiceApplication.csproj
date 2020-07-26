@@ -37,8 +37,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.6" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" />
@@ -46,6 +46,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.AzureServiceBus\RapidField.SolidInstruments.Messaging.AzureServiceBus.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative.Asb\RapidField.SolidInstruments.Messaging.DotNetNative.Asb.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.RabbitMq\RapidField.SolidInstruments.Messaging.RabbitMq.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Example.Contracts\RapidField.SolidInstruments.Example.Contracts.csproj" />
         <ProjectReference Include="..\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj" />

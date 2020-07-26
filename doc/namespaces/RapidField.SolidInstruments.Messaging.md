@@ -32,6 +32,24 @@ Install-Package RapidField.SolidInstruments.Messaging
 
 ### Namespaces
 
+#### [RapidField.SolidInstruments.Messaging.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.CommandMessages](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.CommandMessages.html)
+
+<section>
+Exposes various command message types.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments messaging abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.Messaging.EventMessages](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.EventMessages.html)
 
 <section>

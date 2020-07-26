@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace RapidField.SolidInstruments.DataAccess
@@ -15,7 +14,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <typeparam name="TEntity">
     /// The type of the entity.
     /// </typeparam>
-    public interface IDataAccessRepository<TEntity> : IDataAccessRepository
+    public interface IDataAccessRepository<TEntity> : IReadOnlyDataAccessRepository<TEntity>
         where TEntity : class
     {
         /// <summary>
@@ -30,7 +29,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Add(TEntity entity);
+        public void Add(TEntity entity);
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="IDataAccessRepository{TEntity}" />, or adds it if it doesn't
@@ -45,7 +44,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdate(TEntity entity);
+        public void AddOrUpdate(TEntity entity);
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="IDataAccessRepository{TEntity}" />, or adds them if they don't
@@ -63,7 +62,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddOrUpdateRange(IEnumerable<TEntity> entities);
+        public void AddOrUpdateRange(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -80,90 +79,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void AddRange(IEnumerable<TEntity> entities);
-
-        /// <summary>
-        /// Returns all entities from the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <returns>
-        /// All entities within the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        IQueryable<TEntity> All();
-
-        /// <summary>
-        /// Determines whether or not the specified entity exists in the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="entity">
-        /// The entity to evaluate.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if the specified entity exists in the current <see cref="IDataAccessRepository{TEntity}" />,
-        /// otherwise <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="entity" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        Boolean Contains(TEntity entity);
-
-        /// <summary>
-        /// Determines whether or not any entities matching the specified predicate exist in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if any entities matching the specified predicate exist in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />, otherwise <see langword="false" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        Boolean ContainsWhere(Expression<Func<TEntity, Boolean>> predicate);
-
-        /// <summary>
-        /// Returns the number of entities matching the specified predicate in the current
-        /// <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// The number of entities matching the specified predicate in the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate);
-
-        /// <summary>
-        /// Returns all entities matching the specified predicate from the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </summary>
-        /// <param name="predicate">
-        /// An expression to test each entity for a condition.
-        /// </param>
-        /// <returns>
-        /// All entities matching the specified predicate within the current <see cref="IDataAccessRepository{TEntity}" />.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="predicate" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate);
+        public void AddRange(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -177,7 +93,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Remove(TEntity entity);
+        public void Remove(TEntity entity);
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -194,7 +110,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RemoveRange(IEnumerable<TEntity> entities);
+        public void RemoveRange(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Removes the entities matching the specified predicate from the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -208,7 +124,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void RemoveWhere(Expression<Func<TEntity, Boolean>> predicate);
+        public void RemoveWhere(Expression<Func<TEntity, Boolean>> predicate);
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -222,7 +138,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void Update(TEntity entity);
+        public void Update(TEntity entity);
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="IDataAccessRepository{TEntity}" />.
@@ -239,13 +155,13 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        void UpdateRange(IEnumerable<TEntity> entities);
+        public void UpdateRange(IEnumerable<TEntity> entities);
     }
 
     /// <summary>
     /// Performs data access operations for a specified entity type.
     /// </summary>
-    public interface IDataAccessRepository : IDisposable
+    public interface IDataAccessRepository : IAsyncDisposable, IDisposable
     {
         /// <summary>
         /// Determines whether or not any entities exist in the current <see cref="IDataAccessRepository" />.
@@ -257,7 +173,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Boolean Any();
+        public Boolean Any();
 
         /// <summary>
         /// Returns the number of entities in the current <see cref="IDataAccessRepository" />.
@@ -268,12 +184,12 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Int64 Count();
+        public Int64 Count();
 
         /// <summary>
         /// Gets the entity type of the current <see cref="IDataAccessRepository" />.
         /// </summary>
-        Type EntityType
+        public Type EntityType
         {
             get;
         }

@@ -109,9 +109,9 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
             {
                 return false;
             }
-            else if (obj is SimulatedEntity<TValue>)
+            else if (obj is SimulatedEntity<TValue> entity)
             {
-                return Equals((SimulatedEntity<TValue>)obj);
+                return Equals(entity);
             }
 
             return false;

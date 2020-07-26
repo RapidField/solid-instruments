@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Example.Contracts.Models
         /// <summary>
         /// Gets a unique identifier for the entity.
         /// </summary>
-        Guid Identifier
+        public Guid Identifier
         {
             get;
         }
@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Example.Contracts.Models
         /// <summary>
         /// Gets a unique identifier for the associated number.
         /// </summary>
-        Guid NumberIdentifier
+        public Guid NumberIdentifier
         {
             get;
         }
@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Example.Contracts.Models
         /// <summary>
         /// Gets a unique identifier for the associated number series.
         /// </summary>
-        Guid NumberSeriesIdentifier
+        public Guid NumberSeriesIdentifier
         {
             get;
         }

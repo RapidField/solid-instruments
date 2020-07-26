@@ -7,7 +7,7 @@ using System;
 namespace RapidField.SolidInstruments.EventAuthoring.Extensions
 {
     /// <summary>
-    /// Extends the <see cref="EventVerbosity" /> enumeration with general purpose features.
+    /// Extends the <see cref="EventVerbosity" /> enumeration with event authoring features.
     /// </summary>
     public static class EventVerbosityExtensions
     {

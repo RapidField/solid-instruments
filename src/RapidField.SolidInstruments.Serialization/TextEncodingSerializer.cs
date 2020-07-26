@@ -41,9 +41,9 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <param name="format">
@@ -53,13 +53,13 @@ namespace RapidField.SolidInstruments.Serialization
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected override String Deserialize(Byte[] buffer, SerializationFormat format)
+        protected override String Deserialize(Byte[] serializedObject, SerializationFormat format)
         {
             try
             {
-                return Deserialize(buffer, CharacterEncoding);
+                return Deserialize(serializedObject, CharacterEncoding);
             }
             catch (Exception exception)
             {
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// The format to use for serialization.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
@@ -95,9 +95,9 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <param name="characterEncoding">
@@ -107,19 +107,19 @@ namespace RapidField.SolidInstruments.Serialization
         /// The deserialized object.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="buffer" /> is invalid.
+        /// <paramref name="serializedObject" /> is invalid.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="buffer" /> is invalid.
+        /// <paramref name="serializedObject" /> is invalid.
         /// </exception>
         /// <exception cref="DecoderFallbackException">
         /// A fallback occurred.
         /// </exception>
         [DebuggerHidden]
-        private static String Deserialize(Byte[] buffer, Encoding characterEncoding) => characterEncoding.GetString(buffer);
+        private static String Deserialize(Byte[] serializedObject, Encoding characterEncoding) => characterEncoding.GetString(serializedObject);
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.

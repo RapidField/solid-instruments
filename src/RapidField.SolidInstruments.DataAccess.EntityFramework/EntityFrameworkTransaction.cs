@@ -18,10 +18,14 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Fulfills the unit of work pattern for Entity Framework data access operations.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkTransaction{TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkTransaction{TContext}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session for the transaction.
     /// </typeparam>
-    public class EntityFrameworkTransaction<TContext> : DataAccessTransaction
+    public class EntityFrameworkTransaction<TContext> : DataAccessTransaction, IEntityFrameworkTransaction<TContext>
         where TContext : DbContext
     {
         /// <summary>
@@ -77,7 +81,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that ensures tread safety for the operation.
         /// </param>
-        protected override void Begin(ConcurrencyControlToken controlToken) => Transaction = Context.Database.BeginTransaction(IsolationLevel);
+        protected override void Begin(IConcurrencyControlToken controlToken) => Transaction = Context.Database.BeginTransaction(IsolationLevel);
 
         /// <summary>
         /// Asynchronously initiates the current <see cref="EntityFrameworkTransaction{TContext}" />.
@@ -88,7 +92,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override Task BeginAsync(ConcurrencyControlToken controlToken) => Context.Database.BeginTransactionAsync(IsolationLevel).ContinueWith(beginTransactionTask =>
+        protected override Task BeginAsync(IConcurrencyControlToken controlToken) => Context.Database.BeginTransactionAsync(IsolationLevel).ContinueWith(beginTransactionTask =>
         {
             Transaction = beginTransactionTask.Result;
         });
@@ -99,7 +103,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that ensures tread safety for the operation.
         /// </param>
-        protected override void Commit(ConcurrencyControlToken controlToken)
+        protected override void Commit(IConcurrencyControlToken controlToken)
         {
             Context.SaveChanges(true);
             Transaction?.Commit();
@@ -115,7 +119,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override Task CommitAsync(ConcurrencyControlToken controlToken) => Context.SaveChangesAsync(true).ContinueWith(saveChangesTask =>
+        protected override Task CommitAsync(IConcurrencyControlToken controlToken) => Context.SaveChangesAsync(true).ContinueWith(saveChangesTask =>
         {
             Transaction?.Commit();
         });
@@ -147,7 +151,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that ensures tread safety for the operation.
         /// </param>
-        protected override void Reject(ConcurrencyControlToken controlToken)
+        protected override void Reject(IConcurrencyControlToken controlToken)
         {
             var entities = Context.ChangeTracker.Entries();
 
@@ -180,7 +184,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override Task RejectAsync(ConcurrencyControlToken controlToken)
+        protected override Task RejectAsync(IConcurrencyControlToken controlToken)
         {
             var entities = Context.ChangeTracker.Entries();
             var reloadTasks = new List<Task>();

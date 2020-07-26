@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithFourLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithThreeLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithTwoLayers()
         {
             // Arrange.
-            var derivationMode = SymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
 

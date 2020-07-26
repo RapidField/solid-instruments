@@ -31,11 +31,48 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
         /// </summary>
-        /// <param name="severity">
-        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" />.
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
         /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public SecurityEvent(Guid correlationIdentifier)
+            : this(DefaultSeverity, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
+        /// </summary>
+        /// <param name="severity">
+        /// The severity of the event. The default value is <see cref="SecurityEventSeverity.Medium" />.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" />.
+        /// </exception>
         public SecurityEvent(SecurityEventSeverity severity)
             : this(severity, DefaultVerbosity)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
+        /// </summary>
+        /// <param name="severity">
+        /// The severity of the event. The default value is <see cref="SecurityEventSeverity.Medium" />.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public SecurityEvent(SecurityEventSeverity severity, Guid correlationIdentifier)
+            : this(severity, DefaultVerbosity, correlationIdentifier)
         {
             return;
         }
@@ -55,6 +92,29 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public SecurityEvent(SecurityEventSeverity severity, EventVerbosity verbosity)
             : this(severity, verbosity, null)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
+        /// </summary>
+        /// <param name="severity">
+        /// The severity of the event. The default value is <see cref="SecurityEventSeverity.Medium" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" /> -or-
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public SecurityEvent(SecurityEventSeverity severity, EventVerbosity verbosity, Guid correlationIdentifier)
+            : this(severity, verbosity, null, correlationIdentifier)
         {
             return;
         }
@@ -93,6 +153,32 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="description">
         /// A textual description of the event. This argument can be <see langword="null" />.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" /> -or-
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public SecurityEvent(SecurityEventSeverity severity, EventVerbosity verbosity, String description, Guid correlationIdentifier)
+            : this(severity, verbosity, description, DefaultTimeStamp, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
+        /// </summary>
+        /// <param name="severity">
+        /// The severity of the event. The default value is <see cref="SecurityEventSeverity.Medium" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
         /// <param name="timeStamp">
         /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
         /// </param>
@@ -102,6 +188,35 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public SecurityEvent(SecurityEventSeverity severity, EventVerbosity verbosity, String description, DateTime timeStamp)
             : base(StaticCategory, verbosity, description, timeStamp)
+        {
+            Severity = severity.RejectIf().IsEqualToValue(SecurityEventSeverity.Unspecified, nameof(severity));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityEvent" /> class.
+        /// </summary>
+        /// <param name="severity">
+        /// The severity of the event. The default value is <see cref="SecurityEventSeverity.Medium" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
+        /// <param name="timeStamp">
+        /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="severity" /> is equal to <see cref="SecurityEventSeverity.Unspecified" /> -or-
+        /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public SecurityEvent(SecurityEventSeverity severity, EventVerbosity verbosity, String description, DateTime timeStamp, Guid correlationIdentifier)
+            : base(StaticCategory, verbosity, description, timeStamp, correlationIdentifier)
         {
             Severity = severity.RejectIf().IsEqualToValue(SecurityEventSeverity.Unspecified, nameof(severity));
         }

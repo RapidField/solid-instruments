@@ -170,7 +170,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during object production.
         /// </exception>
         [DebuggerHidden]
-        private T GetNew<T>(ConcurrencyControlToken controlToken)
+        private T GetNew<T>(IConcurrencyControlToken controlToken)
             where T : class
         {
             var instanceType = typeof(T);
