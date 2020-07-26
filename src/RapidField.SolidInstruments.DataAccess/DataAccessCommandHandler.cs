@@ -64,9 +64,11 @@ namespace RapidField.SolidInstruments.DataAccess
                 {
                     Repositories.Dispose();
 
-                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by a
-                    // consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes may
-                    // initialize transactions in their constructors and thereby rely on this class to manage them.
+                    /* IMPORTANT
+                     * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                     * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                     * may initialize transactions in their constructors and thereby rely on this class to manage them.
+                    */
                     Transaction.Dispose();
                 }
             }
@@ -89,29 +91,20 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected sealed override void Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             if (Transaction.State == DataAccessTransactionState.Ready)
             {
                 try
                 {
                     Transaction.Begin();
-                    Process(command, Repositories, Transaction, controlToken);
-
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.CommitAsync());
-                    }
-
+                    Process(command, mediator, Repositories, controlToken);
+                    CommitTransaction(Transaction, controlToken);
                     return;
                 }
                 catch
                 {
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.RejectAsync());
-                    }
-
+                    AbortTransaction(Transaction, controlToken);
                     throw;
                 }
             }
@@ -125,16 +118,53 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="command">
         /// The command to process.
         /// </param>
+        /// <param name="mediator">
+        /// A processing intermediary that is used to process sub-commands. Do not process <paramref name="command" /> using
+        /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
+        /// </param>
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
         /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        protected abstract void Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken);
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.
+        /// </summary>
         /// <param name="transaction">
         /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken);
+        [DebuggerHidden]
+        private static void AbortTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.RejectAsync());
+            }
+        }
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that commits all changes made within the scope of the specified transaction.
+        /// </summary>
+        /// <param name="transaction">
+        /// A transaction that is used to process the command.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        [DebuggerHidden]
+        private static void CommitTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.CommitAsync());
+            }
+        }
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.
@@ -205,9 +235,11 @@ namespace RapidField.SolidInstruments.DataAccess
                 {
                     Repositories.Dispose();
 
-                    // Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by a
-                    // consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes may
-                    // initialize transactions in their constructors and thereby rely on this class to manage them.
+                    /* IMPORTANT
+                     * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                     * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                     * may initialize transactions in their constructors and thereby rely on this class to manage them.
+                    */
                     Transaction.Dispose();
                 }
             }
@@ -233,29 +265,20 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected sealed override TResult Process(TCommand command, ICommandMediator mediator, ConcurrencyControlToken controlToken)
+        protected sealed override TResult Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             if (Transaction.State == DataAccessTransactionState.Ready)
             {
                 try
                 {
                     Transaction.Begin();
-                    var result = Process(command, Repositories, Transaction, controlToken);
-
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.CommitAsync());
-                    }
-
+                    var result = Process(command, mediator, Repositories, controlToken);
+                    CommitTransaction(Transaction, controlToken);
                     return result;
                 }
                 catch
                 {
-                    if (Transaction.State == DataAccessTransactionState.InProgress)
-                    {
-                        controlToken.AttachTask(Transaction.RejectAsync());
-                    }
-
+                    AbortTransaction(Transaction, controlToken);
                     throw;
                 }
             }
@@ -269,11 +292,12 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="command">
         /// The command to process.
         /// </param>
+        /// <param name="mediator">
+        /// A processing intermediary that is used to process sub-commands. Do not process <paramref name="command" /> using
+        /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
+        /// </param>
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
-        /// </param>
-        /// <param name="transaction">
-        /// A transaction that is used to process the command.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -281,7 +305,43 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories, IDataAccessTransaction transaction, ConcurrencyControlToken controlToken);
+        protected abstract TResult Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken);
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.
+        /// </summary>
+        /// <param name="transaction">
+        /// A transaction that is used to process the command.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        [DebuggerHidden]
+        private static void AbortTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.RejectAsync());
+            }
+        }
+
+        /// <summary>
+        /// Conditionally starts an asynchronous task that commits all changes made within the scope of the specified transaction.
+        /// </summary>
+        /// <param name="transaction">
+        /// A transaction that is used to process the command.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        [DebuggerHidden]
+        private static void CommitTransaction(IDataAccessTransaction transaction, IConcurrencyControlToken controlToken)
+        {
+            if (transaction.State == DataAccessTransactionState.InProgress)
+            {
+                controlToken.AttachTask(transaction.CommitAsync());
+            }
+        }
 
         /// <summary>
         /// Represents an object that provides access to data access repositories.

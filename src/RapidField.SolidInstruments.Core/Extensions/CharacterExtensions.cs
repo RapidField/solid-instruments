@@ -55,8 +55,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="Char" />.
         /// </param>
         /// <returns>
-        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode lowercase alphabetic character, otherwise
-        /// <see langword="false" />.
+        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode lowercase alphabetic character,
+        /// otherwise <see langword="false" />.
         /// </returns>
         public static Boolean IsLowercaseAlphabetic(this Char target) => Char.IsLower(target);
 
@@ -71,6 +71,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="false" />.
         /// </returns>
         public static Boolean IsNumeric(this Char target) => Char.IsDigit(target);
+
+        /// <summary>
+        /// Determines whether or not the current <see cref="Char" /> represents a Unicode punctuation character.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Char" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode punctuation character, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        public static Boolean IsPunctuation(this Char target) => Char.IsPunctuation(target);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Char" /> represents a Unicode symbolic character.
@@ -91,8 +103,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="Char" />.
         /// </param>
         /// <returns>
-        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode uppercase alphabetic character, otherwise
-        /// <see langword="false" />.
+        /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode uppercase alphabetic character,
+        /// otherwise <see langword="false" />.
         /// </returns>
         public static Boolean IsUppercaseAlphabetic(this Char target) => Char.IsUpper(target);
 

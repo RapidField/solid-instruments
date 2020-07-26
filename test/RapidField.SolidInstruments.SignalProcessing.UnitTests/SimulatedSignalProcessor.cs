@@ -25,8 +25,8 @@ namespace RapidField.SolidInstruments.SignalProcessing.UnitTests
         /// The operational settings for the signal processor.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="channelA" /> is <see langword="null" /> -or- <paramref name="channelB" /> is <see langword="null" /> -or-
-        /// <paramref name="settings" /> is <see langword="null" />.
+        /// <paramref name="channelA" /> is <see langword="null" /> -or- <paramref name="channelB" /> is <see langword="null" />
+        /// -or- <paramref name="settings" /> is <see langword="null" />.
         /// </exception>
         public SimulatedSignalProcessor(Int32[] channelA, Int32[] channelB, SimulatedSignalProcessorSettings settings)
             : base(new SimulatedChannelCollection(new ObjectCollectionChannel<Int32>(channelA), new ObjectCollectionChannel<Int32>(channelB)), settings)

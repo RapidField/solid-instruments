@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Serialization;
@@ -14,7 +15,48 @@ using System.Security.Cryptography;
 namespace RapidField.SolidInstruments.Cryptography.Hashing
 {
     /// <summary>
-    /// Provides facilities for hashing typed objects and binary arrays.
+    /// Provides facilities for hashing byte arrays.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="HashingProcessor" /> is the default implementation of <see cref="IHashingProcessor" />.
+    /// </remarks>
+    public sealed class HashingProcessor : HashingProcessor<Byte[]>, IHashingProcessor
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HashingProcessor" /> class.
+        /// </summary>
+        /// <param name="randomnessProvider">
+        /// A random number generator that is used to generate salt values.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="randomnessProvider" /> is <see langword="null" />.
+        /// </exception>
+        public HashingProcessor(RandomNumberGenerator randomnessProvider)
+            : base(randomnessProvider, new PassThroughSerializer())
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="IHashingProcessor{T}" /> for the specified serializable type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The serializable object type that the processor can hash.
+        /// </typeparam>
+        /// <returns>
+        /// A new <see cref="IHashingProcessor{T}" /> for the specified serializable type.
+        /// </returns>
+        public static IHashingProcessor<T> ForType<T>()
+            where T : class => new HashingProcessor<T>();
+
+        /// <summary>
+        /// Represents a singleton instance of the <see cref="HashingProcessor" /> class.
+        /// </summary>
+        public static readonly IHashingProcessor Instance = new HashingProcessor(HardenedRandomNumberGenerator.Instance);
+    }
+
+    /// <summary>
+    /// Provides facilities for hashing typed objects and byte arrays.
     /// </summary>
     /// <remarks>
     /// <see cref="HashingProcessor{T}" /> is the default implementation of <see cref="IHashingProcessor{T}" />.
@@ -22,7 +64,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
     /// <typeparam name="T">
     /// The type of the object that can be hashed.
     /// </typeparam>
-    public class HashingProcessor<T> : IHashingProcessor<T>
+    public class HashingProcessor<T> : CryptographicProcessor<T>, IHashingProcessor<T>
         where T : class
     {
         /// <summary>
@@ -31,15 +73,11 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate salt values.
         /// </param>
-        /// <param name="binarySerializer">
-        /// A binary serializer that is used to transform plaintext.
-        /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="binarySerializer" /> is
-        /// <see langword="null" />.
+        /// <paramref name="randomnessProvider" /> is <see langword="null" />.
         /// </exception>
-        public HashingProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> binarySerializer)
-            : this(randomnessProvider, binarySerializer, DefaultSaltLengthInBytes)
+        public HashingProcessor(RandomNumberGenerator randomnessProvider)
+            : this(randomnessProvider, DefaultSerializer)
         {
             return;
         }
@@ -50,31 +88,59 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate salt values.
         /// </param>
-        /// <param name="binarySerializer">
-        /// A binary serializer that is used to transform plaintext.
+        /// <param name="serializer">
+        /// A serializer that is used to transform plaintext.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="serializer" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        public HashingProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer)
+            : this(randomnessProvider, serializer, DefaultSaltLengthInBytes)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HashingProcessor{T}" /> class.
+        /// </summary>
+        /// <param name="randomnessProvider">
+        /// A random number generator that is used to generate salt values.
+        /// </param>
+        /// <param name="serializer">
+        /// A serializer that is used to transform plaintext.
         /// </param>
         /// <param name="saltLengthInBytes">
         /// The salt length, in bytes, to use when calculating and evaluating hash values. The default value is 8.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="binarySerializer" /> is
+        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="serializer" /> is
         /// <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="saltLengthInBytes" /> is less than one.
         /// </exception>
-        public HashingProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> binarySerializer, Int32 saltLengthInBytes)
+        public HashingProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer, Int32 saltLengthInBytes)
+            : base(randomnessProvider, serializer)
         {
-            BinarySerializer = binarySerializer.RejectIf().IsNull(nameof(binarySerializer)).TargetArgument;
-            RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
             SaltLengthInBytes = saltLengthInBytes.RejectIf().IsLessThan(1, nameof(saltLengthInBytes));
         }
 
         /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
+        /// Initializes a new instance of the <see cref="HashingProcessor{T}" /> class.
         /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
+        [DebuggerHidden]
+        internal HashingProcessor()
+            : this(HardenedRandomNumberGenerator.Instance)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Calculates a hash value for the specified plaintext byte array.
+        /// </summary>
+        /// <param name="plaintext">
+        /// The plaintext byte array to hash.
         /// </param>
         /// <param name="algorithm">
         /// The algorithm specification used to transform the plaintext.
@@ -82,16 +148,25 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <returns>
         /// The resulting hash value.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="algorithm" /> is equal to <see cref="HashingAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="plaintext" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="plaintext" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm) => CalculateHash(plaintextBinaryArray, algorithm, null);
+        public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm) => CalculateHash(plaintext, algorithm, null);
 
         /// <summary>
-        /// Calculates a hash value for the specified plaintext binary array.
+        /// Calculates a hash value for the specified plaintext byte array.
         /// </summary>
-        /// <param name="plaintextBinaryArray">
-        /// The plaintext binary array to hash.
+        /// <param name="plaintext">
+        /// The plaintext byte array to hash.
         /// </param>
         /// <param name="algorithm">
         /// The algorithm specification used to transform the plaintext.
@@ -103,36 +178,46 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <returns>
         /// The resulting hash value.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="algorithm" /> is equal to <see cref="HashingAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="plaintext" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="plaintext" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
-        public Byte[] CalculateHash(Byte[] plaintextBinaryArray, HashingAlgorithmSpecification algorithm, Byte[] salt)
+        public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm, Byte[] salt)
         {
+            var applySalt = (salt is null == false);
+            var saltLengthInBytes = (applySalt ? salt.Length : 0);
+            var plaintextLengthInBytes = plaintext.RejectIf().IsNullOrEmpty(nameof(plaintext)).TargetArgument.Length;
+            var saltedPlaintextLengthInBytes = (plaintextLengthInBytes + saltLengthInBytes);
+            var digestLengthInBytes = (algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8);
+            var hashLengthInBytes = (digestLengthInBytes + saltLengthInBytes);
+            var hashValue = new Byte[hashLengthInBytes];
+
             try
             {
-                var applySalt = (salt is null == false);
-                var saltLengthInBytes = (applySalt ? salt.Length : 0);
-                var plaintextLengthInBytes = plaintextBinaryArray.Length;
-                var plaintextBufferLengthInBytes = (plaintextLengthInBytes + saltLengthInBytes);
-                var digestLengthInBytes = (algorithm.ToDigestBitLength() / 8);
-                var hashLengthInBytes = (digestLengthInBytes + saltLengthInBytes);
-                var hashValue = new Byte[hashLengthInBytes];
-                Byte[] plaintextBuffer;
+                Byte[] processedPlaintextBytes;
 
                 if (applySalt)
                 {
-                    plaintextBuffer = new Byte[plaintextBufferLengthInBytes];
-                    Array.Copy(plaintextBinaryArray, plaintextBuffer, plaintextLengthInBytes);
-                    Array.Copy(salt, 0, plaintextBuffer, plaintextLengthInBytes, saltLengthInBytes);
+                    processedPlaintextBytes = new Byte[saltedPlaintextLengthInBytes];
+                    Array.Copy(plaintext, processedPlaintextBytes, plaintextLengthInBytes);
+                    Array.Copy(salt, 0, processedPlaintextBytes, plaintextLengthInBytes, saltLengthInBytes);
                 }
                 else
                 {
-                    plaintextBuffer = plaintextBinaryArray;
+                    processedPlaintextBytes = plaintext;
                 }
 
                 using (var hashAlgorithm = algorithm.ToHashAlgorithm())
                 {
-                    Array.Copy(hashAlgorithm.ComputeHash(plaintextBinaryArray), hashValue, digestLengthInBytes);
+                    Array.Copy(hashAlgorithm.ComputeHash(processedPlaintextBytes), hashValue, digestLengthInBytes);
                 }
 
                 if (applySalt)
@@ -163,6 +248,12 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <returns>
         /// The resulting hash value.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="algorithm" /> is equal to <see cref="HashingAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="plaintextObject" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
@@ -182,6 +273,14 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
 
                         return CalculateHash(plaintextObject, algorithm, null);
                 }
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (ArgumentException)
+            {
+                throw;
             }
             catch
             {
@@ -205,8 +304,18 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// A value specifying whether or not salt is applied to the plaintext.
         /// </param>
         /// <returns>
-        /// <see langword="true" /> if the resulting hash value matches <paramref name="hash" />, otherwise <see langword="false" />.
+        /// <see langword="true" /> if the resulting hash value matches <paramref name="hash" />, otherwise
+        /// <see langword="false" />.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="algorithm" /> is equal to <see cref="HashingAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="hash" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hash" /> is <see langword="null" /> -or- <paramref name="plaintextObject" /> is <see langword="null" />.
+        /// </exception>
         /// <exception cref="SecurityException">
         /// An exception was raised during hashing or serialization.
         /// </exception>
@@ -214,7 +323,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         {
             try
             {
-                var digestLength = (algorithm.ToDigestBitLength() / 8);
+                var digestLength = (algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8);
                 Byte[] processedHash;
                 Byte[] calculatedHash;
 
@@ -223,7 +332,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
                     case SaltingMode.Salted:
 
                         var salt = new Byte[SaltLengthInBytes];
-                        processedHash = hash.Take(digestLength).ToArray();
+                        processedHash = hash.RejectIf().IsNullOrEmpty(nameof(hash)).TargetArgument.Take(digestLength).ToArray();
                         salt = hash.Skip(digestLength).Take(SaltLengthInBytes).ToArray();
                         calculatedHash = CalculateHash(plaintextObject, algorithm, salt).Take(digestLength).ToArray();
                         break;
@@ -256,6 +365,18 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
 
                 return true;
             }
+            catch (ArgumentEmptyException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (ArgumentException)
+            {
+                throw;
+            }
             catch
             {
                 throw new SecurityException("The hashing operation failed.");
@@ -277,8 +398,17 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <returns>
         /// The resulting hash value.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="algorithm" /> is equal to <see cref="HashingAlgorithmSpecification.Unspecified" />.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="plaintextObject" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="SecurityException">
+        /// An exception was raised during hashing or serialization.
+        /// </exception>
         [DebuggerHidden]
-        private Byte[] CalculateHash(T plaintextObject, HashingAlgorithmSpecification algorithm, Byte[] salt) => CalculateHash(BinarySerializer.Serialize(plaintextObject), algorithm, salt);
+        private Byte[] CalculateHash(T plaintextObject, HashingAlgorithmSpecification algorithm, Byte[] salt) => CalculateHash(Serializer.Serialize(plaintextObject.RejectIf().IsNull(nameof(plaintextObject)).TargetArgument), algorithm, salt);
 
         /// <summary>
         /// Gets the salt length, in bytes, to use when calculating and evaluating hash values.
@@ -289,21 +419,14 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         }
 
         /// <summary>
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="HashingProcessor{T}" />.
+        /// </summary>
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.Hashing;
+
+        /// <summary>
         /// Represents the default salt length, in bytes, to use when calculating and evaluating hash values.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 DefaultSaltLengthInBytes = 8;
-
-        /// <summary>
-        /// Represents a binary serializer that is used to transform plaintext.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISerializer<T> BinarySerializer;
-
-        /// <summary>
-        /// Represents a random number generator that is used to generate salt values.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly RandomNumberGenerator RandomnessProvider;
+        private const Int32 DefaultSaltLengthInBytes = 16;
     }
 }

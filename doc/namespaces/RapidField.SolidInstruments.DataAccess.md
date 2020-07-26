@@ -29,3 +29,23 @@ dotnet add package RapidField.SolidInstruments.DataAccess
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess
 ```
+
+### Namespaces
+
+#### [RapidField.SolidInstruments.DataAccess.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments data access abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.DataAccess.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments data access abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.DataAccess.EntityFramework](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
+
+<section>
+Provides Entity Framework implementations of the **Solid Instruments** data access abstractions.
+</section>

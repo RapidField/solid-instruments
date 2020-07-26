@@ -17,6 +17,19 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
     public class HashTreeTests
     {
         [TestMethod]
+        public void Constructor_ShouldProduceDesiredResults_ForMd5()
+        {
+            // Arrange.
+            var algorithm = HashingAlgorithmSpecification.Md5;
+            var maxBlockCount = (TreeHeightDictionary.Count - 1);
+
+            for (var i = 0; i <= maxBlockCount; i++)
+            {
+                Constructor_ShouldProduceDesiredResults(i, algorithm);
+            }
+        }
+
+        [TestMethod]
         public void Constructor_ShouldProduceDesiredResults_ForShaTwo256()
         {
             // Arrange.

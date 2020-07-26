@@ -3,8 +3,9 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -13,14 +14,17 @@ namespace RapidField.SolidInstruments.Messaging
     /// <summary>
     /// Represents instructions and contextual information relating to processing for an <see cref="IMessageBase" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="MessageProcessingInformation" /> is the default implementation of <see cref="IMessageProcessingInformation" />.
+    /// </remarks>
     [DataContract]
-    public sealed class MessageProcessingInformation
+    public sealed class MessageProcessingInformation : IMessageProcessingInformation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
         /// </summary>
         public MessageProcessingInformation()
-            : this(MessageSubscribingFailurePolicy.Default)
+            : this(MessageListeningFailurePolicy.Default)
         {
             return;
         }
@@ -29,41 +33,49 @@ namespace RapidField.SolidInstruments.Messaging
         /// Initializes a new instance of the <see cref="MessageProcessingInformation" /> class.
         /// </summary>
         /// <param name="failurePolicy">
-        /// Instructions that guide failure behavior for the subscriber. The default value is
-        /// <see cref="MessageSubscribingFailurePolicy.Default" />.
+        /// Instructions that guide failure behavior for the listener. The default value is
+        /// <see cref="MessageListeningFailurePolicy.Default" />.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="failurePolicy" /> is <see langword="null" />.
         /// </exception>
-        public MessageProcessingInformation(MessageSubscribingFailurePolicy failurePolicy)
+        public MessageProcessingInformation(MessageListeningFailurePolicy failurePolicy)
         {
-            AttemptResults = new Collection<MessageProcessingAttemptResult>();
+            AttemptResults = new List<MessageProcessingAttemptResult>();
             FailurePolicy = failurePolicy.RejectIf().IsNull(nameof(failurePolicy));
         }
 
         /// <summary>
-        /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not yet
-        /// been attempted.
+        /// Converts the value of the current <see cref="MessageProcessingInformation" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageProcessingInformation" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(IsSuccessfullyProcessed)}\": {IsSuccessfullyProcessed.ToSerializedString()}, \"{nameof(AttemptCount)}\": {AttemptCount} }}";
+
+        /// <summary>
+        /// Gets the number of times that processing has been attempted for the associated message, or zero if processing has not
+        /// yet been attempted.
         /// </summary>
         [IgnoreDataMember]
         public Int32 AttemptCount => AttemptResults.Count();
 
         /// <summary>
-        /// Gets an ordered collection of processing attempt results for the associated message, or an empty collection if processing
-        /// has not yet been attempted.
+        /// Gets or sets an ordered collection of processing attempt results for the associated message, or an empty collection if
+        /// processing has not yet been attempted.
         /// </summary>
         [DataMember]
-        public Collection<MessageProcessingAttemptResult> AttemptResults
+        public List<MessageProcessingAttemptResult> AttemptResults
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
-        /// Gets or sets instructions that guide failure behavior for the subscriber.
+        /// Gets or sets instructions that guide failure behavior for the listener.
         /// </summary>
         [DataMember]
-        public MessageSubscribingFailurePolicy FailurePolicy
+        public MessageListeningFailurePolicy FailurePolicy
         {
             get;
             set;

@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Core
 {
@@ -58,7 +60,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="ReferenceManager" />.
         /// </returns>
-        public override String ToString() => $"Object count: {ObjectCount.ToString()}";
+        public override String ToString() => $"{{ \"{nameof(ObjectCount)}\": {ObjectCount} }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ReferenceManager" />.
@@ -72,18 +74,32 @@ namespace RapidField.SolidInstruments.Core
             {
                 if (disposing)
                 {
-                    var disposedReferences = new List<IDisposable>();
-
-                    while (References.Count > 0)
+                    try
                     {
-                        IDisposable reference;
+                        var disposeTasks = new List<Task>();
 
-                        using (var controlToken = StateControl.Enter())
+                        while (References.Count > 0)
                         {
-                            reference = References.Dequeue();
+                            IAsyncDisposable reference;
+
+                            using (var controlToken = StateControl.Enter())
+                            {
+                                reference = References.Dequeue();
+                            }
+
+                            disposeTasks.Add(reference?.DisposeAsync().AsTask());
                         }
 
-                        reference.Dispose();
+                        var disposeTaskArray = disposeTasks.Where(task => task is null == false).ToArray();
+
+                        if (disposeTaskArray.Any())
+                        {
+                            Task.WaitAll(disposeTaskArray);
+                        }
+                    }
+                    finally
+                    {
+                        References.Clear();
                     }
                 }
             }
@@ -102,7 +118,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents the objects that are managed by the current <see cref="ReferenceManager" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Queue<IDisposable> References = new Queue<IDisposable>();
+        private readonly Queue<IAsyncDisposable> References = new Queue<IAsyncDisposable>();
 
         /// <summary>
         /// Represents an object that is managed by a <see cref="ReferenceManager" />.
@@ -110,7 +126,7 @@ namespace RapidField.SolidInstruments.Core
         /// <typeparam name="T">
         /// The type of the managed object.
         /// </typeparam>
-        private class ManagedReference<T> : IDisposable, IEquatable<ManagedReference<T>>
+        private class ManagedReference<T> : IAsyncDisposable, IDisposable, IEquatable<ManagedReference<T>>
             where T : class
         {
             /// <summary>
@@ -176,6 +192,15 @@ namespace RapidField.SolidInstruments.Core
             }
 
             /// <summary>
+            /// Asynchronously releases all resources consumed by the current <see cref="Instrument" />.
+            /// </summary>
+            /// <returns>
+            /// A task representing the asynchronous operation.
+            /// </returns>
+            [DebuggerHidden]
+            public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+
+            /// <summary>
             /// Determines whether or not the current <see cref="ManagedReference{T}" /> is equal to the specified
             /// <see cref="Object" />.
             /// </summary>
@@ -191,9 +216,9 @@ namespace RapidField.SolidInstruments.Core
                 {
                     return false;
                 }
-                else if (obj is ManagedReference<T>)
+                else if (obj is ManagedReference<T> reference)
                 {
-                    return Equals((ManagedReference<T>)obj);
+                    return Equals(reference);
                 }
 
                 return false;
@@ -246,8 +271,21 @@ namespace RapidField.SolidInstruments.Core
                         return;
                     }
 
-                    (Target as IDisposable)?.Dispose();
-                    Target = null;
+                    try
+                    {
+                        if (Target is IDisposable disposableTarget)
+                        {
+                            disposableTarget?.Dispose();
+                        }
+                        else if (Target is IAsyncDisposable asyncDisposableTarget)
+                        {
+                            asyncDisposableTarget?.DisposeAsync().AsTask().Wait();
+                        }
+                    }
+                    finally
+                    {
+                        Target = null;
+                    }
                 }
             }
 

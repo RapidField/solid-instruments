@@ -13,7 +13,10 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents configuration information for a <see cref="ConfigurableInstrument{TConfiguration}" /> instance.
     /// </summary>
-    public abstract class InstrumentConfiguration
+    /// <remarks>
+    /// <see cref="InstrumentConfiguration" /> is the default implementation of <see cref="IInstrumentConfiguration" />.
+    /// </remarks>
+    public abstract class InstrumentConfiguration : IInstrumentConfiguration
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InstrumentConfiguration" /> class.
@@ -26,12 +29,12 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
-        /// Gets configuration information for the application.
+        /// Gets or sets configuration information for the application.
         /// </summary>
         public IConfiguration Application
         {
             get;
-            internal set;
+            set;
         }
 
         /// <summary>

@@ -4,10 +4,10 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Messaging;
+using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 
@@ -44,15 +44,13 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// </param>
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
-            // Register queue publishers.
-            configurator.AddTransient<ICommandHandler<ApplicationStartingMessage>, QueuePublisher<ApplicationStartingMessage>>();
-            configurator.AddTransient<ICommandHandler<ApplicationStoppingMessage>, QueuePublisher<ApplicationStoppingMessage>>();
+            // Register event transmitters.
+            configurator.AddEventMessageTransmitter<ApplicationStartedEvent, ApplicationStartedEventMessage>();
+            configurator.AddEventMessageTransmitter<ApplicationStoppedEvent, ApplicationStoppedEventMessage>();
+            configurator.AddEventMessageTransmitter<ExceptionRaisedEvent, ExceptionRaisedEventMessage>();
 
-            // Register topic publishers.
-            configurator.AddTransient<ICommandHandler<ExceptionRaisedMessage>, TopicPublisher<ExceptionRaisedMessage>>();
-
-            // Register request publishers.
-            configurator.AddTransient<ICommandHandler<PingRequestMessage>, RequestPublisher<PingRequestMessage, PingResponseMessage>>();
+            // Register request transmitters.
+            configurator.AddRequestMessageTransmitter<PingRequestMessage, PingResponseMessage>();
         }
     }
 }

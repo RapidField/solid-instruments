@@ -25,63 +25,46 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    /// <typeparam name="TPublishingFacade">
-    /// The type of the implementation-specific messaging facade that is used to publish request and response messages.
+    /// <typeparam name="TTransmittingFacade">
+    /// The type of the implementation-specific messaging facade that is used to transmit request and response messages.
     /// </typeparam>
-    /// <typeparam name="TSubscribingFacade">
-    /// The type of the implementation-specific messaging facade that subscribes to request messages.
+    /// <typeparam name="TListeningFacade">
+    /// The type of the implementation-specific messaging facade that listens for request messages.
     /// </typeparam>
     /// <remarks>
-    /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" /> is the
+    /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade}" /> is the
     /// default implementation of
-    /// <see cref="IMessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" />.
+    /// <see cref="IMessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade}" />.
     /// </remarks>
-    public abstract class MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade> : MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade>
+    public abstract class MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade> : MessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>, IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade>
         where TAdaptedMessage : class
-        where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
-        where TSubscribingFacade : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade>
+        where TTransmittingFacade : MessageTransmittingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TListeningFacade : MessageListeningFacade<TSender, TReceiver, TAdaptedMessage, TTransmittingFacade>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage}" /> class.
         /// </summary>
-        /// <param name="subscribingFacade">
-        /// An implementation-specific messaging facade that subscribes to request messages.
+        /// <param name="listeningFacade">
+        /// An implementation-specific messaging facade that listens for request messages.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="subscribingFacade" /> is <see langword="null" />.
+        /// <paramref name="listeningFacade" /> is <see langword="null" />.
         /// </exception>
-        protected MessageRequestingFacade(TSubscribingFacade subscribingFacade)
-            : base(subscribingFacade.RejectIf().IsNull(nameof(subscribingFacade)).TargetArgument.ClientFactory, subscribingFacade.MessageAdapter)
+        protected MessageRequestingFacade(TListeningFacade listeningFacade)
+            : base(listeningFacade.RejectIf().IsNull(nameof(listeningFacade)).TargetArgument.ClientFactory, listeningFacade.MessageAdapter)
         {
-            PublishingFacade = subscribingFacade.PublishingFacade;
-            SubscribingFacade = subscribingFacade;
+            TransmittingFacade = listeningFacade.TransmittingFacade;
+            ListeningFacade = listeningFacade;
         }
 
         /// <summary>
         /// Releases all resources consumed by the current
-        /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade}" />.
+        /// <see cref="MessageRequestingFacade{TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
-
-        /// <summary>
-        /// Asynchronously publishes the specified request message to a bus.
-        /// </summary>
-        /// <typeparam name="TRequestMessage">
-        /// The type of the request message.
-        /// </typeparam>
-        /// <typeparam name="TResponseMessage">
-        /// The type of the response message.
-        /// </typeparam>
-        /// <param name="requestMessage">
-        /// The request message to publish.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        protected sealed override Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => PublishingFacade.PublishAsync(requestMessage, null, Message.RequestEntityType);
 
         /// <summary>
         /// Registers the specified response handler with a bus.
@@ -95,19 +78,36 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken) => SubscribingFacade.RegisterTopicMessageHandler(responseHandler);
+        protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, IConcurrencyControlToken controlToken) => ListeningFacade.RegisterTopicMessageHandler(responseHandler);
 
         /// <summary>
-        /// Represents an implementation-specific messaging facade that is used to publish request and response messages.
+        /// Asynchronously transmits the specified request message to a bus.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly TPublishingFacade PublishingFacade;
+        /// <typeparam name="TRequestMessage">
+        /// The type of the request message.
+        /// </typeparam>
+        /// <typeparam name="TResponseMessage">
+        /// The type of the response message.
+        /// </typeparam>
+        /// <param name="requestMessage">
+        /// The request message to transmit.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected sealed override Task TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => TransmittingFacade.TransmitAsync(requestMessage, null, Message.RequestEntityType);
 
         /// <summary>
-        /// Represents an implementation-specific messaging facade that subscribes to request messages.
+        /// Represents an implementation-specific messaging facade that listens for request messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly TSubscribingFacade SubscribingFacade;
+        private readonly TListeningFacade ListeningFacade;
+
+        /// <summary>
+        /// Represents an implementation-specific messaging facade that is used to transmit request and response messages.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly TTransmittingFacade TransmittingFacade;
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Asynchronously publishes the specified request message to a bus and waits for the correlated response message.
+        /// Asynchronously transmits the specified request message to a bus and waits for the correlated response message.
         /// </summary>
         /// <typeparam name="TRequestMessage">
         /// The type of the request message.
@@ -158,7 +158,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The type of the response message.
         /// </typeparam>
         /// <param name="requestMessage">
-        /// The request message to publish.
+        /// The request message to transmit.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation and containing the correlated response message.
@@ -195,17 +195,15 @@ namespace RapidField.SolidInstruments.Messaging
                 }
             }
 
-            return PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage).ContinueWith((publishTask) =>
+            return TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(requestMessage).ContinueWith(transmitTask =>
             {
                 RejectIfDisposed();
 
                 try
                 {
-                    var responseMessage = WaitForResponse(requestMessageIdentifier) as TResponseMessage;
-
-                    if (responseMessage is null)
+                    if (!(WaitForResponse(requestMessageIdentifier) is TResponseMessage responseMessage))
                     {
-                        throw new MessageSubscribingException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
+                        throw new MessageListeningException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
                     }
 
                     return responseMessage;
@@ -231,25 +229,6 @@ namespace RapidField.SolidInstruments.Messaging
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Asynchronously publishes the specified request message to a bus.
-        /// </summary>
-        /// <typeparam name="TRequestMessage">
-        /// The type of the request message.
-        /// </typeparam>
-        /// <typeparam name="TResponseMessage">
-        /// The type of the response message.
-        /// </typeparam>
-        /// <param name="requestMessage">
-        /// The request message to publish.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        protected abstract Task PublishRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
-            where TRequestMessage : class, IRequestMessage<TResponseMessage>
-            where TResponseMessage : class, IResponseMessage;
-
-        /// <summary>
         /// Registers the specified response handler with a bus.
         /// </summary>
         /// <typeparam name="TResponseMessage">
@@ -261,7 +240,26 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected abstract void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, ConcurrencyControlToken controlToken)
+        protected abstract void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, IConcurrencyControlToken controlToken)
+            where TResponseMessage : class, IResponseMessage;
+
+        /// <summary>
+        /// Asynchronously transmits the specified request message to a bus.
+        /// </summary>
+        /// <typeparam name="TRequestMessage">
+        /// The type of the request message.
+        /// </typeparam>
+        /// <typeparam name="TResponseMessage">
+        /// The type of the response message.
+        /// </typeparam>
+        /// <param name="requestMessage">
+        /// The request message to transmit.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        protected abstract Task TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
+            where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
 
         /// <summary>
@@ -315,7 +313,7 @@ namespace RapidField.SolidInstruments.Messaging
         [DebuggerHidden]
         private Boolean TryAddUnprocessedResponse(IResponseMessage responseMessage)
         {
-            if (OutstandingRequests.TryRemove(responseMessage.RequestMessageIdentifier, out var requestMessage))
+            if (OutstandingRequests.TryRemove(responseMessage.RequestMessageIdentifier, out _))
             {
                 if (UnprocessedResponses.TryAdd(responseMessage.RequestMessageIdentifier, responseMessage))
                 {
@@ -415,7 +413,8 @@ namespace RapidField.SolidInstruments.Messaging
         private readonly Lazy<ConcurrentDictionary<Guid, IMessageBase>> LazyOutstandingRequests = new Lazy<ConcurrentDictionary<Guid, IMessageBase>>(() => new ConcurrentDictionary<Guid, IMessageBase>(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
-        /// Represents a lazily-initialized collection of unprocessed response messages that are keyed by request message identifier.
+        /// Represents a lazily-initialized collection of unprocessed response messages that are keyed by request message
+        /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<ConcurrentDictionary<Guid, IResponseMessage>> LazyUnprocessedResponses = new Lazy<ConcurrentDictionary<Guid, IResponseMessage>>(() => new ConcurrentDictionary<Guid, IResponseMessage>(), LazyThreadSafetyMode.ExecutionAndPublication);

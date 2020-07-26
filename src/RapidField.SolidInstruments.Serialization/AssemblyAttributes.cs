@@ -5,6 +5,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.EventAuthoring")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging.UnitTests")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Serialization.UnitTests")]

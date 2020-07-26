@@ -50,6 +50,7 @@ namespace RapidField.SolidInstruments.Service
         protected ServiceExecutor(String serviceName)
             : base()
         {
+            ExecutionLifetime = null;
             LazyApplicationConfiguration = new Lazy<IConfiguration>(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyDependencyEngine = new Lazy<IDependencyEngine>(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyRootDependencyScope = new Lazy<IDependencyScope>(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -67,23 +68,71 @@ namespace RapidField.SolidInstruments.Service
         {
             try
             {
-                using (var executionLifetime = new ServiceExecutionLifetime())
+                var productName = ProductName?.Trim();
+                var serviceName = ServiceName?.Trim();
+                var copyrightNotice = CopyrightNotice?.Trim();
+
+                if (productName.IsNullOrEmpty() == false)
                 {
-                    using (var dependencyScope = CreateDependencyScope())
+                    Console.WriteLine(productName);
+                }
+
+                if (serviceName.IsNullOrEmpty() == false)
+                {
+                    Console.WriteLine(serviceName);
+                }
+
+                if (copyrightNotice.IsNullOrEmpty() == false)
+                {
+                    Console.WriteLine(copyrightNotice);
+                }
+
+                Console.WriteLine($"{Environment.NewLine}Service execution starting.");
+
+                try
+                {
+                    using (var executionLifetime = new ServiceExecutionLifetime())
                     {
-                        Execute(dependencyScope, ApplicationConfiguration, executionLifetime);
+                        ExecutionLifetime = executionLifetime;
+
+                        using (var dependencyScope = CreateDependencyScope())
+                        {
+                            Execute(dependencyScope, ApplicationConfiguration, executionLifetime);
+                        }
                     }
                 }
+                catch (ServiceExectuionException)
+                {
+                    throw;
+                }
+                catch (Exception exception)
+                {
+                    throw new ServiceExectuionException($"An exception was raised during execution of the service: \"{ServiceName}\". See inner exception.", exception);
+                }
             }
-            catch (ServiceExectuionException)
+            catch (ServiceExectuionException exception)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"{exception.Message} : {exception.StackTrace}{Environment.NewLine}");
+                Console.ResetColor();
                 throw;
             }
-            catch (Exception exception)
+            finally
             {
-                throw new ServiceExectuionException($"An exception was raised during execution of the service: \"{ServiceName}\". See inner exception for details.", exception);
+                Console.WriteLine("Service execution finished.");
             }
         }
+
+        /// <summary>
+        /// Converts the value of the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> to its equivalent string
+        /// representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ServiceName)}\": \"{ServiceName}\" }}";
 
         /// <summary>
         /// Builds the application configuration for the service.
@@ -146,7 +195,7 @@ namespace RapidField.SolidInstruments.Service
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, ServiceExecutionLifetime executionLifetime)
+        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
         {
             return;
         }
@@ -187,9 +236,33 @@ namespace RapidField.SolidInstruments.Service
         }
 
         /// <summary>
+        /// Gets the execution lifetime object for the current
+        /// <see cref="ServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />, or
+        /// <see langword="null" /> if execution has not yet started.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal IServiceExecutionLifetime ExecutionLifetime
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets configuration information for the service.
         /// </summary>
         protected IConfiguration ApplicationConfiguration => LazyApplicationConfiguration.Value;
+
+        /// <summary>
+        /// When overridden by a derived class, gets a copyright notice which is written to the console at the start of service
+        /// execution.
+        /// </summary>
+        protected virtual String CopyrightNotice => null;
+
+        /// <summary>
+        /// When overridden by a derived class, gets a product name associated with the service which is written to the console at
+        /// the start of service execution.
+        /// </summary>
+        protected virtual String ProductName => null;
 
         /// <summary>
         /// Gets a utility that disposes of the object references that are managed by the current

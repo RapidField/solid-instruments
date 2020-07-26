@@ -36,17 +36,17 @@ The examples below are provided to help you get started using the features of th
 
 #### In-memory security
 
-[SecureBuffer](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.SecureBuffer.html) represents a fixed-length bit field that is pinned in memory and encrypted at rest.
+[SecureMemory](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.SecureMemory.html) represents a fixed-length bit field that is pinned in memory and encrypted at rest.
 
 ###### C#
 
 ```csharp
 // Allocates 1,024 bytes that are encrypted and pinned in memory.
-using (var secureBuffer = new SecureBuffer(1024))
+using (var secureMemory = new SecureMemory(1024))
 {
-    secureBuffer.Access(buffer =>
+    secureMemory.Access(memory =>
     {
-        // In this context, buffer is an unencrypted bit field.
+        // In this context, memory is an unencrypted bit field.
     });
 }
 ```
@@ -54,6 +54,12 @@ using (var secureBuffer = new SecureBuffer(1024))
 <br />
 
 ### Namespaces
+
+#### [RapidField.SolidInstruments.Cryptography.Asymmetric](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.Asymmetric.html)
+
+<section>
+Provides abstractions for common asymmetric-key encryption algorithms.
+</section>
 
 #### [RapidField.SolidInstruments.Cryptography.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.Extensions.html)
 
@@ -65,6 +71,12 @@ Exposes extensions that support advanced security mechanics.
 
 <section>
 Provides abstractions for common hashing functions.
+</section>
+
+#### [RapidField.SolidInstruments.Cryptography.Secrets](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.Secrets.html)
+
+<section>
+Provides abstractions for securely managing secrets.
 </section>
 
 #### [RapidField.SolidInstruments.Cryptography.Symmetric](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Cryptography.Symmetric.html)

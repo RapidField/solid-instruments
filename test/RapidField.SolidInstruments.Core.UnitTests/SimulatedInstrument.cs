@@ -119,7 +119,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <summary>
         /// Represents the amount of time <see cref="SimulateThreadSafeOperation" /> delays for each invocation.
         /// </summary>
-        private static readonly TimeSpan ThreadSafeOperationDelayDuration = TimeSpan.FromTicks(21);
+        private static readonly TimeSpan ThreadSafeOperationDelayDuration = TimeSpan.FromTicks(34);
 
         /// <summary>
         /// Represents an object that is used to synchronize access to the associated resource(s).

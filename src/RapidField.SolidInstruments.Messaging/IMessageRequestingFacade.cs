@@ -19,16 +19,16 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TAdaptedMessage">
     /// The type of implementation-specific adapted messages.
     /// </typeparam>
-    /// <typeparam name="TPublishingFacade">
-    /// The type of the implementation-specific messaging facade that is used to publish request messages.
+    /// <typeparam name="TTransmittingFacade">
+    /// The type of the implementation-specific messaging facade that is used to transmit request messages.
     /// </typeparam>
-    /// <typeparam name="TSubscribingFacade">
-    /// The type of the implementation-specific messaging facade that subscribes to request messages.
+    /// <typeparam name="TListeningFacade">
+    /// The type of the implementation-specific messaging facade that listens for request messages.
     /// </typeparam>
-    public interface IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TPublishingFacade, TSubscribingFacade> : IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>
+    public interface IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage, TTransmittingFacade, TListeningFacade> : IMessageRequestingFacade<TSender, TReceiver, TAdaptedMessage>
         where TAdaptedMessage : class
-        where TPublishingFacade : MessagePublishingFacade<TSender, TReceiver, TAdaptedMessage>
-        where TSubscribingFacade : MessageSubscribingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TTransmittingFacade : MessageTransmittingFacade<TSender, TReceiver, TAdaptedMessage>
+        where TListeningFacade : MessageListeningFacade<TSender, TReceiver, TAdaptedMessage>
     {
     }
 
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Messaging
     public interface IMessageRequestingFacade : IMessagingFacade
     {
         /// <summary>
-        /// Asynchronously publishes the specified request message to a bus and waits for the correlated response message.
+        /// Asynchronously transmits the specified request message to a bus and waits for the correlated response message.
         /// </summary>
         /// <typeparam name="TRequestMessage">
         /// The type of the request message.
@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The type of the response message.
         /// </typeparam>
         /// <param name="requestMessage">
-        /// The request message to publish.
+        /// The request message to transmit.
         /// </param>
         /// <returns>
         /// A task representing the asynchronous operation and containing the correlated response message.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task<TResponseMessage> RequestAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
+        public Task<TResponseMessage> RequestAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage;
     }

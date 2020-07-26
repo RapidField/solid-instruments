@@ -74,7 +74,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// <summary>
     /// Represents a function that produces an object of a specified type.
     /// </summary>
-    internal abstract class ObjectFactoryProductionFunction
+    /// <remarks>
+    /// <see cref="ObjectFactoryProductionFunction" /> is the default implementation of
+    /// <see cref="IObjectFactoryProductionFunction" />.
+    /// </remarks>
+    internal abstract class ObjectFactoryProductionFunction : IObjectFactoryProductionFunction
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactoryProductionFunction" /> class.
@@ -97,12 +101,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         public abstract Object Invoke();
 
         /// <summary>
-        /// Converts the value of the current <see cref="ObjectFactoryProductionFunction" /> to its equivalent string representation.
+        /// Converts the value of the current <see cref="ObjectFactoryProductionFunction" /> to its equivalent string
+        /// representation.
         /// </summary>
         /// <returns>
         /// A string representation of the current <see cref="ObjectFactoryProductionFunction" />.
         /// </returns>
-        public override String ToString() => $"Product type: {ProductType.FullName}";
+        public override String ToString() => $"{{ \"{nameof(ProductType)}\": \"{ProductType.FullName}\" }}";
 
         /// <summary>
         /// Gets the type of the object produced by the function.

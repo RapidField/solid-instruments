@@ -13,7 +13,10 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
     /// <summary>
     /// Represents a unidirectional sequence of numbers that are equidistant at each step.
     /// </summary>
-    public class ArithmeticSequence : InfiniteSequence<Double>
+    /// <remarks>
+    /// <see cref="ArithmeticSequence" /> is the default implementation of <see cref="IArithmeticSequence" />.
+    /// </remarks>
+    public class ArithmeticSequence : InfiniteSequence<Double>, IArithmeticSequence
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ArithmeticSequence" /> class.

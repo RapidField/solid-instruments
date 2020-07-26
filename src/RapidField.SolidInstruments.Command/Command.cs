@@ -3,8 +3,10 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Command
 {
@@ -17,6 +19,7 @@ namespace RapidField.SolidInstruments.Command
     /// <typeparam name="TResult">
     /// The type of the result that is emitted when processing the command.
     /// </typeparam>
+    [DataContract]
     public abstract class Command<TResult> : ICommand<TResult>
     {
         /// <summary>
@@ -24,13 +27,61 @@ namespace RapidField.SolidInstruments.Command
         /// </summary>
         protected Command()
         {
-            return;
+            CorrelationIdentifierField = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Command{TResult}" /> class.
+        /// </summary>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related commands.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        protected Command(Guid correlationIdentifier)
+        {
+            CorrelationIdentifierField = correlationIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(correlationIdentifier));
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Command{TResult}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="Command{TResult}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
+
+        /// <summary>
+        /// Gets or sets a unique identifier that is assigned to related commands.
+        /// </summary>
+        [DataMember]
+        public Guid CorrelationIdentifier
+        {
+            get
+            {
+                if (CorrelationIdentifierField.HasValue == false)
+                {
+                    CorrelationIdentifierField = Guid.NewGuid();
+                }
+
+                return CorrelationIdentifierField.Value;
+            }
+            set => CorrelationIdentifierField = value;
         }
 
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
+        [IgnoreDataMember]
         public Type ResultType => ResultTypeReference;
+
+        /// <summary>
+        /// Represents a unique identifier that is assigned to related commands.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [IgnoreDataMember]
+        internal Guid? CorrelationIdentifierField;
 
         /// <summary>
         /// Represents the type of the result that is emitted when processing the command.
@@ -45,6 +96,7 @@ namespace RapidField.SolidInstruments.Command
     /// <remarks>
     /// <see cref="Command" /> is the default implementation of <see cref="ICommand" />.
     /// </remarks>
+    [DataContract]
     public abstract class Command : ICommand
     {
         /// <summary>
@@ -52,12 +104,60 @@ namespace RapidField.SolidInstruments.Command
         /// </summary>
         protected Command()
         {
-            return;
+            CorrelationIdentifierField = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Command" /> class.
+        /// </summary>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related commands.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        protected Command(Guid correlationIdentifier)
+        {
+            CorrelationIdentifierField = correlationIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(correlationIdentifier));
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Command" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="Command" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
+
+        /// <summary>
+        /// Gets or sets a unique identifier that is assigned to related commands.
+        /// </summary>
+        [DataMember]
+        public Guid CorrelationIdentifier
+        {
+            get
+            {
+                if (CorrelationIdentifierField.HasValue == false)
+                {
+                    CorrelationIdentifierField = Guid.NewGuid();
+                }
+
+                return CorrelationIdentifierField.Value;
+            }
+            set => CorrelationIdentifierField = value;
         }
 
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
-        public Type ResultType => Nix.Type;
+        [IgnoreDataMember]
+        public virtual Type ResultType => Nix.Type;
+
+        /// <summary>
+        /// Represents a unique identifier that is assigned to related commands.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [IgnoreDataMember]
+        private Guid? CorrelationIdentifierField;
     }
 }

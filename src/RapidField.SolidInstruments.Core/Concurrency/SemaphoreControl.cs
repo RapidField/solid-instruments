@@ -60,7 +60,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
         /// </summary>
-        protected sealed override void EnterWithoutTimeout() => Semaphore.Wait();
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SemaphoreControl" />.
+        /// </returns>
+        protected sealed override ConcurrencyControlConsumptionState EnterWithoutTimeout()
+        {
+            Semaphore.Wait();
+            return Semaphore.CurrentCount == 0 ? ConcurrencyControlConsumptionState.FullyClaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
+        }
 
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource and
@@ -69,14 +76,17 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="blockTimeoutThreshold">
         /// The maximum length of time to block a thread before raising an exception.
         /// </param>
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SemaphoreControl" />.
+        /// </returns>
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        protected sealed override void EnterWithTimeout(TimeSpan blockTimeoutThreshold)
+        protected sealed override ConcurrencyControlConsumptionState EnterWithTimeout(TimeSpan blockTimeoutThreshold)
         {
             if (Semaphore.Wait(blockTimeoutThreshold))
             {
-                return;
+                return Semaphore.CurrentCount == 0 ? ConcurrencyControlConsumptionState.FullyClaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
             }
 
             throw new TimeoutException($"The operation failed to enter the semaphore after {blockTimeoutThreshold.ToSerializedString()}.");
@@ -88,13 +98,16 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="exitedSuccessfully">
         /// A value indicating whether or not the exit operation was successful. The initial value is <see langword="false" />.
         /// </param>
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SemaphoreControl" />.
+        /// </returns>
         /// <exception cref="SemaphoreFullException">
         /// The semaphore has already reached its maximum size.
         /// </exception>
-        protected sealed override void Exit(ref Boolean exitedSuccessfully)
+        protected sealed override ConcurrencyControlConsumptionState Exit(ref Boolean exitedSuccessfully)
         {
             Semaphore.Release();
-            exitedSuccessfully = true;
+            return Semaphore.CurrentCount == MaximumConcurrencyLimit ? ConcurrencyControlConsumptionState.Unclaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
         }
 
         /// <summary>

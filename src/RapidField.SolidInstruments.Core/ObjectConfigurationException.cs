@@ -7,7 +7,7 @@ using System;
 namespace RapidField.SolidInstruments.Core
 {
     /// <summary>
-    /// Represents an exception that is raised an error occurs during configuration of a
+    /// Represents an exception that is raised when an error occurs during configuration of a
     /// <see cref="ConfigurableInstrument{TConfiguration}" /> instance.
     /// </summary>
     public class ObjectConfigurationException : Exception

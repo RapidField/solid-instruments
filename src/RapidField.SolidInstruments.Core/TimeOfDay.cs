@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Core
     /// Represents a specific time of day in a specific time zone.
     /// </summary>
     [DataContract]
-    public sealed class TimeOfDay : IComparable<TimeOfDay>, IEquatable<TimeOfDay>
+    public sealed class TimeOfDay : ICloneable, IComparable, IComparable<TimeOfDay>, IEquatable<TimeOfDay>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeOfDay" /> class.
@@ -325,7 +325,16 @@ namespace RapidField.SolidInstruments.Core
         public TimeOfDay BeginningOfThisSecond() => new TimeOfDay(Zone, Hour, Minute, Second, 0);
 
         /// <summary>
-        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative values.
+        /// Creates a new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
+        /// </returns>
+        public Object Clone() => new TimeOfDay(Zone, Hour, Minute, Second, Millisecond);
+
+        /// <summary>
+        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative
+        /// values.
         /// </summary>
         /// <param name="other">
         /// The <see cref="TimeOfDay" /> to compare to this instance.
@@ -354,6 +363,19 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Compares the current <see cref="TimeOfDay" /> to the specified object and returns an indication of their relative
+        /// values.
+        /// </summary>
+        /// <param name="obj">
+        /// The object to compare to this instance.
+        /// </param>
+        /// <returns>
+        /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
+        /// instance; zero if they are equal.
+        /// </returns>
+        public Int32 CompareTo(Object obj) => obj is TimeOfDay timeOfDay ? CompareTo(timeOfDay) : GetType().FullName.CompareTo(obj.GetType().FullName);
+
+        /// <summary>
         /// Determines whether or not the current <see cref="TimeOfDay" /> is equal to the specified <see cref="Object" />.
         /// </summary>
         /// <param name="obj">
@@ -368,9 +390,9 @@ namespace RapidField.SolidInstruments.Core
             {
                 return false;
             }
-            else if (obj is TimeOfDay)
+            else if (obj is TimeOfDay timeOfDay)
             {
-                return Equals((TimeOfDay)obj);
+                return Equals(timeOfDay);
             }
 
             return false;
@@ -448,8 +470,8 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public override String ToString()
         {
-            Int32? twelveHourClockFormatHourValue = null;
-            String meridiemStringFragment = null;
+            Int32? twelveHourClockFormatHourValue;
+            String meridiemStringFragment;
 
             switch (Hour)
             {
@@ -604,7 +626,7 @@ namespace RapidField.SolidInstruments.Core
                     break;
             }
 
-            return $"{twelveHourClockFormatHourValue.Value}:{Minute.ToString("00")}:{Second.ToString("00")}.{Millisecond.ToString("000")} {meridiemStringFragment} {Zone.Id}";
+            return $"{twelveHourClockFormatHourValue.Value}:{Minute:00}:{Second:00}.{Millisecond:000} {meridiemStringFragment} {Zone.Id}";
         }
 
         /// <summary>

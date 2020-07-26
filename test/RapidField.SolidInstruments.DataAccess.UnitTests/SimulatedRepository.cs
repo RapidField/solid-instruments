@@ -44,7 +44,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Add(TEntity entity, ConcurrencyControlToken controlToken) => DataStore.Add(entity.Identifier, entity.Value);
+        protected override void Add(TEntity entity, IConcurrencyControlToken controlToken) => DataStore.Add(entity.Identifier, entity.Value);
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="SimulatedRepository{TEntity, TValue}" />.
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void AddRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken)
+        protected override void AddRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
         {
             foreach (var entity in entities)
             {
@@ -72,7 +72,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// All entities within the current <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </returns>
-        protected override IQueryable<TEntity> All(ConcurrencyControlToken controlToken) => DataStore.GetAllEntities();
+        protected override IQueryable<TEntity> All(IConcurrencyControlToken controlToken) => DataStore.GetAllEntities();
 
         /// <summary>
         /// Determines whether or not any entities matching the specified predicate exist in the current
@@ -88,10 +88,11 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <see langword="true" /> if any entities matching the specified predicate exist in the current
         /// <see cref="SimulatedRepository{TEntity, TValue}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => CountWhere(predicate, controlToken) > 0;
+        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => CountWhere(predicate, controlToken) > 0;
 
         /// <summary>
-        /// Determines whether or not the specified entity exists in the current <see cref="SimulatedRepository{TEntity, TValue}" />.
+        /// Determines whether or not the specified entity exists in the current
+        /// <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </summary>
         /// <param name="entity">
         /// The entity to evaluate.
@@ -103,7 +104,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <see langword="true" /> if the specified entity exists in the current
         /// <see cref="SimulatedRepository{TEntity, TValue}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected override Boolean Contains(TEntity entity, ConcurrencyControlToken controlToken) => DataStore.ContainsKey(entity.Identifier);
+        protected override Boolean Contains(TEntity entity, IConcurrencyControlToken controlToken) => DataStore.ContainsKey(entity.Identifier);
 
         /// <summary>
         /// Returns the number of entities in the current <see cref="SimulatedRepository{TEntity, TValue}" />.
@@ -114,7 +115,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// The number of entities in the current <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </returns>
-        protected override Int64 Count(ConcurrencyControlToken controlToken) => DataStore.Count;
+        protected override Int64 Count(IConcurrencyControlToken controlToken) => DataStore.Count;
 
         /// <summary>
         /// Returns the number of entities matching the specified predicate in the current
@@ -130,7 +131,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// The number of entities matching the specified predicate in the current
         /// <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </returns>
-        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => FindWhere(predicate, controlToken).Count();
+        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => FindWhere(predicate, controlToken).Count();
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SimulatedRepository{TEntity, TValue}" />.
@@ -153,7 +154,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// All entities matching the specified predicate within the current <see cref="SimulatedRepository{TEntity, TValue}" />.
         /// </returns>
-        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, ConcurrencyControlToken controlToken) => DataStore.GetEntitiesWhere(predicate);
+        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => DataStore.GetEntitiesWhere(predicate);
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="SimulatedRepository{TEntity, TValue}" />.
@@ -164,7 +165,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Remove(TEntity entity, ConcurrencyControlToken controlToken) => DataStore.Remove(entity.Identifier);
+        protected override void Remove(TEntity entity, IConcurrencyControlToken controlToken) => DataStore.Remove(entity.Identifier);
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="SimulatedRepository{TEntity, TValue}" />.
@@ -175,7 +176,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void RemoveRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken)
+        protected override void RemoveRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
         {
             foreach (var entity in entities)
             {
@@ -192,7 +193,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Update(TEntity entity, ConcurrencyControlToken controlToken)
+        protected override void Update(TEntity entity, IConcurrencyControlToken controlToken)
         {
             Remove(entity, controlToken);
             Add(entity, controlToken);
@@ -207,7 +208,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void UpdateRange(IEnumerable<TEntity> entities, ConcurrencyControlToken controlToken)
+        protected override void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
         {
             RemoveRange(entities, controlToken);
             AddRange(entities, controlToken);

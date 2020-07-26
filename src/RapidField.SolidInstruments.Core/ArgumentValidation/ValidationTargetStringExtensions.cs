@@ -314,8 +314,8 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         }
 
         /// <summary>
-        /// Raises a new <see cref="ArgumentOutOfRangeException" /> if the length of the target argument is less than or equal to the
-        /// specified boundary.
+        /// Raises a new <see cref="ArgumentOutOfRangeException" /> if the length of the target argument is less than or equal to
+        /// the specified boundary.
         /// </summary>
         /// <remarks>
         /// This method should be used for argument validation.
@@ -336,8 +336,8 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         public static ValidationResult<String> LengthIsLessThanOrEqualTo(this ValidationTarget<String> target, Int32 inclusiveLowerBoundary) => target.LengthIsLessThanOrEqualTo(inclusiveLowerBoundary, null);
 
         /// <summary>
-        /// Raises a new <see cref="ArgumentOutOfRangeException" /> if the length of the target argument is less than or equal to the
-        /// specified boundary.
+        /// Raises a new <see cref="ArgumentOutOfRangeException" /> if the length of the target argument is less than or equal to
+        /// the specified boundary.
         /// </summary>
         /// <remarks>
         /// This method should be used for argument validation.

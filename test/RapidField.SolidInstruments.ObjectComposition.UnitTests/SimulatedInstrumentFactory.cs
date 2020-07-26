@@ -18,6 +18,15 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// <summary>
         /// Initializes a new instance of the <see cref="SimulatedInstrumentFactory" /> class.
         /// </summary>
+        public SimulatedInstrumentFactory()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedInstrumentFactory" /> class.
+        /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
@@ -40,9 +49,9 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         {
             configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
             configuration.ProductionFunctions
-                .Define(() => new SimulatedInstrument(configuration.StateControlMode))
-                .Define(() => new PinnedStructureArray<Int16>(3))
-                .Define(() => new CircularBuffer<Int32>(5));
+                .Add(() => new SimulatedInstrument(configuration.StateControlMode))
+                .Add(() => new PinnedMemory<Int16>(3))
+                .Add(() => new CircularBuffer<Int32>(5));
         }
 
         /// <summary>

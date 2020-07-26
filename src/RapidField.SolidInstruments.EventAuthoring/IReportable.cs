@@ -5,16 +5,16 @@
 namespace RapidField.SolidInstruments.EventAuthoring
 {
     /// <summary>
-    /// Represents an object that can be converted to a reportable application event.
+    /// Represents an object that can be described by an <see cref="IEvent" />.
     /// </summary>
     public interface IReportable
     {
         /// <summary>
-        /// Compose a reportable application event for the current object.
+        /// Composes an <see cref="IEvent" /> representing information about the current <see cref="IReportable" />.
         /// </summary>
         /// <returns>
-        /// A reportable <see cref="ApplicationEvent" /> representing the current object.
+        /// An <see cref="IEvent" /> representing information about the current object.
         /// </returns>
-        ApplicationEvent ComposeReportableEvent();
+        public IEvent ComposeEvent();
     }
 }

@@ -9,11 +9,53 @@ using RapidField.SolidInstruments.Cryptography.Extensions;
 using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 
 namespace RapidField.SolidInstruments.Cryptography.Symmetric
 {
+    /// <summary>
+    /// Provides facilities for encrypting and decrypting byte arrays.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="SymmetricProcessor" /> is the default implementation of <see cref="ISymmetricProcessor" />.
+    /// </remarks>
+    public sealed class SymmetricProcessor : SymmetricProcessor<Byte[]>, ISymmetricProcessor
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricProcessor" /> class.
+        /// </summary>
+        /// <param name="randomnessProvider">
+        /// A random number generator that is used to generate initialization vectors.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="randomnessProvider" /> is <see langword="null" />.
+        /// </exception>
+        public SymmetricProcessor(RandomNumberGenerator randomnessProvider)
+            : base(randomnessProvider, new PassThroughSerializer())
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ISymmetricProcessor{T}" /> for the specified serializable type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The serializable object type that the processor can encrypt or decrypt.
+        /// </typeparam>
+        /// <returns>
+        /// A new <see cref="ISymmetricProcessor{T}" /> for the specified serializable type.
+        /// </returns>
+        public static ISymmetricProcessor<T> ForType<T>()
+            where T : class => new SymmetricProcessor<T>();
+
+        /// <summary>
+        /// Represents a singleton instance of the <see cref="SymmetricProcessor" /> class.
+        /// </summary>
+        public static readonly ISymmetricProcessor Instance = new SymmetricProcessor(HardenedRandomNumberGenerator.Instance);
+    }
+
     /// <summary>
     /// Provides facilities for encrypting and decrypting typed objects.
     /// </summary>
@@ -23,7 +65,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
     /// <typeparam name="T">
     /// The type of the object that can be encrypted and decrypted.
     /// </typeparam>
-    public class SymmetricProcessor<T> : ISymmetricProcessor<T>
+    public class SymmetricProcessor<T> : CryptographicProcessor<T>, ISymmetricProcessor<T>
         where T : class
     {
         /// <summary>
@@ -32,17 +74,42 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <param name="randomnessProvider">
         /// A random number generator that is used to generate initialization vectors.
         /// </param>
-        /// <param name="binarySerializer">
-        /// A binary serializer that is used to transform plaintext.
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="randomnessProvider" /> is <see langword="null" />.
+        /// </exception>
+        public SymmetricProcessor(RandomNumberGenerator randomnessProvider)
+            : base(randomnessProvider)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricProcessor{T}" /> class.
+        /// </summary>
+        /// <param name="randomnessProvider">
+        /// A random number generator that is used to generate initialization vectors.
+        /// </param>
+        /// <param name="serializer">
+        /// A serializer that is used to transform plaintext.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="binarySerializer" /> is
+        /// <paramref name="randomnessProvider" /> is <see langword="null" /> -or- <paramref name="serializer" /> is
         /// <see langword="null" />.
         /// </exception>
-        public SymmetricProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> binarySerializer)
+        public SymmetricProcessor(RandomNumberGenerator randomnessProvider, ISerializer<T> serializer)
+            : base(randomnessProvider, serializer)
         {
-            BinarySerializer = binarySerializer.RejectIf().IsNull(nameof(binarySerializer)).TargetArgument;
-            RandomnessProvider = randomnessProvider.RejectIf().IsNull(nameof(randomnessProvider));
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricProcessor{T}" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        internal SymmetricProcessor()
+            : this(HardenedRandomNumberGenerator.Instance)
+        {
+            return;
         }
 
         /// <summary>
@@ -60,13 +127,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, SecureSymmetricKey key)
+        public T Decrypt(Byte[] ciphertext, ISymmetricKey key)
         {
             try
             {
-                using (var keyBuffer = key.DeriveKey())
+                using (var keyMemory = key.ToDerivedKeyBytes())
                 {
-                    return Decrypt(ciphertext, keyBuffer, key.Algorithm);
+                    return Decrypt(ciphertext, keyMemory, key.Algorithm);
                 }
             }
             catch
@@ -90,20 +157,20 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, CascadingSymmetricKey key)
+        public T Decrypt(Byte[] ciphertext, ICascadingSymmetricKey key)
         {
             try
             {
                 var keys = key.Keys;
-                var binaryDecryptor = new SymmetricBinaryProcessor(RandomnessProvider);
+                var decryptor = new SymmetricProcessor(RandomnessProvider);
                 var buffer = ciphertext;
 
                 for (var i = (key.Depth - 1); i > 0; i--)
                 {
-                    buffer = binaryDecryptor.Decrypt(buffer, keys[i]);
+                    buffer = decryptor.Decrypt(buffer, keys.ElementAt(i));
                 }
 
-                return Decrypt(buffer, keys[0]);
+                return Decrypt(buffer, keys.First());
             }
             catch
             {
@@ -129,15 +196,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during decryption or deserialization.
         /// </exception>
-        public T Decrypt(Byte[] ciphertext, SecureBuffer key, SymmetricAlgorithmSpecification algorithm)
+        public T Decrypt(Byte[] ciphertext, ISecureMemory key, SymmetricAlgorithmSpecification algorithm)
         {
             try
             {
                 var plaintext = default(T);
 
-                key.Access(keyBuffer =>
+                key.Access(memory =>
                 {
-                    plaintext = Decrypt(ciphertext, keyBuffer, algorithm);
+                    plaintext = Decrypt(ciphertext, memory, algorithm);
                 });
 
                 return plaintext;
@@ -163,7 +230,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureSymmetricKey key) => Encrypt(plaintextObject, key, null);
+        public Byte[] Encrypt(T plaintextObject, ISymmetricKey key) => Encrypt(plaintextObject, key, null);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -184,13 +251,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureSymmetricKey key, Byte[] initializationVector)
+        public Byte[] Encrypt(T plaintextObject, ISymmetricKey key, Byte[] initializationVector)
         {
             try
             {
-                using (var keyBuffer = key.DeriveKey())
+                using (var keyMemory = key.ToDerivedKeyBytes())
                 {
-                    return Encrypt(plaintextObject, keyBuffer, key.Algorithm, initializationVector);
+                    return Encrypt(plaintextObject, keyMemory, key.Algorithm, initializationVector);
                 }
             }
             catch
@@ -214,17 +281,17 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, CascadingSymmetricKey key)
+        public Byte[] Encrypt(T plaintextObject, ICascadingSymmetricKey key)
         {
             try
             {
                 var keys = key.Keys;
-                var binaryEncryptor = new SymmetricBinaryProcessor(RandomnessProvider);
-                var buffer = Encrypt(plaintextObject, keys[0]);
+                var encryptor = new SymmetricProcessor(RandomnessProvider);
+                var buffer = Encrypt(plaintextObject, keys.First());
 
                 for (var i = 1; i < key.Depth; i++)
                 {
-                    buffer = binaryEncryptor.Encrypt(buffer, keys[i]);
+                    buffer = encryptor.Encrypt(buffer, keys.ElementAt(i));
                 }
 
                 return buffer;
@@ -253,7 +320,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureBuffer key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
+        public Byte[] Encrypt(T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm) => Encrypt(plaintextObject, key, algorithm, null);
 
         /// <summary>
         /// Encrypts the specified plaintext object.
@@ -277,15 +344,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <exception cref="SecurityException">
         /// An exception was raised during encryption or serialization.
         /// </exception>
-        public Byte[] Encrypt(T plaintextObject, SecureBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        public Byte[] Encrypt(T plaintextObject, ISecureMemory key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
             try
             {
                 var ciphertext = (Byte[])null;
 
-                key.Access(keyBuffer =>
+                key.Access(keyMemory =>
                 {
-                    ciphertext = Encrypt(plaintextObject, keyBuffer, algorithm, initializationVector);
+                    ciphertext = Encrypt(plaintextObject, keyMemory, algorithm, initializationVector);
                 });
 
                 return ciphertext;
@@ -312,15 +379,15 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting plaintext object.
         /// </returns>
         [DebuggerHidden]
-        private T Decrypt(Byte[] ciphertext, PinnedBuffer key, SymmetricAlgorithmSpecification algorithm)
+        private T Decrypt(Byte[] ciphertext, PinnedMemory key, SymmetricAlgorithmSpecification algorithm)
         {
             using (var cipher = algorithm.ToCipher(RandomnessProvider))
             {
-                using (var pinnedCiphertext = new PinnedBuffer(ciphertext, false))
+                using (var pinnedCiphertext = new PinnedMemory(ciphertext, false))
                 {
                     using (var plaintext = cipher.Decrypt(pinnedCiphertext, key))
                     {
-                        return BinarySerializer.Deserialize(plaintext);
+                        return Serializer.Deserialize(plaintext);
                     }
                 }
             }
@@ -346,12 +413,12 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The resulting ciphertext.
         /// </returns>
         [DebuggerHidden]
-        private Byte[] Encrypt(T plaintextObject, PinnedBuffer key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
+        private Byte[] Encrypt(T plaintextObject, PinnedMemory key, SymmetricAlgorithmSpecification algorithm, Byte[] initializationVector)
         {
-            var plaintext = BinarySerializer.Serialize(plaintextObject);
+            var plaintext = Serializer.Serialize(plaintextObject);
             var plaintextLength = plaintext.Length;
 
-            using (var pinnedPlaintext = new PinnedBuffer(plaintextLength, true))
+            using (var pinnedPlaintext = new PinnedMemory(plaintextLength, true))
             {
                 Array.Copy(plaintext, pinnedPlaintext, plaintextLength);
 
@@ -361,7 +428,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     {
                         case CryptographicTransform.CipherModeCbc:
 
-                            using (var processedInitializationVector = new PinnedBuffer(cipher.BlockSizeInBytes, true))
+                            using (var processedInitializationVector = new PinnedMemory(cipher.BlockSizeInBytes, true))
                             {
                                 if (initializationVector is null)
                                 {
@@ -388,15 +455,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         }
 
         /// <summary>
-        /// Represents a binary serializer that is used to transform plaintext.
+        /// Gets a value specifying the valid purposes and uses of the current <see cref="SymmetricProcessor{T}" />.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISerializer<T> BinarySerializer;
-
-        /// <summary>
-        /// Represents a random number generator that is used to generate initialization vectors.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly RandomNumberGenerator RandomnessProvider;
+        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.SymmetricKeyEncryption;
     }
 }

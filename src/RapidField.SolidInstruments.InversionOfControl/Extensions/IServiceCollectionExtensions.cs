@@ -104,6 +104,12 @@ namespace RapidField.SolidInstruments.InversionOfControl.Extensions
         }
 
         /// <summary>
+        /// Finalizes static members of the <see cref="IServiceCollectionExtensions" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private static void FinalizeStaticMembers() => ReferenceManager.Dispose();
+
+        /// <summary>
         /// Represents a reference manager for disposable references created by <see cref="IServiceCollectionExtensions" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -113,6 +119,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.Extensions
         /// Represents a finalizer for static members of the <see cref="IServiceCollectionExtensions" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(ReferenceManager.Dispose);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
     }
 }

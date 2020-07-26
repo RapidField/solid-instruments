@@ -35,12 +35,12 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="configuration">
         /// Configuration information for the current <see cref="SimulatedInstrumentFactory" />.
         /// </param>
-        protected override void Configure(ObjectFactoryConfiguration<Object> configuration)
+        protected override void Configure(ObjectFactoryConfiguration configuration)
         {
             configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
             configuration.ProductionFunctions
-                .Define(() => new SimulatedBarRepository(BarData))
-                .Define(() => new SimulatedFooRepository(FooData));
+                .Add(() => new SimulatedBarRepository(BarData))
+                .Add(() => new SimulatedFooRepository(FooData));
         }
 
         /// <summary>

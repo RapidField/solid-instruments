@@ -10,16 +10,16 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This project serves as a sample data access API that is modeled using the Solid Instruments Entity Framework abstractions.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\RapidField.SolidInstruments.Example.DatabaseModel.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Example.DatabaseModel.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\RapidField.SolidInstruments.Example.DatabaseModel.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Example.DatabaseModel.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
@@ -28,6 +28,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative\RapidField.SolidInstruments.DataAccess.DotNetNative.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess\RapidField.SolidInstruments.DataAccess.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.EntityFramework\RapidField.SolidInstruments.DataAccess.EntityFramework.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />

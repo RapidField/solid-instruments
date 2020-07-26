@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Core
     /// used as alternatives to null references and default values, when appropriate.
     /// </remarks>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 1)]
-    public struct Nix : ICloneable, IComparable<Nix>, IConvertible, IEquatable<Nix>
+    public struct Nix : ICloneable, IComparable, IComparable<Nix>, IConvertible, IEquatable<Nix>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Nix" /> structure.
@@ -136,6 +136,18 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         public Int32 CompareTo(Nix other) => 0;
+
+        /// <summary>
+        /// Compares the current <see cref="Nix" /> to the specified object and returns an indication of their relative values.
+        /// </summary>
+        /// <param name="obj">
+        /// The object to compare to this instance.
+        /// </param>
+        /// <returns>
+        /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
+        /// instance; zero if they are equal.
+        /// </returns>
+        public Int32 CompareTo(Object obj) => obj is Nix ? CompareTo((Nix)obj) : GetType().FullName.CompareTo(obj.GetType().FullName);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Nix" /> is equal to the specified <see cref="Object" />.

@@ -38,7 +38,8 @@ namespace RapidField.SolidInstruments.InversionOfControl
         }
 
         /// <summary>
-        /// Adds a collection of service descriptors to a <see cref="DependencyContainer{TContainer, TConfigurator}" /> configurator.
+        /// Adds a collection of service descriptors to a <see cref="DependencyContainer{TContainer, TConfigurator}" />
+        /// configurator.
         /// </summary>
         /// <param name="configurator">
         /// The object that configures a container.
@@ -66,7 +67,8 @@ namespace RapidField.SolidInstruments.InversionOfControl
         }
 
         /// <summary>
-        /// Adds a collection of service descriptors to a <see cref="DependencyContainer{TContainer, TConfigurator}" /> configurator.
+        /// Adds a collection of service descriptors to a <see cref="DependencyContainer{TContainer, TConfigurator}" />
+        /// configurator.
         /// </summary>
         /// <param name="configurator">
         /// The object that configures a container.

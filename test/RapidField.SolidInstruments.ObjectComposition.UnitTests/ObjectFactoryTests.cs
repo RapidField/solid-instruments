@@ -18,9 +18,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Produce_ShouldRaiseArgumentException_ForUnsupportedType()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var target = new SimulatedInstrumentFactory(configuration))
+            using (var target = new SimulatedInstrumentFactory())
             {
                 // Act.
                 var action = new Action(() =>
@@ -37,9 +35,7 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void Produce_ShouldReturnNewObjectOfSpecifiedType_ForSupportedType()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var target = new SimulatedInstrumentFactory(configuration))
+            using (var target = new SimulatedInstrumentFactory())
             {
                 // Act.
                 var result = target.Produce<CircularBuffer<Int32>>();
@@ -54,15 +50,13 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         public void SupportedProductTypes_ShouldReturnConfiguredTypes()
         {
             // Arrange.
-            var configuration = new ConfigurationBuilder().Build();
-
-            using (var target = new SimulatedInstrumentFactory(configuration))
+            using (var target = new SimulatedInstrumentFactory())
             {
                 // Act.
                 var supportedProductTypes = target.SupportedProductTypes;
 
                 // Assert.
-                supportedProductTypes.Should().Contain(typeof(PinnedStructureArray<Int16>));
+                supportedProductTypes.Should().Contain(typeof(PinnedMemory<Int16>));
                 supportedProductTypes.Should().Contain(typeof(CircularBuffer<Int32>));
             }
         }

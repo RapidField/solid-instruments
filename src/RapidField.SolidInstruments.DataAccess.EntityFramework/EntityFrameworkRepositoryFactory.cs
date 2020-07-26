@@ -7,33 +7,51 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.ObjectComposition;
 using System;
-using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
 {
     /// <summary>
     /// Encapsulates creation of new Entity Framework <see cref="IDataAccessRepository" /> instances that map to database entities.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkRepositoryFactory{TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkRepositoryFactory{TContext}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session that is used by the produced repositories.
     /// </typeparam>
-    public abstract class EntityFrameworkRepositoryFactory<TContext> : DataAccessRepositoryFactory
+    public abstract class EntityFrameworkRepositoryFactory<TContext> : DataAccessRepositoryFactory, IEntityFrameworkRepositoryFactory<TContext>
         where TContext : DbContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityFrameworkRepositoryFactory{TContext}" /> class.
         /// </summary>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the application.
-        /// </param>
         /// <param name="context">
         /// The database session that is used by the produced repositories.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="context" /> is
+        /// <paramref name="context" /> is <see langword="null" />.
+        /// </exception>
+        protected EntityFrameworkRepositoryFactory(TContext context)
+            : base()
+        {
+            Context = context.RejectIf().IsNull(nameof(context));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityFrameworkRepositoryFactory{TContext}" /> class.
+        /// </summary>
+        /// <param name="context">
+        /// The database session that is used by the produced repositories.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="context" /> is <see langword="null" /> -or- <paramref name="applicationConfiguration" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkRepositoryFactory(IConfiguration applicationConfiguration, TContext context)
+        protected EntityFrameworkRepositoryFactory(TContext context, IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             Context = context.RejectIf().IsNull(nameof(context));
@@ -67,9 +85,16 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
-        /// Represents the database session that is used by the produced repositories.
+        /// Gets the database session that is used by the produced repositories.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal readonly TContext Context;
+        public TContext Context
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the type of the database session that is used by the produced repositories.
+        /// </summary>
+        public Type ContextType => typeof(TContext);
     }
 }

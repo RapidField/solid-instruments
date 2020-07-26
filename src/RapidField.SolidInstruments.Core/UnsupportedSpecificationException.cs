@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.Core
                 return "The supplied specification(s) are not supported.";
             }
 
-            return $"The supplied specification(s) are not supported: {unsupportedSpecification.ToString()}.";
+            return $"The supplied specification(s) are not supported: {unsupportedSpecification}.";
         }
 
         /// <summary>

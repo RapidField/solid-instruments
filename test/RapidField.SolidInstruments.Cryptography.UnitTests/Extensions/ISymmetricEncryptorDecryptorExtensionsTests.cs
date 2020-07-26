@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
                 var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
                 var plaintextObject = "aZ09`ಮ";
 
-                using (var key = SecureSymmetricKey.New(algorithm))
+                using (var key = SymmetricKey.New(algorithm))
                 {
                     // Act.
                     var ciphertext = target.EncryptToBase64String(plaintextObject, key);

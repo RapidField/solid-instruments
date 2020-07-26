@@ -38,8 +38,8 @@ namespace RapidField.SolidInstruments.Core
         Third = 3,
 
         /// <summary>
-        /// Indicates that the <see cref="DayOfWeek" /> represents the fourth but not the last occurrence in the month. Month and day
-        /// pairs for which there are only four occurrences in a month use <see cref="Last" /> to identify the fourth and last
+        /// Indicates that the <see cref="DayOfWeek" /> represents the fourth but not the last occurrence in the month. Month and
+        /// day pairs for which there are only four occurrences in a month use <see cref="Last" /> to identify the fourth and last
         /// occurrence.
         /// </summary>
         [EnumMember]

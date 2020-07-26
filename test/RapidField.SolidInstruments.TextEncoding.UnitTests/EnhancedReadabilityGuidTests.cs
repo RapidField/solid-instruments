@@ -268,7 +268,7 @@ namespace RapidField.SolidInstruments.TextEncoding.UnitTests
 
         private static void ShouldBeSerializable(SerializationFormat format)
         {
-            // Arrange. Arrange.
+            // Arrange.
             var value = Guid.Parse("4aaadf09-0a66-41dc-bfc8-f8520f4aeaf8");
             var identifier = new EnhancedReadabilityGuid(value);
             var target = new EnhancedReadabilityGuidContainer(identifier);

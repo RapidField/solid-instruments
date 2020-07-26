@@ -5,9 +5,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Example.Contracts.Messages;
-using RapidField.SolidInstruments.Example.Domain.MessageSubscribers;
+using RapidField.SolidInstruments.Example.Domain.MessageListeners;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Messaging;
+using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.Service;
 using System;
@@ -45,16 +45,14 @@ namespace RapidField.SolidInstruments.Example.Domain
         /// </param>
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
-            // Register queue subscribers.
-            configurator.AddTransient<IMessageSubscriber<ApplicationStartingMessage>, ApplicationStartingMessageSubscriber>();
-            configurator.AddTransient<IMessageSubscriber<ApplicationStoppingMessage>, ApplicationStoppingMessageSubscriber>();
-            configurator.AddTransient<IMessageSubscriber<ExceptionRaisedMessage>, ExceptionRaisedMessageSubscriber>();
+            // Register event message listeners.
+            configurator.AddMessageListener<ApplicationStartedEventMessage, ApplicationStartedEventMessageListener>();
+            configurator.AddMessageListener<ApplicationStoppedEventMessage, ApplicationStoppedEventMessageListener>();
+            configurator.AddMessageListener<ExceptionRaisedEventMessage, ExceptionRaisedEventMessageListener>();
+            configurator.AddMessageListener<HeartbeatMessage, HeartbeatMessageListener>();
 
-            // Register topic subscribers.
-            configurator.AddTransient<IMessageSubscriber<HeartbeatMessage>, HeartbeatMessageSubscriber>();
-
-            // Register request subscribers.
-            configurator.AddTransient<IMessageSubscriber<PingRequestMessage, PingResponseMessage>, PingRequestMessageSubscriber>();
+            // Register request message listeners.
+            configurator.AddRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
         }
     }
 }

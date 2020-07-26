@@ -89,11 +89,11 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
             if (target.Query.IsNullOrEmpty())
             {
-                return new Uri($"{target.AbsoluteUri}?{queryStringBuilder.ToString()}", UriKind.Absolute);
+                return new Uri($"{target.AbsoluteUri}?{queryStringBuilder}", UriKind.Absolute);
             }
             else
             {
-                return new Uri($"{target.AbsoluteUri}&{queryStringBuilder.ToString()}", UriKind.Absolute);
+                return new Uri($"{target.AbsoluteUri}&{queryStringBuilder}", UriKind.Absolute);
             }
         }
 

@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithFourLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithThreeLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
             var thirdLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         public void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey_WithTwoLayers()
         {
             // Arrange.
-            var derivationMode = SecureSymmetricKeyDerivationMode.XorLayering;
+            var derivationMode = CryptographicKeyDerivationMode.XorLayering;
             var firstLayerAlgorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
             var secondLayerAlgorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
 
@@ -62,43 +62,43 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
         }
 
         [TestMethod]
-        public void Encrypt_ShouldBeReversible_UsingSecureSymmetricKey_ForAes128Cbc()
+        public void Encrypt_ShouldBeReversible_UsingSymmetricKey_ForAes128Cbc()
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes128Cbc;
 
             // Assert.
-            Encrypt_ShouldBeReversible_UsingSecureSymmetricKey(algorithm);
+            Encrypt_ShouldBeReversible_UsingSymmetricKey(algorithm);
         }
 
         [TestMethod]
-        public void Encrypt_ShouldBeReversible_UsingSecureSymmetricKey_ForAes128Ecb()
+        public void Encrypt_ShouldBeReversible_UsingSymmetricKey_ForAes128Ecb()
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes128Ecb;
 
             // Assert.
-            Encrypt_ShouldBeReversible_UsingSecureSymmetricKey(algorithm);
+            Encrypt_ShouldBeReversible_UsingSymmetricKey(algorithm);
         }
 
         [TestMethod]
-        public void Encrypt_ShouldBeReversible_UsingSecureSymmetricKey_ForAes256Cbc()
+        public void Encrypt_ShouldBeReversible_UsingSymmetricKey_ForAes256Cbc()
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Cbc;
 
             // Assert.
-            Encrypt_ShouldBeReversible_UsingSecureSymmetricKey(algorithm);
+            Encrypt_ShouldBeReversible_UsingSymmetricKey(algorithm);
         }
 
         [TestMethod]
-        public void Encrypt_ShouldBeReversible_UsingSecureSymmetricKey_ForAes256Ebc()
+        public void Encrypt_ShouldBeReversible_UsingSymmetricKey_ForAes256Ebc()
         {
             // Arrange.
             var algorithm = SymmetricAlgorithmSpecification.Aes256Ecb;
 
             // Assert.
-            Encrypt_ShouldBeReversible_UsingSecureSymmetricKey(algorithm);
+            Encrypt_ShouldBeReversible_UsingSymmetricKey(algorithm);
         }
 
         private static void Encrypt_ShouldBeReversible_UsingCascadingSymmetricKey(CascadingSymmetricKey key)
@@ -132,7 +132,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
             }
         }
 
-        private static void Encrypt_ShouldBeReversible_UsingSecureSymmetricKey(SymmetricAlgorithmSpecification algorithm)
+        private static void Encrypt_ShouldBeReversible_UsingSymmetricKey(SymmetricAlgorithmSpecification algorithm)
         {
             using (var randomnessProvider = RandomNumberGenerator.Create())
             {
@@ -140,7 +140,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 var target = new SymmetricStringProcessor(randomnessProvider);
                 var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
 
-                using (var key = SecureSymmetricKey.New(algorithm))
+                using (var key = SymmetricKey.New(algorithm))
                 {
                     // Act.
                     var ciphertext = target.Encrypt(plaintextObject, key);

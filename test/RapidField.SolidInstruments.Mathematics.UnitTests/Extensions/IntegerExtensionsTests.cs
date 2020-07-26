@@ -70,6 +70,324 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Extensions
         }
 
         [TestMethod]
+        public void IsAFactorOf_ShouldReturnValidResult_ForInt16()
+        {
+            // Arrange.
+            Int16 negativeTwo = -2;
+            Int16 negativeOne = -1;
+            Int16 zero = 0;
+            Int16 one = 1;
+            Int16 two = 2;
+            Int16 three = 3;
+            Int16 five = 5;
+            Int16 eight = 8;
+
+            // Act.
+            var resultOne = zero.IsAFactorOf(one);
+            var resultTwo = two.IsAFactorOf(negativeTwo);
+            var resultThree = one.IsAFactorOf(one);
+            var resultFour = one.IsAFactorOf(two);
+            var resultFive = three.IsAFactorOf(eight);
+            var resultSix = two.IsAFactorOf(eight);
+            var resultSeven = negativeOne.IsAFactorOf(five);
+            var resultEight = three.IsAFactorOf(zero);
+            var resultNine = eight.IsAFactorOf(two);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsAFactorOf_ShouldReturnValidResult_ForInt32()
+        {
+            // Arrange.
+            var negativeTwo = -2;
+            var negativeOne = -1;
+            var zero = 0;
+            var one = 1;
+            var two = 2;
+            var three = 3;
+            var five = 5;
+            var eight = 8;
+
+            // Act.
+            var resultOne = zero.IsAFactorOf(one);
+            var resultTwo = two.IsAFactorOf(negativeTwo);
+            var resultThree = one.IsAFactorOf(one);
+            var resultFour = one.IsAFactorOf(two);
+            var resultFive = three.IsAFactorOf(eight);
+            var resultSix = two.IsAFactorOf(eight);
+            var resultSeven = negativeOne.IsAFactorOf(five);
+            var resultEight = three.IsAFactorOf(zero);
+            var resultNine = eight.IsAFactorOf(two);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsAFactorOf_ShouldReturnValidResult_ForInt64()
+        {
+            // Arrange.
+            Int64 negativeTwo = -2;
+            Int64 negativeOne = -1;
+            Int64 zero = 0;
+            Int64 one = 1;
+            Int64 two = 2;
+            Int64 three = 3;
+            Int64 five = 5;
+            Int64 eight = 8;
+
+            // Act.
+            var resultOne = zero.IsAFactorOf(one);
+            var resultTwo = two.IsAFactorOf(negativeTwo);
+            var resultThree = one.IsAFactorOf(one);
+            var resultFour = one.IsAFactorOf(two);
+            var resultFive = three.IsAFactorOf(eight);
+            var resultSix = two.IsAFactorOf(eight);
+            var resultSeven = negativeOne.IsAFactorOf(five);
+            var resultEight = three.IsAFactorOf(zero);
+            var resultNine = eight.IsAFactorOf(two);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForInt16()
+        {
+            // Arrange.
+            Int16 negativeTwo = -2;
+            Int16 negativeOne = -1;
+            Int16 zero = 0;
+            Int16 one = 1;
+            Int16 two = 2;
+            Int16 three = 3;
+            Int16 five = 5;
+            Int16 eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = negativeTwo.IsDivisibleBy(two);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(negativeOne);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForInt32()
+        {
+            // Arrange.
+            var negativeTwo = -2;
+            var negativeOne = -1;
+            var zero = 0;
+            var one = 1;
+            var two = 2;
+            var three = 3;
+            var five = 5;
+            var eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = negativeTwo.IsDivisibleBy(two);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(negativeOne);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForInt64()
+        {
+            // Arrange.
+            Int64 negativeTwo = -2;
+            Int64 negativeOne = -1;
+            Int64 zero = 0;
+            Int64 one = 1;
+            Int64 two = 2;
+            Int64 three = 3;
+            Int64 five = 5;
+            Int64 eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = negativeTwo.IsDivisibleBy(two);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(negativeOne);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForUInt16()
+        {
+            // Arrange.
+            UInt16 zero = 0;
+            UInt16 one = 1;
+            UInt16 two = 2;
+            UInt16 three = 3;
+            UInt16 five = 5;
+            UInt16 eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = five.IsDivisibleBy(one);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(five);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForUInt32()
+        {
+            // Arrange.
+            UInt32 zero = 0;
+            UInt32 one = 1;
+            UInt32 two = 2;
+            UInt32 three = 3;
+            UInt32 five = 5;
+            UInt32 eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = five.IsDivisibleBy(one);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(five);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsDivisibleBy_ShouldReturnValidResult_ForUInt64()
+        {
+            // Arrange.
+            UInt64 zero = 0;
+            UInt64 one = 1;
+            UInt64 two = 2;
+            UInt64 three = 3;
+            UInt64 five = 5;
+            UInt64 eight = 8;
+
+            // Act.
+            var resultOne = one.IsDivisibleBy(zero);
+            var resultTwo = five.IsDivisibleBy(five);
+            var resultThree = one.IsDivisibleBy(one);
+            var resultFour = two.IsDivisibleBy(one);
+            var resultFive = eight.IsDivisibleBy(three);
+            var resultSix = eight.IsDivisibleBy(two);
+            var resultSeven = five.IsDivisibleBy(one);
+            var resultEight = zero.IsDivisibleBy(three);
+            var resultNine = two.IsDivisibleBy(eight);
+
+            // Assert.
+            resultOne.Should().BeFalse();
+            resultTwo.Should().BeTrue();
+            resultThree.Should().BeTrue();
+            resultFour.Should().BeTrue();
+            resultFive.Should().BeFalse();
+            resultSix.Should().BeTrue();
+            resultSeven.Should().BeTrue();
+            resultEight.Should().BeTrue();
+            resultNine.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void IsEven_ShouldReturnValidResult_ForInt16()
         {
             // Arrange.

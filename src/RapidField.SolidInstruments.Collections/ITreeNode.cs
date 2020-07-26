@@ -14,29 +14,35 @@ namespace RapidField.SolidInstruments.Collections
     /// <typeparam name="T">
     /// The value type of the node.
     /// </typeparam>
-    public interface ITreeNode<T> : IEnumerable<ITreeNode<T>>, IEnumerable
+    /// <typeparam name="TChildNode">
+    /// The type of the node's children.
+    /// </typeparam>
+    public interface ITreeNode<T, TChildNode> : ITreeNode<T>
+        where TChildNode : ITreeNode<T>
+    {
+        /// <summary>
+        /// Destroys all references to and from associated tree nodes and sets <see cref="ITreeNode{T}.Value" /> equal to the
+        /// default value.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// The state of the node or the associated tree was changed during the destroy operation.
+        /// </exception>
+        public void Destroy();
+    }
+
+    /// <summary>
+    /// Represents a node in a tree structure.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The value type of the node.
+    /// </typeparam>
+    public interface ITreeNode<T> : IEnumerable<ITreeNode<T>>, ITreeNode
     {
         /// <summary>
         /// Gets the child elements of the node, or an empty collection if the current <see cref="ITreeNode{T}" /> is a terminal
         /// node.
         /// </summary>
-        IEnumerable<ITreeNode<T>> Children
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the number of connections from the tree's root node to the current <see cref="ITreeNode{T}" />.
-        /// </summary>
-        Int32 Depth
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the number of connections on the longest path between the current <see cref="ITreeNode{T}" /> and a leaf node.
-        /// </summary>
-        Int32 Height
+        public IEnumerable<ITreeNode<T>> Children
         {
             get;
         }
@@ -47,7 +53,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Children" /> is an empty collection.
         /// </remarks>
-        Boolean IsLeaf
+        public Boolean IsLeaf
         {
             get;
         }
@@ -58,7 +64,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Parent" /> is a null reference.
         /// </remarks>
-        Boolean IsRoot
+        public Boolean IsRoot
         {
             get;
         }
@@ -67,7 +73,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Gets the parent element of the node, or <see langword="null" /> if the current <see cref="ITreeNode{T}" /> is a root
         /// node.
         /// </summary>
-        ITreeNode<T> Parent
+        public ITreeNode<T> Parent
         {
             get;
         }
@@ -75,10 +81,32 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets or sets the value of the current node.
         /// </summary>
-        T Value
+        public T Value
         {
             get;
             set;
+        }
+    }
+
+    /// <summary>
+    /// Represents a node in a tree structure.
+    /// </summary>
+    public interface ITreeNode : IEnumerable
+    {
+        /// <summary>
+        /// Gets the number of connections from the tree's root node to the current <see cref="ITreeNode" />.
+        /// </summary>
+        public Int32 Depth
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the number of connections on the longest path between the current <see cref="ITreeNode" /> and a leaf node.
+        /// </summary>
+        public Int32 Height
+        {
+            get;
         }
     }
 }

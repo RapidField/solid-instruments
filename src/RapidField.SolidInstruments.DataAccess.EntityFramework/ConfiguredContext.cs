@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in
@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="trackingBehavior">
         /// The query result tracking behavior for the context. The default value is <see cref="QueryTrackingBehavior.TrackAll" />.
@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
         /// </exception>
         public ConfiguredContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, QueryTrackingBehavior trackingBehavior)
-            : this(applicationConfiguration, databaseType, UseConventionalDatabaseNameIndicator, DefaultTrackingBehavior)
+            : this(applicationConfiguration, databaseType, UseConventionalDatabaseNameIndicator, trackingBehavior)
         {
             return;
         }
@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.SQLServer" />.
+        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in
@@ -152,32 +152,20 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         {
             try
             {
-                switch (DatabaseType)
+                optionsBuilder = DatabaseType switch
                 {
-                    case ContextDatabaseType.InMemory:
-
-                        optionsBuilder = optionsBuilder
-                            .UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory)
-                            .UseQueryTrackingBehavior(TrackingBehavior)
-                            .ConfigureWarnings((warningsBuilder) =>
-                            {
-                                warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning);
-                            });
-
-                        break;
-
-                    case ContextDatabaseType.SQLServer:
-
-                        optionsBuilder = optionsBuilder
-                            .UseSqlServer(ConnectionString, OnConfiguringSqlServer)
-                            .UseQueryTrackingBehavior(TrackingBehavior);
-
-                        break;
-
-                    default:
-
-                        throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.");
-                }
+                    ContextDatabaseType.InMemory => optionsBuilder
+                        .UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory)
+                        .UseQueryTrackingBehavior(TrackingBehavior)
+                        .ConfigureWarnings((warningsBuilder) =>
+                        {
+                            warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning);
+                        }),
+                    ContextDatabaseType.SQLServer => optionsBuilder
+                        .UseSqlServer(ConnectionString, OnConfiguringSqlServer)
+                        .UseQueryTrackingBehavior(TrackingBehavior),
+                    _ => throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.")
+                };
             }
             finally
             {
@@ -319,7 +307,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// Represents the default database type for backing databases.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const ContextDatabaseType DefaultDatabaseType = ContextDatabaseType.SQLServer;
+        private const ContextDatabaseType DefaultDatabaseType = ContextDatabaseType.InMemory;
 
         /// <summary>
         /// Represents the default query result tracking behavior for contexts.

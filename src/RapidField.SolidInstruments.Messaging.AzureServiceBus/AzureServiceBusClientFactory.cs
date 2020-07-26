@@ -54,23 +54,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates receive operations.
         /// </returns>
-        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath, String subscriptionName)
+        protected sealed override IReceiverClient CreateMessageReceiver<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, IMessagingEntityPath entityPath, String subscriptionName) => entityType switch
         {
-            switch (entityType)
-            {
-                case MessagingEntityType.Queue:
-
-                    return CreateQueueClient<TMessage>(connection, entityPath);
-
-                case MessagingEntityType.Topic:
-
-                    return CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+            MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
+            MessagingEntityType.Topic => CreateSubscriptionClient<TMessage>(connection, entityPath, subscriptionName),
+            _ => throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.")
+        };
 
         /// <summary>
         /// Creates a new implementation-specific client that facilitates send operations.
@@ -90,23 +79,12 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// A new implementation-specific client that facilitates send operations.
         /// </returns>
-        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, String entityPath)
+        protected sealed override ISenderClient CreateMessageSender<TMessage>(ServiceBusConnection connection, MessagingEntityType entityType, IMessagingEntityPath entityPath) => entityType switch
         {
-            switch (entityType)
-            {
-                case MessagingEntityType.Queue:
-
-                    return CreateQueueClient<TMessage>(connection, entityPath);
-
-                case MessagingEntityType.Topic:
-
-                    return CreateTopicClient<TMessage>(connection, entityPath);
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.");
-            }
-        }
+            MessagingEntityType.Queue => CreateQueueClient<TMessage>(connection, entityPath),
+            MessagingEntityType.Topic => CreateTopicClient<TMessage>(connection, entityPath),
+            _ => throw new UnsupportedSpecificationException($"The specified entity type, {entityType}, is not supported.")
+        };
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="AzureServiceBusClientFactory" />.
@@ -135,11 +113,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection, String queuePath)
+        private IQueueClient CreateQueueClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath queuePath)
             where TMessage : class
         {
             EnsureQueueExistanceAsync(queuePath).Wait();
-            return new QueueClient(connection, queuePath, ReceiveBehavior, RetryBehavior);
+            return new QueueClient(connection, queuePath.ToString(), ReceiveBehavior, RetryBehavior);
         }
 
         /// <summary>
@@ -164,11 +142,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection, String topicPath, String subscriptionName)
+        private ISubscriptionClient CreateSubscriptionClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath topicPath, String subscriptionName)
             where TMessage : class
         {
             EnsureSubscriptionExistanceAsync(topicPath, subscriptionName).Wait();
-            return new SubscriptionClient(connection, topicPath, subscriptionName, ReceiveBehavior, RetryBehavior);
+            return new SubscriptionClient(connection, topicPath.ToString(), subscriptionName, ReceiveBehavior, RetryBehavior);
         }
 
         /// <summary>
@@ -190,11 +168,11 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while creating the client.
         /// </exception>
         [DebuggerHidden]
-        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection, String topicPath)
+        private ITopicClient CreateTopicClient<TMessage>(ServiceBusConnection connection, IMessagingEntityPath topicPath)
             where TMessage : class
         {
             EnsureTopicExistanceAsync(topicPath).Wait();
-            return new TopicClient(connection, topicPath, RetryBehavior);
+            return new TopicClient(connection, topicPath.ToString(), RetryBehavior);
         }
 
         /// <summary>
@@ -207,17 +185,23 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureQueueExistanceAsync(String queuePath)
+        private Task EnsureQueueExistanceAsync(IMessagingEntityPath queuePath) => Task.Factory.StartNew(() =>
         {
-            var queueExists = await ManagementClient.QueueExistsAsync(queuePath).ConfigureAwait(false);
-
-            if (queueExists)
+            lock (EnsureQueueExistenceSyncRoot)
             {
-                return;
-            }
+                ManagementClient.QueueExistsAsync(queuePath.ToString()).ContinueWith(queueExistsTask =>
+                {
+                    var queueExists = queueExistsTask.Result;
 
-            await ManagementClient.CreateQueueAsync(queuePath).ConfigureAwait(false);
-        }
+                    if (queueExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateQueueAsync(queuePath.ToString()).Wait();
+                }).Wait();
+            }
+        });
 
         /// <summary>
         /// Asynchronously creates the specified Azure Service Bus subscription if it does not exist.
@@ -232,18 +216,25 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureSubscriptionExistanceAsync(String topicPath, String subscriptionName)
+        private Task EnsureSubscriptionExistanceAsync(IMessagingEntityPath topicPath, String subscriptionName) => Task.Factory.StartNew(() =>
         {
-            await EnsureTopicExistanceAsync(topicPath).ConfigureAwait(false);
-            var subscriptionExists = await ManagementClient.SubscriptionExistsAsync(topicPath, subscriptionName).ConfigureAwait(false);
+            EnsureTopicExistanceAsync(topicPath).Wait();
 
-            if (subscriptionExists)
+            lock (EnsureSubscriptionExistenceSyncRoot)
             {
-                return;
-            }
+                ManagementClient.SubscriptionExistsAsync(topicPath.ToString(), subscriptionName).ContinueWith(subscriptionExistsTask =>
+                {
+                    var subscriptionExists = subscriptionExistsTask.Result;
 
-            await ManagementClient.CreateSubscriptionAsync(topicPath, subscriptionName);
-        }
+                    if (subscriptionExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateSubscriptionAsync(topicPath.ToString(), subscriptionName).Wait();
+                }).Wait();
+            }
+        });
 
         /// <summary>
         /// Asynchronously creates the specified Azure Service Bus topic if it does not exist.
@@ -255,23 +246,50 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// A task representing the asynchronous operation.
         /// </returns>
         [DebuggerHidden]
-        private async Task EnsureTopicExistanceAsync(String topicPath)
+        private Task EnsureTopicExistanceAsync(IMessagingEntityPath topicPath) => Task.Factory.StartNew(() =>
         {
-            var topicExists = await ManagementClient.TopicExistsAsync(topicPath).ConfigureAwait(false);
-
-            if (topicExists)
+            lock (EnsureTopicExistenceSyncRoot)
             {
-                return;
-            }
+                ManagementClient.TopicExistsAsync(topicPath.ToString()).ContinueWith(topicExistsTask =>
+                {
+                    var topicExists = topicExistsTask.Result;
 
-            await ManagementClient.CreateTopicAsync(topicPath).ConfigureAwait(false);
-        }
+                    if (topicExists)
+                    {
+                        return;
+                    }
+
+                    ManagementClient.CreateTopicAsync(topicPath.ToString()).Wait();
+                }).Wait();
+            }
+        });
 
         /// <summary>
         /// Represents the behavior used by clients when receiving messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const ReceiveMode ReceiveBehavior = ReceiveMode.PeekLock;
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureQueueExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureQueueExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureSubscriptionExistanceAsync(IMessagingEntityPath, String)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureSubscriptionExistenceSyncRoot = new Object();
+
+        /// <summary>
+        /// Represents an object that is used to synchronize access to
+        /// <see cref="EnsureTopicExistanceAsync(IMessagingEntityPath)" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Object EnsureTopicExistenceSyncRoot = new Object();
 
         /// <summary>
         /// Represents the behavior used by clients when retrying an operation.

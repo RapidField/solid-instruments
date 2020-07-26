@@ -10,10 +10,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
     /// <summary>
     /// Represents a discrete unit of output from an <see cref="IChannel" />.
     /// </summary>
+    /// <remarks>
+    /// <see cref="DiscreteUnitOfOutput{T}" /> is the default implementation of <see cref="IDiscreteUnitOfOutput{T}" />.
+    /// </remarks>
     /// <typeparam name="T">
     /// The type of the associated channel's output value.
     /// </typeparam>
-    public sealed class DiscreteUnitOfOutput<T>
+    public sealed class DiscreteUnitOfOutput<T> : IDiscreteUnitOfOutput<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscreteUnitOfOutput{T}" /> class.
@@ -32,6 +35,14 @@ namespace RapidField.SolidInstruments.SignalProcessing
             ChannelReadIndex = channelReadIndex.RejectIf().IsLessThan(0, nameof(channelReadIndex));
             Value = value;
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="DiscreteUnitOfOutput{T}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="DiscreteUnitOfOutput{T}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ChannelReadIndex)}\": {ChannelReadIndex}, \"{nameof(Value)}\": \"{Value}\" }}";
 
         /// <summary>
         /// Gets the zero-based index for the current <see cref="DiscreteUnitOfOutput{T}" /> within the associated channel's output

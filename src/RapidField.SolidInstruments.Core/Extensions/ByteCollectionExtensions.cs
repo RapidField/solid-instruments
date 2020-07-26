@@ -114,6 +114,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <param name="bitShiftCount">
         /// The number of bits to shift by.
         /// </param>
+        /// <returns>
+        /// The resulting shifted bit field.
+        /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// The value of <paramref name="direction" /> is equal to <see cref="BitShiftDirection.Unspecified" /> and/or the value of
         /// <paramref name="bitShiftCount" /> is less than zero.
@@ -230,6 +233,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
+        /// Converts the current <see cref="IEnumerable{Byte}" /> to its textual Base64 representation.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{Byte}" />.
+        /// </param>
+        /// <returns>
+        /// A Base64 string representation of the byte collection.
+        /// </returns>
+        public static String ToBase64String(this IEnumerable<Byte> target) => Convert.ToBase64String(target.ToArray());
+
+        /// <summary>
         /// Computes a 128-bit hash using the bytes in the current <see cref="IEnumerable{Byte}" />.
         /// </summary>
         /// <param name="target">
@@ -298,7 +312,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Represents the binary 128-bit hash for an empty collection.
+        /// Represents the 128-bit hash for an empty collection.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Byte[] EmptyCollectionTwoHundredFiftySixBitHash =

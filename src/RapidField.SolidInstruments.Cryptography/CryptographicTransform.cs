@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -184,7 +183,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     blockAsByteList.Add(Convert.ToByte(paddingLengthInBytes));
                     break;
 
-                case PaddingModePcks7:
+                case PaddingModePkcs7:
 
                     while (blockAsByteList.Count < blockSizeInBytes)
                     {
@@ -230,7 +229,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 return block;
             }
 
-            var paddingLengthInBytes = block[block.Length - 1];
+            var paddingLengthInBytes = block[^1];
 
             if (paddingLengthInBytes > blockSizeInBytes)
             {
@@ -262,7 +261,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
                     break;
 
-                case PaddingModePcks7:
+                case PaddingModePkcs7:
 
                     for (var i = startPosition; i >= 0; i--)
                     {
@@ -290,10 +289,10 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
-        /// Transform the supplied binary range.
+        /// Transform the supplied byte range.
         /// </summary>
         /// <param name="range">
-        /// The binary data to be transformed.
+        /// The data to be transformed.
         /// </param>
         /// <param name="transform">
         /// The cryptographic transform that performs the operation.
@@ -451,7 +450,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the <see cref="PaddingMode.PKCS7" /> padding mode.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const PaddingMode PaddingModePcks7 = PaddingMode.PKCS7;
+        internal const PaddingMode PaddingModePkcs7 = PaddingMode.PKCS7;
 
         /// <summary>
         /// Represents the <see cref="PaddingMode.Zeros" /> padding mode.

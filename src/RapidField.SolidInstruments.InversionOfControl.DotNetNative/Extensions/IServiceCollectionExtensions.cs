@@ -4,6 +4,8 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl.Extensions;
 using System;
 
@@ -15,7 +17,28 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
     public static class IServiceCollectionExtensions
     {
         /// <summary>
-        /// Registers an DotNetNative dependency engine and provider factory with the current <see cref="IServiceCollection" />.
+        /// Registers the specified <see cref="IConfiguration" /> instance as a singleton as an idempotent, safe operation.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
+        /// </exception>
+        public static IServiceCollection AddApplicationConfiguration(this IServiceCollection target, IConfiguration applicationConfiguration)
+        {
+            target.TryAddSingleton(applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)));
+            return target;
+        }
+
+        /// <summary>
+        /// Registers an native .NET dependency engine and provider factory with the current <see cref="IServiceCollection" />.
         /// </summary>
         /// <typeparam name="TPackage">
         /// The package that configures the engine.
@@ -42,7 +65,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
             where TPackage : DotNetNativeDependencyPackage, new() => target.AddDependencyPackage<ServiceCollection, DotNetNativeDependencyEngine, TPackage>(applicationConfiguration);
 
         /// <summary>
-        /// Registers an DotNetNative dependency engine and provider factory with the current <see cref="IServiceCollection" />.
+        /// Registers an native .NET dependency engine and provider factory with the current <see cref="IServiceCollection" />.
         /// </summary>
         /// <typeparam name="TPackage">
         /// The package that configures the engine.

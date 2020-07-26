@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.Command
@@ -37,20 +38,20 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TResult Process(TCommand command);
+        public TResult Process(TCommand command);
     }
 
     /// <summary>
     /// Processes commands.
     /// </summary>
     /// <remarks>
-    /// Do not implement <see cref="ICommandHandler{TCommand}" /> directly in user code. Use <see cref="ICommandHandler{TCommand}" />
-    /// as a registration target for inversion of control tools.
+    /// Do not implement <see cref="ICommandHandler{TCommand}" /> directly in user code. Use
+    /// <see cref="ICommandHandler{TCommand}" /> as a registration target for inversion of control tools.
     /// </remarks>
     /// <typeparam name="TCommand">
     /// The type of the command that is processed by the handler.
     /// </typeparam>
-    public interface ICommandHandler<in TCommand> : IDisposable
+    public interface ICommandHandler<in TCommand> : IInstrument
         where TCommand : class, ICommandBase
     {
     }

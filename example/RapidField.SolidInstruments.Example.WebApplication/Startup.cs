@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
 
@@ -36,25 +37,24 @@ namespace RapidField.SolidInstruments.Example.WebApplication
         /// <param name="env">
         /// Information about the application's hosting environment.
         /// </param>
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
             app.UseStaticFiles();
-
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
 
@@ -66,8 +66,9 @@ namespace RapidField.SolidInstruments.Example.WebApplication
         /// </param>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddControllersAsServices();
             services.AddDependencyPackage<ApplicationDependencyPackage>(Configuration, out var serviceProvider);
+            services.AddControllers();
+            services.AddRazorPages();
             return serviceProvider;
         }
 

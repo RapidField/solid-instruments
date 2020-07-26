@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Serialization
 {
     /// <summary>
-    /// Stands in place of a serializer when the input and output are both unformatted binary arrays.
+    /// Stands in place of a serializer when the input and output are both unformatted byte arrays.
     /// </summary>
     public sealed class PassThroughSerializer : DynamicSerializer<Byte[]>
     {
@@ -22,9 +22,9 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <param name="format">
@@ -34,12 +34,12 @@ namespace RapidField.SolidInstruments.Serialization
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected sealed override Byte[] Deserialize(Byte[] buffer, SerializationFormat format) => buffer;
+        protected sealed override Byte[] Deserialize(Byte[] serializedObject, SerializationFormat format) => serializedObject;
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// The format to use for serialization.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.

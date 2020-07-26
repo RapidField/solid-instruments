@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Core.Concurrency
 {
@@ -41,6 +42,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
 
             BlockTimeoutThreshold = blockTimeoutThreshold.RejectIf().IsLessThanOrEqualTo(TimeSpan.Zero, nameof(blockTimeoutThreshold));
             BlockTimeoutThresholdIsInfinite = false;
+            ConsumptionState = ConcurrencyControlConsumptionState.Unclaimed;
         }
 
         /// <summary>
@@ -76,35 +78,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see cref="Timeout.InfiniteTimeSpan" /> -or- <paramref name="mode" /> is equal to
         /// <see cref="ConcurrencyControlMode.Unspecified" />.
         /// </exception>
-        public static ConcurrencyControl New(ConcurrencyControlMode mode, TimeSpan blockTimeoutThreshold)
+        public static ConcurrencyControl New(ConcurrencyControlMode mode, TimeSpan blockTimeoutThreshold) => mode.RejectIf().IsEqualToValue(ConcurrencyControlMode.Unspecified).TargetArgument switch
         {
-            switch (mode.RejectIf().IsEqualToValue(ConcurrencyControlMode.Unspecified).TargetArgument)
-            {
-                case ConcurrencyControlMode.DuplexSemaphore:
-
-                    return new DuplexSemaphoreControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.ProcessorCountSemaphore:
-
-                    return new ProcessorCountSemaphoreControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.SingleThreadLock:
-
-                    return new SingleThreadLockControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.SingleThreadSpinLock:
-
-                    return new SingleThreadSpinLockControl(blockTimeoutThreshold);
-
-                case ConcurrencyControlMode.Unconstrained:
-
-                    return new UnconstrainedControl();
-
-                default:
-
-                    throw new UnsupportedSpecificationException($"The specified concurrency control mode, {mode}, is not supported.");
-            }
-        }
+            ConcurrencyControlMode.DuplexSemaphore => new DuplexSemaphoreControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.ProcessorCountSemaphore => new ProcessorCountSemaphoreControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.SingleThreadLock => new SingleThreadLockControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.SingleThreadSpinLock => new SingleThreadSpinLockControl(blockTimeoutThreshold),
+            ConcurrencyControlMode.Unconstrained => new UnconstrainedControl(),
+            _ => throw new UnsupportedSpecificationException($"The specified concurrency control mode, {mode}, is not supported.")
+        };
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
@@ -116,6 +98,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Asynchronously releases all resources consumed by the current <see cref="ConcurrencyControl" />.
+        /// </summary>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+
+        /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
         /// </summary>
         /// <exception cref="ConcurrencyControlOperationException">
@@ -124,7 +114,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public ConcurrencyControlToken Enter()
+        public IConcurrencyControlToken Enter()
         {
             RejectIfDisposed();
 
@@ -132,12 +122,12 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             {
                 if (BlockTimeoutThresholdIsInfinite)
                 {
-                    EnterWithoutTimeout();
+                    ConsumptionState = EnterWithoutTimeout();
                     return GetNextToken(SynchronizationContext.Current, Thread.CurrentThread, Timeout.InfiniteTimeSpan, null);
                 }
 
                 var expirationStopwatch = Stopwatch.StartNew();
-                EnterWithTimeout(BlockTimeoutThreshold);
+                ConsumptionState = EnterWithTimeout(BlockTimeoutThreshold);
                 return GetNextToken(SynchronizationContext.Current, Thread.CurrentThread, BlockTimeoutThreshold, expirationStopwatch);
             }
             catch (ConcurrencyControlOperationException)
@@ -163,17 +153,17 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Exit(ConcurrencyControlToken token)
+        public void Exit(IConcurrencyControlToken token)
         {
             RejectIfDisposed();
 
-            if (Tokens.TryRemove(token.Identifier, out var releasedToken))
+            if (Tokens.TryRemove(token.Identifier, out _))
             {
                 var exitedSuccessfully = false;
 
                 try
                 {
-                    Exit(ref exitedSuccessfully);
+                    ConsumptionState = Exit(ref exitedSuccessfully);
                 }
                 catch (ConcurrencyControlOperationException)
                 {
@@ -188,10 +178,27 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 {
                     return;
                 }
+
+#if DEBUG
+                if (Debugger.IsAttached)
+                {
+                    // Attaching a debugger during test execution breaks the expected behavior of Exit implementations. Leave this
+                    // here as a conditional exception to the safeguard defined above.
+                    return;
+                }
+#endif
             }
 
             throw new ConcurrencyControlOperationException("The specified token is not valid for release by the control. It was issued by a different control or it was already released.");
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="ConcurrencyControl" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="ConcurrencyControl" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(ConsumptionState)}\": \"{ConsumptionState}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
@@ -217,7 +224,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
         /// </summary>
-        protected abstract void EnterWithoutTimeout();
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="ConcurrencyControl" />.
+        /// </returns>
+        protected abstract ConcurrencyControlConsumptionState EnterWithoutTimeout();
 
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource and
@@ -226,7 +236,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="blockTimeoutThreshold">
         /// The maximum length of time to block a thread before raising an exception.
         /// </param>
-        protected abstract void EnterWithTimeout(TimeSpan blockTimeoutThreshold);
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="ConcurrencyControl" />.
+        /// </returns>
+        protected abstract ConcurrencyControlConsumptionState EnterWithTimeout(TimeSpan blockTimeoutThreshold);
 
         /// <summary>
         /// Informs the control that a thread is exiting a block of code or has finished consuming a resource.
@@ -234,7 +247,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="exitedSuccessfully">
         /// A value indicating whether or not the exit operation was successful. The initial value is <see langword="false" />.
         /// </param>
-        protected abstract void Exit(ref Boolean exitedSuccessfully);
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="ConcurrencyControl" />.
+        /// </returns>
+        protected abstract ConcurrencyControlConsumptionState Exit(ref Boolean exitedSuccessfully);
 
         /// <summary>
         /// Creates a new, uniquely-identified <see cref="ConcurrencyControlToken" /> and adds it to <see cref="Tokens" /> in a
@@ -262,7 +278,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// The <see cref="IConcurrencyControl" /> is in an invalid state.
         /// </exception>
         [DebuggerHidden]
-        private ConcurrencyControlToken GetNextToken(SynchronizationContext context, Thread granteeThread, TimeSpan expirationThreshold, Stopwatch expirationStopwatch)
+        private IConcurrencyControlToken GetNextToken(SynchronizationContext context, Thread granteeThread, TimeSpan expirationThreshold, Stopwatch expirationStopwatch)
         {
             var identifier = Interlocked.Increment(ref NextTokenIdentifier);
             Interlocked.CompareExchange(ref NextTokenIdentifier, 0, MaximumTokenIdentifier);
@@ -292,6 +308,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Gets the consumption state of the current <see cref="ConcurrencyControl" />.
+        /// </summary>
+        public ConcurrencyControlConsumptionState ConsumptionState
+        {
+            get => (ConcurrencyControlConsumptionState)Convert.ToInt32(Interlocked.Read(ref ConsumptionStateValue));
+            private set => Interlocked.Exchange(ref ConsumptionStateValue, Convert.ToInt64((Int32)value));
+        }
+
+        /// <summary>
         /// Represents the highest assignable token identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -314,7 +339,13 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents currently-in-use tokens that were issued by the current <see cref="ConcurrencyControl" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<Int32, ConcurrencyControlToken> Tokens = new ConcurrentDictionary<Int32, ConcurrencyControlToken>();
+        private readonly ConcurrentDictionary<Int32, IConcurrencyControlToken> Tokens = new ConcurrentDictionary<Int32, IConcurrencyControlToken>();
+
+        /// <summary>
+        /// Represents the consumption state of the current <see cref="ConcurrencyControl" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Int64 ConsumptionStateValue;
 
         /// <summary>
         /// Represents a value indicating whether or not the current <see cref="ConcurrencyControl" /> has been disposed.

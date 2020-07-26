@@ -5,6 +5,8 @@
 using RapidField.SolidInstruments.Core;
 using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
+using SolidInstrumentsCommand = RapidField.SolidInstruments.Command.Command;
 
 namespace RapidField.SolidInstruments.DataAccess
 {
@@ -17,6 +19,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <typeparam name="TResult">
     /// The type of the result that is produced by handling the data access command.
     /// </typeparam>
+    [DataContract]
     public abstract class DataAccessCommand<TResult> : DataAccessCommand, IDataAccessCommand<TResult>
     {
         /// <summary>
@@ -31,6 +34,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Gets the type of the result that is produced by handling the data access command.
         /// </summary>
+        [IgnoreDataMember]
         public sealed override Type ResultType => ResultTypeReference;
 
         /// <summary>
@@ -46,12 +50,14 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <remarks>
     /// <see cref="DataAccessCommand" /> is the default implementation of <see cref="IDataAccessCommand" />.
     /// </remarks>
-    public abstract class DataAccessCommand : IDataAccessCommand
+    [DataContract]
+    public abstract class DataAccessCommand : SolidInstrumentsCommand, IDataAccessCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataAccessCommand" /> class.
         /// </summary>
         protected DataAccessCommand()
+            : base()
         {
             return;
         }
@@ -59,6 +65,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Gets the type of the result that is produced by processing the data access command.
         /// </summary>
-        public virtual Type ResultType => Nix.Type;
+        [IgnoreDataMember]
+        public override Type ResultType => Nix.Type;
     }
 }

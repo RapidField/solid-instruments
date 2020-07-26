@@ -14,7 +14,10 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
     /// Represents a unidirectional sequence of numbers for which each term is found by multiplying the previous term by a constant
     /// factor.
     /// </summary>
-    public sealed class GeometricSequence : InfiniteSequence<Double>
+    /// <remarks>
+    /// <see cref="GeometricSequence" /> is the default implementation of <see cref="IGeometricSequence" />.
+    /// </remarks>
+    public class GeometricSequence : InfiniteSequence<Double>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometricSequence" /> class.

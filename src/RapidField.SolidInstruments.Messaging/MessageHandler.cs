@@ -36,8 +36,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" /> is
-        /// equal to <see cref="MessagingEntityType.Unspecified" />.
+        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" />
+        /// is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
         protected MessageHandler(ICommandMediator mediator, MessageHandlerRole role, MessagingEntityType entityType)
             : base(mediator)
@@ -45,6 +45,14 @@ namespace RapidField.SolidInstruments.Messaging
             EntityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType));
             Role = role.RejectIf().IsEqualToValue(MessageHandlerRole.Unspecified, nameof(role));
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageHandler{TMessage}" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageHandler{TMessage}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(EntityType)}\": {EntityType}, \"{nameof(Role)}\": \"{Role}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage}" />.
@@ -103,8 +111,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" /> is
-        /// equal to <see cref="MessagingEntityType.Unspecified" />.
+        /// <paramref name="role" /> is equal to <see cref="MessageHandlerRole.Unspecified" /> -or- <paramref name="entityType" />
+        /// is equal to <see cref="MessagingEntityType.Unspecified" />.
         /// </exception>
         protected MessageHandler(ICommandMediator mediator, MessageHandlerRole role, MessagingEntityType entityType)
             : base(mediator)
@@ -112,6 +120,15 @@ namespace RapidField.SolidInstruments.Messaging
             EntityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType));
             Role = role.RejectIf().IsEqualToValue(MessageHandlerRole.Unspecified, nameof(role));
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageHandler{TMessage, TResult}" /> to its equivalent string
+        /// representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageHandler{TMessage, TResult}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(EntityType)}\": {EntityType}, \"{nameof(Role)}\": \"{Role}\" }}";
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="MessageHandler{TMessage, TResult}" />.

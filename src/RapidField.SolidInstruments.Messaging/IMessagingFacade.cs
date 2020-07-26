@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 
 namespace RapidField.SolidInstruments.Messaging
@@ -37,12 +38,12 @@ namespace RapidField.SolidInstruments.Messaging
     /// <summary>
     /// Facilitates implementation-specific operations for a message bus.
     /// </summary>
-    public interface IMessagingFacade : IDisposable
+    public interface IMessagingFacade : IInstrument
     {
         /// <summary>
         /// Gets the unique textual identifier for the current <see cref="IMessagingFacade" />.
         /// </summary>
-        String Identifier
+        public String Identifier
         {
             get;
         }

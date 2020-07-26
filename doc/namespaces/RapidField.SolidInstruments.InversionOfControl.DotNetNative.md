@@ -35,5 +35,5 @@ Install-Package RapidField.SolidInstruments.InversionOfControl.DotNetNative
 #### [RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions.html)
 
 <section>
-Exposes extensions that support the native .NET implementation of the Solid Instruments inversion of control abstraction.
+Exposes extensions that support the native .NET implementation of the Solid Instruments inversion of control abstractions.
 </section>

@@ -17,7 +17,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// Initializes a new instance of the <see cref="CompressedXmlSerializer{T}" /> class.
         /// </summary>
         public CompressedXmlSerializer()
-            : base(SerializationFormat.Xml)
+            : base(SerializationFormat.CompressedXml)
         {
             return;
         }
