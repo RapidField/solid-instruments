@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Core.Domain
     /// <see cref="SemanticIdentityDomainModel" /> is the default implementation of <see cref="ISemanticIdentityDomainModel" />.
     /// </remarks>
     [DataContract]
-    public abstract class SemanticIdentityDomainModel : SemanticIdentityModel, ISemanticIdentityDomainModel
+    public abstract class SemanticIdentityDomainModel : SemanticIdentityModel, ISemanticIdentityAggregateDomainModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticIdentityDomainModel" /> class.

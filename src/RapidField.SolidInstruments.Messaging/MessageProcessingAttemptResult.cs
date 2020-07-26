@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 namespace RapidField.SolidInstruments.Messaging
 {
     /// <summary>
-    /// Represents information about the result of a message processing attempt by a subscriber.
+    /// Represents information about the result of a message processing attempt by a listener.
     /// </summary>
     [DataContract]
     public sealed class MessageProcessingAttemptResult
@@ -109,6 +109,14 @@ namespace RapidField.SolidInstruments.Messaging
             AttemptStartTimeStamp = attemptStartTimeStamp;
             ExceptionStackTrace = exceptionStackTrace.IsNullOrEmpty() ? null : exceptionStackTrace;
         }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="MessageProcessingAttemptResult" /> to its equivalent string representation.
+        /// </summary>
+        /// <returns>
+        /// A string representation of the current <see cref="MessageProcessingAttemptResult" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(WasSuccessful)}\": {WasSuccessful.ToSerializedString()}, \"{nameof(AttemptEndTimeStamp)}\": \"{AttemptEndTimeStamp.ToSerializedString()}\" }}";
 
         /// <summary>
         /// Gets or sets the date and time when the associated attempt ended, successfully or otherwise.

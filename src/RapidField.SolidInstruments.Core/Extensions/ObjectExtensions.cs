@@ -37,8 +37,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
             try
             {
                 var serializer = new DataContractJsonSerializer(objectType, GetImpliedHashCodeSerializerSettings);
-                var buffer = Serialize(serializer, target);
-                hashCode ^= buffer.ComputeThirtyTwoBitHash();
+                var serializedObject = Serialize(serializer, target);
+                hashCode ^= serializedObject.ComputeThirtyTwoBitHash();
             }
             catch (Exception exception)
             {
@@ -69,8 +69,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
             try
             {
                 var serializer = new DataContractJsonSerializer(objectType, GetSerializedCloneSerializerSettings);
-                var buffer = Serialize(serializer, target);
-                return Deserialize(serializer, buffer);
+                var serializedObject = Serialize(serializer, target);
+                return Deserialize(serializer, serializedObject);
             }
             catch (Exception exception)
             {
@@ -79,28 +79,28 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified serialized object to its typed equivalent.
         /// </summary>
         /// <param name="serializer">
-        /// A serializer that deserializes <paramref name="buffer" />.
+        /// A serializer that deserializes <paramref name="serializedObject" />.
         /// </param>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
         [DebuggerHidden]
-        private static Object Deserialize(DataContractJsonSerializer serializer, Byte[] buffer)
+        private static Object Deserialize(DataContractJsonSerializer serializer, Byte[] serializedObject)
         {
-            using (var stream = new MemoryStream(buffer))
+            using (var stream = new MemoryStream(serializedObject))
             {
                 try
                 {
-                    return serializer.ReadObject(stream) ?? throw new SerializationException("The specified buffer is invalid.");
+                    return serializer.ReadObject(stream) ?? throw new SerializationException("The specified serialized object is invalid.");
                 }
                 catch (SerializationException)
                 {
@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a serialized byte array.
         /// </summary>
         /// <param name="serializer">
         /// A serializer that serializes <paramref name="target" />.
@@ -123,7 +123,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// An object to be serialized.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized byte array.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.

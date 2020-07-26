@@ -17,13 +17,13 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         Unspecified = 0,
 
         /// <summary>
-        /// The context is backed by a SQL Server database.
-        /// </summary>
-        SQLServer = 1,
-
-        /// <summary>
         /// The context is backed by an in-memory database.
         /// </summary>
-        InMemory = 2
+        InMemory = 1,
+
+        /// <summary>
+        /// The context is backed by a SQL Server database.
+        /// </summary>
+        SQLServer = 2
     }
 }

@@ -104,6 +104,12 @@ namespace RapidField.SolidInstruments.Cryptography
         }
 
         /// <summary>
+        /// Finalizes static members of the <see cref="HardenedRandomNumberGenerator" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private static void FinalizeStaticMembers() => Instance.Dispose();
+
+        /// <summary>
         /// Initializes a random number generator that is used to provide source random material for the current
         /// <see cref="HardenedRandomNumberGenerator" />.
         /// </summary>
@@ -131,15 +137,15 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void PermuteBuffer()
         {
-            using (var sourceBytes = new PinnedBuffer(BufferPermutationSourceLengthInBytes, true))
+            using (var sourceBytes = new PinnedMemory(BufferPermutationSourceLengthInBytes, true))
             {
                 SourceRandomnessProvider.GetBytes(sourceBytes);
 
-                using (var privateKey = new PinnedBuffer(CipherKeyLengthInBytes, true))
+                using (var privateKey = new PinnedMemory(CipherKeyLengthInBytes, true))
                 {
                     SourceRandomnessProvider.GetBytes(privateKey);
 
-                    using (var initializationVector = new PinnedBuffer(CipherBlockLengthInBytes, true))
+                    using (var initializationVector = new PinnedMemory(CipherBlockLengthInBytes, true))
                     {
                         SourceRandomnessProvider.GetBytes(initializationVector);
 
@@ -172,7 +178,7 @@ namespace RapidField.SolidInstruments.Cryptography
         private RandomNumberGenerator SourceRandomnessProvider => LazySourceRandomnessProvider.Value;
 
         /// <summary>
-        /// Represents a singleton instance of <see cref="HardenedRandomNumberGenerator" />.
+        /// Represents a singleton instance of the <see cref="HardenedRandomNumberGenerator" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal static readonly HardenedRandomNumberGenerator Instance = new HardenedRandomNumberGenerator();
@@ -211,7 +217,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents a finalizer for static members of the <see cref="HardenedRandomNumberGenerator" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer Finalizer = new StaticMemberFinalizer(Instance.Dispose);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents a synchronized stack of processed (encrypted) bytes.

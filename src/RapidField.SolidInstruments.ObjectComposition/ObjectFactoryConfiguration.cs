@@ -64,17 +64,17 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="productionFunctions" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal ObjectFactoryConfiguration(ObjectFactoryConfigurationProductionFunctions<TProductBase> productionFunctions)
+        internal ObjectFactoryConfiguration(IObjectFactoryConfigurationProductionFunctions<TProductBase> productionFunctions)
             : base()
         {
-            ProductionFunctions = productionFunctions.RejectIf().IsNull(nameof(productionFunctions));
+            ProductionFunctions = productionFunctions.RejectIf().IsNull(nameof(productionFunctions)).TargetArgument;
         }
 
         /// <summary>
         /// Gets a collection of functions that produce supported types for the associated
         /// <see cref="ObjectFactory{TProductBase}" />.
         /// </summary>
-        public ObjectFactoryConfigurationProductionFunctions<TProductBase> ProductionFunctions
+        public IObjectFactoryConfigurationProductionFunctions<TProductBase> ProductionFunctions
         {
             get;
         }

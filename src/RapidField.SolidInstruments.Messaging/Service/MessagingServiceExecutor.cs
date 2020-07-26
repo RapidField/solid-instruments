@@ -3,8 +3,11 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.Configuration;
+using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.InversionOfControl;
+using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Service;
 using System;
 using System.Collections.Generic;
@@ -45,32 +48,103 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <paramref name="serviceName" /> is <see langword="null" />.
         /// </exception>
         protected MessagingServiceExecutor(String serviceName)
-            : base(serviceName)
-        {
-            LazyHeartbeatSchedule = new Lazy<HeartbeatSchedule>(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyHeartbeatTimers = new Lazy<IList<Timer>>(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
-            LazySubscriptionProfile = new Lazy<IMessageSubscriptionProfile>(CreateSubscriptionProfile, LazyThreadSafetyMode.ExecutionAndPublication);
-        }
-
-        /// <summary>
-        /// Adds message subscriptions to the service.
-        /// </summary>
-        /// <param name="subscriptionProfile">
-        /// An object that is used to add subscriptions.
-        /// </param>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the service application.
-        /// </param>
-        protected virtual void AddSubscriptions(IMessageSubscriptionProfile subscriptionProfile, IConfiguration applicationConfiguration)
+            : this(serviceName, DefaultRunsContinuouslyValue)
         {
             return;
         }
 
         /// <summary>
-        /// Configures the service to publish heartbeat messages.
+        /// Initializes a new instance of the
+        /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> class.
+        /// </summary>
+        /// <param name="serviceName">
+        /// The name of the service.
+        /// </param>
+        /// <param name="runsContinuously">
+        /// A value indicating whether or not the service should schedule heartbeat messages and stay running indefinitely. The
+        /// default value is <see langword="true" />.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="serviceName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="serviceName" /> is <see langword="null" />.
+        /// </exception>
+        protected MessagingServiceExecutor(String serviceName, Boolean runsContinuously)
+            : this(serviceName, runsContinuously, DefaultPublishesStartAndStopEventsValue)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> class.
+        /// </summary>
+        /// <param name="serviceName">
+        /// The name of the service.
+        /// </param>
+        /// <param name="runsContinuously">
+        /// A value indicating whether or not the service should schedule heartbeat messages and stay running indefinitely. The
+        /// default value is <see langword="true" />.
+        /// </param>
+        /// <param name="publishesStartAndStopEvents">
+        /// A value indicating whether or not the service should publish event messages when the application starts and stops. The
+        /// default value is <see langword="false" />.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="serviceName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="serviceName" /> is <see langword="null" />.
+        /// </exception>
+        protected MessagingServiceExecutor(String serviceName, Boolean runsContinuously, Boolean publishesStartAndStopEvents)
+            : base(serviceName)
+        {
+            LazyHeartbeatSchedule = new Lazy<HeartbeatSchedule>(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyHeartbeatTimers = new Lazy<IList<Timer>>(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyListeningProfile = new Lazy<IMessageListeningProfile>(CreateListeningProfile, LazyThreadSafetyMode.ExecutionAndPublication);
+            PublishesStartAndStopEvents = publishesStartAndStopEvents;
+            RunsContinuously = runsContinuously;
+        }
+
+        /// <summary>
+        /// Unlocks waiting threads and ends execution of the service.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        [DebuggerHidden]
+        internal void EndExecution()
+        {
+            if (ExecutionLifetime is null)
+            {
+                return;
+            }
+            else if (ExecutionLifetime.IsAlive)
+            {
+                ExecutionLifetime.End();
+            }
+        }
+
+        /// <summary>
+        /// Adds message subscriptions to the service.
+        /// </summary>
+        /// <param name="listeningProfile">
+        /// An object that is used to add subscriptions.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the service application.
+        /// </param>
+        protected virtual void AddSubscriptions(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Configures the service to transmit heartbeat messages.
         /// </summary>
         /// <param name="heartbeatSchedule">
-        /// An object that defines how the service publishes heartbeat messages.
+        /// An object that defines how the service transmits heartbeat messages.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
@@ -105,21 +179,55 @@ namespace RapidField.SolidInstruments.Messaging.Service
         {
             try
             {
-                using (var childScope = dependencyScope.CreateChildScope())
-                {
-                    OnExecutionStarting(childScope, applicationConfiguration, executionLifetime);
-                }
+                AddSubscriptions(ListeningProfile, ApplicationConfiguration);
+                Thread.Sleep(ExecutionStartDelay);
 
                 try
                 {
-                    AddSubscriptions(SubscriptionProfile, ApplicationConfiguration);
-                    StartHeartbeats();
-                    executionLifetime.KeepAlive();
+                    using (var childScope = dependencyScope.CreateChildScope())
+                    {
+                        OnExecutionStarting(childScope, applicationConfiguration, executionLifetime);
+
+                        if (PublishesStartAndStopEvents)
+                        {
+                            PublishApplicationStartedEventMessage(childScope);
+                        }
+                    }
+
+                    try
+                    {
+                        if (RunsContinuously)
+                        {
+                            Console.CancelKeyPress += (sender, eventArguments) =>
+                            {
+                                executionLifetime.End();
+                                eventArguments.Cancel = true;
+                            };
+
+                            try
+                            {
+                                StartHeartbeats();
+                                executionLifetime.KeepAlive();
+                            }
+                            finally
+                            {
+                                StopHeartbeats();
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        if (PublishesStartAndStopEvents)
+                        {
+                            using (var childScope = dependencyScope.CreateChildScope())
+                            {
+                                PublishApplicationStoppedEventMessage(childScope);
+                            }
+                        }
+                    }
                 }
                 finally
                 {
-                    StopHeartbeats();
-
                     using (var childScope = dependencyScope.CreateChildScope())
                     {
                         OnExecutionStopping(childScope, applicationConfiguration);
@@ -129,6 +237,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             finally
             {
                 base.Execute(dependencyScope, applicationConfiguration, executionLifetime);
+                Thread.Sleep(ExecutionStopDelay);
             }
         }
 
@@ -178,65 +287,57 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Creates the subscription profile for the service.
+        /// Creates the listening profile for the service.
         /// </summary>
         /// <returns>
-        /// The subscription profile for the service.
+        /// The listening profile for the service.
         /// </returns>
         [DebuggerHidden]
-        private IMessageSubscriptionProfile CreateSubscriptionProfile()
+        private IMessageListeningProfile CreateListeningProfile()
         {
             var dependencyScope = CreateDependencyScope();
             ReferenceManager.AddObject(dependencyScope);
-            return new MessageSubscriptionProfile(dependencyScope);
+            return new MessageListeningProfile(dependencyScope);
         }
 
         /// <summary>
-        /// Asynchronously publishes a heartbeat message using the specified schedule item.
+        /// Publishes an event to notify the system that the application has started.
         /// </summary>
-        /// <param name="scheduleItem">
-        /// A schedule item that defines characteristics of the message.
+        /// <param name="dependencyScope">
+        /// A scope that is used to resolve service dependencies.
         /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation.
-        /// </returns>
-        /// <exception cref="MessagePublishingException">
-        /// An exception was raised while attempting to publish the heartbeat message.
+        /// <exception cref="CommandHandlingException">
+        /// An exception was raised while publishing the event message.
         /// </exception>
         [DebuggerHidden]
-        private Task PublishHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
+        private void PublishApplicationStartedEventMessage(IDependencyScope dependencyScope)
         {
-            try
-            {
-                var dependencyScope = CreateDependencyScope();
-
-                try
-                {
-                    var messagePublishingFacade = dependencyScope.Resolve<IMessagePublishingFacade>();
-
-                    return scheduleItem.PublishHeartbeatMessageAsync(messagePublishingFacade).ContinueWith(publishHeartbeatMessageTask =>
-                    {
-                        dependencyScope.Dispose();
-                    });
-                }
-                catch
-                {
-                    dependencyScope.Dispose();
-                    throw;
-                }
-            }
-            catch (MessagePublishingException)
-            {
-                throw;
-            }
-            catch (Exception exception)
-            {
-                throw new MessagePublishingException(typeof(HeartbeatMessage), exception);
-            }
+            var mediator = dependencyScope.Resolve<ICommandMediator>();
+            var applicationStartedEvent = new ApplicationStartedEvent(ServiceName);
+            var applicationStartedEventMessage = new ApplicationStartedEventMessage(applicationStartedEvent);
+            mediator.Process(applicationStartedEventMessage);
         }
 
         /// <summary>
-        /// Creates a new timer that publishes messages according to the supplied specifications.
+        /// Publishes an event to notify the system that the application has stopped.
+        /// </summary>
+        /// <param name="dependencyScope">
+        /// A scope that is used to resolve service dependencies.
+        /// </param>
+        /// <exception cref="CommandHandlingException">
+        /// An exception was raised while publishing the event message.
+        /// </exception>
+        [DebuggerHidden]
+        private void PublishApplicationStoppedEventMessage(IDependencyScope dependencyScope)
+        {
+            var mediator = dependencyScope.Resolve<ICommandMediator>();
+            var applicationStoppedEvent = new ApplicationStoppedEvent(ServiceName);
+            var applicationStoppedEventMessage = new ApplicationStoppedEventMessage(applicationStoppedEvent);
+            mediator.Process(applicationStoppedEventMessage);
+        }
+
+        /// <summary>
+        /// Creates a new timer that transmits messages according to the supplied specifications.
         /// </summary>
         /// <param name="heartbeatScheduleItem">
         /// Specifications for the heartbeat.
@@ -244,7 +345,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         [DebuggerHidden]
         private void ScheduleHeartbeat(IHeartbeatScheduleItem heartbeatScheduleItem)
         {
-            var timerCallback = new TimerCallback((state) => PublishHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
+            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
             var timer = new Timer(timerCallback, heartbeatScheduleItem, TimeSpan.Zero, TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds));
             HeartbeatTimers.Add(timer);
             ReferenceManager.AddObject(timer);
@@ -276,22 +377,92 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
+        /// Asynchronously transmits a heartbeat message using the specified schedule item.
+        /// </summary>
+        /// <param name="scheduleItem">
+        /// A schedule item that defines characteristics of the message.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="MessageTransmissionException">
+        /// An exception was raised while attempting to transmit the heartbeat message.
+        /// </exception>
+        [DebuggerHidden]
+        private Task TransmitHeartbeatMessageAsync(IHeartbeatScheduleItem scheduleItem)
+        {
+            try
+            {
+                var dependencyScope = CreateDependencyScope();
+
+                try
+                {
+                    var messageTransmittingFacade = dependencyScope.Resolve<IMessageTransmittingFacade>();
+
+                    return scheduleItem.TransmitHeartbeatMessageAsync(messageTransmittingFacade).ContinueWith(transmitHeartbeatMessageTask =>
+                    {
+                        dependencyScope.Dispose();
+                    });
+                }
+                catch
+                {
+                    dependencyScope.Dispose();
+                    throw;
+                }
+            }
+            catch (MessageTransmissionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new MessageTransmissionException(typeof(HeartbeatMessage), exception);
+            }
+        }
+
+        /// <summary>
         /// Gets the heartbeat message schedule for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private HeartbeatSchedule HeartbeatSchedule => LazyHeartbeatSchedule.Value;
 
         /// <summary>
-        /// Gets a collection of timers that control heartbeat publishing.
+        /// Gets a collection of timers that control heartbeat transmission.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private IList<Timer> HeartbeatTimers => LazyHeartbeatTimers.Value;
 
         /// <summary>
-        /// Gets the subscription profile for the service.
+        /// Gets the listening profile for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IMessageSubscriptionProfile SubscriptionProfile => LazySubscriptionProfile.Value;
+        private IMessageListeningProfile ListeningProfile => LazyListeningProfile.Value;
+
+        /// <summary>
+        /// Represents a default value indicating whether or not the service should publish event messages when the application
+        /// starts and stops.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Boolean DefaultPublishesStartAndStopEventsValue = false;
+
+        /// <summary>
+        /// Represents a default value indicating whether or not the service should schedule heartbeat messages and stay running
+        /// indefinitely. The
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Boolean DefaultRunsContinuouslyValue = true;
+
+        /// <summary>
+        /// Represents the length of time to delay service execution after adding subscriptions.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly TimeSpan ExecutionStartDelay = TimeSpan.FromSeconds(1);
+
+        /// <summary>
+        /// Represents the length of time to wait after execution has finished.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly TimeSpan ExecutionStopDelay = TimeSpan.FromSeconds(3);
 
         /// <summary>
         /// Represents the lazily-initialized heartbeat message schedule for the service.
@@ -300,15 +471,29 @@ namespace RapidField.SolidInstruments.Messaging.Service
         private readonly Lazy<HeartbeatSchedule> LazyHeartbeatSchedule;
 
         /// <summary>
-        /// Represents a lazily-initialized collection of timers that control heartbeat publishing.
+        /// Represents a lazily-initialized collection of timers that control heartbeat transmission.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<IList<Timer>> LazyHeartbeatTimers;
 
         /// <summary>
-        /// Represents the lazily-initialized
+        /// Represents the lazily-initialized listening profile for the service.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IMessageSubscriptionProfile> LazySubscriptionProfile;
+        private readonly Lazy<IMessageListeningProfile> LazyListeningProfile;
+
+        /// <summary>
+        /// Represents value indicating whether or not the service should publish event messages when the application starts and
+        /// stops.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Boolean PublishesStartAndStopEvents;
+
+        /// <summary>
+        /// Represents a value indicating whether or not the service should schedule heartbeat messages and stay running
+        /// indefinitely.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Boolean RunsContinuously;
     }
 }

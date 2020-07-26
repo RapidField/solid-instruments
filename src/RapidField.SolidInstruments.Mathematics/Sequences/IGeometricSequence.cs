@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <summary>
         /// Gets the constant factor between the terms in the sequence.
         /// </summary>
-        Double CommonRatio
+        public Double CommonRatio
         {
             get;
         }

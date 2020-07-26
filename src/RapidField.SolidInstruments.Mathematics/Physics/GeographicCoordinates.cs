@@ -122,9 +122,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is GeographicCoordinates)
+            else if (obj is GeographicCoordinates coordinates)
             {
-                return Equals((GeographicCoordinates)obj);
+                return Equals(coordinates);
             }
 
             return false;

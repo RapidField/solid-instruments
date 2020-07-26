@@ -27,5 +27,10 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         {
             return;
         }
+
+        /// <summary>
+        /// Represents a singleton instance of the <see cref="SymmetricStringProcessor" /> class.
+        /// </summary>
+        public static readonly ISymmetricProcessor<String> Instance = new SymmetricStringProcessor(HardenedRandomNumberGenerator.Instance);
     }
 }

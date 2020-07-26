@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets a name or value that uniquely identifies the associated application.
         /// </summary>
-        String ApplicationIdentity
+        public String ApplicationIdentity
         {
             get;
             set;

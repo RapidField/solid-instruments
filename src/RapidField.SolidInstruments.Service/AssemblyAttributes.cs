@@ -5,4 +5,5 @@
 using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Service.UnitTests")]

@@ -22,6 +22,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             var valueTwo = Array.Empty<Byte>();
             var valueThree = new Byte[] { 0xcc, 0xff };
             var hashCode = 0;
+            var derivedIdentity = Guid.Empty;
 
             using (var target = new Secret(name))
             {
@@ -31,40 +32,48 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
                 hashCode.Should().Be(target.GetHashCode());
                 target.Name.Should().Be(name);
                 target.HasValue.Should().BeFalse();
-                target.ValueType.Should().Be(typeof(IReadOnlyPinnedBuffer<Byte>));
+                target.ValueType.Should().Be(typeof(IReadOnlyPinnedMemory<Byte>));
+                derivedIdentity = target.DerivedIdentity;
+                derivedIdentity.Should().NotBe(Guid.Empty);
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueOne));
+                target.Write(() => new PinnedMemory(valueOne));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
                 target.HasValue.Should().BeTrue();
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
                 target.Read(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueOne);
                 });
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueTwo));
+                target.WriteAsync(() => new PinnedMemory(valueTwo)).Wait();
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
-                target.Read(secret =>
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
+                target.ReadAsync(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueTwo);
-                });
+                }).Wait();
 
                 // Act.
-                target.Write(() => new PinnedBuffer(valueThree));
+                target.Write(() => new PinnedMemory(valueThree));
 
                 // Assert.
                 hashCode.Should().NotBe(target.GetHashCode());
                 hashCode = target.GetHashCode();
                 hashCode.Should().Be(target.GetHashCode());
+                target.DerivedIdentity.Should().NotBe(derivedIdentity);
+                derivedIdentity = target.DerivedIdentity;
                 target.Read(secret =>
                 {
                     secret.ReadOnlySpan.ToArray().Should().BeEquivalentTo(valueThree);

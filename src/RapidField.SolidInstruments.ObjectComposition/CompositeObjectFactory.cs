@@ -227,9 +227,9 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerHidden]
-        internal sealed override ConcurrentDictionary<Type, ObjectFactoryProductionFunction> DefineProductionFunctions()
+        internal sealed override ConcurrentDictionary<Type, IObjectFactoryProductionFunction> DefineProductionFunctions()
         {
-            var dictionary = new ConcurrentDictionary<Type, ObjectFactoryProductionFunction>();
+            var dictionary = new ConcurrentDictionary<Type, IObjectFactoryProductionFunction>();
 
             foreach (var factory in Factories)
             {

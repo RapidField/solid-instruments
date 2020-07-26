@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets or sets the identifier for the associated request message.
         /// </summary>
-        Guid RequestMessageIdentifier
+        public Guid RequestMessageIdentifier
         {
             get;
             set;

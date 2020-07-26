@@ -82,7 +82,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A unique textual identifier.
         /// </returns>
-        protected virtual String InitializeIdentifier() => new String(new ZBase32Encoding().GetChars(Guid.NewGuid().ToByteArray().ComputeThirtyTwoBitHash().ToByteArray()));
+        protected virtual String InitializeIdentifier() => new ZBase32Encoding().GetString(Guid.NewGuid().ToByteArray().ComputeThirtyTwoBitHash().ToByteArray());
 
         /// <summary>
         /// Gets the name or value that uniquely identifies the application in which the current

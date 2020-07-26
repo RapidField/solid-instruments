@@ -15,7 +15,10 @@ namespace RapidField.SolidInstruments.ObjectComposition
     /// <summary>
     /// Represents an object that configures and initializes new <see cref="IObjectContainer" /> instances.
     /// </summary>
-    public sealed class ObjectContainerBuilder : ObjectBuilder<IObjectContainer>
+    /// <remarks>
+    /// <see cref="ObjectContainerBuilder" /> is the default implementation of <see cref="IObjectContainerBuilder" />.
+    /// </remarks>
+    public sealed class ObjectContainerBuilder : ObjectBuilder<IObjectContainer>, IObjectContainerBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectContainerBuilder" /> class.
@@ -38,7 +41,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder Configure<TProduct>()
+        public IObjectContainerBuilder Configure<TProduct>()
             where TProduct : class, new() => Configure(() => new TProduct());
 
         /// <summary>
@@ -59,7 +62,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder Configure<TProduct>(Func<TProduct> productionFunction)
+        public IObjectContainerBuilder Configure<TProduct>(Func<TProduct> productionFunction)
             where TProduct : class => Configure<TProduct, TProduct>(productionFunction);
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder Configure<TRequest, TProduct>()
+        public IObjectContainerBuilder Configure<TRequest, TProduct>()
             where TRequest : class
             where TProduct : class, TRequest, new() => Configure<TRequest, TProduct>(() => new TProduct());
 
@@ -104,7 +107,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised while configuring the <see cref="IObjectContainer" />. See inner exception for details.
         /// </exception>
-        public ObjectContainerBuilder Configure<TRequest, TProduct>(Func<TProduct> productionFunction)
+        public IObjectContainerBuilder Configure<TRequest, TProduct>(Func<TProduct> productionFunction)
             where TRequest : class
             where TProduct : class, TRequest
         {
@@ -125,7 +128,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     throw new ArgumentException($"The builder is already configured for the request-product type pair: {requestType.FullName}, {productType.FullName}.", nameof(TProduct));
                 }
 
-                DefinitionConfigurationActions.Add(definitionKey, new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+                DefinitionConfigurationActions.Add(definitionKey, new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
                 {
                     definitions.Add<TRequest, TProduct>();
                 }));
@@ -135,7 +138,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     return this;
                 }
 
-                FunctionConfigurationActions.Add(definitionKey, new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+                FunctionConfigurationActions.Add(definitionKey, new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
                 {
                     functions.Add(productionFunction);
                 }));
@@ -149,14 +152,22 @@ namespace RapidField.SolidInstruments.ObjectComposition
         }
 
         /// <summary>
+        /// Releases all resources consumed by the current <see cref="ObjectContainerBuilder" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not managed resources should be released.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
         /// Produces the configured <see cref="ObjectContainer" /> instance.
         /// </summary>
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised during finalization of the builder.
         /// </exception>
-        protected sealed override IObjectContainer ToResult(ConcurrencyControlToken controlToken)
+        protected sealed override IObjectContainer ToResult(IConcurrencyControlToken controlToken)
         {
-            var factoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions>((functions) =>
+            var factoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
             {
                 foreach (var action in FunctionConfigurationActions.Values)
                 {
@@ -164,7 +175,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 }
             });
 
-            var definitionConfigurator = new Action<ObjectContainerConfigurationDefinitions>((definitions) =>
+            var definitionConfigurator = new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
             {
                 foreach (var action in DefinitionConfigurationActions.Values)
                 {
@@ -180,26 +191,19 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see cref="IObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IDictionary<ObjectContainerDefinition, Action<ObjectContainerConfigurationDefinitions>> DefinitionConfigurationActions = new Dictionary<ObjectContainerDefinition, Action<ObjectContainerConfigurationDefinitions>>();
+        private readonly IDictionary<IObjectContainerDefinition, Action<IObjectContainerConfigurationDefinitions>> DefinitionConfigurationActions = new Dictionary<IObjectContainerDefinition, Action<IObjectContainerConfigurationDefinitions>>();
 
         /// <summary>
         /// Represents a collection of definitions that control the behavior of the resulting <see cref="IObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ObjectContainerConfigurationDefinitions Definitions = new ObjectContainerConfigurationDefinitions();
+        private readonly IObjectContainerConfigurationDefinitions Definitions = new ObjectContainerConfigurationDefinitions();
 
         /// <summary>
         /// Represents a collection of actions that configure the functions that produce new object instances for the resulting
         /// <see cref="IObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IDictionary<ObjectContainerDefinition, Action<ObjectFactoryConfigurationProductionFunctions>> FunctionConfigurationActions = new Dictionary<ObjectContainerDefinition, Action<ObjectFactoryConfigurationProductionFunctions>>();
-
-        /// <summary>
-        /// Represents a collection of configured types and functions that produce them using the resulting
-        /// <see cref="IObjectContainer" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ObjectFactoryConfigurationProductionFunctions Functions = new ObjectFactoryConfigurationProductionFunctions();
+        private readonly IDictionary<IObjectContainerDefinition, Action<IObjectFactoryConfigurationProductionFunctions>> FunctionConfigurationActions = new Dictionary<IObjectContainerDefinition, Action<IObjectFactoryConfigurationProductionFunctions>>();
     }
 }

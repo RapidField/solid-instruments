@@ -13,13 +13,17 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Processes Entity Framework data access commands.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkCommandHandler{TContext, TCommand}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkCommandHandler{TContext, TCommand}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session for the transaction.
     /// </typeparam>
     /// <typeparam name="TCommand">
     /// The type of the data access command that is processed by the handler.
     /// </typeparam>
-    public abstract class EntityFrameworkCommandHandler<TContext, TCommand> : DataAccessCommandHandler<TCommand>
+    public abstract class EntityFrameworkCommandHandler<TContext, TCommand> : DataAccessCommandHandler<TCommand>, IEntityFrameworkCommandHandler<TContext, TCommand>
         where TContext : DbContext
         where TCommand : class, IDataAccessCommand
     {
@@ -36,7 +40,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory<TContext> repositoryFactory)
             : this(mediator, repositoryFactory, DefaultIsolationLevel)
         {
             return;
@@ -59,7 +63,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory, IsolationLevel isolationLevel)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory<TContext> repositoryFactory, IsolationLevel isolationLevel)
             : this(mediator, repositoryFactory, new EntityFrameworkTransaction<TContext>(repositoryFactory.Context, isolationLevel))
         {
             return;
@@ -84,7 +88,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" /> -or- <paramref name="transaction" /> is <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory, EntityFrameworkTransaction<TContext> transaction)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory repositoryFactory, IEntityFrameworkTransaction transaction)
             : base(mediator, repositoryFactory, transaction)
         {
             return;
@@ -108,6 +112,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Processes Entity Framework data access commands.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkCommandHandler{TContext, TCommand, TResult}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkCommandHandler{TContext, TCommand, TResult}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session for the transaction.
     /// </typeparam>
@@ -117,7 +125,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <typeparam name="TResult">
     /// The type of the result that is emitted by the handler when processing a data access command.
     /// </typeparam>
-    public abstract class EntityFrameworkCommandHandler<TContext, TCommand, TResult> : DataAccessCommandHandler<TCommand, TResult>
+    public abstract class EntityFrameworkCommandHandler<TContext, TCommand, TResult> : DataAccessCommandHandler<TCommand, TResult>, IEntityFrameworkCommandHandler<TContext, TCommand, TResult>
         where TContext : DbContext
         where TCommand : class, IDataAccessCommand<TResult>
     {
@@ -134,7 +142,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory<TContext> repositoryFactory)
             : this(mediator, repositoryFactory, DefaultIsolationLevel)
         {
             return;
@@ -157,7 +165,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory, IsolationLevel isolationLevel)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory<TContext> repositoryFactory, IsolationLevel isolationLevel)
             : this(mediator, repositoryFactory, new EntityFrameworkTransaction<TContext>(repositoryFactory.Context, isolationLevel))
         {
             return;
@@ -182,7 +190,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="repositoryFactory" /> is
         /// <see langword="null" /> -or- <paramref name="transaction" /> is <see langword="null" />.
         /// </exception>
-        protected EntityFrameworkCommandHandler(ICommandMediator mediator, EntityFrameworkRepositoryFactory<TContext> repositoryFactory, EntityFrameworkTransaction<TContext> transaction)
+        protected EntityFrameworkCommandHandler(ICommandMediator mediator, IEntityFrameworkRepositoryFactory repositoryFactory, IEntityFrameworkTransaction transaction)
             : base(mediator, repositoryFactory, transaction)
         {
             return;

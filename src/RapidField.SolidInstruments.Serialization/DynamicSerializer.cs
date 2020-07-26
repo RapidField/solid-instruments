@@ -51,30 +51,30 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="buffer" /> is <see langword="null" />.
+        /// <paramref name="serializedObject" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        public T Deserialize(Byte[] buffer) => Deserialize(buffer.RejectIf().IsNull(nameof(buffer)), Format);
+        public T Deserialize(Byte[] serializedObject) => Deserialize(serializedObject.RejectIf().IsNull(nameof(serializedObject)), Format);
 
         /// <summary>
-        /// Converts the specified object to a serialized buffer.
+        /// Converts the specified object to a serialized bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="target" /> is <see langword="null" />.
@@ -85,9 +85,17 @@ namespace RapidField.SolidInstruments.Serialization
         public Byte[] Serialize(T target) => Serialize(target.RejectIf().IsNull(nameof(target)), Format);
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the value of the current <see cref="DynamicSerializer{T}" /> to its equivalent string representation.
         /// </summary>
-        /// <param name="buffer">
+        /// <returns>
+        /// A string representation of the current <see cref="DynamicSerializer{T}" />.
+        /// </returns>
+        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\", {nameof(ContractType)}\": \"{ContractType.FullName}\" }}";
+
+        /// <summary>
+        /// Converts the specified bit field to its typed equivalent.
+        /// </summary>
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <param name="format">
@@ -97,20 +105,20 @@ namespace RapidField.SolidInstruments.Serialization
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
-        protected virtual T Deserialize(Byte[] buffer, SerializationFormat format) => format switch
+        protected virtual T Deserialize(Byte[] serializedObject, SerializationFormat format) => format switch
         {
-            SerializationFormat.Binary => Deserialize(buffer, DefaultFormat),
-            SerializationFormat.CompressedJson => DeserializeFromJson(buffer.Decompress()),
-            SerializationFormat.CompressedXml => DeserializeFromXml(buffer.Decompress()),
-            SerializationFormat.Json => DeserializeFromJson(buffer),
-            SerializationFormat.Xml => DeserializeFromXml(buffer),
+            SerializationFormat.Binary => Deserialize(serializedObject, DefaultFormat),
+            SerializationFormat.CompressedJson => DeserializeFromJson(serializedObject.Decompress()),
+            SerializationFormat.CompressedXml => DeserializeFromXml(serializedObject.Decompress()),
+            SerializationFormat.Json => DeserializeFromJson(serializedObject),
+            SerializationFormat.Xml => DeserializeFromXml(serializedObject),
             _ => throw new UnsupportedSpecificationException($"The specified serialization format, {Format}, is not supported.")
         };
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
@@ -119,7 +127,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// The format to use for serialization.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
@@ -153,25 +161,25 @@ namespace RapidField.SolidInstruments.Serialization
         private static DataContractSerializer InitializeXmlSerializer() => new DataContractSerializer(ContractType, XmlSerializerSettings);
 
         /// <summary>
-        /// Converts the specified JSON buffer to its typed equivalent.
+        /// Converts the specified JSON bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
         [DebuggerHidden]
-        private T DeserializeFromJson(Byte[] buffer)
+        private T DeserializeFromJson(Byte[] serializedObject)
         {
-            using (var stream = new MemoryStream(buffer))
+            using (var stream = new MemoryStream(serializedObject))
             {
                 try
                 {
-                    return JsonSerializer.ReadObject(stream) as T ?? throw new SerializationException("The specified buffer is invalid.");
+                    return JsonSerializer.ReadObject(stream) as T ?? throw new SerializationException("The specified bit field is invalid.");
                 }
                 catch (SerializationException)
                 {
@@ -185,25 +193,25 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified XML buffer to its typed equivalent.
+        /// Converts the specified XML bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
         [DebuggerHidden]
-        private T DeserializeFromXml(Byte[] buffer)
+        private T DeserializeFromXml(Byte[] serializedObject)
         {
-            using (var stream = new MemoryStream(buffer))
+            using (var stream = new MemoryStream(serializedObject))
             {
                 try
                 {
-                    return XmlSerializer.ReadObject(stream) as T ?? throw new SerializationException("The specified buffer is invalid.");
+                    return XmlSerializer.ReadObject(stream) as T ?? throw new SerializationException("The specified bit field is invalid.");
                 }
                 catch (SerializationException)
                 {
@@ -217,13 +225,13 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified object to a JSON buffer.
+        /// Converts the specified object to a JSON bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
@@ -251,13 +259,13 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified object to an XML buffer.
+        /// Converts the specified object to an XML bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.
@@ -376,12 +384,12 @@ namespace RapidField.SolidInstruments.Serialization
         /// <returns>
         /// A string representation of the current <see cref="DynamicSerializer" />.
         /// </returns>
-        public override String ToString() => $"Format: {Format}";
+        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\" }}";
 
         /// <summary>
-        /// Converts the specified buffer to its typed equivalent.
+        /// Converts the specified bit field to its typed equivalent.
         /// </summary>
-        /// <param name="buffer">
+        /// <param name="serializedObject">
         /// A serialized object.
         /// </param>
         /// <param name="targetType">
@@ -394,16 +402,16 @@ namespace RapidField.SolidInstruments.Serialization
         /// The deserialized object.
         /// </returns>
         /// <exception cref="SerializationException">
-        /// <paramref name="buffer" /> is invalid or an error occurred during deserialization.
+        /// <paramref name="serializedObject" /> is invalid or an error occurred during deserialization.
         /// </exception>
         [DebuggerHidden]
-        internal static Object Deserialize(Byte[] buffer, Type targetType, SerializationFormat format)
+        internal static Object Deserialize(Byte[] serializedObject, Type targetType, SerializationFormat format)
         {
             try
             {
                 var serializer = Create(targetType.RejectIf().IsNull(nameof(targetType)), format.RejectIf().IsEqualToValue(SerializationFormat.Unspecified));
                 var deserializeMethod = serializer.GetType().GetMethod(nameof(ISerializer<Object>.Deserialize));
-                return deserializeMethod.Invoke(serializer, new Object[] { buffer.RejectIf().IsNull(nameof(buffer)).TargetArgument });
+                return deserializeMethod.Invoke(serializer, new Object[] { serializedObject.RejectIf().IsNull(nameof(serializedObject)).TargetArgument });
             }
             catch (SerializationException)
             {
@@ -416,7 +424,7 @@ namespace RapidField.SolidInstruments.Serialization
         }
 
         /// <summary>
-        /// Converts the specified object to a buffer.
+        /// Converts the specified object to a bit field.
         /// </summary>
         /// <param name="target">
         /// An object to be serialized.
@@ -428,7 +436,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// The format to use for serialization.
         /// </param>
         /// <returns>
-        /// The serialized buffer.
+        /// The serialized bit field.
         /// </returns>
         /// <exception cref="SerializationException">
         /// <paramref name="target" /> is invalid or an error occurred during serialization.

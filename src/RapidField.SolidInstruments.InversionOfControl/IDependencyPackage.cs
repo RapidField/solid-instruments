@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to configure a container.
         /// </exception>
-        TEngine CreateEngine(IConfiguration applicationConfiguration);
+        public TEngine CreateEngine(IConfiguration applicationConfiguration);
 
         /// <summary>
         /// Creates a new dependency engine that is configured by the current
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to configure a container.
         /// </exception>
-        TEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors);
+        public TEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors);
     }
 
     /// <summary>
@@ -87,6 +87,6 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to create the modules for the package.
         /// </exception>
-        IEnumerable<IDependencyModule<TConfigurator>> GetModules(IConfiguration applicationConfiguration);
+        public IEnumerable<IDependencyModule<TConfigurator>> GetModules(IConfiguration applicationConfiguration);
     }
 }

@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets the severity of the current <see cref="ISecurityEvent" />.
         /// </summary>
-        SecurityEventSeverity Severity
+        public SecurityEventSeverity Severity
         {
             get;
             set;

@@ -2,6 +2,12 @@
 # Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 # =================================================================================================================================
 
+# All files
+[*]
+
+# Editor guidelines
+guidelines = 132 1.5px dashed 24608b4e
+
 # C# files
 [*.cs]
 
@@ -207,6 +213,8 @@ dotnet_naming_style.begins_with_i.required_suffix =
 dotnet_naming_style.begins_with_i.word_separator =
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 
+#### Custom rules ####
+
 # IDE0060: Remove unused parameter
 dotnet_code_quality_unused_parameters = all : silent
 
@@ -216,5 +224,11 @@ dotnet_diagnostic.IDE0051.severity = silent
 # IDE0052: Remove unread private members
 dotnet_diagnostic.IDE0052.severity = silent
 
+# CA1027: Mark enums with FlagsAttribute
+dotnet_diagnostic.CA1027.severity = silent
+
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = silent
+
+# IDE0075: Simplify conditional expression
+dotnet_style_prefer_simplified_boolean_expressions = false : none

@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace RapidField.SolidInstruments.Command
     /// <summary>
     /// Serves as a dependency resolver and processing intermediary for commands.
     /// </summary>
-    public interface ICommandMediator : IDisposable
+    public interface ICommandMediator : IInstrument
     {
         /// <summary>
         /// Processes the specified <see cref="ICommand{TResult}" />.
@@ -33,7 +34,7 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        TResult Process<TResult>(ICommand<TResult> command);
+        public TResult Process<TResult>(ICommand<TResult> command);
 
         /// <summary>
         /// Asynchronously processes the specified <see cref="ICommand{TResult}" />.
@@ -56,6 +57,6 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command);
+        public Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command);
     }
 }

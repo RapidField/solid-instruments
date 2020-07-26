@@ -105,13 +105,13 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Converts the binary data underlying the current <see cref="BitArray" /> to its equivalent string representation.
+        /// Converts the bits comprising the current <see cref="BitArray" /> to its equivalent string representation.
         /// </summary>
         /// <param name="target">
         /// The current <see cref="BitArray" />.
         /// </param>
         /// <returns>
-        /// A string representation of the binary data underlying the current <see cref="BitArray" />.
+        /// A string representation of the bits comprising the current <see cref="BitArray" />.
         /// </returns>
         public static String ToBinaryString(this BitArray target)
         {

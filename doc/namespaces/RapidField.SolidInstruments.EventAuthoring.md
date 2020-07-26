@@ -32,6 +32,18 @@ Install-Package RapidField.SolidInstruments.EventAuthoring
 
 ### Namespaces
 
+#### [RapidField.SolidInstruments.EventAuthoring.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Autofac.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments event authoring abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.EventAuthoring.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments event authoring abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.EventAuthoring.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Extensions.html)
 
 <section>

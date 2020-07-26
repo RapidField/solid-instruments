@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
@@ -62,10 +63,19 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Generates a new named <see cref="CascadingSymmetricKey" />.
+        /// </summary>
+        /// <returns>
+        /// A new named <see cref="CascadingSymmetricKey" />.
+        /// </returns>
+        [DebuggerHidden]
+        internal static CascadingSymmetricKeySecret New() => FromValue(NewDefaultCascadingSymmetricKeySecretName(), CascadingSymmetricKey.New());
+
+        /// <summary>
         /// Creates a <see cref="CascadingSymmetricKey" /> using the provided bytes.
         /// </summary>
         /// <param name="bytes">
-        /// A pinned buffer representing a <see cref="CascadingSymmetricKey" />.
+        /// A pinned bit field representing a <see cref="CascadingSymmetricKey" />.
         /// </param>
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
@@ -73,18 +83,18 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="CascadingSymmetricKey" />.
         /// </returns>
-        protected sealed override CascadingSymmetricKey ConvertBytesToValue(IReadOnlyPinnedBuffer<Byte> bytes, ConcurrencyControlToken controlToken)
+        protected sealed override CascadingSymmetricKey ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken)
         {
             var result = (CascadingSymmetricKey)null;
 
-            using (var secureBuffer = new SecureBuffer(bytes.Length))
+            using (var secureMemory = new SecureMemory(bytes.Length))
             {
-                secureBuffer.Access(buffer =>
+                secureMemory.Access(memory =>
                 {
-                    bytes.ReadOnlySpan.CopyTo(buffer);
+                    bytes.ReadOnlySpan.CopyTo(memory);
                 });
 
-                result = CascadingSymmetricKey.FromBuffer(secureBuffer);
+                result = CascadingSymmetricKey.FromSecureMemory(secureMemory);
             }
 
             return result;
@@ -92,7 +102,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting
-        /// <see cref="IReadOnlyPinnedBuffer{T}" />.
+        /// <see cref="IReadOnlyPinnedMemory{T}" />.
         /// </summary>
         /// <param name="value">
         /// The secret value.
@@ -101,17 +111,17 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
-        /// <paramref name="value" /> as a pinned buffer.
+        /// <paramref name="value" /> as a pinned memory.
         /// </returns>
-        protected sealed override IReadOnlyPinnedBuffer<Byte> ConvertValueToBytes(CascadingSymmetricKey value, ConcurrencyControlToken controlToken)
+        protected sealed override IReadOnlyPinnedMemory<Byte> ConvertValueToBytes(CascadingSymmetricKey value, IConcurrencyControlToken controlToken)
         {
-            var result = (ReadOnlyPinnedBuffer)null;
+            var result = (ReadOnlyPinnedMemory)null;
 
-            using (var secureBuffer = value.ToBuffer())
+            using (var secureMemory = value.ToSecureMemory())
             {
-                secureBuffer.Access(buffer =>
+                secureMemory.Access(memory =>
                 {
-                    result = new ReadOnlyPinnedBuffer(buffer.ToArray());
+                    result = new ReadOnlyPinnedMemory(memory.ToArray());
                 });
             }
 
@@ -125,5 +135,20 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// A value indicating whether or not managed resources should be released.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Generates a new, unique default cascading symmetric key name.
+        /// </summary>
+        /// <returns>
+        /// A new, unique default cascading symmetric key name.
+        /// </returns>
+        [DebuggerHidden]
+        private static String NewDefaultCascadingSymmetricKeySecretName() => Secret.GetPrefixedSemanticIdentifier(DefaultCascadingSymmetricKeySecretNamePrefix, NewRandomSemanticIdentifier());
+
+        /// <summary>
+        /// Represents the default textual prefix for <see cref="CascadingSymmetricKeySecret" /> names.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String DefaultCascadingSymmetricKeySecretNamePrefix = "CascadingSymmetricKey";
     }
 }

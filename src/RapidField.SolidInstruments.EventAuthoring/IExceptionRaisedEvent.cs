@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets or sets the full name of the type of the associated <see cref="Exception" /> that was raised.
         /// </summary>
-        String ExceptionTypeFullName
+        public String ExceptionTypeFullName
         {
             get;
             set;

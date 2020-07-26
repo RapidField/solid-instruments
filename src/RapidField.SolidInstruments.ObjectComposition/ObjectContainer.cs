@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="factoryConfigurator" /> is <see langword="null" /> -or- <paramref name="definitionConfigurator" /> is
         /// <see langword="null" />.
         /// </exception>
-        public ObjectContainer(Action<ObjectFactoryConfigurationProductionFunctions> factoryConfigurator, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator)
+        public ObjectContainer(Action<IObjectFactoryConfigurationProductionFunctions> factoryConfigurator, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator)
             : this(InitializeFactory(DefaultConfiguration, factoryConfigurator.RejectIf().IsNull()), definitionConfigurator)
         {
             return;
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="definitionConfigurator" /> is <see langword="null" /> -or- <paramref name="factory" /> is
         /// <see langword="null" />.
         /// </exception>
-        public ObjectContainer(IObjectFactory factory, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator)
+        public ObjectContainer(IObjectFactory factory, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator)
             : this(DefaultConfiguration, factory, definitionConfigurator, false)
         {
             return;
@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="definitionConfigurator" />
         /// is <see langword="null" /> -or- <paramref name="factory" /> is <see langword="null" />.
         /// </exception>
-        public ObjectContainer(IConfiguration applicationConfiguration, IObjectFactory factory, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator)
+        public ObjectContainer(IConfiguration applicationConfiguration, IObjectFactory factory, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator)
             : this(applicationConfiguration, factory, definitionConfigurator, false)
         {
             return;
@@ -103,13 +103,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// is <see langword="null" /> -or- <paramref name="factory" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private ObjectContainer(IConfiguration applicationConfiguration, IObjectFactory factory, Action<ObjectContainerConfigurationDefinitions> definitionConfigurator, Boolean managesFactory)
+        private ObjectContainer(IConfiguration applicationConfiguration, IObjectFactory factory, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator, Boolean managesFactory)
             : base(applicationConfiguration)
         {
             DefinitionConfigurator = definitionConfigurator.RejectIf().IsNull(nameof(definitionConfigurator));
             Factory = factory.RejectIf().IsNull(nameof(factory)).TargetArgument;
             LazyInstanceDictionary = new Lazy<IDictionary<Type, Object>>(InitializeInstanceDictionary, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyInstanceGroup = new Lazy<FactoryProducedInstanceGroup>(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
+            LazyInstanceGroup = new Lazy<IFactoryProducedInstanceGroup>(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
             ManagesFactory = managesFactory;
         }
 
@@ -142,7 +142,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
                 try
                 {
-                    if (Configuration.Definitions.Registrations.ContainsKey(requestType) == false)
+                    if (Registrations.ContainsKey(requestType) == false)
                     {
                         throw new ArgumentException($"{requestType.FullName} is not a registered request type.", nameof(T));
                     }
@@ -152,7 +152,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     throw new ObjectProductionException(requestType, exception);
                 }
 
-                var productType = Configuration.Definitions.Registrations[requestType].ProductType;
+                var productType = Registrations[requestType].ProductType;
 
                 if (Factory.SupportedProductTypes.Contains(productType) == false)
                 {
@@ -211,12 +211,12 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
             try
             {
-                if (Configuration.Definitions.Registrations.ContainsKey(requestType) == false)
+                if (Registrations.ContainsKey(requestType) == false)
                 {
                     throw new ArgumentException($"{requestType.FullName} is not a registered request type.", nameof(T));
                 }
 
-                var productType = Configuration.Definitions.Registrations[requestType].ProductType;
+                var productType = Registrations[requestType].ProductType;
                 var getNewMethod = InstanceGroup.GetType().GetMethod(nameof(InstanceGroup.GetNew), Array.Empty<Type>()).MakeGenericMethod(productType);
 
                 if (!(getNewMethod.Invoke(InstanceGroup, Array.Empty<Object>()) is T newProduct))
@@ -290,7 +290,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private static IObjectFactory InitializeFactory(IConfiguration applicationConfiguration, Action<ObjectFactoryConfigurationProductionFunctions> factoryConfigurator) => new ContainerObjectFactory(applicationConfiguration, factoryConfigurator);
+        private static IObjectFactory InitializeFactory(IConfiguration applicationConfiguration, Action<IObjectFactoryConfigurationProductionFunctions> factoryConfigurator) => new ContainerObjectFactory(applicationConfiguration, factoryConfigurator);
 
         /// <summary>
         /// Gets a collection of managed object instances.
@@ -308,7 +308,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
             try
             {
-                foreach (var definition in Configuration.Definitions.Registrations.Values)
+                foreach (var definition in Registrations.Values)
                 {
                     var getLazyMethodInfo = InstanceGroup.GetType().GetMethod(nameof(InstanceGroup.GetLazy)).MakeGenericMethod(definition.ProductType);
                     var lazyInstance = getLazyMethodInfo.Invoke(InstanceGroup, Array.Empty<Object>());
@@ -330,7 +330,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An object that manages creation and lifetime of instances for the current <see cref="ObjectContainer" />.
         /// </returns>
         [DebuggerHidden]
-        private FactoryProducedInstanceGroup InitializeInstanceGroup() => new FactoryProducedInstanceGroup(Factory);
+        private IFactoryProducedInstanceGroup InitializeInstanceGroup() => new FactoryProducedInstanceGroup(Factory);
 
         /// <summary>
         /// Gets the types of the instances that are managed by the current <see cref="ObjectContainer" />.
@@ -342,13 +342,19 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             get
             {
-                foreach (var instanceType in Configuration.Definitions.Registrations.Keys)
+                foreach (var instanceType in Registrations.Keys)
                 {
                     RejectIfDisposed();
                     yield return instanceType;
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a collection of request-product type pairs that constitute the configured definitions for the container.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private IDictionary<Type, IObjectContainerDefinition> Registrations => ((ObjectContainerConfigurationDefinitions)Configuration.Definitions).Registrations;
 
         /// <summary>
         /// Gets a collection of managed object instances.
@@ -363,13 +369,13 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Gets an object that manages creation and lifetime of instances for the current <see cref="ObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private FactoryProducedInstanceGroup InstanceGroup => LazyInstanceGroup.Value;
+        private IFactoryProducedInstanceGroup InstanceGroup => LazyInstanceGroup.Value;
 
         /// <summary>
         /// Represents an action that configures the request-product type pair definitions for the container.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Action<ObjectContainerConfigurationDefinitions> DefinitionConfigurator;
+        private readonly Action<IObjectContainerConfigurationDefinitions> DefinitionConfigurator;
 
         /// <summary>
         /// Represents an factory that produces objects for the current <see cref="ObjectContainer" />.
@@ -388,7 +394,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see cref="ObjectContainer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<FactoryProducedInstanceGroup> LazyInstanceGroup;
+        private readonly Lazy<IFactoryProducedInstanceGroup> LazyInstanceGroup;
 
         /// <summary>
         /// Represents a valued that indicates whether or not the current <see cref="ObjectContainer" /> manages
@@ -416,10 +422,10 @@ namespace RapidField.SolidInstruments.ObjectComposition
             /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
             /// </exception>
             [DebuggerHidden]
-            internal ContainerObjectFactory(IConfiguration applicationConfiguration, Action<ObjectFactoryConfigurationProductionFunctions> factoryConfigurator)
+            internal ContainerObjectFactory(IConfiguration applicationConfiguration, Action<IObjectFactoryConfigurationProductionFunctions> factoryConfigurator)
                 : base(applicationConfiguration)
             {
-                FactoryConfigurator = new Action<ObjectFactoryConfigurationProductionFunctions<Object>>((functions) =>
+                FactoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions<Object>>((functions) =>
                 {
                     factoryConfigurator(new ObjectFactoryConfigurationProductionFunctions(functions));
                 });
@@ -445,7 +451,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             /// Represents an action that configures the object factory.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly Action<ObjectFactoryConfigurationProductionFunctions<Object>> FactoryConfigurator;
+            private readonly Action<IObjectFactoryConfigurationProductionFunctions<Object>> FactoryConfigurator;
         }
     }
 }

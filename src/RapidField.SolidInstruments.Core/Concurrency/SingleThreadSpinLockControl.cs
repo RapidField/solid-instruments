@@ -43,21 +43,26 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
         /// </summary>
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SingleThreadSpinLockControl" />.
+        /// </returns>
         /// <exception cref="ConcurrencyControlOperationException">
         /// The lock was not acquired.
         /// </exception>
         /// <exception cref="LockRecursionException">
         /// The current thread already owns the lock.
         /// </exception>
-        protected sealed override void EnterWithoutTimeout()
+        protected sealed override ConcurrencyControlConsumptionState EnterWithoutTimeout()
         {
             var lockTaken = false;
             Spin.TryEnter(ref lockTaken);
 
-            if (lockTaken == false)
+            if (lockTaken)
             {
-                throw new ConcurrencyControlOperationException("The operation failed to acquire a spin lock.");
+                return ConcurrencyControlConsumptionState.FullyClaimed;
             }
+
+            throw new ConcurrencyControlOperationException("The operation failed to acquire a spin lock.");
         }
 
         /// <summary>
@@ -67,21 +72,26 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="blockTimeoutThreshold">
         /// The maximum length of time to block a thread before raising an exception.
         /// </param>
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SingleThreadSpinLockControl" />.
+        /// </returns>
         /// <exception cref="LockRecursionException">
         /// The current thread already owns the lock.
         /// </exception>
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        protected sealed override void EnterWithTimeout(TimeSpan blockTimeoutThreshold)
+        protected sealed override ConcurrencyControlConsumptionState EnterWithTimeout(TimeSpan blockTimeoutThreshold)
         {
             var lockTaken = false;
             Spin.TryEnter(blockTimeoutThreshold, ref lockTaken);
 
-            if (lockTaken == false)
+            if (lockTaken)
             {
-                throw new TimeoutException($"The operation failed to acquire a spin lock after {blockTimeoutThreshold.ToSerializedString()}.");
+                return ConcurrencyControlConsumptionState.FullyClaimed;
             }
+
+            throw new TimeoutException($"The operation failed to acquire a spin lock after {blockTimeoutThreshold.ToSerializedString()}.");
         }
 
         /// <summary>
@@ -90,13 +100,25 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <param name="exitedSuccessfully">
         /// A value indicating whether or not the exit operation was successful. The initial value is <see langword="false" />.
         /// </param>
+        /// <returns>
+        /// The resulting consumption state of the current <see cref="SingleThreadSpinLockControl" />.
+        /// </returns>
         /// <exception cref="SynchronizationLockException">
         /// The current thread does not own the lock.
         /// </exception>
-        protected sealed override void Exit(ref Boolean exitedSuccessfully)
+        protected sealed override ConcurrencyControlConsumptionState Exit(ref Boolean exitedSuccessfully)
         {
-            Spin.Exit();
-            exitedSuccessfully = true;
+            try
+            {
+                Spin.Exit();
+                exitedSuccessfully = true;
+                return ConcurrencyControlConsumptionState.Unclaimed;
+            }
+            catch
+            {
+                exitedSuccessfully = false;
+                throw;
+            }
         }
 
         /// <summary>

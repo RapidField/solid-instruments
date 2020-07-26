@@ -9,6 +9,7 @@ using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using SolidInstrumentsCommand = RapidField.SolidInstruments.Command.Command;
 
 namespace RapidField.SolidInstruments.EventAuthoring
 {
@@ -19,16 +20,28 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <see cref="Event" /> is the default implementation of <see cref="IEvent" />.
     /// </remarks>
     [DataContract]
-    public class Event : IEvent
+    public class Event : SolidInstrumentsCommand, IEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Event" /> class.
         /// </summary>
-        /// <remarks>
-        /// <see cref="Event" /> is the default implementation of <see cref="IEvent" />.
-        /// </remarks>
         public Event()
             : this(DefaultCategory)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public Event(Guid correlationIdentifier)
+            : this(DefaultCategory, correlationIdentifier)
         {
             return;
         }
@@ -54,6 +67,25 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="category">
         /// The category of the event. The default value is <see cref="EventCategory.GeneralInformation" />.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="category" /> is equal to <see cref="EventCategory.Unspecified" /> -or-
+        /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
+        /// </exception>
+        public Event(EventCategory category, Guid correlationIdentifier)
+            : this(category, DefaultVerbosity, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        /// <param name="category">
+        /// The category of the event. The default value is <see cref="EventCategory.GeneralInformation" />.
+        /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
         /// </param>
@@ -63,6 +95,29 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// </exception>
         public Event(EventCategory category, EventVerbosity verbosity)
             : this(category, verbosity, null)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        /// <param name="category">
+        /// The category of the event. The default value is <see cref="EventCategory.GeneralInformation" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="category" /> is equal to <see cref="EventCategory.Unspecified" /> -or- <paramref name="verbosity" /> is
+        /// equal to <see cref="EventVerbosity.Unspecified" /> -or- <paramref name="correlationIdentifier" /> is equal to
+        /// <see cref="Guid.Empty" />.
+        /// </exception>
+        public Event(EventCategory category, EventVerbosity verbosity, Guid correlationIdentifier)
+            : this(category, verbosity, null, correlationIdentifier)
         {
             return;
         }
@@ -101,6 +156,32 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <param name="description">
         /// A textual description of the event. This argument can be <see langword="null" />.
         /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="category" /> is equal to <see cref="EventCategory.Unspecified" /> -or- <paramref name="verbosity" /> is
+        /// equal to <see cref="EventVerbosity.Unspecified" /> -or- <paramref name="correlationIdentifier" /> is equal to
+        /// <see cref="Guid.Empty" />.
+        /// </exception>
+        public Event(EventCategory category, EventVerbosity verbosity, String description, Guid correlationIdentifier)
+            : this(category, verbosity, description, Core.TimeStamp.Current, correlationIdentifier)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        /// <param name="category">
+        /// The category of the event. The default value is <see cref="EventCategory.GeneralInformation" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
         /// <param name="timeStamp">
         /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
         /// </param>
@@ -109,6 +190,39 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// equal to <see cref="EventVerbosity.Unspecified" />.
         /// </exception>
         public Event(EventCategory category, EventVerbosity verbosity, String description, DateTime timeStamp)
+            : base()
+        {
+            Category = category.RejectIf().IsEqualToValue(EventCategory.Unspecified, nameof(category));
+            Description = description;
+            TimeStamp = timeStamp;
+            Verbosity = verbosity.RejectIf().IsEqualToValue(EventVerbosity.Unspecified, nameof(verbosity));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        /// <param name="category">
+        /// The category of the event. The default value is <see cref="EventCategory.GeneralInformation" />.
+        /// </param>
+        /// <param name="verbosity">
+        /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
+        /// </param>
+        /// <param name="description">
+        /// A textual description of the event. This argument can be <see langword="null" />.
+        /// </param>
+        /// <param name="timeStamp">
+        /// A <see cref="DateTime" /> that indicates when the event occurred. The default value is <see cref="TimeStamp.Current" />.
+        /// </param>
+        /// <param name="correlationIdentifier">
+        /// A unique identifier that is assigned to related events.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="category" /> is equal to <see cref="EventCategory.Unspecified" /> -or- <paramref name="verbosity" /> is
+        /// equal to <see cref="EventVerbosity.Unspecified" /> -or- <paramref name="correlationIdentifier" /> is equal to
+        /// <see cref="Guid.Empty" />.
+        /// </exception>
+        public Event(EventCategory category, EventVerbosity verbosity, String description, DateTime timeStamp, Guid correlationIdentifier)
+            : base(correlationIdentifier)
         {
             Category = category.RejectIf().IsEqualToValue(EventCategory.Unspecified, nameof(category));
             Description = description;
@@ -281,9 +395,9 @@ namespace RapidField.SolidInstruments.EventAuthoring
             {
                 return false;
             }
-            else if (obj is IEvent)
+            else if (obj is IEvent eventObject)
             {
-                return Equals((IEvent)obj);
+                return Equals(eventObject);
             }
 
             return false;
@@ -334,7 +448,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// A string representation of the current <see cref="Event" />.
         /// </returns>
-        public override String ToString() => Description;
+        public override String ToString() => $"{{ \"{nameof(Description)}\": \"{Description}\" }}";
 
         /// <summary>
         /// Gets or sets the category of the event.

@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Secrets
             var valueTwo = SymmetricKey.New();
             var valueThree = SymmetricKey.New();
             var hashCode = 0;
-            var symmetricProcessor = new SymmetricStringProcessor(SecureBuffer.RandomnessProvider);
+            var symmetricProcessor = new SymmetricStringProcessor(SecureMemory.RandomnessProvider);
             var plaintextObject = "䆟`ಮ䷆ʘ‣⦸⏹ⰄͶa✰ṁ亡Zᨖ0༂⽔9㗰";
             var ciphertextObject = Array.Empty<Byte>();
 

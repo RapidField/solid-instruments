@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Begin(ConcurrencyControlToken controlToken)
+        protected override void Begin(IConcurrencyControlToken controlToken)
         {
             return;
         }
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override Task BeginAsync(ConcurrencyControlToken controlToken) => Task.CompletedTask;
+        protected override Task BeginAsync(IConcurrencyControlToken controlToken) => Task.CompletedTask;
 
         /// <summary>
         /// Commits all changes made within the scope of the current <see cref="SimulatedTransaction" />.
@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Commit(ConcurrencyControlToken controlToken)
+        protected override void Commit(IConcurrencyControlToken controlToken)
         {
             return;
         }
@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected override Task CommitAsync(ConcurrencyControlToken controlToken) => Task.CompletedTask;
+        protected override Task CommitAsync(IConcurrencyControlToken controlToken) => Task.CompletedTask;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DataAccessTransaction" />.
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Reject(ConcurrencyControlToken controlToken)
+        protected override void Reject(IConcurrencyControlToken controlToken)
         {
             return;
         }
@@ -94,6 +94,6 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override Task RejectAsync(ConcurrencyControlToken controlToken) => Task.CompletedTask;
+        protected override Task RejectAsync(IConcurrencyControlToken controlToken) => Task.CompletedTask;
     }
 }

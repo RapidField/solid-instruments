@@ -4,12 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers;
 using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
-using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using System;
+using System.Collections.Generic;
 
 namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
@@ -45,20 +45,12 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register unit-of-work types.
-            configurator.AddScoped<ExampleSqlServerContext>();
-            configurator.AddScoped<ExampleInMemoryContext>();
             configurator.AddScoped<ExampleContext, ExampleInMemoryContext>(provider => new ExampleInMemoryContext(provider.GetService<IConfiguration>(), "Example"));
-            configurator.AddScoped<ExampleTransaction>();
             configurator.AddScoped<ExampleRepositoryFactory>();
 
-            // Register repositories.
-            configurator.AddScoped<NumberRepository>();
-            configurator.AddScoped<NumberSeriesNumberRepository>();
-            configurator.AddScoped<NumberSeriesRepository>();
-
-            // Register command handlers.
-            configurator.AddTransient<ICommandHandler<AddFibonacciNumberCommand>, AddFibonacciNumberCommandHandler>();
-            configurator.AddTransient<ICommandHandler<GetFibonacciNumberValuesCommand>, GetFibonacciNumberValuesCommandHandler>();
+            // Register data access command handlers.
+            configurator.AddDataAccessCommandHandler<AddFibonacciNumberCommand, AddFibonacciNumberCommandHandler>();
+            configurator.AddDataAccessCommandHandler<GetFibonacciNumberValuesCommand, IEnumerable<Int64>, GetFibonacciNumberValuesCommandHandler>();
         }
     }
 }

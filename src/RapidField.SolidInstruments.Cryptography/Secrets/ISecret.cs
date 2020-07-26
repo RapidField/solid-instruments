@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
 {
@@ -12,7 +13,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
     /// <typeparam name="TValue">
     /// The type of the value.
     /// </typeparam>
-    public interface ISecret<TValue> : IReadOnlySecret<TValue>
+    public interface ISecret<TValue> : IReadOnlySecret<TValue>, ISecret
     {
         /// <summary>
         /// Performs the specified write operation and encrypts the resulting value as a thread-safe, atomic operation.
@@ -29,6 +30,34 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
-        void Write(Func<TValue> writeFunction);
+        public void Write(Func<TValue> writeFunction);
+
+        /// <summary>
+        /// Asynchronously performs the specified write operation and encrypts the resulting value as a thread-safe, atomic
+        /// operation.
+        /// </summary>
+        /// <param name="writeFunction">
+        /// The write operation to perform.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="writeFunction" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
+        /// </exception>
+        public Task WriteAsync(Func<TValue> writeFunction);
+    }
+
+    /// <summary>
+    /// Represents a named secret value that is pinned in memory and encrypted at rest.
+    /// </summary>
+    public interface ISecret : IReadOnlySecret
+    {
     }
 }

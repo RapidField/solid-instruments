@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
         /// <summary>
         /// Gets the collection of values comprising the x-axis.
         /// </summary>
-        IEnumerable<TXAxis> XAxis
+        public IEnumerable<TXAxis> XAxis
         {
             get;
         }
@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
         /// <summary>
         /// Gets the collection of values comprising the y-axis.
         /// </summary>
-        IEnumerable<TYAxis> YAxis
+        public IEnumerable<TYAxis> YAxis
         {
             get;
         }

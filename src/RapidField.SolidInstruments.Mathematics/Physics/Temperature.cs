@@ -335,9 +335,9 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
             {
                 return false;
             }
-            else if (obj is Temperature)
+            else if (obj is Temperature temperature)
             {
-                return Equals((Temperature)obj);
+                return Equals(temperature);
             }
 
             return false;

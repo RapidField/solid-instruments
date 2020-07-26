@@ -174,8 +174,8 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Calculates a hash value for the specified plaintext data block object.
         /// </summary>
-        /// <param name="binaryArray">
-        /// The plaintext binary array hash.
+        /// <param name="plaintext">
+        /// The plaintext byte array hash.
         /// </param>
         /// <returns>
         /// The resulting hash value.
@@ -184,7 +184,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// An exception was raised during hashing or serialization.
         /// </exception>
         [DebuggerHidden]
-        private Byte[] CalculateHash(Byte[] binaryArray) => HashingProcessor.CalculateHash(binaryArray, Algorithm);
+        private Byte[] CalculateHash(Byte[] plaintext) => HashingProcessor.CalculateHash(plaintext, Algorithm);
 
         /// <summary>
         /// Calculates a hash value for the specified hash value pair.
@@ -318,7 +318,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Represents a node in a hash tree.
         /// </summary>
-        private class HashTreeNode : BinaryTreeNode<Byte[]>
+        private sealed class HashTreeNode : BinaryTreeNode<Byte[]>
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="HashTreeNode" /> class.
