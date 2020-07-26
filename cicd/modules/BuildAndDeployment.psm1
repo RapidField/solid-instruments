@@ -117,7 +117,7 @@ Function Build
     $BuildVersionWithoutMetadata = GetBuildVersion;
     ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     ComposeNormal "Build version: $BuildVersionWithoutMetadata";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --nologo --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration  --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
@@ -219,7 +219,7 @@ Function Clean
     )
 
     ComposeStart "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile --nologo --configuration $SolutionConfiguration --verbosity minimal";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile  --configuration $SolutionConfiguration --verbosity minimal";
     ComposeStart "Destroying build artifacts.";
 
     Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
@@ -578,7 +578,7 @@ Function StartExampleWebApplication
     ComposeStart "Starting the example web application using $SolutionConfiguration configuration.";
     $ProjectFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj";
     ComposeNormal "Using project path: $ProjectFilePath";
-    Start-Process -ArgumentList "run --nologo --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -FilePath "dotnet" -WindowStyle Minimized;
+    Start-Process -ArgumentList "run  --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -FilePath "dotnet" -WindowStyle Minimized;
     ComposeFinish "Finished starting the application.";
 }
 
@@ -627,7 +627,7 @@ Function Test
     {
         $TestDirectoryPath = $_.FullName;
         ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --nologo --no-restore --verbosity minimal";
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build  --no-restore --verbosity minimal";
 
         If ($LASTEXITCODE -ne 0)
         {
