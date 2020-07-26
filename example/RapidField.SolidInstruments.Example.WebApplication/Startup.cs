@@ -49,10 +49,13 @@ namespace RapidField.SolidInstruments.Example.WebApplication
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
         }
 
         /// <summary>
@@ -63,8 +66,9 @@ namespace RapidField.SolidInstruments.Example.WebApplication
         /// </param>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddControllersAsServices();
             services.AddDependencyPackage<ApplicationDependencyPackage>(Configuration, out var serviceProvider);
+            services.AddControllers();
+            services.AddRazorPages();
             return serviceProvider;
         }
 

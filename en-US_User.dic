@@ -173,6 +173,7 @@ nm
 nodejs
 noexit
 noindex
+nologo
 norepair
 npm
 nuget

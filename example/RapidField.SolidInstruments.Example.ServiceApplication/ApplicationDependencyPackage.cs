@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Example.DatabaseModel;
 using RapidField.SolidInstruments.Example.Domain;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
+using RapidField.SolidInstruments.Messaging.DotNetNative.Rmq;
 using System.Collections.Generic;
 
 namespace RapidField.SolidInstruments.Example.ServiceApplication
@@ -37,7 +38,7 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// </returns>
         protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
         {
-            new ApplicationDependencyModule(applicationConfiguration),
+            new DotNetNativeRabbitMqModule(applicationConfiguration, "SolidInstrumentsServiceBusDev"),
             new ExampleContractsDependencyModule(applicationConfiguration),
             new ExampleDomainDependencyModule(applicationConfiguration)
         };

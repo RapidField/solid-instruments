@@ -32,6 +32,18 @@ Install-Package RapidField.SolidInstruments.InversionOfControl
 
 ### Namespaces
 
+#### [RapidField.SolidInstruments.InversionOfControl.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Autofac.html)
+
+<section>
+Exposes the Autofac implementation of the Solid Instruments inversion of control abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.InversionOfControl.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.DotNetNative.html)
+
+<section>
+Exposes the native .NET implementation of the Solid Instruments inversion of control abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.InversionOfControl.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.Extensions.html)
 
 <section>

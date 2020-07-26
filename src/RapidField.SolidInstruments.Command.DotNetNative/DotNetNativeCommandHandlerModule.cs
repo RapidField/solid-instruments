@@ -5,18 +5,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
-using RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions;
 using System;
 
-namespace RapidField.SolidInstruments.Example.ServiceApplication
+namespace RapidField.SolidInstruments.Command.DotNetNative
 {
     /// <summary>
-    /// Encapsulates container configuration for application dependencies.
+    /// Encapsulates native .NET container configuration for command handlers.
     /// </summary>
-    public class ApplicationDependencyModule : DotNetNativeDependencyModule
+    public abstract class DotNetNativeCommandHandlerModule : DotNetNativeDependencyModule, ICommandHandlerModule<ServiceCollection>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationDependencyModule" /> class.
+        /// Initializes a new instance of the <see cref="DotNetNativeCommandHandlerModule" /> class.
         /// </summary>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
@@ -24,21 +23,10 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        public ApplicationDependencyModule(IConfiguration applicationConfiguration)
+        protected DotNetNativeCommandHandlerModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
             return;
         }
-
-        /// <summary>
-        /// Configures the module.
-        /// </summary>
-        /// <param name="configurator">
-        /// An object that configures containers.
-        /// </param>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the application.
-        /// </param>
-        protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration) => configurator.AddSupportingTypesForRabbitMqMessaging(applicationConfiguration, "SolidInstrumentsServiceBusDev");
     }
 }

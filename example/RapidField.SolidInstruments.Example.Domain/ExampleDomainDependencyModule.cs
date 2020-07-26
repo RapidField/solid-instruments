@@ -45,15 +45,13 @@ namespace RapidField.SolidInstruments.Example.Domain
         /// </param>
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
-            // Register queue listeners.
+            // Register event message listeners.
             configurator.AddMessageListener<ApplicationStartedEventMessage, ApplicationStartedEventMessageListener>();
             configurator.AddMessageListener<ApplicationStoppedEventMessage, ApplicationStoppedEventMessageListener>();
             configurator.AddMessageListener<ExceptionRaisedEventMessage, ExceptionRaisedEventMessageListener>();
-
-            // Register topic listeners.
             configurator.AddMessageListener<HeartbeatMessage, HeartbeatMessageListener>();
 
-            // Register request listeners.
+            // Register request message listeners.
             configurator.AddRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
         }
     }
