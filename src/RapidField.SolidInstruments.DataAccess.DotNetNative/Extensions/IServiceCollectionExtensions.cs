@@ -54,5 +54,25 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions
         public static IServiceCollection AddDataAccessCommandHandler<TCommand, TResult, TCommandHandler>(this IServiceCollection target)
             where TCommand : class, IDataAccessCommand<TResult>
             where TCommandHandler : class, IDataAccessCommandHandler<TCommand, TResult> => target.AddCommandHandler<TCommand, TCommandHandler>();
+
+        /// <summary>
+        /// Registers a data access repository factory of the specified type.
+        /// </summary>
+        /// <typeparam name="TRepositoryFactory">
+        /// The type of the data access repository factory that is registered.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddDataAccessRepositoryFactory<TRepositoryFactory>(this IServiceCollection target)
+            where TRepositoryFactory : class, IDataAccessRepositoryFactory
+        {
+            target.AddScoped<TRepositoryFactory>();
+            target.AddScoped<IDataAccessRepositoryFactory, TRepositoryFactory>((serviceProvider) => serviceProvider.GetService<TRepositoryFactory>());
+            return target;
+        }
     }
 }

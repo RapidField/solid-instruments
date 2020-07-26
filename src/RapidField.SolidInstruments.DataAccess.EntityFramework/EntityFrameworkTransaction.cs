@@ -18,10 +18,14 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Fulfills the unit of work pattern for Entity Framework data access operations.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkTransaction{TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkTransaction{TContext}" />.
+    /// </remarks>
     /// <typeparam name="TContext">
     /// The type of the database session for the transaction.
     /// </typeparam>
-    public class EntityFrameworkTransaction<TContext> : DataAccessTransaction
+    public class EntityFrameworkTransaction<TContext> : DataAccessTransaction, IEntityFrameworkTransaction<TContext>
         where TContext : DbContext
     {
         /// <summary>

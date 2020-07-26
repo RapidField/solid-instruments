@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 try
                 {
                     Transaction.Begin();
-                    Process(command, Repositories);
+                    Process(command, mediator, Repositories, controlToken);
                     CommitTransaction(Transaction, controlToken);
                     return;
                 }
@@ -118,10 +118,17 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="command">
         /// The command to process.
         /// </param>
+        /// <param name="mediator">
+        /// A processing intermediary that is used to process sub-commands. Do not process <paramref name="command" /> using
+        /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
+        /// </param>
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
         /// </param>
-        protected abstract void Process(TCommand command, IFactoryProducedInstanceGroup repositories);
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
+        /// </param>
+        protected abstract void Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.
@@ -265,7 +272,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 try
                 {
                     Transaction.Begin();
-                    var result = Process(command, Repositories);
+                    var result = Process(command, mediator, Repositories, controlToken);
                     CommitTransaction(Transaction, controlToken);
                     return result;
                 }
@@ -285,13 +292,20 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="command">
         /// The command to process.
         /// </param>
+        /// <param name="mediator">
+        /// A processing intermediary that is used to process sub-commands. Do not process <paramref name="command" /> using
+        /// <paramref name="mediator" />, as doing so will generally result in infinite-looping.
+        /// </param>
         /// <param name="repositories">
         /// An object that provides access to data access repositories.
+        /// </param>
+        /// <param name="controlToken">
+        /// A token that represents and manages contextual thread safety.
         /// </param>
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected abstract TResult Process(TCommand command, IFactoryProducedInstanceGroup repositories);
+        protected abstract TResult Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken);
 
         /// <summary>
         /// Conditionally starts an asynchronous task that rejects all changes made within the scope of the specified transaction.

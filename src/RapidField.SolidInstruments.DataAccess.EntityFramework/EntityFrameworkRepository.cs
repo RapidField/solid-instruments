@@ -17,6 +17,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Performs data access operations against an Entity Framework data model type using a single transaction.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkRepository{TIdentifier, TDataAccessModel, TDomainModel, TContext}" /> is the default
+    /// implementation of <see cref="IEntityFrameworkRepository{TIdentifier, TDataAccessModel, TDomainModel, TContext}" />.
+    /// </remarks>
     /// <typeparam name="TIdentifier">
     /// The type of the unique primary identifier for the data model.
     /// </typeparam>
@@ -29,7 +33,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <typeparam name="TContext">
     /// The type of the database session for the repository.
     /// </typeparam>
-    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext> : EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext>, IDomainModelRepository<TIdentifier, TDataAccessModel, TDomainModel>
+    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext> : EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext>, IEntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
         where TDomainModel : class, IDomainModel<TIdentifier>
         where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
@@ -55,6 +59,10 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Performs data access operations against an Entity Framework data model type using a single transaction.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkRepository{TIdentifier, TDataAccessModel, TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkRepository{TIdentifier, TDataAccessModel, TContext}" />.
+    /// </remarks>
     /// <typeparam name="TIdentifier">
     /// The type of the unique primary identifier for the data model.
     /// </typeparam>
@@ -64,7 +72,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <typeparam name="TContext">
     /// The type of the database session for the repository.
     /// </typeparam>
-    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext> : EntityFrameworkRepository<TDataAccessModel, TContext>, IDataAccessModelRepository<TIdentifier, TDataAccessModel>
+    public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext> : EntityFrameworkRepository<TDataAccessModel, TContext>, IEntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
         where TDataAccessModel : class, IDataAccessModel<TIdentifier>
         where TContext : DbContext
@@ -89,13 +97,17 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// <summary>
     /// Performs data access operations against an Entity Framework entity type using a single transaction.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EntityFrameworkRepository{TEntity, TContext}" /> is the default implementation of
+    /// <see cref="IEntityFrameworkRepository{TEntity, TContext}" />.
+    /// </remarks>
     /// <typeparam name="TEntity">
     /// The type of the entity.
     /// </typeparam>
     /// <typeparam name="TContext">
     /// The type of the database session for the repository.
     /// </typeparam>
-    public class EntityFrameworkRepository<TEntity, TContext> : DataAccessRepository<TEntity>
+    public class EntityFrameworkRepository<TEntity, TContext> : DataAccessRepository<TEntity>, IEntityFrameworkRepository<TEntity, TContext>
         where TEntity : class
         where TContext : DbContext
     {
@@ -301,6 +313,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// A token that represents and manages contextual thread safety.
         /// </param>
         protected override void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.UpdateRange(entities);
+
+        /// <summary>
+        /// Gets the database session type of the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
+        /// </summary>
+        public Type ContextType => typeof(TContext);
 
         /// <summary>
         /// Represents the database session for the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.

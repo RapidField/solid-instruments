@@ -47,5 +47,17 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Extensions
         public static void RegisterDataAccessCommandHandler<TCommand, TResult, TCommandHandler>(this ContainerBuilder target)
             where TCommand : class, IDataAccessCommand<TResult>
             where TCommandHandler : class, IDataAccessCommandHandler<TCommand, TResult> => target.RegisterCommandHandler<TCommand, TCommandHandler>();
+
+        /// <summary>
+        /// Registers a data access repository factory of the specified type.
+        /// </summary>
+        /// <typeparam name="TRepositoryFactory">
+        /// The type of the data access repository factory that is registered.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="ContainerBuilder" />.
+        /// </param>
+        public static void RegisterDataAccessRepositoryFactory<TRepositoryFactory>(this ContainerBuilder target)
+            where TRepositoryFactory : class, IDataAccessRepositoryFactory => target.RegisterType<TRepositoryFactory>().As<IDataAccessRepositoryFactory>().AsSelf().InstancePerLifetimeScope();
     }
 }
