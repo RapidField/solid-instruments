@@ -86,6 +86,7 @@ $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplic
 $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
 $CodecovToken = $env:CODECOV_TOKEN;
 $CodeSigningCertificateKey = $env:RAPIDFIELD_CSCERTKEY;
+$CodeSigningCertificateKeySalt = $env:RAPIDFIELD_CSCERTKEY_SALT;
 $CodeSigningCertificatePassword = $env:RAPIDFIELD_CSCERTPWD;
 $CommitAuthorEmail = $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL;
 $CommitAuthorName = $env:APPVEYOR_REPO_COMMIT_AUTHOR;
@@ -313,7 +314,9 @@ Function DecryptCodeSigningCertificate
     Param
     (
         [Parameter(Mandatory = $true, Position = 0)]
-        [String] $Key
+        [String] $Key,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [String] $Salt
     )
 
     If (-not (Test-Path "$FilePathForEncryptedCodeSigningCertificate"))
@@ -331,7 +334,7 @@ Function DecryptCodeSigningCertificate
     Push-Location "$DirectoryPathForCicdTools";
     iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
     Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
-    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret $Key;
+    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret "$Key" -salt "$Salt";
     Pop-Location;
     Remove-Item "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
     Pop-Location;
@@ -365,7 +368,7 @@ Function EncryptCodeSigningCertificate
     Push-Location "$DirectoryPathForCicdTools";
     iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
     Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
-    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret $Key;
+    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret "$Key";
     Pop-Location;
     Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
     Remove-Item -Path "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
@@ -498,7 +501,7 @@ Function SignPackages
 
     If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
     {
-        DecryptCodeSigningCertificate -Key $CodeSigningCertificateKey;
+        DecryptCodeSigningCertificate -Key "$CodeSigningCertificateKey" -Salt "$CodeSigningCertificateKeySalt";
     }
 
     If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
