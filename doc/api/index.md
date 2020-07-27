@@ -21,6 +21,18 @@ Exposes useful collection types and features.
 Exposes implementations of the command and mediator patterns.
 </section>
 
+#### [RapidField.SolidInstruments.Command.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>
+
+#### [RapidField.SolidInstruments.Command.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>
+
 #### [RapidField.SolidInstruments.Core](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.html)
 
 <section>
@@ -39,6 +51,18 @@ Exposes advanced security mechanics.
 Exposes abstractions for the repository and unit-of-work patterns that enable developers to write data access layers that work with a variety of ORMs and database tools.
 </section>
 
+#### [RapidField.SolidInstruments.DataAccess.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
+</section>
+
+#### [RapidField.SolidInstruments.DataAccess.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
+</section>
+
 #### [RapidField.SolidInstruments.DataAccess.EntityFramework](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
 
 <section>
@@ -49,6 +73,18 @@ Provides Entity Framework implementations of the Solid Instruments data access a
 
 <section>
 Defines a simple pattern for producing and representing reportable application events.
+</section>
+
+#### [RapidField.SolidInstruments.EventAuthoring.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments event authoring abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.EventAuthoring.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments event authoring abstractions.
 </section>
 
 #### [RapidField.SolidInstruments.InversionOfControl](https://www.solidinstruments.com/api/RapidField.SolidInstruments.InversionOfControl.html)
@@ -81,10 +117,46 @@ Provides a variety of intuitive mathematics APIs.
 Exposes abstractions for messaging constructs.
 </section>
 
+#### [RapidField.SolidInstruments.Messaging.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.Autofac.Asb](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Asb.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.Autofac.Rmq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Rmq.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments RabbitMQ messaging abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.Messaging.AzureServiceBus](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.AzureServiceBus.html)
 
 <section>
 Provides Azure Service Bus implementations of the Solid Instruments messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative.Asb](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Asb.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative.Rmq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments RabbitMQ messaging abstractions.
 </section>
 
 #### [RapidField.SolidInstruments.Messaging.InMemory](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.InMemory.html)

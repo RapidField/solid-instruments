@@ -87,6 +87,50 @@ Install-Package RapidField.SolidInstruments.Command
 
 <br />
 
+#### [RapidField.SolidInstruments.Command.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Command.Autofac
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Command.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Command.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Command.DotNetNative
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Command.DotNetNative
+```
+
+<br />
+
 ### ![Core](../images/Label.Core.300w.png)
 - - -
 
@@ -140,6 +184,50 @@ Install-Package RapidField.SolidInstruments.Cryptography
 ### ![Data Access](../images/Label.DataAccess.300w.png)
 - - -
 
+#### [RapidField.SolidInstruments.DataAccess.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.DataAccess.Autofac
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.DataAccess.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.DataAccess.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.DataAccess.DotNetNative
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.DataAccess.DotNetNative
+```
+
+<br />
+
 #### [RapidField.SolidInstruments.DataAccess.EntityFramework](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.EntityFramework.html)
 
 <section>
@@ -183,6 +271,50 @@ dotnet add package RapidField.SolidInstruments.EventAuthoring
 
 ```shell
 Install-Package RapidField.SolidInstruments.EventAuthoring
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.EventAuthoring.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments event authoring abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.EventAuthoring.Autofac
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.EventAuthoring.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.EventAuthoring.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments event authoring abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.EventAuthoring.DotNetNative
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.EventAuthoring.DotNetNative
 ```
 
 <br />
@@ -262,6 +394,72 @@ Install-Package RapidField.SolidInstruments.Mathematics
 ### ![Messaging](../images/Label.Messaging.300w.png)
 - - -
 
+#### [RapidField.SolidInstruments.Messaging.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.Autofac
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Messaging.Autofac.Asb](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Asb.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.Autofac.Asb
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.Autofac.Asb
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Messaging.Autofac.Rmq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Rmq.html)
+
+<section>
+Exposes the Autofac IoC integration for the Solid Instruments RabbitMQ messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.Autofac.Rmq
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.Autofac.Rmq
+```
+
+<br />
+
 #### [RapidField.SolidInstruments.Messaging.AzureServiceBus](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.AzureServiceBus.html)
 
 <section>
@@ -280,6 +478,72 @@ dotnet add package RapidField.SolidInstruments.Messaging.AzureServiceBus
 
 ```shell
 Install-Package RapidField.SolidInstruments.Messaging.AzureServiceBus
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.DotNetNative
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.DotNetNative
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative.Asb](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Asb.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.DotNetNative.Asb
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.DotNetNative.Asb
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Messaging.DotNetNative.Rmq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments RabbitMQ messaging abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Messaging.DotNetNative.Rmq
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Messaging.DotNetNative.Rmq
 ```
 
 <br />
