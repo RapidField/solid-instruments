@@ -36,14 +36,16 @@ environment:
   CODECOV_TOKEN:
     secure: 7/8LlzRGKOUWnZwRUPiZjaw1ugVc9OsFebsLdIA/mbbVintw7IhTOqT/fu31eTz3
   RAPIDFIELD_CSCERTKEY:
-    secure: 2UnQ5nbiA4U959m61TBLh1vI6/WDt08mN9E5+4h3FsFES7f3CZIJHciIMFWE/Nwn
+    secure: doWiHasUlfcfGw28sVQzAgx3gJFCCSAtf6+gTuuJmiOrrf7GOywK44WCVQPIcCQ8
+  RAPIDFIELD_CSCERTKEY_SALT:
+    secure: 1OEDzCm/yyUUnPtE7KDICqcUnOYhHhj4SPKlHsb4N2CMt+CSz4sWVksivKCeRtGVvUgI3qK7dfikGp49h8SijQ==
   RAPIDFIELD_CSCERTPWD:
-    secure: igzgdjN7Km8z/cVwEjnyd2Pjq8yF5v5UJym7Zd0r1p4ALkfiadpn0qCdvTGKKFwv
+    secure: NP2Ypdw2exl80s+hIKV6huknLTuPXrMzIj6kByUTegETh9k/ZF47muztJQKC1BPG
   RAPIDFIELD_NUGETAPIKEY:
-    secure: +MUxngO910jKz1/jjAh6a5y8O0AujDeYNhKSfjiDBh6OISt1LQlNjXLPqn/OHV8n
+    secure: aw6CkcahgF2ERsHRz/LMAKRPSkexSjAO/DM8SQA7T62vfQA+KDErlplDCA+BWEZN
 
 # Visual Studio image
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 # Test settings
 test: off
