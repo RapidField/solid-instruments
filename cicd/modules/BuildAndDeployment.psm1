@@ -548,7 +548,7 @@ Function SignPackages
         If ($PackageFilePath -like "*.nupkg")
         {
             ComposeStart "Signing package $PackageFilePath.";
-            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -Timestamper "$CodeSigningCertificateTimestampServiceUri" -CertificatePassword $CodeSigningCertificatePassword;
+            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -Timestamper "$CodeSigningCertificateTimestampServiceUri" -CertificatePassword "$CodeSigningCertificatePassword";
         }
     }
 
