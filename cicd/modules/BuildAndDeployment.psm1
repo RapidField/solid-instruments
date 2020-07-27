@@ -18,6 +18,7 @@ $DirectoryNameForCicdToolsAppVeyorTools = "appveyor-tools";
 $DirectoryNameForDocumentation = "doc";
 $DirectoryNameForDocumentationObjects = "obj";
 $DirectoryNameForDocumentationWebsite = "_DocumentationWebsite";
+$DirectoryNameForDocumentationWebsiteManifestSnapshots = "manifest-snapshots";
 $DirectoryNameForExample = "example";
 $DirectoryNameForSource = "src";
 $DirectoryNameForTests = "test";
@@ -27,6 +28,7 @@ $FileNameForAppVeyorYamlConfiguration = "appveyor.yml";
 $FileNameForCoverageReport = "Coverage.xml";
 $FileNameForCodeSigningCertificate = "CodeSigningCertificate.pfx";
 $FileNameForCoreModule = "Core.psm1";
+$FileNameForDocumentationWebsiteManifest = "manifest.json";
 $FileNameForDotNetCli = "dotnet.exe";
 $FileNameForNugetExe = "nuget.exe";
 $FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
@@ -43,6 +45,7 @@ $DirectoryPathForCicdToolsAppVeyorTools = Join-Path -Path "$DirectoryPathForCicd
 $DirectoryPathForDocumentation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForDocumentation";
 $DirectoryPathForDocumentationObjects = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationObjects";
 $DirectoryPathForDocumentationWebsite = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationWebsite";
+$DirectoryPathForDocumentationWebsiteManifestSnapshots = Join-Path -Path "$DirectoryPathForDocumentationWebsite" -ChildPath "$DirectoryNameForDocumentationWebsiteManifestSnapshots";
 $DirectoryPathForExample = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForExample";
 $DirectoryPathForSource = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForSource";
 $DirectoryPathForTests = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForTests";
@@ -52,6 +55,7 @@ $FilePathForAppVeyorYamlConfigurlation = Join-Path -Path "$DirectoryPathForProje
 $FilePathForCodeSigningCertificate = Join-Path -Path "$DirectoryPathForCicdAssets" -ChildPath "$FileNameForCodeSigningCertificate";
 $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
 $FilePathForCoverageReport = Join-Path -Path "$DirectoryPathForTests" -ChildPath "$FileNameForCoverageReport";
+$FilePathForDocumentationWebsiteManifest = Join-Path -Path "$DirectoryPathForDocumentationWebsite" -ChildPath "$FileNameForDocumentationWebsiteManifest";
 $FilePathForEncryptedCodeSigningCertificate = "$FilePathForCodeSigningCertificate.enc";
 $FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "$FileNameForNugetExe";
 $FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$FileNameForSolutionFile";
@@ -69,6 +73,8 @@ $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.c
 # Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
 $NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json";
+$ProductionDocumentationWebsiteRootUri = "https://www.solidinstruments.com";
+$ProductionDocumentationWebsiteManifestSnapshotsUri = "$ProductionDocumentationWebsiteRootUri/$DirectoryNameForDocumentationWebsiteManifestSnapshots";
 
 # Configuration types
 $ConfigurationTypeLocal = "Local";
@@ -193,6 +199,21 @@ Function BuildWebDocumentation
     ComposeStart "Compiling documentation website.";
     docfx build --loglevel "Error";
     ComposeFinish "Finished compiling documentation website.";
+    ComposeStart "Creating manifest snapshot for documentation website.";
+
+    If (-not (Test-Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots"))
+    {
+        New-Item -ItemType Directory -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -Force | Out-Null;
+    }
+
+    $ManifestHash = Get-FileHash -Algorithm MD5 -Path "$FilePathForDocumentationWebsiteManifest";
+    $ManifestHashValue = $ManifestHash.Hash;
+    $ManifestSnapshotIdentity = "$CommitTimeStamp-$ManifestHashValue";
+    $ManifestSnapshotFilePath = Join-Path -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -ChildPath "$ManifestSnapshotIdentity";
+    $ManifestSnapshotFileContent = "$ManifestSnapshotIdentity $BuildVersion($CommitId) $CommitMessage";
+    New-Item -ItemType File -Path "$ManifestSnapshotFilePath" -Force | Out-Null;
+    Set-Content -Path "$ManifestSnapshotFilePath" -Value "$ManifestSnapshotFileContent" -Force | Out-Null;
+    ComposeFinish "Finished creating manifest snapshot for documentation website.";
     ComposeStart "Minifying documentation website.";
 
     Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object `
@@ -482,6 +503,12 @@ Function SignPackages
     If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq ""))
     {
         ComposeWarning "Packages will not be signed. The code signing certificate key is unavailable.";
+        Return;
+    }
+
+    If (($CodeSigningCertificateKeySalt -eq $null) -or ($CodeSigningCertificateKeySalt -eq ""))
+    {
+        ComposeWarning "Packages will not be signed. The code signing certificate key salt is unavailable.";
         Return;
     }
 
