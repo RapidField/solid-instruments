@@ -14,6 +14,7 @@ Param
 )
 
 # Directory names
+$DirectoryNameForArtifacts = "artifacts";
 $DirectoryNameForCicd = "cicd";
 $DirectoryNameForCicdModules = "modules";
 $DirectoryNameForCicdScripts = "scripts";
@@ -21,10 +22,12 @@ $DirectoryNameForCicdScripts = "scripts";
 # File names
 $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
+$FileNameForCicdLog = "cicd.log";
 $FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
 $DirectoryPathForProjectRoot = $PSScriptRoot;
+$DirectoryPathForArtifacts = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForArtifacts";
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
@@ -32,6 +35,7 @@ $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPat
 # File paths
 $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForAutomationToolsModule";
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
+$FilePathForCicdLog = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$FileNameForCicdLog";
 $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForCoreModule";
 
 # Other configuration values
@@ -62,9 +66,11 @@ Initiates execution of the current script.
 Function EnterScript
 {
     RejectNonAdministratorUsers;
+    Start-Transcript -Path "$FilePathForCicdLog" -Force;
     ComposeStart $("Entering CI/CD pipeline at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
     PerformActions;
     ComposeFinish $("Exiting CI/CD pipeline at {0:yyyy-MM-dd} {0:HH:mm:ss}." -f (Get-Date));
+    Stop-Transcript;
 }
 
 # Execution
