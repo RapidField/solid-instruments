@@ -209,6 +209,7 @@ Function BuildWebDocumentation
     $ManifestHash = Get-FileHash -Algorithm MD5 -Path "$FilePathForDocumentationWebsiteManifest";
     $ManifestHashValue = $ManifestHash.Hash;
     $ManifestSnapshotIdentity = "$CommitTimeStamp-$ManifestHashValue";
+    ComposeVerbose "Using manifest snapshot identity: $ManifestSnapshotIdentity";
     $ManifestSnapshotFilePath = Join-Path -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -ChildPath "$ManifestSnapshotIdentity";
     $ManifestSnapshotFileContent = "$ManifestSnapshotIdentity $BuildVersion($CommitId) $CommitMessage";
     New-Item -ItemType File -Path "$ManifestSnapshotFilePath" -Force | Out-Null;
