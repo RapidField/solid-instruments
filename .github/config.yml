@@ -4,5 +4,5 @@
 
 # This file defines valid pull request title and commit message formats for Commit Message Lint.
 
-PR_TITLE_REGEX: "^[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\(\)\[\]\{\}\|\\\/\s]{21,89}[\.\!]$"
+PR_TITLE_REGEX: "^[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\(\)\[\]\{\}\|\\\/\s]{21,144}$"
 COMMIT_MESSAGE_REGEX: "^#[1-9][0-9]{0,4} [A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\(\)\[\]\{\}\|\\\/\s]{21,89}[\.\!]$"
