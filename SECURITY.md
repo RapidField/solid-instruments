@@ -15,7 +15,7 @@ The versions listed below are currently supported with security updates. We stro
 
 | Version | End of support |
 | ------- | :------------: |
-| 1.0.x   | 31 Jul 2022    |
+| 1.0.x   | 31 Jul 2023    |
 
 ## Reporting a vulnerability
 
