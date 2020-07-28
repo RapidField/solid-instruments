@@ -5,7 +5,7 @@
 # This file controls automated CI/CD activity via AppVeyor.
 
 # Version definition
-version: 1.0.25-preview1+{build}
+version: 1.0.25+{build}
 
 # Artifact definitions
 artifacts:
