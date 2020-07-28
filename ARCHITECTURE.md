@@ -74,7 +74,7 @@ public static Byte[] ToByteArray(this String target, Encoding encoding)
     {
         return Array.Empty<Byte>();
     }
-    
+
     try
     {
         return encoding.GetBytes(target);
@@ -96,11 +96,64 @@ In most cases, the team should...
 - establishes or adheres to meaningful conventions
 - sets forth clear, helpful, repeatable examples for others
 
+```csharp
+/// <summary>
+/// Converts the specified <see cref="String" /> representation of a semantic version to its <see cref="SemanticVersion" />
+/// equivalent. The method returns a value that indicates whether the conversion succeeded.
+/// </summary>
+/// <param name="input">
+/// A <see cref="String" /> containing a semantic version to convert.
+/// </param>
+/// <param name="result">
+/// The parsed result if the operation is successful, otherwise the default instance.
+/// </param>
+/// <returns>
+/// <see langword="true" /> if the parse operation is successful, otherwise <see langword="false" />.
+/// </returns>
+public static Boolean TryParse(String input, out SemanticVersion result)
+{
+    if (Parse(input, out var value, false))
+    {
+        result = value;
+        return true;
+    }
+
+    result = default;
+    return false;
+}
+```
+
 **over a design that**
 
 - introduces new technologies and/or patterns
 - departs from established, meaningful conventions
 - confuses others
+
+```csharp
+/// <summary>
+/// Attempts to hydrate the current <see cref="SemanticVersion" /> using the specified <see cref="String" /> representation
+/// of a semantic version.
+/// </summary>
+/// <param name="input">
+/// A <see cref="String" /> containing a semantic version to import.
+/// </param>
+public void SafeImport(String input)
+{
+    try
+    {
+        var parsedOutput = Parse(input);
+        MajorVersion = parsedOutput.MajorVersion;
+        MinorVersion = parsedOutput.MinorVersion;
+        PatchVersion = parsedOutput.PatchVersion;
+        PreReleaseLabel = parsedOutput.PreReleaseLabel;
+        BuildMetadata = parsedOutput.BuildMetadata;
+    }
+    catch
+    {
+        return;
+    }
+}
+```
 
 ### Clarity over brevity
 
@@ -112,11 +165,29 @@ In most cases, the team should...
 - is thoroughly documented
 - can be readily understood and used by others
 
+```csharp
+/// <summary>
+/// Gets a value indicating whether or not the current <see cref="ICryptographicProcessor" /> can be used to encrypt or
+/// decrypt information using symmetric key cryptography.
+/// </summary>
+public Boolean SupportsSymmetricKeyEncryption
+{
+    get;
+}
+```
+
 **over a design that**
 
 - was developed quickly
 - saves visual space on screen
 - can only be understood and used after careful research
+
+```csharp
+public Boolean Encrypts
+{
+    get;
+}
+```
 
 ## Dependencies
 
