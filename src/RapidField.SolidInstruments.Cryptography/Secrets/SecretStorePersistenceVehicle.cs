@@ -106,10 +106,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        protected sealed override Task PersistInMemoryStoreAsync(SecretVault inMemoryStore, IConcurrencyControlToken controlToken) => inMemoryStore.ExportAsync().ContinueWith(async exportTask =>
+        protected sealed override Task PersistInMemoryStoreAsync(SecretVault inMemoryStore, IConcurrencyControlToken controlToken) => inMemoryStore.ExportAsync().ContinueWith(exportTask =>
         {
             var inMemoryStoreCiphertext = ObscurityProcessor.EncryptToBase64String(exportTask.Result, ObscurityKey);
-            await PersistInMemoryStoreAsync(inMemoryStore.SemanticIdentity, inMemoryStoreCiphertext).ConfigureAwait(false);
+            PersistInMemoryStoreAsync(inMemoryStore.SemanticIdentity, inMemoryStoreCiphertext).Wait();
         });
 
         /// <summary>
