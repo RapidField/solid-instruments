@@ -189,6 +189,18 @@ public Boolean Encrypts
 }
 ```
 
+### Adherence to object oriented principles
+
+We are committed to engineering excellence. We welcome creative and pioneering approaches, but we also understand that the most straightforward paths toward success are those paved by professionals who traveled before us. We observe and find great value in the [**SOLID** principles](https://en.wikipedia.org/wiki/SOLID). Our oversimplified statements of expectation with respect to **SOLID** are as follows.
+
+- In most cases, your class or interface should serve one purpose. Don't reuse types for varying workloads.
+- When it is meaningful to do so, provide ways for other developers to extend the behavior of your components without disrupting their original purpose.
+- Derived types should be usable as instances of the type from which they are derived.
+- Try not to create interfaces that do too many things (or, if you must, split them into distinct interfaces with smaller, related groups of functionality).
+- Prefer dependency injection over self-composition whenever feasible. Ask for what you need in the constructor rather than creating it yourself.
+
+There are good reasons to deviate from these guidelines and we do. Start a conversation when in doubt.
+
 ## Dependencies
 
 The maintainers of **Solid Instruments** make every effort to minimize the inclusion of third-party dependencies. Several of the constituent libraries expose implementations of first-party abstractions for competing third-party product libraries. Those first-party abstractions are listed below with their accompanying implementations.
