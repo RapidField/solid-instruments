@@ -59,6 +59,7 @@ Function PerformActions
 {
     SignPackages -SolutionConfiguration $SolutionConfigurationRelease;
     PublishPackages -SolutionConfiguration $SolutionConfigurationRelease;
+    PublishWebDocumentation -SolutionConfiguration $SolutionConfiguration;
 }
 
 <#
