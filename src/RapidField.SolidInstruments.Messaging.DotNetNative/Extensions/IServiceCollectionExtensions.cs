@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Command.DotNetNative.Extensions;
 using RapidField.SolidInstruments.EventAuthoring;
@@ -155,7 +156,11 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
         /// </returns>
         public static IServiceCollection AddMessageListener<TMessage, TMessageListener>(this IServiceCollection target)
             where TMessage : class, IMessage
-            where TMessageListener : class, IMessageListener<TMessage> => target.AddTransient<IMessageListener<TMessage>, TMessageListener>();
+            where TMessageListener : class, IMessageListener<TMessage>
+        {
+            target.TryAddTransient<IMessageListener<TMessage>, TMessageListener>();
+            return target;
+        }
 
         /// <summary>
         /// Registers a transient message transmitter for the specified message type.
@@ -197,7 +202,11 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
         public static IServiceCollection AddRequestMessageListener<TRequestMessage, TResponseMessage, TMessageListener>(this IServiceCollection target)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage
-            where TMessageListener : class, IMessageListener<TRequestMessage, TResponseMessage> => target.AddTransient<IMessageListener<TRequestMessage, TResponseMessage>, TMessageListener>();
+            where TMessageListener : class, IMessageListener<TRequestMessage, TResponseMessage>
+        {
+            target.TryAddTransient<IMessageListener<TRequestMessage, TResponseMessage>, TMessageListener>();
+            return target;
+        }
 
         /// <summary>
         /// Registers a transient message transmitter for the specified request message type.
@@ -252,19 +261,18 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
         /// </returns>
         public static IServiceCollection AddSupportingTypesForInMemoryMessaging(this IServiceCollection target)
         {
-            target.AddSingleton(MessageTransport.Instance);
-            target.AddSingleton<IMessageTransport, MessageTransport>((serviceProvider) => serviceProvider.GetService<MessageTransport>());
-            target.AddSingleton(MessageTransport.Instance.CreateConnection());
-            target.AddScoped<InMemoryMessageAdapter>();
-            target.AddScoped<IMessageAdapter<PrimitiveMessage>, InMemoryMessageAdapter>((serviceProvider) => serviceProvider.GetService<InMemoryMessageAdapter>());
-            target.AddScoped<InMemoryClientFactory>();
-            target.AddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>, InMemoryClientFactory>((serviceProvider) => serviceProvider.GetService<InMemoryClientFactory>());
-            target.AddScoped<InMemoryTransmittingFacade>();
-            target.AddScoped<IMessageTransmittingFacade, InMemoryTransmittingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryTransmittingFacade>());
-            target.AddSingleton<InMemoryListeningFacade>();
-            target.AddSingleton<IMessageListeningFacade, InMemoryListeningFacade>((serviceProvider) => serviceProvider.GetService<InMemoryListeningFacade>());
-            target.AddSingleton<InMemoryRequestingFacade>();
-            target.AddSingleton<IMessageRequestingFacade, InMemoryRequestingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryRequestingFacade>());
+            target.TryAddSingleton(MessageTransport.Instance);
+            target.TryAddSingleton(MessageTransport.Instance.CreateConnection());
+            target.TryAddScoped<InMemoryMessageAdapter>();
+            target.TryAddScoped<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryMessageAdapter>());
+            target.TryAddScoped<InMemoryClientFactory>();
+            target.TryAddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryClientFactory>());
+            target.TryAddScoped<InMemoryTransmittingFacade>();
+            target.TryAddScoped<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryTransmittingFacade>());
+            target.TryAddSingleton<InMemoryListeningFacade>();
+            target.TryAddSingleton<IMessageListeningFacade>((serviceProvider) => serviceProvider.GetService<InMemoryListeningFacade>());
+            target.TryAddSingleton<InMemoryRequestingFacade>();
+            target.TryAddSingleton<IMessageRequestingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryRequestingFacade>());
             return target;
         }
     }

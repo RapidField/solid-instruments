@@ -145,7 +145,7 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
         /// </param>
         public static void RegisterMessageListener<TMessage, TMessageListener>(this ContainerBuilder target)
             where TMessage : class, IMessage
-            where TMessageListener : class, IMessageListener<TMessage> => target.RegisterType<TMessageListener>().As<IMessageListener<TMessage>>().InstancePerDependency();
+            where TMessageListener : class, IMessageListener<TMessage> => target.RegisterType<TMessageListener>().IfNotRegistered(typeof(TMessageListener)).As<IMessageListener<TMessage>>().InstancePerDependency();
 
         /// <summary>
         /// Registers a transient message transmitter for the specified message type.
@@ -181,7 +181,7 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
         public static void RegisterRequestMessageListener<TRequestMessage, TResponseMessage, TMessageListener>(this ContainerBuilder target)
             where TRequestMessage : class, IRequestMessage<TResponseMessage>
             where TResponseMessage : class, IResponseMessage
-            where TMessageListener : class, IMessageListener<TRequestMessage, TResponseMessage> => target.RegisterType<TMessageListener>().As<IMessageListener<TRequestMessage, TResponseMessage>>().InstancePerDependency();
+            where TMessageListener : class, IMessageListener<TRequestMessage, TResponseMessage> => target.RegisterType<TMessageListener>().IfNotRegistered(typeof(TMessageListener)).As<IMessageListener<TRequestMessage, TResponseMessage>>().InstancePerDependency();
 
         /// <summary>
         /// Registers a transient message transmitter for the specified request message type.
@@ -227,13 +227,13 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
         /// </param>
         public static void RegisterSupportingTypesForInMemoryMessaging(this ContainerBuilder target)
         {
-            target.RegisterInstance(MessageTransport.Instance).SingleInstance();
-            target.RegisterInstance(MessageTransport.Instance.CreateConnection()).SingleInstance();
-            target.RegisterType<InMemoryMessageAdapter>().As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<InMemoryClientFactory>().As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<InMemoryTransmittingFacade>().As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<InMemoryListeningFacade>().As<IMessageListeningFacade>().AsSelf().SingleInstance();
-            target.RegisterType<InMemoryRequestingFacade>().As<IMessageRequestingFacade>().AsSelf().SingleInstance();
+            target.RegisterInstance(MessageTransport.Instance).IfNotRegistered(typeof(IMessageTransport)).SingleInstance();
+            target.RegisterInstance(MessageTransport.Instance.CreateConnection()).IfNotRegistered(typeof(IMessageTransportConnection)).SingleInstance();
+            target.RegisterType<InMemoryMessageAdapter>().IfNotRegistered(typeof(InMemoryMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<InMemoryClientFactory>().IfNotRegistered(typeof(InMemoryClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<InMemoryTransmittingFacade>().IfNotRegistered(typeof(InMemoryTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<InMemoryListeningFacade>().IfNotRegistered(typeof(InMemoryListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
+            target.RegisterType<InMemoryRequestingFacade>().IfNotRegistered(typeof(InMemoryRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }
     }
 }

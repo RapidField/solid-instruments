@@ -8,7 +8,7 @@ using RapidField.SolidInstruments.Core;
 namespace RapidField.SolidInstruments.DataAccess
 {
     /// <summary>
-    /// Processes data access commands.
+    /// Processes a single <see cref="IDataAccessCommand" />.
     /// </summary>
     /// <remarks>
     /// Do not use <see cref="IDataAccessCommandHandler{TCommand}" /> as a registration target for inversion of control tools. Use
@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.DataAccess
     }
 
     /// <summary>
-    /// Processes data access commands.
+    /// Processes a single <see cref="IDataAccessCommand{TResult}" />.
     /// </summary>
     /// <remarks>
     /// Do not use <see cref="IDataAccessCommandHandler{TCommand, TResult}" /> as a registration target for inversion of control
@@ -35,8 +35,15 @@ namespace RapidField.SolidInstruments.DataAccess
     /// <typeparam name="TResult">
     /// The type of the result that is emitted by the handler when processing a data access command.
     /// </typeparam>
-    public interface IDataAccessCommandHandler<in TCommand, TResult> : ICommandHandler<TCommand, TResult>
+    public interface IDataAccessCommandHandler<in TCommand, TResult> : ICommandHandler<TCommand, TResult>, IDataAccessCommandHandler
         where TCommand : class, IDataAccessCommand<TResult>
+    {
+    }
+
+    /// <summary>
+    /// Processes a single <see cref="IDataAccessCommand{TResult}" />.
+    /// </summary>
+    public interface IDataAccessCommandHandler : ICommandHandler
     {
     }
 }

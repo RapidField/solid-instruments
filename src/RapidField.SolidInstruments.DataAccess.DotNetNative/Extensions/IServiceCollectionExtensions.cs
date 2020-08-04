@@ -3,8 +3,10 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RapidField.SolidInstruments.Command.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Core;
+using System;
 
 namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions
 {
@@ -14,6 +16,29 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions
     /// </summary>
     public static class IServiceCollectionExtensions
     {
+        /// <summary>
+        /// Registers a transient command handler for creating and updating instances of the specified data access model type.
+        /// </summary>
+        /// <typeparam name="TIdentifier">
+        /// The type of the unique primary identifier for the data access model type.
+        /// </typeparam>
+        /// <typeparam name="TDataAccessModel">
+        /// The type of the data access model that is associated with the command.
+        /// </typeparam>
+        /// <typeparam name="TRepository">
+        /// The type of the data access model repository that is used to process the command.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddCreateOrUpdateDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>(this IServiceCollection target)
+            where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+            where TDataAccessModel : class, IDataAccessModel<TIdentifier>
+            where TRepository : class, IDataAccessModelRepository<TIdentifier, TDataAccessModel> => target.AddDataAccessCommandHandler<CreateOrUpdateDataAccessModelCommand<TIdentifier, TDataAccessModel>, CreateOrUpdateDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>>();
+
         /// <summary>
         /// Registers a transient data access command handler for the specified command type.
         /// </summary>
@@ -70,8 +95,84 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions
         public static IServiceCollection AddDataAccessRepositoryFactory<TRepositoryFactory>(this IServiceCollection target)
             where TRepositoryFactory : class, IDataAccessRepositoryFactory
         {
-            target.AddScoped<TRepositoryFactory>();
-            target.AddScoped<IDataAccessRepositoryFactory, TRepositoryFactory>((serviceProvider) => serviceProvider.GetService<TRepositoryFactory>());
+            target.TryAddScoped<TRepositoryFactory>();
+            target.TryAddScoped<IDataAccessRepositoryFactory>((serviceProvider) => serviceProvider.GetService<TRepositoryFactory>());
+            return target;
+        }
+
+        /// <summary>
+        /// Registers a transient command handler for deleting instances of the specified data access model type.
+        /// </summary>
+        /// <typeparam name="TIdentifier">
+        /// The type of the unique primary identifier for the data access model type.
+        /// </typeparam>
+        /// <typeparam name="TDataAccessModel">
+        /// The type of the data access model that is associated with the command.
+        /// </typeparam>
+        /// <typeparam name="TRepository">
+        /// The type of the data access model repository that is used to process the command.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddDeleteDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>(this IServiceCollection target)
+            where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+            where TDataAccessModel : class, IDataAccessModel<TIdentifier>
+            where TRepository : class, IDataAccessModelRepository<TIdentifier, TDataAccessModel> => target.AddDataAccessCommandHandler<DeleteDataAccessModelCommand<TIdentifier, TDataAccessModel>, Nix, DeleteDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>>();
+
+        /// <summary>
+        /// Registers a transient command handler for finding instances of the specified data access model type by identifier.
+        /// </summary>
+        /// <typeparam name="TIdentifier">
+        /// The type of the unique primary identifier for the data access model type.
+        /// </typeparam>
+        /// <typeparam name="TDataAccessModel">
+        /// The type of the data access model that is associated with the command.
+        /// </typeparam>
+        /// <typeparam name="TRepository">
+        /// The type of the data access model repository that is used to process the command.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddFindDataAccessModelByIdentifierCommandHandler<TIdentifier, TDataAccessModel, TRepository>(this IServiceCollection target)
+            where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+            where TDataAccessModel : class, IDataAccessModel<TIdentifier>
+            where TRepository : class, IDataAccessModelRepository<TIdentifier, TDataAccessModel> => target.AddDataAccessCommandHandler<FindDataAccessModelByIdentifierCommand<TIdentifier, TDataAccessModel>, TDataAccessModel, FindDataAccessModelByIdentifierCommandHandler<TIdentifier, TDataAccessModel, TRepository>>();
+
+        /// <summary>
+        /// Registers the standard transient command handlers for creating, reading, updating and deleting instances of the
+        /// specified data access model type.
+        /// </summary>
+        /// <typeparam name="TIdentifier">
+        /// The type of the unique primary identifier for the data access model type.
+        /// </typeparam>
+        /// <typeparam name="TDataAccessModel">
+        /// The type of the data access model that is associated with the command.
+        /// </typeparam>
+        /// <typeparam name="TRepository">
+        /// The type of the data access model repository that is used to process the command.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddStandardDataAccessModelCommandHandlers<TIdentifier, TDataAccessModel, TRepository>(this IServiceCollection target)
+            where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
+            where TDataAccessModel : class, IDataAccessModel<TIdentifier>
+            where TRepository : class, IDataAccessModelRepository<TIdentifier, TDataAccessModel>
+        {
+            target.AddCreateOrUpdateDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>();
+            target.AddDeleteDataAccessModelCommandHandler<TIdentifier, TDataAccessModel, TRepository>();
+            target.AddFindDataAccessModelByIdentifierCommandHandler<TIdentifier, TDataAccessModel, TRepository>();
             return target;
         }
     }
