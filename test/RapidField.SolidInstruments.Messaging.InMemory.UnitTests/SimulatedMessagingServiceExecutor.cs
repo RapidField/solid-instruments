@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void AddSubscriptions(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        protected override void AddListeners(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             }
             finally
             {
-                base.AddSubscriptions(subscriptionProfile, applicationConfiguration);
+                base.AddListeners(subscriptionProfile, applicationConfiguration);
             }
         }
 

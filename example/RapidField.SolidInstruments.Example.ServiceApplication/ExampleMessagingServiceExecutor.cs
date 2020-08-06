@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
@@ -29,30 +30,30 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         }
 
         /// <summary>
-        /// Adds message subscriptions to the service.
+        /// Adds message listeners to the service.
         /// </summary>
-        /// <param name="subscriptionProfile">
-        /// An object that is used to add subscriptions.
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void AddSubscriptions(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        protected override void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
         {
             try
             {
-                // Add topic listeners.
-                subscriptionProfile.AddTopicListener<ApplicationStartedEventMessage>();
-                subscriptionProfile.AddTopicListener<ApplicationStoppedEventMessage>();
-                subscriptionProfile.AddTopicListener<ExceptionRaisedEventMessage>();
-                subscriptionProfile.AddTopicListener<HeartbeatMessage>();
+                // Add event listeners.
+                listeningProfile.AddHeartbeatListener();
+                listeningProfile.AddEventListener<ApplicationStartedEvent, ApplicationStartedEventMessage>();
+                listeningProfile.AddEventListener<ApplicationStoppedEvent, ApplicationStoppedEventMessage>();
+                listeningProfile.AddEventListener<ExceptionRaisedEvent, ExceptionRaisedEventMessage>();
 
                 // Add request listeners.
-                subscriptionProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
+                listeningProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
             }
             finally
             {
-                base.AddSubscriptions(subscriptionProfile, applicationConfiguration);
+                base.AddListeners(listeningProfile, applicationConfiguration);
             }
         }
 

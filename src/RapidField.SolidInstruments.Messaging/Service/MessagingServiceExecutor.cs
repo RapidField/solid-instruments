@@ -127,15 +127,15 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Adds message subscriptions to the service.
+        /// Adds message listeners to the service.
         /// </summary>
         /// <param name="listeningProfile">
-        /// An object that is used to add subscriptions.
+        /// An object that is used to add listeners.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected virtual void AddSubscriptions(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
+        protected virtual void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
         {
             return;
         }
@@ -179,7 +179,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         {
             try
             {
-                AddSubscriptions(ListeningProfile, ApplicationConfiguration);
+                AddListeners(ListeningProfile, ApplicationConfiguration);
                 Thread.Sleep(ExecutionStartDelay);
 
                 try

@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Command.Autofac
         protected AutofacCommandHandlerModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
-            TargetAssembly = null;
+            TargetAssembly = null; // This causes the target assembly to be resolved at runtime.
         }
 
         /// <summary>

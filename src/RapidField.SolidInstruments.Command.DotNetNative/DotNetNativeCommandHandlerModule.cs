@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Command.DotNetNative
         protected DotNetNativeCommandHandlerModule(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
-            TargetAssembly = null;
+            TargetAssembly = null; // This causes the target assembly to be resolved at runtime.
         }
 
         /// <summary>

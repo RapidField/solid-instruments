@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.Configuration;
+using System.Data.Common;
 using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
@@ -154,23 +157,32 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
             {
                 optionsBuilder = DatabaseType switch
                 {
-                    ContextDatabaseType.InMemory => optionsBuilder
-                        .UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory)
-                        .UseQueryTrackingBehavior(TrackingBehavior)
-                        .ConfigureWarnings((warningsBuilder) =>
-                        {
-                            warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning);
-                        }),
-                    ContextDatabaseType.SQLServer => optionsBuilder
-                        .UseSqlServer(ConnectionString, OnConfiguringSqlServer)
-                        .UseQueryTrackingBehavior(TrackingBehavior),
+                    ContextDatabaseType.Cosmos => UseCosmos(optionsBuilder),
+                    ContextDatabaseType.InMemory => UseInMemory(optionsBuilder),
+                    ContextDatabaseType.SQLServer => UseSqlServer(optionsBuilder),
                     _ => throw new UnsupportedSpecificationException($"The specified database type, {DatabaseType}, is not supported.")
                 };
+
+                optionsBuilder.UseQueryTrackingBehavior(TrackingBehavior);
             }
             finally
             {
                 base.OnConfiguring(optionsBuilder);
             }
+        }
+
+        /// <summary>
+        /// Configures the Cosmos DB database to be used for this context.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <param name="optionsBuilder">
+        /// A builder that is used to create or modify options for this context.
+        /// </param>
+        protected virtual void OnConfiguringCosmos(IConfiguration applicationConfiguration, CosmosDbContextOptionsBuilder optionsBuilder)
+        {
+            return;
         }
 
         /// <summary>
@@ -256,6 +268,15 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         }
 
         /// <summary>
+        /// Configures the Cosmos DB database to be used for this context.
+        /// </summary>
+        /// <param name="optionsBuilder">
+        /// A builder used to create or modify options for this context.
+        /// </param>
+        [DebuggerHidden]
+        private void OnConfiguringCosmos(CosmosDbContextOptionsBuilder optionsBuilder) => OnConfiguringCosmos(ApplicationConfiguration, optionsBuilder);
+
+        /// <summary>
         /// Configures the in-memory database to be used for this context.
         /// </summary>
         /// <param name="optionsBuilder">
@@ -272,6 +293,69 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// </param>
         [DebuggerHidden]
         private void OnConfiguringSqlServer(SqlServerDbContextOptionsBuilder optionsBuilder) => OnConfiguringSqlServer(ApplicationConfiguration, optionsBuilder);
+
+        /// <summary>
+        /// Configures the specified options builder for a Cosmos DB database connection.
+        /// </summary>
+        /// <param name="optionsBuilder">
+        /// A builder used to create or modify options for this context.
+        /// </param>
+        [DebuggerHidden]
+        private DbContextOptionsBuilder UseCosmos(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionStringBuilder = new DbConnectionStringBuilder();
+            var accountEndpoint = (String)null;
+            var accountKey = (String)null;
+
+            try
+            {
+                connectionStringBuilder.ConnectionString = ConnectionString;
+
+                if (connectionStringBuilder.TryGetValue(ConnectionStringKeywordForAccountEndpoint, out var configuredAccountEndpoint))
+                {
+                    accountEndpoint = configuredAccountEndpoint?.ToString().Trim();
+                }
+
+                if (accountEndpoint.IsNullOrEmpty())
+                {
+                    throw new ConfigurationErrorsException($"A value for the keyword \"{ConnectionStringKeywordForAccountEndpoint}\" was not found within the connection string value for \"{DatabaseName}\".");
+                }
+
+                if (connectionStringBuilder.TryGetValue(ConnectionStringKeywordForAccountKey, out var configuredAccountKey))
+                {
+                    accountKey = configuredAccountKey?.ToString().Trim();
+                }
+
+                if (accountKey.IsNullOrEmpty())
+                {
+                    throw new ConfigurationErrorsException($"A value for the keyword \"{ConnectionStringKeywordForAccountKey}\" was not found within the connection string value for \"{DatabaseName}\".");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new ConfigurationErrorsException($"The connection string value for \"{DatabaseName}\" is invalid. See inner exception.", exception);
+            };
+
+            return optionsBuilder.UseCosmos(accountEndpoint, accountKey, DatabaseName, OnConfiguringCosmos);
+        }
+
+        /// <summary>
+        /// Configures the specified options builder for an in-memory database connection.
+        /// </summary>
+        /// <param name="optionsBuilder">
+        /// A builder used to create or modify options for this context.
+        /// </param>
+        [DebuggerHidden]
+        private DbContextOptionsBuilder UseInMemory(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseInMemoryDatabase(DatabaseName, OnConfiguringInMemory).ConfigureWarnings((warningsBuilder) => { warningsBuilder.Ignore(InMemoryEventId.TransactionIgnoredWarning); });
+
+        /// <summary>
+        /// Configures the specified options builder for a SQL Server database connection.
+        /// </summary>
+        /// <param name="optionsBuilder">
+        /// A builder used to create or modify options for this context.
+        /// </param>
+        [DebuggerHidden]
+        private DbContextOptionsBuilder UseSqlServer(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer(ConnectionString, OnConfiguringSqlServer);
 
         /// <summary>
         /// Gets the connection string for the associated database from <see cref="ApplicationConfiguration" />.
@@ -296,6 +380,18 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
                 return DatabaseNameReference;
             }
         }
+
+        /// <summary>
+        /// Represents the connection string keyword "AccountEndpoint".
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String ConnectionStringKeywordForAccountEndpoint = "AccountEndpoint";
+
+        /// <summary>
+        /// Represents the connection string keyword "AccountKey".
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String ConnectionStringKeywordForAccountKey = "AccountKey";
 
         /// <summary>
         /// Represents the word "Context" as a string.
