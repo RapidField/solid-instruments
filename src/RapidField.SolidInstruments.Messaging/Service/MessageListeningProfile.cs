@@ -82,6 +82,14 @@ namespace RapidField.SolidInstruments.Messaging.Service
         public void AddHeartbeatListener() => AddTopicListener<HeartbeatMessage>();
 
         /// <summary>
+        /// Adds support for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="PingRequestMessage" /> was already added.
+        /// </exception>
+        public void AddPingRequestListener() => AddRequestListener<PingRequestMessage, PingResponseMessage>();
+
+        /// <summary>
         /// Adds support for the specified queue message type.
         /// </summary>
         /// <typeparam name="TMessage">

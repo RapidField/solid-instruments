@@ -10,6 +10,7 @@ using RapidField.SolidInstruments.EventAuthoring.Autofac.Extensions;
 using RapidField.SolidInstruments.Messaging.CommandMessages;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.InMemory;
+using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Messaging.TransportPrimitives;
 
 namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
@@ -132,6 +133,18 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
             where TMessage : class, IEventMessage<TEvent> => target.RegisterMessageTransmitter<TMessage, EventMessageTransmitter<TEvent, TMessage>>();
 
         /// <summary>
+        /// Registers a transient message listener for the <see cref="HeartbeatMessage" /> type.
+        /// </summary>
+        /// <typeparam name="TMessageListener">
+        /// The type of the message listener that is registered.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="ContainerBuilder" />.
+        /// </param>
+        public static void RegisterHeartbeatMessageListener<TMessageListener>(this ContainerBuilder target)
+            where TMessageListener : class, IMessageListener<HeartbeatMessage> => target.RegisterMessageListener<HeartbeatMessage, TMessageListener>();
+
+        /// <summary>
         /// Registers a transient message listener for the specified message type.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -162,6 +175,22 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
         public static void RegisterMessageTransmitter<TMessage, TMessageTransmitter>(this ContainerBuilder target)
             where TMessage : class, IMessage
             where TMessageTransmitter : class, IMessageTransmitter<TMessage> => target.RegisterCommandHandler<TMessage, TMessageTransmitter>();
+
+        /// <summary>
+        /// Registers a transient message listener for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="ContainerBuilder" />.
+        /// </param>
+        public static void RegisterPingRequestMessageListener(this ContainerBuilder target) => target.RegisterRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
+
+        /// <summary>
+        /// Registers a transient message transmitter for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="ContainerBuilder" />.
+        /// </param>
+        public static void RegisterPingRequestMessageTransmitter(this ContainerBuilder target) => target.RegisterRequestMessageTransmitter<PingRequestMessage, PingResponseMessage>();
 
         /// <summary>
         /// Registers a transient message listener for the specified request message type.

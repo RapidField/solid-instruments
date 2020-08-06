@@ -11,6 +11,7 @@ using RapidField.SolidInstruments.EventAuthoring.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.CommandMessages;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Messaging.InMemory;
+using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Messaging.TransportPrimitives;
 
 namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
@@ -140,6 +141,21 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
             where TMessage : class, IEventMessage<TEvent> => target.AddMessageTransmitter<TMessage, EventMessageTransmitter<TEvent, TMessage>>();
 
         /// <summary>
+        /// Registers a transient message listener for the <see cref="HeartbeatMessage" /> type.
+        /// </summary>
+        /// <typeparam name="TMessageListener">
+        /// The type of the message listener that is registered.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddHeartbeatMessageListener<TMessageListener>(this IServiceCollection target)
+            where TMessageListener : class, IMessageListener<HeartbeatMessage> => target.AddMessageListener<HeartbeatMessage, TMessageListener>();
+
+        /// <summary>
         /// Registers a transient message listener for the specified message type.
         /// </summary>
         /// <typeparam name="TMessage">
@@ -180,6 +196,28 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
         public static IServiceCollection AddMessageTransmitter<TMessage, TMessageTransmitter>(this IServiceCollection target)
             where TMessage : class, IMessage
             where TMessageTransmitter : class, IMessageTransmitter<TMessage> => target.AddCommandHandler<TMessage, TMessageTransmitter>();
+
+        /// <summary>
+        /// Registers a transient message listener for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddPingRequestMessageListener(this IServiceCollection target) => target.AddRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
+
+        /// <summary>
+        /// Registers a transient message transmitter for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddPingRequestMessageTransmitter(this IServiceCollection target) => target.AddRequestMessageTransmitter<PingRequestMessage, PingResponseMessage>();
 
         /// <summary>
         /// Registers a transient message listener for the specified request message type.

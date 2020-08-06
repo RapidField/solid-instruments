@@ -5,7 +5,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.EventAuthoring;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
@@ -88,7 +87,7 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         {
             try
             {
-                heartbeatSchedule.AddItem(2, MessagingEntityType.Topic, "TwoSecondHeartbeat");
+                heartbeatSchedule.AddItem(3, MessagingEntityType.Topic, "ThreeSecondHeartbeat");
             }
             finally
             {

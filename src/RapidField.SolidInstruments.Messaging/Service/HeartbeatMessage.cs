@@ -79,6 +79,12 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
+        /// Represents the default messaging entity type for heartbeat messages.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const MessagingEntityType DefaultEntityType = MessagingEntityType.Topic;
+
+        /// <summary>
         /// Represents the regular interval, in seconds, at which frequency "A" heartbeat messages are published.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -88,7 +94,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Represents a label applied to heartbeat messages that are published with a known frequency "A".
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String FrequencyALabel = "FrequencyA";
+        internal const String FrequencyALabel = "Frequency-A";
 
         /// <summary>
         /// Represents the regular interval, in seconds, at which frequency "B" heartbeat messages are published.
@@ -100,7 +106,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Represents a label applied to heartbeat messages that are published with a known frequency "B".
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String FrequencyBLabel = "FrequencyB";
+        internal const String FrequencyBLabel = "Frequency-B";
 
         /// <summary>
         /// Represents the regular interval, in seconds, at which frequency "C" heartbeat messages are published.
@@ -112,7 +118,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Represents a label applied to heartbeat messages that are published with a known frequency "C".
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String FrequencyCLabel = "FrequencyC";
+        internal const String FrequencyCLabel = "Frequency-C";
 
         /// <summary>
         /// Represents the regular interval, in seconds, at which frequency "D" heartbeat messages are published.
@@ -124,7 +130,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Represents a label applied to heartbeat messages that are published with a known frequency "D".
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String FrequencyDLabel = "FrequencyD";
+        internal const String FrequencyDLabel = "Frequency-D";
 
         /// <summary>
         /// Represents the regular interval, in seconds, at which frequency "E" heartbeat messages are published.
@@ -136,6 +142,6 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// Represents a label applied to heartbeat messages that are published with a known frequency "E".
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String FrequencyELabel = "FrequencyE";
+        internal const String FrequencyELabel = "Frequency-E";
     }
 }

@@ -345,8 +345,9 @@ namespace RapidField.SolidInstruments.Messaging.Service
         [DebuggerHidden]
         private void ScheduleHeartbeat(IHeartbeatScheduleItem heartbeatScheduleItem)
         {
-            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
-            var timer = new Timer(timerCallback, heartbeatScheduleItem, TimeSpan.Zero, TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds));
+            var timerPeriod = TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds);
+            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem));
+            var timer = new Timer(timerCallback, heartbeatScheduleItem, timerPeriod, timerPeriod);
             HeartbeatTimers.Add(timer);
             ReferenceManager.AddObject(timer);
         }
@@ -402,6 +403,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     return scheduleItem.TransmitHeartbeatMessageAsync(messageTransmittingFacade).ContinueWith(transmitHeartbeatMessageTask =>
                     {
                         dependencyScope.Dispose();
+                        transmitHeartbeatMessageTask.Dispose();
                     });
                 }
                 catch
