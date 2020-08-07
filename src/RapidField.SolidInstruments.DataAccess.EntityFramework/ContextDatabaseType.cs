@@ -29,6 +29,6 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <summary>
         /// The context is backed by a SQL Server database.
         /// </summary>
-        SQLServer = 3
+        SqlServer = 3
     }
 }

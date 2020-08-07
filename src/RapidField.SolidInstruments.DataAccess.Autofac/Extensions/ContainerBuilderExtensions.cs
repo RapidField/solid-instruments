@@ -12,7 +12,8 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.DataAccess.Autofac.Extensions
 {
     /// <summary>
-    /// Extends the <see cref="ContainerBuilder" /> class with inversion of control features to support data access abstractions.
+    /// Extends the <see cref="ContainerBuilder" /> class with Autofac inversion of control features to support data access
+    /// abstractions.
     /// </summary>
     public static class ContainerBuilderExtensions
     {

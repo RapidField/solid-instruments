@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
         public ExampleSqlServerContext(IConfiguration applicationConfiguration)
-            : base(applicationConfiguration, ContextDatabaseType.SQLServer, QueryTrackingBehavior.TrackAll)
+            : base(applicationConfiguration, ContextDatabaseType.SqlServer, QueryTrackingBehavior.TrackAll)
         {
             return;
         }
