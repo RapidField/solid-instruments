@@ -188,7 +188,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected sealed override void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected sealed override void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
@@ -196,7 +199,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
             finally
             {
-                base.AddListeners(listeningProfile, applicationConfiguration);
+                base.AddListeners(listeningProfile, applicationConfiguration, commandLineArguments);
             }
         }
 
@@ -209,7 +212,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected sealed override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected sealed override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
@@ -240,7 +246,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
             finally
             {
-                base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration);
+                base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration, commandLineArguments);
             }
         }
 

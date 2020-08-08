@@ -49,7 +49,10 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void AddListeners(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected override void AddListeners(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
@@ -80,7 +83,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             }
             finally
             {
-                base.AddListeners(subscriptionProfile, applicationConfiguration);
+                base.AddListeners(subscriptionProfile, applicationConfiguration, commandLineArguments);
             }
         }
 
@@ -101,7 +104,10 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration) => base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration);
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration, String[] commandLineArguments) => base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration, commandLineArguments);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SimulatedMessagingServiceExecutor" />.
