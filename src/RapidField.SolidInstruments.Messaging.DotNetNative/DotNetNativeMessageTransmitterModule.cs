@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
     /// <summary>
     /// Encapsulates native .NET container configuration for message transmitters.
     /// </summary>
-    public abstract class DotNetNativeMessageTransmitterModule : DotNetNativeMessageHandlerModule, IMessageTransmitterModule<ServiceCollection>
+    public class DotNetNativeMessageTransmitterModule : DotNetNativeMessageHandlerModule, IMessageTransmitterModule<ServiceCollection>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNativeMessageTransmitterModule" /> class.
@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         /// <see langword="null" />.
         /// </exception>
         public DotNetNativeMessageTransmitterModule(IConfiguration applicationConfiguration, Assembly targetAssembly)
-            : base(applicationConfiguration, targetAssembly)
+            : base(applicationConfiguration, false, true, targetAssembly)
         {
             return;
         }
@@ -43,41 +43,9 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
         protected DotNetNativeMessageTransmitterModule(IConfiguration applicationConfiguration)
-            : base(applicationConfiguration)
+            : base(applicationConfiguration, false, true)
         {
             return;
-        }
-
-        /// <summary>
-        /// Registers one or more handler types for the specified message type.
-        /// </summary>
-        /// <param name="messageType">
-        /// The message type.
-        /// </param>
-        /// <param name="configurator">
-        /// An object that configures containers.
-        /// </param>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the application.
-        /// </param>
-        protected sealed override void ConfigureMessageType(Type messageType, ServiceCollection configurator, IConfiguration applicationConfiguration)
-        {
-            if (IsRequestMessageType(messageType))
-            {
-                // TODO: Register request transmitter.
-            }
-            else if (IsEventMessageType(messageType))
-            {
-                // TODO: Register event transmitter.
-            }
-            else if (IsCommandMessageType(messageType))
-            {
-                // TODO: Register command transmitter.
-            }
-            else
-            {
-                // TODO: Register message transmitter.
-            }
         }
     }
 }

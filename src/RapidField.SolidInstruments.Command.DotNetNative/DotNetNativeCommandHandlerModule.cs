@@ -113,8 +113,8 @@ namespace RapidField.SolidInstruments.Command.DotNetNative
         {
             foreach (var commandHandlerType in MatchedTypes)
             {
-                var commandHandlerInterfaceType = commandHandlerType.GetInterfaces().Where(implementedInterface => CommandHandlerInterfaceType.IsAssignableFrom(implementedInterface)).FirstOrDefault();
-                var commandType = commandHandlerInterfaceType?.GetGenericArguments().FirstOrDefault();
+                var commandHandlerInterfaceType = commandHandlerType.GetInterfaces().Where(implementedInterface => CommandHandlerInterfaceType.IsAssignableFrom(implementedInterface) && implementedInterface.GenericTypeArguments.Length == 1).FirstOrDefault();
+                var commandType = commandHandlerInterfaceType?.GenericTypeArguments.FirstOrDefault();
 
                 if (commandType is null)
                 {
@@ -163,10 +163,10 @@ namespace RapidField.SolidInstruments.Command.DotNetNative
         private static readonly Type BaseCommandHandlerTypeReference = typeof(TBaseCommandHandler);
 
         /// <summary>
-        /// Represents the <see cref="ICommandHandler{TCommand}" /> type.
+        /// Represents the <see cref="ICommandHandler" /> type.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Type CommandHandlerInterfaceType = typeof(ICommandHandler<>);
+        private static readonly Type CommandHandlerInterfaceType = typeof(ICommandHandler);
 
         /// <summary>
         /// Represents the assembly from which command handler types are registered by the current

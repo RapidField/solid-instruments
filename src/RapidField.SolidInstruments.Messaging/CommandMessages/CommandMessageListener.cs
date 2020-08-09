@@ -12,13 +12,17 @@ namespace RapidField.SolidInstruments.Messaging.CommandMessages
     /// <summary>
     /// Processes command messages as a listener.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CommandMessageListener{TCommand, TMessage}" /> is the default implementation of
+    /// <see cref="ICommandMessageListener" />.
+    /// </remarks>
     /// <typeparam name="TCommand">
     /// The type of the associated command.
     /// </typeparam>
     /// <typeparam name="TMessage">
     /// The type of the message that is listened for.
     /// </typeparam>
-    public class CommandMessageListener<TCommand, TMessage> : QueueListener<TMessage>
+    public class CommandMessageListener<TCommand, TMessage> : QueueListener<TMessage>, ICommandMessageListener
         where TCommand : class, ICommand
         where TMessage : class, ICommandMessage<TCommand>
     {

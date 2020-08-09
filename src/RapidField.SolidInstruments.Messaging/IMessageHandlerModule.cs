@@ -26,10 +26,91 @@ namespace RapidField.SolidInstruments.Messaging
     public interface IMessageHandlerModule : IDependencyModule
     {
         /// <summary>
-        /// Gets the collection of non-abstract public message types defined by <see cref="TargetAssembly" /> for which handler
-        /// types are registered by the current <see cref="IMessageHandlerModule" />.
+        /// Gets the collection of non-abstract public command message listener types defined by <see cref="TargetAssembly" />.
         /// </summary>
-        public IEnumerable<Type> MessageTypes
+        public IEnumerable<Type> CommandMessageListenerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public command message transmitter types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> CommandMessageTransmitterTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public event message listener types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> EventMessageListenerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public event message transmitter types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> EventMessageTransmitterTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public message handler types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> MessageHandlerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public message listener types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> MessageListenerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public message transmitter types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> MessageTransmitterTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="IMessageHandlerModule" /> registers message listener types
+        /// defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public Boolean RegistersMessageListenerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="IMessageHandlerModule" /> registers message transmitter
+        /// types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public Boolean RegistersMessageTransmitterTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public request message listener types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> RequestMessageListenerTypes
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of non-abstract public request message transmitter types defined by <see cref="TargetAssembly" />.
+        /// </summary>
+        public IEnumerable<Type> RequestMessageTransmitterTypes
         {
             get;
         }
