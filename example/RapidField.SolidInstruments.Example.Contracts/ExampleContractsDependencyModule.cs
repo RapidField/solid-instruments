@@ -5,7 +5,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.EventAuthoring;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
@@ -50,7 +49,7 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
             configurator.AddEventMessageTransmitter<ExceptionRaisedEvent, ExceptionRaisedEventMessage>();
 
             // Register request transmitters.
-            configurator.AddRequestMessageTransmitter<PingRequestMessage, PingResponseMessage>();
+            configurator.AddPingRequestMessageTransmitter();
         }
     }
 }

@@ -12,13 +12,17 @@ namespace RapidField.SolidInstruments.Messaging.EventMessages
     /// <summary>
     /// Transmits event messages to a topic.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EventMessageTransmitter{TCommand, TMessage}" /> is the default implementation of
+    /// <see cref="IEventMessageTransmitter" />.
+    /// </remarks>
     /// <typeparam name="TEvent">
     /// The type of the associated event.
     /// </typeparam>
     /// <typeparam name="TMessage">
     /// The type of the message that is transmitted by the transmitter.
     /// </typeparam>
-    public class EventMessageTransmitter<TEvent, TMessage> : TopicTransmitter<TMessage>
+    public class EventMessageTransmitter<TEvent, TMessage> : TopicTransmitter<TMessage>, IEventMessageTransmitter
         where TEvent : class, IEvent
         where TMessage : class, IEventMessage<TEvent>
     {
