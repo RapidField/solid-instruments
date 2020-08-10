@@ -90,6 +90,10 @@ $SolutionConfigurationRelease = "Release";
 $ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
 $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
 
+# Regular expressions
+$ValidCommitMessageRegularExpressionPattern = "^#[1-9][0-9]{0,4} [A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{21,89}[\.\!]$";
+$ValidPullRequestTitleRegularExpressionPattern = "^[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{21,144}$";
+
 # Environment variables
 $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
 $CodecovToken = $env:CODECOV_TOKEN;
@@ -104,6 +108,7 @@ $CommitTimeStamp = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
 $DocumentationWebsiteFtpPassword = $env:DOCWEB_FTP_PASSWORD;
 $DocumentationWebsiteFtpUserName = $env:DOCWEB_FTP_USERNAME;
 $NuGetApiKey = $env:RAPIDFIELD_NUGETAPIKEY;
+$PullRequestTitle = $env:APPVEYOR_PULL_REQUEST_TITLE;
 $RepositoryName = $env:APPVEYOR_REPO_NAME;
 $TagName = $env:APPVEYOR_REPO_TAG_NAME;
 
@@ -832,6 +837,58 @@ Function VerifyBuild
 
 <#
 .Synopsis
+Validates the commit message, if any, against a regular expression pattern.
+#>
+Function ValidateCommitMessageFormat
+{
+    If (($CommitMessage -eq $null) -or ($CommitMessage -eq ""))
+    {
+        ComposeVerbose "Commit message validation will not be performed. No commit message is available.";
+        Return;
+    }
+    ElseIf (($CommitMessage -match $ValidCommitMessageRegularExpressionPattern))
+    {
+        ComposeVerbose "The commit message for this build is properly formatted.";
+        Return;
+    }
+
+    $ErrorMessage = "The commit message for this build is improperly formatted.";
+    ComposeError "$ErrorMessage";
+    ComposeNormal "Commit message:";
+    ComposeVerbose "$CommitMessage"
+    ComposeNormal "Expected format:";
+    ComposeVerbose "$ValidCommitMessageRegularExpressionPattern";
+    Throw "$ErrorMessage";
+}
+
+<#
+.Synopsis
+Validates the pull request title, if any, against a regular expression pattern.
+#>
+Function ValidatePullRequestTitleFormat
+{
+    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq ""))
+    {
+        ComposeVerbose "Pull request title validation will not be performed. No pull request title is available.";
+        Return;
+    }
+    ElseIf (($PullRequestTitle -match $ValidPullRequestTitleRegularExpressionPattern))
+    {
+        ComposeVerbose "The pull request title for this build is properly formatted.";
+        Return;
+    }
+
+    $ErrorMessage = "The pull request title for this build is improperly formatted.";
+    ComposeError "$ErrorMessage";
+    ComposeNormal "Pull request title:";
+    ComposeVerbose "$PullRequestTitle"
+    ComposeNormal "Expected format:";
+    ComposeVerbose "$ValidPullRequestTitleRegularExpressionPattern";
+    Throw "$ErrorMessage";
+}
+
+<#
+.Synopsis
 Writes various details about the build.
 #>
 Function WriteBuildDetails
@@ -839,6 +896,7 @@ Function WriteBuildDetails
     WriteRepositoryName;
     WriteBuildVersion;
     WriteTagName;
+    WritePullRequestTitle;
     WriteCommitId;
     WriteCommitTimeStamp;
     WriteCommitMessage;
@@ -927,6 +985,20 @@ Function WriteCommitTimeStamp
     }
 
     ComposeNormal "Commit time stamp: $CommitTimeStamp";
+}
+
+<#
+.Synopsis
+Writes the pull request title for the build.
+#>
+Function WritePullRequestTitle
+{
+    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq ""))
+    {
+        Return;
+    }
+
+    ComposeNormal "Pull request title: $PullRequestTitle";
 }
 
 <#

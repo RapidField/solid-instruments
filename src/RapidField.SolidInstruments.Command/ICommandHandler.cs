@@ -8,7 +8,7 @@ using System;
 namespace RapidField.SolidInstruments.Command
 {
     /// <summary>
-    /// Processes commands.
+    /// Processes a single <see cref="ICommand" />.
     /// </summary>
     /// <remarks>
     /// Do not use <see cref="ICommandHandler{TCommand, TResult}" /> as a registration target for inversion of control tools. Use
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.Command
     }
 
     /// <summary>
-    /// Processes commands.
+    /// Processes a single <see cref="ICommand" />.
     /// </summary>
     /// <remarks>
     /// Do not implement <see cref="ICommandHandler{TCommand}" /> directly in user code. Use
@@ -51,8 +51,15 @@ namespace RapidField.SolidInstruments.Command
     /// <typeparam name="TCommand">
     /// The type of the command that is processed by the handler.
     /// </typeparam>
-    public interface ICommandHandler<in TCommand> : IInstrument
+    public interface ICommandHandler<in TCommand> : ICommandHandler
         where TCommand : class, ICommandBase
+    {
+    }
+
+    /// <summary>
+    /// Processes a single <see cref="ICommand" />.
+    /// </summary>
+    public interface ICommandHandler : IInstrument
     {
     }
 }

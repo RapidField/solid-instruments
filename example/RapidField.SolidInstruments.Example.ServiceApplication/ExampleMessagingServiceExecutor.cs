@@ -4,7 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging;
 using RapidField.SolidInstruments.Messaging.EventMessages;
@@ -29,30 +29,33 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         }
 
         /// <summary>
-        /// Adds message subscriptions to the service.
+        /// Adds message listeners to the service.
         /// </summary>
-        /// <param name="subscriptionProfile">
-        /// An object that is used to add subscriptions.
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void AddSubscriptions(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected override void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
-                // Add topic listeners.
-                subscriptionProfile.AddTopicListener<ApplicationStartedEventMessage>();
-                subscriptionProfile.AddTopicListener<ApplicationStoppedEventMessage>();
-                subscriptionProfile.AddTopicListener<ExceptionRaisedEventMessage>();
-                subscriptionProfile.AddTopicListener<HeartbeatMessage>();
+                // Add event listeners.
+                listeningProfile.AddHeartbeatListener();
+                listeningProfile.AddEventListener<ApplicationStartedEvent, ApplicationStartedEventMessage>();
+                listeningProfile.AddEventListener<ApplicationStoppedEvent, ApplicationStoppedEventMessage>();
+                listeningProfile.AddEventListener<ExceptionRaisedEvent, ExceptionRaisedEventMessage>();
 
                 // Add request listeners.
-                subscriptionProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
+                listeningProfile.AddRequestListener<PingRequestMessage, PingResponseMessage>();
             }
             finally
             {
-                base.AddSubscriptions(subscriptionProfile, applicationConfiguration);
+                base.AddListeners(listeningProfile, applicationConfiguration, commandLineArguments);
             }
         }
 
@@ -83,15 +86,18 @@ namespace RapidField.SolidInstruments.Example.ServiceApplication
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected override void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
-                heartbeatSchedule.AddItem(2, MessagingEntityType.Topic, "TwoSecondHeartbeat");
+                heartbeatSchedule.AddItem(3, MessagingEntityType.Topic, "ThreeSecondHeartbeat");
             }
             finally
             {
-                base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration);
+                base.ConfigureHeartbeat(heartbeatSchedule, applicationConfiguration, commandLineArguments);
             }
         }
 

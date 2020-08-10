@@ -11,13 +11,17 @@ namespace RapidField.SolidInstruments.Messaging.CommandMessages
     /// <summary>
     /// Transmits command messages to a queue.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CommandMessageTransmitter{TCommand, TMessage}" /> is the default implementation of
+    /// <see cref="ICommandMessageTransmitter" />.
+    /// </remarks>
     /// <typeparam name="TCommand">
     /// The type of the associated command.
     /// </typeparam>
     /// <typeparam name="TMessage">
     /// The type of the message that is transmitted by the transmitter.
     /// </typeparam>
-    public class CommandMessageTransmitter<TCommand, TMessage> : QueueTransmitter<TMessage>
+    public class CommandMessageTransmitter<TCommand, TMessage> : QueueTransmitter<TMessage>, ICommandMessageTransmitter
         where TCommand : class, ICommand
         where TMessage : class, ICommandMessage<TCommand>
     {
