@@ -335,6 +335,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenote
 		doc\releasenotes\v1.0.23.md = doc\releasenotes\v1.0.23.md
 		doc\releasenotes\v1.0.24.md = doc\releasenotes\v1.0.24.md
 		doc\releasenotes\v1.0.25.md = doc\releasenotes\v1.0.25.md
+		doc\releasenotes\v1.0.26.md = doc\releasenotes\v1.0.26.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{3EDA2412-F5E1-492E-86F4-C5CFCC906955}"
@@ -373,6 +374,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
 		.github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md = .github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md
 		.github\ISSUE_TEMPLATE\QUESTION.md = .github\ISSUE_TEMPLATE\QUESTION.md
+		.github\ISSUE_TEMPLATE\SOFTWARE_RELEASE_REQUEST.md = .github\ISSUE_TEMPLATE\SOFTWARE_RELEASE_REQUEST.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.InMemory.UnitTests", "test\RapidField.SolidInstruments.Messaging.InMemory.UnitTests\RapidField.SolidInstruments.Messaging.InMemory.UnitTests.csproj", "{0E10878E-46FB-4512-BE1B-6A97FEDC0C58}"
@@ -401,9 +403,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.DotNetNative.Rmq", "src\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.csproj", "{8FFB8E4C-5858-4D18-B8DA-D669EED643AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.DataAccess.Autofac.Ef", "src\RapidField.SolidInstruments.DataAccess.Autofac.Ef\RapidField.SolidInstruments.DataAccess.Autofac.Ef.csproj", "{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.Autofac.Ef", "src\RapidField.SolidInstruments.DataAccess.Autofac.Ef\RapidField.SolidInstruments.DataAccess.Autofac.Ef.csproj", "{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.DataAccess.DotNetNative.Ef", "src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj", "{F20759D5-D39D-4C31-8A23-AEAA606776E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.DotNetNative.Ef", "src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj", "{F20759D5-D39D-4C31-8A23-AEAA606776E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
