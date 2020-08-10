@@ -20,6 +20,13 @@ The **Solid Instruments** product backlog is fluid and persistently subject to c
 [**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q3) |
 [**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2021-Q4)
 
+## 2022
+
+[**Quarter 1**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2022-Q1) |
+[**Quarter 2**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2022-Q2) |
+[**Quarter 3**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2022-Q3) |
+[**Quarter 4**](https://github.com/RapidField/solid-instruments/issues?utf8=%E2%9C%93&q=is:issue+label:WindowForDelivery-2022-Q4)
+
 ## Contributing
 
 Want to help us get there? Check out the [**Instructions for Contributing**](CONTRIBUTING.md) to get started.

@@ -5,7 +5,7 @@
 # This file controls automated CI/CD activity via AppVeyor.
 
 # Version definition
-version: 1.0.25+{build}
+version: 1.0.26-preview1+{build}
 
 # Artifact definitions
 artifacts:
@@ -19,22 +19,16 @@ build_script:
 - ps: .\Build.ps1
 
 # Deployment settings
-deploy:
-- application: DocumentationWebsite
-  artifact: DocumentationWebsite
-  host: waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot
-  on:
-    branch: master
-  password:
-    secure: IeMo53dCxMhfdS0Ul10w8VgFAz5voNHjVj7NcJcdGAfFrrxoTrqwFH7URO+tGWyFuTSdJzvH8woYilq+VTFb1Q==
-  protocol: ftps
-  provider: FTP
-  username: SolidInstruments-DocWeb-App\$SolidInstruments-DocWeb-App
+deploy: off
 
 # Environment variables
 environment:
   CODECOV_TOKEN:
     secure: 7/8LlzRGKOUWnZwRUPiZjaw1ugVc9OsFebsLdIA/mbbVintw7IhTOqT/fu31eTz3
+  DOCWEB_FTP_PASSWORD:
+    secure: IeMo53dCxMhfdS0Ul10w8VgFAz5voNHjVj7NcJcdGAfFrrxoTrqwFH7URO+tGWyFuTSdJzvH8woYilq+VTFb1Q==
+  DOCWEB_FTP_USERNAME:
+    secure: tpUXWb8YbSH2xVJ1tPbf/SMJN/WDuEi68NFDx3I/Luz6UtPoEwQhBgZuP6a8hbWbE56qxq31RqbPZhO9U09Upw==
   RAPIDFIELD_CSCERTKEY:
     secure: doWiHasUlfcfGw28sVQzAgx3gJFCCSAtf6+gTuuJmiOrrf7GOywK44WCVQPIcCQ8
   RAPIDFIELD_CSCERTKEY_SALT:
