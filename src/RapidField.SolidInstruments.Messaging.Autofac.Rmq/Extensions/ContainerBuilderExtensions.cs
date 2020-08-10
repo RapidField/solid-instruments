@@ -220,13 +220,13 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Rmq.Extensions
         private static void RegisterSupportingTypesForRabbitMqMessaging(this ContainerBuilder target, IConfiguration applicationConfiguration, RabbitMqMessageTransport transport)
         {
             target.RegisterApplicationConfiguration(applicationConfiguration);
-            target.RegisterInstance(transport).AsSelf().SingleInstance();
-            target.RegisterInstance(transport.CreateConnection()).AsSelf().SingleInstance();
-            target.RegisterType<RabbitMqMessageAdapter>().As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<RabbitMqClientFactory>().As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<RabbitMqTransmittingFacade>().As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<RabbitMqListeningFacade>().As<IMessageListeningFacade>().AsSelf().SingleInstance();
-            target.RegisterType<RabbitMqRequestingFacade>().As<IMessageRequestingFacade>().AsSelf().SingleInstance();
+            target.RegisterInstance(transport).IfNotRegistered(typeof(RabbitMqMessageTransport)).AsSelf().SingleInstance();
+            target.RegisterInstance(transport.CreateConnection()).IfNotRegistered(typeof(IMessageTransportConnection)).AsSelf().SingleInstance();
+            target.RegisterType<RabbitMqMessageAdapter>().IfNotRegistered(typeof(RabbitMqMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<RabbitMqClientFactory>().IfNotRegistered(typeof(RabbitMqClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<RabbitMqTransmittingFacade>().IfNotRegistered(typeof(RabbitMqTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<RabbitMqListeningFacade>().IfNotRegistered(typeof(RabbitMqListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
+            target.RegisterType<RabbitMqRequestingFacade>().IfNotRegistered(typeof(RabbitMqRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }
     }
 }

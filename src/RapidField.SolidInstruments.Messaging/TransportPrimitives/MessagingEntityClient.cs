@@ -142,13 +142,13 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </exception>
         public Task SendAsync(PrimitiveMessage message) => EntityType switch
         {
-            MessagingEntityType.Queue => EnsureQueueExistanceAsync(Path).ContinueWith(async ensureQueueExistenceTask =>
+            MessagingEntityType.Queue => EnsureQueueExistanceAsync(Path).ContinueWith(ensureQueueExistenceTask =>
             {
-                await Connection.Transport.SendToQueueAsync(Path, message).ConfigureAwait(false);
+                Connection.Transport.SendToQueueAsync(Path, message).Wait();
             }),
-            MessagingEntityType.Topic => EnsureTopicExistanceAsync(Path).ContinueWith(async ensureTopicExistenceTask =>
+            MessagingEntityType.Topic => EnsureTopicExistanceAsync(Path).ContinueWith(ensureTopicExistenceTask =>
             {
-                await Connection.Transport.SendToTopicAsync(Path, message).ConfigureAwait(false);
+                Connection.Transport.SendToTopicAsync(Path, message).Wait();
             }),
             _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
         };

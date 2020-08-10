@@ -2,9 +2,13 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.EventAuthoring;
 using RapidField.SolidInstruments.InversionOfControl;
+using RapidField.SolidInstruments.Messaging.CommandMessages;
+using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,6 +40,54 @@ namespace RapidField.SolidInstruments.Messaging.Service
         {
             RootDependencyScope = rootDependencyScope.RejectIf().IsNull(nameof(rootDependencyScope)).TargetArgument;
         }
+
+        /// <summary>
+        /// Adds support for the specified command message type.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// The type of the command for which support is added.
+        /// </typeparam>
+        /// <typeparam name="TCommandMessage">
+        /// The type of the command message for which support is added.
+        /// </typeparam>
+        /// <exception cref="InvalidOperationException">
+        /// <typeparamref name="TCommandMessage" /> was already added.
+        /// </exception>
+        public void AddCommandListener<TCommand, TCommandMessage>()
+            where TCommand : class, ICommand
+            where TCommandMessage : class, ICommandMessage<TCommand> => AddQueueListener<TCommandMessage>();
+
+        /// <summary>
+        /// Adds support for the specified event message type.
+        /// </summary>
+        /// <typeparam name="TEvent">
+        /// The type of the event for which support is added.
+        /// </typeparam>
+        /// <typeparam name="TEventMessage">
+        /// The type of the event message for which support is added.
+        /// </typeparam>
+        /// <exception cref="InvalidOperationException">
+        /// <typeparamref name="TEventMessage" /> was already added.
+        /// </exception>
+        public void AddEventListener<TEvent, TEventMessage>()
+            where TEvent : class, IEvent
+            where TEventMessage : class, IEventMessage<TEvent> => AddTopicListener<TEventMessage>();
+
+        /// <summary>
+        /// Adds support for the <see cref="HeartbeatMessage" /> type.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="HeartbeatMessage" /> was already added.
+        /// </exception>
+        public void AddHeartbeatListener() => AddTopicListener<HeartbeatMessage>();
+
+        /// <summary>
+        /// Adds support for the <see cref="PingRequestMessage" /> type.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="PingRequestMessage" /> was already added.
+        /// </exception>
+        public void AddPingRequestListener() => AddRequestListener<PingRequestMessage, PingResponseMessage>();
 
         /// <summary>
         /// Adds support for the specified queue message type.
