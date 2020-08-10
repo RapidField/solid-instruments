@@ -45,6 +45,7 @@ $DirectoryPathForCicdToolsAppVeyorTools = Join-Path -Path "$DirectoryPathForCicd
 $DirectoryPathForDocumentation = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForDocumentation";
 $DirectoryPathForDocumentationObjects = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationObjects";
 $DirectoryPathForDocumentationWebsite = Join-Path -Path "$DirectoryPathForDocumentation" -ChildPath "$DirectoryNameForDocumentationWebsite";
+$DirectoryPathForDocumentationWebsiteArtifacts = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$DirectoryNameForDocumentationWebsite";
 $DirectoryPathForDocumentationWebsiteManifestSnapshots = Join-Path -Path "$DirectoryPathForDocumentationWebsite" -ChildPath "$DirectoryNameForDocumentationWebsiteManifestSnapshots";
 $DirectoryPathForExample = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForExample";
 $DirectoryPathForSource = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForSource";
@@ -73,6 +74,7 @@ $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.c
 # Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
 $NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json";
+$ProductionDocumentationWebsiteFtpUri = "ftps://waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot";
 $ProductionDocumentationWebsiteRootUri = "https://www.solidinstruments.com";
 $ProductionDocumentationWebsiteManifestSnapshotsUri = "$ProductionDocumentationWebsiteRootUri/$DirectoryNameForDocumentationWebsiteManifestSnapshots";
 
@@ -103,6 +105,8 @@ $CommitAuthorName = $env:APPVEYOR_REPO_COMMIT_AUTHOR;
 $CommitId = $env:APPVEYOR_REPO_COMMIT;
 $CommitMessage = $env:APPVEYOR_REPO_COMMIT_MESSAGE;
 $CommitTimeStamp = $env:APPVEYOR_REPO_COMMIT_TIMESTAMP;
+$DocumentationWebsiteFtpPassword = $env:DOCWEB_FTP_PASSWORD;
+$DocumentationWebsiteFtpUserName = $env:DOCWEB_FTP_USERNAME;
 $NuGetApiKey = $env:RAPIDFIELD_NUGETAPIKEY;
 $PullRequestTitle = $env:APPVEYOR_PULL_REQUEST_TITLE;
 $RepositoryName = $env:APPVEYOR_REPO_NAME;
@@ -474,6 +478,47 @@ Function PublishPackages
 
 <#
 .Synopsis
+Publishes the documentation website for the current build.
+#>
+Function PublishWebDocumentation
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    If ($SolutionConfiguration -ne $SolutionConfigurationRelease)
+    {
+        Return;
+    }
+
+    If (($DocumentationWebsiteFtpUserName -eq $null) -or ($DocumentationWebsiteFtpUserName -eq ""))
+    {
+        ComposeWarning "The documentation website artifacts will not be published. The FTP account username is unavailable.";
+        Return;
+    }
+
+    If (($DocumentationWebsiteFtpPassword -eq $null) -or ($DocumentationWebsiteFtpPassword -eq ""))
+    {
+        ComposeWarning "The documentation website artifacts will not be published. The FTP account password is unavailable.";
+        Return;
+    }
+
+    If (-not (Test-Path "$DirectoryPathForDocumentationWebsiteArtifacts"))
+    {
+        ComposeWarning "No documentation website artifacts are available to publish. The path does not exist: $DirectoryPathForDocumentationWebsiteArtifacts.";
+        Return;
+    }
+
+    ComposeStart "Publishing documentation website artifacts in the directory: $DirectoryPathForDocumentationWebsiteArtifacts.";
+    $FtpCredentials = New-Object System.Net.NetworkCredential($DocumentationWebsiteFtpUserName, $DocumentationWebsiteFtpPassword);
+    TransferFiles -LocalSourcePath "$DirectoryPathForDocumentationWebsiteArtifacts" -DestinationFtpPath "$ProductionDocumentationWebsiteFtpUri" -Credentials $FtpCredentials;
+    ComposeFinish "Finished publishing web documentation.";
+}
+
+<#
+.Synopsis
 Restores dependencies for the current build.
 #>
 Function RestoreDependencies
@@ -699,6 +744,84 @@ Executes the test suite against the current build in release mode.
 Function TestRelease
 {
     Test -SolutionConfiguration $SolutionConfigurationRelease;
+}
+
+<#
+.Synopsis
+Transfers the specified source file to the specified destination path using FTPS.
+#>
+Function TransferFile
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $LocalSourcePath,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [String] $DestinationFtpPath,
+        [Parameter(Mandatory = $true, Position = 2)]
+        [String] $Credentials
+    )
+
+    ComposeVerbose "Transferring file ""$LocalSourcePath"".";
+    $FileContent = [System.IO.File]::ReadAllBytes("$LocalSourcePath");
+    $FileContentLengthInBytes = $FileContent.Length;
+    $FtpRequest = [System.Net.FtpWebRequest]::Create("$DestinationFtpPath");
+    $FtpRequest = [System.Net.FtpWebRequest]$FtpRequest;
+    $FtpRequest.ContentLength = $FileContentLengthInBytes;
+    $FtpRequest.Credentials = $Credentials;
+    $FtpRequest.Method = [System.Net.WebRequestMethods+Ftp]::UploadFile;
+    $FtpRequest.UseBinary = $true;
+    $FtpRequest.UsePassive = $true;
+    $RequestStream = $FtpRequest.GetRequestStream();
+
+    Try
+    {
+        $RequestStream.Write($FileContent, 0, $FileContentLengthInBytes);
+    }
+    Catch
+    {
+        ComposeError "Failed to transfer file ""$LocalSourcePath"".";
+        Throw;
+    }
+    Finally
+    {
+        $RequestStream.Close();
+        $RequestStream.Dispose();
+    }
+}
+
+<#
+.Synopsis
+Transfers all files and subdirectories in the specified source path to the specified destination path using FTPS.
+#>
+Function TransferFiles
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $LocalSourcePath,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [String] $DestinationFtpPath,
+        [Parameter(Mandatory = $true, Position = 2)]
+        [String] $Credentials
+    )
+
+    ComposeNormal "Transferring files in source directory ""$LocalSourcePath"".";
+    ComposeVerbose "Destination directory: ""$DestinationFtpPath"".";
+
+    Get-ChildItem -Path "$LocalSourcePath" -File | ForEach-Object `
+    {
+        $SourceFilePath = $_.FullName;
+        $DestinationFilePath = Join-Path -Path "$DestinationFtpPath" -ChildPath $_.Name;
+        TransferFile -LocalSourcePath "$SourceFilePath" -DestinationFtpPath "$DestinationFilePath" -Credentials $Credentials;
+    }
+
+    Get-ChildItem -Path "$LocalSourcePath" -Directory | ForEach-Object `
+    {
+        $SourceDirectoryPath = $_.FullName;
+        $DestinationDirectoryPath = Join-Path -Path "$DestinationFtpPath" -ChildPath $_.Name;
+        TransferFiles -LocalSourcePath "$SourceDirectoryPath" -DestinationFtpPath "$DestinationDirectoryPath" -Credentials $Credentials;
+    }
 }
 
 <#
