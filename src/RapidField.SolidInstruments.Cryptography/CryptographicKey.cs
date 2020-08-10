@@ -14,7 +14,6 @@ using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -312,9 +311,10 @@ namespace RapidField.SolidInstruments.Cryptography
 
             KeySource.Access(memory =>
             {
-                var iterationSumBytes = memory.Take(Pbkdf2IterationSumLengthInBytes);
-                var saltBytes = memory.Skip(Pbkdf2IterationSumLengthInBytes).Take(Pbkdf2SaltLengthInBytes);
-                var passwordBytes = memory.Skip(Pbkdf2IterationSumLengthInBytes + Pbkdf2SaltLengthInBytes).Take(Pbkdf2PasswordLengthInBytes);
+                var memorySpan = memory.ReadOnlySpan;
+                var iterationSumBytes = memorySpan.Slice(0, Pbkdf2IterationSumLengthInBytes);
+                var saltBytes = memorySpan.Slice(Pbkdf2IterationSumLengthInBytes, Pbkdf2SaltLengthInBytes);
+                var passwordBytes = memorySpan.Slice(Pbkdf2IterationSumLengthInBytes + Pbkdf2SaltLengthInBytes, Pbkdf2PasswordLengthInBytes);
                 var iterationCount = Pbkdf2MinimumIterationCount;
 
                 foreach (var iterationSumValue in iterationSumBytes)

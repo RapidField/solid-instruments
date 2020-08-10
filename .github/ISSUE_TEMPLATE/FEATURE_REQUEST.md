@@ -21,9 +21,9 @@ The following list describes the work to be done and defines acceptance criteria
 
 > **MODIFY.** Replace the list below with a complete list of changes and/or acceptance criteria.
 
-1. Briefly describe the first requirement.
-2. And the second requirement.
-3. And so on...
+- [ ] Briefly describe the first requirement.
+- [ ] And the second requirement.
+- [ ] And so on...
 
 ## Additional information
 

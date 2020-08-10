@@ -2,12 +2,13 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.EventAuthoring;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
+using ReportedEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Customer.DomainModelDeletedEvent;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Customer
 {
@@ -15,7 +16,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.Mode
     /// Represents a command to delete a <see cref="DomainModel" />.
     /// </summary>
     [DataContract(Name = DataContractName)]
-    internal sealed class DeleteDomainModelCommand : DeleteDomainModelCommand<DomainModel>
+    internal sealed class DeleteDomainModelCommand : DeleteDomainModelReportableCommand<DomainModel, ReportedEvent>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteDomainModelCommand" /> class.

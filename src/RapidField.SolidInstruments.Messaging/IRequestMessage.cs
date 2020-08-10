@@ -12,7 +12,7 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TResponseMessage">
     /// The type of the response message that is associated with the request.
     /// </typeparam>
-    public interface IRequestMessage<out TResponseMessage> : IMessage<TResponseMessage>, ICommand<TResponseMessage>
+    public interface IRequestMessage<out TResponseMessage> : IMessage<TResponseMessage>, ICommand<TResponseMessage>, IRequestMessageBase
         where TResponseMessage : class, IResponseMessage
     {
     }

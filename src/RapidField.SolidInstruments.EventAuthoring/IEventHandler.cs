@@ -12,8 +12,15 @@ namespace RapidField.SolidInstruments.EventAuthoring
     /// <typeparam name="TEvent">
     /// The type of the event that is processed by the handler.
     /// </typeparam>
-    public interface IEventHandler<in TEvent> : ICommandHandler<TEvent>
+    public interface IEventHandler<in TEvent> : ICommandHandler<TEvent>, IEventHandler
         where TEvent : class, IEvent
+    {
+    }
+
+    /// <summary>
+    /// Processes a single <see cref="IEvent" />.
+    /// </summary>
+    public interface IEventHandler : ICommandHandler
     {
     }
 }

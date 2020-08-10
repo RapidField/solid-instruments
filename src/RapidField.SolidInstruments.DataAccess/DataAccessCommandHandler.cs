@@ -12,7 +12,7 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.DataAccess
 {
     /// <summary>
-    /// Processes data access commands.
+    /// Processes a single <see cref="IDataAccessCommand" />.
     /// </summary>
     /// <remarks>
     /// <see cref="DataAccessCommandHandler{TCommand}" /> is the default implementation of
@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.DataAccess
     }
 
     /// <summary>
-    /// Processes data access commands.
+    /// Processes a single <see cref="IDataAccessCommand{TResult}" />.
     /// </summary>
     /// <remarks>
     /// <see cref="DataAccessCommandHandler{TCommand, TResult}" /> is the default implementation of
