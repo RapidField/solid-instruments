@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Command
     public class DomainCommand<TResult> : Command<TResult>, IDomainCommand<TResult>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DomainCommand" /> class.
+        /// Initializes a new instance of the <see cref="DomainCommand{TResult}" /> class.
         /// </summary>
         public DomainCommand()
             : this(Array.Empty<String>())
@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Command
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DomainCommand" /> class.
+        /// Initializes a new instance of the <see cref="DomainCommand{TResult}" /> class.
         /// </summary>
         /// <param name="correlationIdentifier">
         /// A unique identifier that is assigned to related commands.

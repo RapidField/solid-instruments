@@ -6,6 +6,7 @@ using Autofac;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.Autofac;
 using System;
 
@@ -63,6 +64,6 @@ namespace RapidField.SolidInstruments.Messaging.Autofac
         /// <summary>
         /// Represents a connection string value that instructs the module to register in-memory service bus components.
         /// </summary>
-        protected internal const String InMemoryConnectionStringValue = "InMemory";
+        protected internal static readonly String InMemoryConnectionStringValue = DependencyEngine.InMemoryConnectionStringValue;
     }
 }

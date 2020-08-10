@@ -7,10 +7,12 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Product.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Product.DeleteDomainModelCommand;
+using ReportedEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Product.DomainModelDeletedEvent;
+using ReportedEventMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Event.ModelState.Product.DomainModelDeletedEventMessage;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Command.ModelState.Product
 {
-    using DomainModelCommandMessage = CommandMessages.DeleteDomainModelCommandMessage<DomainModel, DomainModelCommand>;
+    using DomainModelCommandMessage = CommandMessages.DeleteDomainModelCommandMessage<DomainModel, DomainModelCommand, ReportedEvent, ReportedEventMessage>;
 
     /// <summary>
     /// Represents a message that contains a command to delete a <see cref="DomainModel" />.

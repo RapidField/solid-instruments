@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Messaging.EventMessages;
 
 namespace RapidField.SolidInstruments.Messaging.CommandMessages
 {
@@ -28,7 +29,7 @@ namespace RapidField.SolidInstruments.Messaging.CommandMessages
     /// <summary>
     /// Represents a message that contains a command.
     /// </summary>
-    public interface ICommandMessage : IMessage
+    public interface ICommandMessage : IMessage, ICommandMessageBase
     {
     }
 }

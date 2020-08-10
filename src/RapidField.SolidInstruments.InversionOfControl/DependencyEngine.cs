@@ -516,6 +516,12 @@ namespace RapidField.SolidInstruments.InversionOfControl
         public IServiceProvider Provider => LazyProvider.Value;
 
         /// <summary>
+        /// Represents a connection string value that instructs dependency modules to register in-memory connections.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const String InMemoryConnectionStringValue = "InMemory";
+
+        /// <summary>
         /// Represents an empty service descriptor collection.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
