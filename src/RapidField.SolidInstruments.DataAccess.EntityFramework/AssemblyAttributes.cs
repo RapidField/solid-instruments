@@ -5,4 +5,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess.Autofac.Ef")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess.DotNetNative.Ef")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests")]

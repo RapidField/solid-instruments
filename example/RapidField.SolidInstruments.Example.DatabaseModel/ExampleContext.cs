@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.Example.DatabaseModel.Entities;
 using System;
+using System.Configuration;
 
 namespace RapidField.SolidInstruments.Example.DatabaseModel
 {
@@ -25,6 +26,9 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ConfigurationErrorsException">
+        /// The constructor was unable to determine the appropriate connection type by evaluating the connection string.
+        /// </exception>
         public ExampleContext(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
@@ -38,13 +42,15 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
+        /// The database type of the backing database, or <see cref="ContextDatabaseType.Unspecified" /> to determine the connection
+        /// type dynamically based on the format of the connection string.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
+        /// <exception cref="ConfigurationErrorsException">
+        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" /> and the constructor was
+        /// unable to determine the appropriate connection type by evaluating the connection string.
         /// </exception>
         public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType)
             : base(applicationConfiguration, databaseType)
@@ -59,7 +65,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
+        /// The database type of the backing database, or <see cref="ContextDatabaseType.Unspecified" /> to determine the connection
+        /// type dynamically based on the format of the connection string.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in
@@ -73,8 +80,9 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="databaseName" /> is
         /// <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
+        /// <exception cref="ConfigurationErrorsException">
+        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" /> and the constructor was
+        /// unable to determine the appropriate connection type by evaluating the connection string.
         /// </exception>
         public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName)
             : base(applicationConfiguration, databaseType, databaseName)
@@ -89,7 +97,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
+        /// The database type of the backing database, or <see cref="ContextDatabaseType.Unspecified" /> to determine the connection
+        /// type dynamically based on the format of the connection string.
         /// </param>
         /// <param name="trackingBehavior">
         /// The query result tracking behavior for the context. The default value is <see cref="QueryTrackingBehavior.TrackAll" />.
@@ -97,8 +106,9 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
+        /// <exception cref="ConfigurationErrorsException">
+        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" /> and the constructor was
+        /// unable to determine the appropriate connection type by evaluating the connection string.
         /// </exception>
         public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, QueryTrackingBehavior trackingBehavior)
             : base(applicationConfiguration, databaseType, trackingBehavior)
@@ -113,7 +123,8 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// Configuration information for the application.
         /// </param>
         /// <param name="databaseType">
-        /// The database type of the backing database. The default value is <see cref="ContextDatabaseType.InMemory" />.
+        /// The database type of the backing database, or <see cref="ContextDatabaseType.Unspecified" /> to determine the connection
+        /// type dynamically based on the format of the connection string.
         /// </param>
         /// <param name="databaseName">
         /// The name of the backing database, which matches the associated connection string key in
@@ -130,8 +141,9 @@ namespace RapidField.SolidInstruments.Example.DatabaseModel
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="databaseName" /> is
         /// <see langword="null" />.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" />.
+        /// <exception cref="ConfigurationErrorsException">
+        /// <paramref name="databaseType" /> is equal to <see cref="ContextDatabaseType.Unspecified" /> and the constructor was
+        /// unable to determine the appropriate connection type by evaluating the connection string.
         /// </exception>
         public ExampleContext(IConfiguration applicationConfiguration, ContextDatabaseType databaseType, String databaseName, QueryTrackingBehavior trackingBehavior)
             : base(applicationConfiguration, databaseType, databaseName, trackingBehavior)

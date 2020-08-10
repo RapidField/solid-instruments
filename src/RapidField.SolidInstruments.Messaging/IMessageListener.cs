@@ -10,20 +10,6 @@ namespace RapidField.SolidInstruments.Messaging
     /// <summary>
     /// Processes messages as a listener.
     /// </summary>
-    public interface IMessageListener
-    {
-        /// <summary>
-        /// Gets the type of the message that the current <see cref="IMessageListener" /> processes.
-        /// </summary>
-        public Type MessageType
-        {
-            get;
-        }
-    }
-
-    /// <summary>
-    /// Processes messages as a listener.
-    /// </summary>
     /// <typeparam name="TMessage">
     /// The type of the message that is listened for.
     /// </typeparam>
@@ -41,9 +27,23 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TResponseMessage">
     /// The type of the response message that is transmitted in response to the request.
     /// </typeparam>
-    public interface IMessageListener<TRequestMessage, TResponseMessage> : IMessageListener, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>
+    public interface IMessageListener<TRequestMessage, TResponseMessage> : IMessageListener, IMessageHandler<TRequestMessage, TResponseMessage>, ICommandHandler<TRequestMessage>, IRequestListener
         where TRequestMessage : class, IRequestMessage<TResponseMessage>
         where TResponseMessage : class, IResponseMessage
     {
+    }
+
+    /// <summary>
+    /// Processes messages as a listener.
+    /// </summary>
+    public interface IMessageListener : IMessageHandler
+    {
+        /// <summary>
+        /// Gets the type of the message that the current <see cref="IMessageListener" /> processes.
+        /// </summary>
+        public Type MessageType
+        {
+            get;
+        }
     }
 }
