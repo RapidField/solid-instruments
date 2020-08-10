@@ -812,14 +812,16 @@ Function TransferFiles
     Get-ChildItem -Path "$LocalSourcePath" -File | ForEach-Object `
     {
         $SourceFilePath = $_.FullName;
-        $DestinationFilePath = Join-Path -Path "$DestinationFtpPath" -ChildPath $_.Name;
+        $SourceFileName = $_.Name;
+        $DestinationFilePath = "$DestinationFtpPath/$SourceFileName";
         TransferFile -LocalSourcePath "$SourceFilePath" -DestinationFtpPath "$DestinationFilePath" -Credentials $Credentials;
     }
 
     Get-ChildItem -Path "$LocalSourcePath" -Directory | ForEach-Object `
     {
         $SourceDirectoryPath = $_.FullName;
-        $DestinationDirectoryPath = Join-Path -Path "$DestinationFtpPath" -ChildPath $_.Name;
+        $SourceDirectoryName = $_.Name;
+        $DestinationDirectoryPath = "$DestinationFtpPath/$SourceDirectoryName";
         TransferFiles -LocalSourcePath "$SourceDirectoryPath" -DestinationFtpPath "$DestinationDirectoryPath" -Credentials $Credentials;
     }
 }
