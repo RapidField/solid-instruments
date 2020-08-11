@@ -74,7 +74,7 @@ $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.c
 # Other URIs
 $CodeSigningCertificateTimestampServiceUri = "http://timestamp.digicert.com";
 $NuGetOrgPackageSourceUri = "https://api.nuget.org/v3/index.json";
-$ProductionDocumentationWebsiteFtpUri = "ftps://waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot";
+$ProductionDocumentationWebsiteFtpUri = "ftp://waws-prod-sn1-143.ftp.azurewebsites.windows.net/site/wwwroot";
 $ProductionDocumentationWebsiteRootUri = "https://www.solidinstruments.com";
 $ProductionDocumentationWebsiteManifestSnapshotsUri = "$ProductionDocumentationWebsiteRootUri/$DirectoryNameForDocumentationWebsiteManifestSnapshots";
 
