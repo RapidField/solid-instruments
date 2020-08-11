@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -242,18 +243,18 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions
         private static IServiceCollection AddSupportingTypesForRabbitMqMessaging(this IServiceCollection target, IConfiguration applicationConfiguration, RabbitMqMessageTransport transport)
         {
             target.AddApplicationConfiguration(applicationConfiguration);
-            target.AddSingleton(transport);
-            target.AddSingleton(transport.CreateConnection());
-            target.AddScoped<RabbitMqMessageAdapter>();
-            target.AddScoped<IMessageAdapter<PrimitiveMessage>, RabbitMqMessageAdapter>((serviceProvider) => serviceProvider.GetService<RabbitMqMessageAdapter>());
-            target.AddScoped<RabbitMqClientFactory>();
-            target.AddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>, RabbitMqClientFactory>((serviceProvider) => serviceProvider.GetService<RabbitMqClientFactory>());
-            target.AddScoped<RabbitMqTransmittingFacade>();
-            target.AddScoped<IMessageTransmittingFacade, RabbitMqTransmittingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqTransmittingFacade>());
-            target.AddSingleton<RabbitMqListeningFacade>();
-            target.AddSingleton<IMessageListeningFacade, RabbitMqListeningFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqListeningFacade>());
-            target.AddSingleton<RabbitMqRequestingFacade>();
-            target.AddSingleton<IMessageRequestingFacade, RabbitMqRequestingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqRequestingFacade>());
+            target.TryAddSingleton(transport);
+            target.TryAddSingleton(transport.CreateConnection());
+            target.TryAddScoped<RabbitMqMessageAdapter>();
+            target.TryAddScoped<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqMessageAdapter>());
+            target.TryAddScoped<RabbitMqClientFactory>();
+            target.TryAddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqClientFactory>());
+            target.TryAddScoped<RabbitMqTransmittingFacade>();
+            target.TryAddScoped<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqTransmittingFacade>());
+            target.TryAddSingleton<RabbitMqListeningFacade>();
+            target.TryAddSingleton<IMessageListeningFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqListeningFacade>());
+            target.TryAddSingleton<RabbitMqRequestingFacade>();
+            target.TryAddSingleton<IMessageRequestingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqRequestingFacade>());
             return target;
         }
     }

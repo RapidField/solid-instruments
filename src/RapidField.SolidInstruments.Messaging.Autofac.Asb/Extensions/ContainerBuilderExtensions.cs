@@ -56,13 +56,13 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Asb.Extensions
                 }
 
                 return new ServiceBusConnection(serviceBusConnectionString);
-            }).AsSelf().InstancePerLifetimeScope();
+            }).IfNotRegistered(typeof(ServiceBusConnection)).AsSelf().InstancePerLifetimeScope();
 
-            target.RegisterType<AzureServiceBusMessageAdapter>().As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<AzureServiceBusClientFactory>().As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<AzureServiceBusTransmittingFacade>().As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<AzureServiceBusListeningFacade>().As<IMessageListeningFacade>().AsSelf().SingleInstance();
-            target.RegisterType<AzureServiceBusRequestingFacade>().As<IMessageRequestingFacade>().AsSelf().SingleInstance();
+            target.RegisterType<AzureServiceBusMessageAdapter>().IfNotRegistered(typeof(AzureServiceBusMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<AzureServiceBusClientFactory>().IfNotRegistered(typeof(AzureServiceBusClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<AzureServiceBusTransmittingFacade>().IfNotRegistered(typeof(AzureServiceBusTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<AzureServiceBusListeningFacade>().IfNotRegistered(typeof(AzureServiceBusListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
+            target.RegisterType<AzureServiceBusRequestingFacade>().IfNotRegistered(typeof(AzureServiceBusRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }
     }
 }

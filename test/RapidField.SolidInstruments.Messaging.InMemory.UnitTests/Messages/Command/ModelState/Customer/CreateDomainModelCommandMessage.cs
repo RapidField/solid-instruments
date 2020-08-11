@@ -7,10 +7,12 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Customer.CreateDomainModelCommand;
+using ReportedEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Customer.DomainModelCreatedEvent;
+using ReportedEventMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Event.ModelState.Customer.DomainModelCreatedEventMessage;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Command.ModelState.Customer
 {
-    using DomainModelCommandMessage = CommandMessages.CreateDomainModelCommandMessage<DomainModel, DomainModelCommand>;
+    using DomainModelCommandMessage = CommandMessages.CreateDomainModelCommandMessage<DomainModel, DomainModelCommand, ReportedEvent, ReportedEventMessage>;
 
     /// <summary>
     /// Represents a message that contains a command to create a <see cref="DomainModel" />.

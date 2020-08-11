@@ -12,13 +12,17 @@ namespace RapidField.SolidInstruments.Messaging.EventMessages
     /// <summary>
     /// Processes event messages as a listener.
     /// </summary>
+    /// <remarks>
+    /// <see cref="EventMessageListener{TCommand, TMessage}" /> is the default implementation of
+    /// <see cref="IEventMessageListener" />.
+    /// </remarks>
     /// <typeparam name="TEvent">
     /// The type of the associated event.
     /// </typeparam>
     /// <typeparam name="TMessage">
     /// The type of the message that is listened for.
     /// </typeparam>
-    public class EventMessageListener<TEvent, TMessage> : TopicListener<TMessage>
+    public class EventMessageListener<TEvent, TMessage> : TopicListener<TMessage>, IEventMessageListener
         where TEvent : class, IEvent
         where TMessage : class, IEventMessage<TEvent>
     {

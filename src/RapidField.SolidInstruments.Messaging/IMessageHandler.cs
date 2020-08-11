@@ -35,11 +35,22 @@ namespace RapidField.SolidInstruments.Messaging
     /// <typeparam name="TResult">
     /// The type of the result that is emitted by the handler when processing a message.
     /// </typeparam>
-    public interface IMessageHandler<in TMessage, TResult> : ICommandHandler<TMessage, TResult>
+    public interface IMessageHandler<in TMessage, TResult> : ICommandHandler<TMessage, TResult>, IMessageHandler
         where TMessage : class, IMessage<TResult>
     {
+    }
+
+    /// <summary>
+    /// Processes messages.
+    /// </summary>
+    /// <remarks>
+    /// Do not use <see cref="IMessageHandler" /> as a registration target for inversion of control tools. Use
+    /// <see cref="ICommandHandler{TCommand}" /> instead.
+    /// </remarks>
+    public interface IMessageHandler
+    {
         /// <summary>
-        /// Gets the targeted entity type for the current <see cref="IMessageHandler{TMessage, TResult}" />.
+        /// Gets the targeted entity type for the current <see cref="IMessageHandler" />.
         /// </summary>
         public MessagingEntityType EntityType
         {
@@ -47,7 +58,7 @@ namespace RapidField.SolidInstruments.Messaging
         }
 
         /// <summary>
-        /// Gets the role of the current <see cref="IMessageHandler{TMessage, TResult}" />.
+        /// Gets the role of the current <see cref="IMessageHandler" />.
         /// </summary>
         public MessageHandlerRole Role
         {
