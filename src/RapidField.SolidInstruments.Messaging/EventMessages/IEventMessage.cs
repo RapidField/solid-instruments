@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Messaging.EventMessages
     /// <typeparam name="TEvent">
     /// The type of the associated event.
     /// </typeparam>
-    public interface IEventMessage<TEvent> : IMessage
+    public interface IEventMessage<TEvent> : IMessage, IEventMessageBase
         where TEvent : class, IEvent
     {
         /// <summary>

@@ -21,6 +21,17 @@ namespace RapidField.SolidInstruments.Service
         public void Execute();
 
         /// <summary>
+        /// Begins execution of the service and performs the service operations.
+        /// </summary>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        /// <exception cref="ServiceExectuionException">
+        /// An exception was raised during execution of the service.
+        /// </exception>
+        public void Execute(String[] commandLineArguments);
+
+        /// <summary>
         /// Gets the name of the service.
         /// </summary>
         public String ServiceName

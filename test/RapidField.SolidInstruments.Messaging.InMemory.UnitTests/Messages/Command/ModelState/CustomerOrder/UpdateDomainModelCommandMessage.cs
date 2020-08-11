@@ -7,10 +7,12 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.CustomerOrder.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.CustomerOrder.UpdateDomainModelCommand;
+using ReportedEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.CustomerOrder.DomainModelUpdatedEvent;
+using ReportedEventMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Event.ModelState.CustomerOrder.DomainModelUpdatedEventMessage;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Command.ModelState.CustomerOrder
 {
-    using DomainModelCommandMessage = CommandMessages.UpdateDomainModelCommandMessage<DomainModel, DomainModelCommand>;
+    using DomainModelCommandMessage = CommandMessages.UpdateDomainModelCommandMessage<DomainModel, DomainModelCommand, ReportedEvent, ReportedEventMessage>;
 
     /// <summary>
     /// Represents a message that contains a command to update a <see cref="DomainModel" />.

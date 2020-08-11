@@ -5,19 +5,24 @@
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.Messaging.CommandMessages
 {
     /// <summary>
     /// Processes command messages as a listener.
     /// </summary>
+    /// <remarks>
+    /// <see cref="CommandMessageListener{TCommand, TMessage}" /> is the default implementation of
+    /// <see cref="ICommandMessageListener" />.
+    /// </remarks>
     /// <typeparam name="TCommand">
     /// The type of the associated command.
     /// </typeparam>
     /// <typeparam name="TMessage">
     /// The type of the message that is listened for.
     /// </typeparam>
-    public class CommandMessageListener<TCommand, TMessage> : QueueListener<TMessage>
+    public class CommandMessageListener<TCommand, TMessage> : QueueListener<TMessage>, ICommandMessageListener
         where TCommand : class, ICommand
         where TMessage : class, ICommandMessage<TCommand>
     {
@@ -57,6 +62,20 @@ namespace RapidField.SolidInstruments.Messaging.CommandMessages
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(TMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => mediator.Process(command.Command);
+        protected override void Process(TMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
+        {
+            mediator.Process(command.Command);
+
+            if (ReportableCommandMessageInterfaceType.IsAssignableFrom(MessageType) && command is IReportableCommandMessage reportableMessage)
+            {
+                reportableMessage.ConditionallyReport(mediator);
+            }
+        }
+
+        /// <summary>
+        /// Represents the <see cref="IReportableCommandMessage" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type ReportableCommandMessageInterfaceType = typeof(IReportableCommandMessage);
     }
 }
