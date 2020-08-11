@@ -91,8 +91,8 @@ $ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Servi
 $ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
 
 # Regular expressions
-$ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{21,144}$";
-$ValidPullRequestTitleRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{21,144}$";
+$ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
+$ValidPullRequestTitleRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
 
 # Environment variables
 $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
@@ -759,7 +759,7 @@ Function TransferFile
         [Parameter(Mandatory = $true, Position = 1)]
         [String] $DestinationFtpPath,
         [Parameter(Mandatory = $true, Position = 2)]
-        [String] $Credentials
+        [System.Net.NetworkCredential] $Credentials
     )
 
     ComposeVerbose "Transferring file ""$LocalSourcePath"".";
@@ -803,7 +803,7 @@ Function TransferFiles
         [Parameter(Mandatory = $true, Position = 1)]
         [String] $DestinationFtpPath,
         [Parameter(Mandatory = $true, Position = 2)]
-        [String] $Credentials
+        [System.Net.NetworkCredential] $Credentials
     )
 
     ComposeNormal "Transferring files in source directory ""$LocalSourcePath"".";
