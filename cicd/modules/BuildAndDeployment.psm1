@@ -759,7 +759,7 @@ Function TransferFile
         [Parameter(Mandatory = $true, Position = 1)]
         [String] $DestinationFtpPath,
         [Parameter(Mandatory = $true, Position = 2)]
-        [String] $Credentials
+        [System.Net.NetworkCredential] $Credentials
     )
 
     ComposeVerbose "Transferring file ""$LocalSourcePath"".";
@@ -803,7 +803,7 @@ Function TransferFiles
         [Parameter(Mandatory = $true, Position = 1)]
         [String] $DestinationFtpPath,
         [Parameter(Mandatory = $true, Position = 2)]
-        [String] $Credentials
+        [System.Net.NetworkCredential] $Credentials
     )
 
     ComposeNormal "Transferring files in source directory ""$LocalSourcePath"".";
