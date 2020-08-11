@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using System;
 
@@ -63,6 +64,6 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         /// <summary>
         /// Represents a connection string value that instructs the module to register in-memory service bus components.
         /// </summary>
-        protected internal const String InMemoryConnectionStringValue = "InMemory";
+        protected internal static readonly String InMemoryConnectionStringValue = DependencyEngine.InMemoryConnectionStringValue;
     }
 }

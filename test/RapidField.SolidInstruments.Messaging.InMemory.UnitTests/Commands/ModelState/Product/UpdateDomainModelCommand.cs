@@ -2,12 +2,13 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.EventAuthoring;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Product.DomainModel;
+using ReportedEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Product.DomainModelUpdatedEvent;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Product
 {
@@ -15,7 +16,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.Mode
     /// Represents a command to update a <see cref="DomainModel" />.
     /// </summary>
     [DataContract(Name = DataContractName)]
-    internal sealed class UpdateDomainModelCommand : UpdateDomainModelCommand<DomainModel>
+    internal sealed class UpdateDomainModelCommand : UpdateDomainModelReportableCommand<DomainModel, ReportedEvent>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateDomainModelCommand" /> class.

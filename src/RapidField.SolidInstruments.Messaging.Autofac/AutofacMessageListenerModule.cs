@@ -5,14 +5,34 @@
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Reflection;
 
 namespace RapidField.SolidInstruments.Messaging.Autofac
 {
     /// <summary>
     /// Encapsulates Autofac container configuration for message listeners.
     /// </summary>
-    public abstract class AutofacMessageListenerModule : AutofacMessageHandlerModule, IMessageListenerModule<ContainerBuilder>
+    public class AutofacMessageListenerModule : AutofacMessageHandlerModule, IMessageListenerModule<ContainerBuilder>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacMessageListenerModule" /> class.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <param name="targetAssembly">
+        /// The assembly from which message types are identified for handler registration.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="targetAssembly" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        public AutofacMessageListenerModule(IConfiguration applicationConfiguration, Assembly targetAssembly)
+            : base(applicationConfiguration, true, false, targetAssembly)
+        {
+            return;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacMessageListenerModule" /> class.
         /// </summary>
@@ -23,7 +43,7 @@ namespace RapidField.SolidInstruments.Messaging.Autofac
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
         protected AutofacMessageListenerModule(IConfiguration applicationConfiguration)
-            : base(applicationConfiguration)
+            : base(applicationConfiguration, true, false)
         {
             return;
         }
