@@ -17,13 +17,18 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         Unspecified = 0,
 
         /// <summary>
+        /// The context is backed by a Cosmos DB database.
+        /// </summary>
+        Cosmos = 1,
+
+        /// <summary>
         /// The context is backed by an in-memory database.
         /// </summary>
-        InMemory = 1,
+        InMemory = 2,
 
         /// <summary>
         /// The context is backed by a SQL Server database.
         /// </summary>
-        SQLServer = 2
+        SqlServer = 3
     }
 }

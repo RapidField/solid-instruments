@@ -50,6 +50,7 @@ namespace RapidField.SolidInstruments.Service
         protected ServiceExecutor(String serviceName)
             : base()
         {
+            CommandLineArguments = null;
             ExecutionLifetime = null;
             LazyApplicationConfiguration = new Lazy<IConfiguration>(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyDependencyEngine = new Lazy<IDependencyEngine>(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
@@ -64,8 +65,21 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ServiceExectuionException">
         /// An exception was raised during execution of the service.
         /// </exception>
-        public void Execute()
+        public void Execute() => Execute(Array.Empty<String>());
+
+        /// <summary>
+        /// Begins execution of the service and performs the service operations.
+        /// </summary>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        /// <exception cref="ServiceExectuionException">
+        /// An exception was raised during execution of the service.
+        /// </exception>
+        public void Execute(String[] commandLineArguments)
         {
+            CommandLineArguments = commandLineArguments ?? Array.Empty<String>();
+
             try
             {
                 var productName = ProductName?.Trim();
@@ -97,7 +111,7 @@ namespace RapidField.SolidInstruments.Service
 
                         using (var dependencyScope = CreateDependencyScope())
                         {
-                            Execute(dependencyScope, ApplicationConfiguration, executionLifetime);
+                            Execute(dependencyScope, ApplicationConfiguration, CommandLineArguments, executionLifetime);
                         }
                     }
                 }
@@ -192,10 +206,13 @@ namespace RapidField.SolidInstruments.Service
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
+        protected virtual void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, String[] commandLineArguments, IServiceExecutionLifetime executionLifetime)
         {
             return;
         }
@@ -284,6 +301,12 @@ namespace RapidField.SolidInstruments.Service
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private IDependencyScope RootDependencyScope => LazyRootDependencyScope.Value;
+
+        /// <summary>
+        /// Represents the command line arguments that were provided at runtime, if any.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal String[] CommandLineArguments;
 
         /// <summary>
         /// Represents lazily-initialized configuration information for the service.

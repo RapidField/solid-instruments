@@ -215,8 +215,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.Cryptography.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.md
 		doc\namespaces\RapidField.SolidInstruments.Cryptography.Secrets.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Secrets.md
 		doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md = doc\namespaces\RapidField.SolidInstruments.Cryptography.Symmetric.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Ef.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Ef.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.DotNetNative.md
 		doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md = doc\namespaces\RapidField.SolidInstruments.DataAccess.EntityFramework.md
@@ -331,6 +335,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releasenotes", "releasenote
 		doc\releasenotes\v1.0.23.md = doc\releasenotes\v1.0.23.md
 		doc\releasenotes\v1.0.24.md = doc\releasenotes\v1.0.24.md
 		doc\releasenotes\v1.0.25.md = doc\releasenotes\v1.0.25.md
+		doc\releasenotes\v1.0.26.md = doc\releasenotes\v1.0.26.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{3EDA2412-F5E1-492E-86F4-C5CFCC906955}"
@@ -360,7 +365,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{1D0A68B1-B7B3-49C0-87AB-EC52A192D4A3}"
 	ProjectSection(SolutionItems) = preProject
 		.github\CODEOWNERS = .github\CODEOWNERS
-		.github\config.yml = .github\config.yml
 		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
 	EndProjectSection
 EndProject
@@ -370,6 +374,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.md = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.md
 		.github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md = .github\ISSUE_TEMPLATE\MAINTENANCE_REQUEST.md
 		.github\ISSUE_TEMPLATE\QUESTION.md = .github\ISSUE_TEMPLATE\QUESTION.md
+		.github\ISSUE_TEMPLATE\SOFTWARE_RELEASE_REQUEST.md = .github\ISSUE_TEMPLATE\SOFTWARE_RELEASE_REQUEST.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.InMemory.UnitTests", "test\RapidField.SolidInstruments.Messaging.InMemory.UnitTests\RapidField.SolidInstruments.Messaging.InMemory.UnitTests.csproj", "{0E10878E-46FB-4512-BE1B-6A97FEDC0C58}"
@@ -397,6 +402,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.DotNetNative.Asb", "src\RapidField.SolidInstruments.Messaging.DotNetNative.Asb\RapidField.SolidInstruments.Messaging.DotNetNative.Asb.csproj", "{0A130B10-C3DA-48BB-9D2D-8BB1130D299D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Messaging.DotNetNative.Rmq", "src\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.csproj", "{8FFB8E4C-5858-4D18-B8DA-D669EED643AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.Autofac.Ef", "src\RapidField.SolidInstruments.DataAccess.Autofac.Ef\RapidField.SolidInstruments.DataAccess.Autofac.Ef.csproj", "{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.DotNetNative.Ef", "src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj", "{F20759D5-D39D-4C31-8A23-AEAA606776E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -620,6 +629,14 @@ Global
 		{8FFB8E4C-5858-4D18-B8DA-D669EED643AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FFB8E4C-5858-4D18-B8DA-D669EED643AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FFB8E4C-5858-4D18-B8DA-D669EED643AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -695,6 +712,8 @@ Global
 		{C1B05DFA-35B4-4BF7-BE63-B8854AE55B67} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{0A130B10-C3DA-48BB-9D2D-8BB1130D299D} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{8FFB8E4C-5858-4D18-B8DA-D669EED643AB} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{F20759D5-D39D-4C31-8A23-AEAA606776E6} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}
