@@ -4,12 +4,10 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
 using RapidField.SolidInstruments.Example.Domain.MessageListeners;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
-using RapidField.SolidInstruments.Messaging.Service;
 using System;
 
 namespace RapidField.SolidInstruments.Example.Domain
@@ -45,14 +43,11 @@ namespace RapidField.SolidInstruments.Example.Domain
         /// </param>
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
-            // Register event message listeners.
+            configurator.AddHeartbeatMessageListener<ApplicationHeartbeatMessageListener>();
             configurator.AddMessageListener<ApplicationStartedEventMessage, ApplicationStartedEventMessageListener>();
             configurator.AddMessageListener<ApplicationStoppedEventMessage, ApplicationStoppedEventMessageListener>();
             configurator.AddMessageListener<ExceptionRaisedEventMessage, ExceptionRaisedEventMessageListener>();
-            configurator.AddMessageListener<HeartbeatMessage, HeartbeatMessageListener>();
-
-            // Register request message listeners.
-            configurator.AddRequestMessageListener<PingRequestMessage, PingResponseMessage, PingRequestMessageListener>();
+            configurator.AddPingRequestMessageListener();
         }
     }
 }

@@ -21,9 +21,9 @@ The following list describes the work to be done.
 
 > **MODIFY.** Replace the list below with a complete list of work items.
 
-1. Briefly describe the first work item.
-2. And the second work item.
-3. And so on...
+- [ ] Briefly describe the first work item.
+- [ ] And the second work item.
+- [ ] And so on...
 
 ## Additional information
 

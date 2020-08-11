@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Customer.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Customer.DeleteDomainModelCommand;
-using DomainModelEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Customer.DomainModelDeletedEvent;
-using DomainModelEventMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Event.ModelState.Customer.DomainModelDeletedEventMessage;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.CommandHandlers.ModelState.Customer
 {
@@ -51,7 +49,10 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.CommandHandle
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void DeleteDomainModel(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken) => mediator.Process(new DomainModelEventMessage(new DomainModelEvent(model, labels, correlationIdentifier)));
+        protected override void DeleteDomainModel(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken)
+        {
+            return;
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DeleteDomainModelCommandHandler{TModel, TCommand}" />.

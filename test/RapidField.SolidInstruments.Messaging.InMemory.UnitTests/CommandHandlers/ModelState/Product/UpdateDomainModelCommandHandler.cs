@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using DomainModel = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Product.DomainModel;
 using DomainModelCommand = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Commands.ModelState.Product.UpdateDomainModelCommand;
-using DomainModelEvent = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelState.Product.DomainModelUpdatedEvent;
-using DomainModelEventMessage = RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage;
 
 namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.CommandHandlers.ModelState.Product
 {
@@ -59,6 +57,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.CommandHandle
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void UpdateDomainModel(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken) => mediator.Process(new DomainModelEventMessage(new DomainModelEvent(model, labels, correlationIdentifier)));
+        protected override void UpdateDomainModel(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken)
+        {
+            return;
+        }
     }
 }

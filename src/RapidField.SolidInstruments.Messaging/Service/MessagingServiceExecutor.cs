@@ -127,15 +127,18 @@ namespace RapidField.SolidInstruments.Messaging.Service
         }
 
         /// <summary>
-        /// Adds message subscriptions to the service.
+        /// Adds message listeners to the service.
         /// </summary>
         /// <param name="listeningProfile">
-        /// An object that is used to add subscriptions.
+        /// An object that is used to add listeners.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected virtual void AddSubscriptions(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected virtual void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             return;
         }
@@ -149,7 +152,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
-        protected virtual void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration)
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        protected virtual void ConfigureHeartbeat(HeartbeatSchedule heartbeatSchedule, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             return;
         }
@@ -172,14 +178,17 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
         /// </param>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
-        protected sealed override void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, IServiceExecutionLifetime executionLifetime)
+        protected sealed override void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, String[] commandLineArguments, IServiceExecutionLifetime executionLifetime)
         {
             try
             {
-                AddSubscriptions(ListeningProfile, ApplicationConfiguration);
+                AddListeners(ListeningProfile, ApplicationConfiguration, commandLineArguments);
                 Thread.Sleep(ExecutionStartDelay);
 
                 try
@@ -236,7 +245,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
             }
             finally
             {
-                base.Execute(dependencyScope, applicationConfiguration, executionLifetime);
+                base.Execute(dependencyScope, applicationConfiguration, commandLineArguments, executionLifetime);
                 Thread.Sleep(ExecutionStopDelay);
             }
         }
@@ -282,7 +291,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         private HeartbeatSchedule CreateHeartbeatSchedule()
         {
             var heartbeatSchedule = new HeartbeatSchedule();
-            ConfigureHeartbeat(heartbeatSchedule, ApplicationConfiguration);
+            ConfigureHeartbeat(heartbeatSchedule, ApplicationConfiguration, CommandLineArguments);
             return heartbeatSchedule;
         }
 
@@ -345,8 +354,9 @@ namespace RapidField.SolidInstruments.Messaging.Service
         [DebuggerHidden]
         private void ScheduleHeartbeat(IHeartbeatScheduleItem heartbeatScheduleItem)
         {
-            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem).Wait());
-            var timer = new Timer(timerCallback, heartbeatScheduleItem, TimeSpan.Zero, TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds));
+            var timerPeriod = TimeSpan.FromSeconds(heartbeatScheduleItem.IntervalInSeconds);
+            var timerCallback = new TimerCallback((state) => TransmitHeartbeatMessageAsync(state as IHeartbeatScheduleItem));
+            var timer = new Timer(timerCallback, heartbeatScheduleItem, timerPeriod, timerPeriod);
             HeartbeatTimers.Add(timer);
             ReferenceManager.AddObject(timer);
         }
@@ -402,6 +412,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     return scheduleItem.TransmitHeartbeatMessageAsync(messageTransmittingFacade).ContinueWith(transmitHeartbeatMessageTask =>
                     {
                         dependencyScope.Dispose();
+                        transmitHeartbeatMessageTask.Dispose();
                     });
                 }
                 catch
