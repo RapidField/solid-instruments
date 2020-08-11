@@ -4,21 +4,18 @@
 
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
-using RapidField.SolidInstruments.Example.Contracts.Messages;
-using RapidField.SolidInstruments.Messaging;
-using RapidField.SolidInstruments.Messaging.Service;
 using System;
-using System.Diagnostics;
 
-namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
+namespace RapidField.SolidInstruments.Messaging.Service
 {
     /// <summary>
-    /// Listens for and processes <see cref="HeartbeatMessage" /> instances.
+    /// Listens for and processes <see cref="PingRequestMessage" /> instances by issuing a matching
+    /// <see cref="PingResponseMessage" />.
     /// </summary>
-    public sealed class HeartbeatMessageListener : TopicListener<HeartbeatMessage>
+    public sealed class PingRequestMessageListener : RequestListener<PingRequestMessage, PingResponseMessage>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeartbeatMessageListener" /> class.
+        /// Initializes a new instance of the <see cref="PingRequestMessageListener" /> class.
         /// </summary>
         /// <param name="mediator">
         /// A processing intermediary that is used to process sub-commands.
@@ -26,14 +23,14 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
-        public HeartbeatMessageListener(ICommandMediator mediator)
+        public PingRequestMessageListener(ICommandMediator mediator)
             : base(mediator)
         {
             return;
         }
 
         /// <summary>
-        /// Releases all resources consumed by the current <see cref="HeartbeatMessageListener" />.
+        /// Releases all resources consumed by the current <see cref="PingRequestMessageListener" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
@@ -53,21 +50,9 @@ namespace RapidField.SolidInstruments.Example.Domain.MessageListeners
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(HeartbeatMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
-        {
-            var pingRequest = new PingRequestMessage();
-            var pingResponse = (PingResponseMessage)null;
-            var stopwatch = Stopwatch.StartNew();
-            pingResponse = mediator.Process<PingResponseMessage>(pingRequest);
-            stopwatch.Stop();
-
-            if (pingResponse is null == false && pingResponse.RequestMessageIdentifier == pingRequest.Identifier)
-            {
-                Console.WriteLine($"Success! The round trip ping operation completed in {stopwatch.ElapsedMilliseconds} milliseconds.");
-                return;
-            }
-
-            Console.WriteLine("The round trip ping operation failed.");
-        }
+        /// <returns>
+        /// The result that is emitted when processing the command.
+        /// </returns>
+        protected override PingResponseMessage Process(PingRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => new PingResponseMessage(command.Identifier, command.CorrelationIdentifier);
     }
 }

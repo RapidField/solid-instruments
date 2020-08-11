@@ -48,6 +48,8 @@ Houses the functional body of the current script.
 #>
 Function PerformActions
 {
+    ValidateCommitMessageFormat;
+    ValidatePullRequestTitleFormat;
     VerifyBuild;
 }
 

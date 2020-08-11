@@ -6,6 +6,7 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -50,7 +51,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Asb.Extensions
             target.AddApplicationConfiguration(applicationConfiguration);
             _ = connectionStringConfigurationKeyName.RejectIf().IsNullOrEmpty(nameof(connectionStringConfigurationKeyName));
 
-            target.AddScoped((serviceProvider) =>
+            target.TryAddScoped((serviceProvider) =>
             {
                 var configuration = serviceProvider.GetService<IConfiguration>();
                 var serviceBusConnectionString = configuration.GetConnectionString(connectionStringConfigurationKeyName)?.Trim();
@@ -63,16 +64,16 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Asb.Extensions
                 return new ServiceBusConnection(serviceBusConnectionString);
             });
 
-            target.AddScoped<AzureServiceBusMessageAdapter>();
-            target.AddScoped<IMessageAdapter<AzureServiceBusMessage>, AzureServiceBusMessageAdapter>((serviceProvider) => serviceProvider.GetService<AzureServiceBusMessageAdapter>());
-            target.AddScoped<AzureServiceBusClientFactory>();
-            target.AddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>, AzureServiceBusClientFactory>((serviceProvider) => serviceProvider.GetService<AzureServiceBusClientFactory>());
-            target.AddScoped<AzureServiceBusTransmittingFacade>();
-            target.AddScoped<IMessageTransmittingFacade, AzureServiceBusTransmittingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusTransmittingFacade>());
-            target.AddSingleton<AzureServiceBusListeningFacade>();
-            target.AddSingleton<IMessageListeningFacade, AzureServiceBusListeningFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusListeningFacade>());
-            target.AddSingleton<AzureServiceBusRequestingFacade>();
-            target.AddSingleton<IMessageRequestingFacade, AzureServiceBusRequestingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusRequestingFacade>());
+            target.TryAddScoped<AzureServiceBusMessageAdapter>();
+            target.TryAddScoped<IMessageAdapter<AzureServiceBusMessage>>((serviceProvider) => serviceProvider.GetService<AzureServiceBusMessageAdapter>());
+            target.TryAddScoped<AzureServiceBusClientFactory>();
+            target.TryAddScoped<IMessagingClientFactory<ISenderClient, IReceiverClient, AzureServiceBusMessage>>((serviceProvider) => serviceProvider.GetService<AzureServiceBusClientFactory>());
+            target.TryAddScoped<AzureServiceBusTransmittingFacade>();
+            target.TryAddScoped<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusTransmittingFacade>());
+            target.TryAddSingleton<AzureServiceBusListeningFacade>();
+            target.TryAddSingleton<IMessageListeningFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusListeningFacade>());
+            target.TryAddSingleton<AzureServiceBusRequestingFacade>();
+            target.TryAddSingleton<IMessageRequestingFacade>((serviceProvider) => serviceProvider.GetService<AzureServiceBusRequestingFacade>());
             return target;
         }
     }
