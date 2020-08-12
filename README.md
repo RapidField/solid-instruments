@@ -73,6 +73,7 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 
 | Version | Notes                               | Source                                                                  | Release date | End of support |
 | :------ | :---------------------------------: | :---------------------------------------------------------------------: | :----------: | :------------: |
+| 1.0.26  | [Read](doc/releasenotes/v1.0.26.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.26) | 11 Aug 2020  | 31 Aug 2023    |
 | 1.0.25  | [Read](doc/releasenotes/v1.0.25.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.25) | 27 Jul 2020  | 31 Jul 2023    |
 
 #### Preview
