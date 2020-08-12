@@ -6,9 +6,9 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Command;
-using RapidField.SolidInstruments.Example.DatabaseModel;
-using RapidField.SolidInstruments.Example.DatabaseModel.CommandHandlers;
-using RapidField.SolidInstruments.Example.DatabaseModel.Commands;
+using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests;
+using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.CommandHandlers;
+using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Commands;
 using RapidField.SolidInstruments.TextEncoding;
 using System;
 
@@ -34,9 +34,9 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
                 var scope = engine.Container.CreateScope();
                 var commandMediator = scope.Resolve<ICommandMediator>();
 
-                using (var context = new ExampleInMemoryContext(configuration, databaseName).WithTestData())
+                using (var context = new SimulatedInMemoryContext(configuration, databaseName).WithTestData())
                 {
-                    using (var repositoryFactory = new ExampleRepositoryFactory(context, configuration))
+                    using (var repositoryFactory = new SimulatedRepositoryFactory(context, configuration))
                     {
                         using (var commandHandler = new GetFibonacciNumberValuesCommandHandler(commandMediator, repositoryFactory))
                         {

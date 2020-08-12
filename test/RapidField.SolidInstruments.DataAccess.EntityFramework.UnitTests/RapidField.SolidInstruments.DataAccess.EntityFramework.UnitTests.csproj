@@ -24,9 +24,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\example\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative\RapidField.SolidInstruments.DataAccess.DotNetNative.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.EntityFramework\RapidField.SolidInstruments.DataAccess.EntityFramework.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.Autofac\RapidField.SolidInstruments.InversionOfControl.Autofac.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.TextEncoding\RapidField.SolidInstruments.TextEncoding.csproj" />
     </ItemGroup>
 </Project>

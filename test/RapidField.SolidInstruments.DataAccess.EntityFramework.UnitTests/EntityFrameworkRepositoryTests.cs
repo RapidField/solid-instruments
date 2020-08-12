@@ -5,8 +5,8 @@
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RapidField.SolidInstruments.Example.DatabaseModel;
-using RapidField.SolidInstruments.Example.DatabaseModel.Repositories;
+using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests;
+using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Repositories;
 using RapidField.SolidInstruments.TextEncoding;
 using System;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
             var fibonacciNumberSeriesName = "Fibonacci";
             var fibonacciNumberSeriesValues = new Int64[] { 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
-            using (var context = new ExampleInMemoryContext(configuration, databaseName).WithTestData())
+            using (var context = new SimulatedInMemoryContext(configuration, databaseName).WithTestData())
             {
                 using (var numberSeriesRepository = new NumberSeriesRepository(context))
                 {
