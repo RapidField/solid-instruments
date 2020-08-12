@@ -120,15 +120,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests", "test\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests\RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.csproj", "{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.DatabaseModel", "example\RapidField.SolidInstruments.Example.DatabaseModel\RapidField.SolidInstruments.Example.DatabaseModel.csproj", "{3EED0CA7-B5E5-4388-9256-A6B21E82F663}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.WebApplication", "example\RapidField.SolidInstruments.Example.WebApplication\RapidField.SolidInstruments.Example.WebApplication.csproj", "{5043307D-17D2-4053-8022-8C26A26896E9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.ServiceApplication", "example\RapidField.SolidInstruments.Example.ServiceApplication\RapidField.SolidInstruments.Example.ServiceApplication.csproj", "{3636378B-E643-475C-A023-A38836674B67}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain", "example\RapidField.SolidInstruments.Example.Domain\RapidField.SolidInstruments.Example.Domain.csproj", "{7654E174-427D-44AA-AFB7-4EA67DA80759}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Contracts", "example\RapidField.SolidInstruments.Example.Contracts\RapidField.SolidInstruments.Example.Contracts.csproj", "{7B0530D3-32DD-4C98-BB7F-CC924079E82D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Service", "src\RapidField.SolidInstruments.Service\RapidField.SolidInstruments.Service.csproj", "{330FB74B-5D75-4B02-8ABA-B03EE296FA48}"
 EndProject
@@ -545,26 +537,10 @@ Global
 		{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EED0CA7-B5E5-4388-9256-A6B21E82F663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EED0CA7-B5E5-4388-9256-A6B21E82F663}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EED0CA7-B5E5-4388-9256-A6B21E82F663}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EED0CA7-B5E5-4388-9256-A6B21E82F663}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5043307D-17D2-4053-8022-8C26A26896E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5043307D-17D2-4053-8022-8C26A26896E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5043307D-17D2-4053-8022-8C26A26896E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5043307D-17D2-4053-8022-8C26A26896E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3636378B-E643-475C-A023-A38836674B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3636378B-E643-475C-A023-A38836674B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3636378B-E643-475C-A023-A38836674B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3636378B-E643-475C-A023-A38836674B67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7654E174-427D-44AA-AFB7-4EA67DA80759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7654E174-427D-44AA-AFB7-4EA67DA80759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7654E174-427D-44AA-AFB7-4EA67DA80759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7654E174-427D-44AA-AFB7-4EA67DA80759}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B0530D3-32DD-4C98-BB7F-CC924079E82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B0530D3-32DD-4C98-BB7F-CC924079E82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B0530D3-32DD-4C98-BB7F-CC924079E82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B0530D3-32DD-4C98-BB7F-CC924079E82D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -675,11 +651,7 @@ Global
 		{C08FA672-FAC1-4A6C-AEAA-C12417DBB25D} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{D3F03AA2-A280-4D4D-A742-75BB6CEAB189} = {5DAD6C24-954B-43EC-B7D9-62BC08CF7AC6}
 		{BCDA38AB-FF8D-4A5D-B85A-FC23A98D0A42} = {5DAD6C24-954B-43EC-B7D9-62BC08CF7AC6}
-		{3EED0CA7-B5E5-4388-9256-A6B21E82F663} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
-		{5043307D-17D2-4053-8022-8C26A26896E9} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
-		{3636378B-E643-475C-A023-A38836674B67} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{7654E174-427D-44AA-AFB7-4EA67DA80759} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
-		{7B0530D3-32DD-4C98-BB7F-CC924079E82D} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{330FB74B-5D75-4B02-8ABA-B03EE296FA48} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{8B15EEE6-31D0-4EA4-ABAC-C40B751EB658} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{5DBE4E27-AA78-4276-BCF4-1CE1DD60555F} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
