@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble((target - lowerBoundary).Ticks) / Convert.ToDouble((upperBoundary - lowerBoundary).Ticks));
+            return Convert.ToDouble((target - lowerBoundary).Ticks) / Convert.ToDouble((upperBoundary - lowerBoundary).Ticks);
         }
     }
 }

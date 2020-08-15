@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
 
             foreach (var serviceDescriptor in serviceDescriptors)
             {
-                if (serviceDescriptor.ImplementationType is null == false)
+                if ((serviceDescriptor.ImplementationType is null) == false)
                 {
                     if (serviceDescriptor.ServiceType.GetTypeInfo().IsGenericTypeDefinition)
                     {
@@ -59,7 +59,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
 
                     configurator.RegisterType(serviceDescriptor.ImplementationType).As(serviceDescriptor.ServiceType).WithLifetime(serviceDescriptor.Lifetime);
                 }
-                else if (serviceDescriptor.ImplementationFactory is null == false)
+                else if ((serviceDescriptor.ImplementationFactory is null) == false)
                 {
                     configurator.RegisterComponent(RegistrationBuilder.ForDelegate(serviceDescriptor.ServiceType, (context, parameters) => serviceDescriptor.ImplementationFactory(context.Resolve<IServiceProvider>())).WithLifetime(serviceDescriptor.Lifetime).CreateRegistration());
                 }

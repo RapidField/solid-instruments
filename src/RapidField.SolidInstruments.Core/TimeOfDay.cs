@@ -135,7 +135,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(TimeOfDay a, TimeOfDay b) => (a == b) == false;
+        public static Boolean operator !=(TimeOfDay a, TimeOfDay b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="TimeOfDay" /> instance is less than another specified instance.
@@ -149,7 +149,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(TimeOfDay a, TimeOfDay b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(TimeOfDay a, TimeOfDay b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="TimeOfDay" /> instance is less than or equal to another supplied
@@ -165,7 +165,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(TimeOfDay a, TimeOfDay b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(TimeOfDay a, TimeOfDay b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="TimeOfDay" /> instances are equal.
@@ -181,11 +181,11 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean operator ==(TimeOfDay a, TimeOfDay b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(TimeOfDay a, TimeOfDay b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(TimeOfDay a, TimeOfDay b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="TimeOfDay" /> instance is greater than or equal to another supplied
@@ -221,7 +221,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(TimeOfDay a, TimeOfDay b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(TimeOfDay a, TimeOfDay b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its <see cref="TimeOfDay" />
@@ -245,15 +245,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="FormatException">
         /// <paramref name="input" /> does not contain a valid representation of a time of day value.
         /// </exception>
-        public static TimeOfDay Parse(String input)
-        {
-            if (Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, true))
-            {
-                return new TimeOfDay(zone, hour, minute, second, millisecond);
-            }
-
-            return null;
-        }
+        public static TimeOfDay Parse(String input) => Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, true) ? new TimeOfDay(zone, hour, minute, second, millisecond) : null;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its <see cref="TimeOfDay" />
@@ -347,19 +339,7 @@ namespace RapidField.SolidInstruments.Core
         {
             var thisInstanceCountOfMillisecondsPastMidnightUtc = CountOfMillisecondsPastMidnightUtc();
             var otherInstanceCountOfMillisecondsPastMidnightUtc = other.CountOfMillisecondsPastMidnightUtc();
-
-            if (thisInstanceCountOfMillisecondsPastMidnightUtc < otherInstanceCountOfMillisecondsPastMidnightUtc)
-            {
-                return -1;
-            }
-            else if (thisInstanceCountOfMillisecondsPastMidnightUtc > otherInstanceCountOfMillisecondsPastMidnightUtc)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return thisInstanceCountOfMillisecondsPastMidnightUtc < otherInstanceCountOfMillisecondsPastMidnightUtc ? -1 : thisInstanceCountOfMillisecondsPastMidnightUtc > otherInstanceCountOfMillisecondsPastMidnightUtc ? 1 : 0;
         }
 
         /// <summary>
@@ -851,7 +831,7 @@ namespace RapidField.SolidInstruments.Core
                     hour += 12;
                 }
 
-                var zoneStringFragmentCount = (rawValueSubstrings.Length - 2);
+                var zoneStringFragmentCount = rawValueSubstrings.Length - 2;
                 var zoneStringFragment = zoneStringFragmentCount == 1 ? rawValueSubstrings[2] : String.Join(" ", rawValueSubstrings.Skip(2).Take(zoneStringFragmentCount).ToArray(), 0, zoneStringFragmentCount);
 
                 if (raiseExceptionOnFail)
@@ -893,7 +873,7 @@ namespace RapidField.SolidInstruments.Core
         /// The number of milliseconds past midnight in the local timezone that the current instance represents.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CountOfMillisecondsPastMidnightLocal() => ((Convert.ToInt32(Hour) * 3600000) + (Convert.ToInt32(Minute) * 60000) + (Convert.ToInt32(Second) * 1000) + Convert.ToInt32(Millisecond));
+        private Int32 CountOfMillisecondsPastMidnightLocal() => (Convert.ToInt32(Hour) * 3600000) + (Convert.ToInt32(Minute) * 60000) + (Convert.ToInt32(Second) * 1000) + Convert.ToInt32(Millisecond);
 
         /// <summary>
         /// Counts how many milliseconds past midnight in Coordinated Universal Time (UTC) the current <see cref="TimeOfDay" />
@@ -903,7 +883,7 @@ namespace RapidField.SolidInstruments.Core
         /// The number of milliseconds past midnight UTC that the current instance represents.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CountOfMillisecondsPastMidnightUtc() => (CountOfMillisecondsPastMidnightLocal() + (Zone.BaseUtcOffset.Hours * 3600000));
+        private Int32 CountOfMillisecondsPastMidnightUtc() => CountOfMillisecondsPastMidnightLocal() + (Zone.BaseUtcOffset.Hours * 3600000);
 
         /// <summary>
         /// Initializes or reinitializes the instance using the specified serialized representation.
@@ -923,7 +903,7 @@ namespace RapidField.SolidInstruments.Core
         [DebuggerHidden]
         private void Initialize(String input)
         {
-            Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, true);
+            _ = Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, true);
             Zone = zone;
             Hour = hour;
             Minute = minute;

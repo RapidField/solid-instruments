@@ -104,7 +104,7 @@ namespace RapidField.SolidInstruments.TextEncoding
 
             try
             {
-                var decodedBytes = Enumerable.Range(0, (hexadecimalString.Length / 2)).Select(index => System.Convert.ToByte(hexadecimalString.Substring((index * 2), 2), 16)).ToArray();
+                var decodedBytes = Enumerable.Range(0, hexadecimalString.Length / 2).Select(index => System.Convert.ToByte(hexadecimalString.Substring(index * 2, 2), 16)).ToArray();
                 Array.Copy(decodedBytes, 0, bytes, byteIndex, decodedBytes.Length);
                 return decodedBytes.Length;
             }

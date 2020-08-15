@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Command
         public DomainCommand(IEnumerable<String> labels)
             : base()
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace RapidField.SolidInstruments.Command
         public DomainCommand(IEnumerable<String> labels, Guid correlationIdentifier)
             : base(correlationIdentifier)
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace RapidField.SolidInstruments.Command
         public DomainCommand(IEnumerable<String> labels)
             : base()
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.Command
         public DomainCommand(IEnumerable<String> labels, Guid correlationIdentifier)
             : base(correlationIdentifier)
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
         }
 
         /// <summary>

@@ -242,7 +242,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <summary>
         /// Gets the length of the memory field, in bytes.
         /// </summary>
-        public Int32 LengthInBytes => (Length * StructureSize);
+        public Int32 LengthInBytes => Length * StructureSize;
 
         /// <summary>
         /// Gets a <see cref="ReadOnlySpan{T}" /> for the current <see cref="ReadOnlyPinnedMemory{T}" />.

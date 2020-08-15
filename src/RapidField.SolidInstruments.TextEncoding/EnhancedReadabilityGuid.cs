@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => (a == b) == false;
+        public static Boolean operator !=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is less than another specified
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is less than or equal to another
@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="EnhancedReadabilityGuid" /> instances are equal.
@@ -114,19 +114,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public static Boolean operator ==(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b)
-        {
-            if ((Object)a is null && (Object)b is null)
-            {
-                return true;
-            }
-            else if ((Object)a is null || (Object)b is null)
-            {
-                return false;
-            }
-
-            return a.Equals(b);
-        }
+        public static Boolean operator ==(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.Equals(b);
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is greater than another specified
@@ -141,7 +129,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is greater than or equal to
@@ -157,7 +145,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its
@@ -178,15 +166,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <exception cref="FormatException">
         /// <paramref name="input" /> does not contain a valid representation of a <see cref="EnhancedReadabilityGuid" />.
         /// </exception>
-        public static EnhancedReadabilityGuid Parse(String input)
-        {
-            if (Parse(input, out var value, true))
-            {
-                return new EnhancedReadabilityGuid(value);
-            }
-
-            return default;
-        }
+        public static EnhancedReadabilityGuid Parse(String input) => Parse(input, out var value, true) ? new EnhancedReadabilityGuid(value) : default;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its
@@ -260,7 +240,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(EnhancedReadabilityGuid other) => (Value == other.Value);
+        public Boolean Equals(EnhancedReadabilityGuid other) => Value == other.Value;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -401,7 +381,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         [DebuggerHidden]
         private void Initialize(String input)
         {
-            Parse(input, out var value, true);
+            _ = Parse(input, out var value, true);
             Value = value;
         }
 

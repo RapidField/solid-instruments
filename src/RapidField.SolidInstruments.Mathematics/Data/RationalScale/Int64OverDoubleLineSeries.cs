@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.RationalScale
         {
             var yAxisRange = Convert.ToDouble(upwardYAxisValue - downwardYAxisValue);
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            var adjustment = (yAxisRange * positionInXAxisRange);
+            var adjustment = yAxisRange * positionInXAxisRange;
             return Convert.ToInt64((Convert.ToDouble(downwardYAxisValue) + adjustment).RoundedTo(0, MidpointRounding.AwayFromZero));
         }
 
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.RationalScale
         protected sealed override Int64 InterpolateNearest(Double xAxisValue, Double downwardXAxisValue, Int64 downwardYAxisValue, Double upwardXAxisValue, Int64 upwardYAxisValue)
         {
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            return (positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue);
+            return positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue;
         }
     }
 }

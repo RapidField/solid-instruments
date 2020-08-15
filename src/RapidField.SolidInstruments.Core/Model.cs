@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Model<TIdentifier> a, IModel<TIdentifier> b) => (a == b) == false;
+        public static Boolean operator !=(Model<TIdentifier> a, IModel<TIdentifier> b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IModel{TIdentifier}" /> instance is less than another specified
@@ -70,7 +70,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Model<TIdentifier> a, IModel<TIdentifier> b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Model<TIdentifier> a, IModel<TIdentifier> b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IModel{TIdentifier}" /> instance is less than or equal to another
@@ -86,7 +86,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Model<TIdentifier> a, IModel<TIdentifier> b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Model<TIdentifier> a, IModel<TIdentifier> b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IModel{TIdentifier}" /> instances are equal.
@@ -102,11 +102,11 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean operator ==(Model<TIdentifier> a, IModel<TIdentifier> b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -127,7 +127,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Model<TIdentifier> a, IModel<TIdentifier> b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Model<TIdentifier> a, IModel<TIdentifier> b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IModel{TIdentifier}" /> instance is greater than or equal to another
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Model<TIdentifier> a, IModel<TIdentifier> b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Model<TIdentifier> a, IModel<TIdentifier> b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Compares the current <see cref="Model{TIdentifier}" /> to the specified object and returns an indication of their
@@ -225,7 +225,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Model a, IModel b) => (a == b) == false;
+        public static Boolean operator !=(Model a, IModel b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IModel" /> instances are equal.
@@ -241,11 +241,11 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean operator ==(Model a, IModel b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }

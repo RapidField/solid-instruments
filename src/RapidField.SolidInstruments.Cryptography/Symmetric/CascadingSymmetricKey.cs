@@ -225,7 +225,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     // Interrogate the final 16 bits to determine the depth.
                     var keyLength = SymmetricKey.SerializedLength;
-                    var depth = BitConverter.ToUInt16(memory, (SerializedLength - sizeof(UInt16)));
+                    var depth = BitConverter.ToUInt16(memory, SerializedLength - sizeof(UInt16));
                     keys = new ISymmetricKey[depth];
 
                     for (var i = 0; i < depth; i++)
@@ -235,7 +235,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             secureMemory.Access(key =>
                             {
                                 // Copy out the key buffers.
-                                Array.Copy(memory, (keyLength * i), key, 0, keyLength);
+                                Array.Copy(memory, keyLength * i, key, 0, keyLength);
                             });
 
                             keys[i] = SymmetricKey.FromSecureMemory(secureMemory);
@@ -394,7 +394,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 keyMemory.Access(key =>
                                 {
                                     // Copy the key buffers out to the result buffer.
-                                    Array.Copy(key, 0, pinnedMemory, (keyLength * i), keyLength);
+                                    Array.Copy(key, 0, pinnedMemory, keyLength * i, keyLength);
                                 });
                             }
 
@@ -404,11 +404,11 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         // Fill the unused segments with random bytes.
                         var randomBytes = new Byte[keyLength];
                         HardenedRandomNumberGenerator.Instance.GetBytes(randomBytes);
-                        Array.Copy(randomBytes, 0, pinnedMemory, (keyLength * i), keyLength);
+                        Array.Copy(randomBytes, 0, pinnedMemory, keyLength * i, keyLength);
                     }
 
                     // Append the depth as a 16-bit integer.
-                    Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedMemory, (SerializedLength - sizeof(UInt16)), sizeof(UInt16));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedMemory, SerializedLength - sizeof(UInt16), sizeof(UInt16));
                 });
 
                 return secureMemory;
@@ -494,7 +494,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Represents the number of bytes comprising a serialized representation of a <see cref="CascadingSymmetricKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 SerializedLength = ((SymmetricKey.SerializedLength * MaximumDepth) + sizeof(UInt16));
+        internal const Int32 SerializedLength = (SymmetricKey.SerializedLength * MaximumDepth) + sizeof(UInt16);
 
         /// <summary>
         /// Represents the default derivation mode for new keys.

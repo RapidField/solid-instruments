@@ -455,7 +455,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 return true;
             }
 
-            return DateTime.TryParse(dateTimeString, formatProvider, (DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind), out result);
+            return DateTime.TryParse(dateTimeString, formatProvider, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind, out result);
         }
 
         /// <summary>
@@ -498,7 +498,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         internal static Boolean TryParseFullDetailDateTimeString(String dateTimeString, IFormatProvider formatProvider, out DateTime result)
         {
             var dateTimeStringFormat = dateTimeString.Contains(DateTimeZoneUtcFormat) ? FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneUtcFormat) : FullDetailDateTimeFormatTemplate.ApplyFormat(DateTimeZoneLocalFormat);
-            return DateTime.TryParseExact(dateTimeString, dateTimeStringFormat, formatProvider, (DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind), out result);
+            return DateTime.TryParseExact(dateTimeString, dateTimeStringFormat, formatProvider, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind, out result);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="false" />.
         /// </returns>
         [DebuggerHidden]
-        internal static Boolean TryParseSerializedDateTimeString(String dateTimeString, IFormatProvider formatProvider, out DateTime result) => DateTime.TryParseExact(dateTimeString, SerializedDateTimeFormat, formatProvider, (DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind), out result);
+        internal static Boolean TryParseSerializedDateTimeString(String dateTimeString, IFormatProvider formatProvider, out DateTime result) => DateTime.TryParseExact(dateTimeString, SerializedDateTimeFormat, formatProvider, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind, out result);
 
         /// <summary>
         /// Constructs and returns a detailed format string using the time zone kind of the provided <see cref="DateTime" />.

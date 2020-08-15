@@ -130,7 +130,7 @@ namespace RapidField.SolidInstruments.TextEncoding
 
             {
                 var buffer = new BigInteger();
-                var finalCharacterIndex = (charCount - 1);
+                var finalCharacterIndex = charCount - 1;
 
                 for (var i = finalCharacterIndex; i >= 0; i--)
                 {
@@ -150,7 +150,7 @@ namespace RapidField.SolidInstruments.TextEncoding
             }
 
             // Copy the buffer to the output stream.
-            var encodedByteCount = Math.Min((bytes.Length - byteIndex), characterBytes.Length);
+            var encodedByteCount = Math.Min(bytes.Length - byteIndex, characterBytes.Length);
             Array.Copy(characterBytes, 0, bytes, byteIndex, encodedByteCount);
             return encodedByteCount;
         }

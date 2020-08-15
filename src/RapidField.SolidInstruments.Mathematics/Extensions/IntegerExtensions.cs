@@ -395,7 +395,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -424,7 +424,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -511,7 +511,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
             target = target.RejectIf().IsLessThan(lowerBoundary, nameof(lowerBoundary)).OrIf().IsGreaterThan(upperBoundary, nameof(upperBoundary));
             lowerBoundary = lowerBoundary.RejectIf().IsGreaterThan(upperBoundary, nameof(lowerBoundary));
             upperBoundary = upperBoundary.RejectIf().IsEqualToValue(lowerBoundary, nameof(upperBoundary));
-            return (Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary));
+            return Convert.ToDouble(target - lowerBoundary) / Convert.ToDouble(upperBoundary - lowerBoundary);
         }
 
         /// <summary>
@@ -565,9 +565,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt16(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
                 FactorRoundingMode.InwardOnly => Convert.ToInt16(target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => Convert.ToInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                FactorRoundingMode.OutwardOnly => Convert.ToInt16((target % factor == 0) ? target : (factor - (target % factor) + target)),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -594,9 +594,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToUInt16(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt16(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
                 FactorRoundingMode.InwardOnly => Convert.ToUInt16(target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => Convert.ToUInt16((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                FactorRoundingMode.OutwardOnly => Convert.ToUInt16((target % factor == 0) ? target : (factor - (target % factor) + target)),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -623,9 +623,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
-                FactorRoundingMode.InwardOnly => (target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => ((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt32(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => target - (target % factor),
+                FactorRoundingMode.OutwardOnly => (target % factor == 0) ? target : (factor - (target % factor) + target),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -652,9 +652,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToUInt32(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
-                FactorRoundingMode.InwardOnly => (target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => (target % factor == 0) ? target : ((factor - (target % factor)) + target),
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt32(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOnly => target - (target % factor),
+                FactorRoundingMode.OutwardOnly => (target % factor == 0) ? target : (factor - (target % factor) + target),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -681,9 +681,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOrOutward => Convert.ToInt64(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
                 FactorRoundingMode.InwardOnly => Convert.ToInt64(target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => Convert.ToInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                FactorRoundingMode.OutwardOnly => Convert.ToInt64((target % factor == 0) ? target : (factor - (target % factor) + target)),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -710,9 +710,9 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
 
             return mode switch
             {
-                FactorRoundingMode.InwardOrOutward => Convert.ToUInt64(Math.Round((target / Convert.ToDouble(factor)), MidpointRounding.AwayFromZero) * factor),
+                FactorRoundingMode.InwardOrOutward => Convert.ToUInt64(Math.Round(target / Convert.ToDouble(factor), MidpointRounding.AwayFromZero) * factor),
                 FactorRoundingMode.InwardOnly => Convert.ToUInt64(target - (target % factor)),
-                FactorRoundingMode.OutwardOnly => Convert.ToUInt64((target % factor == 0) ? target : ((factor - (target % factor)) + target)),
+                FactorRoundingMode.OutwardOnly => Convert.ToUInt64((target % factor == 0) ? target : (factor - (target % factor) + target)),
                 _ => throw new UnsupportedSpecificationException($"The specified factor rounding mode, {mode}, is not supported.")
             };
         }
@@ -749,7 +749,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean SignedIntegerIsDivisibleBy(Int64 target, Int64 divisor) => ((divisor != 0) && (target % divisor == 0));
+        private static Boolean SignedIntegerIsDivisibleBy(Int64 target, Int64 divisor) => (divisor != 0) && (target % divisor == 0);
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="Int64" /> is an even number.
@@ -762,7 +762,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean SignedIntegerIsEven(Int64 target) => ((target & 0x01) == 0x00);
+        private static Boolean SignedIntegerIsEven(Int64 target) => (target & 0x01) == 0x00;
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="Int64" /> is an odd number.
@@ -775,7 +775,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean SignedIntegerIsOdd(Int64 target) => ((target & 0x01) == 0x01);
+        private static Boolean SignedIntegerIsOdd(Int64 target) => (target & 0x01) == 0x01;
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="UInt64" /> is a factor of the specified multiple.
@@ -809,7 +809,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean UnsignedIntegerIsDivisibleBy(UInt64 target, UInt64 divisor) => ((divisor != 0) && (target % divisor == 0));
+        private static Boolean UnsignedIntegerIsDivisibleBy(UInt64 target, UInt64 divisor) => (divisor != 0) && (target % divisor == 0);
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="UInt64" /> is an even number.
@@ -822,7 +822,7 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean UnsignedIntegerIsEven(UInt64 target) => ((target & 0x01) == 0x00);
+        private static Boolean UnsignedIntegerIsEven(UInt64 target) => (target & 0x01) == 0x00;
 
         /// <summary>
         /// Indicates whether or not the provided <see cref="UInt64" /> is an odd number.
@@ -835,6 +835,6 @@ namespace RapidField.SolidInstruments.Mathematics.Extensions
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Boolean UnsignedIntegerIsOdd(UInt64 target) => ((target & 0x01) == 0x01);
+        private static Boolean UnsignedIntegerIsOdd(UInt64 target) => (target & 0x01) == 0x01;
     }
 }

@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
                 if (Instances.TryGetValue(instanceType, out var extantInstance))
                 {
-                    return (extantInstance as T);
+                    return extantInstance as T;
                 }
 
                 var newInstance = GetNew<T>(controlToken);

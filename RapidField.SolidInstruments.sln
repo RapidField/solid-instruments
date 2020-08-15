@@ -399,6 +399,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.DataAccess.DotNetNative.Ef", "src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj", "{F20759D5-D39D-4C31-8A23-AEAA606776E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.Domain.AccessControl", "example\RapidField.SolidInstruments.Example.Domain.AccessControl\RapidField.SolidInstruments.Example.Domain.AccessControl.csproj", "{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -613,6 +615,10 @@ Global
 		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F20759D5-D39D-4C31-8A23-AEAA606776E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -686,6 +692,7 @@ Global
 		{8FFB8E4C-5858-4D18-B8DA-D669EED643AB} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{266AC8D7-BDA0-42B0-B473-9025EDEB8DF8} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{F20759D5-D39D-4C31-8A23-AEAA606776E6} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

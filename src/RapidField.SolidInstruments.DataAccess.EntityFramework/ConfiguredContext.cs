@@ -355,7 +355,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
             }
             else if (contextTypeName.EndsWith(ContextPostfixStringElement))
             {
-                return contextTypeName.Substring(0, (contextTypeName.Length - ContextPostfixStringElement.Length));
+                return contextTypeName.Substring(0, contextTypeName.Length - ContextPostfixStringElement.Length);
             }
 
             return contextTypeName;

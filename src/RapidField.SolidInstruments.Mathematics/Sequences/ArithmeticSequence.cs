@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <returns>
         /// The next term in the sequence.
         /// </returns>
-        protected override Double CalculateNext(IEnumerable<Double> calculatedTerms) => (calculatedTerms.Last() + CommonDifference);
+        protected override Double CalculateNext(IEnumerable<Double> calculatedTerms) => calculatedTerms.Last() + CommonDifference;
 
         /// <summary>
         /// Gets the constant difference between the terms in the sequence.

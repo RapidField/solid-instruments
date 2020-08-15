@@ -58,10 +58,10 @@ namespace RapidField.SolidInstruments.Mathematics.Data.TimeScale
         /// </returns>
         protected sealed override Double InterpolateLinear(TimeSpan xAxisValue, TimeSpan downwardXAxisValue, Double downwardYAxisValue, TimeSpan upwardXAxisValue, Double upwardYAxisValue)
         {
-            var yAxisRange = (upwardYAxisValue - downwardYAxisValue);
+            var yAxisRange = upwardYAxisValue - downwardYAxisValue;
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            var adjustment = (yAxisRange * positionInXAxisRange);
-            return (downwardYAxisValue + adjustment);
+            var adjustment = yAxisRange * positionInXAxisRange;
+            return downwardYAxisValue + adjustment;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.TimeScale
         protected sealed override Double InterpolateNearest(TimeSpan xAxisValue, TimeSpan downwardXAxisValue, Double downwardYAxisValue, TimeSpan upwardXAxisValue, Double upwardYAxisValue)
         {
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            return (positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue);
+            return positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue;
         }
     }
 }

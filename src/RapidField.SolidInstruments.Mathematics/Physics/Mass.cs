@@ -137,7 +137,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Mass a, Mass b) => (a == b) == false;
+        public static Boolean operator !=(Mass a, Mass b) => a == b == false;
 
         /// <summary>
         /// Determines the product of a <see cref="Mass" /> value and a multiplier.
@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Mass" /> and the specified multiplier.
         /// </returns>
-        public static Mass operator *(Mass multiplicand, Double multiplier) => (multiplicand * Convert.ToDecimal(multiplier));
+        public static Mass operator *(Mass multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
 
         /// <summary>
         /// Determines the product of a <see cref="Mass" /> value and a multiplier.
@@ -179,7 +179,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Mass" /> and the specified divisor.
         /// </returns>
-        public static Mass operator /(Mass dividend, Double divisor) => (dividend / Convert.ToDecimal(divisor));
+        public static Mass operator /(Mass dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
 
         /// <summary>
         /// Determines the quotient of a <see cref="Mass" /> value and a divisor.
@@ -221,7 +221,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is less than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Mass a, Mass b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Mass a, Mass b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Mass" /> instance is less than or equal to another supplied instance.
@@ -236,7 +236,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is less than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Mass a, Mass b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Mass a, Mass b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Mass" /> instances are equal.
@@ -264,7 +264,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is greater than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Mass a, Mass b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Mass a, Mass b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Mass" /> instance is greater than or equal to another supplied instance.
@@ -279,7 +279,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is greater than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Mass a, Mass b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Mass a, Mass b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a mass value to its <see cref="Mass" /> equivalent.
@@ -378,7 +378,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Mass other) => (Grams == other.Grams);
+        public Boolean Equals(Mass other) => Grams == other.Grams;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -575,7 +575,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in centigrams.
         /// </summary>
-        public Decimal TotalCentigrams => (Grams * CentigramsPerGram);
+        public Decimal TotalCentigrams => Grams * CentigramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in grams.
@@ -585,22 +585,22 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in kilograms.
         /// </summary>
-        public Decimal TotalKilograms => (Grams * KilogramsPerGram);
+        public Decimal TotalKilograms => Grams * KilogramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in micro-grams.
         /// </summary>
-        public Decimal TotalMicrograms => (Grams * MicrogramsPerGram);
+        public Decimal TotalMicrograms => Grams * MicrogramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in milligrams.
         /// </summary>
-        public Decimal TotalMilligrams => (Grams * MilligramsPerGram);
+        public Decimal TotalMilligrams => Grams * MilligramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in nanograms.
         /// </summary>
-        public Decimal TotalNanograms => (Grams * NanogramsPerGram);
+        public Decimal TotalNanograms => Grams * NanogramsPerGram;
 
         /// <summary>
         /// Represents the atomic mass unit constant.

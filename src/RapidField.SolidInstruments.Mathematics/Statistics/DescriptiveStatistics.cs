@@ -53,9 +53,9 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics
             Maximum = maximum.RejectIf().IsLessThan(minimum, nameof(maximum), nameof(minimum));
             Mean = mean;
             Median = median;
-            Midrange = ((maximum + minimum) / 2m);
+            Midrange = (maximum + minimum) / 2m;
             Minimum = minimum;
-            Range = (maximum - minimum);
+            Range = maximum - minimum;
             Size = size.RejectIf().IsLessThan(1, nameof(size));
             StandardDeviation = standardDeviation;
             Sum = sum;

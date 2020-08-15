@@ -249,7 +249,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
                 return default;
             }
 
-            return function(target, (target.IsRoot ? default : target.Parent.TraverseUp(function, predicate)));
+            return function(target, target.IsRoot ? default : target.Parent.TraverseUp(function, predicate));
         }
     }
 }

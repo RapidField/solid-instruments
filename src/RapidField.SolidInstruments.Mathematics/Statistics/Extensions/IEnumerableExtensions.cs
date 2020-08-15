@@ -568,7 +568,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // The collection length is even. Return the mean of the values sharing the median position.
-            return ((Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d);
+            return (Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d;
         }
 
         /// <summary>
@@ -622,7 +622,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // The collection length is even. Return the mean of the values sharing the median position.
-            return ((Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d);
+            return (Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d;
         }
 
         /// <summary>
@@ -676,7 +676,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // The collection length is even. Return the mean of the values sharing the median position.
-            return ((Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d);
+            return (Convert.ToDouble(orderedCollection.ElementAt(medianIndices[0])) + Convert.ToDouble(orderedCollection.ElementAt(medianIndices[1]))) / 2d;
         }
 
         /// <summary>
@@ -730,7 +730,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // The collection length is even. Return the mean of the values sharing the median position.
-            return ((orderedCollection.ElementAt(medianIndices[0]) + orderedCollection.ElementAt(medianIndices[1])) / 2d);
+            return (orderedCollection.ElementAt(medianIndices[0]) + orderedCollection.ElementAt(medianIndices[1])) / 2d;
         }
 
         /// <summary>
@@ -784,7 +784,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // The collection length is even. Return the mean of the values sharing the median position.
-            return ((orderedCollection.ElementAt(medianIndices[0]) + orderedCollection.ElementAt(medianIndices[1])) / 2m);
+            return (orderedCollection.ElementAt(medianIndices[0]) + orderedCollection.ElementAt(medianIndices[1])) / 2m;
         }
 
         /// <summary>
@@ -828,7 +828,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Double Midrange(this IEnumerable<Int32> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return ((Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d);
+            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
         }
 
         /// <summary>
@@ -872,7 +872,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Double Midrange(this IEnumerable<Int64> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return ((Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d);
+            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
         }
 
         /// <summary>
@@ -916,7 +916,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Double Midrange(this IEnumerable<Single> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return ((Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d);
+            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
         }
 
         /// <summary>
@@ -960,7 +960,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Double Midrange(this IEnumerable<Double> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return ((target.Min() + target.Max()) / 2d);
+            return (target.Min() + target.Max()) / 2d;
         }
 
         /// <summary>
@@ -1004,7 +1004,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Decimal Midrange(this IEnumerable<Decimal> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return ((target.Min() + target.Max()) / 2m);
+            return (target.Min() + target.Max()) / 2m;
         }
 
         /// <summary>
@@ -1048,7 +1048,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Int32 Range(this IEnumerable<Int32> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Max() - target.Min());
+            return target.Max() - target.Min();
         }
 
         /// <summary>
@@ -1092,7 +1092,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Int64 Range(this IEnumerable<Int64> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Max() - target.Min());
+            return target.Max() - target.Min();
         }
 
         /// <summary>
@@ -1136,7 +1136,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Single Range(this IEnumerable<Single> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Max() - target.Min());
+            return target.Max() - target.Min();
         }
 
         /// <summary>
@@ -1180,7 +1180,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Double Range(this IEnumerable<Double> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Max() - target.Min());
+            return target.Max() - target.Min();
         }
 
         /// <summary>
@@ -1224,7 +1224,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         public static Decimal Range(this IEnumerable<Decimal> target)
         {
             target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Max() - target.Min());
+            return target.Max() - target.Min();
         }
 
         /// <summary>
@@ -1670,8 +1670,8 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             }
 
             // Return the pair of indices sharing the midpoint.
-            var firstIndex = ((elementCount / 2) - 1);
-            return new Int32[] { firstIndex, (firstIndex + 1) };
+            var firstIndex = (elementCount / 2) - 1;
+            return new Int32[] { firstIndex, firstIndex + 1 };
         }
 
         /// <summary>
@@ -1714,7 +1714,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Mean(this IEnumerable<Int32> target, Int32 sum) => (Convert.ToDouble(sum) / Convert.ToDouble(target.Count()));
+        private static Double Mean(this IEnumerable<Int32> target, Int32 sum) => Convert.ToDouble(sum) / Convert.ToDouble(target.Count());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Int64" /> values in the current collection given the provided sum.
@@ -1756,7 +1756,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Mean(this IEnumerable<Int64> target, Int64 sum) => (Convert.ToDouble(sum) / Convert.ToDouble(target.Count()));
+        private static Double Mean(this IEnumerable<Int64> target, Int64 sum) => Convert.ToDouble(sum) / Convert.ToDouble(target.Count());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Single" /> values in the current collection given the provided sum.
@@ -1792,7 +1792,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private static Double Mean(this IEnumerable<Single> target, Single sum) => (Convert.ToDouble(sum) / Convert.ToDouble(target.Count()));
+        private static Double Mean(this IEnumerable<Single> target, Single sum) => Convert.ToDouble(sum) / Convert.ToDouble(target.Count());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Double" /> values in the current collection given the provided sum.
@@ -1828,7 +1828,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private static Double Mean(this IEnumerable<Double> target, Double sum) => (sum / Convert.ToDouble(target.Count()));
+        private static Double Mean(this IEnumerable<Double> target, Double sum) => sum / Convert.ToDouble(target.Count());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Decimal" /> values in the current collection given the provided sum.
@@ -1864,7 +1864,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <paramref name="target" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private static Decimal Mean(this IEnumerable<Decimal> target, Decimal sum) => (sum / Convert.ToDecimal(target.Count()));
+        private static Decimal Mean(this IEnumerable<Decimal> target, Decimal sum) => sum / Convert.ToDecimal(target.Count());
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Int32" /> values in the current collection given the provided
@@ -2087,7 +2087,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Variance(this IEnumerable<Int32> target, Double mean) => ((Convert.ToDouble(target.Sum(number => (number * number))) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d));
+        private static Double Variance(this IEnumerable<Int32> target, Double mean) => (Convert.ToDouble(target.Sum(number => number * number)) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d);
 
         /// <summary>
         /// Calculate the variance of the <see cref="Int64" /> values in the current collection given the provided mean.
@@ -2129,7 +2129,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Variance(this IEnumerable<Int64> target, Double mean) => ((Convert.ToDouble(target.Sum(number => (number * number))) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d));
+        private static Double Variance(this IEnumerable<Int64> target, Double mean) => (Convert.ToDouble(target.Sum(number => number * number)) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d);
 
         /// <summary>
         /// Calculate the variance of the <see cref="Single" /> values in the current collection given the provided mean.
@@ -2171,7 +2171,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Variance(this IEnumerable<Single> target, Double mean) => ((Convert.ToDouble(target.Sum(number => (number * number))) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d));
+        private static Double Variance(this IEnumerable<Single> target, Double mean) => (Convert.ToDouble(target.Sum(number => number * number)) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d);
 
         /// <summary>
         /// Calculate the variance of the <see cref="Double" /> values in the current collection given the provided mean.
@@ -2213,7 +2213,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Double Variance(this IEnumerable<Double> target, Double mean) => ((target.Sum(number => (number * number)) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d));
+        private static Double Variance(this IEnumerable<Double> target, Double mean) => (target.Sum(number => number * number) / Convert.ToDouble(target.Count())) - Math.Pow(mean, 2d);
 
         /// <summary>
         /// Calculate the variance of the <see cref="Decimal" /> values in the current collection given the provided mean.
@@ -2255,6 +2255,6 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
         [DebuggerHidden]
-        private static Decimal Variance(this IEnumerable<Decimal> target, Decimal mean) => ((target.Sum(number => (number * number)) / Convert.ToDecimal(target.Count())) - (mean * mean));
+        private static Decimal Variance(this IEnumerable<Decimal> target, Decimal mean) => (target.Sum(number => number * number) / Convert.ToDecimal(target.Count())) - (mean * mean);
     }
 }

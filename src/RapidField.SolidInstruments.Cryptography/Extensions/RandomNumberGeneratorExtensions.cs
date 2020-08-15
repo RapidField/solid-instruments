@@ -1668,7 +1668,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             var characterEncoding = permitNonLatin ? Encoding.Unicode : Encoding.ASCII;
             var characterByteLength = permitNonLatin ? UnicodeCharByteLength : AsciiCharByteLength;
             var characterBytes = new Byte[characterByteLength * CharacterBytesLengthMultiplier];
-            var singlePassIterationCount = (characterBytes.Length - characterByteLength);
+            var singlePassIterationCount = characterBytes.Length - characterByteLength;
             target.GetBytes(characterBytes);
 
             while (PermuteCharacterGeneration(characterBytes, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) == false)
@@ -1760,8 +1760,8 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         [DebuggerHidden]
         private static void GenerateDecimal(RandomNumberGenerator target, Decimal floor, Decimal ceiling, out Decimal randomValue)
         {
-            GenerateRangePosition(target, (ceiling - floor), out var rangePosition);
-            randomValue = (floor + rangePosition);
+            GenerateRangePosition(target, ceiling - floor, out var rangePosition);
+            randomValue = floor + rangePosition;
         }
 
         /// <summary>
@@ -1801,7 +1801,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             var range = Convert.ToDecimal(ceiling - floor);
             GenerateRangePosition(target, range, out var rangePosition);
-            randomValue = (floor + Convert.ToDouble(rangePosition));
+            randomValue = floor + Convert.ToDouble(rangePosition);
         }
 
         /// <summary>
@@ -1950,7 +1950,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             }
 
             var rationalMultiplier = new Decimal(lowBits, middleBits, Convert.ToInt32(highBits), false, 28);
-            rangePosition = (range * rationalMultiplier);
+            rangePosition = range * rationalMultiplier;
         }
 
         /// <summary>
@@ -1990,7 +1990,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             var range = Convert.ToDecimal(ceiling - floor);
             GenerateRangePosition(target, range, out var rangePosition);
-            randomValue = (floor + Convert.ToSingle(rangePosition));
+            randomValue = floor + Convert.ToSingle(rangePosition);
         }
 
         /// <summary>
@@ -2127,7 +2127,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         [DebuggerHidden]
         private static void GenerateUInt16(RandomNumberGenerator target, UInt16 floor, UInt16 ceiling, out UInt16 randomValue)
         {
-            var range = (ceiling - floor);
+            var range = ceiling - floor;
             GenerateRangePosition(target, range, out var rangePosition);
             randomValue = Convert.ToUInt16(floor + rangePosition.RoundedTo(0));
         }
@@ -2167,7 +2167,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         [DebuggerHidden]
         private static void GenerateUInt32(RandomNumberGenerator target, UInt32 floor, UInt32 ceiling, out UInt32 randomValue)
         {
-            var range = (ceiling - floor);
+            var range = ceiling - floor;
             GenerateRangePosition(target, range, out var rangePosition);
             randomValue = Convert.ToUInt32(floor + rangePosition.RoundedTo(0));
         }

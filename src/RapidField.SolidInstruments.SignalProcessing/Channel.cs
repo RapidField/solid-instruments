@@ -324,7 +324,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
                     argumentOutOfRangeExceptionParameterName = nameof(lookAheadLength);
                 }
 
-                if (argumentOutOfRangeExceptionParameterName is null == false)
+                if ((argumentOutOfRangeExceptionParameterName is null) == false)
                 {
                     return InvalidReadBehavior switch
                     {
@@ -335,9 +335,9 @@ namespace RapidField.SolidInstruments.SignalProcessing
                 }
             }
 
-            var startIndex = (index - lookBehindLength);
-            var count = (lookBehindLength + lookAheadLength + 1);
-            var endIndex = (startIndex + count);
+            var startIndex = index - lookBehindLength;
+            var count = lookBehindLength + lookAheadLength + 1;
+            var endIndex = startIndex + count;
             var range = default(T[]);
 
             using (var controlToken = StateControl.Enter())
@@ -374,13 +374,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
             for (var i = 0; i < lookBehindLength; i++)
             {
-                lookBehindList.Add(new DiscreteUnitOfOutput<T>(range[i], (startIndex + i)));
+                lookBehindList.Add(new DiscreteUnitOfOutput<T>(range[i], startIndex + i));
             }
 
             for (var i = 0; i < lookAheadLength; i++)
             {
-                var adjustment = (lookBehindLength + i + 1);
-                lookAheadList.Add(new DiscreteUnitOfOutput<T>(range[adjustment], (startIndex + adjustment)));
+                var adjustment = lookBehindLength + i + 1;
+                lookAheadList.Add(new DiscreteUnitOfOutput<T>(range[adjustment], startIndex + adjustment));
             }
 
             return Task.FromResult<ISignalSample<T>>(new SignalSample<T>(unitOfOutput, new OutputRange<T>(lookBehindList), new OutputRange<T>(lookAheadList)));
@@ -511,7 +511,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets a value indicating whether or not the output stream for the current <see cref="Channel{T}" /> has a fixed length.
         /// </summary>
-        public Boolean OutputLengthIsFixed => (OutputLength != UnfixedOutputLength);
+        public Boolean OutputLengthIsFixed => OutputLength != UnfixedOutputLength;
 
         /// <summary>
         /// Gets the type of a discrete unit of output value for the current <see cref="Channel{T}" />.

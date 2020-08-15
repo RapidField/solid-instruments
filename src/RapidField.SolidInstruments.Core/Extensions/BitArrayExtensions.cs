@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 case BitShiftDirection.Left:
 
                     // Sign the shift count negative for left shifts.
-                    directionalBitShiftCount = (bitShiftCount.RejectIf().IsLessThan(0, nameof(bitShiftCount)) * -1);
+                    directionalBitShiftCount = bitShiftCount.RejectIf().IsLessThan(0, nameof(bitShiftCount)) * -1;
                     break;
 
                 case BitShiftDirection.Right:
@@ -90,13 +90,13 @@ namespace RapidField.SolidInstruments.Core.Extensions
             }
 
             var reverseOrderBitArray = new BitArray(target);
-            var fieldMidPosition = (fieldLength / 2);
+            var fieldMidPosition = fieldLength / 2;
 
             for (var i = 0; i < fieldMidPosition; i++)
             {
                 // Trade the current position bit for the mirror position bit.
                 var currentPositionBit = reverseOrderBitArray[i];
-                var mirrorPosition = (fieldLength - i - 1);
+                var mirrorPosition = fieldLength - i - 1;
                 reverseOrderBitArray[i] = reverseOrderBitArray[mirrorPosition];
                 reverseOrderBitArray[mirrorPosition] = currentPositionBit;
             }
@@ -150,18 +150,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         private static Int32 DetermineNewCircularPosition(Int32 currentPosition, Int32 arrayLength, Int32 directionalShift)
         {
             // Perform an open-ended (non-circular) shift.
-            var newPosition = (currentPosition + directionalShift);
+            var newPosition = currentPosition + directionalShift;
 
             while (newPosition < 0)
             {
                 // Rotate the field right to bring the new position back into frame.
-                newPosition = (newPosition + arrayLength);
+                newPosition += arrayLength;
             }
 
             while (newPosition >= arrayLength)
             {
                 // Rotate the field left to bring the new position back into frame.
-                newPosition = (newPosition - arrayLength);
+                newPosition -= arrayLength;
             }
 
             return newPosition;

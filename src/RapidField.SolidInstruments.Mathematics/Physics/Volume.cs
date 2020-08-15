@@ -187,7 +187,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Volume a, Volume b) => (a == b) == false;
+        public static Boolean operator !=(Volume a, Volume b) => a == b == false;
 
         /// <summary>
         /// Determines the product of an <see cref="Volume" /> value and a multiplier.
@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Volume" /> and the specified multiplier.
         /// </returns>
-        public static Volume operator *(Volume multiplicand, Double multiplier) => (multiplicand * Convert.ToDecimal(multiplier));
+        public static Volume operator *(Volume multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
 
         /// <summary>
         /// Determines the product of an <see cref="Volume" /> value and a multiplier.
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Volume" /> and the specified divisor.
         /// </returns>
-        public static Volume operator /(Volume dividend, Double divisor) => (dividend / Convert.ToDecimal(divisor));
+        public static Volume operator /(Volume dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
 
         /// <summary>
         /// Determines the quotient of an <see cref="Volume" /> value and a divisor.
@@ -271,7 +271,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is less than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Volume a, Volume b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Volume a, Volume b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Volume" /> instance is less than or equal to another supplied instance.
@@ -286,7 +286,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is less than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Volume a, Volume b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Volume a, Volume b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Volume" /> instances are equal.
@@ -314,7 +314,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is greater than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Volume a, Volume b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Volume a, Volume b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Volume" /> instance is greater than or equal to another supplied
@@ -330,7 +330,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is greater than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Volume a, Volume b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Volume a, Volume b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Volume" /> equivalent.
@@ -429,7 +429,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Volume other) => (CubicMeters == other.CubicMeters);
+        public Boolean Equals(Volume other) => CubicMeters == other.CubicMeters;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -651,22 +651,22 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic centimeters.
         /// </summary>
-        public Decimal TotalCubicCentimeters => (CubicMeters * CubicCentimetersPerCubicMeter);
+        public Decimal TotalCubicCentimeters => CubicMeters * CubicCentimetersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic feet.
         /// </summary>
-        public Decimal TotalCubicFeet => (CubicMeters * CubicFeetPerCubicMeter);
+        public Decimal TotalCubicFeet => CubicMeters * CubicFeetPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic inches.
         /// </summary>
-        public Decimal TotalCubicInches => (CubicMeters * CubicInchesPerCubicMeter);
+        public Decimal TotalCubicInches => CubicMeters * CubicInchesPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic kilometers.
         /// </summary>
-        public Decimal TotalCubicKilometers => (CubicMeters * CubicKilometersPerCubicMeter);
+        public Decimal TotalCubicKilometers => CubicMeters * CubicKilometersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic meters.
@@ -676,32 +676,32 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic miles.
         /// </summary>
-        public Decimal TotalCubicMiles => (CubicMeters * CubicMilesPerCubicMeter);
+        public Decimal TotalCubicMiles => CubicMeters * CubicMilesPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic millimeters.
         /// </summary>
-        public Decimal TotalCubicMillimeters => (CubicMeters * CubicMillimetersPerCubicMeter);
+        public Decimal TotalCubicMillimeters => CubicMeters * CubicMillimetersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic yards.
         /// </summary>
-        public Decimal TotalCubicYards => (CubicMeters * CubicYardsPerCubicMeter);
+        public Decimal TotalCubicYards => CubicMeters * CubicYardsPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in gallons.
         /// </summary>
-        public Decimal TotalGallons => (CubicMeters * GallonsPerCubicMeter);
+        public Decimal TotalGallons => CubicMeters * GallonsPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in liters.
         /// </summary>
-        public Decimal TotalLiters => (CubicMeters * LitersPerCubicMeter);
+        public Decimal TotalLiters => CubicMeters * LitersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in milliliters.
         /// </summary>
-        public Decimal TotalMilliliters => (CubicMeters * MillilitersPerCubicMeter);
+        public Decimal TotalMilliliters => CubicMeters * MillilitersPerCubicMeter;
 
         /// <summary>
         /// Represents the zero <see cref="Volume" /> value.

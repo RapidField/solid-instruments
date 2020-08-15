@@ -46,7 +46,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
                 throw new InvalidOperationException($"{nameof(SelectRandom)} cannot be invoked on an empty collection.");
             }
 
-            return target.ElementAt(randomnessProvider.GetInt32(0, (collectionLength - 1)));
+            return target.ElementAt(randomnessProvider.GetInt32(0, collectionLength - 1));
         }
     }
 }

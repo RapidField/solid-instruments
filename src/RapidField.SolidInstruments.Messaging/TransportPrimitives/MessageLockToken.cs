@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(MessageLockToken a, MessageLockToken b) => (a == b) == false;
+        public static Boolean operator !=(MessageLockToken a, MessageLockToken b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="MessageLockToken" /> instance is less than another specified instance.
@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(MessageLockToken a, MessageLockToken b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(MessageLockToken a, MessageLockToken b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="MessageLockToken" /> instance is less than or equal to another supplied
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(MessageLockToken a, MessageLockToken b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(MessageLockToken a, MessageLockToken b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="MessageLockToken" /> instances are equal.
@@ -169,7 +169,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(MessageLockToken a, MessageLockToken b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(MessageLockToken a, MessageLockToken b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="MessageLockToken" /> instance is greater than or equal to another
@@ -185,7 +185,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(MessageLockToken a, MessageLockToken b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(MessageLockToken a, MessageLockToken b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Compares the current <see cref="MessageLockToken" /> to the specified object and returns an indication of their relative

@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(DateTimeRange dateTimeRangeOne, DateTimeRange dateTimeRangeTwo) => (dateTimeRangeOne == dateTimeRangeTwo) == false;
+        public static Boolean operator !=(DateTimeRange dateTimeRangeOne, DateTimeRange dateTimeRangeTwo) => dateTimeRangeOne == dateTimeRangeTwo == false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="DateTimeRange" /> instances are equal.
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the provided value is within the bounds of the current range, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public Boolean Contains(DateTime dateTime) => (dateTime >= Start && dateTime <= End);
+        public Boolean Contains(DateTime dateTime) => dateTime >= Start && dateTime <= End;
 
         /// <summary>
         /// Indicates whether or not the start and end points of the provided <see cref="DateTimeRange" /> are within the bounds of
@@ -218,7 +218,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the provided range is within the bounds of the current range, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public Boolean Contains(DateTimeRange dateTimeRange) => (dateTimeRange.Start >= Start && dateTimeRange.End <= End);
+        public Boolean Contains(DateTimeRange dateTimeRange) => dateTimeRange.Start >= Start && dateTimeRange.End <= End;
 
         /// <summary>
         /// Determines whether or not the current <see cref="DateTimeRange" /> is equal to the specified <see cref="Object" />.
@@ -546,7 +546,7 @@ namespace RapidField.SolidInstruments.Core
 
             {
                 // The last days of each calendar month are treated equally for the purpose of this calculation.
-                var startAndEndPointsAreSameDayOfMonth = ((Start.IsLastDayOfMonth() && End.IsLastDayOfMonth()) || (Start.Day == End.Day));
+                var startAndEndPointsAreSameDayOfMonth = (Start.IsLastDayOfMonth() && End.IsLastDayOfMonth()) || (Start.Day == End.Day);
 
                 if (startAndEndPointsAreSameDayOfMonth)
                 {
@@ -591,7 +591,7 @@ namespace RapidField.SolidInstruments.Core
             }
 
             // Add months calculated from full years.
-            lengthInMonths += (lengthInYears * 12);
+            lengthInMonths += lengthInYears * 12;
 
             if (endPrecedesStartDuringYear)
             {
@@ -713,7 +713,7 @@ namespace RapidField.SolidInstruments.Core
             Granularity = granularity.RejectIf().IsEqualToValue(DateTimeRangeGranularity.Unspecified, nameof(granularity));
             Start = start.Quantize(granularity);
             End = end.Quantize(granularity);
-            Length = (End - Start);
+            Length = End - Start;
             LazyLengthInDays = new Lazy<Int32>(CalculateLengthInDays, LazyThreadSafetyMode.PublicationOnly);
             LazyLengthInHours = new Lazy<Int32>(CalculateLengthInHours, LazyThreadSafetyMode.PublicationOnly);
             LazyLengthInMilliseconds = new Lazy<Int64>(CalculateLengthInMilliseconds, LazyThreadSafetyMode.PublicationOnly);

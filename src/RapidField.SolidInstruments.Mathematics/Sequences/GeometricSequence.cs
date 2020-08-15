@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         /// <returns>
         /// The next term in the sequence.
         /// </returns>
-        protected override Double CalculateNext(IEnumerable<Double> calculatedTerms) => (calculatedTerms.Last() * CommonRatio);
+        protected override Double CalculateNext(IEnumerable<Double> calculatedTerms) => calculatedTerms.Last() * CommonRatio;
 
         /// <summary>
         /// Gets the constant factor between the terms in the sequence.

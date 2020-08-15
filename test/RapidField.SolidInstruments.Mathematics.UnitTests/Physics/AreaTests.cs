@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var addend = new Area(2.5d);
 
             // Act.
-            var result = (augend + addend);
+            var result = augend + addend;
 
             // Assert.
             result.Should().Be(new Area(8.5m));
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var divisor = 2.5d;
 
             // Act.
-            var result = (dividend / divisor);
+            var result = dividend / divisor;
 
             // Assert.
             result.Should().Be(new Area(2.4m));
@@ -283,7 +283,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var minuend = new Area(2.5d);
 
             // Act.
-            var result = (subtrahend - minuend);
+            var result = subtrahend - minuend;
 
             // Assert.
             result.Should().Be(new Area(3.5m));

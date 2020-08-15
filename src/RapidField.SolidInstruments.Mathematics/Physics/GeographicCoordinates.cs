@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(GeographicCoordinates a, GeographicCoordinates b) => (a == b) == false;
+        public static Boolean operator !=(GeographicCoordinates a, GeographicCoordinates b) => a == b == false;
 
         /// <summary>
         /// Determine whether or not two specified <see cref="GeographicCoordinates" /> instances are equal.
@@ -63,19 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public static Boolean operator ==(GeographicCoordinates a, GeographicCoordinates b)
-        {
-            if ((Object)a is null && (Object)b is null)
-            {
-                return true;
-            }
-            else if ((Object)a is null || (Object)b is null)
-            {
-                return false;
-            }
-
-            return a.Equals(b);
-        }
+        public static Boolean operator ==(GeographicCoordinates a, GeographicCoordinates b) => a.Equals(b);
 
         /// <summary>
         /// Convert the string representation of latitude and longitude coordinates to its <see cref="GeographicCoordinates" />

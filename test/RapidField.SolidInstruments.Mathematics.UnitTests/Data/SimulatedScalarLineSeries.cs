@@ -58,10 +58,10 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Data
         /// </returns>
         protected sealed override Decimal InterpolateLinear(Int32 xAxisValue, Int32 downwardXAxisValue, Decimal downwardYAxisValue, Int32 upwardXAxisValue, Decimal upwardYAxisValue)
         {
-            var yAxisRange = (upwardYAxisValue - downwardYAxisValue);
+            var yAxisRange = upwardYAxisValue - downwardYAxisValue;
             var positionInXAxisRange = Convert.ToDecimal(xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue));
-            var adjustment = (yAxisRange * positionInXAxisRange);
-            return (downwardYAxisValue + adjustment);
+            var adjustment = yAxisRange * positionInXAxisRange;
+            return downwardYAxisValue + adjustment;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Data
         protected sealed override Decimal InterpolateNearest(Int32 xAxisValue, Int32 downwardXAxisValue, Decimal downwardYAxisValue, Int32 upwardXAxisValue, Decimal upwardYAxisValue)
         {
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            return (positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue);
+            return positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue;
         }
     }
 }

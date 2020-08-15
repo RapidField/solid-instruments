@@ -70,7 +70,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ConcurrencyControlToken a, IConcurrencyControlToken b) => (a == b) == false;
+        public static Boolean operator !=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is less than another specified
@@ -85,7 +85,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(ConcurrencyControlToken a, IConcurrencyControlToken b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is less than or equal to another
@@ -101,7 +101,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="ConcurrencyControlToken" /> instances are equal.
@@ -142,7 +142,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(ConcurrencyControlToken a, IConcurrencyControlToken b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is greater than or equal to
@@ -158,7 +158,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Instructs the current <see cref="ConcurrencyControlToken" /> to wait for the specified task to complete before releasing
@@ -277,7 +277,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(IConcurrencyControlToken other) => (Identifier == other.Identifier);
+        public Boolean Equals(IConcurrencyControlToken other) => Identifier == other.Identifier;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -343,25 +343,10 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         {
             if (IsActive)
             {
-                if (IsExpired)
-                {
-                    if (raiseExceptionIfExpired)
-                    {
-                        throw new SystemTimeoutException("The concurrency control token is expired.");
-                    }
-
-                    return false;
-                }
-
-                return true;
+                return IsExpired ? raiseExceptionIfExpired ? throw new SystemTimeoutException("The concurrency control token is expired.") : false : true;
             }
 
-            if (raiseExceptionIfInactive)
-            {
-                throw new ConcurrencyControlOperationException("Control has been relinquished to other threads.");
-            }
-
-            return false;
+            return raiseExceptionIfInactive ? throw new ConcurrencyControlOperationException("Control has been relinquished to other threads.") : false;
         }
 
         /// <summary>
@@ -457,7 +442,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <summary>
         /// Gets a value indicating whether or not the associated thread currently has control of the resource.
         /// </summary>
-        public Boolean IsActive => (IsActiveValue == IsActiveTrue);
+        public Boolean IsActive => IsActiveValue == IsActiveTrue;
 
         /// <summary>
         /// Gets a value indicating whether or not the expiration threshold for the token has been exceeded.

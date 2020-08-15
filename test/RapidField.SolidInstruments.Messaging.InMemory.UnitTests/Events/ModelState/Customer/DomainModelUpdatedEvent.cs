@@ -172,7 +172,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Events.ModelS
         }
 
         /// <summary>
-        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DataContractName = "CustomerUpdatedEvent";

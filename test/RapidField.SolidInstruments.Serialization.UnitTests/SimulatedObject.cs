@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SimulatedObject a, SimulatedObject b) => (a == b) == false;
+        public static Boolean operator !=(SimulatedObject a, SimulatedObject b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="SimulatedObject" /> instances are equal.
@@ -123,19 +123,19 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
             {
                 return false;
             }
-            else if (DecimalValues is null && other.DecimalValues is null == false)
+            else if (DecimalValues is null && (other.DecimalValues is null) == false)
             {
                 return false;
             }
-            else if (DecimalValues is null == false && other.DecimalValues is null)
+            else if ((DecimalValues is null) == false && other.DecimalValues is null)
             {
                 return false;
             }
-            else if (NestedObjects is null && other.NestedObjects is null == false)
+            else if (NestedObjects is null && (other.NestedObjects is null) == false)
             {
                 return false;
             }
-            else if (NestedObjects is null == false && other.NestedObjects is null)
+            else if ((NestedObjects is null) == false && other.NestedObjects is null)
             {
                 return false;
             }

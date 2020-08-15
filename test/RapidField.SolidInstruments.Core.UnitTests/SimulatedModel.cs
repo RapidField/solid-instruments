@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             }
             else
             {
-                ModelCollection.ElementAt(randomnessProvider.GetInt32(0, (collectionLength - 1))).RandomlyModify(randomnessProvider);
+                ModelCollection.ElementAt(randomnessProvider.GetInt32(0, collectionLength - 1)).RandomlyModify(randomnessProvider);
             }
         }
 

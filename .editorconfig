@@ -38,10 +38,10 @@ dotnet_style_predefined_type_for_locals_parameters_members = false : error
 dotnet_style_predefined_type_for_member_access = false : error
 
 # Parentheses preferences
-dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity : silent
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity : silent
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary : silent
-dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity : silent
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity : suggestion
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity : suggestion
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary : suggestion
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity : suggestion
 
 # Modifier preferences
 dotnet_style_require_accessibility_modifiers = for_non_interface_members : silent
@@ -232,3 +232,18 @@ dotnet_diagnostic.CA1031.severity = silent
 
 # IDE0075: Simplify conditional expression
 dotnet_style_prefer_simplified_boolean_expressions = false : none
+
+# PH_S002: Monitor Discouraged Sync Object
+dotnet_diagnostic.PH_S002.severity = none
+
+# PH_S005: Fake-Async Methods
+dotnet_diagnostic.PH_S005.severity = none
+
+# PH_B007: Non-Atomic Access to Concurrent Collection
+dotnet_diagnostic.PH_B007.severity = silent
+
+# PH_P006: Discouraged Monitor Method
+dotnet_diagnostic.PH_P006.severity = silent
+
+# PH_P007: Unused Cancellation Token
+dotnet_diagnostic.PH_P007.severity = silent

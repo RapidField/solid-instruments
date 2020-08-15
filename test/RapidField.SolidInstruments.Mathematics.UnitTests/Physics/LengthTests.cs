@@ -20,7 +20,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var addend = new Length(2.5d);
 
             // Act.
-            var result = (augend + addend);
+            var result = augend + addend;
 
             // Assert.
             result.Should().Be(new Length(8.5m));
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var expectedQuotient = new Length(2.4d);
 
             // Act.
-            var result = (dividend / divisor);
+            var result = dividend / divisor;
 
             // Assert.
             result.Should().Be(new Length(2.4m));
@@ -285,7 +285,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var expectedDifference = new Length(3.5d);
 
             // Act.
-            var result = (subtrahend - minuend);
+            var result = subtrahend - minuend;
 
             // Assert.
             result.Should().Be(new Length(3.5m));

@@ -135,7 +135,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DataMember]
         public Boolean HasValue
         {
-            get => Value is null == false;
+            get => (Value is null) == false;
             set
             {
                 if (value && Value is null)

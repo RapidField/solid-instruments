@@ -202,7 +202,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public GeneralInformationEvent(IEnumerable<String> labels, EventVerbosity verbosity, String description, DateTime timeStamp)
             : base(StaticCategory, verbosity, description, timeStamp)
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
             Metadata = new Dictionary<String, String>();
         }
 
@@ -234,7 +234,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public GeneralInformationEvent(IEnumerable<String> labels, EventVerbosity verbosity, String description, DateTime timeStamp, Guid correlationIdentifier)
             : base(StaticCategory, verbosity, description, timeStamp, correlationIdentifier)
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
             Metadata = new Dictionary<String, String>();
         }
 

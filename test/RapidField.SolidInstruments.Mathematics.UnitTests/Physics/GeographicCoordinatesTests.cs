@@ -25,8 +25,8 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var targetThree = new GeographicCoordinates(latitude, longitudeTwo);
 
             // Assert.
-            (targetOne.Equals(targetTwo)).Should().BeTrue();
-            (targetTwo.Equals(targetThree)).Should().BeFalse();
+            targetOne.Equals(targetTwo).Should().BeTrue();
+            targetTwo.Equals(targetThree).Should().BeFalse();
             (targetTwo == targetOne).Should().BeTrue();
             (targetThree == targetOne).Should().BeFalse();
             (targetOne != targetThree).Should().BeTrue();

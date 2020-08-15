@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Area a, Area b) => (a == b) == false;
+        public static Boolean operator !=(Area a, Area b) => a == b == false;
 
         /// <summary>
         /// Determines the product of an <see cref="Area" /> value and a multiplier.
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Area" /> and the specified multiplier.
         /// </returns>
-        public static Area operator *(Area multiplicand, Double multiplier) => (multiplicand * Convert.ToDecimal(multiplier));
+        public static Area operator *(Area multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
 
         /// <summary>
         /// Determines the product of an <see cref="Area" /> value and a multiplier.
@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Area" /> and the specified divisor.
         /// </returns>
-        public static Area operator /(Area dividend, Double divisor) => (dividend / Convert.ToDecimal(divisor));
+        public static Area operator /(Area dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
 
         /// <summary>
         /// Determines the quotient of an <see cref="Area" /> value and a divisor.
@@ -261,7 +261,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is less than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Area a, Area b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Area a, Area b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Area" /> instance is less than or equal to another supplied instance.
@@ -276,7 +276,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is less than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Area a, Area b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Area a, Area b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Area" /> instances are equal.
@@ -304,7 +304,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is greater than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Area a, Area b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Area a, Area b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Area" /> instance is greater than or equal to another supplied instance.
@@ -319,7 +319,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is greater than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Area a, Area b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Area a, Area b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Area" /> equivalent.
@@ -418,7 +418,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Area other) => (SquareMeters == other.SquareMeters);
+        public Boolean Equals(Area other) => SquareMeters == other.SquareMeters;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -635,32 +635,32 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in acres.
         /// </summary>
-        public Decimal TotalAcres => (SquareMeters * AcresPerSquareMeter);
+        public Decimal TotalAcres => SquareMeters * AcresPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in hectares.
         /// </summary>
-        public Decimal TotalHectares => (SquareMeters * HectaresPerSquareMeter);
+        public Decimal TotalHectares => SquareMeters * HectaresPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square centimeters.
         /// </summary>
-        public Decimal TotalSquareCentimeters => (SquareMeters * SquareCentimetersPerSquareMeter);
+        public Decimal TotalSquareCentimeters => SquareMeters * SquareCentimetersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square feet.
         /// </summary>
-        public Decimal TotalSquareFeet => (SquareMeters * SquareFeetPerSquareMeter);
+        public Decimal TotalSquareFeet => SquareMeters * SquareFeetPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square inches.
         /// </summary>
-        public Decimal TotalSquareInches => (SquareMeters * SquareInchesPerSquareMeter);
+        public Decimal TotalSquareInches => SquareMeters * SquareInchesPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square kilometers.
         /// </summary>
-        public Decimal TotalSquareKilometers => (SquareMeters * SquareKilometersPerSquareMeter);
+        public Decimal TotalSquareKilometers => SquareMeters * SquareKilometersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square meters.
@@ -670,17 +670,17 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square miles.
         /// </summary>
-        public Decimal TotalSquareMiles => (SquareMeters * SquareMilesPerSquareMeter);
+        public Decimal TotalSquareMiles => SquareMeters * SquareMilesPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square millimeters.
         /// </summary>
-        public Decimal TotalSquareMillimeters => (SquareMeters * SquareMillimetersPerSquareMeter);
+        public Decimal TotalSquareMillimeters => SquareMeters * SquareMillimetersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square yards.
         /// </summary>
-        public Decimal TotalSquareYards => (SquareMeters * SquareYardsPerSquareMeter);
+        public Decimal TotalSquareYards => SquareMeters * SquareYardsPerSquareMeter;
 
         /// <summary>
         /// Represents the zero <see cref="Area" /> value.

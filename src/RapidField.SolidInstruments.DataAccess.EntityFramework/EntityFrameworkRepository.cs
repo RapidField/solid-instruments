@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
     /// </typeparam>
     public class EntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext> : EntityFrameworkRepository<TIdentifier, TDataAccessModel, TContext>, IEntityFrameworkRepository<TIdentifier, TDataAccessModel, TDomainModel, TContext>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>, new()
         where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
         where TContext : DbContext
     {

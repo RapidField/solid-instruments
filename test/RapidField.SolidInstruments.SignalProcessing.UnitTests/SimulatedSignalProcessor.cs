@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.SignalProcessing.UnitTests
             var channelAReadTask = inputChannels.ChannelA.ReadAsync(index);
             var channelBReadTask = inputChannels.ChannelB.ReadAsync(index);
             Task.WaitAll(channelAReadTask, channelBReadTask);
-            outputValue = (settings.Factor * (channelAReadTask.Result.Value + channelBReadTask.Result.Value));
+            outputValue = settings.Factor * (channelAReadTask.Result.Value + channelBReadTask.Result.Value);
             return true;
         }
     }

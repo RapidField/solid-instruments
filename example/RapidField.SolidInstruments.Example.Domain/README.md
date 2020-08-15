@@ -11,7 +11,7 @@ This document describes the purpose of the [`RapidField.SolidInstruments.Example
 
 ## Purpose
 
-This project houses sample domain machinery that utilizes **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) and [messaging](../../src/RapidField.SolidInstruments.Messaging/README.md) constructs.
+This project houses a sample collection of shared domain models that utilize the **Solid Instruments** [messaging](../../src/RapidField.SolidInstruments.Messaging/README.md) constructs.
 
 ## License
 

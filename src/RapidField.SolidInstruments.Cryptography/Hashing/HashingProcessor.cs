@@ -192,12 +192,12 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// </exception>
         public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm, Byte[] salt)
         {
-            var applySalt = (salt is null == false);
-            var saltLengthInBytes = (applySalt ? salt.Length : 0);
+            var applySalt = (salt is null) == false;
+            var saltLengthInBytes = applySalt ? salt.Length : 0;
             var plaintextLengthInBytes = plaintext.RejectIf().IsNullOrEmpty(nameof(plaintext)).TargetArgument.Length;
-            var saltedPlaintextLengthInBytes = (plaintextLengthInBytes + saltLengthInBytes);
-            var digestLengthInBytes = (algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8);
-            var hashLengthInBytes = (digestLengthInBytes + saltLengthInBytes);
+            var saltedPlaintextLengthInBytes = plaintextLengthInBytes + saltLengthInBytes;
+            var digestLengthInBytes = algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8;
+            var hashLengthInBytes = digestLengthInBytes + saltLengthInBytes;
             var hashValue = new Byte[hashLengthInBytes];
 
             try
@@ -323,7 +323,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         {
             try
             {
-                var digestLength = (algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8);
+                var digestLength = algorithm.RejectIf().IsEqualToValue(HashingAlgorithmSpecification.Unspecified, nameof(algorithm)).TargetArgument.ToDigestBitLength() / 8;
                 Byte[] processedHash;
                 Byte[] calculatedHash;
 

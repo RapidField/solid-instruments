@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// </typeparam>
     public interface IDataAccessModel<TIdentifier, TDomainModel> : IDataAccessModel<TIdentifier>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>, new()
     {
         /// <summary>
         /// Copies the state of the specified domain model to the current

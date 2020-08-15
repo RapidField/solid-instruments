@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Command
         public TextualCommand(String value, IEnumerable<String> labels)
             : base()
         {
-            Labels = new List<String>((labels.RejectIf().IsNull(nameof(labels)).TargetArgument));
+            Labels = new List<String>(labels.RejectIf().IsNull(nameof(labels)).TargetArgument);
             Metadata = new Dictionary<String, String>();
             Value = value.RejectIf().IsNull(nameof(value));
         }

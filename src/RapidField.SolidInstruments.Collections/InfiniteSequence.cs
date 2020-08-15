@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Collections
                     throw new IndexOutOfRangeException();
                 }
 
-                var indexCeiling = (index + 1);
+                var indexCeiling = index + 1;
 
                 lock (SyncRoot)
                 {
@@ -165,7 +165,7 @@ namespace RapidField.SolidInstruments.Collections
         /// </exception>
         public T[] ToArray(Int32 startIndex, Int32 count)
         {
-            var indexCeiling = (startIndex.RejectIf().IsLessThan(0, nameof(startIndex)) + count.RejectIf().IsLessThan(0, nameof(count)));
+            var indexCeiling = startIndex.RejectIf().IsLessThan(0, nameof(startIndex)) + count.RejectIf().IsLessThan(0, nameof(count));
 
             lock (SyncRoot)
             {

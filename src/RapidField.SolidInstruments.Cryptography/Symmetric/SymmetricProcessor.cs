@@ -165,7 +165,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 var decryptor = new SymmetricProcessor(RandomnessProvider);
                 var buffer = ciphertext;
 
-                for (var i = (key.Depth - 1); i > 0; i--)
+                for (var i = key.Depth - 1; i > 0; i--)
                 {
                     buffer = decryptor.Decrypt(buffer, keys.ElementAt(i));
                 }

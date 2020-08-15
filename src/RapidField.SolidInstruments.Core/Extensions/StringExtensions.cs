@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="String" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrEmpty(this String target) => (target is null || target.Length == 0);
+        public static Boolean IsNullOrEmpty(this String target) => target is null || target.Length == 0;
 
         /// <summary>
         /// Indicates whether or not the current <see cref="String" /> is <see langword="null" />, empty or consists only of
@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="String" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrWhiteSpace(this String target) => (String.IsNullOrWhiteSpace(target));
+        public static Boolean IsNullOrWhiteSpace(this String target) => String.IsNullOrWhiteSpace(target);
 
         /// <summary>
         /// Indicates whether or not the specified regular expression pattern finds a match in the current <see cref="String" />.

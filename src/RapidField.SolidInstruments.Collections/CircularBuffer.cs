@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Collections
             {
                 using (var controlToken = StateControl.Enter())
                 {
-                    var adjustedIndex = (ReadIndex + index);
+                    var adjustedIndex = ReadIndex + index;
                     return (adjustedIndex < Capacity) ? ElementArray[adjustedIndex] : ElementArray[adjustedIndex - Capacity];
                 }
             }

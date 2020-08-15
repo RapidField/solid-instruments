@@ -340,7 +340,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Children" /> is an empty collection.
         /// </remarks>
-        public Boolean IsLeaf => (ChildrenReference.Any() == false);
+        public Boolean IsLeaf => ChildrenReference.Any() == false;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="TreeNode{T}" /> is a root node (a node without a parent).
@@ -348,7 +348,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Parent" /> is a null reference.
         /// </remarks>
-        public Boolean IsRoot => (ParentReference is null);
+        public Boolean IsRoot => ParentReference is null;
 
         /// <summary>
         /// Gets the parent node of the current <see cref="TreeNode{T}" />, or <see langword="null" /> if the current

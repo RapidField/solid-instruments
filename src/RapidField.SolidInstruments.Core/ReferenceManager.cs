@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.Core
                             disposeTasks.Add(reference?.DisposeAsync().AsTask());
                         }
 
-                        var disposeTaskArray = disposeTasks.Where(task => task is null == false).ToArray();
+                        var disposeTaskArray = disposeTasks.Where(task => (task is null) == false).ToArray();
 
                         if (disposeTaskArray.Any())
                         {
@@ -153,7 +153,7 @@ namespace RapidField.SolidInstruments.Core
             /// <returns>
             /// A value indicating whether or not the specified instances are not equal.
             /// </returns>
-            public static Boolean operator !=(ManagedReference<T> a, ManagedReference<T> b) => (a == b) == false;
+            public static Boolean operator !=(ManagedReference<T> a, ManagedReference<T> b) => a == b == false;
 
             /// <summary>
             /// Determines whether or not two specified <see cref="ManagedReference{T}" /> instances are equal.

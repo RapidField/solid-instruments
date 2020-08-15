@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Length a, Length b) => (a == b) == false;
+        public static Boolean operator !=(Length a, Length b) => a == b == false;
 
         /// <summary>
         /// Determines the product of a <see cref="Length" /> value and a multiplier.
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Length" /> and the specified multiplier.
         /// </returns>
-        public static Length operator *(Length multiplicand, Double multiplier) => (multiplicand * Convert.ToDecimal(multiplier));
+        public static Length operator *(Length multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
 
         /// <summary>
         /// Determines the product of a <see cref="Length" /> value and a multiplier.
@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Length" /> and the specified divisor.
         /// </returns>
-        public static Length operator /(Length dividend, Double divisor) => (dividend / Convert.ToDecimal(divisor));
+        public static Length operator /(Length dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
 
         /// <summary>
         /// Determines the quotient of a <see cref="Length" /> value and a divisor.
@@ -261,7 +261,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is less than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Length a, Length b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Length a, Length b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Length" /> instance is less than or equal to another supplied instance.
@@ -276,7 +276,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is less than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Length a, Length b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Length a, Length b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Length" /> instances are equal.
@@ -304,7 +304,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is greater than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Length a, Length b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Length a, Length b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Length" /> instance is greater than or equal to another supplied
@@ -320,7 +320,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is greater than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Length a, Length b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Length a, Length b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a distance value to its <see cref="Length" /> equivalent.
@@ -385,7 +385,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Length other) => (Meters.CompareTo(other.Meters));
+        public Int32 CompareTo(Length other) => Meters.CompareTo(other.Meters);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Length" /> is equal to the specified <see cref="Object" />.
@@ -636,27 +636,27 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in centimeters.
         /// </summary>
-        public Decimal TotalCentimeters => (Meters * CentimetersPerMeter);
+        public Decimal TotalCentimeters => Meters * CentimetersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in feet.
         /// </summary>
-        public Decimal TotalFeet => (Meters * FeetPerMeter);
+        public Decimal TotalFeet => Meters * FeetPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in inches.
         /// </summary>
-        public Decimal TotalInches => (Meters * InchesPerMeter);
+        public Decimal TotalInches => Meters * InchesPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in kilometers.
         /// </summary>
-        public Decimal TotalKilometers => (Meters * KilometersPerMeter);
+        public Decimal TotalKilometers => Meters * KilometersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in light-years.
         /// </summary>
-        public Decimal TotalLightYears => (Meters * LightYearsPerMeter);
+        public Decimal TotalLightYears => Meters * LightYearsPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in meters.
@@ -666,22 +666,22 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in miles.
         /// </summary>
-        public Decimal TotalMiles => (Meters * MilesPerMeter);
+        public Decimal TotalMiles => Meters * MilesPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in millimeters.
         /// </summary>
-        public Decimal TotalMillimeters => (Meters * MillimetersPerMeter);
+        public Decimal TotalMillimeters => Meters * MillimetersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in nanometers.
         /// </summary>
-        public Decimal TotalNanometers => (Meters * NanometersPerMeter);
+        public Decimal TotalNanometers => Meters * NanometersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in yards.
         /// </summary>
-        public Decimal TotalYards => ((Meters * FeetPerMeter) / FeetPerYard);
+        public Decimal TotalYards => Meters * FeetPerMeter / FeetPerYard;
 
         /// <summary>
         /// Represents the zero <see cref="Length" /> value.
@@ -692,7 +692,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of centimeters in an foot.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal CentimetersPerFoot = (CentimetersPerInch * InchesPerFoot);
+        private const Decimal CentimetersPerFoot = CentimetersPerInch * InchesPerFoot;
 
         /// <summary>
         /// Represents the number of centimeters in an inch.
@@ -716,7 +716,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of feet in a meter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal FeetPerMeter = (CentimetersPerMeter / CentimetersPerFoot);
+        private const Decimal FeetPerMeter = CentimetersPerMeter / CentimetersPerFoot;
 
         /// <summary>
         /// Represents the number of feet in a mile.
@@ -746,7 +746,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of inches in a meter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal InchesPerMeter = (CentimetersPerMeter / CentimetersPerInch);
+        private const Decimal InchesPerMeter = CentimetersPerMeter / CentimetersPerInch;
 
         /// <summary>
         /// Represents the textual symbol for an inch.
@@ -770,7 +770,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of light-years in a meter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal LightYearsPerMeter = (1m / MetersPerLightYear);
+        private const Decimal LightYearsPerMeter = 1m / MetersPerLightYear;
 
         /// <summary>
         /// Represents the textual symbol for a light-year.
@@ -794,7 +794,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of miles in a meter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal MilesPerMeter = (FeetPerMeter / FeetPerMile);
+        private const Decimal MilesPerMeter = FeetPerMeter / FeetPerMile;
 
         /// <summary>
         /// Represents the textual symbol for a mile.
@@ -836,7 +836,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Represents the number of yards in a meter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal YardsPerMeter = (FeetPerMeter / FeetPerYard);
+        private const Decimal YardsPerMeter = FeetPerMeter / FeetPerYard;
 
         /// <summary>
         /// Represents the textual symbol for a yard.

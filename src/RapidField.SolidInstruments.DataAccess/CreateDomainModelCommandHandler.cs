@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// </typeparam>
     public class CreateDomainModelCommandHandler<TIdentifier, TDomainModel, TDataAccessModel, TCommand> : CreateDomainModelCommandHandler<TDomainModel, TCommand>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>, new()
         where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
         where TCommand : class, ICreateDomainModelCommand<TDomainModel>
     {
@@ -70,7 +70,7 @@ namespace RapidField.SolidInstruments.DataAccess
             var dataAccessModel = new TDataAccessModel();
             dataAccessModel.HydrateFromDomainModel(model);
             var dataAccessModelCommand = new CreateOrUpdateDataAccessModelCommand<TIdentifier, TDataAccessModel>(dataAccessModel);
-            mediator.Process(dataAccessModelCommand);
+            _ = mediator.Process(dataAccessModelCommand);
         }
 
         /// <summary>

@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
             {
                 Array.Copy(ciphertext, 0, initializationVector, 0, BlockSizeInBytes);
 
-                using (var cipherTextSansInitializationVector = new PinnedMemory((ciphertext.Length - BlockSizeInBytes), true))
+                using (var cipherTextSansInitializationVector = new PinnedMemory(ciphertext.Length - BlockSizeInBytes, true))
                 {
                     Array.Copy(ciphertext, BlockSizeInBytes, cipherTextSansInitializationVector, 0, cipherTextSansInitializationVector.Length);
 
@@ -319,7 +319,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// Gets the number of bytes per block for the cipher represented by this <see cref="SymmetricKeyCipher" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal Int32 BlockSizeInBytes => (BlockSizeInBits / 8);
+        internal Int32 BlockSizeInBytes => BlockSizeInBits / 8;
 
         /// <summary>
         /// Gets the number of key bytes for the cipher represented by this <see cref="SymmetricKeyCipher" />.

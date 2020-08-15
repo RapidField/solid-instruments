@@ -107,7 +107,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Temperature a, Temperature b) => (a == b) == false;
+        public static Boolean operator !=(Temperature a, Temperature b) => a == b == false;
 
         /// <summary>
         /// Determines the product of a <see cref="Temperature" /> value and a multiplier.
@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Temperature" /> and the specified multiplier.
         /// </returns>
-        public static Temperature operator *(Temperature multiplicand, Double multiplier) => (multiplicand * Convert.ToDecimal(multiplier));
+        public static Temperature operator *(Temperature multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
 
         /// <summary>
         /// Determines the product of a <see cref="Temperature" /> value and a multiplier.
@@ -149,7 +149,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Temperature" /> and the specified divisor.
         /// </returns>
-        public static Temperature operator /(Temperature dividend, Double divisor) => (dividend / Convert.ToDecimal(divisor));
+        public static Temperature operator /(Temperature dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
 
         /// <summary>
         /// Determines the quotient of a <see cref="Temperature" /> value and a divisor.
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is less than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(Temperature a, Temperature b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(Temperature a, Temperature b) => a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Temperature" /> instance is less than or equal to another supplied
@@ -207,7 +207,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is less than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(Temperature a, Temperature b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Temperature" /> instances are equal.
@@ -235,7 +235,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// <see langword="true" /> if the second object is greater than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(Temperature a, Temperature b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Temperature" /> instance is greater than or equal to another supplied
@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <see langword="true" /> if the second object is greater than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(Temperature a, Temperature b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a temperature value to its <see cref="Temperature" />
@@ -352,7 +352,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Temperature other) => (DegreesCelsius == other.DegreesCelsius);
+        public Boolean Equals(Temperature other) => DegreesCelsius == other.DegreesCelsius;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -540,12 +540,12 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Temperature" /> expressed in degrees Fahrenheit.
         /// </summary>
-        public Decimal TotalDegreesFahrenheit => ((DegreesCelsius * (9m / 5m)) + 32m);
+        public Decimal TotalDegreesFahrenheit => (DegreesCelsius * (9m / 5m)) + 32m;
 
         /// <summary>
         /// Gets the value of the current <see cref="Temperature" /> expressed in kelvins.
         /// </summary>
-        public Decimal TotalKelvins => (DegreesCelsius + 273.15m);
+        public Decimal TotalKelvins => DegreesCelsius + 273.15m;
 
         /// <summary>
         /// Represents the temperature at the lower limit of the thermodynamic temperature scale.

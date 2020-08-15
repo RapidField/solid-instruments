@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
 
             foreach (var record in Records)
             {
-                var valueHasBeenRecorded = (record.Count > 0);
+                var valueHasBeenRecorded = record.Count > 0;
 
                 if (record.Value == value)
                 {
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             /// <summary>
             /// Gets the average length between occurrences of <see cref="Value" /> in the associated array.
             /// </summary>
-            public Double AverageLengthBetween => (LengthsBetween.Any() ? LengthsBetween.Average() : 0d);
+            public Double AverageLengthBetween => LengthsBetween.Any() ? LengthsBetween.Average() : 0d;
 
             /// <summary>
             /// Gets or sets the frequency of <see cref="Value" /> in the associated array.

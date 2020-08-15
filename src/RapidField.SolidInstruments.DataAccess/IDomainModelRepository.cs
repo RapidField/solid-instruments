@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// </typeparam>
     public interface IDomainModelRepository<TIdentifier, TDataAccessModel, TDomainModel> : IDataAccessModelRepository<TIdentifier, TDataAccessModel>, IReadOnlyDomainModelRepository<TIdentifier, TDataAccessModel, TDomainModel>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>, new()
         where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
     {
         /// <summary>
@@ -223,7 +223,7 @@ namespace RapidField.SolidInstruments.DataAccess
         [DebuggerHidden]
         internal static TDataAccessModel ConvertToDataAccessModel<TIdentifier, TDataAccessModel, TDomainModel>(TDomainModel domainModel)
             where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-            where TDomainModel : class, IDomainModel<TIdentifier>
+            where TDomainModel : class, IDomainModel<TIdentifier>, new()
             where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
         {
             _ = domainModel.RejectIf().IsNull(nameof(domainModel));
@@ -269,7 +269,7 @@ namespace RapidField.SolidInstruments.DataAccess
         [DebuggerHidden]
         internal static TDomainModel ConvertToDomainModel<TIdentifier, TDataAccessModel, TDomainModel>(TDataAccessModel dataAccessModel)
             where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-            where TDomainModel : class, IDomainModel<TIdentifier>
+            where TDomainModel : class, IDomainModel<TIdentifier>, new()
             where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
         {
             try

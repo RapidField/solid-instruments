@@ -46,6 +46,6 @@ namespace RapidField.SolidInstruments.Collections.UnitTests
         /// <returns>
         /// The next term in the sequence.
         /// </returns>
-        protected override Int32 CalculateNext(IEnumerable<Int32> calculatedTerms) => (calculatedTerms.Last() + 1);
+        protected override Int32 CalculateNext(IEnumerable<Int32> calculatedTerms) => calculatedTerms.Last() + 1;
     }
 }

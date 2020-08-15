@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Nix a, Nix b) => (a == b) == false;
+        public static Boolean operator !=(Nix a, Nix b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="Nix" /> instance is less than another specified instance.
@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.Core
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Object obj) => obj is Nix ? CompareTo((Nix)obj) : GetType().FullName.CompareTo(obj.GetType().FullName);
+        public Int32 CompareTo(Object obj) => obj is Nix nix ? CompareTo(nix) : GetType().FullName.CompareTo(obj.GetType().FullName);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Nix" /> is equal to the specified <see cref="Object" />.

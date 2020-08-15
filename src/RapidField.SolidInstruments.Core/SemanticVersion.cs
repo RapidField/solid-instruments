@@ -199,7 +199,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SemanticVersion a, ISemanticVersion b) => (a == b) == false;
+        public static Boolean operator !=(SemanticVersion a, ISemanticVersion b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ISemanticVersion" /> instance is less than another specified instance.
@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(SemanticVersion a, ISemanticVersion b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(SemanticVersion a, ISemanticVersion b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ISemanticVersion" /> instance is less than or equal to another supplied
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(SemanticVersion a, ISemanticVersion b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(SemanticVersion a, ISemanticVersion b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="ISemanticVersion" /> instances are equal.
@@ -245,11 +245,11 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean operator ==(SemanticVersion a, ISemanticVersion b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -270,7 +270,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(SemanticVersion a, ISemanticVersion b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(SemanticVersion a, ISemanticVersion b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ISemanticVersion" /> instance is greater than or equal to another
@@ -286,7 +286,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(SemanticVersion a, ISemanticVersion b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(SemanticVersion a, ISemanticVersion b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a semantic version to its <see cref="SemanticVersion" />
@@ -307,15 +307,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="FormatException">
         /// <paramref name="input" /> does not contain a valid representation of a semantic version.
         /// </exception>
-        public static SemanticVersion Parse(String input)
-        {
-            if (Parse(input, out var value, true))
-            {
-                return value;
-            }
-
-            return default;
-        }
+        public static SemanticVersion Parse(String input) => Parse(input, out var value, true) ? value : default;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a semantic version to its <see cref="SemanticVersion" />
@@ -521,7 +513,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextMajorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion((MajorVersion + 1), 0, 0, preReleaseLabel, buildMetadata);
+        public SemanticVersion NextMajorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion + 1, 0, 0, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Returns the next minor version after the current <see cref="SemanticVersion" />.
@@ -561,7 +553,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextMinorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, (MinorVersion + 1), 0, preReleaseLabel, buildMetadata);
+        public SemanticVersion NextMinorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, MinorVersion + 1, 0, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Returns the next patch version after the current <see cref="SemanticVersion" />.
@@ -601,7 +593,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextPatchVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, MinorVersion, (PatchVersion + 1), preReleaseLabel, buildMetadata);
+        public SemanticVersion NextPatchVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, MinorVersion, PatchVersion + 1, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Converts the value of the current <see cref="SemanticVersion" /> to its equivalent string representation.
@@ -616,12 +608,12 @@ namespace RapidField.SolidInstruments.Core
 
             if (PreReleaseLabel.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{DelimiterPrefixForPreReleaseLabel}{PreReleaseLabel}");
+                _ = stringBuilder.Append($"{DelimiterPrefixForPreReleaseLabel}{PreReleaseLabel}");
             }
 
             if (BuildMetadata.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{DelimiterPrefixForBuildMetadata}{BuildMetadata}");
+                _ = stringBuilder.Append($"{DelimiterPrefixForBuildMetadata}{BuildMetadata}");
             }
 
             return stringBuilder.ToString();
@@ -839,21 +831,21 @@ namespace RapidField.SolidInstruments.Core
         /// x.0.0).
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsMajor => (MinorVersion == 0 && PatchVersion == 0);
+        public Boolean IsMajor => MinorVersion == 0 && PatchVersion == 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a new minor version (eg.
         /// x.x.0).
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsMinor => (MinorVersion > 0 && PatchVersion == 0);
+        public Boolean IsMinor => MinorVersion > 0 && PatchVersion == 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a patch version (
         /// <see cref="PatchVersion" /> is greater than zero).
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsPatch => (PatchVersion > 0);
+        public Boolean IsPatch => PatchVersion > 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a pre-release version.
@@ -865,7 +857,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a stable version.
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsStable => (IsPreRelease == false);
+        public Boolean IsStable => IsPreRelease == false;
 
         /// <summary>
         /// Gets or sets the major version number, which is incremented for compatibility-breaking feature changes.

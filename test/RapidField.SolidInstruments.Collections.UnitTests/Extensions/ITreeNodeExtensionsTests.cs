@@ -1217,12 +1217,12 @@ namespace RapidField.SolidInstruments.Collections.UnitTests.Extensions
 
         private static readonly Func<ITreeNode<Int32>, IEnumerable<Int32>, Int32> SumDownFunction = (node, childResults) =>
         {
-            return (node.Value + childResults.Sum());
+            return node.Value + childResults.Sum();
         };
 
         private static readonly Func<ITreeNode<Int32>, Int32, Int32> SumUpFunction = (node, parentResult) =>
         {
-            return (node.Value + parentResult);
+            return node.Value + parentResult;
         };
     }
 }

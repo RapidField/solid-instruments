@@ -303,13 +303,13 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 // Act.
                 using (var secureMemory = target.ToSecureMemory())
                 {
-                    secureMemory.Access((plaintext =>
+                    secureMemory.Access(plaintext =>
                     {
                         // Assert.
                         plaintext.Should().NotBeNullOrEmpty();
                         plaintext.Length.Should().Be(cascadingKeyLengthInBytes);
                         plaintext.Count(value => value == 0x00).Should().NotBe((Int32)plaintext.Length);
-                    }));
+                    });
                 }
             }
         }

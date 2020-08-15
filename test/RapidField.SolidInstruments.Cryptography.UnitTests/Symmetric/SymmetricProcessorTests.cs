@@ -564,7 +564,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Symmetric
                 using (var secureKeyMemory = new SecureMemory(key.Length))
                 {
                     // Arrange.
-                    var blockLengthInBytes = (blockLengthInBits / 8);
+                    var blockLengthInBytes = blockLengthInBits / 8;
                     var target = new SymmetricProcessor(randomnessProvider);
                     secureKeyMemory.Access(keyMemory =>
                     {

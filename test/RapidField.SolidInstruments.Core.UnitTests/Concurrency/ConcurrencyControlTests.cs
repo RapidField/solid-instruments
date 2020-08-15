@@ -180,13 +180,13 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
                 // Act.
                 var primitiveControlDuration = PerformUsingPrimitive(operations, performUsingPrimitive);
                 var solidControlDuration = PerformUsingSolidControl(operations, mode);
-                var totalLatency = (solidControlDuration - primitiveControlDuration);
+                var totalLatency = solidControlDuration - primitiveControlDuration;
                 var latencyPerOperation = TimeSpan.FromTicks(totalLatency.Ticks / operationCount);
                 sumOfLatenciesPerOperation += latencyPerOperation;
             }
 
             // Assert.
-            var averageLatencyPerOperationInTicks = (sumOfLatenciesPerOperation.Ticks / iterationCount);
+            var averageLatencyPerOperationInTicks = sumOfLatenciesPerOperation.Ticks / iterationCount;
             averageLatencyPerOperationInTicks.Should().BeLessThan(latencyThresholdInTicks);
         }
 
@@ -266,7 +266,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
         {
             var numbers = new Int32[] { 3, 5, 8, 13 };
 
-            for (var i = (numbers.Length - 2); i >= 0; i--)
+            for (var i = numbers.Length - 2; i >= 0; i--)
             {
                 if ((numbers[i + 1] % numbers[i]) == 2)
                 {

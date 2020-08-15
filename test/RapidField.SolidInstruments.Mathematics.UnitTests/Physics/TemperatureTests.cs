@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var addend = new Temperature(2.5d);
 
             // Act.
-            var result = (augend + addend);
+            var result = augend + addend;
 
             // Assert.
             result.Should().Be(new Temperature(8.5m));
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var divisor = 2.5d;
 
             // Act.
-            var result = (dividend / divisor);
+            var result = dividend / divisor;
 
             // Assert.
             result.Should().Be(new Temperature(2.4m));
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
             var minuend = new Temperature(2.5d);
 
             // Act.
-            var result = (subtrahend - minuend);
+            var result = subtrahend - minuend;
 
             // Assert.
             result.Should().Be(new Temperature(3.5m));

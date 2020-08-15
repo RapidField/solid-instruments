@@ -131,16 +131,16 @@ namespace RapidField.SolidInstruments.Core.Extensions
             }
 
             var collectionByteLength = target.Length;
-            var collectionBitLength = (collectionByteLength * 8);
-            var simplifiedBitShiftCount = (bitShiftCount.RejectIf().IsLessThan(0, nameof(bitShiftCount)) % collectionBitLength);
+            var collectionBitLength = collectionByteLength * 8;
+            var simplifiedBitShiftCount = bitShiftCount.RejectIf().IsLessThan(0, nameof(bitShiftCount)) % collectionBitLength;
 
             if (simplifiedBitShiftCount == 0)
             {
                 return target;
             }
 
-            var simplifiedByteShiftCount = (simplifiedBitShiftCount / 8);
-            var bitShiftRemainder = (simplifiedBitShiftCount % 8);
+            var simplifiedByteShiftCount = simplifiedBitShiftCount / 8;
+            var bitShiftRemainder = simplifiedBitShiftCount % 8;
             var outputBuffer = new Byte[collectionByteLength];
             Int32 headIndex;
             Int32 readIndex;
@@ -173,14 +173,14 @@ namespace RapidField.SolidInstruments.Core.Extensions
                         {
                             leftElement = target[readIndex];
                             rightElement = target[readIndex == (collectionByteLength - 1) ? 0 : (readIndex + 1)];
-                            outputBuffer[writeIndex] = unchecked((Byte)(leftElement >> bitShiftRemainder | rightElement << (8 - bitShiftRemainder)));
+                            outputBuffer[writeIndex] = unchecked((Byte)((leftElement >> bitShiftRemainder) | (rightElement << (8 - bitShiftRemainder))));
                         }
 
                         for (readIndex = 0; readIndex < headIndex; readIndex++, writeIndex++)
                         {
                             leftElement = target[readIndex];
                             rightElement = target[readIndex + 1];
-                            outputBuffer[writeIndex] = unchecked((Byte)(leftElement >> bitShiftRemainder | rightElement << (8 - bitShiftRemainder)));
+                            outputBuffer[writeIndex] = unchecked((Byte)((leftElement >> bitShiftRemainder) | (rightElement << (8 - bitShiftRemainder))));
                         }
                     }
 
@@ -188,7 +188,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
                 case BitShiftDirection.Right:
 
-                    headIndex = (collectionByteLength - simplifiedByteShiftCount);
+                    headIndex = collectionByteLength - simplifiedByteShiftCount;
 
                     if (bitShiftRemainder == 0)
                     {
@@ -211,14 +211,14 @@ namespace RapidField.SolidInstruments.Core.Extensions
                         {
                             leftElement = target[readIndex - 1];
                             rightElement = target[readIndex];
-                            outputBuffer[writeIndex] = unchecked((Byte)(leftElement >> (8 - bitShiftRemainder) | rightElement << bitShiftRemainder));
+                            outputBuffer[writeIndex] = unchecked((Byte)((leftElement >> (8 - bitShiftRemainder)) | (rightElement << bitShiftRemainder)));
                         }
 
                         for (readIndex = 0; readIndex < headIndex; readIndex++, writeIndex++)
                         {
                             leftElement = target[readIndex == 0 ? (collectionByteLength - 1) : (readIndex - 1)];
                             rightElement = target[readIndex];
-                            outputBuffer[writeIndex] = unchecked((Byte)(leftElement >> (8 - bitShiftRemainder) | rightElement << bitShiftRemainder));
+                            outputBuffer[writeIndex] = unchecked((Byte)((leftElement >> (8 - bitShiftRemainder)) | (rightElement << bitShiftRemainder)));
                         }
                     }
 

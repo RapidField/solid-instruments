@@ -172,7 +172,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="Instrument" /> has been disposed or is currently in the
         /// process of being disposed.
         /// </summary>
-        protected Boolean IsDisposedOrDisposing => (IsDisposed || IsDisposing);
+        protected Boolean IsDisposedOrDisposing => IsDisposed || IsDisposing;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="Instrument" /> is currently in the process of being

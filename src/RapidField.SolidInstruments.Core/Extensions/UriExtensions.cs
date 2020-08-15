@@ -85,7 +85,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
             }
 
             // Remove the trailing ampersand.
-            queryStringBuilder.Remove((queryStringBuilderLength - 1), 1);
+            queryStringBuilder.Remove(queryStringBuilderLength - 1, 1);
 
             if (target.Query.IsNullOrEmpty())
             {

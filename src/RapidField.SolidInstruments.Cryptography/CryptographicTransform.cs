@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Cryptography
         protected CryptographicTransform(Int32 blockSize, CipherMode mode, PaddingMode paddingMode, EncryptionDirection encryptionDirection)
             : base(ConcurrencyControlMode.SingleThreadLock)
         {
-            BlockSizeInBytes = Convert.ToByte((blockSize.RejectIf().IsLessThanOrEqualTo(0, nameof(blockSize)) / 8));
+            BlockSizeInBytes = Convert.ToByte(blockSize.RejectIf().IsLessThanOrEqualTo(0, nameof(blockSize)) / 8);
             EncryptionDirection = encryptionDirection.RejectIf().IsEqualToValue(EncryptionDirection.Unspecified, nameof(encryptionDirection));
             Mode = mode;
             PaddingMode = paddingMode;
@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 return block;
             }
 
-            var paddingLengthInBytes = (blockSizeInBytes - block.Length);
+            var paddingLengthInBytes = blockSizeInBytes - block.Length;
 
             if (paddingLengthInBytes <= 0)
             {
@@ -238,7 +238,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
             var ciphertextByteCount = Convert.ToByte(blockSizeInBytes - paddingLengthInBytes);
             var blockWithPaddingRemoved = new Byte[ciphertextByteCount];
-            var startPosition = (blockSizeInBytes - 2);
+            var startPosition = blockSizeInBytes - 2;
 
             switch (paddingMode)
             {
@@ -304,12 +304,12 @@ namespace RapidField.SolidInstruments.Cryptography
             var encryptionDirection = transform.EncryptionDirection;
             var paddingMode = transform.PaddingMode;
             var currentLeadingRangeIndex = 0;
-            var nextLeadingRangeIndex = (currentLeadingRangeIndex + blockSizeInBytes);
+            var nextLeadingRangeIndex = currentLeadingRangeIndex + blockSizeInBytes;
             var currentBlock = (Byte[])null;
 
             while (currentLeadingRangeIndex < range.Count)
             {
-                var currentBlockIsFinalBlock = (nextLeadingRangeIndex >= range.Count);
+                var currentBlockIsFinalBlock = nextLeadingRangeIndex >= range.Count;
 
                 switch (encryptionDirection)
                 {
@@ -341,12 +341,12 @@ namespace RapidField.SolidInstruments.Cryptography
                         if (currentBlockIsFinalBlock)
                         {
                             currentBlock = ConditionallyRemovePadding(currentBlock, blockSizeInBytes, paddingMode);
-                            var countOfPaddingBytesRemoved = (blockSizeInBytes - currentBlock.Length);
+                            var countOfPaddingBytesRemoved = blockSizeInBytes - currentBlock.Length;
 
                             if (countOfPaddingBytesRemoved > 0)
                             {
                                 // Contract the range to account for cleared padding bytes.
-                                range.RemoveRange((currentLeadingRangeIndex + currentBlock.Length), countOfPaddingBytesRemoved);
+                                range.RemoveRange(currentLeadingRangeIndex + currentBlock.Length, countOfPaddingBytesRemoved);
                             }
                         }
 
@@ -392,7 +392,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <summary>
         /// Gets the block size, in bits.
         /// </summary>
-        protected Int32 BlockSizeInBits => (BlockSizeInBytes * 8);
+        protected Int32 BlockSizeInBits => BlockSizeInBytes * 8;
 
         /// <summary>
         /// Gets the block size, in bytes.

@@ -320,7 +320,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents the highest assignable token identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 MaximumTokenIdentifier = (Int32.MaxValue - 256);
+        private const Int32 MaximumTokenIdentifier = Int32.MaxValue - 256;
 
         /// <summary>
         /// Represents the maximum length of time to block a thread before raising an exception, or

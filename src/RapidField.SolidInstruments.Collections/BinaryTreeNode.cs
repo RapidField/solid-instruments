@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Collections
         private BinaryTreeNode(T value, BinaryTreeNode<T> leftChild, BinaryTreeNode<T> rightChild, Boolean rejectNullLeftChild, Boolean rejectNullRightChild)
             : base(value, 2)
         {
-            if (leftChild is null == false)
+            if ((leftChild is null) == false)
             {
                 if (AddChild(leftChild) == false)
                 {
@@ -130,7 +130,7 @@ namespace RapidField.SolidInstruments.Collections
                 leftChild.RejectIf().IsNull(nameof(leftChild));
             }
 
-            if (rightChild is null == false)
+            if ((rightChild is null) == false)
             {
                 if (AddChild(rightChild) == false)
                 {

@@ -242,9 +242,9 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
                 return;
             }
 
-            var pairCount = (rowCount / 2);
-            var pairCountModulus = (rowCount % 2);
-            var parentRowLength = (pairCount + pairCountModulus);
+            var pairCount = rowCount / 2;
+            var pairCountModulus = rowCount % 2;
+            var parentRowLength = pairCount + pairCountModulus;
             var parentRow = new HashTreeNode[parentRowLength];
 
             for (var i = 0; i < pairCount; i++)

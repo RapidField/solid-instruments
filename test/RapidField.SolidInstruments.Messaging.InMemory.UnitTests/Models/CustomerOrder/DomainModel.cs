@@ -99,7 +99,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
         public Decimal TotalCost => Products.Select(product => product.Price ?? 0m).Sum();
 
         /// <summary>
-        /// Represents the name that is used when representing this current type in serialization and transport contexts.
+        /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DataContractName = "CustomerOrder";

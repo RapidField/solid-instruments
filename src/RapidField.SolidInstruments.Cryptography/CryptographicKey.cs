@@ -69,9 +69,9 @@ namespace RapidField.SolidInstruments.Cryptography
             LazyPbkdf2Provider = new Lazy<Rfc2898DeriveBytes>(InitializePbkdf2Algorithm, LazyThreadSafetyMode.ExecutionAndPublication);
 
             // Gather information about the derived key.
-            DerivedKeyLength = (derivedKeyLengthInBits.RejectIf().IsLessThanOrEqualTo(0, nameof(derivedKeyLengthInBits)).TargetArgument / 8);
-            BlockWordCount = (derivedKeyLengthInBits / 32);
-            BlockCount = (KeySourceWordCount / BlockWordCount);
+            DerivedKeyLength = derivedKeyLengthInBits.RejectIf().IsLessThanOrEqualTo(0, nameof(derivedKeyLengthInBits)).TargetArgument / 8;
+            BlockWordCount = derivedKeyLengthInBits / 32;
+            BlockCount = KeySourceWordCount / BlockWordCount;
 
             // Copy in the key source bits.
             KeySource.Access(memory => Array.Copy(keySource.RejectIf().IsNull(nameof(keySource)).OrIf(argument => argument.Length > KeySourceLengthInBytes, nameof(keySource), "The specified key source contains too many elements.").TargetArgument, memory, keySource.Length));
@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Cryptography
                                         for (var j = 0; j < BlockWordCount; j++)
                                         {
                                             // Perform the XOR layering operation.
-                                            transformedWords[j] = (transformedWords[j] ^ sourceWords[(i * BlockWordCount) + j]);
+                                            transformedWords[j] = transformedWords[j] ^ sourceWords[(i * BlockWordCount) + j];
                                         }
                                     }
 
@@ -157,7 +157,7 @@ namespace RapidField.SolidInstruments.Cryptography
                                         for (var j = 0; j < BlockWordCount; j++)
                                         {
                                             // Perform the XOR layering operation with substitution.
-                                            transformedWords[j] = (SubstituteWord(transformedWords[j]) ^ sourceWords[(i * BlockWordCount) + j]);
+                                            transformedWords[j] = SubstituteWord(transformedWords[j]) ^ sourceWords[(i * BlockWordCount) + j];
                                         }
                                     }
 
@@ -356,7 +356,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the byte index of the algorithm byte within an unencrypted, serialized bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 AlgorithmSecureMemoryIndex = (KeySourceSecureMemoryIndex + KeySourceLengthInBytes);
+        internal const Int32 AlgorithmSecureMemoryIndex = KeySourceSecureMemoryIndex + KeySourceLengthInBytes;
 
         /// <summary>
         /// Represents the default derivation mode for new keys.
@@ -368,13 +368,13 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the byte index of the derivation mode byte within an unencrypted, serialized bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 DerivationModeSecureMemoryIndex = (AlgorithmSecureMemoryIndex + AlgorithmLength);
+        internal const Int32 DerivationModeSecureMemoryIndex = AlgorithmSecureMemoryIndex + AlgorithmLength;
 
         /// <summary>
         /// Represents the number of bytes comprising <see cref="KeySource" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 KeySourceLengthInBytes = (KeySourceWordCount * sizeof(UInt32));
+        internal const Int32 KeySourceLengthInBytes = KeySourceWordCount * sizeof(UInt32);
 
         /// <summary>
         /// Represents the byte index of the key source within an unencrypted, serialized bit field.
@@ -387,14 +387,14 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <see cref="CryptographicKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 SerializedLength = (SerializedPlaintextLength + (SecureMemoryEncryptionAlgorithmBlockSizeInBytes * 2) - AlgorithmLength - DerivationModeLength);
+        internal const Int32 SerializedLength = SerializedPlaintextLength + (SecureMemoryEncryptionAlgorithmBlockSizeInBytes * 2) - AlgorithmLength - DerivationModeLength;
 
         /// <summary>
         /// Represents the number of bytes comprising a pre-encrypted, serialized representation of a
         /// <see cref="CryptographicKey" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 SerializedPlaintextLength = (KeySourceLengthInBytes + AlgorithmLength + DerivationModeLength);
+        internal const Int32 SerializedPlaintextLength = KeySourceLengthInBytes + AlgorithmLength + DerivationModeLength;
 
         /// <summary>
         /// Represents the key for the cryptographic key algorithm that is used to obscure serialized bit fields.
@@ -433,19 +433,19 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the number of key source bytes constituting the iteration sum for PBKDF2-derived keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 Pbkdf2IterationSumLengthInBytes = (KeySourceLengthInBytes / 3);
+        private const Int32 Pbkdf2IterationSumLengthInBytes = KeySourceLengthInBytes / 3;
 
         /// <summary>
         /// Represents the number of key source bytes constituting the password for PBKDF2-derived keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 Pbkdf2PasswordLengthInBytes = (KeySourceLengthInBytes / 3);
+        private const Int32 Pbkdf2PasswordLengthInBytes = KeySourceLengthInBytes / 3;
 
         /// <summary>
         /// Represents the number of key source bytes constituting the salt for PBKDF2-derived keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 Pbkdf2SaltLengthInBytes = (KeySourceLengthInBytes / 3);
+        private const Int32 Pbkdf2SaltLengthInBytes = KeySourceLengthInBytes / 3;
 
         /// <summary>
         /// Represents a finalizer for static members of the <see cref="CryptographicKey{TAlgorithm}" /> class.

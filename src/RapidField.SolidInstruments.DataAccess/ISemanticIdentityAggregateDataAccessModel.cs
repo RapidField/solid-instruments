@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// The type of the domain model to which the data access model is mapped.
     /// </typeparam>
     public interface ISemanticIdentityAggregateDataAccessModel<TDomainModel> : ISemanticIdentityAggregateDataAccessModel, IAggregateDataAccessModel<String, TDomainModel>
-        where TDomainModel : class, ISemanticIdentityAggregateDomainModel
+        where TDomainModel : class, ISemanticIdentityAggregateDomainModel, new()
     {
     }
 

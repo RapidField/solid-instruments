@@ -187,7 +187,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the number of source bytes generated for a single round of <see cref="PermuteBuffer" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 BufferPermutationSourceLengthInBytes = (CipherBlockLengthInBytes * 32);
+        private const Int32 BufferPermutationSourceLengthInBytes = CipherBlockLengthInBytes * 32;
 
         /// <summary>
         /// Represents the bit-length of a single block for <see cref="Cipher" />.
@@ -199,7 +199,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the length of a single block for <see cref="Cipher" />, in bytes.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 CipherBlockLengthInBytes = (CipherBlockLengthInBits / 8);
+        private const Int32 CipherBlockLengthInBytes = CipherBlockLengthInBits / 8;
 
         /// <summary>
         /// Represents the bit-length of the private key for <see cref="Cipher" />.
@@ -211,7 +211,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents the length of the private key for <see cref="Cipher" />, in bytes.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 CipherKeyLengthInBytes = (CipherKeyLengthInBits / 8);
+        private const Int32 CipherKeyLengthInBytes = CipherKeyLengthInBits / 8;
 
         /// <summary>
         /// Represents a finalizer for static members of the <see cref="HardenedRandomNumberGenerator" /> class.

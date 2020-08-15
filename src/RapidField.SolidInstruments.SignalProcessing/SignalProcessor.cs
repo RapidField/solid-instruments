@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         {
             for (var i = 0; i < count; i++)
             {
-                var index = (startIndex + i);
+                var index = startIndex + i;
 
                 if (TryRead(index, out var outputValue))
                 {

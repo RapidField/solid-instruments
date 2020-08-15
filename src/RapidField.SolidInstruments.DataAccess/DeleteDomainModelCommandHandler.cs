@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.DataAccess
     /// </typeparam>
     public class DeleteDomainModelCommandHandler<TIdentifier, TDomainModel, TDataAccessModel, TCommand> : DeleteDomainModelCommandHandler<TDomainModel, TCommand>
         where TIdentifier : IComparable, IComparable<TIdentifier>, IEquatable<TIdentifier>
-        where TDomainModel : class, IDomainModel<TIdentifier>
+        where TDomainModel : class, IDomainModel<TIdentifier>, new()
         where TDataAccessModel : class, IDataAccessModel<TIdentifier, TDomainModel>, new()
         where TCommand : class, IDeleteDomainModelCommand<TDomainModel>
     {
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.DataAccess
         protected override void DeleteDomainModel(TDomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             var dataAccessModelCommand = new DeleteDataAccessModelCommand<TIdentifier, TDataAccessModel>(model.Identifier);
-            mediator.Process(dataAccessModelCommand);
+            _ = mediator.Process(dataAccessModelCommand);
         }
 
         /// <summary>

@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during configuration of the factory.
         /// </exception>
         [DebuggerHidden]
-        internal virtual ConcurrentDictionary<Type, IObjectFactoryProductionFunction> DefineProductionFunctions() => ((ObjectFactoryConfigurationProductionFunctions<TProductBase>)(Configuration.ProductionFunctions)).Dictionary;
+        internal virtual ConcurrentDictionary<Type, IObjectFactoryProductionFunction> DefineProductionFunctions() => ((ObjectFactoryConfigurationProductionFunctions<TProductBase>)Configuration.ProductionFunctions).Dictionary;
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory{TProductBase}" />.

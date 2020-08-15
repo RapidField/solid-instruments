@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>This project houses sample domain machinery that utilizes Solid Instruments data access and messaging constructs.</Description>
+        <Description>This project houses a sample collection of shared domain models that utilize the Solid Instruments messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -28,8 +28,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" />
-        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.InversionOfControl.DotNetNative\RapidField.SolidInstruments.InversionOfControl.DotNetNative.csproj" />
-        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative\RapidField.SolidInstruments.Messaging.DotNetNative.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
     </ItemGroup>
 </Project>

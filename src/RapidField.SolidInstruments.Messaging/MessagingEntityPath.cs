@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(MessagingEntityPath a, IMessagingEntityPath b) => (a == b) == false;
+        public static Boolean operator !=(MessagingEntityPath a, IMessagingEntityPath b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IMessagingEntityPath" /> instance is less than another specified
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(MessagingEntityPath a, IMessagingEntityPath b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(MessagingEntityPath a, IMessagingEntityPath b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IMessagingEntityPath" /> instance is less than or equal to another
@@ -175,7 +175,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(MessagingEntityPath a, IMessagingEntityPath b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(MessagingEntityPath a, IMessagingEntityPath b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IMessagingEntityPath" /> instances are equal.
@@ -191,11 +191,11 @@ namespace RapidField.SolidInstruments.Messaging
         /// </returns>
         public static Boolean operator ==(MessagingEntityPath a, IMessagingEntityPath b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(MessagingEntityPath a, IMessagingEntityPath b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(MessagingEntityPath a, IMessagingEntityPath b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IMessagingEntityPath" /> instance is greater than or equal to another
@@ -232,7 +232,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(MessagingEntityPath a, IMessagingEntityPath b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(MessagingEntityPath a, IMessagingEntityPath b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a messaging entity path to its
@@ -253,15 +253,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <exception cref="FormatException">
         /// <paramref name="input" /> does not contain a valid representation of a messaging entity path.
         /// </exception>
-        public static MessagingEntityPath Parse(String input)
-        {
-            if (Parse(input, out var value, true))
-            {
-                return value;
-            }
-
-            return default;
-        }
+        public static MessagingEntityPath Parse(String input) => Parse(input, out var value, true) ? value : default;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a messaging entity path to its
@@ -394,27 +386,27 @@ namespace RapidField.SolidInstruments.Messaging
 
             if (Prefix.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{Prefix}{DelimitingCharacterForPrefix}");
+                _ = stringBuilder.Append($"{Prefix}{DelimitingCharacterForPrefix}");
             }
 
             if (MessageType.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append(MessageType);
+                _ = stringBuilder.Append(MessageType);
             }
 
             if (LabelOne.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelOne}");
+                _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelOne}");
             }
 
             if (LabelTwo.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelTwo}");
+                _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelTwo}");
             }
 
             if (LabelThree.IsNullOrEmpty() == false)
             {
-                stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelThree}");
+                _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelThree}");
             }
 
             return stringBuilder.ToString();

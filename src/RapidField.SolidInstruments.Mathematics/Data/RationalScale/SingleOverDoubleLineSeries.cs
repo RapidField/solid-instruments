@@ -59,10 +59,10 @@ namespace RapidField.SolidInstruments.Mathematics.Data.RationalScale
         /// </returns>
         protected sealed override Single InterpolateLinear(Double xAxisValue, Double downwardXAxisValue, Single downwardYAxisValue, Double upwardXAxisValue, Single upwardYAxisValue)
         {
-            var yAxisRange = (upwardYAxisValue - downwardYAxisValue);
+            var yAxisRange = upwardYAxisValue - downwardYAxisValue;
             var positionInXAxisRange = Convert.ToSingle(xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue));
-            var adjustment = (yAxisRange * positionInXAxisRange);
-            return (downwardYAxisValue + adjustment);
+            var adjustment = yAxisRange * positionInXAxisRange;
+            return downwardYAxisValue + adjustment;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.RationalScale
         protected sealed override Single InterpolateNearest(Double xAxisValue, Double downwardXAxisValue, Single downwardYAxisValue, Double upwardXAxisValue, Single upwardYAxisValue)
         {
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            return (positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue);
+            return positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue;
         }
     }
 }

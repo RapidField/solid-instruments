@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.DateTimeScale
         {
             var yAxisRange = Convert.ToDouble(upwardYAxisValue - downwardYAxisValue);
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            var adjustment = (yAxisRange * positionInXAxisRange);
+            var adjustment = yAxisRange * positionInXAxisRange;
             return Convert.ToInt32((Convert.ToDouble(downwardYAxisValue) + adjustment).RoundedTo(0, MidpointRounding.AwayFromZero));
         }
 
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.DateTimeScale
         protected sealed override Int32 InterpolateNearest(DateTime xAxisValue, DateTime downwardXAxisValue, Int32 downwardYAxisValue, DateTime upwardXAxisValue, Int32 upwardYAxisValue)
         {
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
-            return (positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue);
+            return positionInXAxisRange < 0.5d ? downwardYAxisValue : upwardYAxisValue;
         }
     }
 }

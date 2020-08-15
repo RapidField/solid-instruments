@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Boolean Any() => (Count() > 0);
+        public Boolean Any() => Count() > 0;
 
         /// <summary>
         /// Determines whether or not the specified entity exists in the current

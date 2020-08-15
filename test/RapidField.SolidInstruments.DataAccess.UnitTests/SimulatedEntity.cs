@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SimulatedEntity<TValue> a, SimulatedEntity<TValue> b) => (a == b) == false;
+        public static Boolean operator !=(SimulatedEntity<TValue> a, SimulatedEntity<TValue> b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="SimulatedEntity{TValue}" /> instances are equal.
@@ -150,7 +150,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => (Identifier.GetHashCode() ^ Value.ToString().GetHashCode());
+        public override Int32 GetHashCode() => Identifier.GetHashCode() ^ Value.ToString().GetHashCode();
 
         /// <summary>
         /// Represents the entity's value.

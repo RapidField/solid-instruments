@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => (a == b) == false;
+        public static Boolean operator !=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IHeartbeatScheduleItem" /> instance is less than another specified
@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IHeartbeatScheduleItem" /> instance is less than or equal to another
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IHeartbeatScheduleItem" /> instances are equal.
@@ -169,7 +169,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IHeartbeatScheduleItem" /> instance is greater than or equal to another
@@ -185,7 +185,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Compares the current <see cref="IHeartbeatScheduleItem" /> to the specified object and returns an indication of their
@@ -257,7 +257,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(IHeartbeatScheduleItem other) => (MessageType == other.MessageType && IntervalInSeconds == other.IntervalInSeconds && EntityType == other.EntityType && Label == other.Label);
+        public Boolean Equals(IHeartbeatScheduleItem other) => MessageType == other.MessageType && IntervalInSeconds == other.IntervalInSeconds && EntityType == other.EntityType && Label == other.Label;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -265,7 +265,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => ((IntervalInSeconds ^ (Int32)EntityType) ^ ((Label is null ? 0 : Label.GetHashCode()) ^ MessageType.FullName.GetHashCode()));
+        public override Int32 GetHashCode() => IntervalInSeconds ^ (Int32)EntityType ^ (Label is null ? 0 : Label.GetHashCode()) ^ MessageType.FullName.GetHashCode();
 
         /// <summary>
         /// Converts the value of the current <see cref="HeartbeatScheduleItem{TMessage}" /> to its equivalent string

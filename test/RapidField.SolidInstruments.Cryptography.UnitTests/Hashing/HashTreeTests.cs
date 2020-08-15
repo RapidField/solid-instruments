@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         {
             // Arrange.
             var algorithm = HashingAlgorithmSpecification.Md5;
-            var maxBlockCount = (TreeHeightDictionary.Count - 1);
+            var maxBlockCount = TreeHeightDictionary.Count - 1;
 
             for (var i = 0; i <= maxBlockCount; i++)
             {
@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         {
             // Arrange.
             var algorithm = HashingAlgorithmSpecification.ShaTwo256;
-            var maxBlockCount = (TreeHeightDictionary.Count - 1);
+            var maxBlockCount = TreeHeightDictionary.Count - 1;
 
             for (var i = 0; i <= maxBlockCount; i++)
             {
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         {
             // Arrange.
             var algorithm = HashingAlgorithmSpecification.ShaTwo384;
-            var maxBlockCount = (TreeHeightDictionary.Count - 1);
+            var maxBlockCount = TreeHeightDictionary.Count - 1;
 
             for (var i = 0; i <= maxBlockCount; i++)
             {
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
         {
             // Arrange.
             var algorithm = HashingAlgorithmSpecification.ShaTwo512;
-            var maxBlockCount = (TreeHeightDictionary.Count - 1);
+            var maxBlockCount = TreeHeightDictionary.Count - 1;
 
             for (var i = 0; i <= maxBlockCount; i++)
             {

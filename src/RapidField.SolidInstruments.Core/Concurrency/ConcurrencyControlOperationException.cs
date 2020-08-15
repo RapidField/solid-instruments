@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// The exception that is the cause of the current exception.
         /// </param>
         public ConcurrencyControlOperationException(String message, Exception innerException)
-            : base((message ?? ConstructMessage(innerException is null == false)), innerException)
+            : base(message ?? ConstructMessage((innerException is null) == false), innerException)
         {
             return;
         }

@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         protected override BigInteger CalculateNext(IEnumerable<BigInteger> calculatedTerms)
         {
             var inputTerms = calculatedTerms.Skip(calculatedTerms.Count() - 2).Take(2).ToArray();
-            return (inputTerms[0] + inputTerms[1]);
+            return inputTerms[0] + inputTerms[1];
         }
 
         /// <summary>

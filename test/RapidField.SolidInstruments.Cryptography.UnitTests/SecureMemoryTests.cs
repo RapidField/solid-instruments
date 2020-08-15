@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             var valueRange = 256;
             var confidence = 0.223d;
             var curveTolerance = 5m;
-            var length = (valueRange * valueRange);
+            var length = valueRange * valueRange;
             var target = (RandomByteArrayProfile)null;
             var meanTarget = valueRange;
             var meanLowerBoundary = Convert.ToDecimal(meanTarget - (meanTarget * confidence));
@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
             }
 
             finalAllocation = Convert.ToDouble(GC.GetTotalMemory(true));
-            allocationRange = (finalAllocation - initialAllocation);
+            allocationRange = finalAllocation - initialAllocation;
 
             // Assert.
             allocationRange.Should().BeLessThan(length * iterationCount * (1d - confidence));

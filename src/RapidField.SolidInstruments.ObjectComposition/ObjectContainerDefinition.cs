@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ObjectContainerDefinition a, IObjectContainerDefinition b) => (a == b) == false;
+        public static Boolean operator !=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a == b == false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is less than another specified
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// <see langword="true" /> if the second object is earlier than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator <(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) == -1;
+        public static Boolean operator <(ObjectContainerDefinition a, IObjectContainerDefinition b) => a is null ? b is Object : a.CompareTo(b) < 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IObjectContainerDefinition" /> instance is less than or equal to
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see langword="true" /> if the second object is earlier than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator <=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) < 1;
+        public static Boolean operator <=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a is null || a.CompareTo(b) <= 0;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IObjectContainerDefinition" /> instances are equal.
@@ -100,11 +100,11 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// </returns>
         public static Boolean operator ==(ObjectContainerDefinition a, IObjectContainerDefinition b)
         {
-            if ((Object)a is null && (Object)b is null)
+            if (a is null && b is null)
             {
                 return true;
             }
-            else if ((Object)a is null || (Object)b is null)
+            else if (a is null || b is null)
             {
                 return false;
             }
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// <see langword="true" /> if the second object is later than the first object, otherwise <see langword="false" />.
         /// </returns>
-        public static Boolean operator >(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) == 1;
+        public static Boolean operator >(ObjectContainerDefinition a, IObjectContainerDefinition b) => a is Object && a.CompareTo(b) > 0;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IObjectContainerDefinition" /> instance is greater than or equal to
@@ -141,7 +141,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see langword="true" /> if the second object is later than or equal to the first object, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean operator >=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a.CompareTo(b) > -1;
+        public static Boolean operator >=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a is null ? b is null : a.CompareTo(b) >= 0;
 
         /// <summary>
         /// Compares the current <see cref="ObjectContainerDefinition" /> to the specified object and returns an indication of their
@@ -158,19 +158,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             var thisInstanceHashCode = GetHashCode();
             var otherInstancHashCode = other.GetHashCode();
-
-            if (thisInstanceHashCode < otherInstancHashCode)
-            {
-                return -1;
-            }
-            else if (thisInstanceHashCode > otherInstancHashCode)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return thisInstanceHashCode < otherInstancHashCode ? -1 : thisInstanceHashCode > otherInstancHashCode ? 1 : 0;
         }
 
         /// <summary>
