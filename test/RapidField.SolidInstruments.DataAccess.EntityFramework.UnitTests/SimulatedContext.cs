@@ -5,7 +5,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
-using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entities;
 using System;
 using System.Configuration;

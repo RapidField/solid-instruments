@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String DataContractName = "User";
+        internal const String DataContractName = "User";
 
         /// <summary>
         /// Represents the email address for the current <see cref="DomainModel" />.
@@ -159,8 +159,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <summary>
             /// Gets the Steven Callahan user.
             /// </summary>
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel StevenCallahan => new DomainModel(Guid.Parse("a04fc5b0-1a67-43ff-89af-750128398d8a"))
+            public static DomainModel StevenCallahan => new DomainModel(Guid.Parse("a04fc5b0-1a67-43ff-89af-750128398d8a"))
             {
                 EmailAddress = "steven.callahan@example.com",
                 Name = "Steven Callahan",
@@ -170,8 +169,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <summary>
             /// Gets the Tom Smith user.
             /// </summary>
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel TomSmith => new DomainModel(Guid.Parse("01b7e51c-95e1-4eb1-aba6-1db0657a0fa3"))
+            public static DomainModel TomSmith => new DomainModel(Guid.Parse("01b7e51c-95e1-4eb1-aba6-1db0657a0fa3"))
             {
                 EmailAddress = "tom.smith@example.com",
                 Name = "Tom Smith",

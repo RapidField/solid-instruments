@@ -5,13 +5,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Solid Instruments](../../SolidInstruments.Logo.Color.Transparent.500w.png)](../../README.md)
 - - -
 
-# RapidField.SolidInstruments.Example.Domain.AccessControl
+# RapidField.SolidInstruments.Example.Domain.AccessControl.Service
 
-This document describes the purpose of the [`RapidField.SolidInstruments.Example.Domain.AccessControl`]() project.
+This document describes the purpose of the [`RapidField.SolidInstruments.Example.Domain.AccessControl.Service`]() project.
 
 ## Purpose
 
-This project demonstrates access control domain logic utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) constructs.
+This project demonstrates an access control domain service utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) and [messaging](../../src/RapidField.SolidInstruments.Messaging/README.md) constructs.
 
 ## License
 

@@ -3,8 +3,6 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.Configuration;
-using RapidField.SolidInstruments.DataAccess;
-using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Repositories;
 using RapidField.SolidInstruments.ObjectComposition;
 using System;

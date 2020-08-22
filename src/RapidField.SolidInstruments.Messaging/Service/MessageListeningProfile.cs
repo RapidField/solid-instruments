@@ -74,6 +74,14 @@ namespace RapidField.SolidInstruments.Messaging.Service
             where TEventMessage : class, IEventMessage<TEvent> => AddTopicListener<TEventMessage>();
 
         /// <summary>
+        /// Adds support for the <see cref="ExceptionRaisedEventMessage" /> type.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// <see cref="ExceptionRaisedEventMessage" /> was already added.
+        /// </exception>
+        public void AddExceptionRaisedEventListener() => AddEventListener<ExceptionRaisedEvent, ExceptionRaisedEventMessage>();
+
+        /// <summary>
         /// Adds support for the <see cref="HeartbeatMessage" /> type.
         /// </summary>
         /// <exception cref="InvalidOperationException">

@@ -8,7 +8,6 @@ using RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
-using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
 {
@@ -55,8 +54,7 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        [DebuggerHidden]
-        private DotNetNativeEntityFrameworkDataStoreDependencyModule(IConfiguration applicationConfiguration, String dataStoreName)
+        protected DotNetNativeEntityFrameworkDataStoreDependencyModule(IConfiguration applicationConfiguration, String dataStoreName)
             : base(applicationConfiguration, dataStoreName, dataStoreName)
         {
             return;

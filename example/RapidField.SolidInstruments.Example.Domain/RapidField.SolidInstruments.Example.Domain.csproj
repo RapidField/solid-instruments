@@ -30,6 +30,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Cryptography\RapidField.SolidInstruments.Cryptography.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj" />
-        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging\RapidField.SolidInstruments.Messaging.csproj" />
+        <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.csproj" />
     </ItemGroup>
 </Project>

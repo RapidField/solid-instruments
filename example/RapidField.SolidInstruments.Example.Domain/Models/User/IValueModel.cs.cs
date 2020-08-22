@@ -2,14 +2,30 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using IBaseDomainModel = RapidField.SolidInstruments.Core.Domain.IGlobalIdentityValueDomainModel;
+using RapidField.SolidInstruments.Core;
+using System;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
 {
     /// <summary>
     /// Represents a user.
     /// </summary>
-    public interface IValueDomainModel : IBaseDomainModel, IValueModel
+    public interface IValueModel : IGlobalIdentityModel
     {
+        /// <summary>
+        /// Gets the email address for the current <see cref="IValueModel" />.
+        /// </summary>
+        public String EmailAddress
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the name of the current <see cref="IValueModel" />.
+        /// </summary>
+        public String Name
+        {
+            get;
+        }
     }
 }

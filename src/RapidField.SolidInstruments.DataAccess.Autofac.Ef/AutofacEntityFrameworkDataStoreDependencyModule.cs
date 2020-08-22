@@ -8,7 +8,6 @@ using RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions;
 using System;
-using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef
 {
@@ -55,8 +54,7 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef
         /// <exception cref="ArgumentNullException">
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
-        [DebuggerHidden]
-        private AutofacEntityFrameworkDataStoreDependencyModule(IConfiguration applicationConfiguration, String dataStoreName)
+        protected AutofacEntityFrameworkDataStoreDependencyModule(IConfiguration applicationConfiguration, String dataStoreName)
             : base(applicationConfiguration, dataStoreName, dataStoreName)
         {
             return;

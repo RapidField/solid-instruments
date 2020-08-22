@@ -11,16 +11,16 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
     /// <summary>
     /// Represents a user.
     /// </summary>
-    public interface IAggregateDomainModel : IBaseDomainModel, IValueDomainModel
+    public interface IAggregateDomainModel : IAggregateModel, IBaseDomainModel, IValueDomainModel
     {
         /// <summary>
         /// Gets or sets the email address for the current <see cref="IAggregateDomainModel" />.
         /// </summary>
         /// <exception cref="ArgumentEmptyException">
-        /// <see cref="Name" /> is empty.
+        /// <see cref="EmailAddress" /> is empty.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// <see cref="Name" /> is <see langword="null" />.
+        /// <see cref="EmailAddress" /> is <see langword="null" />.
         /// </exception>
         public new String EmailAddress
         {
@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="PasswordHash" /> is <see langword="null" />.
         /// </exception>
-        public String PasswordHash
+        public new String PasswordHash
         {
             get;
             set;

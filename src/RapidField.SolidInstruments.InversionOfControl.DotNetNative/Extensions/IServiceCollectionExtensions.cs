@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
         /// </exception>
         public static IServiceCollection AddApplicationConfiguration(this IServiceCollection target, IConfiguration applicationConfiguration)
         {
-            target.TryAddSingleton(applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)));
+            target.TryAddSingleton(applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument);
             return target;
         }
 
