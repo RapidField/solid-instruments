@@ -4,5 +4,5 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: DisablePrivateReflection()]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Example.Domain.AccessControl")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Example.Domain.AccessControl.Service")]

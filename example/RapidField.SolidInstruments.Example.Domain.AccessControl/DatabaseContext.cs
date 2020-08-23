@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         {
             try
             {
-                _ = modelBuilder.Entity<UserModel>().ToTable(UserModel.TableName);
+                _ = modelBuilder.Entity<UserModel>();
             }
             finally
             {

@@ -340,7 +340,7 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions
             var dataAccessModelRepositoryInterfaceType = DataAccessModelRepositoryInterfaceType.MakeGenericType(identifierType, dataAccessModelType.RejectIf().IsNull(nameof(dataAccessModelType)).OrIf().IsNotSupportedType(dataAccessModelInterfaceType, nameof(dataAccessModelType)));
             var dataAccessModelCommandType = FindDataAccessModelByIdentifierCommandType.MakeGenericType(identifierType, dataAccessModelType);
             var dataAccessModelCommandHandlerType = FindDataAccessModelByIdentifierCommandHandlerType.MakeGenericType(identifierType, dataAccessModelType, repositoryType.RejectIf().IsNull(nameof(repositoryType)).OrIf().IsNotSupportedType(dataAccessModelRepositoryInterfaceType, nameof(repositoryType)));
-            return target.AddDataAccessCommandHandler(dataAccessModelCommandType, dataAccessModelCommandHandlerType);
+            return target.AddDataAccessCommandHandler(dataAccessModelCommandType, dataAccessModelType, dataAccessModelCommandHandlerType);
         }
 
         /// <summary>

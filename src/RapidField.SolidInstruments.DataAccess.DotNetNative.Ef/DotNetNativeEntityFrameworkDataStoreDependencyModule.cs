@@ -73,6 +73,21 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
         {
             configurator.AddApplicationConfiguration(applicationConfiguration);
             configurator.AddSupportingTypesForEntityFrameworkDataAccess<TContext, TRepositoryFactory>(applicationConfiguration);
+            RegisterCustomComponents(configurator, applicationConfiguration);
+        }
+
+        /// <summary>
+        /// Registers additional components.
+        /// </summary>
+        /// <param name="configurator">
+        /// An object that configures containers.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        protected virtual void RegisterCustomComponents(ServiceCollection configurator, IConfiguration applicationConfiguration)
+        {
+            return;
         }
     }
 }

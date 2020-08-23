@@ -43,8 +43,8 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <summary>
         /// Adds message subscriptions to the service.
         /// </summary>
-        /// <param name="subscriptionProfile">
-        /// An object that is used to add subscriptions.
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the service application.
@@ -52,38 +52,38 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <param name="commandLineArguments">
         /// Command line arguments that are provided at runtime, if any.
         /// </param>
-        protected override void AddListeners(IMessageListeningProfile subscriptionProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
+        protected override void AddListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
         {
             try
             {
                 // Add queue listeners.
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Customer.CreateDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Customer.DeleteDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Customer.UpdateDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.CreateDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.DeleteDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.UpdateDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Product.CreateDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Product.DeleteDomainModelCommandMessage>();
-                subscriptionProfile.AddQueueListener<Messages.Command.ModelState.Product.UpdateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Customer.CreateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Customer.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Customer.UpdateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.CreateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.CustomerOrder.UpdateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Product.CreateDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Product.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddQueueListener<Messages.Command.ModelState.Product.UpdateDomainModelCommandMessage>();
 
                 // Add topic listeners.
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelCreatedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelDeletedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelUpdatedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelCreatedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelDeletedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelUpdatedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelCreatedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>();
-                subscriptionProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelCreatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelDeletedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Customer.DomainModelUpdatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelCreatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelDeletedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.CustomerOrder.DomainModelUpdatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelCreatedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelDeletedEventMessage>();
+                listeningProfile.AddTopicListener<Messages.Event.ModelState.Product.DomainModelUpdatedEventMessage>();
 
                 // Add request listeners.
-                subscriptionProfile.AddRequestListener<Messages.RequestResponse.Ping.RequestMessage, Messages.RequestResponse.Ping.ResponseMessage>();
+                listeningProfile.AddRequestListener<Messages.RequestResponse.Ping.RequestMessage, Messages.RequestResponse.Ping.ResponseMessage>();
             }
             finally
             {
-                base.AddListeners(subscriptionProfile, applicationConfiguration, commandLineArguments);
+                base.AddListeners(listeningProfile, applicationConfiguration, commandLineArguments);
             }
         }
 

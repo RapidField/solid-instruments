@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.Configuration;
+using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.Messaging.DotNetNative.Service;
@@ -52,9 +53,20 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         {
             try
             {
+                // Add standard listeners.
                 listeningProfile.AddExceptionRaisedEventListener();
                 listeningProfile.AddHeartbeatListener();
                 listeningProfile.AddPingRequestListener();
+
+                // Add command listeners.
+                listeningProfile.AddCommandListener<Commands.ModelState.User.CreateDomainModelCommand, Messages.Command.ModelState.User.CreateDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.User.DeleteDomainModelCommand, Messages.Command.ModelState.User.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.User.UpdateDomainModelCommand, Messages.Command.ModelState.User.UpdateDomainModelCommandMessage>();
+
+                // Add event listeners.
+                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelDeletedEvent, Messages.Event.ModelState.User.DomainModelDeletedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelUpdatedEvent, Messages.Event.ModelState.User.DomainModelUpdatedEventMessage>();
             }
             finally
             {
@@ -106,6 +118,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
             {
                 var databaseContext = dependencyScope.Resolve<DatabaseContext>();
                 databaseContext.Database.EnsureCreated();
+                var mediator = dependencyScope.Resolve<ICommandMediator>();
+                mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(Models.User.DomainModel.Named.StevenCallahan)));
+                mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(Models.User.DomainModel.Named.TomSmith)));
             }
             finally
             {

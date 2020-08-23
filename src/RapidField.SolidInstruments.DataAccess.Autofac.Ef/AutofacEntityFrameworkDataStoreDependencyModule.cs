@@ -73,6 +73,21 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef
         {
             configurator.RegisterApplicationConfiguration(applicationConfiguration);
             configurator.RegisterSupportingTypesForEntityFrameworkDataAccess<TContext, TRepositoryFactory>(applicationConfiguration);
+            RegisterCustomComponents(configurator, applicationConfiguration);
+        }
+
+        /// <summary>
+        /// Registers additional components.
+        /// </summary>
+        /// <param name="configurator">
+        /// An object that configures containers.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        protected virtual void RegisterCustomComponents(ContainerBuilder configurator, IConfiguration applicationConfiguration)
+        {
+            return;
         }
     }
 }

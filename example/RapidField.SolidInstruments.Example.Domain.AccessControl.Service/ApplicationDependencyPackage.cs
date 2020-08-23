@@ -36,7 +36,10 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
         {
             new DatabaseContextDependencyModule(applicationConfiguration),
-            new ServiceBusDependencyModule(applicationConfiguration)
+            new ServiceBusDependencyModule(applicationConfiguration),
+            new CommandHandlerModule(applicationConfiguration),
+            new EventHandlerModule(applicationConfiguration),
+            new MessageHandlerModule(applicationConfiguration)
         };
     }
 }

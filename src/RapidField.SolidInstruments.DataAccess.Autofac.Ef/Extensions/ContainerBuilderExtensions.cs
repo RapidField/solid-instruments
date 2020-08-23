@@ -68,9 +68,12 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions
         public static void RegisterSupportingTypesForEntityFrameworkDataAccess(this ContainerBuilder target, IConfiguration applicationConfiguration, Type contextType, Type repositoryFactoryType)
         {
             var entityFrameworkRepositoryFactoryInterfaceType = EntityFrameworkRepositoryFactoryInterfaceType.MakeGenericType(contextType.RejectIf().IsNull(nameof(contextType)).OrIf().IsNotSupportedType(DbContextType, nameof(contextType)));
+            var entityFrameworkTransactionInterfaceType = EntityFrameworkTransactionInterfaceType.MakeGenericType(contextType);
+            var entityFrameworkTransactionType = EntityFrameworkTransactionType.MakeGenericType(contextType);
             target.RegisterApplicationConfiguration(applicationConfiguration);
             target.RegisterType(contextType).IfNotRegistered(contextType).AsSelf().InstancePerLifetimeScope();
-            target.RegisterType(repositoryFactoryType.RejectIf().IsNull(nameof(repositoryFactoryType)).OrIf().IsNotSupportedType(entityFrameworkRepositoryFactoryInterfaceType, nameof(repositoryFactoryType))).IfNotRegistered(repositoryFactoryType).As(entityFrameworkRepositoryFactoryInterfaceType).AsSelf().InstancePerLifetimeScope();
+            target.RegisterType(repositoryFactoryType.RejectIf().IsNull(nameof(repositoryFactoryType)).OrIf().IsNotSupportedType(entityFrameworkRepositoryFactoryInterfaceType, nameof(repositoryFactoryType))).IfNotRegistered(repositoryFactoryType).As(entityFrameworkRepositoryFactoryInterfaceType).As(DataAccessRepositoryFactoryInterfaceType).AsSelf().InstancePerLifetimeScope();
+            target.RegisterType(entityFrameworkTransactionType).IfNotRegistered(entityFrameworkTransactionType).As(entityFrameworkTransactionInterfaceType).As(DataAccessTransactionInterfaceType).AsSelf().InstancePerLifetimeScope();
         }
 
         /// <summary>
@@ -101,8 +104,21 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions
         {
             target.RegisterApplicationConfiguration(applicationConfiguration);
             target.RegisterType<TTargetedContext>().IfNotRegistered(typeof(TTargetedContext)).As<TBaseContext>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<TRepositoryFactory>().IfNotRegistered(typeof(TRepositoryFactory)).As<IEntityFrameworkRepositoryFactory<TBaseContext>>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<TRepositoryFactory>().IfNotRegistered(typeof(TRepositoryFactory)).As<IEntityFrameworkRepositoryFactory<TBaseContext>>().As<IDataAccessRepositoryFactory>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<EntityFrameworkTransaction<TBaseContext>>().IfNotRegistered(typeof(EntityFrameworkTransaction<TBaseContext>)).As<IEntityFrameworkTransaction<TBaseContext>>().As<IDataAccessTransaction>().AsSelf().InstancePerLifetimeScope();
         }
+
+        /// <summary>
+        /// Represents the <see cref="IDataAccessRepositoryFactory" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type DataAccessRepositoryFactoryInterfaceType = typeof(IDataAccessRepositoryFactory);
+
+        /// <summary>
+        /// Represents the <see cref="IDataAccessTransaction" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type DataAccessTransactionInterfaceType = typeof(IDataAccessTransaction);
 
         /// <summary>
         /// Represents the <see cref="DbContext" /> type.
@@ -115,5 +131,17 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Type EntityFrameworkRepositoryFactoryInterfaceType = typeof(IEntityFrameworkRepositoryFactory<>);
+
+        /// <summary>
+        /// Represents the <see cref="IEntityFrameworkTransaction{TContext}" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type EntityFrameworkTransactionInterfaceType = typeof(IEntityFrameworkTransaction<>);
+
+        /// <summary>
+        /// Represents the <see cref="EntityFrameworkTransaction{TContext}" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type EntityFrameworkTransactionType = typeof(EntityFrameworkTransaction<>);
     }
 }

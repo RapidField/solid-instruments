@@ -298,7 +298,7 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Extensions
             var dataAccessModelRepositoryInterfaceType = DataAccessModelRepositoryInterfaceType.MakeGenericType(identifierType, dataAccessModelType.RejectIf().IsNull(nameof(dataAccessModelType)).OrIf().IsNotSupportedType(dataAccessModelInterfaceType, nameof(dataAccessModelType)));
             var dataAccessModelCommandType = FindDataAccessModelByIdentifierCommandType.MakeGenericType(identifierType, dataAccessModelType);
             var dataAccessModelCommandHandlerType = FindDataAccessModelByIdentifierCommandHandlerType.MakeGenericType(identifierType, dataAccessModelType, repositoryType.RejectIf().IsNull(nameof(repositoryType)).OrIf().IsNotSupportedType(dataAccessModelRepositoryInterfaceType, nameof(repositoryType)));
-            target.RegisterDataAccessCommandHandler(dataAccessModelCommandType, dataAccessModelCommandHandlerType);
+            target.RegisterDataAccessCommandHandler(dataAccessModelCommandType, dataAccessModelType, dataAccessModelCommandHandlerType);
         }
 
         /// <summary>

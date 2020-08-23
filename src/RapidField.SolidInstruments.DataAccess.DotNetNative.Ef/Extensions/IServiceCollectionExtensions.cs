@@ -75,10 +75,16 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions
         public static IServiceCollection AddSupportingTypesForEntityFrameworkDataAccess(this IServiceCollection target, IConfiguration applicationConfiguration, Type contextType, Type repositoryFactoryType)
         {
             var entityFrameworkRepositoryFactoryInterfaceType = EntityFrameworkRepositoryFactoryInterfaceType.MakeGenericType(contextType.RejectIf().IsNull(nameof(contextType)).OrIf().IsNotSupportedType(DbContextType, nameof(contextType)));
+            var entityFrameworkTransactionInterfaceType = EntityFrameworkTransactionInterfaceType.MakeGenericType(contextType);
+            var entityFrameworkTransactionType = EntityFrameworkTransactionType.MakeGenericType(contextType);
             target.AddApplicationConfiguration(applicationConfiguration);
             target.TryAddScoped(contextType);
             target.TryAddScoped(repositoryFactoryType.RejectIf().IsNull(nameof(repositoryFactoryType)).OrIf().IsNotSupportedType(entityFrameworkRepositoryFactoryInterfaceType, nameof(repositoryFactoryType)));
             target.TryAddScoped(entityFrameworkRepositoryFactoryInterfaceType, repositoryFactoryType);
+            target.TryAddScoped(DataAccessRepositoryFactoryInterfaceType, repositoryFactoryType);
+            target.TryAddScoped(entityFrameworkTransactionType);
+            target.TryAddScoped(entityFrameworkTransactionInterfaceType, entityFrameworkTransactionType);
+            target.TryAddScoped(DataAccessTransactionInterfaceType, entityFrameworkTransactionType);
             return target;
         }
 
@@ -116,8 +122,24 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions
             target.TryAddScoped<TBaseContext, TTargetedContext>();
             target.TryAddScoped<TRepositoryFactory>();
             target.TryAddScoped<IEntityFrameworkRepositoryFactory<TBaseContext>, TRepositoryFactory>();
+            target.TryAddScoped<IDataAccessRepositoryFactory, TRepositoryFactory>();
+            target.TryAddScoped<EntityFrameworkTransaction<TBaseContext>>();
+            target.TryAddScoped<IEntityFrameworkTransaction<TBaseContext>, EntityFrameworkTransaction<TBaseContext>>();
+            target.TryAddScoped<IDataAccessTransaction, EntityFrameworkTransaction<TBaseContext>>();
             return target;
         }
+
+        /// <summary>
+        /// Represents the <see cref="IDataAccessRepositoryFactory" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type DataAccessRepositoryFactoryInterfaceType = typeof(IDataAccessRepositoryFactory);
+
+        /// <summary>
+        /// Represents the <see cref="IDataAccessTransaction" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type DataAccessTransactionInterfaceType = typeof(IDataAccessTransaction);
 
         /// <summary>
         /// Represents the <see cref="DbContext" /> type.
@@ -130,5 +152,17 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Type EntityFrameworkRepositoryFactoryInterfaceType = typeof(IEntityFrameworkRepositoryFactory<>);
+
+        /// <summary>
+        /// Represents the <see cref="IEntityFrameworkTransaction{TContext}" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type EntityFrameworkTransactionInterfaceType = typeof(IEntityFrameworkTransaction<>);
+
+        /// <summary>
+        /// Represents the <see cref="EntityFrameworkTransaction{TContext}" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type EntityFrameworkTransactionType = typeof(EntityFrameworkTransaction<>);
     }
 }
