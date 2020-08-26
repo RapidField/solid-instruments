@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.Messaging.DotNetNative.Rmq
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.Messaging.DotNetNative.Asb.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Asb.Extensions.html)
+#### [RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions.html)
 
 <section>
 Exposes extensions that support the DotNetNative IoC integration for the Solid Instruments RabbitMQ messaging abstractions.

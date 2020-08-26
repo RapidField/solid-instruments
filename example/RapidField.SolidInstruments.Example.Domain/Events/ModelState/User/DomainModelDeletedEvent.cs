@@ -175,6 +175,6 @@ namespace RapidField.SolidInstruments.Example.Domain.Events.ModelState.User
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String DataContractName = "UserDeletedEvent";
+        internal const String DataContractName = DomainModel.DataContractName + DataContractNameVerb + DataContractNameSuffix;
     }
 }

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace RapidField.SolidInstruments.Core.Extensions
@@ -250,6 +251,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Byte[] ComputeOneHundredTwentyEightBitHashBuffer(this IEnumerable<Byte> target)
         {
             var rawHash = target.ComputeTwoHundredFiftySixBitHashBuffer();
@@ -266,6 +268,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Byte[] ComputeSixtyFourBitHashBuffer(this IEnumerable<Byte> target)
         {
             var rawHash = target.ComputeOneHundredTwentyEightBitHashBuffer();
@@ -282,6 +285,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Byte[] ComputeThirtyTwoBitHashBuffer(this IEnumerable<Byte> target)
         {
             var rawHash = target.ComputeSixtyFourBitHashBuffer();
@@ -298,6 +302,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The current instance of the <see cref="IEnumerable{Byte}" />.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Byte[] ComputeTwoHundredFiftySixBitHashBuffer(this IEnumerable<Byte> target)
         {
             if (target.Any())

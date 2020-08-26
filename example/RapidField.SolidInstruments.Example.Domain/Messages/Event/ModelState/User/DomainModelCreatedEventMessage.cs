@@ -46,6 +46,6 @@ namespace RapidField.SolidInstruments.Example.Domain.Messages.Event.ModelState.U
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String DataContractName = "UserCreatedEventMessage";
+        internal const String DataContractName = DomainModelEvent.DataContractName + DataContractNameSuffix;
     }
 }

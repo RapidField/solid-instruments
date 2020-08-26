@@ -9,6 +9,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using UserModel = RapidField.SolidInstruments.Example.Domain.Models.User.AggregateDataAccessModel;
+using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.AggregateDataAccessModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
@@ -50,11 +51,21 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
             try
             {
                 _ = modelBuilder.Entity<UserModel>();
+                _ = modelBuilder.Entity<UserRoleModel>();
             }
             finally
             {
                 base.OnModelCreating(applicationConfiguration, modelBuilder);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a persistent collection of <see cref="UserRoleModel" /> records.
+        /// </summary>
+        public DbSet<UserRoleModel> UserRoles
+        {
+            get;
+            set;
         }
 
         /// <summary>

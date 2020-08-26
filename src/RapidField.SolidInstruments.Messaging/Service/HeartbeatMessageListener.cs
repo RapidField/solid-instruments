@@ -96,6 +96,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> at a custom
         /// frequency.
         /// </summary>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>
@@ -122,6 +126,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// "A" heartbeat messages to be suppressed. Publishing of frequency "A" heartbeat messages can be enabled by using one of
         /// several non-default constructors for that class.
         /// </remarks>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>
@@ -148,6 +156,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// "B" heartbeat messages to be suppressed. Publishing of frequency "B" heartbeat messages can be enabled by using one of
         /// several non-default constructors for that class.
         /// </remarks>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>
@@ -174,6 +186,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// "C" heartbeat messages to be transmitted. Publishing of frequency "C" heartbeat messages can be disabled by using one of
         /// several non-default constructors for that class.
         /// </remarks>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>
@@ -200,6 +216,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// "D" heartbeat messages to be transmitted. Publishing of frequency "D" heartbeat messages can be disabled by using one of
         /// several non-default constructors for that class.
         /// </remarks>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>
@@ -226,6 +246,10 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// "E" heartbeat messages to be transmitted. Publishing of frequency "E" heartbeat messages can be disabled by using one of
         /// several non-default constructors for that class.
         /// </remarks>
+        /// <note type="note">
+        /// Do not process <paramref name="heartbeatMessage" /> using <paramref name="mediator" />, as doing so will generally
+        /// result in infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="heartbeatMessage">
         /// The heartbeat message to process.
         /// </param>

@@ -44,7 +44,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         /// <param name="context">
         /// The database session that is used by the produced repositories.
         /// </param>
-        protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration, DatabaseContext context) => configuration.ProductionFunctions.Add(() => new UserRepository(context));
+        protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration, DatabaseContext context) => configuration.ProductionFunctions
+            .Add(() => new UserRepository(context))
+            .Add(() => new UserRoleRepository(context));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DatabaseContextRepositoryFactory" />.

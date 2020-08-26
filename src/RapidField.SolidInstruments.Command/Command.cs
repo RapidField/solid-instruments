@@ -84,6 +84,12 @@ namespace RapidField.SolidInstruments.Command
         internal Guid? CorrelationIdentifierField;
 
         /// <summary>
+        /// Represents the standard noun appendage to the name that is used when representing this type in serialization and
+        /// transport contexts.
+        /// </summary>
+        protected internal const String DataContractNameSuffix = Command.DataContractNameSuffix;
+
+        /// <summary>
         /// Represents the type of the result that is emitted when processing the command.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -152,6 +158,12 @@ namespace RapidField.SolidInstruments.Command
         /// </summary>
         [IgnoreDataMember]
         public virtual Type ResultType => Nix.Type;
+
+        /// <summary>
+        /// Represents the standard noun appendage to the name that is used when representing this type in serialization and
+        /// transport contexts.
+        /// </summary>
+        protected internal const String DataContractNameSuffix = "Command";
 
         /// <summary>
         /// Represents a unique identifier that is assigned to related commands.

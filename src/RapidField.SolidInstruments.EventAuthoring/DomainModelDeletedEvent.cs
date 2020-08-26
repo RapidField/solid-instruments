@@ -176,5 +176,11 @@ namespace RapidField.SolidInstruments.EventAuthoring
         {
             return;
         }
+
+        /// <summary>
+        /// Represents the standard verb which is appended to the name that is used when representing this type in serialization and
+        /// transport contexts.
+        /// </summary>
+        protected internal const String DataContractNameVerb = "Deleted";
     }
 }

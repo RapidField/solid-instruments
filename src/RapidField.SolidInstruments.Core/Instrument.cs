@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -136,6 +137,8 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void RejectIfDisposed()
         {
             if (IsDisposedOrDisposing)

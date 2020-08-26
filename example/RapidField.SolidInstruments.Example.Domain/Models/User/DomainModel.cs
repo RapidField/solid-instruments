@@ -50,11 +50,14 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="EmailAddress" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="EmailAddress" /> is too long.
+        /// </exception>
         [DataMember]
         public String EmailAddress
         {
             get => EmailAddressValue;
-            set => EmailAddressValue = value.RejectIf().IsNullOrEmpty(nameof(EmailAddress));
+            set => EmailAddressValue = value.RejectIf().IsNullOrEmpty(nameof(EmailAddress)).OrIf().LengthIsGreaterThan(EmailAddressValueMaximumLength, nameof(EmailAddress));
         }
 
         /// <summary>
@@ -66,11 +69,14 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="Name" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="Name" /> is too long.
+        /// </exception>
         [DataMember]
         public String Name
         {
             get => NameValue;
-            set => NameValue = value.RejectIf().IsNullOrEmpty(nameof(Name));
+            set => NameValue = value.RejectIf().IsNullOrEmpty(nameof(Name)).OrIf().LengthIsGreaterThan(EmailAddressValueMaximumLength, nameof(Name));
         }
 
         /// <summary>
@@ -82,18 +88,39 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="PasswordHash" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="PasswordHash" /> is too long.
+        /// </exception>
         [DataMember]
         public String PasswordHash
         {
             get => PasswordHashValue;
-            set => PasswordHashValue = value.RejectIf().IsNullOrEmpty(nameof(PasswordHash));
+            set => PasswordHashValue = value.RejectIf().IsNullOrEmpty(nameof(PasswordHash)).OrIf().LengthIsGreaterThan(PasswordHashValueMaximumLength, nameof(PasswordHash));
         }
 
         /// <summary>
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String DataContractName = "User";
+        internal const String DataContractName = nameof(User);
+
+        /// <summary>
+        /// Represents the maximum email address string length for <see cref="DomainModel" /> instances.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Int32 EmailAddressValueMaximumLength = 320;
+
+        /// <summary>
+        /// Represents the maximum name string length for <see cref="DomainModel" /> instances.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Int32 NameValueMaximumLength = 89;
+
+        /// <summary>
+        /// Represents the maximum hashed password string length for <see cref="DomainModel" /> instances.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal const Int32 PasswordHashValueMaximumLength = 89;
 
         /// <summary>
         /// Represents the email address for the current <see cref="DomainModel" />.
@@ -119,7 +146,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <summary>
         /// Contains a collection of known <see cref="DomainModel" /> instances.
         /// </summary>
-        internal static class Named
+        public static class Named
         {
             /// <summary>
             /// Returns a collection of all known <see cref="DomainModel" /> instances.
@@ -127,8 +154,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <returns>
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
-            [DebuggerHidden]
-            internal static IEnumerable<DomainModel> All() => new DomainModel[]
+            public static IEnumerable<DomainModel> All() => new DomainModel[]
             {
                 StevenCallahan,
                 TomSmith

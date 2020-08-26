@@ -62,11 +62,17 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
                 listeningProfile.AddCommandListener<Commands.ModelState.User.CreateDomainModelCommand, Messages.Command.ModelState.User.CreateDomainModelCommandMessage>();
                 listeningProfile.AddCommandListener<Commands.ModelState.User.DeleteDomainModelCommand, Messages.Command.ModelState.User.DeleteDomainModelCommandMessage>();
                 listeningProfile.AddCommandListener<Commands.ModelState.User.UpdateDomainModelCommand, Messages.Command.ModelState.User.UpdateDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
 
                 // Add event listeners.
                 listeningProfile.AddEventListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
                 listeningProfile.AddEventListener<Events.ModelState.User.DomainModelDeletedEvent, Messages.Event.ModelState.User.DomainModelDeletedEventMessage>();
                 listeningProfile.AddEventListener<Events.ModelState.User.DomainModelUpdatedEvent, Messages.Event.ModelState.User.DomainModelUpdatedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
             }
             finally
             {
@@ -116,11 +122,37 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         {
             try
             {
+                var mediator = dependencyScope.Resolve<ICommandMediator>();
+
+                // Create or update the database schema.
                 var databaseContext = dependencyScope.Resolve<DatabaseContext>();
                 databaseContext.Database.EnsureCreated();
-                var mediator = dependencyScope.Resolve<ICommandMediator>();
-                mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(Models.User.DomainModel.Named.StevenCallahan)));
-                mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(Models.User.DomainModel.Named.TomSmith)));
+
+                foreach (var domainModel in Models.User.DomainModel.Named.All())
+                {
+                    mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(domainModel)));
+                }
+
+                foreach (var domainModel in Models.UserRole.DomainModel.Named.All())
+                {
+                    mediator.Process(new Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage(new Commands.ModelState.UserRole.CreateDomainModelCommand(domainModel)));
+                }
+
+                try
+                {
+                    // Test service bus connectivity.
+                    var pingRequestCorrelationIdentifier = Guid.NewGuid();
+                    var pingResponseMessage = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingRequestCorrelationIdentifier));
+
+                    if (pingResponseMessage is null || pingResponseMessage.CorrelationIdentifier != pingRequestCorrelationIdentifier)
+                    {
+                        throw new ServiceExectuionException("The service was unable to verify service bus connectivity.");
+                    }
+                }
+                catch (CommandHandlingException exception)
+                {
+                    throw new ServiceExectuionException("The service was unable to verify service bus connectivity. See inner exception.", exception);
+                }
             }
             finally
             {

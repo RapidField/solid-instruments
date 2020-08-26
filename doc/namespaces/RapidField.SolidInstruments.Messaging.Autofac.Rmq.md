@@ -32,7 +32,7 @@ Install-Package RapidField.SolidInstruments.Messaging.Autofac.Rmq
 
 ### Namespaces
 
-#### [RapidField.SolidInstruments.Messaging.Autofac.Asb.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Asb.Extensions.html)
+#### [RapidField.SolidInstruments.Messaging.Autofac.Rmq.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Rmq.Extensions.html)
 
 <section>
 Exposes extensions that support the Autofac IoC integration for the Solid Instruments RabbitMQ messaging abstractions.

@@ -535,6 +535,12 @@ namespace RapidField.SolidInstruments.EventAuthoring
         internal const SerializationFormat ToByteArraySerializationFormat = SerializationFormat.CompressedJson;
 
         /// <summary>
+        /// Represents the standard noun appendage to the name that is used when representing this type in serialization and
+        /// transport contexts.
+        /// </summary>
+        protected internal new const String DataContractNameSuffix = "Event";
+
+        /// <summary>
         /// Represents the default event category.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

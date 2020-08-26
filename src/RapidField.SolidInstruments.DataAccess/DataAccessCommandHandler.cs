@@ -115,6 +115,10 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Processes the specified command.
         /// </summary>
+        /// <note type="note">
+        /// Do not process <paramref name="command" /> using <paramref name="mediator" />, as doing so will generally result in
+        /// infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="command">
         /// The command to process.
         /// </param>
@@ -289,6 +293,10 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Processes the specified command.
         /// </summary>
+        /// <note type="note">
+        /// Do not process <paramref name="command" /> using <paramref name="mediator" />, as doing so will generally result in
+        /// infinite-looping; <paramref name="mediator" /> is exposed to this method to facilitate sub-command processing.
+        /// </note>
         /// <param name="command">
         /// The command to process.
         /// </param>

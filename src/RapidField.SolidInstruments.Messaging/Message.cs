@@ -216,6 +216,12 @@ namespace RapidField.SolidInstruments.Messaging
         internal static MessagingEntityType ResponseEntityType = MessagingEntityType.Topic;
 
         /// <summary>
+        /// Represents the standard noun appendage to the name that is used when representing this type in serialization and
+        /// transport contexts.
+        /// </summary>
+        protected internal const String DataContractNameSuffix = "Message";
+
+        /// <summary>
         /// Represents a unique identifier that is assigned to related messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

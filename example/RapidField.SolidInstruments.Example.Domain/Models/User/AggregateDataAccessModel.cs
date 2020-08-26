@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using AssociatedDomainModel = RapidField.SolidInstruments.Example.Domain.Models.User.DomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
 {
@@ -29,10 +30,10 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <summary>
         /// Gets or sets the hashed password for the current <see cref="AggregateDataAccessModel" />.
         /// </summary>
-        [Column(Order = 3)]
+        [Column]
         [DataMember]
         [Required]
-        [StringLength(89)]
+        [StringLength(AssociatedDomainModel.PasswordHashValueMaximumLength)]
         public String PasswordHash
         {
             get;

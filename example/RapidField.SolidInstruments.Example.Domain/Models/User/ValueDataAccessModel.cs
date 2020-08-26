@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         [Column(Order = 1)]
         [DataMember]
         [Required]
-        [StringLength(320)]
+        [StringLength(AssociatedDomainModel.EmailAddressValueMaximumLength)]
         public String EmailAddress
         {
             get;
@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         [Column(Order = 2)]
         [DataMember]
         [Required]
-        [StringLength(89)]
+        [StringLength(AssociatedDomainModel.NameValueMaximumLength)]
         public String Name
         {
             get;

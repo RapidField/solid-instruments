@@ -12,6 +12,7 @@ using RapidField.SolidInstruments.Cryptography.Symmetric.Aes;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -182,6 +183,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The resulting private key.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal PinnedMemory DerivePrivateKey() => DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
 
         /// <summary>
@@ -230,6 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The resulting private key.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static PinnedMemory DerivePrivateKey(Byte[] privateKeySource, BitShiftDirection bitShiftDirection, Int32 bitShiftCount, Int32 keyLengthInBytes) => new PinnedMemory(new Span<Byte>(privateKeySource.PerformCircularBitShift(bitShiftDirection, bitShiftCount)).Slice(0, keyLengthInBytes).ToArray(), true);
 
         /// <summary>
@@ -239,6 +242,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The bit field to which the plaintext result is written.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DecryptField(PinnedMemory plaintext)
         {
             using var privateKey = DerivePrivateKey();
@@ -253,6 +257,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The bit field containing the plaintext to encrypt.
         /// </param>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void EncryptField(PinnedMemory plaintext)
         {
             using var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true);
@@ -400,6 +405,7 @@ namespace RapidField.SolidInstruments.Cryptography
             /// The object is disposed.
             /// </exception>
             [DebuggerHidden]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             internal void Scramble()
             {
                 using (var controlToken = StateControl.Enter())
@@ -450,6 +456,7 @@ namespace RapidField.SolidInstruments.Cryptography
             /// The object is disposed.
             /// </exception>
             [DebuggerHidden]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private PinnedMemory GetTargetField()
             {
                 using (var controlToken = StateControl.Enter())

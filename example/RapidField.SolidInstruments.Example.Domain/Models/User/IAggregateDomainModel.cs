@@ -22,6 +22,9 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="EmailAddress" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="EmailAddress" /> is too long.
+        /// </exception>
         public new String EmailAddress
         {
             get;
@@ -37,6 +40,9 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// <exception cref="ArgumentNullException">
         /// <see cref="Name" /> is <see langword="null" />.
         /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="Name" /> is too long.
+        /// </exception>
         public new String Name
         {
             get;
@@ -51,6 +57,9 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <see cref="PasswordHash" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="PasswordHash" /> is too long.
         /// </exception>
         public new String PasswordHash
         {

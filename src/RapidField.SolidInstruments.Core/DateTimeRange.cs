@@ -15,6 +15,25 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents the span of a contiguous period of time with specific start and end points.
     /// </summary>
+    /// <example>
+    /// This example demonstrates the capabilities of the <see cref="DateTimeRange" /> class.
+    /// <code language="cs">
+    ///var start = new DateTime(1997, 11, 6, 14, 7, 46, 482, DateTimeKind.Local);
+    ///var end = new DateTime(2024, 2, 29, 17, 41, 10, 193, DateTimeKind.Local);
+    ///var range = new DateTimeRange(start, end);
+    ///var containsStart = range.Contains(start); // true
+    ///var containsEnd = range.Contains(end); // true
+    ///var containsMidpoint = range.Contains(range.Midpoint); // true
+    ///var lengthInYears = range.LengthInYears; // 26
+    ///var lengthInMonths = range.LengthInMonths; // 315
+    ///var lengthInWeeks = range.LengthInWeeks; // 1373
+    ///var lengthInDays = range.LengthInDays; // 9611
+    ///var lengthInHours = range.LengthInHours; // 230667
+    ///var lengthInMinutes = range.LengthInMinutes; // 13840053
+    ///var lengthInSeconds = range.LengthInSeconds; // 830403203
+    ///var lengthInMilliseconds = range.LengthInMilliseconds; // 830403203711
+    /// </code>
+    /// </example>
     [DataContract]
     public sealed class DateTimeRange : ICloneable, IEquatable<DateTimeRange>
     {

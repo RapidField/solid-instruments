@@ -9,6 +9,7 @@ using RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Example.Domain.AccessControl.Repositories;
 using System;
 using UserModel = RapidField.SolidInstruments.Example.Domain.Models.User.AggregateDataAccessModel;
+using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.AggregateDataAccessModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
@@ -41,6 +42,8 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
-        protected override void RegisterCustomComponents(ServiceCollection configurator, IConfiguration applicationConfiguration) => _ = configurator.AddStandardDataAccessModelCommandHandlers<Guid, UserModel, UserRepository>();
+        protected override void RegisterCustomComponents(ServiceCollection configurator, IConfiguration applicationConfiguration) => _ = configurator
+            .AddStandardDataAccessModelCommandHandlers<Guid, UserModel, UserRepository>()
+            .AddStandardDataAccessModelCommandHandlers<Guid, UserRoleModel, UserRoleRepository>();
     }
 }
