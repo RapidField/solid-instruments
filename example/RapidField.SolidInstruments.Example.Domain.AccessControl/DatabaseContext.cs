@@ -9,6 +9,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using UserModel = RapidField.SolidInstruments.Example.Domain.Models.User.AggregateDataAccessModel;
+using UserRoleAssignmentModel = RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment.AggregateDataAccessModel;
 using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.AggregateDataAccessModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
@@ -50,13 +51,34 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         {
             try
             {
-                _ = modelBuilder.Entity<UserModel>();
-                _ = modelBuilder.Entity<UserRoleModel>();
+                _ = modelBuilder
+                    .Entity<UserModel>(entityType =>
+                    {
+                        entityType.HasMany(entity => entity.UserRoleAssignments).WithOne(entity => entity.User);
+                    })
+                    .Entity<UserRoleModel>(entityType =>
+                    {
+                        return;
+                    })
+                    .Entity<UserRoleAssignmentModel>(entityType =>
+                    {
+                        entityType.HasOne(entity => entity.User).WithMany(entity => entity.UserRoleAssignments).HasForeignKey(entity => entity.UserIdentifier);
+                        entityType.HasOne(entity => entity.UserRole).WithMany().HasForeignKey(entity => entity.UserRoleIdentifier);
+                    });
             }
             finally
             {
                 base.OnModelCreating(applicationConfiguration, modelBuilder);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a persistent collection of <see cref="UserRoleAssignmentModel" /> records.
+        /// </summary>
+        public DbSet<UserRoleAssignmentModel> UserRoleAssignments
+        {
+            get;
+            set;
         }
 
         /// <summary>

@@ -46,6 +46,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         /// </param>
         protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration, DatabaseContext context) => configuration.ProductionFunctions
             .Add(() => new UserRepository(context))
+            .Add(() => new UserRoleAssignmentRepository(context))
             .Add(() => new UserRoleRepository(context));
 
         /// <summary>

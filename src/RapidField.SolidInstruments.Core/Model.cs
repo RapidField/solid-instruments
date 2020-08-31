@@ -2,8 +2,14 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Core
@@ -322,5 +328,132 @@ namespace RapidField.SolidInstruments.Core
         /// A string representation of the current <see cref="Model" />.
         /// </returns>
         public override String ToString() => Convert.ToBase64String(GetHashCode().ToByteArray());
+
+        /// <summary>
+        /// Copies the state of the specified source model to the specified target model.
+        /// </summary>
+        /// <param name="sourceModel">
+        /// The model from which state is derived.
+        /// </param>
+        /// <param name="targetModel">
+        /// The model to which state is copied.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sourceModel" /> is <see langword="null" /> -or- <paramref name="targetModel" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal static void HydrateModel(IModel sourceModel, IModel targetModel)
+        {
+            var sourceModelType = sourceModel.RejectIf().IsNull(nameof(sourceModel)).TargetArgument.GetType();
+            var targetModelType = targetModel.RejectIf().IsNull(nameof(targetModel)).TargetArgument.GetType();
+            var sourceModelProperties = sourceModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
+            var targetModelProperties = targetModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
+
+            foreach (var sourcePropertyElement in sourceModelProperties)
+            {
+                var propertyName = sourcePropertyElement.Key;
+                var sourceProperty = sourcePropertyElement.Value;
+                var sourcePropertyValue = sourceProperty.CanRead ? sourceProperty.GetValue(sourceModel) : null;
+                var sourcePropertyValueType = sourcePropertyValue?.GetType() ?? sourceProperty.PropertyType;
+
+                if (targetModelProperties.ContainsKey(propertyName))
+                {
+                    var targetProperty = targetModelProperties[propertyName];
+                    var targetPropertyValue = targetProperty.CanRead ? targetProperty.GetValue(targetModel) : null;
+                    var targetPropertyValueType = targetPropertyValue?.GetType() ?? targetProperty.PropertyType;
+
+                    if (targetProperty.CanWrite && targetPropertyValueType == sourcePropertyValueType && targetPropertyValue != sourcePropertyValue)
+                    {
+                        targetProperty.SetValue(targetModel, sourcePropertyValue);
+                    }
+                    else if (sourcePropertyValue is null)
+                    {
+                        continue;
+                    }
+                    else if (ModelInterfaceType.IsAssignableFrom(sourcePropertyValueType) && ModelInterfaceType.IsAssignableFrom(targetPropertyValueType))
+                    {
+                        if (targetPropertyValue is null)
+                        {
+                            targetPropertyValue = targetPropertyValueType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>());
+                        }
+
+                        if (sourcePropertyValue is IModel sourcePropertyModel && targetPropertyValue is IModel targetPropertyModel)
+                        {
+                            HydrateModel(sourcePropertyModel, targetPropertyModel);
+
+                            if (targetProperty.CanWrite)
+                            {
+                                targetProperty.SetValue(targetModel, targetPropertyModel);
+                            }
+                        }
+                    }
+                    else if (CollectionInterfaceType.IsAssignableFrom(sourcePropertyValueType) && CollectionInterfaceType.IsAssignableFrom(targetPropertyValueType))
+                    {
+                        var sourceCollectionGenericInterfaceType = sourcePropertyValueType.GetInterfaces().FirstOrDefault(interfaceType => interfaceType.Name == CollectionGenericInterfaceType.Name && interfaceType.IsGenericType);
+                        var sourceCollectionElementType = sourceCollectionGenericInterfaceType?.GetGenericArguments()[0];
+                        var targetCollectionGenericInterfaceType = targetPropertyValueType.GetInterfaces().FirstOrDefault(interfaceType => interfaceType.Name == CollectionGenericInterfaceType.Name && interfaceType.IsGenericType);
+                        var targetCollectionElementType = targetCollectionGenericInterfaceType?.GetGenericArguments()[0];
+
+                        if (sourceCollectionElementType is null || targetCollectionElementType is null)
+                        {
+                            continue;
+                        }
+                        else if (ModelInterfaceType.IsAssignableFrom(sourceCollectionElementType) && ModelInterfaceType.IsAssignableFrom(targetCollectionElementType))
+                        {
+                            var sourceCollection = sourcePropertyValue as ICollection<IModel>;
+                            var targetCollection = targetPropertyValue as ICollection<IModel> ?? targetPropertyValueType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) as ICollection<IModel>;
+
+                            if (sourceCollection.IsNullOrEmpty() || targetCollection is null)
+                            {
+                                continue;
+                            }
+
+                            foreach (var sourceCollectionElement in sourceCollection)
+                            {
+                                if (sourceCollectionElement is null)
+                                {
+                                    continue;
+                                }
+                                else if (targetCollectionElementType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) is IModel targetCollectionElement)
+                                {
+                                    HydrateModel(sourceCollectionElement, targetCollectionElement);
+                                    targetCollection.Add(targetCollectionElement);
+                                }
+                            }
+
+                            if (targetProperty.CanWrite)
+                            {
+                                targetProperty.SetValue(targetModel, targetCollection);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Represents binding flags that are used to find public instance properties of a model.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const BindingFlags PropertyBindingFlags = BindingFlags.Instance | BindingFlags.Public;
+
+        /// <summary>
+        /// Represents the <see cref="ICollection{T}" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type CollectionGenericInterfaceType = typeof(ICollection<>);
+
+        /// <summary>
+        /// Represents the <see cref="ICollection" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type CollectionInterfaceType = typeof(ICollection);
+
+        /// <summary>
+        /// Represents the <see cref="IModel" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type ModelInterfaceType = typeof(IModel);
     }
 }

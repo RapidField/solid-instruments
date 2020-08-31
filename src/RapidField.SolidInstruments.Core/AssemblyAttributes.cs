@@ -8,4 +8,6 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Collections.UnitTests")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Core.UnitTests")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Cryptography")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess.EntityFramework")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.ObjectComposition")]

@@ -8,9 +8,6 @@ using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework
@@ -101,51 +98,6 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
                 throw new TypeInitializationException(typeof(TDomainModel).FullName, exception);
             }
         }
-
-        /// <summary>
-        /// Copies the state of the specified source model to the specified target model.
-        /// </summary>
-        /// <param name="sourceModel">
-        /// The model from which state is derived.
-        /// </param>
-        /// <param name="targetModel">
-        /// The model to which state is copied.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="sourceModel" /> is <see langword="null" /> -or- <paramref name="targetModel" /> is
-        /// <see langword="null" />.
-        /// </exception>
-        [DebuggerHidden]
-        private static void HydrateModel(IModel sourceModel, IModel targetModel)
-        {
-            var sourceModelType = sourceModel.RejectIf().IsNull(nameof(sourceModel)).TargetArgument.GetType();
-            var targetModelType = targetModel.RejectIf().IsNull(nameof(targetModel)).TargetArgument.GetType();
-            var sourceModelProperties = sourceModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
-            var targetModelProperties = targetModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
-
-            foreach (var sourcePropertyElement in sourceModelProperties)
-            {
-                var propertyName = sourcePropertyElement.Key;
-                var sourcePropertyValue = sourcePropertyElement.Value.CanRead ? sourcePropertyElement.Value.GetValue(sourceModel) : null;
-
-                if (targetModelProperties.ContainsKey(propertyName) && (sourcePropertyValue is null) == false)
-                {
-                    var targetProperty = targetModelProperties[propertyName];
-                    var sourcePropertyValueType = sourcePropertyValue.GetType();
-
-                    if (targetProperty.CanWrite && targetProperty.PropertyType == sourcePropertyValueType)
-                    {
-                        targetProperty.SetValue(targetModel, sourcePropertyValue);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Represents binding flags that are used to find public instance properties of a model.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const BindingFlags PropertyBindingFlags = BindingFlags.Instance | BindingFlags.Public;
     }
 
     /// <summary>

@@ -59,6 +59,6 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.EventHandlers
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Process(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken) => Console.WriteLine($"A user was updated (identifier: {model?.Identifier.ToSerializedString()}).");
+        protected override void Process(DomainModel model, IEnumerable<String> labels, Guid correlationIdentifier, ICommandMediator mediator, IConcurrencyControlToken controlToken) => Console.WriteLine($"{DomainModelEvent.DataContractNameVerb} {DomainModel.DataContractName} {model?.Identifier.ToSerializedString()}.");
     }
 }

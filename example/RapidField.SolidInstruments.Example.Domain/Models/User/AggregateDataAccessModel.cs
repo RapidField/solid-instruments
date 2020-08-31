@@ -3,11 +3,13 @@
 // =================================================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using AssociatedDomainModel = RapidField.SolidInstruments.Example.Domain.Models.User.DomainModel;
+using UserRoleAssignmentModel = RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment.AggregateDataAccessModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
 {
@@ -41,6 +43,23 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         }
 
         /// <summary>
+        /// Gets a collection of user roles which are assigned to the current <see cref="AggregateDataAccessModel" />.
+        /// </summary>
+        [DataMember]
+        public ICollection<UserRoleAssignmentModel> UserRoleAssignments
+        {
+            get
+            {
+                if (UserRoleAssignmentsValue is null)
+                {
+                    UserRoleAssignmentsValue = new List<UserRoleAssignmentModel>();
+                }
+
+                return UserRoleAssignmentsValue;
+            }
+        }
+
+        /// <summary>
         /// Represents the name that is used when representing this type as a database entity.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -51,5 +70,12 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DataContractName = TableName + nameof(AggregateDataAccessModel);
+
+        /// <summary>
+        /// Represents a collection of user roles which are assigned to the current <see cref="AggregateDataAccessModel" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [IgnoreDataMember]
+        private List<UserRoleAssignmentModel> UserRoleAssignmentsValue;
     }
 }

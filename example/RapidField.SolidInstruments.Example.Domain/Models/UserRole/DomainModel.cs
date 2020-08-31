@@ -82,7 +82,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String DataContractName = nameof(UserRole);
+        public const String DataContractName = nameof(UserRole);
 
         /// <summary>
         /// Represents the maximum description string length for <see cref="DomainModel" /> instances.

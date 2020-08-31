@@ -32,12 +32,4 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj" />
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq\RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Commands\ModelState\UserRoleAssignment\" />
-      <Folder Include="Events\ModelState\UserRoleAssignment\" />
-      <Folder Include="Messages\Command\ModelState\UserRoleAssignment\" />
-      <Folder Include="Messages\Event\ModelState\UserRoleAssignment\" />
-      <Folder Include="Models\UserRoleAssignment\" />
-      <Folder Include="Repositories\UserRoleAssignment\" />
-    </ItemGroup>
 </Project>

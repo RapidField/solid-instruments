@@ -136,7 +136,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Add(TEntity entity, IConcurrencyControlToken controlToken) => Set.Add(entity);
+        protected override void Add(TEntity entity, IConcurrencyControlToken controlToken)
+        {
+            Set.Attach(entity);
+            Set.Add(entity);
+        }
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -147,7 +151,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void AddRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.AddRange(entities);
+        protected override void AddRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
+        {
+            Set.AttachRange(entities);
+            Set.AddRange(entities);
+        }
 
         /// <summary>
         /// Returns all entities from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -158,7 +166,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// All entities within the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override IQueryable<TEntity> All(IConcurrencyControlToken controlToken) => Set.AsQueryable();
+        protected override IQueryable<TEntity> All(IConcurrencyControlToken controlToken) => ReadQuery;
 
         /// <summary>
         /// Determines whether or not any entities matching the specified predicate exist in the current
@@ -174,7 +182,22 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <see langword="true" /> if any entities matching the specified predicate exist in the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />, otherwise <see langword="false" />.
         /// </returns>
-        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.AsNoTracking().Any(predicate);
+        protected override Boolean AnyWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => UntrackedQuery.Any(predicate);
+
+        /// <summary>
+        /// Configures the specified read query for eager loading.
+        /// </summary>
+        /// <remarks>
+        /// When not overridden by a derived class, no eager loading is performed. Explicit loading must be configured by consuming
+        /// classes.
+        /// </remarks>
+        /// <param name="query">
+        /// The query to configure.
+        /// </param>
+        /// <returns>
+        /// The resulting query.
+        /// </returns>
+        protected virtual IQueryable<TEntity> ConfigureEagerLoading(IQueryable<TEntity> query) => TrackedQuery;
 
         /// <summary>
         /// Determines whether or not the specified entity exists in the current
@@ -228,7 +251,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// The number of entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override Int64 Count(IConcurrencyControlToken controlToken) => Set.AsNoTracking().Count();
+        protected override Int64 Count(IConcurrencyControlToken controlToken) => UntrackedQuery.Count();
 
         /// <summary>
         /// Returns the number of entities matching the specified predicate in the current
@@ -244,7 +267,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// The number of entities matching the specified predicate in the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.AsNoTracking().Count(predicate);
+        protected override Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => UntrackedQuery.Count(predicate);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -268,7 +291,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// All entities matching the specified predicate within the current
         /// <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </returns>
-        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => Set.Where(predicate);
+        protected override IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate, IConcurrencyControlToken controlToken) => ReadQuery.Where(predicate);
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -279,7 +302,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Remove(TEntity entity, IConcurrencyControlToken controlToken) => Set.Remove(entity);
+        protected override void Remove(TEntity entity, IConcurrencyControlToken controlToken)
+        {
+            Set.Attach(entity);
+            Set.Remove(entity);
+        }
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -290,7 +317,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void RemoveRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.RemoveRange(entities);
+        protected override void RemoveRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
+        {
+            Set.AttachRange(entities);
+            Set.RemoveRange(entities);
+        }
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -301,7 +332,11 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void Update(TEntity entity, IConcurrencyControlToken controlToken) => Set.Update(entity);
+        protected override void Update(TEntity entity, IConcurrencyControlToken controlToken)
+        {
+            Set.Attach(entity);
+            Set.Update(entity);
+        }
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
@@ -312,12 +347,80 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
-        protected override void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken) => Set.UpdateRange(entities);
+        protected override void UpdateRange(IEnumerable<TEntity> entities, IConcurrencyControlToken controlToken)
+        {
+            Set.AttachRange(entities);
+            Set.UpdateRange(entities);
+        }
+
+        /// <summary>
+        /// Configures the specified read query for full eager loading.
+        /// </summary>
+        /// <param name="query">
+        /// The query to configure.
+        /// </param>
+        /// <returns>
+        /// The resulting query.
+        /// </returns>
+        [DebuggerHidden]
+        private IQueryable<TEntity> ConfigureFullEagerLoading(IQueryable<TEntity> query)
+        {
+            var navigationProperties = Context.Model.FindEntityType(EntityType).GetDerivedTypesInclusive().SelectMany(type => type.GetNavigations()).Distinct();
+
+            foreach (var navigationProperty in navigationProperties)
+            {
+                query = query.Include(navigationProperty.Name);
+            }
+
+            return query.AsTracking();
+        }
+
+        /// <summary>
+        /// Configures the specified read query.
+        /// </summary>
+        /// <param name="query">
+        /// The query to configure.
+        /// </param>
+        /// <returns>
+        /// The resulting query.
+        /// </returns>
+        [DebuggerHidden]
+        private IQueryable<TEntity> ConfigureReadQuery(IQueryable<TEntity> query) => PerformsConfiguredEagerLoading ? ConfigureEagerLoading(query) : ConfigureFullEagerLoading(query);
 
         /// <summary>
         /// Gets the database session type of the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.
         /// </summary>
         public Type ContextType => typeof(TContext);
+
+        /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="EntityFrameworkRepository{TEntity, TContext}" /> invokes
+        /// <see cref="ConfigureEagerLoading(IQueryable{TEntity})" /> for all read queries. When <see langword="false" />, all
+        /// queries are configured for full eager loading. The default value is <see langword="false" />.
+        /// </summary>
+        protected virtual Boolean PerformsConfiguredEagerLoading => DefaultPerformsConfiguredEagerLoadingValue;
+
+        /// <summary>
+        /// Gets a configured query that can be used for read operations.
+        /// </summary>
+        protected IQueryable<TEntity> ReadQuery => ConfigureReadQuery(TrackedQuery);
+
+        /// <summary>
+        /// Gets a tracked query that can be used for read or write operations.
+        /// </summary>
+        protected IQueryable<TEntity> TrackedQuery => Set.AsTracking();
+
+        /// <summary>
+        /// Gets an untracked query that can be used for read operations.
+        /// </summary>
+        protected IQueryable<TEntity> UntrackedQuery => Set.AsNoTracking();
+
+        /// <summary>
+        /// Represents the default value indicating whether or not the current
+        /// <see cref="EntityFrameworkRepository{TEntity, TContext}" /> invokes
+        /// <see cref="ConfigureEagerLoading(IQueryable{TEntity})" /> for all read queries.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Boolean DefaultPerformsConfiguredEagerLoadingValue = false;
 
         /// <summary>
         /// Represents the database session for the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.

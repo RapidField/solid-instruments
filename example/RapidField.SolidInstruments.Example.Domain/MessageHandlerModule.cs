@@ -48,6 +48,9 @@ namespace RapidField.SolidInstruments.Example.Domain
             configurator.AddCommandMessageListener<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
             configurator.AddCommandMessageListener<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
             configurator.AddCommandMessageListener<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
+            configurator.AddCommandMessageListener<Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage>();
+            configurator.AddCommandMessageListener<Commands.ModelState.UserRoleAssignment.DeleteDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.DeleteDomainModelCommandMessage>();
+            configurator.AddCommandMessageListener<Commands.ModelState.UserRoleAssignment.UpdateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.UpdateDomainModelCommandMessage>();
 
             // Register command message transmitters.
             configurator.AddCommandMessageTransmitter<Commands.ModelState.User.CreateDomainModelCommand, Messages.Command.ModelState.User.CreateDomainModelCommandMessage>();
@@ -56,6 +59,9 @@ namespace RapidField.SolidInstruments.Example.Domain
             configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
             configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
             configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
+            configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage>();
+            configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRoleAssignment.DeleteDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.DeleteDomainModelCommandMessage>();
+            configurator.AddCommandMessageTransmitter<Commands.ModelState.UserRoleAssignment.UpdateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.UpdateDomainModelCommandMessage>();
 
             // Register event message listeners.
             configurator.AddEventMessageListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
@@ -64,6 +70,9 @@ namespace RapidField.SolidInstruments.Example.Domain
             configurator.AddEventMessageListener<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
             configurator.AddEventMessageListener<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
             configurator.AddEventMessageListener<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
+            configurator.AddEventMessageListener<Events.ModelState.UserRoleAssignment.DomainModelCreatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelCreatedEventMessage>();
+            configurator.AddEventMessageListener<Events.ModelState.UserRoleAssignment.DomainModelDeletedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelDeletedEventMessage>();
+            configurator.AddEventMessageListener<Events.ModelState.UserRoleAssignment.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelUpdatedEventMessage>();
 
             // Register event message transmitters.
             configurator.AddEventMessageTransmitter<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
@@ -72,6 +81,9 @@ namespace RapidField.SolidInstruments.Example.Domain
             configurator.AddEventMessageTransmitter<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
             configurator.AddEventMessageTransmitter<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
             configurator.AddEventMessageTransmitter<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
+            configurator.AddEventMessageTransmitter<Events.ModelState.UserRoleAssignment.DomainModelCreatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelCreatedEventMessage>();
+            configurator.AddEventMessageTransmitter<Events.ModelState.UserRoleAssignment.DomainModelDeletedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelDeletedEventMessage>();
+            configurator.AddEventMessageTransmitter<Events.ModelState.UserRoleAssignment.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelUpdatedEventMessage>();
 
             // Register request message listeners.
             configurator.AddPingRequestMessageListener();

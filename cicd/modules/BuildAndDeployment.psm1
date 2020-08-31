@@ -87,8 +87,8 @@ $SolutionConfigurationDebug = "Debug";
 $SolutionConfigurationRelease = "Release";
 
 # Namespaces
-$ExampleServiceApplicationNamespace = "RapidField.SolidInstruments.Example.ServiceApplication";
-$ExampleWebApplicationNamespace = "RapidField.SolidInstruments.Example.WebApplication";
+$ExampleAccessControlServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.AccessControl.Service";
+$ExampleBeaconServiceApplicationNamespace = "RapidField.SolidInstruments.Example.BeaconService";
 
 # Regular expressions
 $ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
@@ -609,9 +609,9 @@ Function SignPackages
 
 <#
 .Synopsis
-Starts the example service application.
+Starts the example access control service application.
 #>
-Function StartExampleServiceApplication
+Function StartExampleAccessControlServiceApplication
 {
     Param
     (
@@ -619,8 +619,8 @@ Function StartExampleServiceApplication
         [String] $SolutionConfiguration
     )
 
-    ComposeStart "Starting the example service application using $SolutionConfiguration configuration.";
-    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleServiceApplicationNamespace.dll";
+    ComposeStart "Starting the example access control service application using $SolutionConfiguration configuration.";
+    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleAccessControlServiceApplicationNamespace.dll";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Start-Process -ArgumentList "$BinaryFilePath" -FilePath "dotnet" -WindowStyle Minimized;
     ComposeFinish "Finished starting the application.";
@@ -628,27 +628,27 @@ Function StartExampleServiceApplication
 
 <#
 .Synopsis
-Starts the example service application in debug mode.
+Starts the example access control service application in debug mode.
 #>
-Function StartExampleServiceApplicationDebug
+Function StartExampleAccessControlServiceApplicationDebug
 {
-    StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
+    StartExampleAccessControlServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
 <#
 .Synopsis
-Starts the example service application in release mode.
+Starts the example access control service application in release mode.
 #>
-Function StartExampleServiceApplicationRelease
+Function StartExampleAccessControlServiceApplicationRelease
 {
-    StartExampleServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
+    StartExampleAccessControlServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
 <#
 .Synopsis
-Starts the example web application.
+Starts the example beacon service application.
 #>
-Function StartExampleWebApplication
+Function StartExampleBeaconServiceApplication
 {
     Param
     (
@@ -656,29 +656,29 @@ Function StartExampleWebApplication
         [String] $SolutionConfiguration
     )
 
-    ComposeStart "Starting the example web application using $SolutionConfiguration configuration.";
-    $ProjectFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleWebApplicationNamespace\$ExampleWebApplicationNamespace.csproj";
-    ComposeNormal "Using project path: $ProjectFilePath";
-    Start-Process -ArgumentList "run  --project ""$ProjectFilePath"" --configuration $SolutionConfiguration" -FilePath "dotnet" -WindowStyle Minimized;
+    ComposeStart "Starting the example beacon service application using $SolutionConfiguration configuration.";
+    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleBeaconServiceApplicationNamespace.dll";
+    ComposeNormal "Using binary path: $BinaryFilePath";
+    Start-Process -ArgumentList "$BinaryFilePath" -FilePath "dotnet" -WindowStyle Minimized;
     ComposeFinish "Finished starting the application.";
 }
 
 <#
 .Synopsis
-Starts the example web application in debug mode.
+Starts the example beacon service application in debug mode.
 #>
-Function StartExampleWebApplicationDebug
+Function StartExampleBeaconServiceApplicationDebug
 {
-    StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationDebug;
+    StartExampleBeaconServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
 }
 
 <#
 .Synopsis
-Starts the example web application in release mode.
+Starts the example beacon service application in release mode.
 #>
-Function StartExampleWebApplicationRelease
+Function StartExampleBeaconServiceApplicationRelease
 {
-    StartExampleWebApplication -SolutionConfiguration $SolutionConfigurationRelease;
+    StartExampleBeaconServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
 <#

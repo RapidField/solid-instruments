@@ -10,7 +10,9 @@ using RapidField.SolidInstruments.Messaging.DotNetNative.Service;
 using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Service;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
 {
@@ -65,6 +67,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
                 listeningProfile.AddCommandListener<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
                 listeningProfile.AddCommandListener<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
                 listeningProfile.AddCommandListener<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.DeleteDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.DeleteDomainModelCommandMessage>();
+                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.UpdateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.UpdateDomainModelCommandMessage>();
 
                 // Add event listeners.
                 listeningProfile.AddEventListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
@@ -73,6 +78,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
                 listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
                 listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
                 listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelCreatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelCreatedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelDeletedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelDeletedEventMessage>();
+                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelUpdatedEventMessage>();
             }
             finally
             {
@@ -123,41 +131,88 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
             try
             {
                 var mediator = dependencyScope.Resolve<ICommandMediator>();
-
-                // Create or update the database schema.
-                var databaseContext = dependencyScope.Resolve<DatabaseContext>();
-                databaseContext.Database.EnsureCreated();
-
-                foreach (var domainModel in Models.User.DomainModel.Named.All())
-                {
-                    mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(domainModel)));
-                }
-
-                foreach (var domainModel in Models.UserRole.DomainModel.Named.All())
-                {
-                    mediator.Process(new Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage(new Commands.ModelState.UserRole.CreateDomainModelCommand(domainModel)));
-                }
-
-                try
-                {
-                    // Test service bus connectivity.
-                    var pingRequestCorrelationIdentifier = Guid.NewGuid();
-                    var pingResponseMessage = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingRequestCorrelationIdentifier));
-
-                    if (pingResponseMessage is null || pingResponseMessage.CorrelationIdentifier != pingRequestCorrelationIdentifier)
-                    {
-                        throw new ServiceExectuionException("The service was unable to verify service bus connectivity.");
-                    }
-                }
-                catch (CommandHandlingException exception)
-                {
-                    throw new ServiceExectuionException("The service was unable to verify service bus connectivity. See inner exception.", exception);
-                }
+                TestServiceBusConnectivity(mediator);
+                MigrateDatabaseSchema(dependencyScope);
+                HydrateNamedEntities(mediator);
             }
             finally
             {
                 base.OnExecutionStarting(dependencyScope, applicationConfiguration, executionLifetime);
             }
+        }
+
+        /// <summary>
+        /// Creates or updates all named domain models.
+        /// </summary>
+        /// <param name="mediator">
+        /// A mediator that is used to issue commands.
+        /// </param>
+        [DebuggerHidden]
+        private static void HydrateNamedEntities(ICommandMediator mediator)
+        {
+            foreach (var domainModel in Models.User.DomainModel.Named.All())
+            {
+                mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(domainModel)));
+            }
+
+            Thread.Sleep(610);
+
+            foreach (var domainModel in Models.UserRole.DomainModel.Named.All())
+            {
+                mediator.Process(new Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage(new Commands.ModelState.UserRole.CreateDomainModelCommand(domainModel)));
+            }
+
+            Thread.Sleep(610);
+
+            foreach (var domainModel in Models.UserRoleAssignment.DomainModel.Named.All())
+            {
+                mediator.Process(new Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage(new Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand(domainModel)));
+            }
+
+            Thread.Sleep(610);
+            Console.WriteLine("Database entities created/updated.");
+        }
+
+        /// <summary>
+        /// Creates or updates the database schema.
+        /// </summary>
+        /// <param name="dependencyScope">
+        /// A scope that is used to resolve service dependencies.
+        /// </param>
+        [DebuggerHidden]
+        private static void MigrateDatabaseSchema(IDependencyScope dependencyScope)
+        {
+            var databaseContext = dependencyScope.Resolve<DatabaseContext>();
+            databaseContext.Database.EnsureCreated();
+            Thread.Sleep(610);
+            Console.WriteLine("Database schema created/updated.");
+        }
+
+        /// <summary>
+        /// Raises an exception if a service bus connection is unavailable.
+        /// </summary>
+        /// <param name="mediator">
+        /// A mediator that is used to issue commands.
+        /// </param>
+        [DebuggerHidden]
+        private static void TestServiceBusConnectivity(ICommandMediator mediator)
+        {
+            try
+            {
+                var pingRequestCorrelationIdentifier = Guid.NewGuid();
+                var pingResponseMessage = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingRequestCorrelationIdentifier));
+
+                if (pingResponseMessage is null || pingResponseMessage.CorrelationIdentifier != pingRequestCorrelationIdentifier)
+                {
+                    throw new ServiceExectuionException("The service was unable to verify service bus connectivity.");
+                }
+            }
+            catch (CommandHandlingException exception)
+            {
+                throw new ServiceExectuionException("The service was unable to verify service bus connectivity. See inner exception.", exception);
+            }
+
+            Console.WriteLine("Service bus connectivity verified.");
         }
 
         /// <summary>

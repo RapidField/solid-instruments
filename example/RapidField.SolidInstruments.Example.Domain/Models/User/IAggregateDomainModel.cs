@@ -4,7 +4,9 @@
 
 using RapidField.SolidInstruments.Core;
 using System;
+using System.Collections.Generic;
 using IBaseDomainModel = RapidField.SolidInstruments.Core.Domain.IGlobalIdentityAggregateDomainModel;
+using UserRoleAssignmentModel = RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment.DomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
 {
@@ -65,6 +67,14 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets a collection of user roles which are assigned to the current <see cref="IAggregateDomainModel" />.
+        /// </summary>
+        public ICollection<UserRoleAssignmentModel> UserRoleAssignments
+        {
+            get;
         }
     }
 }

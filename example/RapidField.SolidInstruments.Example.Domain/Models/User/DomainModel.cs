@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using BaseDomainModel = RapidField.SolidInstruments.Core.Domain.GlobalIdentityDomainModel;
+using UserRoleAssignmentModel = RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment.DomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
 {
@@ -99,10 +100,27 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         }
 
         /// <summary>
+        /// Gets a collection of user roles which are assigned to the current <see cref="DomainModel" />.
+        /// </summary>
+        [DataMember]
+        public ICollection<UserRoleAssignmentModel> UserRoleAssignments
+        {
+            get
+            {
+                if (UserRoleAssignmentsValue is null)
+                {
+                    UserRoleAssignmentsValue = new List<UserRoleAssignmentModel>();
+                }
+
+                return UserRoleAssignmentsValue;
+            }
+        }
+
+        /// <summary>
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String DataContractName = nameof(User);
+        public const String DataContractName = nameof(User);
 
         /// <summary>
         /// Represents the maximum email address string length for <see cref="DomainModel" /> instances.
@@ -142,6 +160,13 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [IgnoreDataMember]
         private String PasswordHashValue;
+
+        /// <summary>
+        /// Represents a collection of user roles which are assigned to the current <see cref="DomainModel" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [IgnoreDataMember]
+        private List<UserRoleAssignmentModel> UserRoleAssignmentsValue;
 
         /// <summary>
         /// Contains a collection of known <see cref="DomainModel" /> instances.
@@ -195,7 +220,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <summary>
             /// Gets the Tom Smith user.
             /// </summary>
-            public static DomainModel TomSmith => new DomainModel(Guid.Parse("01b7e51c-95e1-4eb1-aba6-1db0657a0fa3"))
+            public static DomainModel TomSmith => new DomainModel(Guid.Parse("3d46470a-1c90-4e94-bc5c-3cbde44ba6ac"))
             {
                 EmailAddress = "tom.smith@example.com",
                 Name = "Tom Smith",
