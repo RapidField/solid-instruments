@@ -8,17 +8,18 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
     /// Represents the assignment of a single user role to a single user.
     /// </summary>
     /// <remarks>
-    /// This is the root declaration for a shared aggregate model interface. Aggregate models expose the full schema for a model
-    /// group and are appropriate for use in any context in which detail-level information is needed. Shared models define the
-    /// characteristics which are shared between data access models and domain models. The following are guidelines for use of this
-    /// declaration.
-    /// - DO specify interface implementation(s).
-    /// - DO implement <see cref="IValueModel" />.
-    /// - DO NOT declare data fields or properties.
+    /// This is the data declaration for a shared value model interface. Value models expose the foundational schema for a model
+    /// group and are appropriate for use in any context in which basic or identifying information is needed. Shared models define
+    /// the characteristics which are shared between data access models and domain models. The following are guidelines for use of
+    /// this declaration.
+    /// - DO declare data properties with public getters.
+    /// - DO NOT specify interface implementation(s).
+    /// - DO NOT decorate the interface with attributes.
+    /// - DO NOT decorate data properties with attributes.
     /// - DO NOT declare computed properties or domain logic methods.
     /// - DO NOT declare navigation properties.
     /// </remarks>
-    public partial interface IAggregateModel : IValueModel
+    public partial interface IValueModel
     {
     }
 }

@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
                     })
                     .Entity<UserRoleModel>(entityType =>
                     {
-                        return;
+                        entityType.HasMany<UserRoleAssignmentModel>().WithOne(entity => entity.UserRole).HasForeignKey(entity => entity.UserRoleIdentifier);
                     })
                     .Entity<UserRoleAssignmentModel>(entityType =>
                     {

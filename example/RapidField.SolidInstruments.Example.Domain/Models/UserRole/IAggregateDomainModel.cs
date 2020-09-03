@@ -2,8 +2,6 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Core;
-using System;
 using IBaseDomainModel = RapidField.SolidInstruments.Core.Domain.IGlobalIdentityAggregateDomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
@@ -11,42 +9,17 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
     /// <summary>
     /// Represents a user role.
     /// </summary>
-    public interface IAggregateDomainModel : IAggregateModel, IBaseDomainModel, IValueDomainModel
+    /// <remarks>
+    /// This is the root declaration for an aggregate domain model interface. Aggregate models expose the full schema for a model
+    /// group and are appropriate for use in any context in which detail-level information is needed. Domain models represent domain
+    /// constructs and define their characteristics and behavior. The following are guidelines for use of this declaration.
+    /// - DO specify interface implementation(s).
+    /// - DO implement <see cref="IAggregateModel" />, <see cref="IBaseDomainModel" /> and <see cref="IValueDomainModel" />.
+    /// - DO NOT declare data fields or properties.
+    /// - DO NOT declare computed properties or domain logic methods.
+    /// - DO NOT declare navigation properties.
+    /// </remarks>
+    public partial interface IAggregateDomainModel : IAggregateModel, IBaseDomainModel, IValueDomainModel
     {
-        /// <summary>
-        /// Gets or sets the description for the current <see cref="IAggregateDomainModel" />.
-        /// </summary>
-        /// <exception cref="ArgumentEmptyException">
-        /// <see cref="Description" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Description" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Description" /> is too long.
-        /// </exception>
-        public new String Description
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the current <see cref="IAggregateDomainModel" />.
-        /// </summary>
-        /// <exception cref="ArgumentEmptyException">
-        /// <see cref="Name" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Name" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Name" /> is too long.
-        /// </exception>
-        public new String Name
-        {
-            get;
-            set;
-        }
     }
 }

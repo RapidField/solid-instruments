@@ -3,21 +3,33 @@
 // =================================================================================================================================
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using UserModel = RapidField.SolidInstruments.Example.Domain.Models.User.AggregateDataAccessModel;
-using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.AggregateDataAccessModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
 {
     /// <summary>
     /// Represents the assignment of a single user role to a single user.
     /// </summary>
+    /// <remarks>
+    /// This is the root declaration for a concrete aggregate data access model. Aggregate models expose the full schema for a model
+    /// group and are appropriate for use in a system of record or in any context in which detail-level information is needed. Data
+    /// access models are in-memory representations of data entities and are used to perform data access operations. The following
+    /// are guidelines for use of this declaration.
+    /// - DO specify class inheritance and interface implementation(s).
+    /// - DO derive this class (inherit) from <see cref="ValueDataAccessModel" />.
+    /// - DO implement <see cref="IAggregateModel" />.
+    /// - DO decorate the class with <see cref="DataContractAttribute" /> and <see cref="TableAttribute" />.
+    /// - DO specify a custom, unique data contract name and custom, unique table name.
+    /// - DO declare a public, parameterless constructor.
+    /// - DO NOT declare data fields or properties.
+    /// - DO NOT declare computed properties or domain logic methods.
+    /// - DO NOT declare navigation properties.
+    /// </remarks>
     [DataContract(Name = DataContractName)]
     [Table(TableName)]
-    public sealed class AggregateDataAccessModel : ValueDataAccessModel, IAggregateModel
+    public sealed partial class AggregateDataAccessModel : ValueDataAccessModel, IAggregateModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateDataAccessModel" /> class.
@@ -26,52 +38,6 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
             : base()
         {
             return;
-        }
-
-        /// <summary>
-        /// Gets or sets the user to which a user role is assigned.
-        /// </summary>
-        [ForeignKey(nameof(UserIdentifier))]
-        [IgnoreDataMember]
-        public UserModel User
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that uniquely identifies the user to which a user role is assigned.
-        /// </summary>
-        [Column]
-        [DataMember]
-        [Required]
-        public Guid UserIdentifier
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the user role that is a assigned to a user.
-        /// </summary>
-        [ForeignKey(nameof(UserRoleIdentifier))]
-        [IgnoreDataMember]
-        public UserRoleModel UserRole
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that uniquely identifies the user role that is assigned to a user.
-        /// </summary>
-        [Column]
-        [DataMember]
-        [Required]
-        public Guid UserRoleIdentifier
-        {
-            get;
-            set;
         }
 
         /// <summary>

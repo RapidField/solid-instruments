@@ -2,10 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using RapidField.SolidInstruments.Core;
-using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using BaseDomainModel = RapidField.SolidInstruments.Core.Domain.GlobalIdentityDomainModel;
@@ -15,8 +12,23 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
     /// <summary>
     /// Represents a user role.
     /// </summary>
+    /// <remarks>
+    /// This is the root declaration for a concrete aggregate domain model. Aggregate models expose the full schema for a model
+    /// group and are appropriate for use in any context in which detail-level information is needed. Domain models represent domain
+    /// constructs and define their characteristics and behavior. The following are guidelines for use of this declaration.
+    /// - DO specify class inheritance and interface implementation(s).
+    /// - DO derive this class (inherit) from <see cref="BaseDomainModel" />.
+    /// - DO implement <see cref="IAggregateDomainModel" />.
+    /// - DO decorate the class with <see cref="DataContractAttribute" />.
+    /// - DO specify a custom, unique data contract name.
+    /// - DO declare a public, parameterless constructor.
+    /// - DO declare an internal constructor which accepts an identifier value.
+    /// - DO NOT declare data fields or properties.
+    /// - DO NOT declare computed properties or domain logic methods.
+    /// - DO NOT declare navigation properties.
+    /// </remarks>
     [DataContract(Name = DataContractName)]
-    public sealed class DomainModel : BaseDomainModel, IAggregateDomainModel
+    public sealed partial class DomainModel : BaseDomainModel, IAggregateDomainModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainModel" /> class.
@@ -41,109 +53,9 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
         }
 
         /// <summary>
-        /// Gets or sets the description of the current <see cref="DomainModel" />.
-        /// </summary>
-        /// <exception cref="ArgumentEmptyException">
-        /// <see cref="Description" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Description" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Description" /> is too long.
-        /// </exception>
-        [DataMember]
-        public String Description
-        {
-            get => DescriptionValue;
-            set => DescriptionValue = value.RejectIf().IsNullOrEmpty(nameof(Description)).OrIf().LengthIsGreaterThan(DescriptionValueMaximumLength, nameof(Description));
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the current <see cref="DomainModel" />.
-        /// </summary>
-        /// <exception cref="ArgumentEmptyException">
-        /// <see cref="Name" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Name" /> is <see langword="null" />.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <see cref="Name" /> is too long.
-        /// </exception>
-        [DataMember]
-        public String Name
-        {
-            get => NameValue;
-            set => NameValue = value.RejectIf().IsNullOrEmpty(nameof(Name)).OrIf().LengthIsGreaterThan(NameValueMaximumLength, nameof(Name));
-        }
-
-        /// <summary>
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public const String DataContractName = nameof(UserRole);
-
-        /// <summary>
-        /// Represents the maximum description string length for <see cref="DomainModel" /> instances.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 DescriptionValueMaximumLength = 89;
-
-        /// <summary>
-        /// Represents the maximum name string length for <see cref="DomainModel" /> instances.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const Int32 NameValueMaximumLength = 55;
-
-        /// <summary>
-        /// Represents the description for the current <see cref="DomainModel" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [IgnoreDataMember]
-        private String DescriptionValue;
-
-        /// <summary>
-        /// Represents the name of the current <see cref="DomainModel" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [IgnoreDataMember]
-        private String NameValue;
-
-        /// <summary>
-        /// Contains a collection of known <see cref="DomainModel" /> instances.
-        /// </summary>
-        public static class Named
-        {
-            /// <summary>
-            /// Returns a collection of all known <see cref="DomainModel" /> instances.
-            /// </summary>
-            /// <returns>
-            /// A collection of all known <see cref="DomainModel" /> instances.
-            /// </returns>
-            public static IEnumerable<DomainModel> All() => new DomainModel[]
-            {
-                EndUser,
-                SystemAdministrator
-            };
-
-            /// <summary>
-            /// Gets the end user role.
-            /// </summary>
-            public static DomainModel EndUser => new DomainModel(Guid.Parse("816e7126-2034-49b3-af08-d07cab150d93"))
-            {
-                Description = "A standard end user.",
-                Name = "End User"
-            };
-
-            /// <summary>
-            /// Gets the system administrator user role.
-            /// </summary>
-            public static DomainModel SystemAdministrator => new DomainModel(Guid.Parse("b13c7a39-0c65-4515-a4af-2e3f60d289ba"))
-            {
-                Description = "A user with full administrative privileges.",
-                Name = "System Administrator"
-            };
-        }
     }
 }

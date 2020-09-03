@@ -3,20 +3,32 @@
 // =================================================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using BaseDomainModel = RapidField.SolidInstruments.Core.Domain.GlobalIdentityDomainModel;
-using UserModel = RapidField.SolidInstruments.Example.Domain.Models.User.DomainModel;
-using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.DomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
 {
     /// <summary>
     /// Represents the assignment of a single user role to a single user.
     /// </summary>
+    /// <remarks>
+    /// This is the root declaration for a concrete aggregate domain model. Aggregate models expose the full schema for a model
+    /// group and are appropriate for use in any context in which detail-level information is needed. Domain models represent domain
+    /// constructs and define their characteristics and behavior. The following are guidelines for use of this declaration.
+    /// - DO specify class inheritance and interface implementation(s).
+    /// - DO derive this class (inherit) from <see cref="BaseDomainModel" />.
+    /// - DO implement <see cref="IAggregateDomainModel" />.
+    /// - DO decorate the class with <see cref="DataContractAttribute" />.
+    /// - DO specify a custom, unique data contract name.
+    /// - DO declare a public, parameterless constructor.
+    /// - DO declare an internal constructor which accepts an identifier value.
+    /// - DO NOT declare data fields or properties.
+    /// - DO NOT declare computed properties or domain logic methods.
+    /// - DO NOT declare navigation properties.
+    /// </remarks>
     [DataContract(Name = DataContractName)]
-    public sealed class DomainModel : BaseDomainModel, IAggregateDomainModel
+    public sealed partial class DomainModel : BaseDomainModel, IAggregateDomainModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainModel" /> class.
@@ -41,85 +53,9 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
         }
 
         /// <summary>
-        /// Gets the user to which a user role is assigned.
-        /// </summary>
-        [IgnoreDataMember]
-        public UserModel User
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that uniquely identifies the user to which a user role is assigned.
-        /// </summary>
-        [DataMember]
-        public Guid UserIdentifier
-        {
-            get => User?.Identifier ?? Guid.Empty;
-            set => User = new UserModel(value);
-        }
-
-        /// <summary>
-        /// Gets the user role that is a assigned to a user.
-        /// </summary>
-        [IgnoreDataMember]
-        public UserRoleModel UserRole
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that uniquely identifies the user role that is assigned to a user.
-        /// </summary>
-        [DataMember]
-        public Guid UserRoleIdentifier
-        {
-            get => UserRole?.Identifier ?? Guid.Empty;
-            set => UserRole = new UserRoleModel(value);
-        }
-
-        /// <summary>
         /// Represents the name that is used when representing this type in serialization and transport contexts.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public const String DataContractName = nameof(UserRoleAssignment);
-
-        /// <summary>
-        /// Contains a collection of known <see cref="DomainModel" /> instances.
-        /// </summary>
-        public static class Named
-        {
-            /// <summary>
-            /// Returns a collection of all known <see cref="DomainModel" /> instances.
-            /// </summary>
-            /// <returns>
-            /// A collection of all known <see cref="DomainModel" /> instances.
-            /// </returns>
-            public static IEnumerable<DomainModel> All() => new DomainModel[]
-            {
-                StevenCallahanSystemAdministrator,
-                TomSmithEndUser
-            };
-
-            /// <summary>
-            /// Gets the system administrator role assignment for Steven Callahan.
-            /// </summary>
-            public static DomainModel StevenCallahanSystemAdministrator => new DomainModel(Guid.Parse("3af59674-efe9-46ad-b8b3-847e1a74c53c"))
-            {
-                User = UserModel.Named.StevenCallahan,
-                UserRole = UserRoleModel.Named.SystemAdministrator
-            };
-
-            /// <summary>
-            /// Gets the end user role assignment for Tom Smith.
-            /// </summary>
-            public static DomainModel TomSmithEndUser => new DomainModel(Guid.Parse("472ceca5-e06b-4ae7-8022-ecb160822137"))
-            {
-                User = UserModel.Named.TomSmith,
-                UserRole = UserRoleModel.Named.EndUser
-            };
-        }
     }
 }

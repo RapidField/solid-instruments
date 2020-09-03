@@ -343,12 +343,32 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        internal static void HydrateModel(IModel sourceModel, IModel targetModel)
+        internal static void HydrateModel(IModel sourceModel, IModel targetModel) => HydrateModel(sourceModel, targetModel, new MappedModelDictionary());
+
+        /// <summary>
+        /// Copies the state of the specified source model to the specified target model.
+        /// </summary>
+        /// <param name="sourceModel">
+        /// The model from which state is derived.
+        /// </param>
+        /// <param name="targetModel">
+        /// The model to which state is copied.
+        /// </param>
+        /// <param name="mappedModels">
+        /// A collection of cached, hydrated models.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="sourceModel" /> is <see langword="null" /> -or- <paramref name="targetModel" /> is
+        /// <see langword="null" /> -or- <paramref name="mappedModels" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private static void HydrateModel(IModel sourceModel, IModel targetModel, MappedModelDictionary mappedModels)
         {
             var sourceModelType = sourceModel.RejectIf().IsNull(nameof(sourceModel)).TargetArgument.GetType();
             var targetModelType = targetModel.RejectIf().IsNull(nameof(targetModel)).TargetArgument.GetType();
             var sourceModelProperties = sourceModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
             var targetModelProperties = targetModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
+            mappedModels.RejectIf().IsNull(nameof(mappedModels)).TargetArgument.AddModelPair(new MappedModel(sourceModel, targetModel));
 
             foreach (var sourcePropertyElement in sourceModelProperties)
             {
@@ -380,7 +400,14 @@ namespace RapidField.SolidInstruments.Core
 
                         if (sourcePropertyValue is IModel sourcePropertyModel && targetPropertyValue is IModel targetPropertyModel)
                         {
-                            HydrateModel(sourcePropertyModel, targetPropertyModel);
+                            if (mappedModels.TryGetModel(sourcePropertyModel, out var cachedModel))
+                            {
+                                targetPropertyModel = cachedModel;
+                            }
+                            else
+                            {
+                                HydrateModel(sourcePropertyModel, targetPropertyModel, mappedModels);
+                            }
 
                             if (targetProperty.CanWrite)
                             {
@@ -401,10 +428,9 @@ namespace RapidField.SolidInstruments.Core
                         }
                         else if (ModelInterfaceType.IsAssignableFrom(sourceCollectionElementType) && ModelInterfaceType.IsAssignableFrom(targetCollectionElementType))
                         {
-                            var sourceCollection = sourcePropertyValue as ICollection<IModel>;
-                            var targetCollection = targetPropertyValue as ICollection<IModel> ?? targetPropertyValueType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) as ICollection<IModel>;
+                            var targetCollection = targetPropertyValue as ICollection ?? targetPropertyValueType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) as ICollection;
 
-                            if (sourceCollection.IsNullOrEmpty() || targetCollection is null)
+                            if (!(sourcePropertyValue is ICollection sourceCollection) || sourceCollection.Count == 0 || targetCollection is null)
                             {
                                 continue;
                             }
@@ -415,10 +441,18 @@ namespace RapidField.SolidInstruments.Core
                                 {
                                     continue;
                                 }
-                                else if (targetCollectionElementType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) is IModel targetCollectionElement)
+                                else if (sourceCollectionElement is IModel sourceCollectionElementModel && targetCollectionElementType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) is IModel targetCollectionElementModel)
                                 {
-                                    HydrateModel(sourceCollectionElement, targetCollectionElement);
-                                    targetCollection.Add(targetCollectionElement);
+                                    if (mappedModels.TryGetModel(sourceCollectionElementModel, out var cachedModel))
+                                    {
+                                        targetCollectionElementModel = cachedModel;
+                                    }
+                                    else
+                                    {
+                                        HydrateModel(sourceCollectionElementModel, targetCollectionElementModel, mappedModels);
+                                    }
+
+                                    targetCollectionGenericInterfaceType.GetMethod(nameof(ICollection<Object>.Add))?.Invoke(targetCollection, new Object[] { targetCollectionElementModel });
                                 }
                             }
 
@@ -455,5 +489,120 @@ namespace RapidField.SolidInstruments.Core
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Type ModelInterfaceType = typeof(IModel);
+
+        /// <summary>
+        /// Represents a source <see cref="IModel" /> instance and a target <see cref="IModel" /> to which it is mapped.
+        /// </summary>
+        private sealed class MappedModel
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MappedModel" /> class.
+            /// </summary>
+            /// <param name="sourceModel">
+            /// The model from which <paramref name="targetModel" /> is produced.
+            /// </param>
+            /// <param name="targetModel">
+            /// The model that is produced to represent <paramref name="sourceModel" />.
+            /// </param>
+            /// <exception cref="ArgumentNullException">
+            /// <paramref name="sourceModel" /> is <see langword="null" /> -or- <paramref name="targetModel" /> is
+            /// <see langword="null" />.
+            /// </exception>
+            [DebuggerHidden]
+            internal MappedModel(IModel sourceModel, IModel targetModel)
+            {
+                SourceModel = sourceModel.RejectIf().IsNull(nameof(sourceModel)).TargetArgument;
+                TargetModel = targetModel.RejectIf().IsNull(nameof(targetModel)).TargetArgument;
+                Key = SourceModel.GetHashCode();
+            }
+
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A 32-bit signed integer hash code.
+            /// </returns>
+            public override Int32 GetHashCode() => SourceModel.GetHashCode();
+
+            /// <summary>
+            /// Gets the source model hash code, which serves as a unique key for the model pair.
+            /// </summary>
+            public Int32 Key
+            {
+                get;
+            }
+
+            /// <summary>
+            /// Gets the model from which <see cref="TargetModel" /> is produced.
+            /// </summary>
+            public IModel SourceModel
+            {
+                get;
+            }
+
+            /// <summary>
+            /// Gets the model that is produced to represent <see cref="SourceModel" />.
+            /// </summary>
+            public IModel TargetModel
+            {
+                get;
+            }
+        }
+
+        /// <summary>
+        /// Represents a collection of <see cref="MappedModel" /> instances which are keyed by source model hash code.
+        /// </summary>
+        private sealed class MappedModelDictionary : Dictionary<Int32, MappedModel>
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MappedModelDictionary" /> class.
+            /// </summary>
+            [DebuggerHidden]
+            internal MappedModelDictionary()
+                : base()
+            {
+                return;
+            }
+
+            /// <summary>
+            /// Adds the specified model pair to the dictionary.
+            /// </summary>
+            /// <param name="modelPair">
+            /// The model pair to add.
+            /// </param>
+            /// <exception cref="ArgumentException">
+            /// The dictionary already contains <paramref name="modelPair" />.
+            /// </exception>
+            /// <exception cref="ArgumentNullException">
+            /// <paramref name="modelPair" /> is <see langword="null" />.
+            /// </exception>
+            public void AddModelPair(MappedModel modelPair) => Add(modelPair.RejectIf().IsNull(nameof(modelPair)).TargetArgument.Key, modelPair);
+
+            /// <summary>
+            /// Attempts to retrieve a cached target model for the specified source model.
+            /// </summary>
+            /// <param name="sourceModel">
+            /// The model from which <paramref name="targetModel" /> is produced.
+            /// </param>
+            /// <param name="targetModel">
+            /// The model that is produced to represent <paramref name="sourceModel" />.
+            /// </param>
+            /// <returns>
+            /// <see langword="true" /> if the model pair is cached, otherwise <see langword="false" />.
+            /// </returns>
+            public Boolean TryGetModel(IModel sourceModel, out IModel targetModel)
+            {
+                var sourceModelHashCode = sourceModel.RejectIf().IsNull(nameof(sourceModel)).TargetArgument.GetHashCode();
+
+                if (TryGetValue(sourceModelHashCode, out var mappedModel))
+                {
+                    targetModel = mappedModel.TargetModel;
+                    return true;
+                }
+
+                targetModel = null;
+                return false;
+            }
+        }
     }
 }

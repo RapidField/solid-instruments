@@ -3,9 +3,11 @@
 // =================================================================================================================================
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Domain;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -359,21 +361,49 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="query">
         /// The query to configure.
         /// </param>
+        /// <param name="entityType">
+        /// The entity type for which to discover and include navigation properties.
+        /// </param>
+        /// <param name="parentNavigationPath">
+        /// The navigation path for <paramref name="entityType" />.
+        /// </param>
+        /// <param name="recursionDepth">
+        /// </param>
         /// <returns>
         /// The resulting query.
         /// </returns>
         [DebuggerHidden]
-        private IQueryable<TEntity> ConfigureFullEagerLoading(IQueryable<TEntity> query)
+        private static IQueryable<TEntity> ConfigureFullEagerLoading(IQueryable<TEntity> query, IEntityType entityType, String parentNavigationPath, Int32 recursionDepth)
         {
-            var navigationProperties = Context.Model.FindEntityType(EntityType).GetDerivedTypesInclusive().SelectMany(type => type.GetNavigations()).Distinct();
+            var navigationProperties = entityType.GetDerivedTypesInclusive().SelectMany(type => type.GetNavigations()).Distinct();
+            recursionDepth += 1;
+
+            if (recursionDepth > MaximumEagerLoadingRecursionDepth)
+            {
+                return query;
+            }
 
             foreach (var navigationProperty in navigationProperties)
             {
-                query = query.Include(navigationProperty.Name);
+                var navigationPath = parentNavigationPath.IsNullOrEmpty() ? navigationProperty.Name : $"{parentNavigationPath}.{navigationProperty.Name}";
+                query = query.Include(navigationPath);
+                query = ConfigureFullEagerLoading(query, navigationProperty.GetTargetType(), navigationPath, recursionDepth);
             }
 
-            return query.AsTracking();
+            return query;
         }
+
+        /// <summary>
+        /// Configures the specified read query for full eager loading.
+        /// </summary>
+        /// <param name="query">
+        /// The query to configure.
+        /// </param>
+        /// <returns>
+        /// The resulting query.
+        /// </returns>
+        [DebuggerHidden]
+        private IQueryable<TEntity> ConfigureFullEagerLoading(IQueryable<TEntity> query) => ConfigureFullEagerLoading(query, Context.Model.FindEntityType(EntityType), null, 0).AsTracking();
 
         /// <summary>
         /// Configures the specified read query.
@@ -421,6 +451,12 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const Boolean DefaultPerformsConfiguredEagerLoadingValue = false;
+
+        /// <summary>
+        /// Represents the maximum depth of recursion to honor when configuring queries for full eager loading.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 MaximumEagerLoadingRecursionDepth = 5;
 
         /// <summary>
         /// Represents the database session for the current <see cref="EntityFrameworkRepository{TEntity, TContext}" />.

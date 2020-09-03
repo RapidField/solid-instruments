@@ -3,7 +3,6 @@
 // =================================================================================================================================
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Runtime.Serialization;
@@ -16,9 +15,24 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
     /// <summary>
     /// Represents a user.
     /// </summary>
+    /// <remarks>
+    /// This is the root declaration for a concrete value data access model. Value models expose the foundational schema for a model
+    /// group and are appropriate for use in any context in which basic or identifying information is needed. Data access models are
+    /// in-memory representations of data entities and are used to perform data access operations. The following are guidelines for
+    /// use of this declaration.
+    /// - DO specify class inheritance and interface implementation(s).
+    /// - DO derive this class (inherit) from <see cref="BaseDataAccessModel" />.
+    /// - DO implement <see cref="IValueModel" />.
+    /// - DO decorate the class with <see cref="DataContractAttribute" /> and <see cref="TableAttribute" />.
+    /// - DO specify a custom, unique data contract name and custom, unique table name.
+    /// - DO declare a public, parameterless constructor.
+    /// - DO NOT declare data fields or properties.
+    /// - DO NOT declare computed properties or domain logic methods.
+    /// - DO NOT declare navigation properties.
+    /// </remarks>
     [DataContract(Name = DataContractName)]
     [Table(TableName)]
-    public class ValueDataAccessModel : BaseDataAccessModel, IValueModel
+    public partial class ValueDataAccessModel : BaseDataAccessModel, IValueModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueDataAccessModel" /> class.
@@ -27,32 +41,6 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             : base()
         {
             return;
-        }
-
-        /// <summary>
-        /// Gets or sets the email address of the current <see cref="ValueDataAccessModel" />.
-        /// </summary>
-        [Column(Order = 1)]
-        [DataMember]
-        [Required]
-        [StringLength(AssociatedDomainModel.EmailAddressValueMaximumLength)]
-        public String EmailAddress
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the current <see cref="ValueDataAccessModel" />.
-        /// </summary>
-        [Column(Order = 2)]
-        [DataMember]
-        [Required]
-        [StringLength(AssociatedDomainModel.NameValueMaximumLength)]
-        public String Name
-        {
-            get;
-            set;
         }
 
         /// <summary>
