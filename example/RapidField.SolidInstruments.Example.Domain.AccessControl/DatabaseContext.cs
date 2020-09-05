@@ -14,6 +14,10 @@ using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
+    using UserModelConfiguration = Models.User.AggregateDataAccessModelConfiguration;
+    using UserRoleAssignmentModelConfiguration = Models.UserRoleAssignment.AggregateDataAccessModelConfiguration;
+    using UserRoleModelConfiguration = Models.UserRole.AggregateDataAccessModelConfiguration;
+
     /// <summary>
     /// Represents a connection to the AccessControl database.
     /// </summary>
@@ -52,19 +56,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
             try
             {
                 _ = modelBuilder
-                    .Entity<UserModel>(entityType =>
-                    {
-                        entityType.HasMany(entity => entity.UserRoleAssignments).WithOne(entity => entity.User);
-                    })
-                    .Entity<UserRoleModel>(entityType =>
-                    {
-                        entityType.HasMany<UserRoleAssignmentModel>().WithOne(entity => entity.UserRole).HasForeignKey(entity => entity.UserRoleIdentifier);
-                    })
-                    .Entity<UserRoleAssignmentModel>(entityType =>
-                    {
-                        entityType.HasOne(entity => entity.User).WithMany(entity => entity.UserRoleAssignments).HasForeignKey(entity => entity.UserIdentifier);
-                        entityType.HasOne(entity => entity.UserRole).WithMany().HasForeignKey(entity => entity.UserRoleIdentifier);
-                    });
+                    .ApplyConfiguration(new UserModelConfiguration(applicationConfiguration))
+                    .ApplyConfiguration(new UserRoleAssignmentModelConfiguration(applicationConfiguration))
+                    .ApplyConfiguration(new UserRoleModelConfiguration(applicationConfiguration));
             }
             finally
             {

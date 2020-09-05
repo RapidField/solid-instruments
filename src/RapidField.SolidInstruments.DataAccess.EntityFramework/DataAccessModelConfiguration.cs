@@ -45,13 +45,13 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <summary>
         /// Configures the entity.
         /// </summary>
-        /// <param name="builder">
+        /// <param name="entityType">
         /// The builder that is used to configure the entity.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
-        protected override void Configure(EntityTypeBuilder<TDataAccessModel> builder, IConfiguration applicationConfiguration) => builder.HasKey(model => model.Identifier);
+        protected override void Configure(EntityTypeBuilder<TDataAccessModel> entityType, IConfiguration applicationConfiguration) => entityType.HasKey(model => model.Identifier);
 
         /// <summary>
         /// Represents the type of the value that uniquely identifies the data access model.
@@ -89,21 +89,21 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <summary>
         /// Configures the entity.
         /// </summary>
-        /// <param name="builder">
+        /// <param name="entityType">
         /// The builder that is used to configure the entity.
         /// </param>
-        public void Configure(EntityTypeBuilder<TDataAccessModel> builder) => Configure(builder, ApplicationConfiguration);
+        public void Configure(EntityTypeBuilder<TDataAccessModel> entityType) => Configure(entityType, ApplicationConfiguration);
 
         /// <summary>
         /// Configures the entity.
         /// </summary>
-        /// <param name="builder">
+        /// <param name="entityType">
         /// The builder that is used to configure the entity.
         /// </param>
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
-        protected abstract void Configure(EntityTypeBuilder<TDataAccessModel> builder, IConfiguration applicationConfiguration);
+        protected abstract void Configure(EntityTypeBuilder<TDataAccessModel> entityType, IConfiguration applicationConfiguration);
 
         /// <summary>
         /// Represents the type of the data access model.
