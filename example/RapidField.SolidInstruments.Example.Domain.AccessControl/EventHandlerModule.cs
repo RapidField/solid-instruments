@@ -9,7 +9,7 @@ using System;
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
     /// <summary>
-    /// Encapsulates container configuration for access control domain event handlers.
+    /// Encapsulates container configuration for AccessControl domain event handlers.
     /// </summary>
     public sealed class EventHandlerModule : DotNetNativeEventHandlerModule
     {

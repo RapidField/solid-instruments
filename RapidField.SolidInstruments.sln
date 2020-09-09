@@ -403,7 +403,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.AccessControl.Service", "example\RapidField.SolidInstruments.Example.Domain.AccessControl.Service\RapidField.SolidInstruments.Example.Domain.AccessControl.Service.csproj", "{77026FD0-F0DC-48B8-A678-0E67BDCC29EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.BeaconService", "example\RapidField.SolidInstruments.Example.BeaconService\RapidField.SolidInstruments.Example.BeaconService.csproj", "{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.BeaconService", "example\RapidField.SolidInstruments.Example.BeaconService\RapidField.SolidInstruments.Example.BeaconService.csproj", "{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi", "example\RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi\RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.csproj", "{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.Domain.Identity", "example\RapidField.SolidInstruments.Example.Domain.Identity\RapidField.SolidInstruments.Example.Domain.Identity.csproj", "{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.Domain.Identity.Service", "example\RapidField.SolidInstruments.Example.Domain.Identity.Service\RapidField.SolidInstruments.Example.Domain.Identity.Service.csproj", "{352E9021-1010-4A5D-8435-F8331DA63F95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -631,6 +637,18 @@ Global
 		{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{352E9021-1010-4A5D-8435-F8331DA63F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{352E9021-1010-4A5D-8435-F8331DA63F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{352E9021-1010-4A5D-8435-F8331DA63F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{352E9021-1010-4A5D-8435-F8331DA63F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -707,6 +725,9 @@ Global
 		{7B185E3A-3A26-4188-9FB4-DED7E4EF5C3D} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{77026FD0-F0DC-48B8-A678-0E67BDCC29EB} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{423CCBD1-0299-4C1A-BFDB-05AF2BF4847A} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
+		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
+		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
+		{352E9021-1010-4A5D-8435-F8331DA63F95} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

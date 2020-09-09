@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>This project demonstrates an access control service application utilizing Solid Instruments constructs.</Description>
+        <Description>This project demonstrates an AccessControl domain service application utilizing Solid Instruments constructs.</Description>
         <Version>$(BuildVersion)</Version>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -34,7 +34,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.8" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Example.Domain.AccessControl\RapidField.SolidInstruments.Example.Domain.AccessControl.csproj" />

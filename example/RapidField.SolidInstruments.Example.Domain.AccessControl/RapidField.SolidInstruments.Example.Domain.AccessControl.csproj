@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>This project demonstrates access control domain logic utilizing the Solid Instruments data access and messaging constructs.</Description>
+        <Description>This project demonstrates AccessControl domain logic utilizing the Solid Instruments data access and messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>

@@ -28,6 +28,6 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         /// Represents the name of the service that is hosted by this application.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String ServiceName = "AccessControl Service";
+        private static readonly String ServiceName = $"{nameof(AccessControl)} Service";
     }
 }

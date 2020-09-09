@@ -9,7 +9,7 @@ using System;
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
     /// <summary>
-    /// Encapsulates container configuration for access control domain command handlers.
+    /// Encapsulates container configuration for AccessControl domain command handlers.
     /// </summary>
     public sealed class CommandHandlerModule : DotNetNativeCommandHandlerModule
     {

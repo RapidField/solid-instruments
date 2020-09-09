@@ -39,7 +39,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     <ItemGroup>
         <PackageReference Include="Autofac" Version="5.2.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Command\RapidField.SolidInstruments.Command.csproj" Version="$(BuildVersion)" />

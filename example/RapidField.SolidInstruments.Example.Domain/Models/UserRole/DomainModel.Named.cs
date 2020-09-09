@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
             public static DomainModel EndUser => new DomainModel(Guid.Parse("816e7126-2034-49b3-af08-d07cab150d93"))
             {
                 Description = "A standard end user.",
-                Name = "End User"
+                Name = nameof(EndUser)
             };
 
             /// <summary>
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
             public static DomainModel SystemAdministrator => new DomainModel(Guid.Parse("b13c7a39-0c65-4515-a4af-2e3f60d289ba"))
             {
                 Description = "A user with full administrative privileges.",
-                Name = "System Administrator"
+                Name = nameof(SystemAdministrator)
             };
         }
     }

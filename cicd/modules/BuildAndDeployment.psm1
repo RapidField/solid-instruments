@@ -87,8 +87,10 @@ $SolutionConfigurationDebug = "Debug";
 $SolutionConfigurationRelease = "Release";
 
 # Namespaces
+$ExampleAccessControlHttpApiApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi";
 $ExampleAccessControlServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.AccessControl.Service";
 $ExampleBeaconServiceApplicationNamespace = "RapidField.SolidInstruments.Example.BeaconService";
+$ExampleIdentityServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.Identity.Service";
 
 # Regular expressions
 $ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
@@ -113,7 +115,8 @@ $RepositoryName = $env:APPVEYOR_REPO_NAME;
 $TagName = $env:APPVEYOR_REPO_TAG_NAME;
 
 # Other configuration values
-$TargetFrameworkForExampleServiceApplication = "netcoreapp2.1";
+$TargetFrameworkForExampleHttpApiApplications = "netcoreapp3.1";
+$TargetFrameworkForExampleServiceApplications = "netcoreapp3.1";
 
 # Modules
 Import-Module $FilePathForCoreModule -Force;
@@ -609,7 +612,48 @@ Function SignPackages
 
 <#
 .Synopsis
-Starts the example access control service application.
+Starts the example AccessControl domain HTTP API application.
+#>
+Function StartExampleAccessControlHttpApiApplication
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    ComposeStart "Starting the example AccessControl domain HTTP API application using $SolutionConfiguration configuration.";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlHttpApiApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleHttpApiApplications";
+    $BinaryFileName = "$ExampleAccessControlHttpApiApplicationNamespace.dll";
+    $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
+    ComposeNormal "Using binary path: $BinaryFilePath";
+    Push-Location "$BinaryDirectoryPath";
+    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Pop-Location;
+    ComposeFinish "Finished starting the application.";
+}
+
+<#
+.Synopsis
+Starts the example AccessControl domain HTTP API application in debug mode.
+#>
+Function StartExampleAccessControlHttpApiApplicationDebug
+{
+    StartExampleAccessControlHttpApiApplication -SolutionConfiguration $SolutionConfigurationDebug;
+}
+
+<#
+.Synopsis
+Starts the example AccessControl domain HTTP API application in release mode.
+#>
+Function StartExampleAccessControlHttpApiApplicationRelease
+{
+    StartExampleAccessControlHttpApiApplication -SolutionConfiguration $SolutionConfigurationRelease;
+}
+
+<#
+.Synopsis
+Starts the example AccessControl domain service application.
 #>
 Function StartExampleAccessControlServiceApplication
 {
@@ -619,16 +663,20 @@ Function StartExampleAccessControlServiceApplication
         [String] $SolutionConfiguration
     )
 
-    ComposeStart "Starting the example access control service application using $SolutionConfiguration configuration.";
-    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleAccessControlServiceApplicationNamespace.dll";
+    ComposeStart "Starting the example AccessControl domain service application using $SolutionConfiguration configuration.";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryFileName = "$ExampleAccessControlServiceApplicationNamespace.dll";
+    $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
-    Start-Process -ArgumentList "$BinaryFilePath" -FilePath "dotnet" -WindowStyle Minimized;
+    Push-Location "$BinaryDirectoryPath";
+    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
 
 <#
 .Synopsis
-Starts the example access control service application in debug mode.
+Starts the example AccessControl domain service application in debug mode.
 #>
 Function StartExampleAccessControlServiceApplicationDebug
 {
@@ -637,7 +685,7 @@ Function StartExampleAccessControlServiceApplicationDebug
 
 <#
 .Synopsis
-Starts the example access control service application in release mode.
+Starts the example AccessControl domain service application in release mode.
 #>
 Function StartExampleAccessControlServiceApplicationRelease
 {
@@ -646,7 +694,7 @@ Function StartExampleAccessControlServiceApplicationRelease
 
 <#
 .Synopsis
-Starts the example beacon service application.
+Starts the example Beacon service application.
 #>
 Function StartExampleBeaconServiceApplication
 {
@@ -657,15 +705,19 @@ Function StartExampleBeaconServiceApplication
     )
 
     ComposeStart "Starting the example beacon service application using $SolutionConfiguration configuration.";
-    $BinaryFilePath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplication\$ExampleBeaconServiceApplicationNamespace.dll";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleBeaconServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryFileName = "$ExampleBeaconServiceApplicationNamespace.dll";
+    $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
-    Start-Process -ArgumentList "$BinaryFilePath" -FilePath "dotnet" -WindowStyle Minimized;
+    Push-Location "$BinaryDirectoryPath";
+    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
 
 <#
 .Synopsis
-Starts the example beacon service application in debug mode.
+Starts the example Beacon service application in debug mode.
 #>
 Function StartExampleBeaconServiceApplicationDebug
 {
@@ -674,11 +726,52 @@ Function StartExampleBeaconServiceApplicationDebug
 
 <#
 .Synopsis
-Starts the example beacon service application in release mode.
+Starts the example Beacon service application in release mode.
 #>
 Function StartExampleBeaconServiceApplicationRelease
 {
     StartExampleBeaconServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
+}
+
+<#
+.Synopsis
+Starts the example Identity domain service application.
+#>
+Function StartExampleIdentityServiceApplication
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $SolutionConfiguration
+    )
+
+    ComposeStart "Starting the example Identity domain service application using $SolutionConfiguration configuration.";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleIdentityServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryFileName = "$ExampleIdentityServiceApplicationNamespace.dll";
+    $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
+    ComposeNormal "Using binary path: $BinaryFilePath";
+    Push-Location "$BinaryDirectoryPath";
+    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Pop-Location;
+    ComposeFinish "Finished starting the application.";
+}
+
+<#
+.Synopsis
+Starts the example Identity domain service application in debug mode.
+#>
+Function StartExampleIdentityServiceApplicationDebug
+{
+    StartExampleIdentityServiceApplication -SolutionConfiguration $SolutionConfigurationDebug;
+}
+
+<#
+.Synopsis
+Starts the example Identity domain service application in release mode.
+#>
+Function StartExampleIdentityServiceApplicationRelease
+{
+    StartExampleIdentityServiceApplication -SolutionConfiguration $SolutionConfigurationRelease;
 }
 
 <#

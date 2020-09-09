@@ -24,8 +24,8 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
     /// - DO declare private standard navigation fields as concrete domain models.
     /// - DO declare internal inverse collection navigation properties as <see cref="ICollection{T}" /> of concrete domain models.
     /// - DO decorate (public and internal) standard navigation properties with <see cref="IgnoreDataMemberAttribute" />.
-    /// - DO decorate public inverse collection navigation properties with <see cref="IgnoreDataMemberAttribute" />.
-    /// - DO decorate internal inverse collection navigation properties with <see cref="DataMemberAttribute" />.
+    /// - DO decorate public inverse collection navigation properties with <see cref="DataMemberAttribute" />.
+    /// - DO decorate internal inverse collection navigation properties with <see cref="IgnoreDataMemberAttribute" />.
     /// - DO expose getters and internal setters for public standard navigation properties.
     /// - DO expose getters (but not setters) for (public and internal) inverse collection navigation properties.
     /// - DO lazily initialize inverse navigation collections.

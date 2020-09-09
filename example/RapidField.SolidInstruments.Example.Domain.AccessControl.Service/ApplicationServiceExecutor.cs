@@ -55,32 +55,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         {
             try
             {
-                // Add standard listeners.
-                listeningProfile.AddExceptionRaisedEventListener();
-                listeningProfile.AddHeartbeatListener();
-                listeningProfile.AddPingRequestListener();
-
-                // Add command listeners.
-                listeningProfile.AddCommandListener<Commands.ModelState.User.CreateDomainModelCommand, Messages.Command.ModelState.User.CreateDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.User.DeleteDomainModelCommand, Messages.Command.ModelState.User.DeleteDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.User.UpdateDomainModelCommand, Messages.Command.ModelState.User.UpdateDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.DeleteDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.DeleteDomainModelCommandMessage>();
-                listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.UpdateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.UpdateDomainModelCommandMessage>();
-
-                // Add event listeners.
-                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelDeletedEvent, Messages.Event.ModelState.User.DomainModelDeletedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.User.DomainModelUpdatedEvent, Messages.Event.ModelState.User.DomainModelUpdatedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelCreatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelCreatedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelDeletedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelDeletedEventMessage>();
-                listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelUpdatedEventMessage>();
+                AddStandardListeners(listeningProfile, applicationConfiguration, commandLineArguments);
+                AddCommandListeners(listeningProfile, applicationConfiguration, commandLineArguments);
+                AddEventListeners(listeningProfile, applicationConfiguration, commandLineArguments);
             }
             finally
             {
@@ -130,10 +107,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         {
             try
             {
-                var mediator = dependencyScope.Resolve<ICommandMediator>();
-                TestServiceBusConnectivity(mediator);
+                TestServiceBusConnectivity(dependencyScope);
                 MigrateDatabaseSchema(dependencyScope);
-                HydrateNamedEntities(mediator);
+                HydrateNamedDomainEntities(dependencyScope);
             }
             finally
             {
@@ -142,35 +118,137 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         }
 
         /// <summary>
+        /// Adds command message listeners to the service.
+        /// </summary>
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the service application.
+        /// </param>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        [DebuggerHidden]
+        private static void AddCommandListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
+        {
+            listeningProfile.AddCommandListener<Commands.ModelState.User.CreateDomainModelCommand, Messages.Command.ModelState.User.CreateDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.User.DeleteDomainModelCommand, Messages.Command.ModelState.User.DeleteDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.User.UpdateDomainModelCommand, Messages.Command.ModelState.User.UpdateDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRole.CreateDomainModelCommand, Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRole.DeleteDomainModelCommand, Messages.Command.ModelState.UserRole.DeleteDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRole.UpdateDomainModelCommand, Messages.Command.ModelState.UserRole.UpdateDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.DeleteDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.DeleteDomainModelCommandMessage>();
+            listeningProfile.AddCommandListener<Commands.ModelState.UserRoleAssignment.UpdateDomainModelCommand, Messages.Command.ModelState.UserRoleAssignment.UpdateDomainModelCommandMessage>();
+        }
+
+        /// <summary>
+        /// Adds event message listeners to the service.
+        /// </summary>
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the service application.
+        /// </param>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        [DebuggerHidden]
+        private static void AddEventListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments)
+        {
+            listeningProfile.AddEventListener<Events.ModelState.User.DomainModelCreatedEvent, Messages.Event.ModelState.User.DomainModelCreatedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.User.DomainModelDeletedEvent, Messages.Event.ModelState.User.DomainModelDeletedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.User.DomainModelUpdatedEvent, Messages.Event.ModelState.User.DomainModelUpdatedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelCreatedEvent, Messages.Event.ModelState.UserRole.DomainModelCreatedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelDeletedEvent, Messages.Event.ModelState.UserRole.DomainModelDeletedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRole.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRole.DomainModelUpdatedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelCreatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelCreatedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelDeletedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelDeletedEventMessage>();
+            listeningProfile.AddEventListener<Events.ModelState.UserRoleAssignment.DomainModelUpdatedEvent, Messages.Event.ModelState.UserRoleAssignment.DomainModelUpdatedEventMessage>();
+        }
+
+        /// <summary>
+        /// Adds standard message listeners to the service.
+        /// </summary>
+        /// <param name="listeningProfile">
+        /// An object that is used to add listeners.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the service application.
+        /// </param>
+        /// <param name="commandLineArguments">
+        /// Command line arguments that are provided at runtime, if any.
+        /// </param>
+        [DebuggerHidden]
+        private static void AddStandardListeners(IMessageListeningProfile listeningProfile, IConfiguration applicationConfiguration, String[] commandLineArguments) => listeningProfile.AddHeartbeatListener();
+
+        /// <summary>
         /// Creates or updates all named domain models.
+        /// </summary>
+        /// <param name="dependencyScope">
+        /// A scope that is used to resolve service dependencies.
+        /// </param>
+        [DebuggerHidden]
+        private static void HydrateNamedDomainEntities(IDependencyScope dependencyScope)
+        {
+            var mediator = dependencyScope.Resolve<ICommandMediator>();
+            HydrateNamedUsers(mediator);
+            HydrateNamedUserRoles(mediator);
+            HydrateNamedUserRoleAssignments(mediator);
+            Console.WriteLine("Database entities created/updated.");
+        }
+
+        /// <summary>
+        /// Creates or updates all named <see cref="Models.UserRoleAssignment.DomainModel" /> instances.
         /// </summary>
         /// <param name="mediator">
         /// A mediator that is used to issue commands.
         /// </param>
         [DebuggerHidden]
-        private static void HydrateNamedEntities(ICommandMediator mediator)
+        private static void HydrateNamedUserRoleAssignments(ICommandMediator mediator)
+        {
+            foreach (var domainModel in Models.UserRoleAssignment.DomainModel.Named.All())
+            {
+                mediator.Process(new Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage(new Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand(domainModel)));
+            }
+
+            Pause();
+        }
+
+        /// <summary>
+        /// Creates or updates all named <see cref="Models.UserRole.DomainModel" /> instances.
+        /// </summary>
+        /// <param name="mediator">
+        /// A mediator that is used to issue commands.
+        /// </param>
+        [DebuggerHidden]
+        private static void HydrateNamedUserRoles(ICommandMediator mediator)
+        {
+            foreach (var domainModel in Models.UserRole.DomainModel.Named.All())
+            {
+                mediator.Process(new Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage(new Commands.ModelState.UserRole.CreateDomainModelCommand(domainModel)));
+            }
+
+            Pause();
+        }
+
+        /// <summary>
+        /// Creates or updates all named <see cref="Models.User.DomainModel" /> instances.
+        /// </summary>
+        /// <param name="mediator">
+        /// A mediator that is used to issue commands.
+        /// </param>
+        [DebuggerHidden]
+        private static void HydrateNamedUsers(ICommandMediator mediator)
         {
             foreach (var domainModel in Models.User.DomainModel.Named.All())
             {
                 mediator.Process(new Messages.Command.ModelState.User.CreateDomainModelCommandMessage(new Commands.ModelState.User.CreateDomainModelCommand(domainModel)));
             }
 
-            Thread.Sleep(610);
-
-            foreach (var domainModel in Models.UserRole.DomainModel.Named.All())
-            {
-                mediator.Process(new Messages.Command.ModelState.UserRole.CreateDomainModelCommandMessage(new Commands.ModelState.UserRole.CreateDomainModelCommand(domainModel)));
-            }
-
-            Thread.Sleep(610);
-
-            foreach (var domainModel in Models.UserRoleAssignment.DomainModel.Named.All())
-            {
-                mediator.Process(new Messages.Command.ModelState.UserRoleAssignment.CreateDomainModelCommandMessage(new Commands.ModelState.UserRoleAssignment.CreateDomainModelCommand(domainModel)));
-            }
-
-            Thread.Sleep(610);
-            Console.WriteLine("Database entities created/updated.");
+            Pause();
         }
 
         /// <summary>
@@ -184,21 +262,31 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         {
             var databaseContext = dependencyScope.Resolve<DatabaseContext>();
             databaseContext.Database.EnsureCreated();
-            Thread.Sleep(610);
+            Pause();
             Console.WriteLine("Database schema created/updated.");
         }
 
         /// <summary>
+        /// Blocks the current thread for a short period to ensure synchronous execution of startup events.
+        /// </summary>
+        [DebuggerHidden]
+        private static void Pause() => Thread.Sleep(PauseDurationInMilliseconds);
+
+        /// <summary>
         /// Raises an exception if a service bus connection is unavailable.
         /// </summary>
-        /// <param name="mediator">
-        /// A mediator that is used to issue commands.
+        /// <param name="dependencyScope">
+        /// A scope that is used to resolve service dependencies.
         /// </param>
+        /// <exception cref="ServiceExectuionException">
+        /// The service was unable to verify service bus connectivity.
+        /// </exception>
         [DebuggerHidden]
-        private static void TestServiceBusConnectivity(ICommandMediator mediator)
+        private static void TestServiceBusConnectivity(IDependencyScope dependencyScope)
         {
             try
             {
+                var mediator = dependencyScope.Resolve<ICommandMediator>();
                 var pingRequestCorrelationIdentifier = Guid.NewGuid();
                 var pingResponseMessage = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingRequestCorrelationIdentifier));
 
@@ -226,5 +314,11 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
         /// the start of service execution.
         /// </summary>
         protected override sealed String ProductName => "Solid Instruments";
+
+        /// <summary>
+        /// Represents the number of milliseconds to wait when invoking <see cref="Pause" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Int32 PauseDurationInMilliseconds = 1597;
     }
 }

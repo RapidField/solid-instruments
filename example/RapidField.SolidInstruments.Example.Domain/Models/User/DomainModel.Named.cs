@@ -74,7 +74,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             public static DomainModel StevenCallahan => new DomainModel(Guid.Parse("a04fc5b0-1a67-43ff-89af-750128398d8a"))
             {
                 EmailAddress = "steven.callahan@example.com",
-                Name = "Steven Callahan",
+                Name = nameof(StevenCallahan),
                 PasswordHash = GetPasswordHash("My name is Steven. 321")
             };
 
@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             public static DomainModel TomSmith => new DomainModel(Guid.Parse("3d46470a-1c90-4e94-bc5c-3cbde44ba6ac"))
             {
                 EmailAddress = "tom.smith@example.com",
-                Name = "Tom Smith",
+                Name = nameof(TomSmith),
                 PasswordHash = GetPasswordHash("My name is Tom. 321")
             };
         }
