@@ -17,7 +17,7 @@ using System.Threading;
 namespace RapidField.SolidInstruments.Example.Domain.Identity.Service
 {
     /// <summary>
-    /// Prepares for and performs execution of the Identity domain service.
+    /// Prepares for and performs execution of the <see cref="Identity" /> domain service.
     /// </summary>
     public sealed class ApplicationServiceExecutor : DotNetNativeMessagingServiceExecutor<ApplicationDependencyPackage>
     {

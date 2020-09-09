@@ -11,7 +11,8 @@ using System;
 namespace RapidField.SolidInstruments.Example.Domain.Identity
 {
     /// <summary>
-    /// Encapsulates container configuration for the Identity database connection and related data access dependencies.
+    /// Encapsulates container configuration for the <see cref="Identity" /> database connection and related data access
+    /// dependencies.
     /// </summary>
     public sealed class DatabaseContextDependencyModule : DotNetNativeDependencyModule
     {

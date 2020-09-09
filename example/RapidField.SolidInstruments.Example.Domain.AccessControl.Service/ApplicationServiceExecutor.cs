@@ -17,7 +17,7 @@ using System.Threading;
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
 {
     /// <summary>
-    /// Prepares for and performs execution of the AccessControl domain service.
+    /// Prepares for and performs execution of the <see cref="AccessControl" /> domain service.
     /// </summary>
     public sealed class ApplicationServiceExecutor : DotNetNativeMessagingServiceExecutor<ApplicationDependencyPackage>
     {

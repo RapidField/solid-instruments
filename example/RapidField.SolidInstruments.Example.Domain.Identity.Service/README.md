@@ -11,7 +11,7 @@ This document describes the purpose of the [`RapidField.SolidInstruments.Example
 
 ## Purpose
 
-This project demonstrates an Identity domain service utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) and [messaging](../../src/RapidField.SolidInstruments.Messaging/README.md) constructs.
+This project demonstrates an **Identity** domain service utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) and [messaging](../../src/RapidField.SolidInstruments.Messaging/README.md) constructs.
 
 ## License
 

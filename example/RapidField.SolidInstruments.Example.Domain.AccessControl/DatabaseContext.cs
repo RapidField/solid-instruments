@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
     using UserRoleModelConfiguration = Models.UserRole.AggregateDataAccessModelConfiguration;
 
     /// <summary>
-    /// Represents a connection to the AccessControl database.
+    /// Represents a connection to the <see cref="AccessControl" /> database.
     /// </summary>
     public sealed class DatabaseContext : ConfiguredContext
     {
@@ -97,6 +97,6 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl
         /// Represents the database name that is used when creating and connecting to the data source.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal const String DatabaseName = "AccessControl";
+        internal const String DatabaseName = nameof(AccessControl);
     }
 }

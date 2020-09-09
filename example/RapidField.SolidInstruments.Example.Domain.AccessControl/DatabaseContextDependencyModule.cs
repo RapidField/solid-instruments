@@ -15,7 +15,8 @@ using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
     /// <summary>
-    /// Encapsulates container configuration for the AccessControl database connection and related data access dependencies.
+    /// Encapsulates container configuration for the <see cref="AccessControl" /> database connection and related data access
+    /// dependencies.
     /// </summary>
     public sealed class DatabaseContextDependencyModule : DotNetNativeEntityFrameworkDataStoreDependencyModule<DatabaseContext, DatabaseContextRepositoryFactory>
     {

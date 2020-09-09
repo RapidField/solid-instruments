@@ -9,7 +9,7 @@ using System;
 namespace RapidField.SolidInstruments.Example.Domain.Identity
 {
     /// <summary>
-    /// Encapsulates container configuration for Identity domain event handlers.
+    /// Encapsulates container configuration for <see cref="Identity" /> domain event handlers.
     /// </summary>
     public sealed class EventHandlerModule : DotNetNativeEventHandlerModule
     {

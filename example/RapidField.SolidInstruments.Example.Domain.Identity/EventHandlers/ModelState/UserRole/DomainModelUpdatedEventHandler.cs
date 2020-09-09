@@ -27,7 +27,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.EventHandlers.Mode
         /// A processing intermediary that is used to process sub-commands.
         /// </param>
         /// <param name="databaseContext">
-        /// A connection to the Identity database.
+        /// A connection to the <see cref="Identity" /> database.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="mediator" /> is <see langword="null" /> -or- <paramref name="databaseContext" /> is
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.EventHandlers.Mode
         }
 
         /// <summary>
-        /// Represents a connection to the Identity database.
+        /// Represents a connection to the <see cref="Identity" /> database.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly DatabaseContext DatabaseContext;

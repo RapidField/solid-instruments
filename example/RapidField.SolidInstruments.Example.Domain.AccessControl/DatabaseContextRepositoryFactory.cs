@@ -12,7 +12,8 @@ using System;
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl
 {
     /// <summary>
-    /// Encapsulates creation of new <see cref="IDataAccessRepository" /> instances that map to AccessControl database entities.
+    /// Encapsulates creation of new <see cref="IDataAccessRepository" /> instances that map to <see cref="AccessControl" />
+    /// database entities.
     /// </summary>
     public sealed class DatabaseContextRepositoryFactory : EntityFrameworkRepositoryFactory<DatabaseContext>
     {

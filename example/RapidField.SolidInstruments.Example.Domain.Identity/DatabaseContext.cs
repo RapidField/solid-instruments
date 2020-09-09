@@ -20,7 +20,7 @@ using System.Diagnostics;
 namespace RapidField.SolidInstruments.Example.Domain.Identity
 {
     /// <summary>
-    /// Represents a connection to the Identity database.
+    /// Represents a connection to the <see cref="Identity" /> database.
     /// </summary>
     public sealed class DatabaseContext : IdentityDbContext
     {
@@ -441,7 +441,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity
         /// Represents the database name that is used when creating and connecting to the data source.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String DefaultDatabaseName = "Identity";
+        private const String DefaultDatabaseName = nameof(Identity);
 
         /// <summary>
         /// Represents the default database type for backing databases.

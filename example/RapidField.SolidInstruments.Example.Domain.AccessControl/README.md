@@ -11,7 +11,7 @@ This document describes the purpose of the [`RapidField.SolidInstruments.Example
 
 ## Purpose
 
-This project demonstrates AccessControl domain logic utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) constructs.
+This project demonstrates **AccessControl** domain logic utilizing the **Solid Instruments** [data access](../../src/RapidField.SolidInstruments.DataAccess/README.md) constructs.
 
 ## License
 
