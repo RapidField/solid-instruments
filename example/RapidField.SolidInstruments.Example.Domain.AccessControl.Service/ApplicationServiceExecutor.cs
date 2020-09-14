@@ -11,7 +11,6 @@ using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Service;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
@@ -62,24 +61,6 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
             finally
             {
                 base.AddListeners(listeningProfile, applicationConfiguration, commandLineArguments);
-            }
-        }
-
-        /// <summary>
-        /// Builds the application configuration for the service.
-        /// </summary>
-        /// <param name="configurationBuilder">
-        /// An object that is used to build the configuration.
-        /// </param>
-        protected override void BuildConfiguration(IConfigurationBuilder configurationBuilder)
-        {
-            try
-            {
-                configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            }
-            finally
-            {
-                base.BuildConfiguration(configurationBuilder);
             }
         }
 

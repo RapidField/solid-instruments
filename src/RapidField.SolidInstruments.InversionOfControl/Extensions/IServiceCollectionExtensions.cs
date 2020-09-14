@@ -96,7 +96,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.Extensions
                 throw new InvalidOperationException("Another dependency package has already been added to the service collection.");
             }
 
-            var package = new TPackage();
             var engine = DependencyEngine.New<TConfigurator, TEngine, TPackage>(applicationConfiguration, target);
             ReferenceManager.AddObject(engine);
             serviceProvider = engine.Provider;

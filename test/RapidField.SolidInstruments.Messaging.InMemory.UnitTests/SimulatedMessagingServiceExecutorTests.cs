@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             mediator.Process(new CreateCustomerCommandMessage(new CreateCustomerCommand(smithIndustriesCustomer)));
 
             // Assert.
-            Thread.Sleep(6765);
+            Thread.Sleep(10946);
             SimulatedServiceState.Customers.Should().HaveCount(2);
 
             // Act.

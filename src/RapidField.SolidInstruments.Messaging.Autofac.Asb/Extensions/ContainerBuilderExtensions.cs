@@ -56,11 +56,11 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Asb.Extensions
                 }
 
                 return new ServiceBusConnection(serviceBusConnectionString);
-            }).IfNotRegistered(typeof(ServiceBusConnection)).AsSelf().InstancePerLifetimeScope();
+            }).IfNotRegistered(typeof(ServiceBusConnection)).AsSelf().SingleInstance();
 
-            target.RegisterType<AzureServiceBusMessageAdapter>().IfNotRegistered(typeof(AzureServiceBusMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<AzureServiceBusClientFactory>().IfNotRegistered(typeof(AzureServiceBusClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<AzureServiceBusTransmittingFacade>().IfNotRegistered(typeof(AzureServiceBusTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<AzureServiceBusMessageAdapter>().IfNotRegistered(typeof(AzureServiceBusMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<AzureServiceBusClientFactory>().IfNotRegistered(typeof(AzureServiceBusClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<AzureServiceBusTransmittingFacade>().IfNotRegistered(typeof(AzureServiceBusTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().SingleInstance();
             target.RegisterType<AzureServiceBusListeningFacade>().IfNotRegistered(typeof(AzureServiceBusListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
             target.RegisterType<AzureServiceBusRequestingFacade>().IfNotRegistered(typeof(AzureServiceBusRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }

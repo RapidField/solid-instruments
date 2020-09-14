@@ -2,10 +2,8 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Messaging.DotNetNative.Service;
 using System;
-using System.IO;
 
 namespace RapidField.SolidInstruments.Example.BeaconService
 {
@@ -21,24 +19,6 @@ namespace RapidField.SolidInstruments.Example.BeaconService
             : base(true, false, false, false, false)
         {
             return;
-        }
-
-        /// <summary>
-        /// Builds the application configuration for the service.
-        /// </summary>
-        /// <param name="configurationBuilder">
-        /// An object that is used to build the configuration.
-        /// </param>
-        protected override void BuildConfiguration(IConfigurationBuilder configurationBuilder)
-        {
-            try
-            {
-                configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            }
-            finally
-            {
-                base.BuildConfiguration(configurationBuilder);
-            }
         }
 
         /// <summary>

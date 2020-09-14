@@ -45,11 +45,12 @@ namespace RapidField.SolidInstruments.Core
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
+                Prune();
                 var managedReference = new ManagedReference<T>(reference);
 
                 if (References.Contains(managedReference) == false)
                 {
-                    References.Enqueue(managedReference);
+                    References.Add(managedReference);
                 }
             }
         }
@@ -74,38 +75,56 @@ namespace RapidField.SolidInstruments.Core
             {
                 if (disposing)
                 {
-                    try
+                    while (References.Any())
                     {
-                        var disposeTasks = new List<Task>();
-
-                        while (References.Count > 0)
+                        try
                         {
-                            IAsyncDisposable reference;
+                            var disposeTasks = new List<Task>();
 
-                            using (var controlToken = StateControl.Enter())
+                            foreach (var reference in References.ToArray())
                             {
-                                reference = References.Dequeue();
+                                disposeTasks.Add(reference?.DisposeAsync().AsTask());
                             }
 
-                            disposeTasks.Add(reference?.DisposeAsync().AsTask());
+                            var disposeTaskArray = disposeTasks.Where(task => (task is null) == false).ToArray();
+
+                            if (disposeTaskArray.Any())
+                            {
+                                Task.WaitAll(disposeTaskArray);
+                            }
                         }
-
-                        var disposeTaskArray = disposeTasks.Where(task => (task is null) == false).ToArray();
-
-                        if (disposeTaskArray.Any())
+                        finally
                         {
-                            Task.WaitAll(disposeTaskArray);
+                            References.Clear();
                         }
-                    }
-                    finally
-                    {
-                        References.Clear();
                     }
                 }
             }
             finally
             {
                 base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
+        /// Removes dead references from the current <see cref="ReferenceManager" />.
+        /// </summary>
+        [DebuggerHidden]
+        private void Prune()
+        {
+            if (References.Any())
+            {
+                foreach (var reference in References)
+                {
+                    reference.Poll();
+                }
+
+                var deadReferences = References.Where(reference => reference.IsDead);
+
+                foreach (var deadReference in deadReferences)
+                {
+                    References.Remove(deadReference);
+                }
             }
         }
 
@@ -118,15 +137,18 @@ namespace RapidField.SolidInstruments.Core
         /// Represents the objects that are managed by the current <see cref="ReferenceManager" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Queue<IAsyncDisposable> References = new Queue<IAsyncDisposable>();
+        private readonly IList<IManagedReference> References = new List<IManagedReference>();
 
         /// <summary>
         /// Represents an object that is managed by a <see cref="ReferenceManager" />.
         /// </summary>
+        /// <remarks>
+        /// <see cref="ManagedReference{T}" /> is the default implementation of <see cref="IManagedReference" />.
+        /// </remarks>
         /// <typeparam name="T">
         /// The type of the managed object.
         /// </typeparam>
-        private class ManagedReference<T> : IAsyncDisposable, IDisposable, IEquatable<ManagedReference<T>>
+        private class ManagedReference<T> : IEquatable<ManagedReference<T>>, IManagedReference
             where T : class
         {
             /// <summary>
@@ -138,6 +160,7 @@ namespace RapidField.SolidInstruments.Core
             [DebuggerHidden]
             internal ManagedReference(T target)
             {
+                CreationTimeStamp = TimeStamp.Current;
                 Target = target;
             }
 
@@ -253,7 +276,18 @@ namespace RapidField.SolidInstruments.Core
             /// <returns>
             /// A 32-bit signed integer hash code.
             /// </returns>
-            public override Int32 GetHashCode() => Target.GetHashCode();
+            public override Int32 GetHashCode() => Target?.GetHashCode() ?? 0;
+
+            /// <summary>
+            /// Destroys the strong reference to the managed object if its lifespan is expired.
+            /// </summary>
+            public void Poll()
+            {
+                if (StrongReferenceIsExpired)
+                {
+                    StrongReference = null;
+                }
+            }
 
             /// <summary>
             /// Releases all resources consumed by the current <see cref="ManagedReference{T}" />.
@@ -290,10 +324,93 @@ namespace RapidField.SolidInstruments.Core
             }
 
             /// <summary>
-            /// Represents the managed object.
+            /// Gets a value indicating whether or not the managed object has live references.
+            /// </summary>
+            public Boolean IsDead => Target is null;
+
+            /// <summary>
+            /// Gets the length of time that the current <see cref="ManagedReference{T}" /> has existed.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private T Target;
+            private TimeSpan Age => TimeStamp.Current - CreationTimeStamp;
+
+            /// <summary>
+            /// Gets a value indicating whether or not the strong reference is expired.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private Boolean StrongReferenceIsExpired => StrongReference is null || Age > StrongReferenceMinimumLifeSpan;
+
+            /// <summary>
+            /// Gets or sets the managed object.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private T Target
+            {
+                [DebuggerHidden]
+                get
+                {
+                    if ((StrongReference is null) == false)
+                    {
+                        return StrongReference;
+                    }
+                    else if ((WeakReference is null) == false && WeakReference.TryGetTarget(out var target))
+                    {
+                        return target;
+                    }
+
+                    return null;
+                }
+                [DebuggerHidden]
+                set
+                {
+                    StrongReference = value;
+                    WeakReference = value is null ? null : new WeakReference<T>(value);
+                }
+            }
+
+            /// <summary>
+            /// Represents the minimum length of time to preserve a strong reference to the managed object. The observed length of
+            /// time may be shorter if the reference manager is disposed.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private static readonly TimeSpan StrongReferenceMinimumLifeSpan = TimeSpan.FromSeconds(233);
+
+            /// <summary>
+            /// Represents the date and time when the current <see cref="ManagedReference{T}" /> was created.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly DateTime CreationTimeStamp;
+
+            /// <summary>
+            /// Represents a strong reference to the managed object.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private T StrongReference;
+
+            /// <summary>
+            /// Represents a weak reference to the managed object.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private WeakReference<T> WeakReference;
+        }
+
+        /// <summary>
+        /// Represents an object that is managed by a <see cref="ReferenceManager" />.
+        /// </summary>
+        private interface IManagedReference : IAsyncDisposable, IDisposable
+        {
+            /// <summary>
+            /// Destroys the strong reference to the managed object if its lifespan is expired.
+            /// </summary>
+            public void Poll();
+
+            /// <summary>
+            /// Gets a value indicating whether or not the managed object has live references.
+            /// </summary>
+            public Boolean IsDead
+            {
+                get;
+            }
         }
     }
 }

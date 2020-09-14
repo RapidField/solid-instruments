@@ -245,12 +245,12 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions
             target.AddApplicationConfiguration(applicationConfiguration);
             target.TryAddSingleton(transport);
             target.TryAddSingleton(transport.CreateConnection());
-            target.TryAddScoped<RabbitMqMessageAdapter>();
-            target.TryAddScoped<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqMessageAdapter>());
-            target.TryAddScoped<RabbitMqClientFactory>();
-            target.TryAddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqClientFactory>());
-            target.TryAddScoped<RabbitMqTransmittingFacade>();
-            target.TryAddScoped<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqTransmittingFacade>());
+            target.TryAddSingleton<RabbitMqMessageAdapter>();
+            target.TryAddSingleton<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqMessageAdapter>());
+            target.TryAddSingleton<RabbitMqClientFactory>();
+            target.TryAddSingleton<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<RabbitMqClientFactory>());
+            target.TryAddSingleton<RabbitMqTransmittingFacade>();
+            target.TryAddSingleton<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqTransmittingFacade>());
             target.TryAddSingleton<RabbitMqListeningFacade>();
             target.TryAddSingleton<IMessageListeningFacade>((serviceProvider) => serviceProvider.GetService<RabbitMqListeningFacade>());
             target.TryAddSingleton<RabbitMqRequestingFacade>();

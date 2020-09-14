@@ -29,6 +29,7 @@ The **Solid Instruments** constituent libraries expose a wide variety of powerfu
 [![Service](doc/images/Label.Service.300w.png)](src/RapidField.SolidInstruments.Service/README.md)
 [![Signal Processing](doc/images/Label.SignalProcessing.300w.png)](src/RapidField.SolidInstruments.SignalProcessing/README.md)
 [![Text Encoding](doc/images/Label.TextEncoding.300w.png)](src/RapidField.SolidInstruments.TextEncoding/README.md)
+[![Web](doc/images/Label.Web.300w.png)](src/RapidField.SolidInstruments.Web/README.md)
 
 ## License
 

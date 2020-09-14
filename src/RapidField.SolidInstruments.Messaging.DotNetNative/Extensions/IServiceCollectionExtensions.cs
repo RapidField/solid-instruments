@@ -673,12 +673,12 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Extensions
         {
             target.TryAddSingleton(MessageTransport.Instance);
             target.TryAddSingleton(MessageTransport.Instance.CreateConnection());
-            target.TryAddScoped<InMemoryMessageAdapter>();
-            target.TryAddScoped<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryMessageAdapter>());
-            target.TryAddScoped<InMemoryClientFactory>();
-            target.TryAddScoped<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryClientFactory>());
-            target.TryAddScoped<InMemoryTransmittingFacade>();
-            target.TryAddScoped<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryTransmittingFacade>());
+            target.TryAddSingleton<InMemoryMessageAdapter>();
+            target.TryAddSingleton<IMessageAdapter<PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryMessageAdapter>());
+            target.TryAddSingleton<InMemoryClientFactory>();
+            target.TryAddSingleton<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>((serviceProvider) => serviceProvider.GetService<InMemoryClientFactory>());
+            target.TryAddSingleton<InMemoryTransmittingFacade>();
+            target.TryAddSingleton<IMessageTransmittingFacade>((serviceProvider) => serviceProvider.GetService<InMemoryTransmittingFacade>());
             target.TryAddSingleton<InMemoryListeningFacade>();
             target.TryAddSingleton<IMessageListeningFacade>((serviceProvider) => serviceProvider.GetService<InMemoryListeningFacade>());
             target.TryAddSingleton<InMemoryRequestingFacade>();

@@ -8,7 +8,9 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.InversionOfControl;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Service
@@ -151,12 +153,28 @@ namespace RapidField.SolidInstruments.Service
         /// <summary>
         /// Builds the application configuration for the service.
         /// </summary>
+        /// <remarks>
+        /// The default implementation of the this method adds:
+        /// - environment variables with prefixes matching any of <see cref="EnvironmentVariableConfigurationPrefixes" />,
+        /// - all command line arguments supplied to <see cref="Execute(String[])" /> and
+        /// - the appsettings.json file in the root application path.
+        /// </remarks>
         /// <param name="configurationBuilder">
         /// An object that is used to build the configuration.
         /// </param>
         protected virtual void BuildConfiguration(IConfigurationBuilder configurationBuilder)
         {
-            return;
+            foreach (var prefix in EnvironmentVariableConfigurationPrefixes)
+            {
+                _ = configurationBuilder.AddEnvironmentVariables(prefix);
+            }
+
+            if (CommandLineArguments.IsNullOrEmpty() == false)
+            {
+                _ = configurationBuilder.AddCommandLine(CommandLineArguments);
+            }
+
+            _ = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(DefaultAppSettingsJsonFileName);
         }
 
         /// <summary>
@@ -276,6 +294,13 @@ namespace RapidField.SolidInstruments.Service
         protected virtual String CopyrightNotice => null;
 
         /// <summary>
+        /// When overridden by a derived class, gets a collection of textual prefixes which are used by
+        /// <see cref="BuildConfiguration(IConfigurationBuilder)" /> to find and add environment variables to
+        /// <see cref="ApplicationConfiguration" />.
+        /// </summary>
+        protected virtual IEnumerable<String> EnvironmentVariableConfigurationPrefixes => Array.Empty<String>();
+
+        /// <summary>
         /// When overridden by a derived class, gets a product name associated with the service which is written to the console at
         /// the start of service execution.
         /// </summary>
@@ -307,6 +332,13 @@ namespace RapidField.SolidInstruments.Service
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal String[] CommandLineArguments;
+
+        /// <summary>
+        /// Represents the default JSON settings file name which is used by <see cref="BuildConfiguration(IConfigurationBuilder)" />
+        /// to add file-based configuration to <see cref="ApplicationConfiguration" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DefaultAppSettingsJsonFileName = "appsettings.json";
 
         /// <summary>
         /// Represents lazily-initialized configuration information for the service.

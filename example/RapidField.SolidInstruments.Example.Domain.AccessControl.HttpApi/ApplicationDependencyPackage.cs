@@ -35,6 +35,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// </returns>
         protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
         {
+            new ApplicationDependencyModule(applicationConfiguration),
             new DatabaseContextDependencyModule(applicationConfiguration),
             new ServiceBusDependencyModule(applicationConfiguration),
             new MessageHandlerModule(applicationConfiguration)

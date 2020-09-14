@@ -31,6 +31,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// <paramref name="mediator" /> is <see langword="null" />.
         /// </exception>
         public UserController(ICommandMediator mediator)
+            : base()
         {
             Mediator = mediator.RejectIf().IsNull(nameof(mediator)).TargetArgument;
         }
@@ -45,10 +46,18 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// A status code result.
         /// </returns>
         [HttpDelete]
-        public IActionResult Delete([FromQuery] Guid identifier)
+        public IActionResult Delete([FromRoute] Guid identifier)
         {
             try
             {
+                var model = Mediator.Process<DomainModel>(new FindDomainModelByIdentifierCommand(identifier));
+
+                if (model is null)
+                {
+                    return NotFound(identifier);
+                }
+
+                _ = Mediator.Process(new DeleteDomainModelCommandMessage(new DeleteDomainModelCommand(model)));
                 return Ok();
             }
             catch (ArgumentException exception)
@@ -76,7 +85,13 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         {
             try
             {
-                var model = (DomainModel)null;
+                var model = Mediator.Process<DomainModel>(new FindDomainModelByIdentifierCommand(identifier));
+
+                if (model is null)
+                {
+                    return NotFound(identifier);
+                }
+
                 return new JsonResult(model);
             }
             catch (ArgumentException exception)

@@ -587,9 +587,9 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Extensions
         {
             target.RegisterInstance(MessageTransport.Instance).IfNotRegistered(typeof(IMessageTransport)).SingleInstance();
             target.RegisterInstance(MessageTransport.Instance.CreateConnection()).IfNotRegistered(typeof(IMessageTransportConnection)).SingleInstance();
-            target.RegisterType<InMemoryMessageAdapter>().IfNotRegistered(typeof(InMemoryMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<InMemoryClientFactory>().IfNotRegistered(typeof(InMemoryClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<InMemoryTransmittingFacade>().IfNotRegistered(typeof(InMemoryTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<InMemoryMessageAdapter>().IfNotRegistered(typeof(InMemoryMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<InMemoryClientFactory>().IfNotRegistered(typeof(InMemoryClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<InMemoryTransmittingFacade>().IfNotRegistered(typeof(InMemoryTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().SingleInstance();
             target.RegisterType<InMemoryListeningFacade>().IfNotRegistered(typeof(InMemoryListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
             target.RegisterType<InMemoryRequestingFacade>().IfNotRegistered(typeof(InMemoryRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }

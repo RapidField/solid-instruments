@@ -165,6 +165,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{3A9700
 		doc\images\Icon.Service.128w.png = doc\images\Icon.Service.128w.png
 		doc\images\Icon.SignalProcessing.128w.png = doc\images\Icon.SignalProcessing.128w.png
 		doc\images\Icon.TextEncoding.128w.png = doc\images\Icon.TextEncoding.128w.png
+		doc\images\Icon.Web.128w.png = doc\images\Icon.Web.128w.png
 		doc\images\Label.Collections.300w.png = doc\images\Label.Collections.300w.png
 		doc\images\Label.Command.300w.png = doc\images\Label.Command.300w.png
 		doc\images\Label.Core.300w.png = doc\images\Label.Core.300w.png
@@ -179,6 +180,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{3A9700
 		doc\images\Label.Service.300w.png = doc\images\Label.Service.300w.png
 		doc\images\Label.SignalProcessing.300w.png = doc\images\Label.SignalProcessing.300w.png
 		doc\images\Label.TextEncoding.300w.png = doc\images\Label.TextEncoding.300w.png
+		doc\images\Label.Web.300w.png = doc\images\Label.Web.300w.png
 		doc\images\RapidField.Logo.Color.White.Transparent.227w.png = doc\images\RapidField.Logo.Color.White.Transparent.227w.png
 		doc\images\SolidInstruments.Logo.Color.Black.Transparent.500w.png = doc\images\SolidInstruments.Logo.Color.Black.Transparent.500w.png
 	EndProjectSection
@@ -260,6 +262,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md = doc\namespaces\RapidField.SolidInstruments.SignalProcessing.md
 		doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.TextEncoding.md = doc\namespaces\RapidField.SolidInstruments.TextEncoding.md
+		doc\namespaces\RapidField.SolidInstruments.Web.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Web.Autofac.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Web.Autofac.md = doc\namespaces\RapidField.SolidInstruments.Web.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.Web.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Web.DotNetNative.Extensions.md
+		doc\namespaces\RapidField.SolidInstruments.Web.DotNetNative.md = doc\namespaces\RapidField.SolidInstruments.Web.DotNetNative.md
+		doc\namespaces\RapidField.SolidInstruments.Web.md = doc\namespaces\RapidField.SolidInstruments.Web.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{5D1D074E-456F-4CA1-A4C5-45074EDCFDA8}"
@@ -407,9 +414,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi", "example\RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi\RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.csproj", "{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.Domain.Identity", "example\RapidField.SolidInstruments.Example.Domain.Identity\RapidField.SolidInstruments.Example.Domain.Identity.csproj", "{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.Identity", "example\RapidField.SolidInstruments.Example.Domain.Identity\RapidField.SolidInstruments.Example.Domain.Identity.csproj", "{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Example.Domain.Identity.Service", "example\RapidField.SolidInstruments.Example.Domain.Identity.Service\RapidField.SolidInstruments.Example.Domain.Identity.Service.csproj", "{352E9021-1010-4A5D-8435-F8331DA63F95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.Identity.Service", "example\RapidField.SolidInstruments.Example.Domain.Identity.Service\RapidField.SolidInstruments.Example.Domain.Identity.Service.csproj", "{352E9021-1010-4A5D-8435-F8331DA63F95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web", "src\RapidField.SolidInstruments.Web\RapidField.SolidInstruments.Web.csproj", "{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web.Autofac", "src\RapidField.SolidInstruments.Web.Autofac\RapidField.SolidInstruments.Web.Autofac.csproj", "{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web.DotNetNative", "src\RapidField.SolidInstruments.Web.DotNetNative\RapidField.SolidInstruments.Web.DotNetNative.csproj", "{6A53C072-71C8-42F1-90D9-9AE64F2848B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -649,6 +662,18 @@ Global
 		{352E9021-1010-4A5D-8435-F8331DA63F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{352E9021-1010-4A5D-8435-F8331DA63F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{352E9021-1010-4A5D-8435-F8331DA63F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A53C072-71C8-42F1-90D9-9AE64F2848B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A53C072-71C8-42F1-90D9-9AE64F2848B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A53C072-71C8-42F1-90D9-9AE64F2848B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A53C072-71C8-42F1-90D9-9AE64F2848B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -728,6 +753,9 @@ Global
 		{AC2D0816-3ABF-4458-80DB-E4BADDD9A2E0} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{630F6AC9-3A4C-4B8A-B55D-D44A7BFBB025} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
 		{352E9021-1010-4A5D-8435-F8331DA63F95} = {BEB60D41-11BB-4C6E-8F5D-1E7990A27C34}
+		{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
+		{6A53C072-71C8-42F1-90D9-9AE64F2848B2} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

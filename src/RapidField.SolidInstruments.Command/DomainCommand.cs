@@ -46,7 +46,7 @@ namespace RapidField.SolidInstruments.Command
         /// Initializes a new instance of the <see cref="DomainCommand" /> class.
         /// </summary>
         /// <param name="labels">
-        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// A collection of textual labels that provide categorical and/or contextual information about the command.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="labels" /> is <see langword="null" />.
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Command
         /// Initializes a new instance of the <see cref="DomainCommand" /> class.
         /// </summary>
         /// <param name="labels">
-        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// A collection of textual labels that provide categorical and/or contextual information about the command.
         /// </param>
         /// <param name="correlationIdentifier">
         /// A unique identifier that is assigned to related commands.
@@ -130,7 +130,7 @@ namespace RapidField.SolidInstruments.Command
         /// Initializes a new instance of the <see cref="DomainCommand{TResult}" /> class.
         /// </summary>
         /// <param name="labels">
-        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// A collection of textual labels that provide categorical and/or contextual information about the command.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="labels" /> is <see langword="null" />.
@@ -145,7 +145,7 @@ namespace RapidField.SolidInstruments.Command
         /// Initializes a new instance of the <see cref="DomainCommand{TResult}" /> class.
         /// </summary>
         /// <param name="labels">
-        /// A collection of textual labels that provide categorical and/or contextual information about the event.
+        /// A collection of textual labels that provide categorical and/or contextual information about the command.
         /// </param>
         /// <param name="correlationIdentifier">
         /// A unique identifier that is assigned to related commands.

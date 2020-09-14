@@ -37,8 +37,14 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         /// The object that configures a container.
         /// </param>
         /// <param name="serviceDescriptors">
-        /// a collection of service descriptors that are added to the configurator.
+        /// A collection of service descriptors that are added to the configurator.
         /// </param>
-        protected sealed override void Inject(ServiceCollection configurator, IServiceCollection serviceDescriptors) => configurator.Add(serviceDescriptors);
+        protected sealed override void Inject(ServiceCollection configurator, IServiceCollection serviceDescriptors)
+        {
+            foreach (var serviceDescriptor in serviceDescriptors)
+            {
+                configurator.TryAdd(serviceDescriptor);
+            }
+        }
     }
 }

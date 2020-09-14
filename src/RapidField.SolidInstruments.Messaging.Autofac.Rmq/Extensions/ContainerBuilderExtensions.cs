@@ -222,9 +222,9 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Rmq.Extensions
             target.RegisterApplicationConfiguration(applicationConfiguration);
             target.RegisterInstance(transport).IfNotRegistered(typeof(RabbitMqMessageTransport)).AsSelf().SingleInstance();
             target.RegisterInstance(transport.CreateConnection()).IfNotRegistered(typeof(IMessageTransportConnection)).AsSelf().SingleInstance();
-            target.RegisterType<RabbitMqMessageAdapter>().IfNotRegistered(typeof(RabbitMqMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<RabbitMqClientFactory>().IfNotRegistered(typeof(RabbitMqClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().InstancePerLifetimeScope();
-            target.RegisterType<RabbitMqTransmittingFacade>().IfNotRegistered(typeof(RabbitMqTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().InstancePerLifetimeScope();
+            target.RegisterType<RabbitMqMessageAdapter>().IfNotRegistered(typeof(RabbitMqMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<RabbitMqClientFactory>().IfNotRegistered(typeof(RabbitMqClientFactory)).As<IMessagingClientFactory<IMessagingEntitySendClient, IMessagingEntityReceiveClient, PrimitiveMessage>>().AsSelf().SingleInstance();
+            target.RegisterType<RabbitMqTransmittingFacade>().IfNotRegistered(typeof(RabbitMqTransmittingFacade)).As<IMessageTransmittingFacade>().AsSelf().SingleInstance();
             target.RegisterType<RabbitMqListeningFacade>().IfNotRegistered(typeof(RabbitMqListeningFacade)).As<IMessageListeningFacade>().AsSelf().SingleInstance();
             target.RegisterType<RabbitMqRequestingFacade>().IfNotRegistered(typeof(RabbitMqRequestingFacade)).As<IMessageRequestingFacade>().AsSelf().SingleInstance();
         }
