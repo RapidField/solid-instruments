@@ -418,11 +418,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Example.Domain.Identity.Service", "example\RapidField.SolidInstruments.Example.Domain.Identity.Service\RapidField.SolidInstruments.Example.Domain.Identity.Service.csproj", "{352E9021-1010-4A5D-8435-F8331DA63F95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web", "src\RapidField.SolidInstruments.Web\RapidField.SolidInstruments.Web.csproj", "{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Web", "src\RapidField.SolidInstruments.Web\RapidField.SolidInstruments.Web.csproj", "{3F1A6F2B-B84F-44C5-9E7D-5763C82CA926}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web.Autofac", "src\RapidField.SolidInstruments.Web.Autofac\RapidField.SolidInstruments.Web.Autofac.csproj", "{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Web.Autofac", "src\RapidField.SolidInstruments.Web.Autofac\RapidField.SolidInstruments.Web.Autofac.csproj", "{20452BD4-3C2F-44EC-8DEB-14FD9FE8AA84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Web.DotNetNative", "src\RapidField.SolidInstruments.Web.DotNetNative\RapidField.SolidInstruments.Web.DotNetNative.csproj", "{6A53C072-71C8-42F1-90D9-9AE64F2848B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Web.DotNetNative", "src\RapidField.SolidInstruments.Web.DotNetNative\RapidField.SolidInstruments.Web.DotNetNative.csproj", "{6A53C072-71C8-42F1-90D9-9AE64F2848B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

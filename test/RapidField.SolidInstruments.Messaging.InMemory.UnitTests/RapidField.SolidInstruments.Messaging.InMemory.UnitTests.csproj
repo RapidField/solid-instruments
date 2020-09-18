@@ -15,7 +15,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="appsettings.json" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
+        <Content Include="appsettings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
