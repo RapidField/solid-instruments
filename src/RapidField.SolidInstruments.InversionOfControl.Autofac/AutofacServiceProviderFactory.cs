@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         /// </param>
         protected override void PrepareConfigurator(ContainerBuilder configurator, IServiceCollection services)
         {
-            services.AddDependencyPackage<TPackage>(ApplicationConfiguration);
+            services = services.AddDependencyPackage<TPackage>(ApplicationConfiguration);
             var serviceInjector = new AutofacServiceInjector(services);
             serviceInjector.Inject(configurator);
         }

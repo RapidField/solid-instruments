@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -15,8 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
-using WebHostInitializer = Microsoft.AspNetCore.WebHost;
+using HostInitializer = Microsoft.Extensions.Hosting.Host;
 
 namespace RapidField.SolidInstruments.Web
 {
@@ -24,8 +23,8 @@ namespace RapidField.SolidInstruments.Web
     /// Prepares for and performs execution of a web application.
     /// </summary>
     /// <remarks>
-    /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> is the default implementation of
-    /// <see cref="IWebExecutor" />.
+    /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" /> is the
+    /// default implementation of <see cref="IWebExecutor" />.
     /// </remarks>
     /// <typeparam name="TDependencyPackage">
     /// The type of the package that configures the dependency engine.
@@ -36,14 +35,19 @@ namespace RapidField.SolidInstruments.Web
     /// <typeparam name="TDependencyEngine">
     /// The type of the dependency engine that is produced by the dependency package.
     /// </typeparam>
-    public abstract class WebExecutor<TDependencyPackage, TDependencyConfigurator, TDependencyEngine> : Instrument, IWebExecutor
+    /// <typeparam name="TServiceProviderFactory">
+    /// The type of the service provider factory that is used by the dependency engine.
+    /// </typeparam>
+    public abstract class WebExecutor<TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory> : Instrument, IWebExecutor
         where TDependencyPackage : class, IDependencyPackage<TDependencyConfigurator, TDependencyEngine>, new()
         where TDependencyConfigurator : class, new()
         where TDependencyEngine : class, IDependencyEngine
+        where TServiceProviderFactory : class, IServiceProviderFactory<TDependencyConfigurator>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> class.
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" />
+        /// class.
         /// </summary>
         /// <param name="applicationName">
         /// The name of the web application.
@@ -57,13 +61,8 @@ namespace RapidField.SolidInstruments.Web
         protected WebExecutor(String applicationName)
             : base()
         {
-            ApplicationName = applicationName.Trim().RejectIf().IsNullOrEmpty(nameof(applicationName));
+            ApplicationName = applicationName.RejectIf().IsNullOrEmpty(nameof(applicationName)).TargetArgument.Trim();
             CommandLineArguments = null;
-            LazyApplicationConfiguration = new Lazy<IConfiguration>(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyDependencyEngine = new Lazy<IDependencyEngine>(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyRootDependencyScope = new Lazy<IDependencyScope>(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyWebHost = new Lazy<IWebHost>(CreateWebHost, LazyThreadSafetyMode.ExecutionAndPublication);
-            ReferenceManager = new ReferenceManager();
         }
 
         /// <summary>
@@ -112,11 +111,11 @@ namespace RapidField.SolidInstruments.Web
 
                 try
                 {
-                    var webHost = WebHost; // Do not move this line.
+                    ApplicationConfiguration = CreateApplicationConfiguration();
 
-                    using (var dependencyScope = CreateDependencyScope())
+                    using (var host = CreateHost())
                     {
-                        Execute(webHost, dependencyScope, ApplicationConfiguration, CommandLineArguments);
+                        host.Run();
                     }
                 }
                 catch (WebExectuionException)
@@ -143,14 +142,98 @@ namespace RapidField.SolidInstruments.Web
 
         /// <summary>
         /// Converts the value of the current
-        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" /> to its equivalent string
-        /// representation.
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" /> to
+        /// its equivalent string representation.
         /// </summary>
         /// <returns>
         /// A string representation of the current
-        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" />.
         /// </returns>
         public override String ToString() => $"{{ \"{nameof(ApplicationName)}\": \"{ApplicationName}\" }}";
+
+        /// <summary>
+        /// Configures the application's request pipeline.
+        /// </summary>
+        /// <param name="application">
+        /// An object that configures the application's request pipeline.
+        /// </param>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while configuring the application.
+        /// </exception>
+        [DebuggerHidden]
+        internal void ConfigureApplication(IApplicationBuilder application)
+        {
+            try
+            {
+                ConfigureApplication(application, ApplicationConfiguration);
+            }
+            catch (WebExectuionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while configuring the application. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Configures the host.
+        /// </summary>
+        /// <param name="host">
+        /// An object that configures the host.
+        /// </param>
+        /// <returns>
+        /// The configured host builder.
+        /// </returns>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while configuring the host.
+        /// </exception>
+        [DebuggerHidden]
+        internal IHostBuilder ConfigureHost(IHostBuilder host)
+        {
+            try
+            {
+                return ConfigureHost(host, ConfigureWebHost);
+            }
+            catch (WebExectuionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while configuring the host. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Configures the web host.
+        /// </summary>
+        /// <param name="webHost">
+        /// An object that configures the web host.
+        /// </param>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while configuring the web host.
+        /// </exception>
+        [DebuggerHidden]
+        internal void ConfigureWebHost(IWebHostBuilder webHost)
+        {
+            try
+            {
+                webHost = webHost
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseConfiguration(ApplicationConfiguration)
+                    .Configure(ConfigureApplication);
+            }
+            catch (WebExectuionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while configuring the web host. See inner exception.", exception);
+            }
+        }
 
         /// <summary>
         /// Builds the application configuration for the web application.
@@ -168,15 +251,15 @@ namespace RapidField.SolidInstruments.Web
         {
             foreach (var prefix in EnvironmentVariableConfigurationPrefixes)
             {
-                _ = configurationBuilder.AddEnvironmentVariables(prefix);
+                configurationBuilder = configurationBuilder.AddEnvironmentVariables(prefix);
             }
 
             if (CommandLineArguments.IsNullOrEmpty() == false)
             {
-                _ = configurationBuilder.AddCommandLine(CommandLineArguments);
+                configurationBuilder = configurationBuilder.AddCommandLine(CommandLineArguments);
             }
 
-            _ = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(DefaultAppSettingsJsonFileName);
+            configurationBuilder = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(DefaultAppSettingsJsonFileName);
         }
 
         /// <summary>
@@ -188,68 +271,44 @@ namespace RapidField.SolidInstruments.Web
         /// <param name="applicationConfiguration">
         /// Configuration information for the web application.
         /// </param>
-        /// <param name="commandLineArguments">
-        /// Command line arguments that are provided at runtime, if any.
-        /// </param>
-        protected virtual void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration, String[] commandLineArguments)
+        protected virtual void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration)
         {
             return;
         }
 
         /// <summary>
-        /// Creates a new dependency scope.
+        /// Configures the host.
         /// </summary>
+        /// <param name="host">
+        /// An object that configures the host.
+        /// </param>
+        /// <param name="configureWebHostAction">
+        /// An action that configures the web host.
+        /// </param>
         /// <returns>
-        /// A new dependency scope.
+        /// The configured host builder.
         /// </returns>
-        /// <exception cref="CreateDependencyScopeException">
-        /// An exception was raised while attempting to create the scope.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        protected IDependencyScope CreateDependencyScope() => RootDependencyScope.CreateChildScope();
+        protected abstract IHostBuilder ConfigureHost(IHostBuilder host, Action<IWebHostBuilder> configureWebHostAction);
+
+        /// <summary>
+        /// Creates the service provider factory.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        /// <returns>
+        /// The service provider factory.
+        /// </returns>
+        protected abstract TServiceProviderFactory CreateServiceProviderFactory(IConfiguration applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current
-        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" />.
         /// </summary>
         /// <param name="disposing">
         /// A value indicating whether or not managed resources should be released.
         /// </param>
-        protected override void Dispose(Boolean disposing)
-        {
-            try
-            {
-                if (disposing)
-                {
-                    LazyRootDependencyScope.Dispose();
-                    LazyDependencyEngine.Dispose();
-                    ReferenceManager.Dispose();
-                }
-            }
-            finally
-            {
-                base.Dispose(disposing);
-            }
-        }
-
-        /// <summary>
-        /// Begins execution of the web application.
-        /// </summary>
-        /// <param name="webHost">
-        /// A configured web host.
-        /// </param>
-        /// <param name="dependencyScope">
-        /// A scope that is used to resolve web application dependencies.
-        /// </param>
-        /// <param name="applicationConfiguration">
-        /// Configuration information for the web application.
-        /// </param>
-        /// <param name="commandLineArguments">
-        /// Command line arguments that are provided at runtime, if any.
-        /// </param>
-        protected virtual void Execute(IWebHost webHost, IDependencyScope dependencyScope, IConfiguration applicationConfiguration, String[] commandLineArguments) => webHost.Start();
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
         /// Creates configuration information for the web application.
@@ -257,25 +316,22 @@ namespace RapidField.SolidInstruments.Web
         /// <returns>
         /// Configuration information for the web application.
         /// </returns>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while creating the application configuration.
+        /// </exception>
         [DebuggerHidden]
         private IConfiguration CreateApplicationConfiguration()
         {
-            var configurationBuilder = new ConfigurationBuilder();
-            BuildConfiguration(configurationBuilder);
-            return configurationBuilder.Build();
-        }
-
-        /// <summary>
-        /// Creates the dependency engine for the web application.
-        /// </summary>
-        /// <returns>
-        /// The dependency engine for the web application.
-        /// </returns>
-        [DebuggerHidden]
-        private IDependencyEngine CreateDependencyEngine()
-        {
-            var dependencyPackage = new TDependencyPackage();
-            return dependencyPackage.CreateEngine(ApplicationConfiguration, ServiceDescriptors);
+            try
+            {
+                var configurationBuilder = new ConfigurationBuilder();
+                BuildConfiguration(configurationBuilder);
+                return configurationBuilder.Build();
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while creating the application configuration. See inner exception.", exception);
+            }
         }
 
         /// <summary>
@@ -284,25 +340,79 @@ namespace RapidField.SolidInstruments.Web
         /// <returns>
         /// The web application host.
         /// </returns>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while creating the host.
+        /// </exception>
         [DebuggerHidden]
-        private IWebHost CreateWebHost() => WebHostInitializer.CreateDefaultBuilder()
-            .UseConfiguration(ApplicationConfiguration)
-            .Configure(application =>
+        private IHost CreateHost()
+        {
+            try
             {
-                ConfigureApplication(application, ApplicationConfiguration, CommandLineArguments);
-            })
-            .ConfigureServices(services =>
+                var hostBuilder = CreateHostBuilder();
+                return hostBuilder.Build();
+            }
+            catch (WebExectuionException)
             {
-                foreach (var serviceDescritor in services)
-                {
-                    ServiceDescriptors.TryAdd(serviceDescritor);
-                }
-            })
-            .Configure(application =>
+                throw;
+            }
+            catch (Exception exception)
             {
-                application.ApplicationServices = DependencyEngine.Provider;
-            })
-            .Build();
+                throw new WebExectuionException("An exception was raised while creating the host. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Creates the web application host builder.
+        /// </summary>
+        /// <returns>
+        /// The web application host builder.
+        /// </returns>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while creating the host builder.
+        /// </exception>
+        [DebuggerHidden]
+        private IHostBuilder CreateHostBuilder()
+        {
+            try
+            {
+                var serviceProviderFactory = CreateServiceProviderFactory();
+                return ConfigureHost(HostInitializer.CreateDefaultBuilder().UseServiceProviderFactory(serviceProviderFactory));
+            }
+            catch (WebExectuionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while creating the host builder. See inner exception.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Creates the service provider factory.
+        /// </summary>
+        /// <returns>
+        /// The service provider factory.
+        /// </returns>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while creating the service provider factory.
+        /// </exception>
+        [DebuggerHidden]
+        private TServiceProviderFactory CreateServiceProviderFactory()
+        {
+            try
+            {
+                return CreateServiceProviderFactory(ApplicationConfiguration);
+            }
+            catch (WebExectuionException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while creating the service provider factory. See inner exception.", exception);
+            }
+        }
 
         /// <summary>
         /// Gets the name of the web application.
@@ -315,7 +425,14 @@ namespace RapidField.SolidInstruments.Web
         /// <summary>
         /// Gets configuration information for the web application.
         /// </summary>
-        protected IConfiguration ApplicationConfiguration => LazyApplicationConfiguration.Value;
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while creating the application configuration.
+        /// </exception>
+        protected IConfiguration ApplicationConfiguration
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// When overridden by a derived class, gets a copyright notice which is written to the console at the start of web
@@ -337,33 +454,6 @@ namespace RapidField.SolidInstruments.Web
         protected virtual String ProductName => null;
 
         /// <summary>
-        /// Gets a utility that disposes of the object references that are managed by the current
-        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
-        /// </summary>
-        protected IReferenceManager ReferenceManager
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the dependency engine for the web application.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IDependencyEngine DependencyEngine => LazyDependencyEngine.Value;
-
-        /// <summary>
-        /// Gets the root dependency scope for the web application.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IDependencyScope RootDependencyScope => LazyRootDependencyScope.Value;
-
-        /// <summary>
-        /// Gets the web application host.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IWebHost WebHost => LazyWebHost.Value;
-
-        /// <summary>
         /// Represents the command line arguments that were provided at runtime, if any.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -375,35 +465,5 @@ namespace RapidField.SolidInstruments.Web
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DefaultAppSettingsJsonFileName = "appsettings.json";
-
-        /// <summary>
-        /// Represents lazily-initialized configuration information for the web application.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IConfiguration> LazyApplicationConfiguration;
-
-        /// <summary>
-        /// Represents the lazily-initialized dependency engine for the web application.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IDependencyEngine> LazyDependencyEngine;
-
-        /// <summary>
-        /// Represents the lazily-initialized root dependency scope for the web application.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IDependencyScope> LazyRootDependencyScope;
-
-        /// <summary>
-        /// Represents the lazily-initialized web application host.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IWebHost> LazyWebHost;
-
-        /// <summary>
-        /// Represents a collection of configured service descriptors.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IServiceCollection ServiceDescriptors = new ServiceCollection();
     }
 }

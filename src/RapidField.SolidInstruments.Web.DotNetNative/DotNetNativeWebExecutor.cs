@@ -2,9 +2,9 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Core;
-using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using System;
 
@@ -16,8 +16,8 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
     /// <typeparam name="TDependencyPackage">
     /// The type of the package that configures the dependency engine.
     /// </typeparam>
-    public abstract class DotNetNativeWebExecutor<TDependencyPackage> : WebExecutor<TDependencyPackage, ServiceCollection, DotNetNativeDependencyEngine>
-        where TDependencyPackage : class, IDependencyPackage<ServiceCollection, DotNetNativeDependencyEngine>, new()
+    public abstract class DotNetNativeWebExecutor<TDependencyPackage> : WebExecutor<TDependencyPackage, ServiceCollection, DotNetNativeDependencyEngine, DotNetNativeServiceProviderFactory<TDependencyPackage>>
+        where TDependencyPackage : DotNetNativeDependencyPackage, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNativeWebExecutor{TDependencyPackage}" /> class.
@@ -36,6 +36,17 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         {
             return;
         }
+
+        /// <summary>
+        /// Creates the service provider factory.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        /// <returns>
+        /// The service provider factory.
+        /// </returns>
+        protected override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DotNetNativeWebExecutor{TDependencyPackage}" />.

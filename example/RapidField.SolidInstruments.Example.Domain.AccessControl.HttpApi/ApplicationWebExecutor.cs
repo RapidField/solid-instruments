@@ -3,7 +3,9 @@
 // =================================================================================================================================
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using RapidField.SolidInstruments.Web.DotNetNative;
 using System;
 
@@ -41,25 +43,37 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// <param name="applicationConfiguration">
         /// Configuration information for the web application.
         /// </param>
-        /// <param name="commandLineArguments">
-        /// Command line arguments that are provided at runtime, if any.
-        /// </param>
-        protected override void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration, String[] commandLineArguments)
+        protected override void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration)
         {
             try
             {
-                application.UseAuthorization();
-                application.UseRouting();
-                application.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+                application = application
+                    .UseAuthorization()
+                    .UseRouting()
+                    .UseEndpoints(endpoints =>
+                    {
+                        endpoints.MapControllers();
+                    });
             }
             finally
             {
-                base.ConfigureApplication(application, applicationConfiguration, commandLineArguments);
+                base.ConfigureApplication(application, applicationConfiguration);
             }
         }
+
+        /// <summary>
+        /// Configures the host.
+        /// </summary>
+        /// <param name="host">
+        /// An object that configures the host.
+        /// </param>
+        /// <param name="configureWebHostAction">
+        /// An action that configures the web host.
+        /// </param>
+        /// <returns>
+        /// The configured host builder.
+        /// </returns>
+        protected override IHostBuilder ConfigureHost(IHostBuilder host, Action<IWebHostBuilder> configureWebHostAction) => host.ConfigureWebHostDefaults(configureWebHostAction);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ApplicationWebExecutor" />.

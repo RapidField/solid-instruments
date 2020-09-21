@@ -3,8 +3,8 @@
 // =================================================================================================================================
 
 using Autofac;
+using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
-using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.InversionOfControl.Autofac;
 using System;
 
@@ -16,8 +16,8 @@ namespace RapidField.SolidInstruments.Web.Autofac
     /// <typeparam name="TDependencyPackage">
     /// The type of the package that configures the dependency engine.
     /// </typeparam>
-    public abstract class AutofacWebExecutor<TDependencyPackage> : WebExecutor<TDependencyPackage, ContainerBuilder, AutofacDependencyEngine>
-        where TDependencyPackage : class, IDependencyPackage<ContainerBuilder, AutofacDependencyEngine>, new()
+    public abstract class AutofacWebExecutor<TDependencyPackage> : WebExecutor<TDependencyPackage, ContainerBuilder, AutofacDependencyEngine, AutofacServiceProviderFactory<TDependencyPackage>>
+        where TDependencyPackage : AutofacDependencyPackage, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacWebExecutor{TDependencyPackage}" /> class.
@@ -36,6 +36,17 @@ namespace RapidField.SolidInstruments.Web.Autofac
         {
             return;
         }
+
+        /// <summary>
+        /// Creates the service provider factory.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        /// <returns>
+        /// The service provider factory.
+        /// </returns>
+        protected override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new AutofacServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="AutofacWebExecutor{TDependencyPackage}" />.
