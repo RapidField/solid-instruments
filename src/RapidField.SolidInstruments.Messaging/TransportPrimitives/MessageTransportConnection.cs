@@ -56,12 +56,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                 try
                 {
-                    if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                    if (TransportReference?.Connections?.Any(connection => connection.Identifier == Identifier) ?? false)
                     {
-                        TransportReference.CloseConnection(this);
+                        TransportReference?.CloseConnection(this);
                     }
 
-                    LazyPollTimer.Dispose();
+                    LazyPollTimer?.Dispose();
                 }
                 catch (Exception exception)
                 {
@@ -146,7 +146,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Releases all resources consumed by the current <see cref="MessageTransportConnection" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         /// <exception cref="MessagingException">
         /// An exception was raised while closing the transport connection.
@@ -155,10 +155,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             try
             {
-                if (disposing)
-                {
-                    Close();
-                }
+                Close();
             }
             finally
             {

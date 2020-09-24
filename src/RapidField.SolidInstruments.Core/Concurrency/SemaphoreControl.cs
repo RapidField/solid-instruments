@@ -40,16 +40,13 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Releases all resources consumed by the current <see cref="SemaphoreControl" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    Semaphore.Dispose();
-                }
+                Semaphore?.Dispose();
             }
             finally
             {

@@ -205,18 +205,15 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="CryptographicKey{TAlgorithm}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    SecureMemoryEncryptionKey.Dispose();
-                    KeySource.Dispose();
-                    LazyPbkdf2Provider.Dispose();
-                }
+                SecureMemoryEncryptionKey?.Dispose();
+                KeySource?.Dispose();
+                LazyPbkdf2Provider?.Dispose();
             }
             finally
             {
@@ -629,7 +626,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="CryptographicKey" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 

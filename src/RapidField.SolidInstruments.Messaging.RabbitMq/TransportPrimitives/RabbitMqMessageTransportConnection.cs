@@ -60,16 +60,19 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 {
                     try
                     {
-                        foreach (var channel in Channels)
+                        if (Channels?.Any() ?? false)
                         {
-                            channel.Dispose();
+                            foreach (var channel in Channels)
+                            {
+                                channel?.Dispose();
+                            }
                         }
                     }
                     finally
                     {
-                        if (TransportReference.Connections.Any(connection => connection.Identifier == Identifier))
+                        if (TransportReference?.Connections?.Any(connection => connection.Identifier == Identifier) ?? false)
                         {
-                            TransportReference.CloseConnection(this);
+                            TransportReference?.CloseConnection(this);
                         }
                     }
                 }
@@ -268,7 +271,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// Releases all resources consumed by the current <see cref="RabbitMqMessageTransportConnection" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         /// <exception cref="MessagingException">
         /// An exception was raised while closing the transport connection.
@@ -277,10 +280,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             try
             {
-                if (disposing)
-                {
-                    Close();
-                }
+                Close();
             }
             finally
             {

@@ -80,21 +80,23 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="HardenedRandomNumberGenerator" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         [DebuggerHidden]
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                if (SyncRoot is null)
                 {
-                    lock (SyncRoot)
-                    {
-                        LazyCipher.Dispose();
-                        LazySourceRandomnessProvider.Dispose();
-                        Buffer.Clear();
-                    }
+                    return;
+                }
+
+                lock (SyncRoot)
+                {
+                    LazyCipher?.Dispose();
+                    LazySourceRandomnessProvider?.Dispose();
+                    Buffer?.Clear();
                 }
             }
             finally

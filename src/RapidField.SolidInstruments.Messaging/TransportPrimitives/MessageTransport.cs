@@ -1058,20 +1058,17 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Releases all resources consumed by the current <see cref="MessageTransport" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                while (TopicCount > 0 || QueueCount > 0 || ConnectionCount > 0)
                 {
-                    while (TopicCount > 0 || QueueCount > 0 || ConnectionCount > 0)
-                    {
-                        DestroyAllTopics();
-                        DestroyAllQueues();
-                        DestroyAllConnections();
-                    }
+                    DestroyAllTopics();
+                    DestroyAllQueues();
+                    DestroyAllConnections();
                 }
             }
             finally
@@ -1103,7 +1100,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             var destroyConnectionTasks = new List<Task>();
 
-            while (ConnectionDictionary.Any())
+            while (ConnectionDictionary?.Any() ?? false)
             {
                 var connectionIdentifier = ConnectionDictionary.Keys.FirstOrDefault();
 
@@ -1131,7 +1128,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             var destroyQueueTasks = new List<Task>();
 
-            while (QueueDictionary.Any())
+            while (QueueDictionary?.Any() ?? false)
             {
                 var queuePath = QueueDictionary.Keys.First();
 
@@ -1159,7 +1156,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             var destroyTopicTasks = new List<Task>();
 
-            while (TopicDictionary.Any())
+            while (TopicDictionary?.Any() ?? false)
             {
                 var topicPath = TopicDictionary.Keys.First();
 
@@ -1182,12 +1179,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of active connections to the current <see cref="MessageTransport" />.
         /// </summary>
-        public Int32 ConnectionCount => Connections.Count();
+        public Int32 ConnectionCount => Connections?.Count() ?? 0;
 
         /// <summary>
         /// Gets a collection of active connections to the current <see cref="MessageTransport" />.
         /// </summary>
-        public IEnumerable<IMessageTransportConnection> Connections => ConnectionDictionary.Values;
+        public IEnumerable<IMessageTransportConnection> Connections => ConnectionDictionary?.Values ?? Array.Empty<IMessageTransportConnection>();
 
         /// <summary>
         /// Gets the format that is used to serialize enqueued message bodies.
@@ -1200,22 +1197,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of queues within the current <see cref="MessageTransport" />.
         /// </summary>
-        public Int32 QueueCount => QueuePaths.Count();
+        public Int32 QueueCount => QueuePaths?.Count() ?? 0;
 
         /// <summary>
         /// Gets a collection of available queue paths for the current <see cref="MessageTransport" />.
         /// </summary>
-        public IEnumerable<IMessagingEntityPath> QueuePaths => QueueDictionary.Keys;
+        public IEnumerable<IMessagingEntityPath> QueuePaths => QueueDictionary?.Keys ?? Array.Empty<IMessagingEntityPath>();
 
         /// <summary>
         /// Gets the number of topics within the current <see cref="MessageTransport" />.
         /// </summary>
-        public Int32 TopicCount => TopicPaths.Count();
+        public Int32 TopicCount => TopicPaths?.Count() ?? 0;
 
         /// <summary>
         /// Gets a collection of available topic paths for the current <see cref="MessageTransport" />.
         /// </summary>
-        public IEnumerable<IMessagingEntityPath> TopicPaths => TopicDictionary.Keys;
+        public IEnumerable<IMessagingEntityPath> TopicPaths => TopicDictionary?.Keys ?? Array.Empty<IMessagingEntityPath>();
 
         /// <summary>
         /// Gets an in-memory <see cref="IMessageTransport" /> instance.

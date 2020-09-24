@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         {
             foreach (var serviceDescriptor in serviceDescriptors)
             {
-                configurator.TryAdd(serviceDescriptor);
+                configurator.Add(serviceDescriptor);
             }
         }
     }

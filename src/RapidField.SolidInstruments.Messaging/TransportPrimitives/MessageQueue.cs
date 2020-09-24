@@ -318,25 +318,22 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Releases all resources consumed by the current <see cref="MessageQueue" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                var disposalAttemptCount = 0;
+
+                while (MessageCount > 0 && disposalAttemptCount < MaximumDisposalAttemptCount)
                 {
-                    var disposalAttemptCount = 0;
-
-                    while (MessageCount > 0 && disposalAttemptCount < MaximumDisposalAttemptCount)
-                    {
-                        Thread.Sleep(EnqueueTimeoutThreshold);
-                        disposalAttemptCount++;
-                    }
-
-                    LockedMessages.Clear();
-                    Messages.Clear();
+                    Thread.Sleep(EnqueueTimeoutThreshold);
+                    disposalAttemptCount++;
                 }
+
+                LockedMessages?.Clear();
+                Messages?.Clear();
             }
             finally
             {

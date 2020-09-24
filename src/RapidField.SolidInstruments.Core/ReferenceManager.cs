@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,18 +41,37 @@ namespace RapidField.SolidInstruments.Core
         /// The object is disposed.
         /// </exception>
         public void AddObject<T>(T reference)
+            where T : class => AddObject(reference, DefaultStrongReferenceMinimumLifeSpan);
+
+        /// <summary>
+        /// Instructs the current <see cref="ReferenceManager" /> to manage the specified object.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the managed object.
+        /// </typeparam>
+        /// <param name="reference">
+        /// The managed object.
+        /// </param>
+        /// <param name="strongReferenceMinimumLifeSpan">
+        /// The minimum length of time to preserve a strong reference to the managed object. The default value is 55 seconds. The
+        /// observed length of time may be shorter if the reference manager is disposed.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="strongReferenceMinimumLifeSpan" /> is less than <see cref="TimeSpan.Zero" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        public void AddObject<T>(T reference, TimeSpan strongReferenceMinimumLifeSpan)
             where T : class
         {
+            RejectIfDisposed();
+
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
                 Prune();
-                var managedReference = new ManagedReference<T>(reference);
-
-                if (References.Contains(managedReference) == false)
-                {
-                    References.Add(managedReference);
-                }
+                References?.Add(new ManagedReference<T>(reference, strongReferenceMinimumLifeSpan));
             }
         }
 
@@ -67,36 +87,33 @@ namespace RapidField.SolidInstruments.Core
         /// Releases all resources consumed by the current <see cref="ReferenceManager" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                while (References?.Any() ?? false)
                 {
-                    while (References.Any())
+                    try
                     {
-                        try
+                        var disposeTasks = new List<Task>();
+                        var referenceArray = References?.ToArray() ?? Array.Empty<IManagedReference>();
+
+                        foreach (var reference in referenceArray)
                         {
-                            var disposeTasks = new List<Task>();
-
-                            foreach (var reference in References.ToArray())
-                            {
-                                disposeTasks.Add(reference?.DisposeAsync().AsTask());
-                            }
-
-                            var disposeTaskArray = disposeTasks.Where(task => (task is null) == false).ToArray();
-
-                            if (disposeTaskArray.Any())
-                            {
-                                Task.WaitAll(disposeTaskArray);
-                            }
+                            disposeTasks.Add(reference?.DisposeAsync().AsTask() ?? Task.CompletedTask);
                         }
-                        finally
+
+                        if (disposeTasks.Any())
                         {
-                            References.Clear();
+                            Task.WaitAll(disposeTasks.ToArray());
                         }
+                    }
+                    finally
+                    {
+                        References?.Clear();
+                        References = null;
                     }
                 }
             }
@@ -107,37 +124,57 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Finalizes static members of the <see cref="ReferenceManager" /> class.
+        /// </summary>
+        [DebuggerHidden]
+        private static void FinalizeStaticMembers() => Instance.Dispose();
+
+        /// <summary>
         /// Removes dead references from the current <see cref="ReferenceManager" />.
         /// </summary>
         [DebuggerHidden]
         private void Prune()
         {
-            if (References.Any())
+            if (References?.Any() ?? false)
             {
+                var referenceArray = References?.ToArray() ?? Array.Empty<IManagedReference>();
+
                 foreach (var reference in References)
                 {
-                    reference.Poll();
+                    reference?.Poll();
                 }
 
-                var deadReferences = References.Where(reference => reference.IsDead);
-
-                foreach (var deadReference in deadReferences)
-                {
-                    References.Remove(deadReference);
-                }
+                References = new List<IManagedReference>(References?.Where(reference => reference.IsDead == false) ?? Array.Empty<IManagedReference>());
             }
         }
 
         /// <summary>
         /// Gets the number of objects that are managed by the current <see cref="ReferenceManager" />.
         /// </summary>
-        public Int32 ObjectCount => References.Count;
+        public Int32 ObjectCount => References?.Count ?? 0;
+
+        /// <summary>
+        /// Represents a singleton instance of the <see cref="ReferenceManager" /> class.
+        /// </summary>
+        public static readonly IReferenceManager Instance = new ReferenceManager();
+
+        /// <summary>
+        /// Represents the default minimum length of time to preserve strong references to managed objects.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly TimeSpan DefaultStrongReferenceMinimumLifeSpan = TimeSpan.FromSeconds(55);
+
+        /// <summary>
+        /// Represents a finalizer for static members of the <see cref="ReferenceManager" /> class.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents the objects that are managed by the current <see cref="ReferenceManager" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IList<IManagedReference> References = new List<IManagedReference>();
+        private IList<IManagedReference> References = new List<IManagedReference>();
 
         /// <summary>
         /// Represents an object that is managed by a <see cref="ReferenceManager" />.
@@ -157,11 +194,28 @@ namespace RapidField.SolidInstruments.Core
             /// <param name="target">
             /// The managed object.
             /// </param>
+            /// <param name="strongReferenceMinimumLifeSpan">
+            /// The minimum length of time to preserve a strong reference to the managed object. The observed length of time may be
+            /// shorter if the reference manager is disposed.
+            /// </param>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// <paramref name="strongReferenceMinimumLifeSpan" /> is less than <see cref="TimeSpan.Zero" />.
+            /// </exception>
             [DebuggerHidden]
-            internal ManagedReference(T target)
+            internal ManagedReference(T target, TimeSpan strongReferenceMinimumLifeSpan)
             {
                 CreationTimeStamp = TimeStamp.Current;
+                StrongReferenceMinimumLifeSpan = strongReferenceMinimumLifeSpan.RejectIf().IsLessThan(TimeSpan.Zero, nameof(strongReferenceMinimumLifeSpan));
                 Target = target;
+            }
+
+            /// <summary>
+            /// Finalizes the current <see cref="ManagedReference{T}" />.
+            /// </summary>
+            [DebuggerHidden]
+            ~ManagedReference()
+            {
+                Dispose(false);
             }
 
             /// <summary>
@@ -267,7 +321,7 @@ namespace RapidField.SolidInstruments.Core
                     return false;
                 }
 
-                return ReferenceEquals(Target, other.Target);
+                return ReferenceEquals(Target, other.Target) && CreationTimeStamp == other.CreationTimeStamp;
             }
 
             /// <summary>
@@ -293,33 +347,30 @@ namespace RapidField.SolidInstruments.Core
             /// Releases all resources consumed by the current <see cref="ManagedReference{T}" />.
             /// </summary>
             /// <param name="disposing">
-            /// A value indicating whether or not managed resources should be released.
+            /// A value indicating whether or not disposal was invoked by user code.
             /// </param>
             [DebuggerHidden]
             protected void Dispose(Boolean disposing)
             {
-                if (disposing)
+                if (IsDead)
                 {
-                    if (Target is null)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    try
+                try
+                {
+                    if (Target is IDisposable disposableTarget)
                     {
-                        if (Target is IDisposable disposableTarget)
-                        {
-                            disposableTarget?.Dispose();
-                        }
-                        else if (Target is IAsyncDisposable asyncDisposableTarget)
-                        {
-                            asyncDisposableTarget?.DisposeAsync().AsTask().Wait();
-                        }
+                        disposableTarget?.Dispose();
                     }
-                    finally
+                    else if (Target is IAsyncDisposable asyncDisposableTarget)
                     {
-                        Target = null;
+                        asyncDisposableTarget?.DisposeAsync().AsTask().Wait();
                     }
+                }
+                finally
+                {
+                    Target = null;
                 }
             }
 
@@ -347,39 +398,27 @@ namespace RapidField.SolidInstruments.Core
             private T Target
             {
                 [DebuggerHidden]
-                get
-                {
-                    if ((StrongReference is null) == false)
-                    {
-                        return StrongReference;
-                    }
-                    else if ((WeakReference is null) == false && WeakReference.TryGetTarget(out var target))
-                    {
-                        return target;
-                    }
-
-                    return null;
-                }
+                get => StrongReference is null ? (WeakReference?.Target as T) : StrongReference;
                 [DebuggerHidden]
                 set
                 {
                     StrongReference = value;
-                    WeakReference = value is null ? null : new WeakReference<T>(value);
+                    WeakReference = value is null ? null : new WeakReference(value);
                 }
             }
-
-            /// <summary>
-            /// Represents the minimum length of time to preserve a strong reference to the managed object. The observed length of
-            /// time may be shorter if the reference manager is disposed.
-            /// </summary>
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private static readonly TimeSpan StrongReferenceMinimumLifeSpan = TimeSpan.FromSeconds(233);
 
             /// <summary>
             /// Represents the date and time when the current <see cref="ManagedReference{T}" /> was created.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly DateTime CreationTimeStamp;
+
+            /// <summary>
+            /// Represents the minimum length of time to preserve a strong reference to the managed object. The observed length of
+            /// time may be shorter if the reference manager is disposed.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private readonly TimeSpan StrongReferenceMinimumLifeSpan;
 
             /// <summary>
             /// Represents a strong reference to the managed object.
@@ -391,7 +430,7 @@ namespace RapidField.SolidInstruments.Core
             /// Represents a weak reference to the managed object.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private WeakReference<T> WeakReference;
+            private WeakReference WeakReference;
         }
 
         /// <summary>

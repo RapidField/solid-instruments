@@ -54,23 +54,20 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Releases all resources consumed by the current <see cref="DataAccessCommandHandler{TCommand}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    Repositories.Dispose();
+                Repositories?.Dispose();
 
-                    /* IMPORTANT
-                     * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
-                     * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
-                     * may initialize transactions in their constructors and thereby rely on this class to manage them.
-                    */
-                    Transaction.Dispose();
-                }
+                /* IMPORTANT
+                 * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                 * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                 * may initialize transactions in their constructors and thereby rely on this class to manage them.
+                */
+                Transaction?.Dispose();
             }
             finally
             {
@@ -229,23 +226,20 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Releases all resources consumed by the current <see cref="DataAccessCommandHandler{TCommand, TResult}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    Repositories.Dispose();
+                Repositories?.Dispose();
 
-                    /* IMPORTANT
-                     * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
-                     * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
-                     * may initialize transactions in their constructors and thereby rely on this class to manage them.
-                    */
-                    Transaction.Dispose();
-                }
+                /* IMPORTANT
+                 * Don't remove this. Although the transaction object is injected and, therefore, should normally be managed by
+                 * a consuming class, the handler manages the complete life cycle of the transaction. Further, derived classes
+                 * may initialize transactions in their constructors and thereby rely on this class to manage them.
+                */
+                Transaction?.Dispose();
             }
             finally
             {

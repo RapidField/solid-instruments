@@ -59,6 +59,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Finalizes the current <see cref="ConcurrencyControlToken" />.
+        /// </summary>
+        [DebuggerHidden]
+        ~ConcurrencyControlToken()
+        {
+            Dispose();
+        }
+
+        /// <summary>
         /// Determines whether or not two specified <see cref="ConcurrencyControlToken" /> instances are not equal.
         /// </summary>
         /// <param name="a">
@@ -379,7 +388,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 {
                     try
                     {
-                        if (AttachedTasks.Any())
+                        if (AttachedTasks?.Any() ?? false)
                         {
                             Task.WaitAll(AttachedTasks.ToArray());
                         }
@@ -388,11 +397,11 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                     {
                         try
                         {
-                            Control.Exit(this);
+                            Control?.Exit(this);
                         }
                         catch (ConcurrencyControlOperationException)
                         {
-                            if (Context != null && Thread.CurrentThread != GranteeThread)
+                            if ((Context is null) == false && Thread.CurrentThread != GranteeThread)
                             {
                                 // Attempt to avoid deadlocks in case the IConcurrencyControl implementation is using the wrong
                                 // concurrency control primitive, or making some other unforeseen mistake.
@@ -428,7 +437,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         private static void ExitIssuingControl(Object state)
         {
             var token = (ConcurrencyControlToken)state;
-            token.Control.Exit(token);
+            token?.Control?.Exit(token);
         }
 
         /// <summary>

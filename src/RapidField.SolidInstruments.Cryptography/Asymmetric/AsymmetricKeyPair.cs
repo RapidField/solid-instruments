@@ -76,18 +76,15 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <see cref="AsymmetricKeyPair{TAlgorithm, TProvider, TKey, TPrivateKey, TPublicKey}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    LazyProvider?.Dispose();
-                    LazyPrivateKey?.Dispose();
-                    LazyPublicKey?.Dispose();
-                }
+                LazyProvider?.Dispose();
+                LazyPrivateKey?.Dispose();
+                LazyPublicKey?.Dispose();
             }
             finally
             {
@@ -291,7 +288,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// Releases all resources consumed by the current <see cref="AsymmetricKeyPair{TAlgorithm}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
@@ -336,7 +333,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// Releases all resources consumed by the current <see cref="AsymmetricKeyPair" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 

@@ -99,18 +99,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Releases all resources consumed by the current <see cref="SecretStoreFilePersistenceVehicle" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                if (DeleteStateFileUponDisposal && (FilePath is null) == false && File.Exists(FilePath))
                 {
-                    if (DeleteStateFileUponDisposal && File.Exists(FilePath))
-                    {
-                        File.Delete(FilePath);
-                    }
+                    File.Delete(FilePath);
                 }
             }
             finally

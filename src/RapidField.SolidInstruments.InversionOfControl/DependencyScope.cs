@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// Releases all resources consumed by the current <see cref="DependencyScope{TScope}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
@@ -167,8 +167,8 @@ namespace RapidField.SolidInstruments.InversionOfControl
             {
                 if (disposing)
                 {
-                    SourceScope.Dispose();
-                    LazyReferenceManager.Dispose();
+                    SourceScope?.Dispose();
+                    LazyReferenceManager?.Dispose();
                 }
             }
             finally

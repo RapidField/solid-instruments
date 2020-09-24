@@ -15,10 +15,93 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using HostInitializer = Microsoft.Extensions.Hosting.Host;
 
 namespace RapidField.SolidInstruments.Web
 {
+    /// <summary>
+    /// Prepares for and performs execution of a web application.
+    /// </summary>
+    /// <typeparam name="TDependencyPackage">
+    /// The type of the package that configures the dependency engine.
+    /// </typeparam>
+    /// <typeparam name="TDependencyConfigurator">
+    /// The type of the object that configures the dependency container.
+    /// </typeparam>
+    /// <typeparam name="TDependencyEngine">
+    /// The type of the dependency engine that is produced by the dependency package.
+    /// </typeparam>
+    /// <typeparam name="TServiceProviderFactory">
+    /// The type of the service provider factory that is used by the dependency engine.
+    /// </typeparam>
+    /// <typeparam name="TStartup">
+    /// The type of the user-defined startup class that configures the web host.
+    /// </typeparam>
+    public abstract class WebExecutor<TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory, TStartup> : WebExecutor<TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory>
+        where TDependencyPackage : class, IDependencyPackage<TDependencyConfigurator, TDependencyEngine>, new()
+        where TDependencyConfigurator : class, new()
+        where TDependencyEngine : class, IDependencyEngine
+        where TServiceProviderFactory : class, IServiceProviderFactory<TDependencyConfigurator>
+        where TStartup : class
+    {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory, TStartup}" />
+        /// class.
+        /// </summary>
+        /// <param name="applicationName">
+        /// The name of the web application.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationName" /> is <see langword="null" />.
+        /// </exception>
+        protected WebExecutor(String applicationName)
+            : base(applicationName, true)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Configures the web host using a user-defined startup class.
+        /// </summary>
+        /// <param name="webHost">
+        /// An object that configures the web host.
+        /// </param>
+        /// <returns>
+        /// The configured web host builder.
+        /// </returns>
+        [DebuggerHidden]
+        internal sealed override IWebHostBuilder ConfigureWebHostUsingStartupClass(IWebHostBuilder webHost)
+        {
+            webHost = webHost.UseStartup<TStartup>();
+            return base.ConfigureWebHostUsingStartupClass(webHost);
+        }
+
+        /// <summary>
+        /// Configures the application's request pipeline.
+        /// </summary>
+        /// <param name="application">
+        /// An object that configures the application's request pipeline.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        protected sealed override void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration) => base.ConfigureApplication(application, applicationConfiguration);
+
+        /// <summary>
+        /// Releases all resources consumed by the current
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory, TStartup}" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not disposal was invoked by user code.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+    }
+
     /// <summary>
     /// Prepares for and performs execution of a web application.
     /// </summary>
@@ -52,6 +135,32 @@ namespace RapidField.SolidInstruments.Web
         /// <param name="applicationName">
         /// The name of the web application.
         /// </param>
+        /// <param name="usesStartupClass">
+        /// A value indicating whether or not the executor is configured using a user-defined startup class.
+        /// </param>
+        /// <exception cref="ArgumentEmptyException">
+        /// <paramref name="applicationName" /> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="applicationName" /> is <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        internal WebExecutor(String applicationName, Boolean usesStartupClass)
+            : base()
+        {
+            ApplicationName = applicationName.RejectIf().IsNullOrEmpty(nameof(applicationName)).TargetArgument.Trim();
+            CommandLineArguments = null;
+            UsesStartupClass = usesStartupClass;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" />
+        /// class.
+        /// </summary>
+        /// <param name="applicationName">
+        /// The name of the web application.
+        /// </param>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="applicationName" /> is empty.
         /// </exception>
@@ -59,10 +168,9 @@ namespace RapidField.SolidInstruments.Web
         /// <paramref name="applicationName" /> is <see langword="null" />.
         /// </exception>
         protected WebExecutor(String applicationName)
-            : base()
+            : this(applicationName, false)
         {
-            ApplicationName = applicationName.RejectIf().IsNullOrEmpty(nameof(applicationName)).TargetArgument.Trim();
-            CommandLineArguments = null;
+            return;
         }
 
         /// <summary>
@@ -215,15 +323,13 @@ namespace RapidField.SolidInstruments.Web
         /// <exception cref="WebExectuionException">
         /// An exception was raised while configuring the web host.
         /// </exception>
-        [DebuggerHidden]
+        //[DebuggerHidden]
         internal void ConfigureWebHost(IWebHostBuilder webHost)
         {
             try
             {
-                webHost = webHost
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseConfiguration(ApplicationConfiguration)
-                    .Configure(ConfigureApplication);
+                webHost = webHost.UseContentRoot(Directory.GetCurrentDirectory()).UseConfiguration(ApplicationConfiguration).UseIISIntegration();
+                webHost = UsesStartupClass ? ConfigureWebHostUsingStartupClass(webHost) : webHost.Configure(ConfigureApplication);
             }
             catch (WebExectuionException)
             {
@@ -234,6 +340,19 @@ namespace RapidField.SolidInstruments.Web
                 throw new WebExectuionException("An exception was raised while configuring the web host. See inner exception.", exception);
             }
         }
+
+        /// <summary>
+        /// Configures the web host using a user-defined startup class.
+        /// </summary>
+        /// <param name="webHost">
+        /// An object that configures the web host.
+        /// </param>
+        /// <returns>
+        /// The configured web host builder.
+        /// </returns>
+        [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal virtual IWebHostBuilder ConfigureWebHostUsingStartupClass(IWebHostBuilder webHost) => webHost;
 
         /// <summary>
         /// Builds the application configuration for the web application.
@@ -306,7 +425,7 @@ namespace RapidField.SolidInstruments.Web
         /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
@@ -376,7 +495,8 @@ namespace RapidField.SolidInstruments.Web
             try
             {
                 var serviceProviderFactory = CreateServiceProviderFactory();
-                return ConfigureHost(HostInitializer.CreateDefaultBuilder().UseServiceProviderFactory(serviceProviderFactory));
+                var hostBuilder = HostInitializer.CreateDefaultBuilder().UseServiceProviderFactory(serviceProviderFactory);
+                return ConfigureHost(hostBuilder);
             }
             catch (WebExectuionException)
             {
@@ -465,5 +585,13 @@ namespace RapidField.SolidInstruments.Web
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DefaultAppSettingsJsonFileName = "appsettings.json";
+
+        /// <summary>
+        /// Represents a value indicating whether or not the current
+        /// <see cref="WebExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine, TServiceProviderFactory}" /> is
+        /// configured using a user-defined startup class.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Boolean UsesStartupClass;
     }
 }

@@ -75,24 +75,26 @@ namespace RapidField.SolidInstruments.Service
         /// Releases all resources consumed by the current <see cref="ServiceExecutionLifetime" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                if (StateControl is null)
                 {
-                    using (var controlToken = StateControl.Enter())
-                    {
-                        if (IsAlive)
-                        {
-                            EndOfLifeEvent.Set();
-                            IsAlive = false;
-                        }
+                    return;
+                }
 
-                        EndOfLifeEvent.Dispose();
+                using (var controlToken = StateControl.Enter())
+                {
+                    if (IsAlive)
+                    {
+                        EndOfLifeEvent?.Set();
+                        IsAlive = false;
                     }
+
+                    EndOfLifeEvent?.Dispose();
                 }
             }
             finally

@@ -54,7 +54,7 @@ public class ExampleClass : IDisposable
 
     public void Dispose()
     {
-        Control.Dispose();
+        Control?.Dispose();
     }
 
     public void ExecuteActions(Action[] actions)

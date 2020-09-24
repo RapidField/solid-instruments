@@ -190,18 +190,15 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="SecureMemory" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    Cipher.Dispose();
-                    CiphertextField.Dispose();
-                    PrivateKeySourceField.Dispose();
-                }
+                Cipher?.Dispose();
+                CiphertextField?.Dispose();
+                PrivateKeySourceField?.Dispose();
             }
             finally
             {
@@ -424,16 +421,16 @@ namespace RapidField.SolidInstruments.Cryptography
             /// Releases all resources consumed by the current <see cref="InflatedField" />.
             /// </summary>
             /// <param name="disposing">
-            /// A value indicating whether or not managed resources should be released.
+            /// A value indicating whether or not disposal was invoked by user code.
             /// </param>
             protected override void Dispose(Boolean disposing)
             {
                 try
                 {
-                    if (disposing)
-                    {
-                        ReferenceKey = default;
+                    ReferenceKey = default;
 
+                    if (Fields?.Any() ?? false)
+                    {
                         foreach (var field in Fields)
                         {
                             field?.Dispose();

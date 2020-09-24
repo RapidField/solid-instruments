@@ -46,6 +46,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         }
 
         /// <summary>
+        /// Finalizes the current <see cref="ConcurrencyControl" />.
+        /// </summary>
+        [DebuggerHidden]
+        ~ConcurrencyControl()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="ConcurrencyControl" /> instance using the specified settings.
         /// </summary>
         /// <param name="mode">
@@ -204,18 +213,15 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Releases all resources consumed by the current <see cref="ConcurrencyControl" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected virtual void Dispose(Boolean disposing)
         {
-            if (disposing)
+            if (Tokens?.Any() ?? false)
             {
-                if (Tokens.Any())
-                {
-                    // Reject new entries and wait for pending exits.
-                    IsDisposed = true;
-                    SpinWait.SpinUntil(() => Tokens.Any() == false);
-                }
+                // Reject new entries and wait for pending exits.
+                IsDisposed = true;
+                SpinWait.SpinUntil(() => Tokens.Any() == false);
             }
 
             IsDisposed = true;

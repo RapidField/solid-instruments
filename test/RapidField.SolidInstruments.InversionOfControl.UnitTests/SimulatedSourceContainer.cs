@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
 {
@@ -22,6 +24,15 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
         {
             IsDisposed = false;
             TestValue = testValue;
+        }
+
+        /// <summary>
+        /// Finalizes the current <see cref="SimulatedSourceContainer" />.
+        /// </summary>
+        [DebuggerHidden]
+        ~SimulatedSourceContainer()
+        {
+            Dispose();
         }
 
         /// <summary>
@@ -47,9 +58,12 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
                 return;
             }
 
-            foreach (var childScope in ChildScopeCollection)
+            if (ChildScopeCollection?.Any() ?? false)
             {
-                childScope?.Dispose();
+                foreach (var childScope in ChildScopeCollection)
+                {
+                    childScope?.Dispose();
+                }
             }
 
             IsDisposed = true;

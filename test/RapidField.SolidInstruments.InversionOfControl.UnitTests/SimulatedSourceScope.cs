@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
 {
@@ -21,6 +22,15 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
         {
             ParentContainer = parentContainer;
             IsDisposed = false;
+        }
+
+        /// <summary>
+        /// Finalizes the current <see cref="SimulatedSourceScope" />.
+        /// </summary>
+        [DebuggerHidden]
+        ~SimulatedSourceScope()
+        {
+            Dispose();
         }
 
         /// <summary>

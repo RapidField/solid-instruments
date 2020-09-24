@@ -503,34 +503,31 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Releases all resources consumed by the current <see cref="MessageTopic" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                while (SubscriptionCount > 0)
                 {
-                    while (SubscriptionCount > 0)
+                    var subscriptionNames = SubscriptionQueues?.Keys.ToArray() ?? Array.Empty<String>();
+                    var subscriptionCount = subscriptionNames.Length;
+                    var disposeQueueTasks = new List<Task>(subscriptionCount);
+
+                    for (var i = 0; i < subscriptionCount; i++)
                     {
-                        var subscriptionNames = SubscriptionQueues.Keys.ToArray();
-                        var subscriptionCount = subscriptionNames.Length;
-                        var disposeQueueTasks = new List<Task>(subscriptionCount);
+                        var subscriptionName = subscriptionNames[i];
 
-                        for (var i = 0; i < subscriptionCount; i++)
+                        if (SubscriptionQueues.TryRemove(subscriptionName, out var subscriptionQueue))
                         {
-                            var subscriptionName = subscriptionNames[i];
-
-                            if (SubscriptionQueues.TryRemove(subscriptionName, out var subscriptionQueue))
-                            {
-                                disposeQueueTasks.Add(Task.Factory.StartNew(() => subscriptionQueue.Dispose()));
-                            }
+                            disposeQueueTasks.Add(Task.Factory.StartNew(() => subscriptionQueue.Dispose()));
                         }
+                    }
 
-                        if (disposeQueueTasks.Any())
-                        {
-                            Task.WaitAll(disposeQueueTasks.ToArray());
-                        }
+                    if (disposeQueueTasks.Any())
+                    {
+                        Task.WaitAll(disposeQueueTasks.ToArray());
                     }
                 }
             }
@@ -564,7 +561,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <summary>
         /// Gets the number of subscriptions to the current <see cref="MessageTopic" />.
         /// </summary>
-        public Int32 SubscriptionCount => SubscriptionQueues.Count;
+        public Int32 SubscriptionCount => SubscriptionQueues?.Count ?? 0;
 
         /// <summary>
         /// Gets the unique names of the subscriptions to the current <see cref="MessageTopic" />.

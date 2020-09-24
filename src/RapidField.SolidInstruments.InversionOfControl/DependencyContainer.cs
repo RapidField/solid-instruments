@@ -187,25 +187,27 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// Releases all resources consumed by the current <see cref="DependencyContainer{TContainer, TConfigurator}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
+                if (StateControl is null)
                 {
-                    using (var controlToken = StateControl.Enter())
+                    return;
+                }
+
+                using (var controlToken = StateControl.Enter())
+                {
+                    try
                     {
-                        try
-                        {
-                            LazySourceContainer.Dispose();
-                            LazyRootScope.Dispose();
-                        }
-                        finally
-                        {
-                            LazyReferenceManager.Dispose();
-                        }
+                        LazySourceContainer?.Dispose();
+                        LazyRootScope?.Dispose();
+                    }
+                    finally
+                    {
+                        LazyReferenceManager?.Dispose();
                     }
                 }
             }

@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 target.AddObject((Object)null);
 
                 // Assert.
-                target.ObjectCount.Should().Be((i + 1) * 3);
+                target.ObjectCount.Should().Be(((i + 1) * 3) - i);
             }
 
             // Act.

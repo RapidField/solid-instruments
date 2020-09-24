@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// Releases all resources consumed by the current <see cref="DependencyEngine{TConfigurator, TServiceInjector}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
@@ -269,7 +269,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// Releases all resources consumed by the current <see cref="DependencyEngine{TConfigurator}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
@@ -482,16 +482,13 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// Releases all resources consumed by the current <see cref="DependencyEngine" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    LazyContainer.Dispose();
-                }
+                LazyContainer?.Dispose();
             }
             finally
             {

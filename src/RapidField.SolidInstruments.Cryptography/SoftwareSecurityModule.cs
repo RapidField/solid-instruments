@@ -241,17 +241,14 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="SoftwareSecurityModule" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing)
         {
             try
             {
-                if (disposing)
-                {
-                    PersistenceVehicle?.InMemoryStore.Dispose();
-                    PersistenceVehicle?.Dispose();
-                }
+                PersistenceVehicle?.InMemoryStore?.Dispose();
+                PersistenceVehicle?.Dispose();
             }
             finally
             {
@@ -899,7 +896,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Releases all resources consumed by the current <see cref="SoftwareSecurityModule{TPersistenceVehicle}" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 

@@ -71,6 +71,15 @@ namespace RapidField.SolidInstruments.Core
             LazyStateControl = new Lazy<IConcurrencyControl>(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+        /// <summary>
+        /// Finalizes the current <see cref="Instrument" />.
+        /// </summary>
+        [DebuggerHidden]
+        ~Instrument()
+        {
+            Dispose(false);
+        }
+
 #pragma warning disable CA1063
 
         /// <summary>
@@ -120,15 +129,9 @@ namespace RapidField.SolidInstruments.Core
         /// Releases all resources consumed by the current <see cref="Instrument" />.
         /// </summary>
         /// <param name="disposing">
-        /// A value indicating whether or not managed resources should be released.
+        /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
-        protected virtual void Dispose(Boolean disposing)
-        {
-            if (disposing)
-            {
-                LazyStateControl.Dispose();
-            }
-        }
+        protected virtual void Dispose(Boolean disposing) => LazyStateControl.Dispose();
 
         /// <summary>
         /// Raises a new <see cref="ObjectDisposedException" /> if the current <see cref="Instrument" /> is disposed or is currently
