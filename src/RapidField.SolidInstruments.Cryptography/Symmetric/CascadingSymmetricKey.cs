@@ -356,7 +356,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 {
                     foreach (var key in Keys)
                     {
-                        key.Dispose();
+                        key?.Dispose();
                     }
                 }
             }

@@ -211,9 +211,12 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             try
             {
-                SecureMemoryEncryptionKey?.Dispose();
-                KeySource?.Dispose();
-                LazyPbkdf2Provider?.Dispose();
+                if (IsDisposed == false)
+                {
+                    LazyPbkdf2Provider?.Dispose();
+                    KeySource?.Dispose();
+                    KeySource = null;
+                }
             }
             finally
             {
@@ -505,16 +508,16 @@ namespace RapidField.SolidInstruments.Cryptography
         private readonly Int32 DerivedKeyLength;
 
         /// <summary>
-        /// Represents a bit field that is used to derive key bits from the current <see cref="CryptographicKey{TAlgorithm}" />.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ISecureMemory KeySource;
-
-        /// <summary>
         /// Represents the lazily-initialized PBKDF2 algorithm provider for the current <see cref="CryptographicKey{TAlgorithm}" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Rfc2898DeriveBytes> LazyPbkdf2Provider;
+
+        /// <summary>
+        /// Represents a bit field that is used to derive key bits from the current <see cref="CryptographicKey{TAlgorithm}" />.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ISecureMemory KeySource;
     }
 
     /// <summary>

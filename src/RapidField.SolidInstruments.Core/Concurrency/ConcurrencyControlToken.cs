@@ -437,7 +437,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         private static void ExitIssuingControl(Object state)
         {
             var token = (ConcurrencyControlToken)state;
-            token?.Control?.Exit(token);
+            token.Control.Exit(token);
         }
 
         /// <summary>

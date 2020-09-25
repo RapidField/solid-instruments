@@ -135,20 +135,29 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => Ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
+        public override Int32 GetHashCode()
+        {
+            var ciphertext = Ciphertext;
+            return ciphertext is null ? 0 : ciphertext.ComputeThirtyTwoBitHash() ^ 0x3a566a5c;
+        }
 
         /// <summary>
         /// Regenerates and replaces the source bytes for the private key that is used to secure the current
         /// <see cref="SecureMemory" />.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
         void ISecureMemory.RegeneratePrivateKey()
         {
+            if (IsDisposedOrDisposing)
+            {
+                return;
+            }
+
             using (var controlToken = StateControl.Enter())
             {
-                RejectIfDisposed();
+                if (IsDisposedOrDisposing)
+                {
+                    return;
+                }
 
                 using (var plaintext = new PinnedMemory(LengthInBytes, true))
                 {
@@ -182,9 +191,16 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <returns>
         /// The resulting private key.
         /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal PinnedMemory DerivePrivateKey() => DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
+        internal PinnedMemory DerivePrivateKey()
+        {
+            RejectIfDisposed();
+            return DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SecureMemory" />.
@@ -196,9 +212,14 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             try
             {
-                Cipher?.Dispose();
-                CiphertextField?.Dispose();
-                PrivateKeySourceField?.Dispose();
+                if (IsDisposed == false)
+                {
+                    Cipher?.Dispose();
+                    CiphertextField?.Dispose();
+                    PrivateKeySourceField?.Dispose();
+                    CiphertextField = null;
+                    PrivateKeySourceField = null;
+                }
             }
             finally
             {
@@ -238,6 +259,9 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <param name="plaintext">
         /// The bit field to which the plaintext result is written.
         /// </param>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DecryptField(PinnedMemory plaintext)
@@ -253,10 +277,14 @@ namespace RapidField.SolidInstruments.Cryptography
         /// <param name="plaintext">
         /// The bit field containing the plaintext to encrypt.
         /// </param>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void EncryptField(PinnedMemory plaintext)
         {
+            RejectIfDisposed();
             using var initializationVector = new PinnedMemory(Cipher.BlockSizeInBytes, true);
             RandomnessProvider.GetBytes(initializationVector);
 
@@ -289,13 +317,13 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Gets the ciphertext bits for the bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private PinnedMemory Ciphertext => CiphertextField.TargetField;
+        private PinnedMemory Ciphertext => CiphertextField?.TargetField;
 
         /// <summary>
         /// Gets a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private PinnedMemory PrivateKeySource => PrivateKeySourceField.TargetField;
+        private PinnedMemory PrivateKeySource => PrivateKeySourceField?.TargetField;
 
         /// <summary>
         /// Gets the length, in bytes, of <see cref="PrivateKeySource" />.
@@ -322,12 +350,6 @@ namespace RapidField.SolidInstruments.Cryptography
         private readonly SymmetricKeyCipher Cipher;
 
         /// <summary>
-        /// Represents the ciphertext bits for the bit field.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly InflatedField CiphertextField;
-
-        /// <summary>
         /// Represents the circular bit shift count to use when deriving a private key from <see cref="PrivateKeySource" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -340,10 +362,16 @@ namespace RapidField.SolidInstruments.Cryptography
         private readonly BitShiftDirection PrivateKeySourceBitShiftDirection;
 
         /// <summary>
+        /// Represents the ciphertext bits for the bit field.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private InflatedField CiphertextField;
+
+        /// <summary>
         /// Represents a field of random bits from which a private key is derived to encrypt and decrypt the secure bit field.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly InflatedField PrivateKeySourceField;
+        private InflatedField PrivateKeySourceField;
 
         /// <summary>
         /// Represents the current zero-based ordinal version of the bits comprising <see cref="PrivateKeySource" />.
@@ -398,16 +426,22 @@ namespace RapidField.SolidInstruments.Cryptography
             /// <summary>
             /// Fills the current <see cref="InflatedField" /> with random bits and generates a new, random reference key.
             /// </summary>
-            /// <exception cref="ObjectDisposedException">
-            /// The object is disposed.
-            /// </exception>
             [DebuggerHidden]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             internal void Scramble()
             {
+                if (IsDisposedOrDisposing)
+                {
+                    return;
+                }
+
                 using (var controlToken = StateControl.Enter())
                 {
-                    RejectIfDisposed();
+                    if (IsDisposedOrDisposing)
+                    {
+                        return;
+                    }
+
                     ReferenceKey = RandomnessProvider.GetUInt64();
 
                     foreach (var field in Fields)
@@ -427,13 +461,18 @@ namespace RapidField.SolidInstruments.Cryptography
             {
                 try
                 {
-                    ReferenceKey = default;
-
-                    if (Fields?.Any() ?? false)
+                    if (IsDisposed == false)
                     {
-                        foreach (var field in Fields)
+                        ReferenceKey = default;
+
+                        if (Fields?.Any() ?? false)
                         {
-                            field?.Dispose();
+                            foreach (var field in Fields)
+                            {
+                                field?.Dispose();
+                            }
+
+                            Fields = null;
                         }
                     }
                 }
@@ -449,16 +488,22 @@ namespace RapidField.SolidInstruments.Cryptography
             /// <returns>
             /// The target field.
             /// </returns>
-            /// <exception cref="ObjectDisposedException">
-            /// The object is disposed.
-            /// </exception>
             [DebuggerHidden]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private PinnedMemory GetTargetField()
             {
+                if (IsDisposed)
+                {
+                    return null;
+                }
+
                 using (var controlToken = StateControl.Enter())
                 {
-                    RejectIfDisposed();
+                    if (IsDisposed)
+                    {
+                        return null;
+                    }
+
                     return Fields[TargetFieldIndex];
                 }
             }
@@ -466,9 +511,6 @@ namespace RapidField.SolidInstruments.Cryptography
             /// <summary>
             /// Gets the target field.
             /// </summary>
-            /// <exception cref="ObjectDisposedException">
-            /// The object is disposed.
-            /// </exception>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             internal PinnedMemory TargetField => GetTargetField();
 
@@ -485,16 +527,16 @@ namespace RapidField.SolidInstruments.Cryptography
             private Int32 TargetFieldIndex => Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Convert.ToUInt64(Multiplier)));
 
             /// <summary>
-            /// Represents the underlying collection of pinned memory fields.
-            /// </summary>
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly PinnedMemory[] Fields;
-
-            /// <summary>
             /// Represents a random number generator that is used to scramble the inflated field.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly RandomNumberGenerator RandomnessProvider;
+
+            /// <summary>
+            /// Represents the underlying collection of pinned memory fields.
+            /// </summary>
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            private PinnedMemory[] Fields;
 
             /// <summary>
             /// Represents a 64-bit key that defines the location of the target field within the current

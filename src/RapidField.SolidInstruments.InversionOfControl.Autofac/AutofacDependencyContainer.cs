@@ -110,8 +110,10 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         {
             var lifetimeScope = provider.Resolve<ILifetimeScope>();
             var dependencyScope = new AutofacDependencyScope(lifetimeScope);
+            var commandMediator = new CommandMediator(dependencyScope);
             ReferenceManager.AddObject(dependencyScope);
-            return new CommandMediator(dependencyScope);
+            ReferenceManager.AddObject(commandMediator);
+            return commandMediator;
         }
     }
 }

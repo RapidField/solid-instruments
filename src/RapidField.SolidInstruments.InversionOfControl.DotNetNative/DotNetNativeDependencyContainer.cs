@@ -111,8 +111,10 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         {
             var sourceScope = provider.CreateScope();
             var dependencyScope = new DotNetNativeDependencyScope(sourceScope);
+            var commandMediator = new CommandMediator(dependencyScope);
             ReferenceManager.AddObject(dependencyScope);
-            return new CommandMediator(dependencyScope);
+            ReferenceManager.AddObject(commandMediator);
+            return commandMediator;
         }
     }
 }

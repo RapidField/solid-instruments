@@ -1477,9 +1477,9 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         {
             var destroyConnectionTasks = new List<Task>();
 
-            while (ConnectionDictionary.Any())
+            while (ConnectionDictionary?.Any() ?? false)
             {
-                var connectionIdentifier = ConnectionDictionary.Keys.FirstOrDefault();
+                var connectionIdentifier = ConnectionDictionary?.Keys.FirstOrDefault() ?? default;
 
                 if (connectionIdentifier == default)
                 {

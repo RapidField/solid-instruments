@@ -120,16 +120,16 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ConcurrencyControlOperationException">
         /// The operation timed out or the <see cref="IConcurrencyControl" /> is in an invalid state.
         /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
         public IConcurrencyControlToken Enter()
         {
-            RejectIfDisposed();
-
             try
             {
-                if (BlockTimeoutThresholdIsInfinite)
+                if (IsDisposed)
+                {
+                    ConsumptionState = ConcurrencyControlConsumptionState.Unclaimed;
+                    return GetNextToken(SynchronizationContext.Current, Thread.CurrentThread, Timeout.InfiniteTimeSpan, null);
+                }
+                else if (BlockTimeoutThresholdIsInfinite)
                 {
                     ConsumptionState = EnterWithoutTimeout();
                     return GetNextToken(SynchronizationContext.Current, Thread.CurrentThread, Timeout.InfiniteTimeSpan, null);
@@ -159,14 +159,14 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <paramref name="token" /> was not issued by this control or the <see cref="IConcurrencyControl" /> is in an invalid
         /// state.
         /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
         public void Exit(IConcurrencyControlToken token)
         {
-            RejectIfDisposed();
-
-            if (Tokens.TryRemove(token.Identifier, out _))
+            if (IsDisposed)
+            {
+                ConsumptionState = ConcurrencyControlConsumptionState.Unclaimed;
+                Tokens?.Clear();
+            }
+            else if (Tokens?.TryRemove(token.Identifier, out _) ?? false)
             {
                 var exitedSuccessfully = false;
 
@@ -217,14 +217,38 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </param>
         protected virtual void Dispose(Boolean disposing)
         {
-            if (Tokens?.Any() ?? false)
+            if (IsDisposed)
             {
-                // Reject new entries and wait for pending exits.
-                IsDisposed = true;
-                SpinWait.SpinUntil(() => Tokens.Any() == false);
+                return;
             }
 
-            IsDisposed = true;
+            lock (DisposalSyncRoot)
+            {
+                if (IsDisposed)
+                {
+                    return;
+                }
+
+                try
+                {
+                    var waitDurationInMilliseconds = 1;
+
+                    while ((Tokens?.Any() ?? false) && waitDurationInMilliseconds <= 1024)
+                    {
+                        if (IsDisposed)
+                        {
+                            break;
+                        }
+
+                        Thread.Sleep(waitDurationInMilliseconds);
+                        waitDurationInMilliseconds *= 2;
+                    }
+                }
+                finally
+                {
+                    IsDisposed = true;
+                }
+            }
         }
 
         /// <summary>
@@ -290,27 +314,12 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             Interlocked.CompareExchange(ref NextTokenIdentifier, 0, MaximumTokenIdentifier);
             var controlToken = new ConcurrencyControlToken(context, granteeThread, this, identifier, expirationThreshold, expirationStopwatch);
 
-            if (Tokens.TryAdd(identifier, controlToken))
+            if (Tokens?.TryAdd(identifier, controlToken) ?? true)
             {
                 return controlToken;
             }
 
             throw new ConcurrencyControlOperationException("The control failed to create a new control token.");
-        }
-
-        /// <summary>
-        /// Raises a new <see cref="ObjectDisposedException" /> if the current <see cref="ConcurrencyControl" /> is disposed.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        [DebuggerHidden]
-        private void RejectIfDisposed()
-        {
-            if (IsDisposed)
-            {
-                throw new ObjectDisposedException(ToString());
-            }
         }
 
         /// <summary>
@@ -340,6 +349,12 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Boolean BlockTimeoutThresholdIsInfinite;
+
+        /// <summary>
+        /// Represents an object that can be used to synchronize object disposal.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Object DisposalSyncRoot = new Object();
 
         /// <summary>
         /// Represents currently-in-use tokens that were issued by the current <see cref="ConcurrencyControl" />.

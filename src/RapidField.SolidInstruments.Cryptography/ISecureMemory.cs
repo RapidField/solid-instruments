@@ -50,9 +50,6 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Regenerates and replaces the source bytes for the private key that is used to secure the current
         /// <see cref="ISecureMemory" />.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
         internal void RegeneratePrivateKey();
 
         /// <summary>

@@ -47,6 +47,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             try
             {
                 Semaphore?.Dispose();
+                Semaphore = null;
             }
             finally
             {
@@ -62,8 +63,8 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </returns>
         protected sealed override ConcurrencyControlConsumptionState EnterWithoutTimeout()
         {
-            Semaphore.Wait();
-            return Semaphore.CurrentCount == 0 ? ConcurrencyControlConsumptionState.FullyClaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
+            Semaphore?.Wait();
+            return GetConsumptionState();
         }
 
         /// <summary>
@@ -81,9 +82,9 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </exception>
         protected sealed override ConcurrencyControlConsumptionState EnterWithTimeout(TimeSpan blockTimeoutThreshold)
         {
-            if (Semaphore.Wait(blockTimeoutThreshold))
+            if (Semaphore?.Wait(blockTimeoutThreshold) ?? true)
             {
-                return Semaphore.CurrentCount == 0 ? ConcurrencyControlConsumptionState.FullyClaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
+                return GetConsumptionState();
             }
 
             throw new TimeoutException($"The operation failed to enter the semaphore after {blockTimeoutThreshold.ToSerializedString()}.");
@@ -103,8 +104,22 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// </exception>
         protected sealed override ConcurrencyControlConsumptionState Exit(ref Boolean exitedSuccessfully)
         {
-            Semaphore.Release();
-            return Semaphore.CurrentCount == MaximumConcurrencyLimit ? ConcurrencyControlConsumptionState.Unclaimed : ConcurrencyControlConsumptionState.PartiallyClaimed;
+            Semaphore?.Release();
+            exitedSuccessfully = true;
+            return GetConsumptionState();
+        }
+
+        /// <summary>
+        /// Gets the consumption state for the current <see cref="SemaphoreControl" />.
+        /// </summary>
+        /// <returns>
+        /// The consumption state.
+        /// </returns>
+        [DebuggerHidden]
+        private ConcurrencyControlConsumptionState GetConsumptionState()
+        {
+            var semaphoreCount = Semaphore?.CurrentCount ?? MaximumConcurrencyLimit;
+            return semaphoreCount == MaximumConcurrencyLimit ? ConcurrencyControlConsumptionState.Unclaimed : (semaphoreCount == 0 ? ConcurrencyControlConsumptionState.FullyClaimed : ConcurrencyControlConsumptionState.PartiallyClaimed);
         }
 
         /// <summary>
@@ -117,6 +132,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents the underlying concurrency control mechanism.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly SemaphoreSlim Semaphore;
+        private SemaphoreSlim Semaphore;
     }
 }

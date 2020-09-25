@@ -71,16 +71,16 @@ namespace RapidField.SolidInstruments.Core
             LazyStateControl = new Lazy<IConcurrencyControl>(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
+#pragma warning disable CA1063
+
         /// <summary>
         /// Finalizes the current <see cref="Instrument" />.
         /// </summary>
         [DebuggerHidden]
         ~Instrument()
         {
-            Dispose(false);
+            Dispose();
         }
-
-#pragma warning disable CA1063
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="Instrument" />.
@@ -92,17 +92,28 @@ namespace RapidField.SolidInstruments.Core
                 return;
             }
 
-            IsDisposing = true;
+            lock (DisposalSyncRoot)
+            {
+                if (IsDisposedOrDisposing)
+                {
+                    return;
+                }
 
-            try
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-            finally
-            {
-                IsDisposed = true;
-                IsDisposing = false;
+                using (var controlToken = StateControl.Enter())
+                {
+                    IsDisposing = true;
+                }
+
+                try
+                {
+                    Dispose(true);
+                    GC.SuppressFinalize(this);
+                }
+                finally
+                {
+                    IsDisposed = true;
+                    IsDisposing = false;
+                }
             }
         }
 
@@ -131,7 +142,7 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="disposing">
         /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
-        protected virtual void Dispose(Boolean disposing) => LazyStateControl.Dispose();
+        protected virtual void Dispose(Boolean disposing) => LazyStateControl?.Dispose();
 
         /// <summary>
         /// Raises a new <see cref="ObjectDisposedException" /> if the current <see cref="Instrument" /> is disposed or is currently
@@ -215,6 +226,12 @@ namespace RapidField.SolidInstruments.Core
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal TimeSpan StateControlTimeoutThreshold;
+
+        /// <summary>
+        /// Represents an object that can be used to synchronize object disposal.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private readonly Object DisposalSyncRoot = new Object();
 
         /// <summary>
         /// Represents a lazily-initialized concurrency control mechanism that is used to manage state for the current

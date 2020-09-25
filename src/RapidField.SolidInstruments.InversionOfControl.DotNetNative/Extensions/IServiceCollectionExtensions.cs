@@ -188,11 +188,13 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
         [DebuggerHidden]
         private static Object CreateCommandMediator(IServiceProvider serviceProvider)
         {
-            var providerScope = serviceProvider.CreateScope();
-            var dependencyScope = new DotNetNativeDependencyScope(providerScope);
-            ReferenceManager.Instance.AddObject(providerScope);
+            var sourceScope = serviceProvider.CreateScope();
+            var dependencyScope = new DotNetNativeDependencyScope(sourceScope);
+            var commandMediator = new CommandMediator(dependencyScope);
+            ReferenceManager.Instance.AddObject(sourceScope);
             ReferenceManager.Instance.AddObject(dependencyScope);
-            return new CommandMediator(dependencyScope);
+            ReferenceManager.Instance.AddObject(commandMediator);
+            return commandMediator;
         }
 
         /// <summary>

@@ -17,9 +17,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ConcurrencyControlOperationException">
         /// The operation timed out or the <see cref="IConcurrencyControl" /> is in an invalid state.
         /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
         public IConcurrencyControlToken Enter();
 
         /// <summary>
@@ -31,9 +28,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <exception cref="ConcurrencyControlOperationException">
         /// <paramref name="token" /> was not issued by this control or the <see cref="IConcurrencyControl" /> is in an invalid
         /// state.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
         /// </exception>
         public void Exit(IConcurrencyControlToken token);
 

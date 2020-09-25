@@ -193,22 +193,14 @@ namespace RapidField.SolidInstruments.InversionOfControl
         {
             try
             {
-                if (StateControl is null)
+                try
                 {
-                    return;
+                    LazySourceContainer?.Dispose();
+                    LazyRootScope?.Dispose();
                 }
-
-                using (var controlToken = StateControl.Enter())
+                finally
                 {
-                    try
-                    {
-                        LazySourceContainer?.Dispose();
-                        LazyRootScope?.Dispose();
-                    }
-                    finally
-                    {
-                        LazyReferenceManager?.Dispose();
-                    }
+                    LazyReferenceManager?.Dispose();
                 }
             }
             finally

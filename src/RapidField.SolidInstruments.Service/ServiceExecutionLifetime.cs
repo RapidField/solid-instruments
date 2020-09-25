@@ -81,21 +81,13 @@ namespace RapidField.SolidInstruments.Service
         {
             try
             {
-                if (StateControl is null)
+                if (IsAlive)
                 {
-                    return;
+                    EndOfLifeEvent?.Set();
+                    IsAlive = false;
                 }
 
-                using (var controlToken = StateControl.Enter())
-                {
-                    if (IsAlive)
-                    {
-                        EndOfLifeEvent?.Set();
-                        IsAlive = false;
-                    }
-
-                    EndOfLifeEvent?.Dispose();
-                }
+                EndOfLifeEvent?.Dispose();
             }
             finally
             {

@@ -165,11 +165,8 @@ namespace RapidField.SolidInstruments.InversionOfControl
         {
             try
             {
-                if (disposing)
-                {
-                    SourceScope?.Dispose();
-                    LazyReferenceManager?.Dispose();
-                }
+                SourceScope?.Dispose();
+                LazyReferenceManager?.Dispose();
             }
             finally
             {
