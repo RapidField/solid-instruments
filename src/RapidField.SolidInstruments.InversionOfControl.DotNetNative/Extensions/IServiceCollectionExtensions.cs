@@ -77,6 +77,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions
             var serviceCollection = new ServiceCollection();
             serviceInjector.Inject(serviceCollection);
             dependencyModule.RejectIf().IsNull(nameof(dependencyModule)).TargetArgument.Configure(serviceCollection);
+            target.AddCommandMediator();
             target.TryAdd(serviceCollection);
             return target;
         }

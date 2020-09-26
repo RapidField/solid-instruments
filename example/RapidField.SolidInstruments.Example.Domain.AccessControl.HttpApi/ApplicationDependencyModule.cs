@@ -38,8 +38,6 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
-        protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration) => _ = configurator
-            .AddOptions()
-            .AddControllers();
+        protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration) => _ = configurator.AddControllers();
     }
 }

@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Web.Autofac
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new AutofacServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new AutofacServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="AutofacWebExecutor{TDependencyPackage, TStartup}" />.
@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Web.Autofac
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new AutofacServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new AutofacServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="AutofacWebExecutor{TDependencyPackage}" />.

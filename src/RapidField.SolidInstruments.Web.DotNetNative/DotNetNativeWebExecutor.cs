@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
+using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
 
 namespace RapidField.SolidInstruments.Web.DotNetNative
@@ -42,6 +43,20 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         }
 
         /// <summary>
+        /// Configures application dependencies.
+        /// </summary>
+        /// <param name="services">
+        /// An object that configures application dependencies.
+        /// </param>
+        /// <param name="dependencyPackage">
+        /// A package that defines the configured dependencies.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        protected sealed override void ConfigureServices(IServiceCollection services, TDependencyPackage dependencyPackage, IConfiguration applicationConfiguration) => _ = services.AddDependencyPackage(dependencyPackage, applicationConfiguration);
+
+        /// <summary>
         /// Creates the service provider factory.
         /// </summary>
         /// <param name="applicationConfiguration">
@@ -50,7 +65,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DotNetNativeWebExecutor{TDependencyPackage, TStartup}" />.
@@ -89,6 +104,20 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         }
 
         /// <summary>
+        /// Configures application dependencies.
+        /// </summary>
+        /// <param name="services">
+        /// An object that configures application dependencies.
+        /// </param>
+        /// <param name="dependencyPackage">
+        /// A package that defines the configured dependencies.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        protected sealed override void ConfigureServices(IServiceCollection services, TDependencyPackage dependencyPackage, IConfiguration applicationConfiguration) => _ = services.AddDependencyPackage(dependencyPackage, applicationConfiguration);
+
+        /// <summary>
         /// Creates the service provider factory.
         /// </summary>
         /// <param name="applicationConfiguration">
@@ -97,7 +126,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DotNetNativeWebExecutor{TDependencyPackage}" />.

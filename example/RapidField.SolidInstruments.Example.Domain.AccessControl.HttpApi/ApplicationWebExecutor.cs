@@ -48,6 +48,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
             try
             {
                 application = application
+                    .UseAuthorization()
                     .UseRouting()
                     .UseEndpoints(endpoints =>
                     {

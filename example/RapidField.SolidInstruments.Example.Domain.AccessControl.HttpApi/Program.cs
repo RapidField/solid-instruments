@@ -2,6 +2,10 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
 
@@ -20,8 +24,27 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// </param>
         public static void Main(String[] args)
         {
-            using var webExecutor = new ApplicationWebExecutor(ApplicationName);
-            webExecutor.Execute(args);
+            //using var webExecutor = new ApplicationWebExecutor(ApplicationName);
+            //webExecutor.Execute(args);
+            var host = Host.CreateDefaultBuilder(args)
+               .ConfigureWebHostDefaults(webHost =>
+               {
+                   webHost.ConfigureServices(services =>
+                   {
+                       services.AddControllers();
+                   });
+                   webHost.Configure(application =>
+                   {
+                       application.UseAuthorization();
+                       application.UseRouting();
+                       application.UseEndpoints(endpoints =>
+                       {
+                           endpoints.MapControllers();
+                       });
+                   });
+               })
+               .Build();
+            host.Run();
         }
 
         /// <summary>

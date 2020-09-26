@@ -9,8 +9,8 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
     /// <summary>
     /// Processes HTTP requests for the ~/Test endpoint.
     /// </summary>
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public sealed class TestController : ControllerBase
     {
         /// <summary>

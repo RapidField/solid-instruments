@@ -323,12 +323,12 @@ namespace RapidField.SolidInstruments.Web
         /// <exception cref="WebExectuionException">
         /// An exception was raised while configuring the web host.
         /// </exception>
-        //[DebuggerHidden]
+747        [DebuggerHidden]
         internal void ConfigureWebHost(IWebHostBuilder webHost)
         {
             try
             {
-                webHost = webHost.UseContentRoot(Directory.GetCurrentDirectory()).UseConfiguration(ApplicationConfiguration).UseIISIntegration();
+                webHost = webHost.UseConfiguration(ApplicationConfiguration).ConfigureServices(ConfigureServices);
                 webHost = UsesStartupClass ? ConfigureWebHostUsingStartupClass(webHost) : webHost.Configure(ConfigureApplication);
             }
             catch (WebExectuionException)
@@ -410,6 +410,31 @@ namespace RapidField.SolidInstruments.Web
         protected abstract IHostBuilder ConfigureHost(IHostBuilder host, Action<IWebHostBuilder> configureWebHostAction);
 
         /// <summary>
+        /// Configures application dependencies.
+        /// </summary>
+        /// <param name="services">
+        /// An object that configures application dependencies.
+        /// </param>
+        /// <param name="dependencyPackage">
+        /// A package that defines the configured dependencies.
+        /// </param>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        protected abstract void ConfigureServices(IServiceCollection services, TDependencyPackage dependencyPackage, IConfiguration applicationConfiguration);
+
+        /// <summary>
+        /// Creates the dependency package.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the web application.
+        /// </param>
+        /// <returns>
+        /// The dependency package.
+        /// </returns>
+        protected virtual TDependencyPackage CreateDependencyPackage(IConfiguration applicationConfiguration) => new TDependencyPackage();
+
+        /// <summary>
         /// Creates the service provider factory.
         /// </summary>
         /// <param name="applicationConfiguration">
@@ -428,6 +453,30 @@ namespace RapidField.SolidInstruments.Web
         /// A value indicating whether or not disposal was invoked by user code.
         /// </param>
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Configures application dependencies.
+        /// </summary>
+        /// <param name="services">
+        /// An object that configures application dependencies.
+        /// </param>
+        /// <exception cref="WebExectuionException">
+        /// An exception was raised while configuring application dependencies.
+        /// </exception>
+        [DebuggerHidden]
+        private void ConfigureServices(IServiceCollection services)
+        {
+            try
+            {
+                var applicationConfiguration = ApplicationConfiguration;
+                var dependencyPackage = CreateDependencyPackage(applicationConfiguration);
+                ConfigureServices(services, dependencyPackage, applicationConfiguration);
+            }
+            catch (Exception exception)
+            {
+                throw new WebExectuionException("An exception was raised while configuring application dependencies. See inner exception.", exception);
+            }
+        }
 
         /// <summary>
         /// Creates configuration information for the web application.
@@ -494,8 +543,7 @@ namespace RapidField.SolidInstruments.Web
         {
             try
             {
-                var serviceProviderFactory = CreateServiceProviderFactory();
-                var hostBuilder = HostInitializer.CreateDefaultBuilder().UseServiceProviderFactory(serviceProviderFactory);
+                var hostBuilder = HostInitializer.CreateDefaultBuilder(CommandLineArguments);
                 return ConfigureHost(hostBuilder);
             }
             catch (WebExectuionException)
