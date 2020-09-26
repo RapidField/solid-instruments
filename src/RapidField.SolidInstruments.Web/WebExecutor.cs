@@ -323,7 +323,7 @@ namespace RapidField.SolidInstruments.Web
         /// <exception cref="WebExectuionException">
         /// An exception was raised while configuring the web host.
         /// </exception>
-747        [DebuggerHidden]
+        [DebuggerHidden]
         internal void ConfigureWebHost(IWebHostBuilder webHost)
         {
             try
