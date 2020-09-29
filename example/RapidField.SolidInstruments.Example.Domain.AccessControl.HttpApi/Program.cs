@@ -4,10 +4,13 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
 {
@@ -24,14 +27,17 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// </param>
         public static void Main(String[] args)
         {
-            //using var webExecutor = new ApplicationWebExecutor(ApplicationName);
-            //webExecutor.Execute(args);
+            var applicationConfiguration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
             var host = Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webHost =>
                {
+                   webHost.UseConfiguration(applicationConfiguration);
                    webHost.ConfigureServices(services =>
                    {
-                       services.AddControllers();
+                       services.AddDependencyPackage(new ApplicationDependencyPackage(), applicationConfiguration);
                    });
                    webHost.Configure(application =>
                    {

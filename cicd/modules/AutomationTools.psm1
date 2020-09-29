@@ -40,6 +40,7 @@ $ChoclateyPackageNameForDotNetCoreSdk = "dotnetcore-sdk";
 $ChoclateyPackageNameForHub = "hub";
 $ChoclateyPackageNameForLeanify = "leanify";
 $ChoclateyPackageNameForNodeJs = "nodejs";
+$ChoclateyPackageNameForNSwagStudio = "nswagstudio";
 $ChoclateyPackageNameForOpenCover = "opencover.portable";
 $ChoclateyPackageNameForOpenSsl = "openssl.light";
 $ChoclateyPackageNameForPsake = "psake";
@@ -71,6 +72,7 @@ $SuppressHtmlMinifier = $false;
 $SuppressHub = $true;
 $SuppressLeanify = $true;
 $SuppressNodeJs = $false;
+$SuppressNSwagStudio = $false;
 $SuppressNuGet = $false;
 $SuppressOpenCover = $false;
 $SuppressOpenSsl = $true;
@@ -157,6 +159,15 @@ Function GetNodeJsInstallationStatus
 
 <#
 .Synopsis
+Returns a boolean value indicating whether or not NSwagStudio is installed in the current environment.
+#>
+Function GetNSwagStudioInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNSwagStudio") });
+}
+
+<#
+.Synopsis
 Returns a boolean value indicating whether or not NuGet is installed in the current environment.
 #>
 Function GetNuGetInstallationStatus
@@ -232,6 +243,7 @@ Function InstallAllAutomationTools
     InstallHtmlMinifier;
     InstallHub;
     InstallLeanify;
+    InstallNSwagStudio;
     InstallOpenCover;
     InstallOpenSsl;
     InstallPoshGit;
@@ -422,6 +434,28 @@ Function InstallNodeJs
     UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForNodeJs";
     MakeCommandPathAvailableAll -Command $CommandNameForNpm;
     ComposeFinish "Finished installing Node.js.";
+}
+
+<#
+.Synopsis
+Installs NSwagStudio in the current environment.
+#>
+Function InstallNSwagStudio
+{
+    If ($SuppressNSwagStudio -eq $true)
+    {
+        ComposeNormal "Suppressing installation of NSwagStudio.";
+        Return;
+    }
+    ElseIf (GetNSwagStudioInstallationStatus)
+    {
+        ComposeNormal "NSwagStudio is already installed.";
+        Return;
+    }
+
+    ComposeStart "Installing NSwagStudio.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForNSwagStudio";
+    ComposeFinish "Finished installing NSwagStudio.";
 }
 
 <#
@@ -808,6 +842,18 @@ Function RestoreNodeJs
 
 <#
 .Synopsis
+Uninstalls, if necessary, and installs NSwagStudio in the current environment.
+#>
+Function RestoreNSwagStudio
+{
+    ComposeStart "Restoring NSwagStudio.";
+    UninstallNSwagStudio;
+    InstallNSwagStudio;
+    ComposeFinish "Finished restoring NSwagStudio.";
+}
+
+<#
+.Synopsis
 Uninstalls, if necessary, and installs NuGet in the current environment.
 #>
 Function RestoreNuGet
@@ -903,6 +949,7 @@ Function UninstallAllAutomationTools
     UninstallHtmlMinifier;
     UninstallHub;
     UninstallLeanify;
+    UninstallNSwagStudio;
     UninstallOpenCover;
     UninstallOpenSsl;
     UninstallPoshGit;
@@ -1042,6 +1089,25 @@ Function UninstallNodeJs
         ComposeStart "Uninstalling Node.js.";
         UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForNodeJs";
         ComposeFinish "Finished uninstalling Node.js.";
+    }
+}
+
+<#
+.Synopsis
+Uninstalls NSwagStudio in the current environment.
+#>
+Function UninstallNSwagStudio
+{
+    If ($SuppressNSwagStudio -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of NSwagStudio.";
+        Return;
+    }
+    ElseIf (GetNSwagStudioInstallationStatus)
+    {
+        ComposeStart "Uninstalling NSwagStudio.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForNSwagStudio";
+        ComposeFinish "Finished uninstalling NSwagStudio.";
     }
 }
 

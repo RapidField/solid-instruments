@@ -2,15 +2,18 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Example.Domain.Commands.ModelState.User;
 using RapidField.SolidInstruments.Example.Domain.Messages.Command.ModelState.User;
 using RapidField.SolidInstruments.Example.Domain.Models.User;
+using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Text;
 
 namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Controllers
 {
@@ -46,7 +49,12 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// A status code result.
         /// </returns>
         [HttpDelete]
-        public IActionResult Delete([FromRoute] Guid identifier)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{identifier:Guid}")]
+        public ActionResult Delete([FromRoute] Guid identifier)
         {
             try
             {
@@ -81,7 +89,12 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// model exists.
         /// </returns>
         [HttpGet]
-        public IActionResult Get([FromQuery] Guid identifier)
+        [ProducesResponseType(typeof(DomainModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{identifier:Guid}")]
+        public ActionResult<DomainModel> Get([FromRoute] Guid identifier)
         {
             try
             {
@@ -92,7 +105,9 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
                     return NotFound(identifier);
                 }
 
-                return new JsonResult(model);
+                var serializer = new JsonSerializer<DomainModel>();
+                var response = Encoding.UTF8.GetString(serializer.Serialize(model));
+                return Ok(response);
             }
             catch (ArgumentException exception)
             {
@@ -114,7 +129,10 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// A status code result.
         /// </returns>
         [HttpPost]
-        public IActionResult Post([FromBody] DomainModel model)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult Post([FromBody] DomainModel model)
         {
             try
             {
@@ -141,7 +159,10 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi.Contr
         /// A status code result.
         /// </returns>
         [HttpPut]
-        public IActionResult Put([FromBody] DomainModel model)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult Put([FromBody] DomainModel model)
         {
             try
             {
