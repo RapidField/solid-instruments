@@ -22,16 +22,17 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi
         /// <summary>
         /// Begins execution of the application.
         /// </summary>
-        /// <param name="args">
+        /// <param name="commandLineArguments">
         /// Command line arguments that are provided at runtime.
         /// </param>
-        public static void Main(String[] args)
+        public static void Main(String[] commandLineArguments)
         {
             var applicationConfiguration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
+                .AddCommandLine(commandLineArguments)
                 .Build();
-            var host = Host.CreateDefaultBuilder(args)
+            var host = Host.CreateDefaultBuilder(commandLineArguments)
                .ConfigureWebHostDefaults(webHost =>
                {
                    webHost.UseConfiguration(applicationConfiguration);

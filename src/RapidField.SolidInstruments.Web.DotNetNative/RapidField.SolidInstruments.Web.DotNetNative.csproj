@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This library exposes the native .NET IoC integration for the Solid Instruments web application abstractions.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
@@ -22,12 +22,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageTags>solid-instruments;web;web-application;inversion-of-control;ioc;dependency-injection;di</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Web.DotNetNative.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netcoreapp3.1\RapidField.SolidInstruments.Web.DotNetNative.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Web.DotNetNative.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netcoreapp3.1\RapidField.SolidInstruments.Web.DotNetNative.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>

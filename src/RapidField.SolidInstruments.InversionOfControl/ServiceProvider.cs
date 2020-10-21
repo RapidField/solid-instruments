@@ -23,8 +23,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ArgumentNullException">
         /// <paramref name="container" /> is <see langword="null" />.
         /// </exception>
-        [DebuggerHidden]
-        internal ServiceProvider(IDependencyContainer container)
+        public ServiceProvider(IDependencyContainer container)
         {
             Container = container.RejectIf().IsNull(nameof(container)).TargetArgument;
         }

@@ -15,13 +15,13 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.Service
         /// <summary>
         /// Begins execution of the application.
         /// </summary>
-        /// <param name="args">
+        /// <param name="commandLineArguments">
         /// Command line arguments that are provided at runtime.
         /// </param>
-        public static void Main(String[] args)
+        public static void Main(String[] commandLineArguments)
         {
             using var serviceExecutor = new ApplicationServiceExecutor(ServiceName);
-            serviceExecutor.Execute(args);
+            serviceExecutor.Execute(commandLineArguments);
         }
 
         /// <summary>
