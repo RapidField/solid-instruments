@@ -41,10 +41,14 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
         /// </returns>
         public SimulatedSourceScope CreateNewScope() => ParentContainer.CreateNewScope();
 
+#pragma warning disable CA1816
+
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SimulatedSourceScope" />.
         /// </summary>
         public void Dispose() => IsDisposed = true;
+
+#pragma warning restore CA1816
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SimulatedSourceScope" /> has been disposed.

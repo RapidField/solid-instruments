@@ -54,9 +54,9 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         protected override void Configure(EntityTypeBuilder<TDataAccessModel> entityType, IConfiguration applicationConfiguration) => entityType.HasKey(model => model.Identifier);
 
         /// <summary>
-        /// Represents the type of the value that uniquely identifies the data access model.
+        /// Gets the type of the value that uniquely identifies the data access model.
         /// </summary>
-        protected static Type DataAccessModelIdentifierType = typeof(TIdentifier);
+        protected static Type DataAccessModelIdentifierType => typeof(TIdentifier);
     }
 
     /// <summary>
@@ -106,9 +106,9 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         protected abstract void Configure(EntityTypeBuilder<TDataAccessModel> entityType, IConfiguration applicationConfiguration);
 
         /// <summary>
-        /// Represents the type of the data access model.
+        /// Gets the type of the data access model.
         /// </summary>
-        protected static Type DataAccessModelType = typeof(TDataAccessModel);
+        protected static Type DataAccessModelType => typeof(TDataAccessModel);
 
         /// <summary>
         /// Represents configuration information for the application.

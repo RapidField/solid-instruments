@@ -126,7 +126,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// An exception was raised while converting the data access model to its equivalent domain model.
         /// </exception>
         [DebuggerHidden]
-        private TDomainModel ConvertToDomainModel(TDataAccessModel dataAccessModel) => ConvertToDomainModel<TIdentifier, TDataAccessModel, TDomainModel>(dataAccessModel);
+        private static TDomainModel ConvertToDomainModel(TDataAccessModel dataAccessModel) => ConvertToDomainModel<TIdentifier, TDataAccessModel, TDomainModel>(dataAccessModel);
 
         /// <summary>
         /// Gets the domain model type of the current

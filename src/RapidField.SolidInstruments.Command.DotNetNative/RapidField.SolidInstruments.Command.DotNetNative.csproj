@@ -20,6 +20,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.Command.128w.png</PackageIcon>
         <PackageTags>solid-instruments;command;mediator;inversion-of-control;ioc;dependency-injection;di</PackageTags>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Command.Autofac.xml</DocumentationFile>

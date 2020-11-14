@@ -86,7 +86,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
                         {
                             receiveClient.AbandonAsync(lockToken).ContinueWith(abandonTask => { TransmitReceiverExceptionAsync(exception, ExtractCorrelationIdentifier(message)).Wait(); }).Wait();
                         }
-                    }).ContinueWith(handleMessageTask =>
+                    }, cancellationToken).ContinueWith(handleMessageTask =>
                     {
                         try
                         {

@@ -115,8 +115,8 @@ $RepositoryName = $env:APPVEYOR_REPO_NAME;
 $TagName = $env:APPVEYOR_REPO_TAG_NAME;
 
 # Other configuration values
-$TargetFrameworkForExampleHttpApiApplications = "netcoreapp3.1";
-$TargetFrameworkForExampleServiceApplications = "netcoreapp3.1";
+$TargetFrameworkForExampleHttpApiApplications = "net5.0";
+$TargetFrameworkForExampleServiceApplications = "net5.0";
 
 # Modules
 Import-Module $FilePathForCoreModule -Force;

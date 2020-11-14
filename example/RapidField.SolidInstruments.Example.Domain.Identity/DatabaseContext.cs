@@ -301,6 +301,8 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity
         [DebuggerHidden]
         private void OnConfiguringSqlServer(SqlServerDbContextOptionsBuilder optionsBuilder) => OnConfiguringSqlServer(ApplicationConfiguration, optionsBuilder);
 
+#pragma warning disable CA1822
+
         /// <summary>
         /// Configures the model that is discovered by convention from entity types exposed via <see cref="DbSet{TEntity}" />
         /// properties on the derived context.
@@ -316,6 +318,8 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity
         {
             return;
         }
+
+#pragma warning restore CA1822
 
         /// <summary>
         /// Configures the specified options builder for a Cosmos DB database connection.

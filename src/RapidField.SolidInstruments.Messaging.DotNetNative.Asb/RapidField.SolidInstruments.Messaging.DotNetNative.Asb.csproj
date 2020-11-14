@@ -20,6 +20,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.Messaging.128w.png</PackageIcon>
         <PackageTags>solid-instruments;messaging;service-bus;bus;request-response;pub-sub;eventing;azure-service-bus;inversion-of-control;ioc;dependency-injection;di</PackageTags>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Messaging.DotNetNative.Asb.xml</DocumentationFile>

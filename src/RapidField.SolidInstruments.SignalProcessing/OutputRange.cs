@@ -44,7 +44,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         public OutputRange(IList<IDiscreteUnitOfOutput<T>> unitsOfOutput)
             : base(unitsOfOutput)
         {
-            var listLength = unitsOfOutput.Count();
+            var listLength = unitsOfOutput.Count;
 
             if (listLength == 0)
             {

@@ -280,7 +280,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// <summary>
         /// Gets the number of leaf nodes in the current <see cref="HashTree{TBlock}" />.
         /// </summary>
-        public Int32 LeafCount => LeafNodes.Count();
+        public Int32 LeafCount => LeafNodes.Count;
 
         /// <summary>
         /// Gets the root node for the current <see cref="HashTree{TBlock}" />.

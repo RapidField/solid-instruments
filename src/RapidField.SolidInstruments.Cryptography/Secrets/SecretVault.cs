@@ -577,7 +577,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)
@@ -674,7 +674,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)
@@ -1199,6 +1199,84 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         }
 
         /// <summary>
+        /// Asynchronously exports the specified secret and encrypts it using the specified key.
+        /// </summary>
+        /// <param name="exportedSecret">
+        /// The secret to export.
+        /// </param>
+        /// <param name="keySecret">
+        /// The key secret that is used to encrypt the exported secret.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// The specified key secret is not a valid key.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        [DebuggerHidden]
+        private static async Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(ExportedSecret exportedSecret, IReadOnlySecret keySecret)
+        {
+            var encryptedExportedSecret = (EncryptedExportedSecret)null;
+            var keyName = keySecret.Name;
+
+            if (keySecret.ValueType == typeof(SymmetricKey))
+            {
+                await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                {
+                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                }).ConfigureAwait(false);
+            }
+            else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+            {
+                await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                {
+                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                }).ConfigureAwait(false);
+            }
+
+            return encryptedExportedSecret ?? throw new ArgumentException($"The specified key name, \"{keyName}\", does not reference a valid key.", nameof(keySecret));
+        }
+
+        /// <summary>
+        /// Asynchronously exports the specified secret vault and encrypts it using the specified key.
+        /// </summary>
+        /// <param name="exportedSecretVault">
+        /// The secrets to export.
+        /// </param>
+        /// <param name="keySecret">
+        /// The key secret that is used to encrypt the exported secrets.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// The specified key secret is not a valid key.
+        /// </exception>
+        /// <exception cref="SecretAccessException">
+        /// An exception was raised during encryption or serialization.
+        /// </exception>
+        [DebuggerHidden]
+        private static async Task<EncryptedExportedSecretVault> ExportEncryptedSecretVaultAsync(ExportedSecretVault exportedSecretVault, IReadOnlySecret keySecret)
+        {
+            var encryptedExportedSecretVault = (EncryptedExportedSecretVault)null;
+            var keyName = keySecret.Name;
+
+            if (keySecret.ValueType == typeof(SymmetricKey))
+            {
+                await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
+                {
+                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
+                }).ConfigureAwait(false);
+            }
+            else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
+            {
+                await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
+                {
+                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
+                }).ConfigureAwait(false);
+            }
+
+            return encryptedExportedSecretVault ?? throw new ArgumentException($"The specified key name, \"{keyName}\", does not reference a valid key.", nameof(keySecret));
+        }
+
+        /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
         /// with the same name already exists.
         /// </summary>
@@ -1294,84 +1372,6 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             }
 
             throw new ArgumentException("The specified password does not comply with the composition requirements for secret vault master keys.", nameof(masterPassword));
-        }
-
-        /// <summary>
-        /// Asynchronously exports the specified secret and encrypts it using the specified key.
-        /// </summary>
-        /// <param name="exportedSecret">
-        /// The secret to export.
-        /// </param>
-        /// <param name="keySecret">
-        /// The key secret that is used to encrypt the exported secret.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// The specified key secret is not a valid key.
-        /// </exception>
-        /// <exception cref="SecretAccessException">
-        /// An exception was raised during encryption or serialization.
-        /// </exception>
-        [DebuggerHidden]
-        private async Task<EncryptedExportedSecret> ExportEncryptedSecretAsync(ExportedSecret exportedSecret, IReadOnlySecret keySecret)
-        {
-            var encryptedExportedSecret = (EncryptedExportedSecret)null;
-            var keyName = keySecret.Name;
-
-            if (keySecret.ValueType == typeof(SymmetricKey))
-            {
-                await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
-                {
-                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
-                }).ConfigureAwait(false);
-            }
-            else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
-            {
-                await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
-                {
-                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
-                }).ConfigureAwait(false);
-            }
-
-            return encryptedExportedSecret ?? throw new ArgumentException($"The specified key name, \"{keyName}\", does not reference a valid key.", nameof(keySecret));
-        }
-
-        /// <summary>
-        /// Asynchronously exports the specified secret vault and encrypts it using the specified key.
-        /// </summary>
-        /// <param name="exportedSecretVault">
-        /// The secrets to export.
-        /// </param>
-        /// <param name="keySecret">
-        /// The key secret that is used to encrypt the exported secrets.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// The specified key secret is not a valid key.
-        /// </exception>
-        /// <exception cref="SecretAccessException">
-        /// An exception was raised during encryption or serialization.
-        /// </exception>
-        [DebuggerHidden]
-        private async Task<EncryptedExportedSecretVault> ExportEncryptedSecretVaultAsync(ExportedSecretVault exportedSecretVault, IReadOnlySecret keySecret)
-        {
-            var encryptedExportedSecretVault = (EncryptedExportedSecretVault)null;
-            var keyName = keySecret.Name;
-
-            if (keySecret.ValueType == typeof(SymmetricKey))
-            {
-                await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
-                {
-                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
-                }).ConfigureAwait(false);
-            }
-            else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
-            {
-                await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
-                {
-                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
-                }).ConfigureAwait(false);
-            }
-
-            return encryptedExportedSecretVault ?? throw new ArgumentException($"The specified key name, \"{keyName}\", does not reference a valid key.", nameof(keySecret));
         }
 
         /// <summary>

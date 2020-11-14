@@ -430,7 +430,7 @@ namespace RapidField.SolidInstruments.Core
                         {
                             var targetCollection = targetPropertyValue as ICollection ?? targetPropertyValueType.GetConstructor(Array.Empty<Type>())?.Invoke(Array.Empty<Object>()) as ICollection;
 
-                            if (!(sourcePropertyValue is ICollection sourceCollection) || sourceCollection.Count == 0 || targetCollection is null)
+                            if (sourcePropertyValue is not ICollection sourceCollection || sourceCollection.Count == 0 || targetCollection is null)
                             {
                                 continue;
                             }

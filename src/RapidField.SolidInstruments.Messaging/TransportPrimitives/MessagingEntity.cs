@@ -611,7 +611,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             var messageList = new List<PrimitiveMessage>();
             var requeueTasks = new List<Task>();
 
-            while (messageList.Count() < count && CurrentStatePermitsDequeue && TryDequeue(subscriptionName, out var message))
+            while (messageList.Count < count && CurrentStatePermitsDequeue && TryDequeue(subscriptionName, out var message))
             {
                 var lockToken = new MessageLockToken(Guid.NewGuid(), message.Identifier, TimeStamp.Current.Add(MessageLockExpirationThreshold));
                 message.LockToken = lockToken;

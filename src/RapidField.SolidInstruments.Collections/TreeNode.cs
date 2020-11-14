@@ -290,7 +290,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             lock (SyncRoot)
             {
-                if (Capacity > UnlimitedCapacityValue && ChildrenReference.Count() >= Capacity)
+                if (Capacity > UnlimitedCapacityValue && ChildrenReference.Count >= Capacity)
                 {
                     return false;
                 }

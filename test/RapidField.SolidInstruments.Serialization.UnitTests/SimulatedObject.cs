@@ -140,9 +140,9 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
                 return false;
             }
 
-            var decimalValueCount = DecimalValues.Count();
+            var decimalValueCount = DecimalValues.Count;
 
-            if (decimalValueCount != other.DecimalValues.Count())
+            if (decimalValueCount != other.DecimalValues.Count)
             {
                 return false;
             }
@@ -155,9 +155,9 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
                 }
             }
 
-            var nestedObjectCount = NestedObjects.Count();
+            var nestedObjectCount = NestedObjects.Count;
 
-            if (nestedObjectCount != other.NestedObjects.Count())
+            if (nestedObjectCount != other.NestedObjects.Count)
             {
                 return false;
             }

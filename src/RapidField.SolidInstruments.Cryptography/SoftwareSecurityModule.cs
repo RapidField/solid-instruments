@@ -407,7 +407,7 @@ namespace RapidField.SolidInstruments.Cryptography
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)
@@ -511,7 +511,7 @@ namespace RapidField.SolidInstruments.Cryptography
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)
@@ -620,7 +620,7 @@ namespace RapidField.SolidInstruments.Cryptography
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)
@@ -724,7 +724,7 @@ namespace RapidField.SolidInstruments.Cryptography
                         }
                         else
                         {
-                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keySecret.Name));
+                            throw new ArgumentException($"The specified key name, \"{keyName}\" does not reference a valid key.", nameof(keyName));
                         }
                     }
                     catch (AggregateException exception)

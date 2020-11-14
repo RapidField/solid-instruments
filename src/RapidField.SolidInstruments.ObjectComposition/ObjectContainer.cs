@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 var productType = Registrations[requestType].ProductType;
                 var getNewMethod = InstanceGroup.GetType().GetMethod(nameof(InstanceGroup.GetNew), Array.Empty<Type>()).MakeGenericMethod(productType);
 
-                if (!(getNewMethod.Invoke(InstanceGroup, Array.Empty<Object>()) is T newProduct))
+                if (getNewMethod.Invoke(InstanceGroup, Array.Empty<Object>()) is not T newProduct)
                 {
                     throw new ArgumentException("The factory does not support the registered types.", nameof(T));
                 }

@@ -188,7 +188,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <paramref name="domainModel" /> is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
-        private TDataAccessModel ConvertToDataAccessModel(TDomainModel domainModel) => ConvertToDataAccessModel<TIdentifier, TDataAccessModel, TDomainModel>(domainModel);
+        private static TDataAccessModel ConvertToDataAccessModel(TDomainModel domainModel) => ConvertToDataAccessModel<TIdentifier, TDataAccessModel, TDomainModel>(domainModel);
     }
 
     /// <summary>

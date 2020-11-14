@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RapidField.SolidInstruments.Collections": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

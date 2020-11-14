@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data
             }
             else if (seriesLength == 1 || Data.First().XValue.CompareTo(xAxisValue) > 0 || Data.Last().XValue.CompareTo(xAxisValue) < 0)
             {
-                throw new ArgumentOutOfRangeException("The specified x-axis value is outside of the series boundaries.");
+                throw new ArgumentOutOfRangeException(nameof(xAxisValue), "The specified x-axis value is outside of the series boundaries.");
             }
 
             var downwardDataPoint = Data.Last(element => element.XValue.CompareTo(xAxisValue) < 0);

@@ -74,8 +74,8 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         [DebuggerHidden]
         internal PinnedMemory Decrypt(PinnedMemory ciphertext, PinnedMemory privateKey)
         {
-            ciphertext.RejectIf().IsNull(nameof(ciphertext)).OrIf(argument => argument.Count() < BlockSizeInBytes, nameof(ciphertext), "The length of the specified ciphertext is invalid for the algorithm.");
-            privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
+            ciphertext.RejectIf().IsNull(nameof(ciphertext)).OrIf(argument => argument.Length < BlockSizeInBytes, nameof(ciphertext), "The length of the specified ciphertext is invalid for the algorithm.");
+            privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Length != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
 
             return Mode switch
             {
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         internal PinnedMemory Encrypt(PinnedMemory plaintext, PinnedMemory privateKey, PinnedMemory initializationVector)
         {
             plaintext.RejectIf().IsNull(nameof(plaintext));
-            privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Count() != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
+            privateKey.RejectIf().IsNull(nameof(privateKey)).OrIf(argument => argument.Length != KeySizeInBytes, nameof(privateKey), "The length of the specified key is invalid for the algorithm.");
 
             return Mode switch
             {
@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         [DebuggerHidden]
         private PinnedMemory EncryptInCbcMode(PinnedMemory plaintext, PinnedMemory privateKey, PinnedMemory initializationVector)
         {
-            initializationVector.RejectIf().IsNull(nameof(initializationVector)).OrIf(argument => argument.Count() != BlockSizeInBytes, nameof(privateKey), "The length of the specified initialization vector is invalid for the algorithm.");
+            initializationVector.RejectIf().IsNull(nameof(initializationVector)).OrIf(argument => argument.Length != BlockSizeInBytes, nameof(privateKey), "The length of the specified initialization vector is invalid for the algorithm.");
 
             using (var encryptionProvider = InitializeProvider())
             {

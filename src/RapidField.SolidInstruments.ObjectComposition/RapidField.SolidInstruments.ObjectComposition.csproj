@@ -20,6 +20,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.ObjectComposition.128w.png</PackageIcon>
         <PackageTags>solid-instruments;object-composition;factory;composite-factory;factory-pattern</PackageTags>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.ObjectComposition.xml</DocumentationFile>

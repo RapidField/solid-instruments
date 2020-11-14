@@ -12,6 +12,8 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Version>$(BuildVersion)</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Example.Domain.Identity.xml</DocumentationFile>

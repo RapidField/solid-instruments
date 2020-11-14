@@ -84,6 +84,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="IEnumerable{T}" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.Count() == 0;
+        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.Any() == false;
     }
 }

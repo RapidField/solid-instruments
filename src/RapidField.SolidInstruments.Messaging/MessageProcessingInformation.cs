@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// yet been attempted.
         /// </summary>
         [IgnoreDataMember]
-        public Int32 AttemptCount => AttemptResults.Count();
+        public Int32 AttemptCount => AttemptResults.Count;
 
         /// <summary>
         /// Gets or sets an ordered collection of processing attempt results for the associated message, or an empty collection if

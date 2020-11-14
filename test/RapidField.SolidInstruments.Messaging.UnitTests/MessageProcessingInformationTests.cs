@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
             deserializedResult.Should().NotBeNull();
             deserializedResult.AttemptCount.Should().Be(1);
             deserializedResult.AttemptResults.Should().NotBeNull();
-            deserializedResult.AttemptResults.Count().Should().Be(1);
+            deserializedResult.AttemptResults.Count.Should().Be(1);
             deserializedResult.AttemptResults.Single().AttemptEndTimeStamp.Should().Be(attemptEndTimeStamp);
             deserializedResult.AttemptResults.Single().AttemptStartTimeStamp.Should().Be(attemptStartTimeStamp);
             deserializedResult.AttemptResults.Single().ExceptionStackTrace.Should().Be(exceptionStackTrace);

@@ -76,7 +76,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
             foreach (var integer in target)
             {
-                stringBuilder.Append(integer.ToString());
+                stringBuilder.Append(integer);
             }
 
             result = stringBuilder.ToString();
@@ -137,7 +137,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
                 finalSumOfRandomValues = target.Sum();
 
                 // Assert.
-                target.Count().Should().Be(elementCount);
+                target.Count.Should().Be(elementCount);
                 (firstValue == target[0] && lastValue == target[elementCount - 1]).Should().BeFalse();
                 finalSumOfRandomValues.Should().Be(initialSumOfRandomValues);
             }

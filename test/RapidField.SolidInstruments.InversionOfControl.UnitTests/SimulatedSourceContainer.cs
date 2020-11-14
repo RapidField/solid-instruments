@@ -48,6 +48,8 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
             return newScope;
         }
 
+#pragma warning disable CA1816
+
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SimulatedSourceContainer" />.
         /// </summary>
@@ -68,6 +70,8 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
 
             IsDisposed = true;
         }
+
+#pragma warning restore CA1816
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SimulatedSourceContainer" /> has been disposed.
