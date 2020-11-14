@@ -36,6 +36,7 @@ $InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/v5.1.0/$
 # Chocolatey package names
 $ChoclateyPackageNameForCodecov = "codecov";
 $ChoclateyPackageNameForDocFx = "docfx";
+$ChoclateyPackageNameForDotNet5Sdk = "dotnet-5.0-sdk";
 $ChoclateyPackageNameForDotNetCoreSdk = "dotnetcore-sdk";
 $ChoclateyPackageNameForHub = "hub";
 $ChoclateyPackageNameForLeanify = "leanify";
@@ -67,6 +68,7 @@ $CommandNameForOpenSsl = "openssl";
 $SuppressChocolatey = $false;
 $SuppressCodecov = $false;
 $SuppressDocFx = $false;
+$SuppressDotNet5Sdk = $false;
 $SuppressDotNetCoreSdk = $false;
 $SuppressHtmlMinifier = $false;
 $SuppressHub = $true;
@@ -110,6 +112,15 @@ Returns a boolean value indicating whether or not DocFX is installed in the curr
 Function GetDocFxInstallationStatus
 {
     Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
+}
+
+<#
+.Synopsis
+Returns a boolean value indicating whether or not the .NET 5 SDK is installed in the current environment.
+#>
+Function GetDotNet5SdkInstallationStatus
+{
+    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNet5Sdk") });
 }
 
 <#
@@ -239,6 +250,7 @@ Function InstallAllAutomationTools
     InstallPackageManagers;
     InstallCodecov;
     InstallDocFx;
+    InstallDotNet5Sdk;
     InstallDotNetCoreSdk;
     InstallHtmlMinifier;
     InstallHub;
@@ -321,6 +333,28 @@ Function InstallDocFx
     ComposeStart "Installing DocFX.";
     UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDocFx";
     ComposeFinish "Finished installing DocFX.";
+}
+
+<#
+.Synopsis
+Installs the .NET 5 SDK in the current environment.
+#>
+Function InstallDotNet5Sdk
+{
+    If ($SuppressDotNet5Sdk -eq $true)
+    {
+        ComposeNormal "Suppressing installation of the .NET 5 SDK.";
+        Return;
+    }
+    ElseIf (GetDotNet5SdkInstallationStatus)
+    {
+        ComposeNormal "The .NET 5 SDK is already installed.";
+        Return;
+    }
+
+    ComposeStart "Installing the .NET 5 SDK.";
+    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDotNet5Sdk";
+    ComposeFinish "Finished installing the .NET 5 SDK.";
 }
 
 <#
@@ -782,6 +816,18 @@ Function RestoreDocFx
 
 <#
 .Synopsis
+Uninstalls, if necessary, and installs the .NET 5 SDK in the current environment.
+#>
+Function RestoreDotNet5Sdk
+{
+    ComposeStart "Restoring the .NET 5 SDK.";
+    UninstallDotNet5Sdk;
+    InstallDotNet5Sdk;
+    ComposeFinish "Finished restoring the .NET 5 SDK.";
+}
+
+<#
+.Synopsis
 Uninstalls, if necessary, and installs the .NET Core SDK in the current environment.
 #>
 Function RestoreDotNetCoreSdk
@@ -945,6 +991,7 @@ Function UninstallAllAutomationTools
     ComposeStart "Uninstalling all automation tools.";
     UninstallCodecov;
     UninstallDocFx;
+    UninstallDotNet5Sdk;
     UninstallDotNetCoreSdk;
     UninstallHtmlMinifier;
     UninstallHub;
@@ -994,6 +1041,25 @@ Function UninstallDocFx
         ComposeStart "Uninstalling DocFX.";
         UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDocFx";
         ComposeFinish "Finished uninstalling DocFX.";
+    }
+}
+
+<#
+.Synopsis
+Uninstalls the .NET 5 SDK in the current environment.
+#>
+Function UninstallDotNet5Sdk
+{
+    If ($SuppressDotNet5Sdk -eq $true)
+    {
+        ComposeNormal "Suppressing uninstallation of the .NET 5 SDK.";
+        Return;
+    }
+    ElseIf (GetDotNet5SdkInstallationStatus)
+    {
+        ComposeStart "Uninstalling the .NET 5 SDK.";
+        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDotNet5Sdk";
+        ComposeFinish "Finished uninstalling the .NET 5 SDK.";
     }
 }
 
