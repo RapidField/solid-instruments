@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
         {
             // Arrange.
             var mode = ConcurrencyControlMode.Unconstrained;
-            var latencyThresholdInTicks = 2584;
+            var latencyThresholdInTicks = 6765;
 
             // Assert.
             ConcurrencyControlTests.OperationLatency_ShouldBeLow(mode, PerformUsingPrimitive, latencyThresholdInTicks);

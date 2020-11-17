@@ -387,7 +387,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
             {
                 var navigationPath = parentNavigationPath.IsNullOrEmpty() ? navigationProperty.Name : $"{parentNavigationPath}.{navigationProperty.Name}";
                 query = query.Include(navigationPath);
-                query = ConfigureFullEagerLoading(query, navigationProperty.GetTargetType(), navigationPath, recursionDepth);
+                query = ConfigureFullEagerLoading(query, navigationProperty.TargetEntityType, navigationPath, recursionDepth);
             }
 
             return query;

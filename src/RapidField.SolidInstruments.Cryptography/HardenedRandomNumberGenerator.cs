@@ -86,12 +86,7 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             try
             {
-                if (SyncRoot is null)
-                {
-                    return;
-                }
-
-                lock (SyncRoot)
+                lock (SyncRoot ?? new Object())
                 {
                     LazyCipher?.Dispose();
                     LazySourceRandomnessProvider?.Dispose();

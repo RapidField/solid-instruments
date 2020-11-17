@@ -102,6 +102,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             Handle = GCHandle.Alloc(field.RejectIf().IsNull(nameof(field)).TargetArgument, GCHandleType.Pinned);
             Field = (T[])Handle.Target;
+            HandleIsActive = true;
             LazyFieldMemory = new Lazy<Memory<T>>(InitializeFieldMemory, LazyThreadSafetyMode.ExecutionAndPublication);
             Length = field.Length;
             Pointer = Handle.AddrOfPinnedObject();
@@ -210,7 +211,12 @@ namespace RapidField.SolidInstruments.Collections
             {
                 if (IsDisposed == false)
                 {
-                    Handle.Free();
+                    if (HandleIsActive)
+                    {
+                        HandleIsActive = false;
+                        Handle.Free();
+                    }
+
                     Pointer = IntPtr.Zero;
                 }
             }
@@ -294,5 +300,11 @@ namespace RapidField.SolidInstruments.Collections
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Lazy<Memory<T>> LazyFieldMemory;
+
+        /// <summary>
+        /// Represents a value indicating whether or not <see cref="Handle" /> is initialized and active.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Boolean HandleIsActive = false;
     }
 }

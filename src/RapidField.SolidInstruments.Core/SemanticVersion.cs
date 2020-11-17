@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -681,7 +682,7 @@ namespace RapidField.SolidInstruments.Core
                 }
 
                 var regularExpression = new Regex(RegularExpressionPatternForCompleteVersion);
-                var matchGroups = regularExpression.IsMatch(processedString) ? regularExpression.Match(processedString).Groups : null;
+                var matchGroups = (regularExpression.IsMatch(processedString) ? regularExpression.Match(processedString).Groups : null) as IEnumerable<Group>;
 
                 if (matchGroups.IsNullOrEmpty())
                 {

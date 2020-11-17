@@ -10,7 +10,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This library exposes the Autofac IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/rapidfield/solid-instruments</RepositoryUrl>
@@ -24,12 +24,12 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Messaging.Autofac.Asb.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net5.0\RapidField.SolidInstruments.Messaging.Autofac.Asb.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Messaging.Autofac.Asb.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net5.0\RapidField.SolidInstruments.Messaging.Autofac.Asb.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
@@ -41,7 +41,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     <ItemGroup>
         <PackageReference Include="Autofac" Version="6.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.8" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />

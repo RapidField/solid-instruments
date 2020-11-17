@@ -4,7 +4,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RapidField.SolidInstruments.Command.DotNetNative.Extensions
+namespace RapidField.SolidInstruments.Web.DotNetNative.Extensions
 {
     /// <summary>
     /// Extends the <see cref="IServiceCollection" /> interface with native .NET inversion of control features to support web

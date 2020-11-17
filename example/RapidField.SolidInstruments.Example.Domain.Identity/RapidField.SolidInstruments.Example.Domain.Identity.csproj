@@ -10,18 +10,18 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This project demonstrates Identity domain logic utilizing the Solid Instruments data access and messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Example.Domain.Identity.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net5.0\RapidField.SolidInstruments.Example.Domain.Identity.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Example.Domain.Identity.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net5.0\RapidField.SolidInstruments.Example.Domain.Identity.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
@@ -29,7 +29,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef\RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.csproj" />

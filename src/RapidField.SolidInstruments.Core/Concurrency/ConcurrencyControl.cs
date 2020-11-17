@@ -222,7 +222,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 return;
             }
 
-            lock (DisposalSyncRoot)
+            lock (DisposalSyncRoot ?? new Object())
             {
                 if (IsDisposed)
                 {

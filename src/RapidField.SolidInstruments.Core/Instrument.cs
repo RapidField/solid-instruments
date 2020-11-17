@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core
                 return;
             }
 
-            lock (DisposalSyncRoot)
+            lock (DisposalSyncRoot ?? new Object())
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -174,7 +174,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.
         /// </summary>
-        protected internal IConcurrencyControl StateControl => LazyStateControl.Value;
+        protected internal IConcurrencyControl StateControl => LazyStateControl?.Value ?? new UnconstrainedControl();
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="Instrument" /> has been disposed.

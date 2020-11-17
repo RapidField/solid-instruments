@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.TextEncoding;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -538,7 +539,7 @@ namespace RapidField.SolidInstruments.Messaging
                 }
 
                 var regularExpression = new Regex(RegularExpressionPatternForCompletePath);
-                var matchGroups = regularExpression.IsMatch(processedString) ? regularExpression.Match(processedString).Groups : null;
+                var matchGroups = (regularExpression.IsMatch(processedString) ? regularExpression.Match(processedString).Groups : null) as IEnumerable<Group>;
 
                 if (matchGroups.IsNullOrEmpty())
                 {

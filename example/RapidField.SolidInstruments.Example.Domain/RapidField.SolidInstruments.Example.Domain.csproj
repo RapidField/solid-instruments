@@ -10,19 +10,19 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Product>Solid Instruments</Product>
         <Description>This project houses a sample collection of shared domain models that utilize the Solid Instruments messaging constructs.</Description>
         <Version>$(BuildVersion)</Version>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.1\RapidField.SolidInstruments.Example.Domain.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net5.0\RapidField.SolidInstruments.Example.Domain.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <Optimize>false</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.1\RapidField.SolidInstruments.Example.Domain.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net5.0\RapidField.SolidInstruments.Example.Domain.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
