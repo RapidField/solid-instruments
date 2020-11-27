@@ -414,7 +414,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
             var engine = package.CreateEngine(applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument, serviceDescriptors);
             var abstractEngine = engine as DependencyEngine;
 
-            if ((abstractEngine is null) == false)
+            if (abstractEngine is not null)
             {
                 abstractEngine.Start();
             }

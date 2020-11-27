@@ -6,3 +6,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.EventAuthoring.UnitTests")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Messaging")]

@@ -324,7 +324,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
                     argumentOutOfRangeExceptionParameterName = nameof(lookAheadLength);
                 }
 
-                if ((argumentOutOfRangeExceptionParameterName is null) == false)
+                if (argumentOutOfRangeExceptionParameterName is not null)
                 {
                     return InvalidReadBehavior switch
                     {

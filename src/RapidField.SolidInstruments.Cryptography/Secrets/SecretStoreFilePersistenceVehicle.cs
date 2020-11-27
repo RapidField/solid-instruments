@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         {
             try
             {
-                if (DeleteStateFileUponDisposal && (FilePath is null) == false && File.Exists(FilePath))
+                if (DeleteStateFileUponDisposal && FilePath is not null && File.Exists(FilePath))
                 {
                     File.Delete(FilePath);
                 }

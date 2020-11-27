@@ -209,7 +209,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <exception cref="SerializationException">
         /// An error occurred during serialization or deserialization.
         /// </exception>
-        [DataMember(Name = "Body", Order = 3)]
+        [DataMember(Name = SerializedBodyDataMemberName, Order = 3)]
         internal String SerializedBody
         {
             get => SerializeBody();
@@ -250,6 +250,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal const SerializationFormat DefaultBodySerializationFormat = SerializationFormat.CompressedJson;
+
+        /// <summary>
+        /// Represents the name of <see cref="SerializedBody" /> in serialization contexts.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String SerializedBodyDataMemberName = "Body";
 
         /// <summary>
         /// Represents the text encoding that is used to encode and decode <see cref="SerializedBody" />.

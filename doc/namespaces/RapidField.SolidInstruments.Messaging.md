@@ -56,6 +56,12 @@ Exposes the native .NET IoC integration for the Solid Instruments messaging abst
 Exposes various event message types.
 </section>
 
+#### [RapidField.SolidInstruments.Messaging.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Extensions.html)
+
+<section>
+Exposes extensions that support messaging abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.Messaging.Service](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Service.html)
 
 <section>

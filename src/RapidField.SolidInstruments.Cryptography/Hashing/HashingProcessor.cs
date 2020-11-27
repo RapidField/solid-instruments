@@ -192,7 +192,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// </exception>
         public Byte[] CalculateHash(Byte[] plaintext, HashingAlgorithmSpecification algorithm, Byte[] salt)
         {
-            var applySalt = (salt is null) == false;
+            var applySalt = salt is not null;
             var saltLengthInBytes = applySalt ? salt.Length : 0;
             var plaintextLengthInBytes = plaintext.RejectIf().IsNullOrEmpty(nameof(plaintext)).TargetArgument.Length;
             var saltedPlaintextLengthInBytes = plaintextLengthInBytes + saltLengthInBytes;

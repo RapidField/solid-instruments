@@ -109,3 +109,9 @@ Exposes the Autofac integration for the Solid Instruments implementations of the
 <section>
 Exposes the native .NET IoC integration for the Solid Instruments implementations of the command and mediator patterns.
 </section>
+
+#### [RapidField.SolidInstruments.Command.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Extensions.html)
+
+<section>
+Exposes extensions that support the command and mediator patterns.
+</section>

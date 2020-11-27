@@ -48,6 +48,18 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandHandlingException" />
         /// </summary>
+        /// <param name="innerException">
+        /// The exception that is the cause of the current exception.
+        /// </param>
+        public CommandHandlingException(Exception innerException)
+            : this(commandType: null, innerException: innerException)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandHandlingException" />
+        /// </summary>
         /// <param name="commandType">
         /// The type of the command that was being processed when the exception was raised.
         /// </param>

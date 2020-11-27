@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.Command.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
+using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,6 +112,9 @@ namespace RapidField.SolidInstruments.Command.DotNetNative
         /// </param>
         protected sealed override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
+            configurator.AddApplicationConfiguration(applicationConfiguration);
+            configurator.AddConfigurationCommandHandlers();
+
             foreach (var commandHandlerType in MatchedTypes)
             {
                 var commandHandlerInterfaceType = commandHandlerType.GetInterfaces().Where(implementedInterface => CommandHandlerInterfaceType.IsAssignableFrom(implementedInterface) && implementedInterface.GenericTypeArguments.Length == 1).FirstOrDefault();

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Command.Autofac.Extensions;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.InversionOfControl.Autofac;
+using RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -111,6 +112,9 @@ namespace RapidField.SolidInstruments.Command.Autofac
         /// </param>
         protected sealed override void Configure(ContainerBuilder configurator, IConfiguration applicationConfiguration)
         {
+            configurator.RegisterApplicationConfiguration(applicationConfiguration);
+            configurator.RegisterConfigurationCommandHandlers();
+
             foreach (var commandHandlerType in MatchedTypes)
             {
                 var commandHandlerInterfaceType = commandHandlerType.GetInterfaces().Where(implementedInterface => CommandHandlerInterfaceType.IsAssignableFrom(implementedInterface) && implementedInterface.GenericTypeArguments.Length == 1).FirstOrDefault();

@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using RapidField.SolidInstruments.Command.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
@@ -63,6 +64,23 @@ namespace RapidField.SolidInstruments.Command.DotNetNative.Extensions
         {
             var commandHandlerInterfaceType = CommandHandlerInterfaceType.MakeGenericType(commandType.RejectIf().IsNull(nameof(commandType)).OrIf().IsNotSupportedType(CommandBaseInterfaceType, nameof(commandType)));
             target.TryAddTransient(commandHandlerInterfaceType, commandHandlerType.RejectIf().IsNull(nameof(commandHandlerType)).OrIf().IsNotSupportedType(commandHandlerInterfaceType, nameof(commandHandlerType)));
+            return target;
+        }
+
+        /// <summary>
+        /// Registers transient command handlers for retrieving configuration sections and values.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="IServiceCollection" />.
+        /// </param>
+        /// <returns>
+        /// The resulting <see cref="IServiceCollection" />.
+        /// </returns>
+        public static IServiceCollection AddConfigurationCommandHandlers(this IServiceCollection target)
+        {
+            target.AddCommandHandler<GetConfigurationSectionCommand, GetConfigurationSectionCommandHandler>();
+            target.AddCommandHandler<GetConfigurationValueCommand, GetConfigurationValueCommandHandler>();
+            target.AddCommandHandler<GetConnectionStringCommand, GetConnectionStringCommandHandler>();
             return target;
         }
 

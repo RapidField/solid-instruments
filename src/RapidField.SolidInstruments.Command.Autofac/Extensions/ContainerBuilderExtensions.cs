@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using Autofac;
+using RapidField.SolidInstruments.Command.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
@@ -56,6 +57,19 @@ namespace RapidField.SolidInstruments.Command.Autofac.Extensions
         {
             var commandHandlerInterfaceType = CommandHandlerInterfaceType.MakeGenericType(commandType.RejectIf().IsNull(nameof(commandType)).OrIf().IsNotSupportedType(CommandBaseInterfaceType, nameof(commandType)));
             target.RegisterType(commandHandlerType.RejectIf().IsNull(nameof(commandHandlerType)).OrIf().IsNotSupportedType(commandHandlerInterfaceType, nameof(commandHandlerType))).IfNotRegistered(commandHandlerType).As(commandHandlerInterfaceType).InstancePerDependency();
+        }
+
+        /// <summary>
+        /// Registers transient command handlers for retrieving configuration sections and values.
+        /// </summary>
+        /// <param name="target">
+        /// The current <see cref="ContainerBuilder" />.
+        /// </param>
+        public static void RegisterConfigurationCommandHandlers(this ContainerBuilder target)
+        {
+            target.RegisterCommandHandler<GetConfigurationSectionCommand, GetConfigurationSectionCommandHandler>();
+            target.RegisterCommandHandler<GetConfigurationValueCommand, GetConfigurationValueCommandHandler>();
+            target.RegisterCommandHandler<GetConnectionStringCommand, GetConnectionStringCommandHandler>();
         }
 
         /// <summary>

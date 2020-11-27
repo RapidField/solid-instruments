@@ -38,6 +38,12 @@ Install-Package RapidField.SolidInstruments.Core
 Defines a fluent pattern for evaluating argument validity.
 </section>
 
+#### [RapidField.SolidInstruments.Core.Caching](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.Caching.html)
+
+<section>
+Exposes configurable clients for accessing cached data.
+</section>
+
 #### [RapidField.SolidInstruments.Core.Concurrency](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.Concurrency.html)
 
 <section>

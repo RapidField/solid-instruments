@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using RapidField.SolidInstruments.Command.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -243,6 +244,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Rmq.Extensions
         private static IServiceCollection AddSupportingTypesForRabbitMqMessaging(this IServiceCollection target, IConfiguration applicationConfiguration, RabbitMqMessageTransport transport)
         {
             target.AddApplicationConfiguration(applicationConfiguration);
+            target.AddConfigurationCommandHandlers();
             target.TryAddSingleton(transport);
             target.TryAddSingleton(transport.CreateConnection());
             target.TryAddSingleton<RabbitMqMessageAdapter>();

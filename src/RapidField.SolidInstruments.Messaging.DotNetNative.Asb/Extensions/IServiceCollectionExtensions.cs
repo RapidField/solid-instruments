@@ -7,6 +7,7 @@ using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using RapidField.SolidInstruments.Command.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -49,6 +50,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative.Asb.Extensions
         public static IServiceCollection AddSupportingTypesForAzureServiceBusMessaging(this IServiceCollection target, IConfiguration applicationConfiguration, String connectionStringConfigurationKeyName)
         {
             target.AddApplicationConfiguration(applicationConfiguration);
+            target.AddConfigurationCommandHandlers();
             _ = connectionStringConfigurationKeyName.RejectIf().IsNullOrEmpty(nameof(connectionStringConfigurationKeyName));
 
             target.TryAddSingleton((serviceProvider) =>

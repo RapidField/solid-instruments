@@ -4,6 +4,7 @@
 
 using Autofac;
 using Microsoft.Extensions.Configuration;
+using RapidField.SolidInstruments.Command.Autofac.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -220,6 +221,7 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Rmq.Extensions
         private static void RegisterSupportingTypesForRabbitMqMessaging(this ContainerBuilder target, IConfiguration applicationConfiguration, RabbitMqMessageTransport transport)
         {
             target.RegisterApplicationConfiguration(applicationConfiguration);
+            target.RegisterConfigurationCommandHandlers();
             target.RegisterInstance(transport).IfNotRegistered(typeof(RabbitMqMessageTransport)).AsSelf().SingleInstance();
             target.RegisterInstance(transport.CreateConnection()).IfNotRegistered(typeof(IMessageTransportConnection)).AsSelf().SingleInstance();
             target.RegisterType<RabbitMqMessageAdapter>().IfNotRegistered(typeof(RabbitMqMessageAdapter)).As<IMessageAdapter<PrimitiveMessage>>().AsSelf().SingleInstance();

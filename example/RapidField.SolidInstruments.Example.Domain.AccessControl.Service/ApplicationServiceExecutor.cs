@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.InversionOfControl;
 using RapidField.SolidInstruments.Messaging.DotNetNative.Service;
+using RapidField.SolidInstruments.Messaging.Extensions;
 using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Service;
 using System;
@@ -269,7 +270,7 @@ namespace RapidField.SolidInstruments.Example.Domain.AccessControl.Service
             {
                 var mediator = dependencyScope.Resolve<ICommandMediator>();
                 var pingRequestCorrelationIdentifier = Guid.NewGuid();
-                var pingResponseMessage = mediator.Process<PingResponseMessage>(new PingRequestMessage(pingRequestCorrelationIdentifier));
+                var pingResponseMessage = mediator.TransmitRequestMessage(register => register.Ping(pingRequestCorrelationIdentifier));
 
                 if (pingResponseMessage is null || pingResponseMessage.CorrelationIdentifier != pingRequestCorrelationIdentifier)
                 {

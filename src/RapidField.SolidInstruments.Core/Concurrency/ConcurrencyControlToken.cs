@@ -401,7 +401,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                         }
                         catch (ConcurrencyControlOperationException)
                         {
-                            if ((Context is null) == false && Thread.CurrentThread != GranteeThread)
+                            if (Context is not null && Thread.CurrentThread != GranteeThread)
                             {
                                 // Attempt to avoid deadlocks in case the IConcurrencyControl implementation is using the wrong
                                 // concurrency control primitive, or making some other unforeseen mistake.

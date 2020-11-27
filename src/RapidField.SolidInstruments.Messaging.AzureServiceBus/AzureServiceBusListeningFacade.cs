@@ -161,7 +161,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         [DebuggerHidden]
         private static Guid ExtractCorrelationIdentifier(AzureServiceBusMessage message)
         {
-            if ((message?.CorrelationId is null) == false && Guid.TryParse(message.CorrelationId, out var correlationIdentifier))
+            if (message?.CorrelationId is not null && Guid.TryParse(message.CorrelationId, out var correlationIdentifier))
             {
                 return correlationIdentifier;
             }

@@ -39,6 +39,9 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+    </ItemGroup>
+    <ItemGroup>
         <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
         <ProjectReference Include="..\RapidField.SolidInstruments.InversionOfControl\RapidField.SolidInstruments.InversionOfControl.csproj" Version="$(BuildVersion)" />
     </ItemGroup>

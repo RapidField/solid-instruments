@@ -4,6 +4,7 @@
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -13,6 +14,20 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
     [TestClass]
     public class ObjectExtensionsTests
     {
+        [TestMethod]
+        public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForNullTarget()
+        {
+            // Arrange.
+            var expectedResult = IntPtr.Size;
+            var target = (Object)null;
+
+            // Act.
+            var result = target.CalculateSizeInBytes();
+
+            // Assert.
+            Assert.AreEqual(expectedResult, result);
+        }
+
         [TestMethod]
         public void GetImpliedHashCode_ShouldProduceIdenticalHashCodes_ForIdenticalObjects()
         {

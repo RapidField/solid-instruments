@@ -123,19 +123,19 @@ namespace RapidField.SolidInstruments.Serialization.UnitTests
             {
                 return false;
             }
-            else if (DecimalValues is null && (other.DecimalValues is null) == false)
+            else if (DecimalValues is null && other.DecimalValues is not null)
             {
                 return false;
             }
-            else if ((DecimalValues is null) == false && other.DecimalValues is null)
+            else if (DecimalValues is not null && other.DecimalValues is null)
             {
                 return false;
             }
-            else if (NestedObjects is null && (other.NestedObjects is null) == false)
+            else if (NestedObjects is null && other.NestedObjects is not null)
             {
                 return false;
             }
-            else if ((NestedObjects is null) == false && other.NestedObjects is null)
+            else if (NestedObjects is not null && other.NestedObjects is null)
             {
                 return false;
             }

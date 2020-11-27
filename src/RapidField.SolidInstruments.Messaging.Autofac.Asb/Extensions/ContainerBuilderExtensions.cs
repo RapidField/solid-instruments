@@ -5,6 +5,7 @@
 using Autofac;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
+using RapidField.SolidInstruments.Command.Autofac.Extensions;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
@@ -43,6 +44,7 @@ namespace RapidField.SolidInstruments.Messaging.Autofac.Asb.Extensions
         public static void RegisterSupportingTypesForAzureServiceBusMessaging(this ContainerBuilder target, IConfiguration applicationConfiguration, String connectionStringConfigurationKeyName)
         {
             target.RegisterApplicationConfiguration(applicationConfiguration);
+            target.RegisterConfigurationCommandHandlers();
             _ = connectionStringConfigurationKeyName.RejectIf().IsNullOrEmpty(nameof(connectionStringConfigurationKeyName));
 
             target.Register(context =>
