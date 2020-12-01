@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         [DebuggerHidden]
         internal ObjectContainerConfigurationDefinitions()
         {
-            Registrations = new ConcurrentDictionary<Type, IObjectContainerDefinition>();
+            Registrations = new();
         }
 
         /// <summary>

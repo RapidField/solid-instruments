@@ -699,7 +699,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// the plaintext is empty.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Byte[] DerivedIdentityEmptyValueBytes = new Byte[] { 0xf0, 0x55, 0xcc, 0x99, 0x0f, 0xaa, 0x33, 0x66 };
+        private static readonly Byte[] DerivedIdentityEmptyValueBytes = { 0xf0, 0x55, 0xcc, 0x99, 0x0f, 0xaa, 0x33, 0x66 };
 
         /// <summary>
         /// Represents an array of bytes that are used in place of ciphertext bytes for producing <see cref="DerivedIdentity" />

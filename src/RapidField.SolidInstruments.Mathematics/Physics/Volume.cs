@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic centimeters.
         /// </summary>
-        public static Volume FromCubicCentimeters(Decimal value) => new Volume(value / CubicCentimetersPerCubicMeter);
+        public static Volume FromCubicCentimeters(Decimal value) => new(value / CubicCentimetersPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic feet.
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic feet.
         /// </summary>
-        public static Volume FromCubicFeet(Decimal value) => new Volume(value / CubicFeetPerCubicMeter);
+        public static Volume FromCubicFeet(Decimal value) => new(value / CubicFeetPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic inches.
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic inches.
         /// </summary>
-        public static Volume FromCubicInches(Decimal value) => new Volume(value / CubicInchesPerCubicMeter);
+        public static Volume FromCubicInches(Decimal value) => new(value / CubicInchesPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic kilometers.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic kilometers.
         /// </summary>
-        public static Volume FromCubicKilometers(Decimal value) => new Volume(value / CubicKilometersPerCubicMeter);
+        public static Volume FromCubicKilometers(Decimal value) => new(value / CubicKilometersPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic meters.
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic meters.
         /// </summary>
-        public static Volume FromCubicMeters(Decimal value) => new Volume(value);
+        public static Volume FromCubicMeters(Decimal value) => new(value);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic miles.
@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic miles.
         /// </summary>
-        public static Volume FromCubicMiles(Decimal value) => new Volume(value / CubicMilesPerCubicMeter);
+        public static Volume FromCubicMiles(Decimal value) => new(value / CubicMilesPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic millimeters.
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic millimeters.
         /// </summary>
-        public static Volume FromCubicMillimeters(Decimal value) => new Volume(value / CubicMillimetersPerCubicMeter);
+        public static Volume FromCubicMillimeters(Decimal value) => new(value / CubicMillimetersPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic yards.
@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic yards.
         /// </summary>
-        public static Volume FromCubicYards(Decimal value) => new Volume(value / CubicYardsPerCubicMeter);
+        public static Volume FromCubicYards(Decimal value) => new(value / CubicYardsPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of gallons.
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of gallons.
         /// </summary>
-        public static Volume FromGallons(Decimal value) => new Volume(value / GallonsPerCubicMeter);
+        public static Volume FromGallons(Decimal value) => new(value / GallonsPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of liters.
@@ -138,7 +138,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of liters.
         /// </summary>
-        public static Volume FromLiters(Decimal value) => new Volume(value / LitersPerCubicMeter);
+        public static Volume FromLiters(Decimal value) => new(value / LitersPerCubicMeter);
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of milliliters.
@@ -148,7 +148,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of milliliters.
         /// </summary>
-        public static Volume FromMilliliters(Decimal value) => new Volume(value / MillilitersPerCubicMeter);
+        public static Volume FromMilliliters(Decimal value) => new(value / MillilitersPerCubicMeter);
 
         /// <summary>
         /// Determines the difference between two <see cref="Volume" /> values.
@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The area between the specified <see cref="Volume" /> instances.
         /// </returns>
-        public static Volume operator -(Volume subtrahend, Volume minuend) => new Volume(subtrahend.CubicMeters - minuend.CubicMeters);
+        public static Volume operator -(Volume subtrahend, Volume minuend) => new(subtrahend.CubicMeters - minuend.CubicMeters);
 
         /// <summary>
         /// Negates the specified <see cref="Volume" /> value.
@@ -173,7 +173,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The negative of the specified <see cref="Volume" /> instance.
         /// </returns>
-        public static Volume operator -(Volume value) => new Volume(-value.CubicMeters);
+        public static Volume operator -(Volume value) => new(-value.CubicMeters);
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Volume" /> instances are not equal.
@@ -215,7 +215,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Volume" /> and the specified multiplier.
         /// </returns>
-        public static Volume operator *(Volume multiplicand, Decimal multiplier) => new Volume(multiplicand.CubicMeters * multiplier);
+        public static Volume operator *(Volume multiplicand, Decimal multiplier) => new(multiplicand.CubicMeters * multiplier);
 
         /// <summary>
         /// Determines the quotient of an <see cref="Volume" /> value and a divisor.
@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Volume" /> and the specified divisor.
         /// </returns>
-        public static Volume operator /(Volume dividend, Decimal divisor) => new Volume(dividend.CubicMeters / divisor);
+        public static Volume operator /(Volume dividend, Decimal divisor) => new(dividend.CubicMeters / divisor);
 
         /// <summary>
         /// Determines the sum of two <see cref="Volume" /> values.
@@ -257,7 +257,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The sum of the specified <see cref="Volume" /> instances.
         /// </returns>
-        public static Volume operator +(Volume augend, Volume addend) => new Volume(augend.CubicMeters + addend.CubicMeters);
+        public static Volume operator +(Volume augend, Volume addend) => new(augend.CubicMeters + addend.CubicMeters);
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Volume" /> instance is less than another supplied instance.
@@ -706,7 +706,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Represents the zero <see cref="Volume" /> value.
         /// </summary>
-        public static readonly Volume Zero = new Volume(0m);
+        public static readonly Volume Zero = new(0m);
 
         /// <summary>
         /// Represents the number of cubic centimeters in a cubic meter.

@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Core
         {
             StateControlMode = stateControlMode.RejectIf().IsEqualToValue(ConcurrencyControlMode.Unspecified, nameof(stateControlMode));
             StateControlTimeoutThreshold = (stateControlTimeoutThreshold == Timeout.InfiniteTimeSpan) ? stateControlTimeoutThreshold : stateControlTimeoutThreshold.RejectIf().IsLessThanOrEqualTo(TimeSpan.Zero, nameof(stateControlTimeoutThreshold));
-            LazyStateControl = new Lazy<IConcurrencyControl>(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyStateControl = new(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
 #pragma warning disable CA1063
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core
                 return;
             }
 
-            lock (DisposalSyncRoot ?? new Object())
+            lock (DisposalSyncRoot ?? new())
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+        public ValueTask DisposeAsync() => new(Task.Factory.StartNew(Dispose));
 
         /// <summary>
         /// Initializes a concurrency control mechanism that is used to manage state for the current <see cref="Instrument" />.
@@ -231,7 +231,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents an object that can be used to synchronize object disposal.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Object DisposalSyncRoot = new Object();
+        private readonly Object DisposalSyncRoot = new();
 
         /// <summary>
         /// Represents a lazily-initialized concurrency control mechanism that is used to manage state for the current

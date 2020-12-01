@@ -168,7 +168,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a finalizer for static members of the <see cref="ReferenceManager" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents the objects that are managed by the current <see cref="ReferenceManager" />.
@@ -275,7 +275,7 @@ namespace RapidField.SolidInstruments.Core
             /// A task representing the asynchronous operation.
             /// </returns>
             [DebuggerHidden]
-            public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+            public ValueTask DisposeAsync() => new(Task.Factory.StartNew(Dispose));
 
             /// <summary>
             /// Determines whether or not the current <see cref="ManagedReference{T}" /> is equal to the specified

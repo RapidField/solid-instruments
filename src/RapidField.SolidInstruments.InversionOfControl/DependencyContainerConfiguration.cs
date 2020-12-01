@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         public DependencyContainerConfiguration()
             : base()
         {
-            Configurator = new TConfigurator();
+            Configurator = new();
         }
 
         /// <summary>

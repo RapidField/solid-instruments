@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         public ServiceScope(IDependencyScope dependencyScope)
         {
             DependencyScope = dependencyScope.RejectIf().IsNull(nameof(dependencyScope)).TargetArgument;
-            LazyProvider = new Lazy<IServiceProvider>(() => DependencyScope.Resolve<IServiceProvider>(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProvider = new(() => DependencyScope.Resolve<IServiceProvider>(), LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

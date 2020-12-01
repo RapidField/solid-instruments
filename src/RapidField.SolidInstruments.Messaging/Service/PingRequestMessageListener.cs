@@ -53,6 +53,6 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected override PingResponseMessage Process(PingRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => new PingResponseMessage(command.Identifier, command.CorrelationIdentifier);
+        protected override PingResponseMessage Process(PingRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => new(command.Identifier, command.CorrelationIdentifier);
     }
 }

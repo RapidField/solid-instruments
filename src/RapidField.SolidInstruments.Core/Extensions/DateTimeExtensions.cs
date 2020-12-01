@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the day of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisDay(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, 0, 0, 0, 0, target.Kind);
+        public static DateTime BeginningOfThisDay(this DateTime target) => new(target.Year, target.Month, target.Day, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the start of the hour of the current <see cref="DateTime" />.
@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the hour of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisHour(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, 0, 0, 0, target.Kind);
+        public static DateTime BeginningOfThisHour(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, 0, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the start of the millisecond of the current <see cref="DateTime" />.
@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
             }
 
             target = target.Add(SingleTick);
-            return new DateTime(target.Ticks, target.Kind);
+            return new(target.Ticks, target.Kind);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the minute of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisMinute(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, 0, 0, target.Kind);
+        public static DateTime BeginningOfThisMinute(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the start of the month of the current <see cref="DateTime" />.
@@ -77,7 +77,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the month of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisMonth(this DateTime target) => new DateTime(target.Year, target.Month, 1, 0, 0, 0, 0, target.Kind);
+        public static DateTime BeginningOfThisMonth(this DateTime target) => new(target.Year, target.Month, 1, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the start of the second of the current <see cref="DateTime" />.
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the second of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisSecond(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 0, target.Kind);
+        public static DateTime BeginningOfThisSecond(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the start of the year of the current <see cref="DateTime" />.
@@ -99,7 +99,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the year of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime BeginningOfThisYear(this DateTime target) => new DateTime(target.Year, 1, 1, 0, 0, 0, 0, target.Kind);
+        public static DateTime BeginningOfThisYear(this DateTime target) => new(target.Year, 1, 1, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines an integer representing the calendar quarter of the current <see cref="DateTime" />.
@@ -182,7 +182,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the day of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime MidpointOfThisDay(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, 12, 0, 0, 0, target.Kind);
+        public static DateTime MidpointOfThisDay(this DateTime target) => new(target.Year, target.Month, target.Day, 12, 0, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the midpoint of the hour of the current <see cref="DateTime" />.
@@ -193,7 +193,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the hour of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime MidpointOfThisHour(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, 30, 0, 0, target.Kind);
+        public static DateTime MidpointOfThisHour(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, 30, 0, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the midpoint of the millisecond of the current <see cref="DateTime" />.
@@ -215,7 +215,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the minute of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime MidpointOfThisMinute(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, 30, 0, target.Kind);
+        public static DateTime MidpointOfThisMinute(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, 30, 0, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the midpoint of the month of the current <see cref="DateTime" />.
@@ -234,19 +234,19 @@ namespace RapidField.SolidInstruments.Core.Extensions
             {
                 case 28:
 
-                    return new DateTime(target.Year, target.Month, 15, 0, 0, 0, 0, target.Kind);
+                    return new(target.Year, target.Month, 15, 0, 0, 0, 0, target.Kind);
 
                 case 29:
 
-                    return new DateTime(target.Year, target.Month, 15, 12, 0, 0, 0, target.Kind);
+                    return new(target.Year, target.Month, 15, 12, 0, 0, 0, target.Kind);
 
                 case 30:
 
-                    return new DateTime(target.Year, target.Month, 16, 0, 0, 0, 0, target.Kind);
+                    return new(target.Year, target.Month, 16, 0, 0, 0, 0, target.Kind);
 
                 case 31:
 
-                    return new DateTime(target.Year, target.Month, 16, 12, 0, 0, 0, target.Kind);
+                    return new(target.Year, target.Month, 16, 12, 0, 0, 0, target.Kind);
 
                 default:
 
@@ -263,7 +263,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the second of the current <see cref="DateTime" />.
         /// </returns>
-        public static DateTime MidpointOfThisSecond(this DateTime target) => new DateTime(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 500, target.Kind);
+        public static DateTime MidpointOfThisSecond(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 500, target.Kind);
 
         /// <summary>
         /// Defines a <see cref="DateTime" /> representing the midpoint of the year of the current <see cref="DateTime" />.
@@ -279,11 +279,11 @@ namespace RapidField.SolidInstruments.Core.Extensions
             if (DateTime.IsLeapYear(target.Year))
             {
                 // Midnight on 1-Jul is the midpoint for leap years.
-                return new DateTime(target.Year, 7, 2, 0, 0, 0, 0, target.Kind);
+                return new(target.Year, 7, 2, 0, 0, 0, 0, target.Kind);
             }
 
             // Noon on 2-Jul is the midpoint for non-leap years.
-            return new DateTime(target.Year, 7, 2, 12, 0, 0, 0, target.Kind);
+            return new(target.Year, 7, 2, 12, 0, 0, 0, target.Kind);
         }
 
         /// <summary>
@@ -349,11 +349,11 @@ namespace RapidField.SolidInstruments.Core.Extensions
             {
                 case DateTimeKind.Local:
 
-                    return new TimeOfDay(TimeZoneInfo.Local, target.Hour, target.Minute, target.Second, target.Millisecond);
+                    return new(TimeZoneInfo.Local, target.Hour, target.Minute, target.Second, target.Millisecond);
 
                 case DateTimeKind.Utc:
 
-                    return new TimeOfDay(TimeZoneInfo.Utc, target.Hour, target.Minute, target.Second, target.Millisecond);
+                    return new(TimeZoneInfo.Utc, target.Hour, target.Minute, target.Second, target.Millisecond);
 
                 case DateTimeKind.Unspecified:
 

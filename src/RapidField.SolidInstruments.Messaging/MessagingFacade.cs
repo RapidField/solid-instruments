@@ -49,8 +49,8 @@ namespace RapidField.SolidInstruments.Messaging
             : base(ConcurrencyControlMode.SingleThreadLock, Timeout.InfiniteTimeSpan)
         {
             ClientFactory = clientFactory.RejectIf().IsNull(nameof(clientFactory)).TargetArgument;
-            LazyApplicationIdentity = new Lazy<String>(InitializeApplicationIdentity, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyIdentifier = new Lazy<String>(InitializeIdentifier, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyApplicationIdentity = new(InitializeApplicationIdentity, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyIdentifier = new(InitializeIdentifier, LazyThreadSafetyMode.ExecutionAndPublication);
             MessageAdapter = messageAdapter.RejectIf().IsNull(nameof(messageAdapter)).TargetArgument;
         }
 

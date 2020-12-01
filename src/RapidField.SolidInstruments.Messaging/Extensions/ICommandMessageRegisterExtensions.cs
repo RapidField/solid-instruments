@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
         /// <returns>
         /// A new <see cref="TextualCommandMessage" />.
         /// </returns>
-        public static TextualCommandMessage FromText(this ICommandMessageRegister target, String value) => new TextualCommandMessage(target.Commands.FromText(value));
+        public static TextualCommandMessage FromText(this ICommandMessageRegister target, String value) => new(target.Commands.FromText(value));
 
         /// <summary>
         /// Creates a new <see cref="TextualCommandMessage" />.
@@ -49,6 +49,6 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
         /// <returns>
         /// A new <see cref="TextualCommandMessage" />.
         /// </returns>
-        public static TextualCommandMessage FromText(this ICommandMessageRegister target, String value, IEnumerable<String> labels) => new TextualCommandMessage(target.Commands.FromText(value, labels));
+        public static TextualCommandMessage FromText(this ICommandMessageRegister target, String value, IEnumerable<String> labels) => new(target.Commands.FromText(value, labels));
     }
 }

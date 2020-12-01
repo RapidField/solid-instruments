@@ -25,7 +25,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
         /// <returns>
         /// A new <see cref="SimulatedSourceContainer" />.
         /// </returns>
-        public SimulatedSourceContainer Build() => new SimulatedSourceContainer(TestValue);
+        public SimulatedSourceContainer Build() => new(TestValue);
 
         /// <summary>
         /// Represents a test value that is injected into resolved objects.

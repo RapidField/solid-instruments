@@ -583,12 +583,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents a lazily-initialized collection of message receivers that are keyed by entity path.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IDictionary<String, TReceiver>> LazyMessageReceivers = new Lazy<IDictionary<String, TReceiver>>(() => new Dictionary<String, TReceiver>(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<IDictionary<String, TReceiver>> LazyMessageReceivers = new(() => new Dictionary<String, TReceiver>(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents a lazily-initialized collection of message senders that are keyed by entity path.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<IDictionary<String, TSender>> LazyMessageSenders = new Lazy<IDictionary<String, TSender>>(() => new Dictionary<String, TSender>(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<IDictionary<String, TSender>> LazyMessageSenders = new(() => new Dictionary<String, TSender>(), LazyThreadSafetyMode.ExecutionAndPublication);
     }
 }

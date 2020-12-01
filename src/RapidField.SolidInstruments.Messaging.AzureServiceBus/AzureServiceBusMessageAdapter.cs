@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <returns>
         /// The implementation-specific message.
         /// </returns>
-        protected sealed override AzureServiceBusMessage ConvertForward<TMessage>(TMessage message, ISerializer<TMessage> serializer) => new AzureServiceBusMessage()
+        protected sealed override AzureServiceBusMessage ConvertForward<TMessage>(TMessage message, ISerializer<TMessage> serializer) => new()
         {
             Body = serializer.Serialize(message),
             ContentType = MessageSerializationFormat.ToMimeMediaType(),

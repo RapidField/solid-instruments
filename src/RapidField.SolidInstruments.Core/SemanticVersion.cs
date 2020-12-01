@@ -160,7 +160,7 @@ namespace RapidField.SolidInstruments.Core
             var minorVersion = Convert.ToUInt64(assemblyVersion.Minor < 0 ? 0 : assemblyVersion.Minor);
             var patchVersion = Convert.ToUInt64(assemblyVersion.Revision < 0 ? 0 : assemblyVersion.Revision);
             var buildMetadata = assemblyVersion.Build > 0 ? assemblyVersion.Build.ToString() : null;
-            return new SemanticVersion(majorVersion, minorVersion, patchVersion, null, buildMetadata);
+            return new(majorVersion, minorVersion, patchVersion, null, buildMetadata);
         }
 
         /// <summary>
@@ -514,7 +514,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextMajorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion + 1, 0, 0, preReleaseLabel, buildMetadata);
+        public SemanticVersion NextMajorVersion(String preReleaseLabel, String buildMetadata) => new(MajorVersion + 1, 0, 0, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Returns the next minor version after the current <see cref="SemanticVersion" />.
@@ -554,7 +554,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextMinorVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, MinorVersion + 1, 0, preReleaseLabel, buildMetadata);
+        public SemanticVersion NextMinorVersion(String preReleaseLabel, String buildMetadata) => new(MajorVersion, MinorVersion + 1, 0, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Returns the next patch version after the current <see cref="SemanticVersion" />.
@@ -594,7 +594,7 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ArgumentException">
         /// <paramref name="preReleaseLabel" /> is invalid -or- <paramref name="buildMetadata" /> is invalid.
         /// </exception>
-        public SemanticVersion NextPatchVersion(String preReleaseLabel, String buildMetadata) => new SemanticVersion(MajorVersion, MinorVersion, PatchVersion + 1, preReleaseLabel, buildMetadata);
+        public SemanticVersion NextPatchVersion(String preReleaseLabel, String buildMetadata) => new(MajorVersion, MinorVersion, PatchVersion + 1, preReleaseLabel, buildMetadata);
 
         /// <summary>
         /// Converts the value of the current <see cref="SemanticVersion" /> to its equivalent string representation.
@@ -715,7 +715,7 @@ namespace RapidField.SolidInstruments.Core
                 var patchVersion = UInt64.Parse(patchVersionString);
                 var preReleaseLabel = matchGroups.Where(group => group.Success && group.Name == PatternGroupNameForPreReleaseLabel).SingleOrDefault()?.Value;
                 var buildMetadata = matchGroups.Where(group => group.Success && group.Name == PatternGroupNameForBuildMetadata).SingleOrDefault()?.Value;
-                result = new SemanticVersion(majorVersion, minorVersion, patchVersion, preReleaseLabel, buildMetadata);
+                result = new(majorVersion, minorVersion, patchVersion, preReleaseLabel, buildMetadata);
                 return true;
             }
             catch (Exception exception)
@@ -801,12 +801,12 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Gets a <see cref="SemanticVersion" /> equivalent to version 1.0.0.
         /// </summary>
-        public static SemanticVersion One => new SemanticVersion(1);
+        public static SemanticVersion One => new(1);
 
         /// <summary>
         /// Gets a <see cref="SemanticVersion" /> equivalent to version 0.0.0.
         /// </summary>
-        public static SemanticVersion Zero => new SemanticVersion(0);
+        public static SemanticVersion Zero => new(0);
 
         /// <summary>
         /// Gets or sets the build metadata, <see langword="null" /> if there is no metadata.
@@ -985,7 +985,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents prefix characters that are ignored by <see cref="Parse(String)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Char[] IgnoredPrefixCharacters = new Char[2] { 'v', 'V' };
+        private static readonly Char[] IgnoredPrefixCharacters = new[] { 'v', 'V' };
 
         /// <summary>
         /// Represents a regular expression that is used to validate a complete semantic version.

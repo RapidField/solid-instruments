@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
                 modelCollection[i] = Random(randomnessProvider);
             }
 
-            return new SimulatedModel(time, integerCollection, modelCollection, stringValue);
+            return new(time, integerCollection, modelCollection, stringValue);
         }
 
         /// <summary>

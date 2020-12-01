@@ -26,7 +26,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
             // Act.
             target.ReverseStaggerSort();
             target.ReverseStaggerSort();
-            result = new String(target);
+            result = new(target);
 
             // Assert.
             result.Should().Be("ABCDEFGHI");
@@ -42,7 +42,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
             // Act.
             target.ReverseStaggerSort();
             target.ReverseStaggerSort();
-            result = new String(target);
+            result = new(target);
 
             // Assert.
             result.Should().Be("GHEFCDAB");
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
             // Act.
             target.ReverseStaggerSort();
-            result = new String(target);
+            result = new(target);
 
             // Assert.
             result.Should().Be("BGDEFCHA");

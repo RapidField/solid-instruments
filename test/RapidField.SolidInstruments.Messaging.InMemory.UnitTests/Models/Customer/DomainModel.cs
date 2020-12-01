@@ -82,7 +82,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
             [DebuggerHidden]
-            internal static IEnumerable<DomainModel> All() => new DomainModel[]
+            internal static IEnumerable<DomainModel> All() => new[]
             {
                 AcmeCo,
                 SmithIndustries
@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
             /// Gets the ACME Co. customer.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel AcmeCo => new DomainModel(Guid.Parse("8e953a24-2d7f-4be1-96aa-c5288ad380ad"))
+            internal static DomainModel AcmeCo => new(Guid.Parse("8e953a24-2d7f-4be1-96aa-c5288ad380ad"))
             {
                 Name = "ACME Co."
             };
@@ -101,7 +101,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Custom
             /// Gets the Smith Industries customer.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel SmithIndustries => new DomainModel(Guid.Parse("c2e497e2-ab27-457c-808d-8dfd74c9748d"))
+            internal static DomainModel SmithIndustries => new(Guid.Parse("c2e497e2-ab27-457c-808d-8dfd74c9748d"))
             {
                 Name = "Smith Industries"
             };

@@ -11,8 +11,8 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
     /// </summary>
     internal static class SimulatedServiceState
     {
-        internal static readonly List<Models.CustomerOrder.DomainModel> CustomerOrders = new List<Models.CustomerOrder.DomainModel>();
-        internal static readonly List<Models.Customer.DomainModel> Customers = new List<Models.Customer.DomainModel>();
-        internal static readonly List<Models.Product.DomainModel> Products = new List<Models.Product.DomainModel>();
+        internal static readonly List<Models.CustomerOrder.DomainModel> CustomerOrders = new();
+        internal static readonly List<Models.Customer.DomainModel> Customers = new();
+        internal static readonly List<Models.Product.DomainModel> Products = new();
     }
 }

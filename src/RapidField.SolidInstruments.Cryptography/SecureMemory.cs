@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             Cipher = new Aes128CbcCipher(RandomnessProvider);
             LengthInBytes = lengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(lengthInBytes));
-            PrivateKeySourceField = new InflatedField(PrivateKeySourceLengthInBytes, PrivateKeySourceFieldMultiplier, RandomnessProvider);
+            PrivateKeySourceField = new(PrivateKeySourceLengthInBytes, PrivateKeySourceFieldMultiplier, RandomnessProvider);
             PrivateKeySourceBitShiftDirection = RandomnessProvider.GetBoolean() ? BitShiftDirection.Left : BitShiftDirection.Right;
             PrivateKeySourceBitShiftCount = BitConverter.GetBytes(RandomnessProvider.GetUInt16()).Max();
             PrivateKeyVersionValue = 0;
@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Cryptography
             using var plaintext = new PinnedMemory(lengthInBytes);
             using var privateKey = DerivePrivateKey(PrivateKeySource, PrivateKeySourceBitShiftDirection, PrivateKeySourceBitShiftCount, Cipher.KeySizeInBytes);
             using var ciphertext = Cipher.Encrypt(plaintext, privateKey, initializationVector);
-            CiphertextField = new InflatedField(ciphertext.Length, CiphertextFieldMultiplier, RandomnessProvider);
+            CiphertextField = new(ciphertext.Length, CiphertextFieldMultiplier, RandomnessProvider);
             ciphertext.ReadOnlySpan.CopyTo(Ciphertext);
         }
 
@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static PinnedMemory DerivePrivateKey(Byte[] privateKeySource, BitShiftDirection bitShiftDirection, Int32 bitShiftCount, Int32 keyLengthInBytes) => new PinnedMemory(new Span<Byte>(privateKeySource.PerformCircularBitShift(bitShiftDirection, bitShiftCount)).Slice(0, keyLengthInBytes).ToArray(), true);
+        private static PinnedMemory DerivePrivateKey(Byte[] privateKeySource, BitShiftDirection bitShiftDirection, Int32 bitShiftCount, Int32 keyLengthInBytes) => new(new Span<Byte>(privateKeySource.PerformCircularBitShift(bitShiftDirection, bitShiftCount)).Slice(0, keyLengthInBytes).ToArray(), true);
 
         /// <summary>
         /// Decrypts the current bit field and writes the result to the specified bit field.

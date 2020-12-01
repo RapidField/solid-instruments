@@ -100,9 +100,9 @@ namespace RapidField.SolidInstruments.Messaging.Service
         protected MessagingServiceExecutor(String serviceName, Boolean runsContinuously, Boolean publishesStartAndStopEvents)
             : base(serviceName)
         {
-            LazyHeartbeatSchedule = new Lazy<HeartbeatSchedule>(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyHeartbeatTimers = new Lazy<IList<Timer>>(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyListeningProfile = new Lazy<IMessageListeningProfile>(CreateListeningProfile, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyHeartbeatSchedule = new(CreateHeartbeatSchedule, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyHeartbeatTimers = new(() => new List<Timer>(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyListeningProfile = new(CreateListeningProfile, LazyThreadSafetyMode.ExecutionAndPublication);
             PublishesStartAndStopEvents = publishesStartAndStopEvents;
             RunsContinuously = runsContinuously;
         }

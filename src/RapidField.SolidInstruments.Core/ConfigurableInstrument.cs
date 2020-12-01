@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Core
             : base()
         {
             ApplicationConfiguration = applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument;
-            LazyConfiguration = new Lazy<TConfiguration>(Configure, LazyThreadSafetyMode.PublicationOnly);
+            LazyConfiguration = new(Configure, LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a lazily-initialized default <see cref="IConfiguration" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IConfiguration> LazyDefaultConfiguration = new Lazy<IConfiguration>(InitializeDefaultConfiguration, LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Lazy<IConfiguration> LazyDefaultConfiguration = new(InitializeDefaultConfiguration, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Represents configuration information for the application.

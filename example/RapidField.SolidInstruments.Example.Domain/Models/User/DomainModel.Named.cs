@@ -40,7 +40,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <returns>
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
-            public static IEnumerable<DomainModel> All() => new DomainModel[]
+            public static IEnumerable<DomainModel> All() => new[]
             {
                 StevenCallahan,
                 TomSmith
@@ -71,7 +71,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <summary>
             /// Gets the Steven Callahan user.
             /// </summary>
-            public static DomainModel StevenCallahan => new DomainModel(Guid.Parse("a04fc5b0-1a67-43ff-89af-750128398d8a"))
+            public static DomainModel StevenCallahan => new(Guid.Parse("a04fc5b0-1a67-43ff-89af-750128398d8a"))
             {
                 EmailAddress = "steven.callahan@example.com",
                 Name = nameof(StevenCallahan),
@@ -81,7 +81,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             /// <summary>
             /// Gets the Tom Smith user.
             /// </summary>
-            public static DomainModel TomSmith => new DomainModel(Guid.Parse("3d46470a-1c90-4e94-bc5c-3cbde44ba6ac"))
+            public static DomainModel TomSmith => new(Guid.Parse("3d46470a-1c90-4e94-bc5c-3cbde44ba6ac"))
             {
                 EmailAddress = "tom.smith@example.com",
                 Name = nameof(TomSmith),

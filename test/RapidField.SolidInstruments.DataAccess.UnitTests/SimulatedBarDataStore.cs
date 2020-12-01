@@ -56,9 +56,6 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <summary>
         /// Represents the default values for a data store.
         /// </summary>
-        private static readonly Int32[] DefaultValues = new Int32[]
-        {
-            0, 1, 2, 3, 4, 5, 6, 7
-        };
+        private static readonly Int32[] DefaultValues = { 0, 1, 2, 3, 4, 5, 6, 7 };
     }
 }

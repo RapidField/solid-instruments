@@ -355,14 +355,14 @@ namespace RapidField.SolidInstruments.Messaging
         {
             if (pathLabels.IsNullOrEmpty())
             {
-                return new String[] { DeadLetterQueueLabel };
+                return new[] { DeadLetterQueueLabel };
             }
 
             return (pathLabels.Count()) switch
             {
-                1 => new String[] { pathLabels.ElementAt(0), DeadLetterQueueLabel },
-                2 => new String[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), DeadLetterQueueLabel },
-                3 => new String[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), $"{pathLabels.ElementAt(1)}{MessagingEntityPath.DelimitingCharacterForLabelTokenSubParts}{DeadLetterQueueLabel}" },
+                1 => new[] { pathLabels.ElementAt(0), DeadLetterQueueLabel },
+                2 => new[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), DeadLetterQueueLabel },
+                3 => new[] { pathLabels.ElementAt(0), pathLabels.ElementAt(1), $"{pathLabels.ElementAt(1)}{MessagingEntityPath.DelimitingCharacterForLabelTokenSubParts}{DeadLetterQueueLabel}" },
                 _ => throw new ArgumentException("The specified path label collection contains more than three elements.", nameof(pathLabels)),
             };
         }

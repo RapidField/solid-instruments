@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <summary>
         /// Represents an object that is used to synchronize access to the associated resource(s).
         /// </summary>
-        private readonly Object SyncRoot = new Object();
+        private readonly Object SyncRoot = new();
 
         /// <summary>
         /// Represents the present concurrency for invocations of <see cref="SimulateThreadSafeOperation" />.

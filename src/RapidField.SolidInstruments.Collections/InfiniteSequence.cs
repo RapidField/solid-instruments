@@ -213,12 +213,12 @@ namespace RapidField.SolidInstruments.Collections
         /// Represents an object that can be used to synchronize access to the current <see cref="InfiniteSequence{T}" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Object SyncRoot = new Object();
+        private readonly Object SyncRoot = new();
 
         /// <summary>
         /// Represents the ordered, calculated terms for the current <see cref="InfiniteSequence{T}" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<T> CalculatedTerms = new List<T>();
+        private List<T> CalculatedTerms = new();
     }
 }

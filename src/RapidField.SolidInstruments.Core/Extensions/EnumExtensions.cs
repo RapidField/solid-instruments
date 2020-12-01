@@ -22,6 +22,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// An integer and textual name pair representation of the current <see cref="Enum" />.
         /// </returns>
         public static KeyValuePair<Int32, String> ToKeyValuePair<T>(this T target)
-            where T : Enum => new KeyValuePair<Int32, String>(Convert.ToInt32(target), Enum.GetName(typeof(T), target));
+            where T : Enum => new(Convert.ToInt32(target), Enum.GetName(typeof(T), target));
     }
 }

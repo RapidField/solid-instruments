@@ -22,7 +22,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         protected SelfComposingInstrument()
             : base()
         {
-            LazyContainer = new Lazy<IObjectContainer>(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyContainer = new(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         protected SelfComposingInstrument(ConcurrencyControlMode stateControlMode)
             : base(stateControlMode)
         {
-            LazyContainer = new Lazy<IObjectContainer>(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyContainer = new(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         protected SelfComposingInstrument(ConcurrencyControlMode stateControlMode, TimeSpan stateControlTimeoutThreshold)
             : base(stateControlMode, stateControlTimeoutThreshold)
         {
-            LazyContainer = new Lazy<IObjectContainer>(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyContainer = new(InitializeContainer, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

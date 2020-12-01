@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entit
             /// Represents the Fibonacci number series.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static NumberSeries Fibonacci => new NumberSeries()
+            internal static NumberSeries Fibonacci => new()
             {
                 Identifier = Guid.Parse("1100d8c5-a70c-4db2-833d-33638e453082"),
                 Name = "Fibonacci"

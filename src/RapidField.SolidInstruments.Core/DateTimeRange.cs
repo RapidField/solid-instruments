@@ -164,7 +164,7 @@ namespace RapidField.SolidInstruments.Core
         {
             if (Parse(input, out var start, out var end, out var granularity, true))
             {
-                return new DateTimeRange(start, end, granularity);
+                return new(start, end, granularity);
             }
 
             return null;
@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Core
                 return false;
             }
 
-            result = new DateTimeRange(start, end, granularity);
+            result = new(start, end, granularity);
             return true;
         }
 
@@ -587,7 +587,7 @@ namespace RapidField.SolidInstruments.Core
             else if (End.Month == Start.Month)
             {
                 // The end months and start month are the same, but the end day and time precedes the start day and time.
-                endPrecedesStartDuringYear = endPrecedesStartDuringMonth == true;
+                endPrecedesStartDuringYear = endPrecedesStartDuringMonth is true;
             }
             else
             {
@@ -733,15 +733,15 @@ namespace RapidField.SolidInstruments.Core
             Start = start.Quantize(granularity);
             End = end.Quantize(granularity);
             Length = End - Start;
-            LazyLengthInDays = new Lazy<Int32>(CalculateLengthInDays, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInHours = new Lazy<Int32>(CalculateLengthInHours, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInMilliseconds = new Lazy<Int64>(CalculateLengthInMilliseconds, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInMinutes = new Lazy<Int64>(CalculateLengthInMinutes, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInMonths = new Lazy<Int32>(CalculateLengthInMonths, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInSeconds = new Lazy<Int64>(CalculateLengthInSeconds, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInWeeks = new Lazy<Int32>(CalculateLengthInWeeks, LazyThreadSafetyMode.PublicationOnly);
-            LazyLengthInYears = new Lazy<Int32>(CalculateLengthInYears, LazyThreadSafetyMode.PublicationOnly);
-            LazyMidpoint = new Lazy<DateTime>(CalculateMidpoint, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInDays = new(CalculateLengthInDays, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInHours = new(CalculateLengthInHours, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInMilliseconds = new(CalculateLengthInMilliseconds, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInMinutes = new(CalculateLengthInMinutes, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInMonths = new(CalculateLengthInMonths, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInSeconds = new(CalculateLengthInSeconds, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInWeeks = new(CalculateLengthInWeeks, LazyThreadSafetyMode.PublicationOnly);
+            LazyLengthInYears = new(CalculateLengthInYears, LazyThreadSafetyMode.PublicationOnly);
+            LazyMidpoint = new(CalculateMidpoint, LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>

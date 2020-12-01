@@ -68,9 +68,9 @@ namespace RapidField.SolidInstruments.InversionOfControl
             : base(applicationConfiguration)
         {
             ConfigureAction = configureAction.RejectIf().IsNull(nameof(configureAction));
-            LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyRootScope = new Lazy<IDependencyScope>(CreateRootScope, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazySourceContainer = new Lazy<TContainer>(BuildSourceContainer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyReferenceManager = new(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyRootScope = new(CreateRootScope, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazySourceContainer = new(BuildSourceContainer, LazyThreadSafetyMode.ExecutionAndPublication);
             ServiceInjector = serviceInjector.RejectIf().IsNull(nameof(serviceInjector)).TargetArgument;
         }
 

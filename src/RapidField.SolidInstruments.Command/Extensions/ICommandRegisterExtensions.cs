@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Command.Extensions
         /// <returns>
         /// A new <see cref="TextualCommand" />.
         /// </returns>
-        public static TextualCommand FromText(this ICommandRegister target, String value) => new TextualCommand(value);
+        public static TextualCommand FromText(this ICommandRegister target, String value) => new(value);
 
         /// <summary>
         /// Creates a new <see cref="TextualCommand" />.
@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Command.Extensions
         /// <returns>
         /// A new <see cref="TextualCommand" />.
         /// </returns>
-        public static TextualCommand FromText(this ICommandRegister target, String value, IEnumerable<String> labels) => new TextualCommand(value, labels);
+        public static TextualCommand FromText(this ICommandRegister target, String value, IEnumerable<String> labels) => new(value, labels);
 
         /// <summary>
         /// Creates a new <see cref="GetConfigurationSectionCommand" />.
@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.Command.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is <see langword="null" />.
         /// </exception>
-        public static GetConfigurationSectionCommand GetConfigurationSection(this ICommandRegister target, String key) => new GetConfigurationSectionCommand(key);
+        public static GetConfigurationSectionCommand GetConfigurationSection(this ICommandRegister target, String key) => new(key);
 
         /// <summary>
         /// Creates a new <see cref="GetConfigurationValueCommand" />.
@@ -89,7 +89,7 @@ namespace RapidField.SolidInstruments.Command.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is <see langword="null" />.
         /// </exception>
-        public static GetConfigurationValueCommand GetConfigurationValue(this ICommandRegister target, String key) => new GetConfigurationValueCommand(key);
+        public static GetConfigurationValueCommand GetConfigurationValue(this ICommandRegister target, String key) => new(key);
 
         /// <summary>
         /// Creates a new <see cref="GetConnectionStringCommand" />.
@@ -109,6 +109,6 @@ namespace RapidField.SolidInstruments.Command.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name" /> is <see langword="null" />.
         /// </exception>
-        public static GetConnectionStringCommand GetConnectionString(this ICommandRegister target, String name) => new GetConnectionStringCommand(name);
+        public static GetConnectionStringCommand GetConnectionString(this ICommandRegister target, String name) => new(name);
     }
 }

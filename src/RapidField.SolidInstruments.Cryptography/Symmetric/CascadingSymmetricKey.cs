@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     }
                 });
 
-                return new CascadingSymmetricKey(keys);
+                return new(keys);
             }
             catch
             {
@@ -263,7 +263,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// A new <see cref="CascadingSymmetricKey" />.
         /// </returns>
         [DebuggerHidden]
-        public static CascadingSymmetricKey New() => new CascadingSymmetricKey(DefaultDerivationMode, DefaultFirstLayerAlgorithm, DefaultSecondLayerAlgorithm);
+        public static CascadingSymmetricKey New() => new(DefaultDerivationMode, DefaultFirstLayerAlgorithm, DefaultSecondLayerAlgorithm);
 
         /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKey" />.
@@ -287,7 +287,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm);
+        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm) => new(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm);
 
         /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKey" />.
@@ -312,7 +312,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm);
+        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm) => new(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm);
 
         /// <summary>
         /// Generates a new <see cref="CascadingSymmetricKey" />.
@@ -340,7 +340,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// more algorithm layers are equal to <see cref="SymmetricAlgorithmSpecification.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => new CascadingSymmetricKey(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm);
+        public static CascadingSymmetricKey New(CryptographicKeyDerivationMode derivationMode, SymmetricAlgorithmSpecification firstLayerAlgorithm, SymmetricAlgorithmSpecification secondLayerAlgorithm, SymmetricAlgorithmSpecification thirdLayerAlgorithm, SymmetricAlgorithmSpecification fourthLayerAlgorithm) => new(derivationMode, firstLayerAlgorithm, secondLayerAlgorithm, thirdLayerAlgorithm, fourthLayerAlgorithm);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="CascadingSymmetricKey" />.
@@ -469,7 +469,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 }
             }
 
-            return new CascadingSymmetricKey(keys);
+            return new(keys);
         }
 
         /// <summary>

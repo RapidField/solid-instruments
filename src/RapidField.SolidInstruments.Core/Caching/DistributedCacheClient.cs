@@ -278,9 +278,9 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// Represents settings used by <see cref="Serialize(DataContractJsonSerializer, Object)" /> to serialize objects.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly DataContractJsonSerializerSettings SerializerSettings = new DataContractJsonSerializerSettings
+        private static readonly DataContractJsonSerializerSettings SerializerSettings = new()
         {
-            DateTimeFormat = new DateTimeFormat(DateTimeSerializationFormatString),
+            DateTimeFormat = new(DateTimeSerializationFormatString),
             EmitTypeInformation = EmitTypeInformation.AsNeeded,
             SerializeReadOnlyTypes = false
         };

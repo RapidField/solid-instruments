@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <summary>
         /// Represents the default values for a data store.
         /// </summary>
-        private static readonly String[] DefaultValues = new String[]
+        private static readonly String[] DefaultValues =
         {
             String.Empty, "foo", "bar", "foobar", "foo", "bar", "foobar", "buzz"
         };

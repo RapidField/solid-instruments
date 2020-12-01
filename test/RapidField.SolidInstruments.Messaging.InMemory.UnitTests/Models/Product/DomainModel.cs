@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Produc
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
             [DebuggerHidden]
-            internal static IEnumerable<DomainModel> All() => new DomainModel[]
+            internal static IEnumerable<DomainModel> All() => new[]
             {
                 Fidget,
                 Widget
@@ -115,7 +115,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Produc
             /// Gets the Fidget product.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel Fidget => new DomainModel(Guid.Parse("dc177df0-2b54-44e6-a166-55c3b4403d5f"))
+            internal static DomainModel Fidget => new(Guid.Parse("dc177df0-2b54-44e6-a166-55c3b4403d5f"))
             {
                 Name = "Fidget",
                 Price = 1.99m
@@ -125,7 +125,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.Models.Produc
             /// Gets the Widget product.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            internal static DomainModel Widget => new DomainModel(Guid.Parse("acec6baf-66e2-49c1-92e5-37f1b9722e73"))
+            internal static DomainModel Widget => new(Guid.Parse("acec6baf-66e2-49c1-92e5-37f1b9722e73"))
             {
                 Name = "Widget",
                 Price = 13.69m

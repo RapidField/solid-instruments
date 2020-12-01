@@ -100,7 +100,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A new <see cref="Guid" /> that uniquely identifies the contents of the current <see cref="IEnumerable{Byte}" />.
         /// </returns>
-        public static Guid GenerateChecksumIdentity(this IEnumerable<Byte> target) => new Guid(target.ComputeOneHundredTwentyEightBitHashBuffer());
+        public static Guid GenerateChecksumIdentity(this IEnumerable<Byte> target) => new(target.ComputeOneHundredTwentyEightBitHashBuffer());
 
         /// <summary>
         /// Performs a circular shift on the bits in the current <see cref="Byte" /> array.

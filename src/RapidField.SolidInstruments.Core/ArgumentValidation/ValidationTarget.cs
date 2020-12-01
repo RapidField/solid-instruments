@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// Gets the result of the validation operation.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal ValidationResult<TArgument> Result => new ValidationResult<TArgument>(this);
+        internal ValidationResult<TArgument> Result => new(this);
 
         /// <summary>
         /// Represents the target argument.

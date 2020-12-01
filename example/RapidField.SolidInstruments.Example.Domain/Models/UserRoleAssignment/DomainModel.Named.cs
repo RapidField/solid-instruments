@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
             /// <returns>
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
-            public static IEnumerable<DomainModel> All() => new DomainModel[]
+            public static IEnumerable<DomainModel> All() => new[]
             {
                 StevenCallahanSystemAdministrator,
                 TomSmithEndUser
@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
             /// <summary>
             /// Gets the system administrator role assignment for Steven Callahan.
             /// </summary>
-            public static DomainModel StevenCallahanSystemAdministrator => new DomainModel(Guid.Parse("3af59674-efe9-46ad-b8b3-847e1a74c53c"))
+            public static DomainModel StevenCallahanSystemAdministrator => new(Guid.Parse("3af59674-efe9-46ad-b8b3-847e1a74c53c"))
             {
                 User = UserModel.Named.StevenCallahan,
                 UserRole = UserRoleModel.Named.SystemAdministrator
@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment
             /// <summary>
             /// Gets the end user role assignment for Tom Smith.
             /// </summary>
-            public static DomainModel TomSmithEndUser => new DomainModel(Guid.Parse("472ceca5-e06b-4ae7-8022-ecb160822137"))
+            public static DomainModel TomSmithEndUser => new(Guid.Parse("472ceca5-e06b-4ae7-8022-ecb160822137"))
             {
                 User = UserModel.Named.TomSmith,
                 UserRole = UserRoleModel.Named.EndUser

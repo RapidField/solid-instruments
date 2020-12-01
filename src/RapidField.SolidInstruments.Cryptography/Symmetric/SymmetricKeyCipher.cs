@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                                 {
                                     cryptographicStream.Write(cipherTextSansInitializationVector, 0, cipherTextSansInitializationVector.Length);
                                     cryptographicStream.FlushFinalBlock();
-                                    return new PinnedMemory(memoryStream.ToArray(), false);
+                                    return new(memoryStream.ToArray(), false);
                                 }
                             }
                         }
@@ -220,7 +220,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(ciphertext, 0, ciphertext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedMemory(memoryStream.ToArray(), false);
+                            return new(memoryStream.ToArray(), false);
                         }
                     }
                 }
@@ -270,7 +270,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(plaintext, 0, plaintext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedMemory(initializationVector.Concat(memoryStream.ToArray()).ToArray(), false);
+                            return new(initializationVector.Concat(memoryStream.ToArray()).ToArray(), false);
                         }
                     }
                 }
@@ -308,7 +308,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                         {
                             cryptographicStream.Write(plaintext, 0, plaintext.Length);
                             cryptographicStream.FlushFinalBlock();
-                            return new PinnedMemory(memoryStream.ToArray(), false);
+                            return new(memoryStream.ToArray(), false);
                         }
                     }
                 }

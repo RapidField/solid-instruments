@@ -54,9 +54,9 @@ namespace RapidField.SolidInstruments.Service
         {
             CommandLineArguments = null;
             ExecutionLifetime = null;
-            LazyApplicationConfiguration = new Lazy<IConfiguration>(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyDependencyEngine = new Lazy<IDependencyEngine>(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyRootDependencyScope = new Lazy<IDependencyScope>(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyApplicationConfiguration = new(CreateApplicationConfiguration, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyDependencyEngine = new(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyRootDependencyScope = new(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
             ReferenceManager = new ReferenceManager();
             ServiceName = serviceName.Trim().RejectIf().IsNullOrEmpty(nameof(serviceName));
         }

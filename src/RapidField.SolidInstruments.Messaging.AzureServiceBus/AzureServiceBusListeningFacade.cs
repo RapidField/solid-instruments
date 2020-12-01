@@ -188,7 +188,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// Gets options that specify how receive clients handle messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static MessageHandlerOptions ReceiverOptions => new MessageHandlerOptions(HandleReceiverExceptionAsync)
+        private static MessageHandlerOptions ReceiverOptions => new(HandleReceiverExceptionAsync)
         {
             AutoComplete = false
         };

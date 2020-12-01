@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// The resulting <see cref="X509Certificate2" />.
         /// </returns>
-        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => new X509Certificate2(bytes.ToArray());
+        protected sealed override X509Certificate2 ConvertBytesToValue(IReadOnlyPinnedMemory<Byte> bytes, IConcurrencyControlToken controlToken) => new(bytes.ToArray());
 
         /// <summary>
         /// Gets the bytes of <paramref name="value" />, pins them in memory and returns the resulting

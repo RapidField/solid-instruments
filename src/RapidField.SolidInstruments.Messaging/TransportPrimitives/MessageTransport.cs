@@ -1224,31 +1224,31 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Represents a lazily-initialized in-memory <see cref="IMessageTransport" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IMessageTransport> LazyInstance = new Lazy<IMessageTransport>(InitializeInstance, LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<IMessageTransport> LazyInstance = new(InitializeInstance, LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents a finalizer for static members of the <see cref="MessageTransport" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents a collection of active connections to the current <see cref="MessageTransport" />, which are keyed by
         /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new ConcurrentDictionary<Guid, IMessageTransportConnection>();
+        private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new();
 
         /// <summary>
         /// Represents a collection of available queues for the current <see cref="MessageTransport" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageQueue> QueueDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageQueue>();
+        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageQueue> QueueDictionary = new();
 
         /// <summary>
         /// Represents a collection of available topics for the current <see cref="MessageTransport" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageTopic> TopicDictionary = new ConcurrentDictionary<IMessagingEntityPath, IMessageTopic>();
+        private readonly ConcurrentDictionary<IMessagingEntityPath, IMessageTopic> TopicDictionary = new();
     }
 }

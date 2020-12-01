@@ -34,7 +34,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode basic Latin character, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsBasicLatin(this Char target) => Regex.IsMatch(new String(target, 1), "[\x00-\x7f]");
+        public static Boolean IsBasicLatin(this Char target) => Regex.IsMatch(new(target, 1), "[\x00-\x7f]");
 
         /// <summary>
         /// Determines whether or not the current <see cref="Char" /> represents a Unicode control character.

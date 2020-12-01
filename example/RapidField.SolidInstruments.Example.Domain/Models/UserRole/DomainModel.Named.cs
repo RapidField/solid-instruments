@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
             /// <returns>
             /// A collection of all known <see cref="DomainModel" /> instances.
             /// </returns>
-            public static IEnumerable<DomainModel> All() => new DomainModel[]
+            public static IEnumerable<DomainModel> All() => new[]
             {
                 EndUser,
                 SystemAdministrator
@@ -46,7 +46,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
             /// <summary>
             /// Gets the end user role.
             /// </summary>
-            public static DomainModel EndUser => new DomainModel(Guid.Parse("816e7126-2034-49b3-af08-d07cab150d93"))
+            public static DomainModel EndUser => new(Guid.Parse("816e7126-2034-49b3-af08-d07cab150d93"))
             {
                 Description = "A standard end user.",
                 Name = nameof(EndUser)
@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.UserRole
             /// <summary>
             /// Gets the system administrator user role.
             /// </summary>
-            public static DomainModel SystemAdministrator => new DomainModel(Guid.Parse("b13c7a39-0c65-4515-a4af-2e3f60d289ba"))
+            public static DomainModel SystemAdministrator => new(Guid.Parse("b13c7a39-0c65-4515-a4af-2e3f60d289ba"))
             {
                 Description = "A user with full administrative privileges.",
                 Name = nameof(SystemAdministrator)

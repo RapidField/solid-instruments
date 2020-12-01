@@ -74,7 +74,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         public SecretVault(String semanticIdentity)
             : base()
         {
-            LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyReferenceManager = new(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
             Secrets = new Dictionary<String, IReadOnlySecret>();
             SemanticIdentity = semanticIdentity.IsNullOrEmpty() ? Secret.NewRandomSemanticIdentifier() : semanticIdentity.RejectIf().DoesNotMatchRegularExpression(SemanticIdentityRegularExpression, nameof(semanticIdentity));
         }

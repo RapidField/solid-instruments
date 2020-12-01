@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Publication 800-63-3.
         /// </summary>
         [IgnoreDataMember]
-        public static PasswordCompositionRequirements Nist800633 => new PasswordCompositionRequirements()
+        public static PasswordCompositionRequirements Nist800633 => new()
         {
             ForbidCommonBreachedPasswords = true,
             MinimumLowercaseAlphabeticCharacterCount = 0,
@@ -47,7 +47,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Gets a <see cref="PasswordCompositionRequirements" /> that specifies no requirements.
         /// </summary>
         [IgnoreDataMember]
-        public static PasswordCompositionRequirements None => new PasswordCompositionRequirements()
+        public static PasswordCompositionRequirements None => new()
         {
             ForbidCommonBreachedPasswords = false,
             MinimumLowercaseAlphabeticCharacterCount = 0,
@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// character in every category and forbids commonly breached passwords.
         /// </summary>
         [IgnoreDataMember]
-        public static PasswordCompositionRequirements Strict => new PasswordCompositionRequirements()
+        public static PasswordCompositionRequirements Strict => new()
         {
             ForbidCommonBreachedPasswords = true,
             MinimumLowercaseAlphabeticCharacterCount = 1,
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// 2019, per the National Cyber Security Centre (NCSC).
         /// </summary>
         [IgnoreDataMember]
-        public static readonly IEnumerable<String> CommonBreachedPasswords = new String[]
+        public static readonly IEnumerable<String> CommonBreachedPasswords = new[]
         {
             "123456",
             "123456789",

@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             var mean = target.Mean(sum);
             var variance = target.Variance(mean);
             var standardDeviation = target.StandardDeviation(variance);
-            return new DescriptiveStatistics(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
+            return new(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             var mean = target.Mean(sum);
             var variance = target.Variance(mean);
             var standardDeviation = target.StandardDeviation(variance);
-            return new DescriptiveStatistics(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
+            return new(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             var mean = target.Mean(sum);
             var variance = target.Variance(mean);
             var standardDeviation = target.StandardDeviation(variance);
-            return new DescriptiveStatistics(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
+            return new(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             var mean = target.Mean(sum);
             var variance = target.Variance(mean);
             var standardDeviation = target.StandardDeviation(variance);
-            return new DescriptiveStatistics(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
+            return new(size, Convert.ToDecimal(minimum), Convert.ToDecimal(maximum), Convert.ToDecimal(sum), Convert.ToDecimal(median), Convert.ToDecimal(mean), Convert.ToDecimal(variance), Convert.ToDecimal(standardDeviation));
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             var mean = target.Mean(sum);
             var variance = target.Variance(mean);
             var standardDeviation = target.StandardDeviation(variance);
-            return new DescriptiveStatistics(size, minimum, maximum, sum, median, mean, variance, standardDeviation);
+            return new(size, minimum, maximum, sum, median, mean, variance, standardDeviation);
         }
 
         /// <summary>

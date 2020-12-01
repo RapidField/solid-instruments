@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of acres.
         /// </summary>
-        public static Area FromAcres(Decimal value) => new Area(value / AcresPerSquareMeter);
+        public static Area FromAcres(Decimal value) => new(value / AcresPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of hectares.
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of hectares.
         /// </summary>
-        public static Area FromHectares(Decimal value) => new Area(value / HectaresPerSquareMeter);
+        public static Area FromHectares(Decimal value) => new(value / HectaresPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square centimeters.
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square centimeters.
         /// </summary>
-        public static Area FromSquareCentimeters(Decimal value) => new Area(value / SquareCentimetersPerSquareMeter);
+        public static Area FromSquareCentimeters(Decimal value) => new(value / SquareCentimetersPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square feet.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square feet.
         /// </summary>
-        public static Area FromSquareFeet(Decimal value) => new Area(value / SquareFeetPerSquareMeter);
+        public static Area FromSquareFeet(Decimal value) => new(value / SquareFeetPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square inches.
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square inches.
         /// </summary>
-        public static Area FromSquareInches(Decimal value) => new Area(value / SquareInchesPerSquareMeter);
+        public static Area FromSquareInches(Decimal value) => new(value / SquareInchesPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square kilometers.
@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square kilometers.
         /// </summary>
-        public static Area FromSquareKilometers(Decimal value) => new Area(value / SquareKilometersPerSquareMeter);
+        public static Area FromSquareKilometers(Decimal value) => new(value / SquareKilometersPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square meters.
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square meters.
         /// </summary>
-        public static Area FromSquareMeters(Decimal value) => new Area(value);
+        public static Area FromSquareMeters(Decimal value) => new(value);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square miles.
@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square miles.
         /// </summary>
-        public static Area FromSquareMiles(Decimal value) => new Area(value / SquareMilesPerSquareMeter);
+        public static Area FromSquareMiles(Decimal value) => new(value / SquareMilesPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square millimeters.
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square millimeters.
         /// </summary>
-        public static Area FromSquareMillimeters(Decimal value) => new Area(value / SquareMillimetersPerSquareMeter);
+        public static Area FromSquareMillimeters(Decimal value) => new(value / SquareMillimetersPerSquareMeter);
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square yards.
@@ -138,7 +138,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square yards.
         /// </summary>
-        public static Area FromSquareYards(Decimal value) => new Area(value / SquareYardsPerSquareMeter);
+        public static Area FromSquareYards(Decimal value) => new(value / SquareYardsPerSquareMeter);
 
         /// <summary>
         /// Determines the difference between two <see cref="Area" /> values.
@@ -152,7 +152,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The area between the specified <see cref="Area" /> instances.
         /// </returns>
-        public static Area operator -(Area subtrahend, Area minuend) => new Area(subtrahend.SquareMeters - minuend.SquareMeters);
+        public static Area operator -(Area subtrahend, Area minuend) => new(subtrahend.SquareMeters - minuend.SquareMeters);
 
         /// <summary>
         /// Negates the specified <see cref="Area" /> value.
@@ -163,7 +163,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The negative of the specified <see cref="Area" /> instance.
         /// </returns>
-        public static Area operator -(Area value) => new Area(-value.SquareMeters);
+        public static Area operator -(Area value) => new(-value.SquareMeters);
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Area" /> instances are not equal.
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Area" /> and the specified multiplier.
         /// </returns>
-        public static Area operator *(Area multiplicand, Decimal multiplier) => new Area(multiplicand.SquareMeters * multiplier);
+        public static Area operator *(Area multiplicand, Decimal multiplier) => new(multiplicand.SquareMeters * multiplier);
 
         /// <summary>
         /// Determines the quotient of an <see cref="Area" /> value and a divisor.
@@ -233,7 +233,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Area" /> and the specified divisor.
         /// </returns>
-        public static Area operator /(Area dividend, Decimal divisor) => new Area(dividend.SquareMeters / divisor);
+        public static Area operator /(Area dividend, Decimal divisor) => new(dividend.SquareMeters / divisor);
 
         /// <summary>
         /// Determines the sum of two <see cref="Area" /> values.
@@ -247,7 +247,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The sum of the specified <see cref="Area" /> instances.
         /// </returns>
-        public static Area operator +(Area augend, Area addend) => new Area(augend.SquareMeters + addend.SquareMeters);
+        public static Area operator +(Area augend, Area addend) => new(augend.SquareMeters + addend.SquareMeters);
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Area" /> instance is less than another supplied instance.
@@ -685,7 +685,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Represents the zero <see cref="Area" /> value.
         /// </summary>
-        public static readonly Area Zero = new Area(0m);
+        public static readonly Area Zero = new(0m);
 
         /// <summary>
         /// Represents the number of acres in a square meter.

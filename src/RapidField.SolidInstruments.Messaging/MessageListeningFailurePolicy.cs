@@ -137,7 +137,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Represents the default failure behavior.
         /// </summary>
-        public static readonly MessageListeningFailurePolicy Default = new MessageListeningFailurePolicy();
+        public static readonly MessageListeningFailurePolicy Default = new();
 
         /// <summary>
         /// Represents the default failure behavior that is employed after the retry policy is exhausted.

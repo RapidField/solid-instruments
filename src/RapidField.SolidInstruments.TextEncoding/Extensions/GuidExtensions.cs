@@ -21,6 +21,6 @@ namespace RapidField.SolidInstruments.TextEncoding.Extensions
         /// <returns>
         /// A <see cref="EnhancedReadabilityGuid" /> representation of the current <see cref="Guid" />.
         /// </returns>
-        public static EnhancedReadabilityGuid ToEnhancedReadabilityGuid(this Guid target) => new EnhancedReadabilityGuid(target);
+        public static EnhancedReadabilityGuid ToEnhancedReadabilityGuid(this Guid target) => new(target);
     }
 }

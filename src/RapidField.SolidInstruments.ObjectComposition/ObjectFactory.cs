@@ -102,7 +102,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         protected ObjectFactory(IConfiguration applicationConfiguration)
             : base(applicationConfiguration)
         {
-            LazyProductionFunctions = new Lazy<ConcurrentDictionary<Type, IObjectFactoryProductionFunction>>(DefineProductionFunctions, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProductionFunctions = new(DefineProductionFunctions, LazyThreadSafetyMode.ExecutionAndPublication);
             ProductBaseType = typeof(TProductBase);
         }
 

@@ -91,7 +91,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         public static GeographicCoordinates Parse(String input)
         {
             Parse(input, out var latitude, out var longitude);
-            return new GeographicCoordinates(latitude, longitude);
+            return new(latitude, longitude);
         }
 
         /// <summary>
@@ -228,12 +228,12 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Represents geographic coordinates for Earth's North Pole.
         /// </summary>
-        public static readonly GeographicCoordinates NorthPole = new GeographicCoordinates(90d, 0d);
+        public static readonly GeographicCoordinates NorthPole = new(90d, 0d);
 
         /// <summary>
         /// Represents geographic coordinates for Earth's South Pole.
         /// </summary>
-        public static readonly GeographicCoordinates SouthPole = new GeographicCoordinates(-90d, 0d);
+        public static readonly GeographicCoordinates SouthPole = new(-90d, 0d);
 
         /// <summary>
         /// Represents the latitude element of the current <see cref="GeographicCoordinates" />.

@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         /// <returns>
         /// The package's dependency modules.
         /// </returns>
-        protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
+        protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new[]
         {
             new SimulatedDependencyModule(applicationConfiguration)
         };

@@ -129,7 +129,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
                 processedPlaintext.ReverseStaggerSort();
                 using var saltDerivationAlgorithm = SaltDerivationHashAlgorithm.ToHashAlgorithm();
                 var saltBytes = saltDerivationAlgorithm.ComputeHash(processedPlaintext.ToArray().PerformCircularBitShift(SaltDerivationBitShiftDirection, SaltDerivationBitShiftCount));
-                return new PinnedMemory(saltBytes, true);
+                return new(saltBytes, true);
             }
             finally
             {

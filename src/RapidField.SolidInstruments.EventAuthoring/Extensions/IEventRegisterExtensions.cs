@@ -28,7 +28,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="exception" /> is <see langword="null" />.
         /// </exception>
-        public static ErrorEvent Error(this IEventRegister target, Exception exception) => new ErrorEvent(exception);
+        public static ErrorEvent Error(this IEventRegister target, Exception exception) => new(exception);
 
         /// <summary>
         /// Creates a new <see cref="ErrorEvent" />.
@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
-        public static ErrorEvent Error(this IEventRegister target, Exception exception, Guid correlationIdentifier) => new ErrorEvent(exception, correlationIdentifier);
+        public static ErrorEvent Error(this IEventRegister target, Exception exception, Guid correlationIdentifier) => new(exception, correlationIdentifier);
 
         /// <summary>
         /// Creates a new <see cref="ErrorEvent" />.
@@ -75,7 +75,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <paramref name="applicationIdentity" /> is <see langword="null" /> -or- <paramref name="exception" /> is
         /// <see langword="null" />.
         /// </exception>
-        public static ErrorEvent Error(this IEventRegister target, String applicationIdentity, Exception exception) => new ErrorEvent(applicationIdentity, exception);
+        public static ErrorEvent Error(this IEventRegister target, String applicationIdentity, Exception exception) => new(applicationIdentity, exception);
 
         /// <summary>
         /// Creates a new <see cref="ErrorEvent" />.
@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
-        public static ErrorEvent Error(this IEventRegister target, String applicationIdentity, Exception exception, Guid correlationIdentifier) => new ErrorEvent(applicationIdentity, exception, correlationIdentifier);
+        public static ErrorEvent Error(this IEventRegister target, String applicationIdentity, Exception exception, Guid correlationIdentifier) => new(applicationIdentity, exception, correlationIdentifier);
 
         /// <summary>
         /// Creates a new <see cref="GeneralInformationEvent" />.
@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentNullException">
         /// <paramref name="labels" /> is <see langword="null" />.
         /// </exception>
-        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels) => new GeneralInformationEvent(labels);
+        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels) => new(labels);
 
         /// <summary>
         /// Creates a new <see cref="GeneralInformationEvent" />.
@@ -145,7 +145,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" />.
         /// </exception>
-        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity) => new GeneralInformationEvent(labels, verbosity);
+        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity) => new(labels, verbosity);
 
         /// <summary>
         /// Creates a new <see cref="GeneralInformationEvent" />.
@@ -171,7 +171,7 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" />.
         /// </exception>
-        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity, String description) => new GeneralInformationEvent(labels, verbosity, description);
+        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity, String description) => new(labels, verbosity, description);
 
         /// <summary>
         /// Creates a new <see cref="GeneralInformationEvent" />.
@@ -201,6 +201,6 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
         /// <paramref name="verbosity" /> is equal to <see cref="EventVerbosity.Unspecified" /> -or-
         /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
-        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity, String description, Guid correlationIdentifier) => new GeneralInformationEvent(labels, verbosity, description, correlationIdentifier);
+        public static GeneralInformationEvent GeneralInformation(this IEventRegister target, IEnumerable<String> labels, EventVerbosity verbosity, String description, Guid correlationIdentifier) => new(labels, verbosity, description, correlationIdentifier);
     }
 }

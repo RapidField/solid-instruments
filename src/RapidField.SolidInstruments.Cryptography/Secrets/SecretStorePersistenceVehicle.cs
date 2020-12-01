@@ -180,13 +180,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <see cref="EncryptedExportedSecretVault" /> instances.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<SymmetricKey> LazyObscurityKey = new Lazy<SymmetricKey>(InitializeObscurityKey, LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<SymmetricKey> LazyObscurityKey = new(InitializeObscurityKey, LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents the lazily-initialized password from which <see cref="ObscurityKey" /> is derived.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IPassword> LazyObscurityPassword = new Lazy<IPassword>(InitializeObscurityPassword, LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<IPassword> LazyObscurityPassword = new(InitializeObscurityPassword, LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents the <see cref="ISymmetricProcessor{T}" /> that is used to encrypt and decrypt persisted state objects.
@@ -198,7 +198,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Represents a finalizer for static members of the <see cref="SecretStorePersistenceVehicle" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
     }
 
     /// <summary>

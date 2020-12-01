@@ -305,20 +305,20 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see cref="EnsureQueueExistanceAsync(IMessagingEntityPath)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly Object EnsureQueueExistenceSyncRoot = new Object();
+        internal static readonly Object EnsureQueueExistenceSyncRoot = new();
 
         /// <summary>
         /// Represents an object that is used to synchronize access to
         /// <see cref="EnsureSubscriptionExistanceAsync(IMessagingEntityPath, String)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly Object EnsureSubscriptionExistenceSyncRoot = new Object();
+        internal static readonly Object EnsureSubscriptionExistenceSyncRoot = new();
 
         /// <summary>
         /// Represents an object that is used to synchronize access to
         /// <see cref="EnsureTopicExistanceAsync(IMessagingEntityPath)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly Object EnsureTopicExistenceSyncRoot = new Object();
+        internal static readonly Object EnsureTopicExistenceSyncRoot = new();
     }
 }

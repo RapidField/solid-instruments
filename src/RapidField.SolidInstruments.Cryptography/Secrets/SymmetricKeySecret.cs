@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 secureMemory.Access(memory =>
                 {
-                    result = new ReadOnlyPinnedMemory(memory.ToArray());
+                    result = new(memory.ToArray());
                 });
             }
 

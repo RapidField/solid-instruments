@@ -35,7 +35,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         protected DependencyScope(TScope sourceScope)
             : base()
         {
-            LazyReferenceManager = new Lazy<IReferenceManager>(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyReferenceManager = new(() => new ReferenceManager(), LazyThreadSafetyMode.ExecutionAndPublication);
             SourceScope = sourceScope.RejectIf().IsNull(nameof(sourceScope));
         }
 

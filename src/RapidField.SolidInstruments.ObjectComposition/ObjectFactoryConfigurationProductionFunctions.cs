@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// </summary>
         [DebuggerHidden]
         internal ObjectFactoryConfigurationProductionFunctions()
-            : this(new ConcurrentDictionary<Type, IObjectFactoryProductionFunction>())
+            : this(new())
         {
             return;
         }

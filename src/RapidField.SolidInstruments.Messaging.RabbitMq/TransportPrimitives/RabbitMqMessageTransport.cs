@@ -1604,6 +1604,6 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new ConcurrentDictionary<Guid, IMessageTransportConnection>();
+        private readonly ConcurrentDictionary<Guid, IMessageTransportConnection> ConnectionDictionary = new();
     }
 }

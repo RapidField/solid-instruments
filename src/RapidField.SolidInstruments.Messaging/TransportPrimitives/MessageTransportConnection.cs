@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             Handlers = new List<Handler>();
             Identifier = Guid.NewGuid();
-            LazyPollTimer = new Lazy<Timer>(InitializePollTimer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyPollTimer = new(InitializePollTimer, LazyThreadSafetyMode.ExecutionAndPublication);
             State = MessageTransportConnectionState.Open;
             TransportReference = transport.RejectIf().IsNull(nameof(transport)).TargetArgument;
         }
@@ -189,7 +189,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         private Timer InitializePollTimer()
         {
             var timerCallback = new TimerCallback((state) => Poll(state as ICollection<Handler>));
-            return new Timer(timerCallback, Handlers, TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds), TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds));
+            return new(timerCallback, Handlers, TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds), TimeSpan.FromMilliseconds(PollingIntervalInMilliseconds));
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// </returns>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValidationTarget<TArgument> RejectIf<TArgument>(this TArgument target) => new ValidationTarget<TArgument>(target);
+        public static ValidationTarget<TArgument> RejectIf<TArgument>(this TArgument target) => new(target);
 
         /// <summary>
         /// Raises a new <see cref="ArgumentException" /> if the target argument satisfies the specified predicate.
@@ -114,7 +114,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
                 throw new ArgumentException(exceptionMessage, targetParameterName);
             }
 
-            return new ValidationResult<TArgument>(new ValidationTarget<TArgument>(target));
+            return new(new(target));
         }
     }
 }

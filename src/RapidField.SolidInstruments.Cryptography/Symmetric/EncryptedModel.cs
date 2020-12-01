@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <returns>
         /// A serializable <see cref="EncryptedModel" /> representation of the current <see cref="EncryptedModel{TModel}" />.
         /// </returns>
-        public EncryptedModel ToSerializableModel() => new EncryptedModel(CiphertextBytes, ModelType);
+        public EncryptedModel ToSerializableModel() => new(CiphertextBytes, ModelType);
     }
 
     /// <summary>

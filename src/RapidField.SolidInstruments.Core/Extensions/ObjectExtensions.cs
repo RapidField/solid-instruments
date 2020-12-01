@@ -342,9 +342,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// Represents settings used by <see cref="GetImpliedHashCode(Object)" /> to serialize objects.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly DataContractJsonSerializerSettings GetImpliedHashCodeSerializerSettings = new DataContractJsonSerializerSettings
+        private static readonly DataContractJsonSerializerSettings GetImpliedHashCodeSerializerSettings = new()
         {
-            DateTimeFormat = new DateTimeFormat(DateTimeSerializationFormatString),
+            DateTimeFormat = new(DateTimeSerializationFormatString),
             EmitTypeInformation = EmitTypeInformation.Always,
             SerializeReadOnlyTypes = true
         };
@@ -353,9 +353,9 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// Represents settings used by <see cref="GetSerializedClone(Object)" /> to serialize objects.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly DataContractJsonSerializerSettings GetSerializedCloneSerializerSettings = new DataContractJsonSerializerSettings
+        private static readonly DataContractJsonSerializerSettings GetSerializedCloneSerializerSettings = new()
         {
-            DateTimeFormat = new DateTimeFormat(DateTimeSerializationFormatString),
+            DateTimeFormat = new(DateTimeSerializationFormatString),
             EmitTypeInformation = EmitTypeInformation.AsNeeded,
             SerializeReadOnlyTypes = false
         };

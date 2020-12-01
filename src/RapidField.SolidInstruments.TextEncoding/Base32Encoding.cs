@@ -234,7 +234,7 @@ namespace RapidField.SolidInstruments.TextEncoding
             {
                 var bufferArray = new Byte[byteCount + 1];
                 Array.Copy(bytes, byteIndex, bufferArray, 0, byteCount);
-                buffer = new BigInteger(bufferArray);
+                buffer = new(bufferArray);
             }
 
             var encodedCharacterCount = GetMaxCharCount(byteCount);
@@ -279,7 +279,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <summary>
         /// Represents the default base32 encoding specification.
         /// </summary>
-        public new static readonly Base32Encoding Default = new Base32Encoding();
+        public new static readonly Base32Encoding Default = new();
 
         /// <summary>
         /// Represents the z-base-32 encoding specification.

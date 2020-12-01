@@ -112,7 +112,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+        public ValueTask DisposeAsync() => new(Task.Factory.StartNew(Dispose));
 
         /// <summary>
         /// Informs the control that a thread is entering a block of code or that it is beginning to consuming a resource.
@@ -222,7 +222,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
                 return;
             }
 
-            lock (DisposalSyncRoot ?? new Object())
+            lock (DisposalSyncRoot ?? new())
             {
                 if (IsDisposed)
                 {
@@ -354,13 +354,13 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents an object that can be used to synchronize object disposal.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Object DisposalSyncRoot = new Object();
+        private readonly Object DisposalSyncRoot = new();
 
         /// <summary>
         /// Represents currently-in-use tokens that were issued by the current <see cref="ConcurrencyControl" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<Int32, IConcurrencyControlToken> Tokens = new ConcurrentDictionary<Int32, IConcurrencyControlToken>();
+        private readonly ConcurrentDictionary<Int32, IConcurrencyControlToken> Tokens = new();
 
         /// <summary>
         /// Represents the consumption state of the current <see cref="ConcurrencyControl" />.

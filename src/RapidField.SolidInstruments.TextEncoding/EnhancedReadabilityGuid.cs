@@ -166,7 +166,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <exception cref="FormatException">
         /// <paramref name="input" /> does not contain a valid representation of a <see cref="EnhancedReadabilityGuid" />.
         /// </exception>
-        public static EnhancedReadabilityGuid Parse(String input) => Parse(input, out var value, true) ? new EnhancedReadabilityGuid(value) : default;
+        public static EnhancedReadabilityGuid Parse(String input) => Parse(input, out var value, true) ? new(value) : default;
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its
@@ -186,7 +186,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         {
             if (Parse(input, out var value, false))
             {
-                result = new EnhancedReadabilityGuid(value);
+                result = new(value);
                 return true;
             }
 
@@ -256,7 +256,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A new instance of the <see cref="EnhancedReadabilityGuid" /> structure.
         /// </returns>
-        public static EnhancedReadabilityGuid New() => new EnhancedReadabilityGuid(Guid.NewGuid());
+        public static EnhancedReadabilityGuid New() => new(Guid.NewGuid());
 
         /// <summary>
         /// Converts the current <see cref="EnhancedReadabilityGuid" /> to an array of bytes.
@@ -273,7 +273,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A <see cref="Guid" /> representation of the current <see cref="EnhancedReadabilityGuid" />.
         /// </returns>
-        public Guid ToGuid() => new Guid(Value.ToByteArray());
+        public Guid ToGuid() => new(Value.ToByteArray());
 
         /// <summary>
         /// Converts the value of the current <see cref="EnhancedReadabilityGuid" /> to its equivalent string representation.
@@ -281,7 +281,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A string representation of the current <see cref="EnhancedReadabilityGuid" />.
         /// </returns>
-        public override String ToString() => new String(Encoding.GetChars(Value.ToByteArray()));
+        public override String ToString() => new(Encoding.GetChars(Value.ToByteArray()));
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its
@@ -334,7 +334,7 @@ namespace RapidField.SolidInstruments.TextEncoding
             {
                 try
                 {
-                    value = new Guid(Encoding.GetBytes(lowercaseInput).Take(16).ToArray());
+                    value = new(Encoding.GetBytes(lowercaseInput).Take(16).ToArray());
                     return true;
                 }
                 catch (ArgumentException exception)
@@ -355,7 +355,7 @@ namespace RapidField.SolidInstruments.TextEncoding
                     return false;
                 }
 
-                value = new Guid(Encoding.GetBytes(lowercaseInput).Take(16).ToArray());
+                value = new(Encoding.GetBytes(lowercaseInput).Take(16).ToArray());
                 return true;
             }
 

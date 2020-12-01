@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                             Array.Copy(plaintextBuffer, KeySourceSecureMemoryIndex, keySource, 0, KeySourceLengthInBytes);
                             var algorithm = (SymmetricAlgorithmSpecification)plaintextBuffer[AlgorithmSecureMemoryIndex];
                             var derivationMode = (CryptographicKeyDerivationMode)plaintextBuffer[DerivationModeSecureMemoryIndex];
-                            key = new SymmetricKey(algorithm, derivationMode, keySource);
+                            key = new(algorithm, derivationMode, keySource);
                         }
                     }
                 });
@@ -349,7 +349,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// <paramref name="derivationMode" /> is equal to <see cref="CryptographicKeyDerivationMode.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, CryptographicKeyDerivationMode derivationMode, PinnedMemory keySource) => new SymmetricKey(algorithm, derivationMode, keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length."));
+        internal static SymmetricKey New(SymmetricAlgorithmSpecification algorithm, CryptographicKeyDerivationMode derivationMode, PinnedMemory keySource) => new(algorithm, derivationMode, keySource.RejectIf(argument => argument.Length != KeySourceLengthInBytes, nameof(keySource), $"The key source is not {KeySourceLengthInBytes} bytes in length."));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="SymmetricKey" />.

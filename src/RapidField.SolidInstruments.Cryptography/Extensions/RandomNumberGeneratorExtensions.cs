@@ -1690,7 +1690,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         private static void GenerateDateTime(RandomNumberGenerator target, out DateTime randomValue)
         {
             GenerateInt64(target, DateTimeTickFloor, DateTimeTickCeiling, out var ticks);
-            randomValue = new DateTime(ticks, RandomDateTimeKind);
+            randomValue = new(ticks, RandomDateTimeKind);
         }
 
         /// <summary>
@@ -1712,7 +1712,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         private static void GenerateDateTime(RandomNumberGenerator target, DateTime floor, DateTime ceiling, out DateTime randomValue)
         {
             GenerateInt64(target, floor.Ticks, ceiling.Ticks, out var ticks);
-            randomValue = new DateTime(ticks, RandomDateTimeKind);
+            randomValue = new(ticks, RandomDateTimeKind);
         }
 
         /// <summary>
@@ -1739,7 +1739,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
                 target.GetBytes(scale);
             }
 
-            randomValue = new Decimal(lowBits, middleBits, highBits, isNegative, scale[0]);
+            randomValue = new(lowBits, middleBits, highBits, isNegative, scale[0]);
         }
 
         /// <summary>
@@ -1919,7 +1919,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         [DebuggerHidden]
         private static void GenerateInt64(RandomNumberGenerator target, Int64 floor, Int64 ceiling, out Int64 randomValue)
         {
-            var range = BigInteger.Subtract(new BigInteger(ceiling), new BigInteger(floor));
+            var range = BigInteger.Subtract(new(ceiling), new(floor));
             GenerateRangePosition(target, (Decimal)range, out var rangePosition);
             randomValue = Convert.ToInt64(floor + rangePosition.RoundedTo(0));
         }
@@ -2051,7 +2051,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
                 buffer[i] = randomCharacter;
             }
 
-            randomValue = new String(buffer);
+            randomValue = new(buffer);
         }
 
         /// <summary>
@@ -2067,7 +2067,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         private static void GenerateTimeSpan(RandomNumberGenerator target, out TimeSpan randomValue)
         {
             GenerateInt64(target, TimeSpanTickFloor, TimeSpanTickCeiling, out var ticks);
-            randomValue = new TimeSpan(ticks);
+            randomValue = new(ticks);
         }
 
         /// <summary>
@@ -2089,7 +2089,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         private static void GenerateTimeSpan(RandomNumberGenerator target, TimeSpan floor, TimeSpan ceiling, out TimeSpan randomValue)
         {
             GenerateInt64(target, floor.Ticks, ceiling.Ticks, out var ticks);
-            randomValue = new TimeSpan(ticks);
+            randomValue = new(ticks);
         }
 
         /// <summary>

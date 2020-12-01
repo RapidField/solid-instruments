@@ -406,7 +406,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Represents an object that is used to synchronize access to the associated resource(s).
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Object SyncRoot = new Object();
+        private readonly Object SyncRoot = new();
 
         /// <summary>
         /// Represents the parent node of the current <see cref="TreeNode{T}" />, or <see langword="null" /> if the current

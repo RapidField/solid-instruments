@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         {
             Algorithm = algorithm.RejectIf().IsEqualToValue(DigitalSignatureAlgorithmSpecification.Unspecified, nameof(algorithm));
             ExpirationTimeStamp = expirationTimeStamp.RejectIf().IsEqualToValue(DateTime.MaxValue, nameof(expirationTimeStamp));
-            KeyMemory = new PinnedMemory(keyMemory.RejectIf().IsNullOrEmpty(nameof(keyMemory)).OrIf(argument => argument.Length != (algorithm.ToPublicKeyBitLength() / 8), nameof(keyMemory), $"The length of the specified key is invalid for the specified algorithm, \"{algorithm}\"."), true);
+            KeyMemory = new(keyMemory.RejectIf().IsNullOrEmpty(nameof(keyMemory)).OrIf(argument => argument.Length != (algorithm.ToPublicKeyBitLength() / 8), nameof(keyMemory), $"The length of the specified key is invalid for the specified algorithm, \"{algorithm}\"."), true);
             KeyPairIdentifier = keyPairIdentifier.RejectIf().IsEqualToValue(Guid.Empty, nameof(keyPairIdentifier));
             Purpose = AsymmetricKeyPurpose.DigitalSignature;
         }
@@ -160,7 +160,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public AsymmetricPublicKeyModel ToModel() => new AsymmetricPublicKeyModel(KeyPairIdentifier, ToBase64String(), ExpirationTimeStamp);
+        public AsymmetricPublicKeyModel ToModel() => new(KeyPairIdentifier, ToBase64String(), ExpirationTimeStamp);
 
         /// <summary>
         /// Converts the value of the current <see cref="DigitalSignaturePublicKey" /> to its equivalent string representation.

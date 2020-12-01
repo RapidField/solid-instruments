@@ -29,7 +29,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Where(value => value == true).Count().Should().BeGreaterOrEqualTo(45).And.BeLessOrEqualTo(135);
+                array.Where(value => value).Count().Should().BeGreaterOrEqualTo(45).And.BeLessOrEqualTo(135);
             }
         }
 

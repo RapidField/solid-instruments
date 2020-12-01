@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
-        public ValueTask DisposeAsync() => new ValueTask(Task.Factory.StartNew(Dispose));
+        public ValueTask DisposeAsync() => new(Task.Factory.StartNew(Dispose));
 
         /// <summary>
         /// Determines whether or not the current <see cref="ConcurrencyControlToken" /> is equal to the specified

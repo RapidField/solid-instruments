@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 modelCollection[i] = Random(randomnessProvider);
             }
 
-            return new SimulatedModel(time, integerCollection, modelCollection, stringValue);
+            return new(time, integerCollection, modelCollection, stringValue);
         }
 
         /// <summary>

@@ -66,9 +66,9 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
             : base(identifier, algorithm, keyLifespanDuration)
         {
             IsReconstituted = isReconstituted;
-            LazyPrivateKey = new Lazy<TPrivateKey>(InitializePrivateKey, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyProvider = new Lazy<TProvider>(InitializeProvider, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyPublicKey = new Lazy<TPublicKey>(InitializePublicKey, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyPrivateKey = new(InitializePrivateKey, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProvider = new(InitializeProvider, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyPublicKey = new(InitializePublicKey, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

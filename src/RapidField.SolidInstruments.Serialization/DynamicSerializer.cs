@@ -46,8 +46,8 @@ namespace RapidField.SolidInstruments.Serialization
         public DynamicSerializer(SerializationFormat format)
             : base(format)
         {
-            LazyJsonSerializer = new Lazy<DataContractJsonSerializer>(InitializeJsonSerializer, LazyThreadSafetyMode.PublicationOnly);
-            LazyXmlSerializer = new Lazy<DataContractSerializer>(InitializeXmlSerializer, LazyThreadSafetyMode.PublicationOnly);
+            LazyJsonSerializer = new(InitializeJsonSerializer, LazyThreadSafetyMode.PublicationOnly);
+            LazyXmlSerializer = new(InitializeXmlSerializer, LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>
@@ -320,9 +320,9 @@ namespace RapidField.SolidInstruments.Serialization
         /// Represents settings used by the JSON serializer.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly DataContractJsonSerializerSettings JsonSerializerSettings = new DataContractJsonSerializerSettings
+        private static readonly DataContractJsonSerializerSettings JsonSerializerSettings = new()
         {
-            DateTimeFormat = new DateTimeFormat(DateTimeSerializationFormatString),
+            DateTimeFormat = new(DateTimeSerializationFormatString),
             EmitTypeInformation = EmitTypeInformation.AsNeeded,
             SerializeReadOnlyTypes = false
         };
@@ -331,7 +331,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// Represents settings used by the XML serializer.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly DataContractSerializerSettings XmlSerializerSettings = new DataContractSerializerSettings
+        private static readonly DataContractSerializerSettings XmlSerializerSettings = new()
         {
             PreserveObjectReferences = false,
             SerializeReadOnlyTypes = false

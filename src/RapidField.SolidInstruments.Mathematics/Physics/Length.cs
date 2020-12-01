@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of centimeters.
         /// </summary>
-        public static Length FromCentimeters(Decimal value) => new Length(value / CentimetersPerMeter);
+        public static Length FromCentimeters(Decimal value) => new(value / CentimetersPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of feet.
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of feet.
         /// </summary>
-        public static Length FromFeet(Decimal value) => new Length(value / FeetPerMeter);
+        public static Length FromFeet(Decimal value) => new(value / FeetPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of inches.
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of inches.
         /// </summary>
-        public static Length FromInches(Decimal value) => new Length(value / InchesPerMeter);
+        public static Length FromInches(Decimal value) => new(value / InchesPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of kilometers.
@@ -78,7 +78,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of kilometers.
         /// </summary>
-        public static Length FromKilometers(Decimal value) => new Length(value / KilometersPerMeter);
+        public static Length FromKilometers(Decimal value) => new(value / KilometersPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of light-years.
@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of light-years.
         /// </summary>
-        public static Length FromLightYears(Decimal value) => new Length(value / LightYearsPerMeter);
+        public static Length FromLightYears(Decimal value) => new(value / LightYearsPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of meters.
@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of meters.
         /// </summary>
-        public static Length FromMeters(Decimal value) => new Length(value);
+        public static Length FromMeters(Decimal value) => new(value);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of miles.
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of miles.
         /// </summary>
-        public static Length FromMiles(Decimal value) => new Length(value / MilesPerMeter);
+        public static Length FromMiles(Decimal value) => new(value / MilesPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of millimeters.
@@ -118,7 +118,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of millimeters.
         /// </summary>
-        public static Length FromMillimeters(Decimal value) => new Length(value / MillimetersPerMeter);
+        public static Length FromMillimeters(Decimal value) => new(value / MillimetersPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of nanometers.
@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of nanometers.
         /// </summary>
-        public static Length FromNanometers(Decimal value) => new Length(value / NanometersPerMeter);
+        public static Length FromNanometers(Decimal value) => new(value / NanometersPerMeter);
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of yards.
@@ -138,7 +138,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of yards.
         /// </summary>
-        public static Length FromYards(Decimal value) => new Length(value / YardsPerMeter);
+        public static Length FromYards(Decimal value) => new(value / YardsPerMeter);
 
         /// <summary>
         /// Determines the difference between two <see cref="Length" /> values.
@@ -152,7 +152,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The distance between the specified <see cref="Length" /> instances.
         /// </returns>
-        public static Length operator -(Length subtrahend, Length minuend) => new Length(subtrahend.Meters - minuend.Meters);
+        public static Length operator -(Length subtrahend, Length minuend) => new(subtrahend.Meters - minuend.Meters);
 
         /// <summary>
         /// Negates the specified <see cref="Length" /> value.
@@ -163,7 +163,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The negative of the specified <see cref="Length" /> instance.
         /// </returns>
-        public static Length operator -(Length value) => new Length(-value.Meters);
+        public static Length operator -(Length value) => new(-value.Meters);
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Length" /> instances are not equal.
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Length" /> and the specified multiplier.
         /// </returns>
-        public static Length operator *(Length multiplicand, Decimal multiplier) => new Length(multiplicand.Meters * multiplier);
+        public static Length operator *(Length multiplicand, Decimal multiplier) => new(multiplicand.Meters * multiplier);
 
         /// <summary>
         /// Determines the quotient of a <see cref="Length" /> value and a divisor.
@@ -233,7 +233,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Length" /> and the specified divisor.
         /// </returns>
-        public static Length operator /(Length dividend, Decimal divisor) => new Length(dividend.Meters / divisor);
+        public static Length operator /(Length dividend, Decimal divisor) => new(dividend.Meters / divisor);
 
         /// <summary>
         /// Determines the sum of two <see cref="Length" /> values.
@@ -247,7 +247,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The sum of the specified <see cref="Length" /> instances.
         /// </returns>
-        public static Length operator +(Length augend, Length addend) => new Length(augend.Meters + addend.Meters);
+        public static Length operator +(Length augend, Length addend) => new(augend.Meters + addend.Meters);
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Length" /> instance is less than another supplied instance.
@@ -686,7 +686,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Represents the zero <see cref="Length" /> value.
         /// </summary>
-        public static readonly Length Zero = new Length(0m);
+        public static readonly Length Zero = new(0m);
 
         /// <summary>
         /// Represents the number of centimeters in an foot.

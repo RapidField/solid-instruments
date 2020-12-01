@@ -224,7 +224,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <summary>
         /// Represents the default hexadecimal encoding specification.
         /// </summary>
-        public new static readonly HexadecimalEncoding Default = new HexadecimalEncoding();
+        public new static readonly HexadecimalEncoding Default = new();
 
         /// <summary>
         /// Represents the number of bits in a byte.

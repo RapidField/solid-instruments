@@ -44,8 +44,8 @@ namespace RapidField.SolidInstruments.Core.Caching
             : base(strategy == InMemoryCachingStrategy.NoCaching ? ConcurrencyControlMode.Unconstrained : ConcurrencyControlMode.ProcessorCountSemaphore)
         {
             Strategy = strategy.RejectIf().IsEqualToValue(InMemoryCachingStrategy.Unspecified, nameof(strategy));
-            LazyCache = IsOperative ? new Lazy<MemoryCache>(InitializeCache, LazyThreadSafetyMode.ExecutionAndPublication) : null;
-            LazyCacheOptions = IsOperative ? new Lazy<IOptions<MemoryCacheOptions>>(InitializeCacheOptions, LazyThreadSafetyMode.ExecutionAndPublication) : null;
+            LazyCache = IsOperative ? new(InitializeCache, LazyThreadSafetyMode.ExecutionAndPublication) : null;
+            LazyCacheOptions = IsOperative ? new(InitializeCacheOptions, LazyThreadSafetyMode.ExecutionAndPublication) : null;
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// A new <see cref="MemoryCache" />.
         /// </returns>
         [DebuggerHidden]
-        private MemoryCache InitializeCache() => new MemoryCache(CacheOptions);
+        private MemoryCache InitializeCache() => new(CacheOptions);
 
         /// <summary>
         /// Initializes the configuration options for <see cref="Cache" />.

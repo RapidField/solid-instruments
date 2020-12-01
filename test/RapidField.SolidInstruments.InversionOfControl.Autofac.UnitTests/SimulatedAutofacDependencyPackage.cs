@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac.UnitTests
         /// <returns>
         /// The package's dependency modules.
         /// </returns>
-        protected override IEnumerable<IDependencyModule<ContainerBuilder>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ContainerBuilder>[]
+        protected override IEnumerable<IDependencyModule<ContainerBuilder>> CreateModules(IConfiguration applicationConfiguration) => new[]
         {
             new SimulatedAutofacDependencyModule(applicationConfiguration)
         };

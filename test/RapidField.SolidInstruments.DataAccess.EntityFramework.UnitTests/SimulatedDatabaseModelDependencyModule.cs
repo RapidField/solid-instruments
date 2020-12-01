@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
         protected override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             // Register unit-of-work types.
-            configurator.AddScoped<SimulatedContext, SimulatedInMemoryContext>(provider => new SimulatedInMemoryContext(provider.GetService<IConfiguration>(), "Simulated"));
+            configurator.AddScoped<SimulatedContext, SimulatedInMemoryContext>(provider => new(provider.GetService<IConfiguration>(), "Simulated"));
             configurator.AddScoped<SimulatedRepositoryFactory>();
 
             // Register data access command handlers.

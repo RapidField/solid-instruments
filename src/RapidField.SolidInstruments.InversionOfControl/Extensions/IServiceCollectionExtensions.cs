@@ -118,6 +118,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.Extensions
         /// Represents a finalizer for static members of the <see cref="IServiceCollectionExtensions" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
     }
 }

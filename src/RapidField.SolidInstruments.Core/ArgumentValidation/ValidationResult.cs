@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
                 throw new ArgumentException(exceptionMessage, targetParameterName);
             }
 
-            return new ValidationResult<TArgument>(Target);
+            return new(Target);
         }
 
         /// <summary>

@@ -387,7 +387,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Represents a static <see cref="Nix" /> instance.
         /// </summary>
-        public static readonly Nix Instance = new Nix(0x00);
+        public static readonly Nix Instance = new(0x00);
 
         /// <summary>
         /// Represents a static reference to the <see cref="Nix" /> type.

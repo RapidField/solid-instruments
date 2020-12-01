@@ -91,7 +91,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         protected sealed override EcdhPrivateKey InitializePrivateKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider, Boolean isReconstituted)
         {
             using var keySource = new PinnedMemory(provider.ExportECPrivateKey());
-            return new EcdhPrivateKey(Identifier, algorithm, keySource, KeyLifespanDuration);
+            return new(Identifier, algorithm, keySource, KeyLifespanDuration);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         protected sealed override EcdhPublicKey InitializePublicKey(KeyExchangeAlgorithmSpecification algorithm, ECDiffieHellman provider, Boolean isReconstituted)
         {
             var keyMemory = provider.ExportSubjectPublicKeyInfo();
-            return new EcdhPublicKey(Identifier, algorithm, keyMemory, KeyLifespanDuration);
+            return new(Identifier, algorithm, keyMemory, KeyLifespanDuration);
         }
 
         /// <summary>

@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         protected DependencyEngine(IConfiguration applicationConfiguration, IDependencyPackage<TConfigurator> package, IServiceCollection serviceDescriptors)
             : base(applicationConfiguration, package)
         {
-            LazyProviderFactory = new Lazy<ServiceProviderFactory>(CreateProviderFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProviderFactory = new(CreateProviderFactory, LazyThreadSafetyMode.ExecutionAndPublication);
             ServiceDescriptors = serviceDescriptors.RejectIf().IsNull(nameof(serviceDescriptors)).TargetArgument;
         }
 
@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         {
             ApplicationConfiguration = applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument;
             ConfigureContainerAction = (configuration, configurator) => ConfigureContainer(configuration, configurator);
-            LazyServiceInjector = new Lazy<IServiceInjector<TConfigurator>>(CreateServiceInjector, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyServiceInjector = new(CreateServiceInjector, LazyThreadSafetyMode.ExecutionAndPublication);
             Package = package.RejectIf().IsNull(nameof(package)).TargetArgument;
         }
 
@@ -343,8 +343,8 @@ namespace RapidField.SolidInstruments.InversionOfControl
         protected DependencyEngine()
             : base()
         {
-            LazyContainer = new Lazy<IDependencyContainer>(CreateContainer, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyProvider = new Lazy<IServiceProvider>(CreateProvider, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyContainer = new(CreateContainer, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyProvider = new(CreateProvider, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>

@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a singleton instance of the <see cref="TimeStamp" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly TimeStamp Instance = new TimeStamp();
+        internal static readonly TimeStamp Instance = new();
 
         /// <summary>
         /// Represents the default concurrency control mode for new <see cref="TimeStamp" /> instances.
@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a finalizer for static members of the <see cref="TimeStamp" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents the <see cref="DateTimeKind" /> that is used by the current <see cref="TimeStamp" /> when producing the

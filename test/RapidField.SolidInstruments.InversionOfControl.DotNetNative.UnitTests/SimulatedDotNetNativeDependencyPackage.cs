@@ -31,7 +31,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative.UnitTests
         /// <returns>
         /// The package's dependency modules.
         /// </returns>
-        protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new IDependencyModule<ServiceCollection>[]
+        protected override IEnumerable<IDependencyModule<ServiceCollection>> CreateModules(IConfiguration applicationConfiguration) => new[]
         {
             new SimulatedDotNetNativeDependencyModule(applicationConfiguration)
         };

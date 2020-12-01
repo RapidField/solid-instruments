@@ -66,7 +66,7 @@ namespace RapidField.SolidInstruments.Cryptography
             Algorithm = algorithm.RejectIf().IsEqualToValue(default, nameof(algorithm));
             DerivationMode = derivationMode.RejectIf().IsEqualToValue(CryptographicKeyDerivationMode.Unspecified, nameof(derivationMode));
             KeySource = new SecureMemory(KeySourceLengthInBytes);
-            LazyPbkdf2Provider = new Lazy<Rfc2898DeriveBytes>(InitializePbkdf2Algorithm, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyPbkdf2Provider = new(InitializePbkdf2Algorithm, LazyThreadSafetyMode.ExecutionAndPublication);
 
             // Gather information about the derived key.
             DerivedKeyLength = derivedKeyLengthInBits.RejectIf().IsLessThanOrEqualTo(0, nameof(derivedKeyLengthInBits)).TargetArgument / 8;
@@ -406,7 +406,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// probably few good reasons to.
         /// </remarks>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static readonly PinnedMemory SecureMemoryEncryptionKey = new PinnedMemory(new Byte[]
+        internal static readonly PinnedMemory SecureMemoryEncryptionKey = new(new Byte[]
         {
             0xaa, 0xf0, 0xcc, 0xff, 0x00, 0x33, 0x0f, 0x55, 0xff, 0xcc, 0xf0, 0xaa, 0x55, 0x0f, 0x33, 0x00
         });
@@ -451,7 +451,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Represents a finalizer for static members of the <see cref="CryptographicKey{TAlgorithm}" /> class.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new StaticMemberFinalizer(FinalizeStaticMembers);
+        private static readonly StaticMemberFinalizer StaticMemberFinalizer = new(FinalizeStaticMembers);
 
         /// <summary>
         /// Represents the substitution bytes that are used to fulfill key derivation operations when <see cref="DerivationMode" />
@@ -586,7 +586,7 @@ namespace RapidField.SolidInstruments.Cryptography
             using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(keyMaterial, PasswordSaltHashingAlgorithm)))
             {
                 var pbkdf2Provider = new Rfc2898DeriveBytes(keyMaterial, saltBytes, Pbkdf2MinimumIterationCount);
-                return new PinnedMemory(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
+                return new(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
             }
         }
 

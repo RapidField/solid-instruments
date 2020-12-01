@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory
         /// <returns>
         /// The implementation-specific message.
         /// </returns>
-        protected sealed override PrimitiveMessage ConvertForward<TMessage>(TMessage message, ISerializer<TMessage> serializer) => new PrimitiveMessage(message, new MessageLockToken(Guid.NewGuid(), message.Identifier), MessageSerializationFormat);
+        protected sealed override PrimitiveMessage ConvertForward<TMessage>(TMessage message, ISerializer<TMessage> serializer) => new(message, new(Guid.NewGuid(), message.Identifier), MessageSerializationFormat);
 
         /// <summary>
         /// Converts the specified implementation-specific message to a general-format message.

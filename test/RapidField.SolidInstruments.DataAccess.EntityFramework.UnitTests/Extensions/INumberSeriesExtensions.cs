@@ -21,6 +21,6 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Exten
         /// <returns>
         /// The converted object.
         /// </returns>
-        public static NumberSeries ToSimulatedDatabaseEntity(this INumberSeries target) => new NumberSeries(target);
+        public static NumberSeries ToSimulatedDatabaseEntity(this INumberSeries target) => new(target);
     }
 }

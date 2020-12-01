@@ -569,7 +569,7 @@ namespace RapidField.SolidInstruments.Messaging
                 var labelOneString = matchGroups.Where(group => group.Success && group.Name == PatternGroupNameForLabelTokenOne).SingleOrDefault()?.Value;
                 var labelTwoString = matchGroups.Where(group => group.Success && group.Name == PatternGroupNameForLabelTokenTwo).SingleOrDefault()?.Value;
                 var labelThreeString = matchGroups.Where(group => group.Success && group.Name == PatternGroupNameForLabelTokenThree).SingleOrDefault()?.Value;
-                result = new MessagingEntityPath(messageTypeString, prefixString, labelOneString, labelTwoString, labelThreeString);
+                result = new(messageTypeString, prefixString, labelOneString, labelTwoString, labelThreeString);
                 return true;
             }
             catch (Exception exception)

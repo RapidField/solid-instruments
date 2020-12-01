@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature.E
         protected sealed override EcdsaPrivateKey InitializePrivateKey(DigitalSignatureAlgorithmSpecification algorithm, ECDsa provider, Boolean isReconstituted)
         {
             using var keySource = new PinnedMemory(provider.ExportECPrivateKey());
-            return new EcdsaPrivateKey(Identifier, algorithm, keySource, KeyLifespanDuration);
+            return new(Identifier, algorithm, keySource, KeyLifespanDuration);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature.E
         protected sealed override EcdsaPublicKey InitializePublicKey(DigitalSignatureAlgorithmSpecification algorithm, ECDsa provider, Boolean isReconstituted)
         {
             var keyMemory = provider.ExportSubjectPublicKeyInfo();
-            return new EcdsaPublicKey(Identifier, algorithm, keyMemory, KeyLifespanDuration);
+            return new(Identifier, algorithm, keyMemory, KeyLifespanDuration);
         }
 
         /// <summary>

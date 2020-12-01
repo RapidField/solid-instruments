@@ -54,6 +54,6 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests.MessageListen
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
-        protected override AssociatedResponseMessage Process(AssociatedRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => new AssociatedResponseMessage(command.Identifier, command.CorrelationIdentifier);
+        protected override AssociatedResponseMessage Process(AssociatedRequestMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => new(command.Identifier, command.CorrelationIdentifier);
     }
 }

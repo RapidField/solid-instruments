@@ -573,6 +573,6 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// subscription name.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<String, MessageQueue> SubscriptionQueues = new ConcurrentDictionary<String, MessageQueue>();
+        private readonly ConcurrentDictionary<String, MessageQueue> SubscriptionQueues = new();
     }
 }

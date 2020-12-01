@@ -108,8 +108,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
         {
             DefinitionConfigurator = definitionConfigurator.RejectIf().IsNull(nameof(definitionConfigurator));
             Factory = factory.RejectIf().IsNull(nameof(factory)).TargetArgument;
-            LazyInstanceDictionary = new Lazy<IDictionary<Type, Object>>(InitializeInstanceDictionary, LazyThreadSafetyMode.ExecutionAndPublication);
-            LazyInstanceGroup = new Lazy<IFactoryProducedInstanceGroup>(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
+            LazyInstanceDictionary = new(InitializeInstanceDictionary, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyInstanceGroup = new(InitializeInstanceGroup, LazyThreadSafetyMode.PublicationOnly);
             ManagesFactory = managesFactory;
         }
 
@@ -422,7 +422,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             internal ContainerObjectFactory(IConfiguration applicationConfiguration, Action<IObjectFactoryConfigurationProductionFunctions> factoryConfigurator)
                 : base(applicationConfiguration)
             {
-                FactoryConfigurator = new Action<IObjectFactoryConfigurationProductionFunctions<Object>>((functions) =>
+                FactoryConfigurator = new((functions) =>
                 {
                     factoryConfigurator(new ObjectFactoryConfigurationProductionFunctions(functions));
                 });

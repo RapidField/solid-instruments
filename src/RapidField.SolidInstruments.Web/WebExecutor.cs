@@ -432,7 +432,7 @@ namespace RapidField.SolidInstruments.Web
         /// <returns>
         /// The dependency package.
         /// </returns>
-        protected virtual TDependencyPackage CreateDependencyPackage(IConfiguration applicationConfiguration) => new TDependencyPackage();
+        protected virtual TDependencyPackage CreateDependencyPackage(IConfiguration applicationConfiguration) => new();
 
         /// <summary>
         /// Creates the service provider factory.

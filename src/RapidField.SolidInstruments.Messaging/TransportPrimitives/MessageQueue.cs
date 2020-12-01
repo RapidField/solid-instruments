@@ -373,12 +373,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Represents the underlying first-in first-out collection that contains messages that are locked for processing.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentDictionary<MessageLockToken, PrimitiveMessage> LockedMessages = new ConcurrentDictionary<MessageLockToken, PrimitiveMessage>();
+        private readonly ConcurrentDictionary<MessageLockToken, PrimitiveMessage> LockedMessages = new();
 
         /// <summary>
         /// Represents the underlying first-in first-out collection that contains enqueued messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ConcurrentQueue<PrimitiveMessage> Messages = new ConcurrentQueue<PrimitiveMessage>();
+        private readonly ConcurrentQueue<PrimitiveMessage> Messages = new();
     }
 }

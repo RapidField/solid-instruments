@@ -33,7 +33,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
             : base(blockTimeoutThreshold)
         {
             MaximumConcurrencyLimit = maximumConcurrencyLimit.RejectIf().IsLessThan(1, nameof(maximumConcurrencyLimit));
-            Semaphore = new SemaphoreSlim(MaximumConcurrencyLimit);
+            Semaphore = new(MaximumConcurrencyLimit);
         }
 
         /// <summary>

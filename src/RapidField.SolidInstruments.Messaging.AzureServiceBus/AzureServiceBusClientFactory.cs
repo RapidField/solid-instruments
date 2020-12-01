@@ -30,7 +30,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         public AzureServiceBusClientFactory(ServiceBusConnection connection)
             : base(connection)
         {
-            ManagementClient = new ManagementClient(connection.Endpoint.ToString(), connection.TokenProvider);
+            ManagementClient = new(connection.Endpoint.ToString(), connection.TokenProvider);
         }
 
         /// <summary>
@@ -275,21 +275,21 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// <see cref="EnsureQueueExistanceAsync(IMessagingEntityPath)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Object EnsureQueueExistenceSyncRoot = new Object();
+        private static readonly Object EnsureQueueExistenceSyncRoot = new();
 
         /// <summary>
         /// Represents an object that is used to synchronize access to
         /// <see cref="EnsureSubscriptionExistanceAsync(IMessagingEntityPath, String)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Object EnsureSubscriptionExistenceSyncRoot = new Object();
+        private static readonly Object EnsureSubscriptionExistenceSyncRoot = new();
 
         /// <summary>
         /// Represents an object that is used to synchronize access to
         /// <see cref="EnsureTopicExistanceAsync(IMessagingEntityPath)" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Object EnsureTopicExistenceSyncRoot = new Object();
+        private static readonly Object EnsureTopicExistenceSyncRoot = new();
 
         /// <summary>
         /// Represents the behavior used by clients when retrying an operation.

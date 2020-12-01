@@ -129,12 +129,12 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Represents the default retry behavior.
         /// </summary>
-        public static readonly MessageListeningRetryPolicy Default = new MessageListeningRetryPolicy();
+        public static readonly MessageListeningRetryPolicy Default = new();
 
         /// <summary>
         /// Represents retry behavior that instructs the listener not to retry processing for the message.
         /// </summary>
-        public static readonly MessageListeningRetryPolicy DoNotRetry = new MessageListeningRetryPolicy(0);
+        public static readonly MessageListeningRetryPolicy DoNotRetry = new(0);
 
         /// <summary>
         /// Represents the default number of seconds to wait between retries, or the duration, in seconds, from which to scale

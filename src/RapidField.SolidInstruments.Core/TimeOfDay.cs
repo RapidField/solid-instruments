@@ -288,7 +288,7 @@ namespace RapidField.SolidInstruments.Core
                 return false;
             }
 
-            result = new TimeOfDay(zone, hour, minute, second, millisecond);
+            result = new(zone, hour, minute, second, millisecond);
             return true;
         }
 
@@ -298,7 +298,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A <see cref="TimeOfDay" /> representing the start of the hour of the current <see cref="TimeOfDay" />.
         /// </returns>
-        public TimeOfDay BeginningOfThisHour() => new TimeOfDay(Zone, Hour, 0, 0, 0);
+        public TimeOfDay BeginningOfThisHour() => new(Zone, Hour, 0, 0, 0);
 
         /// <summary>
         /// Defines a <see cref="TimeOfDay" /> representing the start of the minute of the current <see cref="TimeOfDay" />.
@@ -306,7 +306,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A <see cref="TimeOfDay" /> representing the start of the minute of the current <see cref="TimeOfDay" />.
         /// </returns>
-        public TimeOfDay BeginningOfThisMinute() => new TimeOfDay(Zone, Hour, Minute, 0, 0);
+        public TimeOfDay BeginningOfThisMinute() => new(Zone, Hour, Minute, 0, 0);
 
         /// <summary>
         /// Defines a <see cref="TimeOfDay" /> representing the start of the second of the current <see cref="TimeOfDay" />.
@@ -314,7 +314,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A <see cref="TimeOfDay" /> representing the start of the second of the current <see cref="TimeOfDay" />.
         /// </returns>
-        public TimeOfDay BeginningOfThisSecond() => new TimeOfDay(Zone, Hour, Minute, Second, 0);
+        public TimeOfDay BeginningOfThisSecond() => new(Zone, Hour, Minute, Second, 0);
 
         /// <summary>
         /// Creates a new <see cref="TimeOfDay" /> that is an identical copy of the current <see cref="TimeOfDay" />.
@@ -649,7 +649,7 @@ namespace RapidField.SolidInstruments.Core
                 utcHour -= 24;
             }
 
-            return new TimeOfDay(TimeZoneInfo.Utc, utcHour, utcMinute, Second, Millisecond);
+            return new(TimeZoneInfo.Utc, utcHour, utcMinute, Second, Millisecond);
         }
 
         /// <summary>

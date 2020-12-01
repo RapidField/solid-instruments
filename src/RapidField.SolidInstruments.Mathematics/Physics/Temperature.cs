@@ -48,7 +48,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Fahrenheit.
         /// </summary>
-        public static Temperature FromDegreesFahrenheit(Decimal value) => new Temperature((value - 32m) * (5m / 9m));
+        public static Temperature FromDegreesFahrenheit(Decimal value) => new((value - 32m) * (5m / 9m));
 
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Celsius.
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Celsius.
         /// </summary>
-        public static Temperature FromDegreesCelsius(Decimal value) => new Temperature(value);
+        public static Temperature FromDegreesCelsius(Decimal value) => new(value);
 
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of kelvins.
@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of kelvins.
         /// </summary>
-        public static Temperature FromKelvins(Decimal value) => new Temperature(value - 273.15m);
+        public static Temperature FromKelvins(Decimal value) => new(value - 273.15m);
 
         /// <summary>
         /// Determines the difference between two <see cref="Temperature" /> values.
@@ -82,7 +82,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The temperature between the specified <see cref="Temperature" /> instances.
         /// </returns>
-        public static Temperature operator -(Temperature subtrahend, Temperature minuend) => new Temperature(subtrahend.DegreesCelsius - minuend.DegreesCelsius);
+        public static Temperature operator -(Temperature subtrahend, Temperature minuend) => new(subtrahend.DegreesCelsius - minuend.DegreesCelsius);
 
         /// <summary>
         /// Negates the specified <see cref="Temperature" /> value.
@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The negative of the specified <see cref="Temperature" /> instance.
         /// </returns>
-        public static Temperature operator -(Temperature value) => new Temperature(-value.DegreesCelsius);
+        public static Temperature operator -(Temperature value) => new(-value.DegreesCelsius);
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Temperature" /> instances are not equal.
@@ -135,7 +135,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Temperature" /> and the specified multiplier.
         /// </returns>
-        public static Temperature operator *(Temperature multiplicand, Decimal multiplier) => new Temperature(multiplicand.DegreesCelsius * multiplier);
+        public static Temperature operator *(Temperature multiplicand, Decimal multiplier) => new(multiplicand.DegreesCelsius * multiplier);
 
         /// <summary>
         /// Determines the quotient of a <see cref="Temperature" /> value and a divisor.
@@ -163,7 +163,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Temperature" /> and the specified divisor.
         /// </returns>
-        public static Temperature operator /(Temperature dividend, Decimal divisor) => new Temperature(dividend.DegreesCelsius / divisor);
+        public static Temperature operator /(Temperature dividend, Decimal divisor) => new(dividend.DegreesCelsius / divisor);
 
         /// <summary>
         /// Determines the sum of two <see cref="Temperature" /> values.
@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The sum of the specified <see cref="Temperature" /> instances.
         /// </returns>
-        public static Temperature operator +(Temperature augend, Temperature addend) => new Temperature(augend.DegreesCelsius + addend.DegreesCelsius);
+        public static Temperature operator +(Temperature augend, Temperature addend) => new(augend.DegreesCelsius + addend.DegreesCelsius);
 
         /// <summary>
         /// Determines whether or not a supplied <see cref="Temperature" /> instance is less than another supplied instance.

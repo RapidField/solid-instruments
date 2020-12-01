@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Collections
             Handle = GCHandle.Alloc(field.RejectIf().IsNull(nameof(field)).TargetArgument, GCHandleType.Pinned);
             Field = (T[])Handle.Target;
             HandleIsActive = true;
-            LazyFieldMemory = new Lazy<Memory<T>>(InitializeFieldMemory, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyFieldMemory = new(InitializeFieldMemory, LazyThreadSafetyMode.ExecutionAndPublication);
             Length = field.Length;
             Pointer = Handle.AddrOfPinnedObject();
         }
@@ -230,7 +230,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Initializes the lazily-initialized structure collection as a <see cref="Memory{T}" />.
         /// </summary>
         [DebuggerHidden]
-        private Memory<T> InitializeFieldMemory() => new Memory<T>(Field);
+        private Memory<T> InitializeFieldMemory() => new(Field);
 
         /// <summary>
         /// Gets a value indicating whether or not the memory field is empty.

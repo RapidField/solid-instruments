@@ -410,13 +410,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// Represents a lazily-initialized collection of outstanding requests that key pending response messages.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<ConcurrentDictionary<Guid, IMessageBase>> LazyOutstandingRequests = new Lazy<ConcurrentDictionary<Guid, IMessageBase>>(() => new ConcurrentDictionary<Guid, IMessageBase>(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<ConcurrentDictionary<Guid, IMessageBase>> LazyOutstandingRequests = new(() => new(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Represents a lazily-initialized collection of unprocessed response messages that are keyed by request message
         /// identifier.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Lazy<ConcurrentDictionary<Guid, IResponseMessage>> LazyUnprocessedResponses = new Lazy<ConcurrentDictionary<Guid, IResponseMessage>>(() => new ConcurrentDictionary<Guid, IResponseMessage>(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private readonly Lazy<ConcurrentDictionary<Guid, IResponseMessage>> LazyUnprocessedResponses = new(() => new(), LazyThreadSafetyMode.ExecutionAndPublication);
     }
 }

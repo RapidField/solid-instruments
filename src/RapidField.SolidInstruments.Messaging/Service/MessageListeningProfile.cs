@@ -291,6 +291,6 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <see cref="MessagingServiceExecutor{TDependencyPackage, TDependencyConfigurator, TDependencyEngine}" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly List<Type> SupportedMessageTypesReference = new List<Type>();
+        private readonly List<Type> SupportedMessageTypesReference = new();
     }
 }

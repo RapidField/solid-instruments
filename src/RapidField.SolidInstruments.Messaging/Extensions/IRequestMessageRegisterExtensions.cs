@@ -38,6 +38,6 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
-        public static PingRequestMessage Ping(this IRequestMessageRegister target, Guid correlationIdentifier) => new PingRequestMessage(correlationIdentifier);
+        public static PingRequestMessage Ping(this IRequestMessageRegister target, Guid correlationIdentifier) => new(correlationIdentifier);
     }
 }

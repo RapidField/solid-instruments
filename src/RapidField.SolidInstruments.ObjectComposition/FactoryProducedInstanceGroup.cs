@@ -92,7 +92,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             where T : class
         {
             RejectIfDisposed();
-            return new Lazy<T>(() => Get<T>(), LazyThreadSafetyMode.PublicationOnly);
+            return new(() => Get<T>(), LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>
