@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Nix a, Nix b) => a == b == false;
+        public static Boolean operator !=(Nix a, Nix b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="Nix" /> instance is less than another specified instance.

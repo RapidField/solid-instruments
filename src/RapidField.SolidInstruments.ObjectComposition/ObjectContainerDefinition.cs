@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ObjectContainerDefinition a, IObjectContainerDefinition b) => a == b == false;
+        public static Boolean operator !=(ObjectContainerDefinition a, IObjectContainerDefinition b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ObjectContainerDefinition" /> instance is less than another specified

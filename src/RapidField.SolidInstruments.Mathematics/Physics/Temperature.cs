@@ -107,7 +107,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Temperature a, Temperature b) => a == b == false;
+        public static Boolean operator !=(Temperature a, Temperature b) => (a == b) is false;
 
         /// <summary>
         /// Determines the product of a <see cref="Temperature" /> value and a multiplier.
@@ -444,7 +444,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
 
                 foreach (var character in processedString)
                 {
-                    if (numericSubstringIsComplete == false)
+                    if (numericSubstringIsComplete is false)
                     {
                         if (character.IsNumeric() || character == '.')
                         {

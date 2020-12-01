@@ -40,9 +40,9 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
 
         private void OnStopping(ICommandMediator mediator)
         {
-            Thread.Sleep(2584);
-
             // Arrange.
+            var customers = SimulatedServiceState.Customers;
+            Thread.Sleep(2584);
             var acmeCoCustomer = CustomerModel.Named.AcmeCo;
             var smithIndustriesCustomer = CustomerModel.Named.SmithIndustries;
 
@@ -51,8 +51,8 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
             mediator.Process(new CreateCustomerCommandMessage(new CreateCustomerCommand(smithIndustriesCustomer)));
 
             // Assert.
-            Thread.Sleep(10946);
-            SimulatedServiceState.Customers.Should().HaveCount(2);
+            Thread.Sleep(6765);
+            customers.Should().HaveCount(2);
 
             // Act.
             acmeCoCustomer.Name = "New Acme Corporation";
@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
 
             // Assert.
             Thread.Sleep(6765);
-            SimulatedServiceState.Customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name.Should().Be(acmeCoCustomer.Name);
+            customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name.Should().Be(acmeCoCustomer.Name);
 
             // Act.
             var pingCorrelationIdentifier = Guid.NewGuid();

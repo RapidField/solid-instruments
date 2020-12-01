@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// </exception>
         public static Uri AppendQueryStringData(this Uri target, IDictionary<String, String> queryStringData)
         {
-            if (target.IsAbsoluteUri == false)
+            if (target.IsAbsoluteUri is false)
             {
                 throw new InvalidOperationException($"{nameof(AppendQueryStringData)} cannot be invoked against instances representing relative URIs.");
             }

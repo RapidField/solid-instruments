@@ -120,7 +120,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             if (leftChild is not null)
             {
-                if (AddChild(leftChild) == false)
+                if (AddChild(leftChild) is false)
                 {
                     throw new ArgumentException("The specified left child is invalid.", nameof(leftChild));
                 }
@@ -132,7 +132,7 @@ namespace RapidField.SolidInstruments.Collections
 
             if (rightChild is not null)
             {
-                if (AddChild(rightChild) == false)
+                if (AddChild(rightChild) is false)
                 {
                     throw new ArgumentException("The specified right child is invalid.", nameof(rightChild));
                 }

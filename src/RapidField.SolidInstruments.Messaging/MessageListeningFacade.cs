@@ -88,7 +88,7 @@ namespace RapidField.SolidInstruments.Messaging
                 {
                     RejectIfDisposed();
 
-                    if (TryAddListenedMessageType<TRequestMessage>(controlToken) == false)
+                    if (TryAddListenedMessageType<TRequestMessage>(controlToken) is false)
                     {
                         // Disallow registration of duplicate request handlers.
                         return;
@@ -453,7 +453,7 @@ namespace RapidField.SolidInstruments.Messaging
             {
                 RejectIfDisposed();
 
-                if (TryAddListenedMessageType<TMessage>(controlToken) == false)
+                if (TryAddListenedMessageType<TMessage>(controlToken) is false)
                 {
                     if (ResponseMessageInterfaceType.IsAssignableFrom(typeof(TMessage)))
                     {

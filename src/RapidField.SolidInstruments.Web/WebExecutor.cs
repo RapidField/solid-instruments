@@ -200,17 +200,17 @@ namespace RapidField.SolidInstruments.Web
                 var applicationName = ApplicationName?.Trim();
                 var copyrightNotice = CopyrightNotice?.Trim();
 
-                if (productName.IsNullOrEmpty() == false)
+                if (productName.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(productName);
                 }
 
-                if (applicationName.IsNullOrEmpty() == false)
+                if (applicationName.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(applicationName);
                 }
 
-                if (copyrightNotice.IsNullOrEmpty() == false)
+                if (copyrightNotice.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(copyrightNotice);
                 }
@@ -373,7 +373,7 @@ namespace RapidField.SolidInstruments.Web
                 configurationBuilder = configurationBuilder.AddEnvironmentVariables(prefix);
             }
 
-            if (CommandLineArguments.IsNullOrEmpty() == false)
+            if (CommandLineArguments.IsNullOrEmpty() is false)
             {
                 configurationBuilder = configurationBuilder.AddCommandLine(CommandLineArguments);
             }

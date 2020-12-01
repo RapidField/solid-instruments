@@ -212,7 +212,7 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             try
             {
-                if (IsDisposed == false)
+                if (IsDisposed is false)
                 {
                     Cipher?.Dispose();
                     CiphertextField?.Dispose();
@@ -461,7 +461,7 @@ namespace RapidField.SolidInstruments.Cryptography
             {
                 try
                 {
-                    if (IsDisposed == false)
+                    if (IsDisposed is false)
                     {
                         ReferenceKey = default;
 

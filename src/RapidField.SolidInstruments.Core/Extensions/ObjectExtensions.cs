@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
     public static class ObjectExtensions
     {
         /// <summary>
-        /// Reflectively interrogates the current object to determine its total size, in bytes, in memory.
+        /// Reflectively interrogates the current object to determine the total number of bytes that it occupies in memory.
         /// </summary>
         /// <param name="target">
         /// The current instance of the <see cref="Object" />.
@@ -123,18 +123,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Reflectively interrogates the current value object to determine its total size, in bytes, in memory.
-        /// </summary>
-        /// <param name="target">
-        /// The current instance of the <see cref="Object" />.
-        /// </param>
-        /// <returns>
-        /// The total size of the current value object, in bytes.
-        /// </returns>
-        [DebuggerHidden]
-        private static Int32 CalculateValueSizeInBytes(this Object target) => target is null ? 0 : Marshal.SizeOf(target);
-
-        /// <summary>
         /// Converts the specified serialized object to its typed equivalent.
         /// </summary>
         /// <param name="serializer">
@@ -188,7 +176,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         [DebuggerHidden]
         private static void FlattenCollectionGraph(this Object target, IList<IEnumerable> collections, IList<Object> references, IList<Object> values)
         {
-            if (target is IEnumerable collection && collections.Contains(collection) == false)
+            if (target is IEnumerable collection && collections.Contains(collection) is false)
             {
                 collections.Add(collection);
 
@@ -268,7 +256,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FlattenReferenceGraph(this Object target, Type targetType, IList<IEnumerable> collections, IList<Object> references, IList<Object> values)
         {
-            if (references.Contains(target) == false)
+            if (references.Contains(target) is false)
             {
                 references.Add(target);
 
@@ -338,17 +326,11 @@ namespace RapidField.SolidInstruments.Core.Extensions
         }
 
         /// <summary>
-        /// Represents the <see cref="DateTime" /> format string that is used by <see cref="GetImpliedHashCode(Object)" /> to
-        /// serialize objects.
+        /// Represents the <see cref="DateTime" /> format string that is used by <see cref="GetImpliedHashCode(Object)" /> and
+        /// <see cref="GetSerializedClone(Object)" /> to serialize objects.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DateTimeSerializationFormatString = "o";
-
-        /// <summary>
-        /// Represents the <see cref="IEnumerable{T}" /> type.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Type CollectionGenericInterfaceType = typeof(IEnumerable<>);
 
         /// <summary>
         /// Represents the <see cref="IEnumerable" /> type.

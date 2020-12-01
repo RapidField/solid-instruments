@@ -492,7 +492,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction, IConcurrencyControlToken controlToken)
         {
-            if (HasValue == false)
+            if (HasValue is false)
             {
                 throw new InvalidOperationException($"The secret does not have a value. This exception can be avoided by evaluating {nameof(HasValue)} before performing a read operation.");
             }
@@ -628,7 +628,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 var value = writeFunction();
 
-                if (ValueType.IsValueType == false && value is null)
+                if (ValueType.IsValueType is false && value is null)
                 {
                     throw new SecretAccessException("The specified write function produced a null secret value.");
                 }

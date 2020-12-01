@@ -254,7 +254,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             try
             {
-                if (IsDisposed == false && OverwriteWithZerosOnDispose)
+                if (IsDisposed is false && OverwriteWithZerosOnDispose)
                 {
                     OverwriteWithZeros(this);
                 }

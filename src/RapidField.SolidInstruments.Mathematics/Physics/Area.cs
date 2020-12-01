@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Area a, Area b) => a == b == false;
+        public static Boolean operator !=(Area a, Area b) => (a == b) is false;
 
         /// <summary>
         /// Determines the product of an <see cref="Area" /> value and a multiplier.
@@ -509,7 +509,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
 
                 foreach (var character in processedString)
                 {
-                    if (numericSubstringIsComplete == false)
+                    if (numericSubstringIsComplete is false)
                     {
                         if (character.IsNumeric() || character == '.')
                         {

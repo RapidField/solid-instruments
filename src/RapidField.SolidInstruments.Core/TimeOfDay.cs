@@ -135,7 +135,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(TimeOfDay a, TimeOfDay b) => a == b == false;
+        public static Boolean operator !=(TimeOfDay a, TimeOfDay b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="TimeOfDay" /> instance is less than another specified instance.
@@ -262,7 +262,7 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean TryParse(String input, out TimeOfDay result)
         {
-            if (Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, false) == false)
+            if (Parse(input, out var zone, out var hour, out var minute, out var second, out var millisecond, false) is false)
             {
                 result = null;
                 return false;
@@ -783,7 +783,7 @@ namespace RapidField.SolidInstruments.Core
                     second = Int32.Parse(secondString);
                     millisecond = Int32.Parse(millisecondString);
                 }
-                else if (Int32.TryParse(hourString, out hour) == false)
+                else if (Int32.TryParse(hourString, out hour) is false)
                 {
                     zone = null;
                     hour = default;
@@ -792,7 +792,7 @@ namespace RapidField.SolidInstruments.Core
                     millisecond = default;
                     return false;
                 }
-                else if (Int32.TryParse(minuteString, out minute) == false)
+                else if (Int32.TryParse(minuteString, out minute) is false)
                 {
                     zone = null;
                     hour = default;
@@ -801,7 +801,7 @@ namespace RapidField.SolidInstruments.Core
                     millisecond = default;
                     return false;
                 }
-                else if (Int32.TryParse(secondString, out second) == false)
+                else if (Int32.TryParse(secondString, out second) is false)
                 {
                     zone = null;
                     hour = default;
@@ -810,7 +810,7 @@ namespace RapidField.SolidInstruments.Core
                     millisecond = default;
                     return false;
                 }
-                else if (Int32.TryParse(millisecondString, out millisecond) == false)
+                else if (Int32.TryParse(millisecondString, out millisecond) is false)
                 {
                     zone = null;
                     hour = default;

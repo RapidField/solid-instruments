@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(GeographicCoordinates a, GeographicCoordinates b) => a == b == false;
+        public static Boolean operator !=(GeographicCoordinates a, GeographicCoordinates b) => (a == b) is false;
 
         /// <summary>
         /// Determine whether or not two specified <see cref="GeographicCoordinates" /> instances are equal.

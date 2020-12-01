@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(ConcurrencyControlToken a, IConcurrencyControlToken b) => a == b == false;
+        public static Boolean operator !=(ConcurrencyControlToken a, IConcurrencyControlToken b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ConcurrencyControlToken" /> instance is less than another specified

@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Mathematics.Sequences
         {
             var lastTerm = calculatedTerms.Last();
 
-            while (IsPrimeNumber(lastTerm += 2) == false)
+            while (IsPrimeNumber(lastTerm += 2) is false)
             {
                 continue;
             }

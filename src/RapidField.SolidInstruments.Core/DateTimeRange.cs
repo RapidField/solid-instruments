@@ -111,7 +111,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(DateTimeRange dateTimeRangeOne, DateTimeRange dateTimeRangeTwo) => dateTimeRangeOne == dateTimeRangeTwo == false;
+        public static Boolean operator !=(DateTimeRange dateTimeRangeOne, DateTimeRange dateTimeRangeTwo) => (dateTimeRangeOne == dateTimeRangeTwo) is false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="DateTimeRange" /> instances are equal.
@@ -185,7 +185,7 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Boolean TryParse(String input, out DateTimeRange result)
         {
-            if (Parse(input, out var start, out var end, out var granularity, false) == false)
+            if (Parse(input, out var start, out var end, out var granularity, false) is false)
             {
                 result = null;
                 return false;
@@ -457,21 +457,21 @@ namespace RapidField.SolidInstruments.Core
                     granularity = (DateTimeRangeGranularity)Enum.Parse(typeof(DateTimeRangeGranularity), rawValueSubstrings[2]);
                     return true;
                 }
-                else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[0], out start) == false)
+                else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[0], out start) is false)
                 {
                     start = default;
                     end = default;
                     granularity = DateTimeRangeGranularity.Unspecified;
                     return false;
                 }
-                else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[1], out end) == false)
+                else if (DateTimeExtensions.TryParseExtendedFormatDateTimeString(rawValueSubstrings[1], out end) is false)
                 {
                     start = default;
                     end = default;
                     granularity = DateTimeRangeGranularity.Unspecified;
                     return false;
                 }
-                else if (Enum.TryParse(rawValueSubstrings[2], out granularity) == false)
+                else if (Enum.TryParse(rawValueSubstrings[2], out granularity) is false)
                 {
                     return false;
                 }

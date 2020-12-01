@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             get
             {
-                if (CorrelationIdentifierField.HasValue == false)
+                if (CorrelationIdentifierField.HasValue is false)
                 {
                     CorrelationIdentifierField = Guid.NewGuid();
                 }
@@ -169,7 +169,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             get
             {
-                if (IdentifierField.HasValue == false)
+                if (IdentifierField.HasValue is false)
                 {
                     IdentifierField = Guid.NewGuid();
                 }

@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(EntityFrameworkNumericIdentityDataAccessModel<TDomainModel> a, EntityFrameworkNumericIdentityDataAccessModel<TDomainModel> b) => a == b == false;
+        public static Boolean operator !=(EntityFrameworkNumericIdentityDataAccessModel<TDomainModel> a, EntityFrameworkNumericIdentityDataAccessModel<TDomainModel> b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EntityFrameworkNumericIdentityDataAccessModel{TDomainModel}" />
@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(EntityFrameworkNumericIdentityDataAccessModel a, IDataAccessModel b) => a == b == false;
+        public static Boolean operator !=(EntityFrameworkNumericIdentityDataAccessModel a, IDataAccessModel b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EntityFrameworkNumericIdentityDataAccessModel" /> instance is less than

@@ -868,9 +868,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 {
                     return false;
                 }
-                else if (TopicExists(path) == false)
+                else if (TopicExists(path) is false)
                 {
-                    if (TryCreateTopic(path) == false)
+                    if (TryCreateTopic(path) is false)
                     {
                         return false;
                     }

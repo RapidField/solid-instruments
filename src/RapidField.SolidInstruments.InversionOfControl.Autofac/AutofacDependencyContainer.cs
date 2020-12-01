@@ -89,6 +89,17 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
 
         /// <summary>
+        /// Conditionally registers important dependency types if they are missing following user-defined registrations.
+        /// </summary>
+        /// <param name="configurator">
+        /// The object that configures the container.
+        /// </param>
+        protected override void RegisterFallbackTypes(ContainerBuilder configurator)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Registers a command mediator with the configurator.
         /// </summary>
         /// <param name="configurator">

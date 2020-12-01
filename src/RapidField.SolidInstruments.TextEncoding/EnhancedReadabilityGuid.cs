@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => a == b == false;
+        public static Boolean operator !=(EnhancedReadabilityGuid a, EnhancedReadabilityGuid b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="EnhancedReadabilityGuid" /> instance is less than another specified

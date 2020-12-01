@@ -88,17 +88,17 @@ namespace RapidField.SolidInstruments.Service
                 var serviceName = ServiceName?.Trim();
                 var copyrightNotice = CopyrightNotice?.Trim();
 
-                if (productName.IsNullOrEmpty() == false)
+                if (productName.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(productName);
                 }
 
-                if (serviceName.IsNullOrEmpty() == false)
+                if (serviceName.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(serviceName);
                 }
 
-                if (copyrightNotice.IsNullOrEmpty() == false)
+                if (copyrightNotice.IsNullOrEmpty() is false)
                 {
                     Console.WriteLine(copyrightNotice);
                 }
@@ -169,7 +169,7 @@ namespace RapidField.SolidInstruments.Service
                 _ = configurationBuilder.AddEnvironmentVariables(prefix);
             }
 
-            if (CommandLineArguments.IsNullOrEmpty() == false)
+            if (CommandLineArguments.IsNullOrEmpty() is false)
             {
                 _ = configurationBuilder.AddCommandLine(CommandLineArguments);
             }

@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Command
         {
             get
             {
-                if (CorrelationIdentifierField.HasValue == false)
+                if (CorrelationIdentifierField.HasValue is false)
                 {
                     CorrelationIdentifierField = Guid.NewGuid();
                 }
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Command
         {
             get
             {
-                if (CorrelationIdentifierField.HasValue == false)
+                if (CorrelationIdentifierField.HasValue is false)
                 {
                     CorrelationIdentifierField = Guid.NewGuid();
                 }

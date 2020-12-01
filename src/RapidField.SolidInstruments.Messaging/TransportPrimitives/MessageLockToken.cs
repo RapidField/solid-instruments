@@ -98,7 +98,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(MessageLockToken a, MessageLockToken b) => a == b == false;
+        public static Boolean operator !=(MessageLockToken a, MessageLockToken b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="MessageLockToken" /> instance is less than another specified instance.

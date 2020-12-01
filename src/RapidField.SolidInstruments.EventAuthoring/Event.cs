@@ -242,7 +242,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Event a, IEvent b) => a == b == false;
+        public static Boolean operator !=(Event a, IEvent b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IEvent" /> instance is less than another specified instance.

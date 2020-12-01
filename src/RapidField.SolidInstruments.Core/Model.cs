@@ -61,7 +61,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Model<TIdentifier> a, IModel<TIdentifier> b) => a == b == false;
+        public static Boolean operator !=(Model<TIdentifier> a, IModel<TIdentifier> b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IModel{TIdentifier}" /> instance is less than another specified
@@ -231,7 +231,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Model a, IModel b) => a == b == false;
+        public static Boolean operator !=(Model a, IModel b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="IModel" /> instances are equal.

@@ -236,7 +236,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                 try
                 {
-                    return AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(BodyTypeName)).First(type => type != null);
+                    return AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(BodyTypeName)).First(type => type is not null);
                 }
                 catch (Exception exception)
                 {

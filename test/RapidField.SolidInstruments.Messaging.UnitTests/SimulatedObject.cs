@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Messaging.UnitTests
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SimulatedObject a, SimulatedObject b) => a == b == false;
+        public static Boolean operator !=(SimulatedObject a, SimulatedObject b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="SimulatedObject" /> instances are equal.

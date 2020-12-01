@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Service
             {
                 RejectIfDisposed();
 
-                if (IsAlive == false)
+                if (IsAlive is false)
                 {
                     throw new InvalidOperationException("The service execution lifetime has ended.");
                 }

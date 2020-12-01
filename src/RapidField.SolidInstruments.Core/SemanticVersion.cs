@@ -200,7 +200,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SemanticVersion a, ISemanticVersion b) => a == b == false;
+        public static Boolean operator !=(SemanticVersion a, ISemanticVersion b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="ISemanticVersion" /> instance is less than another specified instance.
@@ -463,12 +463,12 @@ namespace RapidField.SolidInstruments.Core
         {
             var hashCode = (433494437 ^ (MajorVersion * 514229) ^ (MinorVersion * 28657) ^ (PatchVersion * 1597) ^ 233).GetHashCode();
 
-            if (PreReleaseLabel.IsNullOrEmpty() == false)
+            if (PreReleaseLabel.IsNullOrEmpty() is false)
             {
                 hashCode ^= PreReleaseLabel.GetHashCode();
             }
 
-            if (BuildMetadata.IsNullOrEmpty() == false)
+            if (BuildMetadata.IsNullOrEmpty() is false)
             {
                 hashCode ^= BuildMetadata.GetHashCode();
             }
@@ -607,12 +607,12 @@ namespace RapidField.SolidInstruments.Core
             var versionNumbers = $"{MajorVersion}{DelimiterForVersionNumber}{MinorVersion}{DelimiterForVersionNumber}{PatchVersion}";
             var stringBuilder = new StringBuilder(versionNumbers);
 
-            if (PreReleaseLabel.IsNullOrEmpty() == false)
+            if (PreReleaseLabel.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{DelimiterPrefixForPreReleaseLabel}{PreReleaseLabel}");
             }
 
-            if (BuildMetadata.IsNullOrEmpty() == false)
+            if (BuildMetadata.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{DelimiterPrefixForBuildMetadata}{BuildMetadata}");
             }
@@ -825,7 +825,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> includes build metadata.
         /// </summary>
         [IgnoreDataMember]
-        public Boolean HasBuildMetadata => BuildMetadata.IsNullOrEmpty() == false;
+        public Boolean HasBuildMetadata => BuildMetadata.IsNullOrEmpty() is false;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a new major version (eg.
@@ -852,13 +852,13 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a pre-release version.
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsPreRelease => PreReleaseLabel.IsNullOrEmpty() == false;
+        public Boolean IsPreRelease => PreReleaseLabel.IsNullOrEmpty() is false;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="SemanticVersion" /> represents a stable version.
         /// </summary>
         [IgnoreDataMember]
-        public Boolean IsStable => IsPreRelease == false;
+        public Boolean IsStable => IsPreRelease is false;
 
         /// <summary>
         /// Gets or sets the major version number, which is incremented for compatibility-breaking feature changes.

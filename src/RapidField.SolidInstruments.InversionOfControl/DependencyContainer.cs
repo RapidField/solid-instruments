@@ -160,6 +160,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
             {
                 RegisterMediator(configuration.Configurator);
                 ConfigureAction(configuration.Application, configuration.Configurator);
+                RegisterFallbackTypes(configuration.Configurator);
             }
             catch (ContainerConfigurationException)
             {
@@ -208,6 +209,14 @@ namespace RapidField.SolidInstruments.InversionOfControl
                 base.Dispose(disposing);
             }
         }
+
+        /// <summary>
+        /// Conditionally registers important dependency types if they are missing following user-defined registrations.
+        /// </summary>
+        /// <param name="configurator">
+        /// The object that configures the container.
+        /// </param>
+        protected abstract void RegisterFallbackTypes(TConfigurator configurator);
 
         /// <summary>
         /// Registers a command mediator with the configurator.

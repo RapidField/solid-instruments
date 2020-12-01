@@ -57,7 +57,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(SimulatedEntity<TValue> a, SimulatedEntity<TValue> b) => a == b == false;
+        public static Boolean operator !=(SimulatedEntity<TValue> a, SimulatedEntity<TValue> b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="SimulatedEntity{TValue}" /> instances are equal.
@@ -136,7 +136,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
             {
                 return false;
             }
-            else if (Value.Equals(other.Value) == false)
+            else if (Value.Equals(other.Value) is false)
             {
                 return false;
             }

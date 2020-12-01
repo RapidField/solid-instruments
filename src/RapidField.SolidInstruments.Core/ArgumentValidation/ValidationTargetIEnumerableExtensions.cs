@@ -97,11 +97,11 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         internal static ValidationResult<TArgument> RejectIfIsNullOrEmpty<TArgument, T>(this ValidationTarget<TArgument> target, String targetParameterName)
             where TArgument : IEnumerable<T>
         {
-            if (target.Argument == null)
+            if (target.Argument is null)
             {
                 throw new ArgumentNullException(targetParameterName);
             }
-            else if (target.Argument.Any() == false)
+            else if (target.Argument.Any() is false)
             {
                 throw new ArgumentEmptyException(targetParameterName);
             }

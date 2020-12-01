@@ -232,7 +232,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </exception>
         [DebuggerHidden]
         private SoftwareSecurityModule(SecretStoreFilePersistenceVehicle persistenceVehicle)
-            : base(persistenceVehicle, String.IsNullOrEmpty(persistenceVehicle?.FilePath) == false && File.Exists(persistenceVehicle.FilePath))
+            : base(persistenceVehicle, String.IsNullOrEmpty(persistenceVehicle?.FilePath) is false && File.Exists(persistenceVehicle.FilePath))
         {
             return;
         }
@@ -913,7 +913,7 @@ namespace RapidField.SolidInstruments.Cryptography
             {
                 RejectIfDisposed();
 
-                if (InMemoryStore.Secrets.ContainsKey(InMemoryStore.MasterKeyName) == false)
+                if (InMemoryStore.Secrets.ContainsKey(InMemoryStore.MasterKeyName) is false)
                 {
                     _ = InMemoryStore.CreateMasterKey();
                     PersistInMemoryStore();

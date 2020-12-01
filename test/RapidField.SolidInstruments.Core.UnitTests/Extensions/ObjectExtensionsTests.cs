@@ -15,6 +15,74 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
     public class ObjectExtensionsTests
     {
         [TestMethod]
+        public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForAnonymousReferenceTarget()
+        {
+            // Arrange.
+            var expectedResult = 255;
+            var reference = new TimeOfDay(TimeZoneInfo.Utc, 8, 23, 40, 819);
+            var target = new
+            {
+                ReferenceOne = reference,
+                ReferenceTwo = reference,
+                ValueOne = 42,
+                ValueTwo = (Byte)0x01,
+                ValueThree = (Byte)0x02,
+                Collection = new String[]
+                {
+                    "foo",
+                    "bar",
+                    "foobar"
+                }
+            };
+
+            // Act.
+            var result = target.CalculateSizeInBytes();
+
+            // Assert.
+            result.Should().Be(expectedResult);
+        }
+
+        [TestMethod]
+        public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForCollectionTarget()
+        {
+            // Arrange.
+            var expectedResult = 52;
+            var target = new String[]
+            {
+                "foo",
+                "bar",
+                null,
+                "foobar"
+            };
+
+            // Act.
+            var result = target.CalculateSizeInBytes();
+
+            // Assert.
+            result.Should().Be(expectedResult);
+        }
+
+        [TestMethod]
+        public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForComplexReferenceTarget()
+        {
+            using (var randomnessProvider = RandomNumberGenerator.Create())
+            {
+                // Arrange.
+                var target = SimulatedModel.Random(randomnessProvider);
+                var clone = target.Clone() as SimulatedModel;
+
+                // Act.
+                var resultOne = target.CalculateSizeInBytes();
+                var resultTwo = target.CalculateSizeInBytes();
+
+                // Assert.
+                resultOne.Should().BeGreaterThan(0);
+                resultTwo.Should().BeGreaterThan(0);
+                resultOne.Should().Be(resultTwo);
+            }
+        }
+
+        [TestMethod]
         public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForNullTarget()
         {
             // Arrange.
@@ -25,7 +93,21 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             var result = target.CalculateSizeInBytes();
 
             // Assert.
-            Assert.AreEqual(expectedResult, result);
+            result.Should().Be(expectedResult);
+        }
+
+        [TestMethod]
+        public void CalculateSizeInBytes_ShouldProduceAccurateResult_ForValueTarget()
+        {
+            // Arrange.
+            var expectedResult = 16;
+            var target = Guid.NewGuid();
+
+            // Act.
+            var result = target.CalculateSizeInBytes();
+
+            // Assert.
+            result.Should().Be(expectedResult);
         }
 
         [TestMethod]

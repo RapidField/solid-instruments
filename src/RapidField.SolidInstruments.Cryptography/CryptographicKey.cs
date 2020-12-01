@@ -211,7 +211,7 @@ namespace RapidField.SolidInstruments.Cryptography
         {
             try
             {
-                if (IsDisposed == false)
+                if (IsDisposed is false)
                 {
                     LazyPbkdf2Provider?.Dispose();
                     KeySource?.Dispose();

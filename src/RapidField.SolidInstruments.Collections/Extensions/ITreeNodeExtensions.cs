@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
             action.RejectIf().IsNull(nameof(action));
             predicate.RejectIf().IsNull(nameof(predicate));
 
-            if (predicate(target) == false)
+            if (predicate(target) is false)
             {
                 return;
             }
@@ -120,7 +120,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
             function.RejectIf().IsNull(nameof(function));
             predicate.RejectIf().IsNull(nameof(predicate));
 
-            if (predicate(target) == false)
+            if (predicate(target) is false)
             {
                 return default;
             }
@@ -176,7 +176,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
             action.RejectIf().IsNull(nameof(action));
             predicate.RejectIf().IsNull(nameof(predicate));
 
-            if (predicate(target) == false)
+            if (predicate(target) is false)
             {
                 return;
             }
@@ -244,7 +244,7 @@ namespace RapidField.SolidInstruments.Collections.Extensions
             function.RejectIf().IsNull(nameof(function));
             predicate.RejectIf().IsNull(nameof(predicate));
 
-            if (predicate(target) == false)
+            if (predicate(target) is false)
             {
                 return default;
             }

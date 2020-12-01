@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Core
                     reference?.Poll();
                 }
 
-                References = new List<IManagedReference>(References?.Where(reference => reference.IsDead == false) ?? Array.Empty<IManagedReference>());
+                References = new List<IManagedReference>(References?.Where(reference => reference.IsDead is false) ?? Array.Empty<IManagedReference>());
             }
         }
 
@@ -230,7 +230,7 @@ namespace RapidField.SolidInstruments.Core
             /// <returns>
             /// A value indicating whether or not the specified instances are not equal.
             /// </returns>
-            public static Boolean operator !=(ManagedReference<T> a, ManagedReference<T> b) => a == b == false;
+            public static Boolean operator !=(ManagedReference<T> a, ManagedReference<T> b) => (a == b) is false;
 
             /// <summary>
             /// Determines whether or not two specified <see cref="ManagedReference{T}" /> instances are equal.

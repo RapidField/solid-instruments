@@ -574,7 +574,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             array.RejectIf().IsNull(nameof(array));
             characterLength.RejectIf().IsLessThan(1, nameof(characterLength));
 
-            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
+            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) is false)
             {
                 throw new ArgumentException(NoCharacterTypesPermittedExceptionMessageTemplate);
             }
@@ -638,7 +638,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             array.RejectIf().IsNull(nameof(array));
             characterLengthFloor.RejectIf().IsLessThan(0, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
 
-            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
+            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) is false)
             {
                 throw new ArgumentException(NoCharacterTypesPermittedExceptionMessageTemplate);
             }
@@ -939,7 +939,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// </exception>
         public static Char GetChar(this RandomNumberGenerator target, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl)
         {
-            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
+            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) is false)
             {
                 throw new ArgumentException(NoCharacterTypesPermittedExceptionMessageTemplate);
             }
@@ -1262,7 +1262,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         /// </exception>
         public static String GetString(this RandomNumberGenerator target, Int32 characterLength, Boolean permitNonLatin, Boolean permitLowercaseAlphabetic, Boolean permitUppercaseAlphabetic, Boolean permitNumeric, Boolean permitSymbolic, Boolean permitWhiteSpace, Boolean permitControl)
         {
-            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
+            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) is false)
             {
                 throw new ArgumentException(NoCharacterTypesPermittedExceptionMessageTemplate);
             }
@@ -1318,7 +1318,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         {
             characterLengthFloor.RejectIf().IsLessThan(0, nameof(characterLengthFloor)).OrIf().IsGreaterThan(characterLengthCeiling, nameof(characterLengthFloor), nameof(characterLengthCeiling));
 
-            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) == false)
+            if ((permitLowercaseAlphabetic || permitUppercaseAlphabetic || permitNumeric || permitSymbolic || permitWhiteSpace || permitControl) is false)
             {
                 throw new ArgumentException(NoCharacterTypesPermittedExceptionMessageTemplate);
             }
@@ -1671,7 +1671,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
             var singlePassIterationCount = characterBytes.Length - characterByteLength;
             target.GetBytes(characterBytes);
 
-            while (PermuteCharacterGeneration(characterBytes, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) == false)
+            while (PermuteCharacterGeneration(characterBytes, singlePassIterationCount, characterByteLength, characterEncoding, permitNonLatin, permitLowercaseAlphabetic, permitUppercaseAlphabetic, permitNumeric, permitSymbolic, permitWhiteSpace, permitControl, out randomValue) is false)
             {
                 target.GetBytes(characterBytes);
             }
@@ -2261,7 +2261,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
 
             for (var i = 0; i < iterationCount; i++)
             {
-                if (permitNonLatin == false && characterBytes[i] > 0x7f)
+                if (permitNonLatin is false && characterBytes[i] > 0x7f)
                 {
                     // 0x7f is the last valid ASCII character.
                     continue;

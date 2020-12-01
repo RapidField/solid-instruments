@@ -122,7 +122,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// </exception>
         public void AddBlockRange(IEnumerable<TBlock> blocks)
         {
-            if (blocks.Any() == false)
+            if (blocks.Any() is false)
             {
                 return;
             }

@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Collections
         /// </exception>
         public void Destroy()
         {
-            if (IsRoot == false)
+            if (IsRoot is false)
             {
                 ((TreeNode<T>)Parent).RemoveChild(this);
             }
@@ -200,7 +200,7 @@ namespace RapidField.SolidInstruments.Collections
                 {
                     throw new ArgumentException("The specified collection contains a null node.", nameof(children));
                 }
-                else if (AddChild(node, true) == false)
+                else if (AddChild(node, true) is false)
                 {
                     throw new ArgumentException("The specified collection contains a duplicate or invalid node.", nameof(children));
                 }
@@ -340,7 +340,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <remarks>
         /// When true, <see cref="Children" /> is an empty collection.
         /// </remarks>
-        public Boolean IsLeaf => ChildrenReference.Any() == false;
+        public Boolean IsLeaf => ChildrenReference.Any() is false;
 
         /// <summary>
         /// Gets a value indicating whether or not the current <see cref="TreeNode{T}" /> is a root node (a node without a parent).

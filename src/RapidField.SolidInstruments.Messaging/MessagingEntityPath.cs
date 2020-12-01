@@ -112,22 +112,22 @@ namespace RapidField.SolidInstruments.Messaging
         {
             MessageType = messageType;
 
-            if (prefix.IsNullOrEmpty() == false)
+            if (prefix.IsNullOrEmpty() is false)
             {
                 Prefix = prefix;
             }
 
-            if (labelOne.IsNullOrEmpty() == false)
+            if (labelOne.IsNullOrEmpty() is false)
             {
                 LabelOne = labelOne;
             }
 
-            if (labelTwo.IsNullOrEmpty() == false)
+            if (labelTwo.IsNullOrEmpty() is false)
             {
                 LabelTwo = labelTwo;
             }
 
-            if (labelThree.IsNullOrEmpty() == false)
+            if (labelThree.IsNullOrEmpty() is false)
             {
                 LabelThree = labelThree;
             }
@@ -145,7 +145,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(MessagingEntityPath a, IMessagingEntityPath b) => a == b == false;
+        public static Boolean operator !=(MessagingEntityPath a, IMessagingEntityPath b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IMessagingEntityPath" /> instance is less than another specified
@@ -352,22 +352,22 @@ namespace RapidField.SolidInstruments.Messaging
         {
             var hashCode = 433494437 ^ MessageType.GetHashCode();
 
-            if (Prefix.IsNullOrEmpty() == false)
+            if (Prefix.IsNullOrEmpty() is false)
             {
                 hashCode ^= Prefix.GetHashCode();
             }
 
-            if (LabelOne.IsNullOrEmpty() == false)
+            if (LabelOne.IsNullOrEmpty() is false)
             {
                 hashCode ^= LabelOne.GetHashCode();
             }
 
-            if (LabelTwo.IsNullOrEmpty() == false)
+            if (LabelTwo.IsNullOrEmpty() is false)
             {
                 hashCode ^= LabelTwo.GetHashCode();
             }
 
-            if (LabelThree.IsNullOrEmpty() == false)
+            if (LabelThree.IsNullOrEmpty() is false)
             {
                 hashCode ^= LabelThree.GetHashCode();
             }
@@ -385,27 +385,27 @@ namespace RapidField.SolidInstruments.Messaging
         {
             var stringBuilder = new StringBuilder();
 
-            if (Prefix.IsNullOrEmpty() == false)
+            if (Prefix.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{Prefix}{DelimitingCharacterForPrefix}");
             }
 
-            if (MessageType.IsNullOrEmpty() == false)
+            if (MessageType.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append(MessageType);
             }
 
-            if (LabelOne.IsNullOrEmpty() == false)
+            if (LabelOne.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelOne}");
             }
 
-            if (LabelTwo.IsNullOrEmpty() == false)
+            if (LabelTwo.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelTwo}");
             }
 
-            if (LabelThree.IsNullOrEmpty() == false)
+            if (LabelThree.IsNullOrEmpty() is false)
             {
                 _ = stringBuilder.Append($"{DelimitingCharacterForLabelToken}{LabelThree}");
             }
@@ -461,7 +461,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             try
             {
-                if (messageType.RejectIf().IsNull(nameof(messageType)).TargetArgument.GetCustomAttributes(typeof(DataContractAttribute), false).FirstOrDefault() is DataContractAttribute dataContractAttribute && dataContractAttribute.Name.IsNullOrEmpty() == false)
+                if (messageType.RejectIf().IsNull(nameof(messageType)).TargetArgument.GetCustomAttributes(typeof(DataContractAttribute), false).FirstOrDefault() is DataContractAttribute dataContractAttribute && dataContractAttribute.Name.IsNullOrEmpty() is false)
                 {
                     return dataContractAttribute.Name.Compress();
                 }

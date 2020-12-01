@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.Messaging
 
             using (var controlToken = StateControl.Enter())
             {
-                if (TryAddOutstandingRequest<TRequestMessage, TResponseMessage>(requestMessage, requestMessageIdentifier) == false)
+                if (TryAddOutstandingRequest<TRequestMessage, TResponseMessage>(requestMessage, requestMessageIdentifier) is false)
                 {
                     throw new InvalidOperationException("The request was not processed because it is a duplicate.");
                 }

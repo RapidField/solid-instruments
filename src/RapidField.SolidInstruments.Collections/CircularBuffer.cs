@@ -164,7 +164,7 @@ namespace RapidField.SolidInstruments.Collections
         /// </exception>
         public void Write(T element, Boolean permitOverwrite)
         {
-            if (permitOverwrite == false && Length == Capacity)
+            if (permitOverwrite is false && Length == Capacity)
             {
                 throw new InvalidOperationException("A write operation failed because it would have overwritten an unread element in the buffer.");
             }

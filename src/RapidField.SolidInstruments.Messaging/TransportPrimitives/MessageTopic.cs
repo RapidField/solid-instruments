@@ -319,7 +319,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 return false;
             }
-            else if (SubscriptionQueues.ContainsKey(subscriptionName) == false)
+            else if (SubscriptionQueues.ContainsKey(subscriptionName) is false)
             {
                 var subscriptionQueue = new MessageQueue(Guid.NewGuid(), Path, OperationalState, MessageBodySerializationFormat, MessageLockExpirationThreshold, EnqueueTimeoutThreshold);
 
@@ -452,7 +452,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
             foreach (var queue in SubscriptionQueues.Values)
             {
-                if (queue.TryEnqueue(message) == false)
+                if (queue.TryEnqueue(message) is false)
                 {
                     return false;
                 }

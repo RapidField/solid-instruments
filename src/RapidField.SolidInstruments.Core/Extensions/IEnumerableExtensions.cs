@@ -48,15 +48,15 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 var targetElement = target.ElementAt(i);
                 var otherElement = otherCollection.ElementAt(i);
 
-                if (targetElement == null && otherElement == null)
+                if (targetElement is null && otherElement is null)
                 {
                     continue;
                 }
-                else if (targetElement == null && otherElement != null)
+                else if (targetElement is null && otherElement is not null)
                 {
                     return false;
                 }
-                else if (targetElement != null && otherElement == null)
+                else if (targetElement is not null && otherElement is null)
                 {
                     return false;
                 }
@@ -84,6 +84,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="IEnumerable{T}" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.Any() == false;
+        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.Any() is false;
     }
 }

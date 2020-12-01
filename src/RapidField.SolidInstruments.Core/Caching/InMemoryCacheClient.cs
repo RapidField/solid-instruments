@@ -212,11 +212,6 @@ namespace RapidField.SolidInstruments.Core.Caching
         private IOptions<MemoryCacheOptions> CacheOptions => LazyCacheOptions?.Value;
 
         /// <summary>
-        /// Represents a non-operative in-memory cache client.
-        /// </summary>
-        public static readonly IInMemoryCacheClient NonOperative = new InMemoryCacheClient(InMemoryCachingStrategy.NoCaching);
-
-        /// <summary>
         /// Represents the default value specifying the cache access and management behavior of the client.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

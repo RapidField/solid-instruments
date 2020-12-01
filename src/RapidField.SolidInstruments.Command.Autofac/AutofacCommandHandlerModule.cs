@@ -139,7 +139,7 @@ namespace RapidField.SolidInstruments.Command.Autofac
         /// Gets the collection of non-abstract public class types defined by <see cref="TargetAssembly" /> that are registered by
         /// the current <see cref="AutofacCommandHandlerModule{TBaseCommandHandler}" />.
         /// </summary>
-        public IEnumerable<Type> MatchedTypes => TargetAssembly.GetTypes().Where(type => type.IsPublic && type.IsClass && type.IsAbstract == false && BaseCommandHandlerType.IsAssignableFrom(type));
+        public IEnumerable<Type> MatchedTypes => TargetAssembly.GetTypes().Where(type => type.IsPublic && type.IsClass && type.IsAbstract is false && BaseCommandHandlerType.IsAssignableFrom(type));
 
         /// <summary>
         /// Gets the assembly from which command handler types are registered by the current

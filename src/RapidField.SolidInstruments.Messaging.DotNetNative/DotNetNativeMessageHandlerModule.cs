@@ -514,7 +514,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         /// <summary>
         /// Gets the collection of non-abstract public message handler types defined by <see cref="TargetAssembly" />.
         /// </summary>
-        public IEnumerable<Type> MessageHandlerTypes => TargetAssembly.GetTypes().Where(type => type.IsPublic && type.IsClass && type.IsAbstract == false && MessageHandlerInterfaceType.IsAssignableFrom(type));
+        public IEnumerable<Type> MessageHandlerTypes => TargetAssembly.GetTypes().Where(type => type.IsPublic && type.IsClass && type.IsAbstract is false && MessageHandlerInterfaceType.IsAssignableFrom(type));
 
         /// <summary>
         /// Gets the collection of non-abstract public message listener types defined by <see cref="TargetAssembly" />.

@@ -209,7 +209,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             try
             {
-                if (IsDisposed == false)
+                if (IsDisposed is false)
                 {
                     if (HandleIsActive)
                     {

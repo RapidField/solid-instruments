@@ -97,7 +97,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => a == b == false;
+        public static Boolean operator !=(HeartbeatScheduleItem<TMessage> a, IHeartbeatScheduleItem b) => (a == b) is false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="IHeartbeatScheduleItem" /> instance is less than another specified
