@@ -403,7 +403,7 @@ namespace RapidField.SolidInstruments.Core
                 set
                 {
                     StrongReference = value;
-                    WeakReference = value is null ? null : new WeakReference(value);
+                    WeakReference = value is null ? null : new(value);
                 }
             }
 

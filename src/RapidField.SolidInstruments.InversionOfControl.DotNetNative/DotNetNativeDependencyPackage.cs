@@ -40,6 +40,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="package" /> is
         /// <see langword="null" /> -or- <paramref name="serviceDescriptors" /> is <see langword="null" /> .
         /// </exception>
-        protected sealed override DotNetNativeDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ServiceCollection> package) => new DotNetNativeDependencyEngine(applicationConfiguration, package, serviceDescriptors);
+        protected sealed override DotNetNativeDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ServiceCollection> package) => new(applicationConfiguration, package, serviceDescriptors);
     }
 }

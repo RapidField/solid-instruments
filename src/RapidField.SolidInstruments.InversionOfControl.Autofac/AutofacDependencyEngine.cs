@@ -108,6 +108,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         /// <returns>
         /// A new service injector.
         /// </returns>
-        protected override AutofacServiceInjector CreateServiceInjector(IServiceCollection serviceDescriptors) => new AutofacServiceInjector(serviceDescriptors);
+        protected override AutofacServiceInjector CreateServiceInjector(IServiceCollection serviceDescriptors) => new(serviceDescriptors);
     }
 }

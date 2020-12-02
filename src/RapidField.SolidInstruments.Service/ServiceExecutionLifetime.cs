@@ -108,6 +108,6 @@ namespace RapidField.SolidInstruments.Service
         /// Represents an event that can be triggered to signal the end of an associated service's lifetime.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly ManualResetEvent EndOfLifeEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent EndOfLifeEvent = new(false);
     }
 }

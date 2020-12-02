@@ -41,6 +41,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="package" /> is
         /// <see langword="null" /> -or- <paramref name="serviceDescriptors" /> is <see langword="null" /> .
         /// </exception>
-        protected sealed override AutofacDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ContainerBuilder> package) => new AutofacDependencyEngine(applicationConfiguration, package, serviceDescriptors);
+        protected sealed override AutofacDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ContainerBuilder> package) => new(applicationConfiguration, package, serviceDescriptors);
     }
 }

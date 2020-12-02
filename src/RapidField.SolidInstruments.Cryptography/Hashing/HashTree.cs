@@ -223,7 +223,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
         /// The new node.
         /// </returns>
         [DebuggerHidden]
-        private HashTreeNode CreateNode(HashTreeNode leftChild, HashTreeNode rightChild) => new HashTreeNode(CalculateHash(leftChild.Value, rightChild.Value), leftChild, rightChild);
+        private HashTreeNode CreateNode(HashTreeNode leftChild, HashTreeNode rightChild) => new(CalculateHash(leftChild.Value, rightChild.Value), leftChild, rightChild);
 
         /// <summary>
         /// Processes the specified row in the tree recursively toward the root node.

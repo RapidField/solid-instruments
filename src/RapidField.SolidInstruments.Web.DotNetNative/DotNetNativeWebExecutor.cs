@@ -65,7 +65,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DotNetNativeWebExecutor{TDependencyPackage, TStartup}" />.
@@ -126,7 +126,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
-        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new DotNetNativeServiceProviderFactory<TDependencyPackage>(applicationConfiguration);
+        protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="DotNetNativeWebExecutor{TDependencyPackage}" />.

@@ -2207,7 +2207,7 @@ namespace RapidField.SolidInstruments.Cryptography.Extensions
         [DebuggerHidden]
         private static void GenerateUInt64(RandomNumberGenerator target, UInt64 floor, UInt64 ceiling, out UInt64 randomValue)
         {
-            var range = BigInteger.Subtract(new BigInteger(ceiling), new BigInteger(floor));
+            var range = BigInteger.Subtract(new(ceiling), new(floor));
             GenerateRangePosition(target, (Decimal)range, out var rangePosition);
             randomValue = Convert.ToUInt64(floor + rangePosition.RoundedTo(0));
         }

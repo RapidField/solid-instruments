@@ -106,8 +106,8 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public SimulatedModel(TimeOfDay time, IEnumerable<Int32> integerCollection, IEnumerable<SimulatedModel> modelCollection, String stringValue)
             : base()
         {
-            IntegerCollection = new List<Int32>(integerCollection.RejectIf().IsNull(nameof(integerCollection)).TargetArgument);
-            ModelCollection = new List<SimulatedModel>(modelCollection.RejectIf().IsNull(nameof(modelCollection)).TargetArgument);
+            IntegerCollection = new(integerCollection.RejectIf().IsNull(nameof(integerCollection)).TargetArgument);
+            ModelCollection = new(modelCollection.RejectIf().IsNull(nameof(modelCollection)).TargetArgument);
             StringValue = stringValue;
             Time = time.RejectIf().IsNull(nameof(time));
         }
@@ -250,7 +250,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var hour = randomnessProvider.GetInt32(0, 23);
             var minute = randomnessProvider.GetInt32(0, 59);
             var second = randomnessProvider.GetInt32(0, 59);
-            Time = new TimeOfDay(TimeZoneInfo.Utc, hour, minute, second);
+            Time = new(TimeZoneInfo.Utc, hour, minute, second);
         }
 
         /// <summary>

@@ -368,7 +368,7 @@ namespace RapidField.SolidInstruments.Core
             var targetModelType = targetModel.RejectIf().IsNull(nameof(targetModel)).TargetArgument.GetType();
             var sourceModelProperties = sourceModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
             var targetModelProperties = targetModelType.GetProperties(PropertyBindingFlags).ToDictionary(property => property.Name, property => property);
-            mappedModels.RejectIf().IsNull(nameof(mappedModels)).TargetArgument.AddModelPair(new MappedModel(sourceModel, targetModel));
+            mappedModels.RejectIf().IsNull(nameof(mappedModels)).TargetArgument.AddModelPair(new(sourceModel, targetModel));
 
             foreach (var sourcePropertyElement in sourceModelProperties)
             {

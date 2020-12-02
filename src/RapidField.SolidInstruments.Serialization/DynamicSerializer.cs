@@ -149,7 +149,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// An XML serializer.
         /// </returns>
         [DebuggerHidden]
-        private static DataContractJsonSerializer InitializeJsonSerializer() => new DataContractJsonSerializer(ContractType, JsonSerializerSettings);
+        private static DataContractJsonSerializer InitializeJsonSerializer() => new(ContractType, JsonSerializerSettings);
 
         /// <summary>
         /// Initializes an XML serializer.
@@ -158,7 +158,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// An XML serializer.
         /// </returns>
         [DebuggerHidden]
-        private static DataContractSerializer InitializeXmlSerializer() => new DataContractSerializer(ContractType, XmlSerializerSettings);
+        private static DataContractSerializer InitializeXmlSerializer() => new(ContractType, XmlSerializerSettings);
 
         /// <summary>
         /// Converts the specified JSON bit field to its typed equivalent.

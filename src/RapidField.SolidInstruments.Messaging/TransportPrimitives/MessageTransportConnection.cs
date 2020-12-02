@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
             if (Transport.QueueExists(queuePath))
             {
-                Handlers.Add(new Handler(queuePath, MessagingEntityType.Queue, null, handleMessageAction));
+                Handlers.Add(new(queuePath, MessagingEntityType.Queue, null, handleMessageAction));
                 BeginPolling();
                 return;
             }
@@ -134,7 +134,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
             if (Transport.SubscriptionExists(topicPath, subscriptionName))
             {
-                Handlers.Add(new Handler(topicPath, MessagingEntityType.Topic, subscriptionName, handleMessageAction));
+                Handlers.Add(new(topicPath, MessagingEntityType.Topic, subscriptionName, handleMessageAction));
                 BeginPolling();
                 return;
             }

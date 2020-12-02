@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.Collections
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator ReadOnlyPinnedMemory<T>(T[] target) => target is null ? null : new ReadOnlyPinnedMemory<T>(target);
+        public static implicit operator ReadOnlyPinnedMemory<T>(T[] target) => target is null ? null : new(target);
 
         /// <summary>
         /// Facilitates implicit <see cref="ReadOnlyPinnedMemory{T}" /> to <see cref="ReadOnlySpan{T}" /> casting.

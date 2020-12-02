@@ -2,7 +2,6 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using Microsoft.AspNetCore.Identity;
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
@@ -71,7 +70,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.EventHandlers.Mode
 
             if (identityRole is null)
             {
-                identityRole = new IdentityRole()
+                identityRole = new()
                 {
                     Id = model.Identifier.ToString(),
                     Name = model.Name

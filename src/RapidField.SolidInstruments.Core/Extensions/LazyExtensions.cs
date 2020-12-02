@@ -21,7 +21,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static void Dispose<T>(this Lazy<T> target)
             where T : IDisposable
         {
-            if ((target?.IsValueCreated).GetValueOrDefault(false))
+            if (target?.IsValueCreated ?? false)
             {
                 target.Value.Dispose();
             }
@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Task DisposeAsync<T>(this Lazy<T> target)
             where T : IAsyncDisposable
         {
-            if ((target?.IsValueCreated).GetValueOrDefault(false))
+            if (target?.IsValueCreated ?? false)
             {
                 return target.Value.DisposeAsync().AsTask();
             }

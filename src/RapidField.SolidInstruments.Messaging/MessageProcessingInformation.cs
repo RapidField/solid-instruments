@@ -41,7 +41,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// </exception>
         public MessageProcessingInformation(MessageListeningFailurePolicy failurePolicy)
         {
-            AttemptResults = new List<MessageProcessingAttemptResult>();
+            AttemptResults = new();
             FailurePolicy = failurePolicy.RejectIf().IsNull(nameof(failurePolicy));
         }
 

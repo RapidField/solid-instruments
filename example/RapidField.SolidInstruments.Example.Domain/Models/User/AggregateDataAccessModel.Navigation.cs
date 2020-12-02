@@ -44,7 +44,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
             {
                 if (UserRoleAssignmentsList is null)
                 {
-                    UserRoleAssignmentsList = new List<UserRoleAssignmentModel>();
+                    UserRoleAssignmentsList = new();
                 }
 
                 return UserRoleAssignmentsList;

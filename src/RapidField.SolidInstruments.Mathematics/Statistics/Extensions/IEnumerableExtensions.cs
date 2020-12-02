@@ -1666,12 +1666,12 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
             else if (elementCount.IsOdd())
             {
                 // Return the index at the midpoint.
-                return new Int32[] { Convert.ToInt32(Math.Round((Single)(elementCount / 2), 0, MidpointRounding.AwayFromZero)) };
+                return new[] { Convert.ToInt32(Math.Round((Single)(elementCount / 2), 0, MidpointRounding.AwayFromZero)) };
             }
 
             // Return the pair of indices sharing the midpoint.
             var firstIndex = (elementCount / 2) - 1;
-            return new Int32[] { firstIndex, firstIndex + 1 };
+            return new[] { firstIndex, firstIndex + 1 };
         }
 
         /// <summary>

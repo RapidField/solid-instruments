@@ -1223,14 +1223,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
                 {
-                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                    encryptedExportedSecret = new(exportedSecret, key, keyName);
                 }).ConfigureAwait(false);
             }
             else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
             {
                 await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
                 {
-                    encryptedExportedSecret = new EncryptedExportedSecret(exportedSecret, key, keyName);
+                    encryptedExportedSecret = new(exportedSecret, key, keyName);
                 }).ConfigureAwait(false);
             }
 
@@ -1262,14 +1262,14 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             {
                 await ((SymmetricKeySecret)keySecret).ReadAsync((SymmetricKey key) =>
                 {
-                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
+                    encryptedExportedSecretVault = new(exportedSecretVault, key, keyName);
                 }).ConfigureAwait(false);
             }
             else if (keySecret.ValueType == typeof(CascadingSymmetricKey))
             {
                 await ((CascadingSymmetricKeySecret)keySecret).ReadAsync((CascadingSymmetricKey key) =>
                 {
-                    encryptedExportedSecretVault = new EncryptedExportedSecretVault(exportedSecretVault, key, keyName);
+                    encryptedExportedSecretVault = new(exportedSecretVault, key, keyName);
                 }).ConfigureAwait(false);
             }
 

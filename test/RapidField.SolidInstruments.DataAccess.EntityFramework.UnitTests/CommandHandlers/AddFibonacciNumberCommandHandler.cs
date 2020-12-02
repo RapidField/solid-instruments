@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Comma
 
             if (number is null)
             {
-                number = new Number()
+                number = new()
                 {
                     Identifier = Guid.NewGuid(),
                     Value = command.NumberValue
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Comma
 
             if (numberSeriesNumber is null)
             {
-                numberSeriesNumber = new NumberSeriesNumber()
+                numberSeriesNumber = new()
                 {
                     Identifier = Guid.NewGuid(),
                     Number = number,

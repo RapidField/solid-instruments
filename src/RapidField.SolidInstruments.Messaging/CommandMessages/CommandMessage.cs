@@ -206,7 +206,7 @@ namespace RapidField.SolidInstruments.Messaging.CommandMessages
         /// Initializes a new instance of the <see cref="CommandMessage{TCommand}" /> class.
         /// </summary>
         protected CommandMessage()
-            : this(new TCommand())
+            : this(new())
         {
             return;
         }

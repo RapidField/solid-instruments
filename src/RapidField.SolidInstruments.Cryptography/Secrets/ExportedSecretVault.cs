@@ -45,7 +45,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
             : base()
         {
             Identifier = identifier.RejectIf().IsNullOrEmpty(nameof(identifier));
-            Secrets = new List<ExportedSecret>(secrets.RejectIf().IsNull(nameof(secrets)).OrIf(collection => collection.Any(secret => secret is null), nameof(secrets), "The specified secret collection contains one or more null elements.").TargetArgument);
+            Secrets = new(secrets.RejectIf().IsNull(nameof(secrets)).OrIf(collection => collection.Any(secret => secret is null), nameof(secrets), "The specified secret collection contains one or more null elements.").TargetArgument);
         }
 
         /// <summary>

@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Linq;
-using UserRoleAssignmentModel = RapidField.SolidInstruments.Example.Domain.Models.UserRoleAssignment.DomainModel;
 using UserRoleModel = RapidField.SolidInstruments.Example.Domain.Models.UserRole.DomainModel;
 
 namespace RapidField.SolidInstruments.Example.Domain.Models.User
@@ -43,7 +42,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Models.User
                 return;
             }
 
-            UserRoleAssignments.Add(new UserRoleAssignmentModel(Guid.NewGuid())
+            UserRoleAssignments.Add(new(Guid.NewGuid())
             {
                 User = this,
                 UserRole = userRole

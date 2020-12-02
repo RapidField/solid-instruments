@@ -2,7 +2,6 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
-using Microsoft.AspNetCore.Identity;
 using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
@@ -71,7 +70,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.EventHandlers.Mode
 
             if (identityUser is null)
             {
-                identityUser = new IdentityUser()
+                identityUser = new()
                 {
                     AccessFailedCount = 0,
                     Email = model.EmailAddress,

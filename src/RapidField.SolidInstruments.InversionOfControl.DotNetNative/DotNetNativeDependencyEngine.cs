@@ -107,6 +107,6 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         /// <returns>
         /// A new service injector.
         /// </returns>
-        protected override DotNetNativeServiceInjector CreateServiceInjector(IServiceCollection serviceDescriptors) => new DotNetNativeServiceInjector(serviceDescriptors);
+        protected override DotNetNativeServiceInjector CreateServiceInjector(IServiceCollection serviceDescriptors) => new(serviceDescriptors);
     }
 }

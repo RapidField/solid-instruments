@@ -128,7 +128,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     throw new ArgumentException($"The builder is already configured for the request-product type pair: {requestType.FullName}, {productType.FullName}.", nameof(TProduct));
                 }
 
-                DefinitionConfigurationActions.Add(definitionKey, new Action<IObjectContainerConfigurationDefinitions>((definitions) =>
+                DefinitionConfigurationActions.Add(definitionKey, new((definitions) =>
                 {
                     definitions.Add<TRequest, TProduct>();
                 }));
@@ -138,7 +138,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                     return this;
                 }
 
-                FunctionConfigurationActions.Add(definitionKey, new Action<IObjectFactoryConfigurationProductionFunctions>((functions) =>
+                FunctionConfigurationActions.Add(definitionKey, new((functions) =>
                 {
                     functions.Add(productionFunction);
                 }));

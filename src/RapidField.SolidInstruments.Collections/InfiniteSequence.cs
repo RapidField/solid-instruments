@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.Collections
         {
             lock (SyncRoot)
             {
-                CalculatedTerms = new List<T>(CalculatedTerms.Take(SeedTermCount));
+                CalculatedTerms = new(CalculatedTerms.Take(SeedTermCount));
             }
         }
 

@@ -322,7 +322,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     iterationCount += iterationSumValue;
                 }
 
-                algorithm = new Rfc2898DeriveBytes(passwordBytes.ToArray(), saltBytes.ToArray(), iterationCount);
+                algorithm = new(passwordBytes.ToArray(), saltBytes.ToArray(), iterationCount);
             });
 
             return algorithm;

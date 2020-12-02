@@ -106,8 +106,8 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests
         public SimulatedModel(TimeOfDay time, IEnumerable<Int32> integerCollection, IEnumerable<SimulatedModel> modelCollection, String stringValue)
             : base()
         {
-            IntegerCollection = new List<Int32>(integerCollection.RejectIf().IsNull(nameof(integerCollection)).TargetArgument);
-            ModelCollection = new List<SimulatedModel>(modelCollection.RejectIf().IsNull(nameof(modelCollection)).TargetArgument);
+            IntegerCollection = new(integerCollection.RejectIf().IsNull(nameof(integerCollection)).TargetArgument);
+            ModelCollection = new(modelCollection.RejectIf().IsNull(nameof(modelCollection)).TargetArgument);
             StringValue = stringValue;
             Time = time.RejectIf().IsNull(nameof(time));
         }

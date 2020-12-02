@@ -54,11 +54,11 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <summary>
         /// Represents a store for <see cref="SimulatedBarEntity" /> data.
         /// </summary>
-        private static SimulatedBarDataStore BarData => new SimulatedBarDataStore(new Int32[] { 1, 2, 3, 4, 5 });
+        private static SimulatedBarDataStore BarData => new(new Int32[] { 1, 2, 3, 4, 5 });
 
         /// <summary>
         /// Represents a store for <see cref="SimulatedFooEntity" /> data.
         /// </summary>
-        private static SimulatedFooDataStore FooData => new SimulatedFooDataStore(new String[] { "foo1", "foo2", "foo3", "foo4", "foo5" });
+        private static SimulatedFooDataStore FooData => new(new String[] { "foo1", "foo2", "foo3", "foo4", "foo5" });
     }
 }
