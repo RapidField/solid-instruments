@@ -524,7 +524,7 @@ namespace RapidField.SolidInstruments.Cryptography
             /// Gets the zero-based index of the target field within <see cref="Fields" />.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private Int32 TargetFieldIndex => Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Convert.ToUInt64(Multiplier)));
+            private Int32 TargetFieldIndex => Convert.ToInt32(ReferenceKey / (UInt64.MaxValue / Multiplier.ToUInt64()));
 
             /// <summary>
             /// Represents a random number generator that is used to scramble the inflated field.

@@ -416,19 +416,19 @@ namespace RapidField.SolidInstruments.Messaging.Service
                         transmitHeartbeatMessageTask.Dispose();
                     });
                 }
-                catch
+                catch (Exception exception)
                 {
                     dependencyScope.Dispose();
-                    throw;
+                    return Task.FromException(exception);
                 }
             }
-            catch (MessageTransmissionException)
+            catch (MessageTransmissionException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new MessageTransmissionException(typeof(HeartbeatMessage), exception);
+                return Task.FromException(new MessageTransmissionException(typeof(HeartbeatMessage), exception));
             }
         }
 

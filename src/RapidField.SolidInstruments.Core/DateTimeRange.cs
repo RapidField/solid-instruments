@@ -499,7 +499,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in days.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CalculateLengthInDays() => Convert.ToInt32(Math.Floor(Length.TotalDays));
+        private Int32 CalculateLengthInDays() => Math.Floor(Length.TotalDays).ToInt32();
 
         /// <summary>
         /// Calculates the total number of hours that the current <see cref="DateTimeRange" /> spans.
@@ -508,7 +508,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in hours.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CalculateLengthInHours() => Convert.ToInt32(Math.Floor(Length.TotalHours));
+        private Int32 CalculateLengthInHours() => Math.Floor(Length.TotalHours).ToInt32();
 
         /// <summary>
         /// Calculates the total number of milliseconds that the current <see cref="DateTimeRange" /> spans.
@@ -517,7 +517,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in milliseconds.
         /// </returns>
         [DebuggerHidden]
-        private Int64 CalculateLengthInMilliseconds() => Convert.ToInt64(Math.Floor(Length.TotalMilliseconds));
+        private Int64 CalculateLengthInMilliseconds() => Math.Floor(Length.TotalMilliseconds).ToInt64();
 
         /// <summary>
         /// Calculates the total number of minutes that the current <see cref="DateTimeRange" /> spans.
@@ -526,7 +526,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in minutes.
         /// </returns>
         [DebuggerHidden]
-        private Int64 CalculateLengthInMinutes() => Convert.ToInt64(Math.Floor(Length.TotalMinutes));
+        private Int64 CalculateLengthInMinutes() => Math.Floor(Length.TotalMinutes).ToInt64();
 
         /// <summary>
         /// Calculates the total number of months that the current <see cref="DateTimeRange" /> spans.
@@ -643,7 +643,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in seconds.
         /// </returns>
         [DebuggerHidden]
-        private Int64 CalculateLengthInSeconds() => Convert.ToInt64(Math.Floor(Length.TotalSeconds));
+        private Int64 CalculateLengthInSeconds() => Math.Floor(Length.TotalSeconds).ToInt64();
 
         /// <summary>
         /// Calculates the total number of weeks that the current <see cref="DateTimeRange" /> spans.
@@ -652,7 +652,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting length, in weeks.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CalculateLengthInWeeks() => Convert.ToInt32(Math.Floor(Length.TotalDays / 7));
+        private Int32 CalculateLengthInWeeks() => Math.Floor(Length.TotalDays / 7).ToInt32();
 
         /// <summary>
         /// Calculates the total number of years (calendar date to calendar date) that the current <see cref="DateTimeRange" />

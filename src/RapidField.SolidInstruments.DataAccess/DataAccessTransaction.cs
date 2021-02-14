@@ -84,13 +84,14 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(BeginAsync)} cannot be invoked when the transaction state is {State}.");
+                    controlToken.Dispose();
+                    return Task.FromException(new InvalidOperationException($"{nameof(BeginAsync)} cannot be invoked when the transaction state is {State}."));
                 }
             }
-            catch
+            catch (Exception exception)
             {
                 controlToken.Dispose();
-                throw;
+                return Task.FromException(exception);
             }
         }
 
@@ -152,13 +153,14 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(CommitAsync)} cannot be invoked when the transaction state is {State}.");
+                    controlToken.Dispose();
+                    return Task.FromException(new InvalidOperationException($"{nameof(CommitAsync)} cannot be invoked when the transaction state is {State}."));
                 }
             }
-            catch
+            catch (Exception exception)
             {
                 controlToken.Dispose();
-                throw;
+                return Task.FromException(exception);
             }
         }
 
@@ -220,13 +222,14 @@ namespace RapidField.SolidInstruments.DataAccess
                 }
                 else
                 {
-                    throw new InvalidOperationException($"{nameof(RejectAsync)} cannot be invoked when the transaction state is {State}.");
+                    controlToken.Dispose();
+                    return Task.FromException(new InvalidOperationException($"{nameof(RejectAsync)} cannot be invoked when the transaction state is {State}."));
                 }
             }
-            catch
+            catch (Exception exception)
             {
                 controlToken.Dispose();
-                throw;
+                return Task.FromException(exception);
             }
         }
 

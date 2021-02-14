@@ -135,17 +135,17 @@ namespace RapidField.SolidInstruments.Command.Extensions
             {
                 return target.ProcessAsync(createCommandFunction.RejectIf().IsNull(nameof(createCommandFunction)).TargetArgument(CommandRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(exception);
+                return Task.FromException<TResult>(new CommandHandlingException(exception));
             }
         }
 
@@ -183,17 +183,17 @@ namespace RapidField.SolidInstruments.Command.Extensions
             {
                 return target.ProcessAsync(createCommandFunction.RejectIf().IsNull(nameof(createCommandFunction)).TargetArgument(CommandRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TCommand), exception);
+                return Task.FromException<TResult>(new CommandHandlingException(typeof(TCommand), exception));
             }
         }
     }

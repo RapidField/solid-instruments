@@ -8,7 +8,6 @@ using RapidField.SolidInstruments.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -232,7 +231,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return RequeueAsync(message);
             }
 
-            throw new InvalidOperationException("Failure conveyance was not successful. The specified lock token does not reference an existing locked message.");
+            return Task.FromException(new InvalidOperationException("Failure conveyance was not successful. The specified lock token does not reference an existing locked message."));
         }
 
         /// <summary>
@@ -263,7 +262,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return Task.CompletedTask;
             }
 
-            throw new InvalidOperationException("Success conveyance was not successful. The specified lock token does not reference an existing locked message.");
+            return Task.FromException(new InvalidOperationException("Success conveyance was not successful. The specified lock token does not reference an existing locked message."));
         }
 
         /// <summary>

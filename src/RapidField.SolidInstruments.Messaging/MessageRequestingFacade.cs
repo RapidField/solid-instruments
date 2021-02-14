@@ -182,7 +182,7 @@ namespace RapidField.SolidInstruments.Messaging
             {
                 if (TryAddOutstandingRequest<TRequestMessage, TResponseMessage>(requestMessage, requestMessageIdentifier) is false)
                 {
-                    throw new InvalidOperationException("The request was not processed because it is a duplicate.");
+                    return Task.FromException<TResponseMessage>(new InvalidOperationException("The request was not processed because it is a duplicate."));
                 }
 
                 try
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Messaging
                 }
                 catch (Exception exception)
                 {
-                    throw new MessageRequestingException(typeof(TRequestMessage), exception);
+                    return Task.FromException<TResponseMessage>(new MessageRequestingException(typeof(TRequestMessage), exception));
                 }
             }
 

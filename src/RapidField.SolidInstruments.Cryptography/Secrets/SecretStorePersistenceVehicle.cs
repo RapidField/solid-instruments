@@ -326,13 +326,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 {
                     return LoadPersistedStateAsync(InMemoryStore, controlToken);
                 }
-                catch (SecretStorePersistenceException)
+                catch (SecretStorePersistenceException exception)
                 {
-                    throw;
+                    return Task.FromException(exception);
                 }
                 catch (Exception exception)
                 {
-                    throw new SecretStorePersistenceException(exception);
+                    return Task.FromException(new SecretStorePersistenceException(exception));
                 }
             }
         }
@@ -359,13 +359,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 {
                     return PersistInMemoryStoreAsync(InMemoryStore, controlToken);
                 }
-                catch (SecretStorePersistenceException)
+                catch (SecretStorePersistenceException exception)
                 {
-                    throw;
+                    return Task.FromException(exception);
                 }
                 catch (Exception exception)
                 {
-                    throw new SecretStorePersistenceException(exception);
+                    return Task.FromException(new SecretStorePersistenceException(exception));
                 }
             }
         }

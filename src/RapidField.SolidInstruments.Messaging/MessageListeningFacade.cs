@@ -669,6 +669,8 @@ namespace RapidField.SolidInstruments.Messaging
                 failurePolicyTasks.Add(TransmitReceiverExceptionAsync(raisedException, message.CorrelationIdentifier));
             }
 
+#pragma warning disable PH_S032
+
             if (retryPolicy.RetryCount >= attemptCount)
             {
                 var baseDelayDurationInSeconds = retryPolicy.BaseDelayDurationInSeconds.AbsoluteValue();
@@ -692,7 +694,11 @@ namespace RapidField.SolidInstruments.Messaging
                     MessageListeningSecondaryFailureBehavior.RouteToDeadLetterQueue => RouteToDeadLetterQueueAsync(adaptedMessage, message, pathLabels, entityType),
                     _ => throw new UnsupportedSpecificationException($"The specified secondary failure behavior, {failurePolicy.SecondaryFailureBehavior}, is not supported.")
                 };
+
+                failurePolicyTasks.Add(secondaryFailureTask);
             }
+
+#pragma warning restore PH_S032
 
             if (failurePolicyTasks.Any())
             {

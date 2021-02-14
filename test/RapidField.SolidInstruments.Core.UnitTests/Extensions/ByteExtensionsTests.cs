@@ -13,6 +13,58 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
     public class ByteExtensionsTests
     {
         [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForNinetyNine()
+        {
+            // Arrange.
+            var target = (Byte)99;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOne()
+        {
+            // Arrange.
+            var target = (Byte)1;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOneHundred()
+        {
+            // Arrange.
+            var target = (Byte)100;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForZero()
+        {
+            // Arrange.
+            var target = (Byte)0;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(0);
+        }
+
+        [TestMethod]
         public void ReverseBitOrder_ShouldReturnValidResult()
         {
             // Arrange.

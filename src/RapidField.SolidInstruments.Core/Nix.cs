@@ -378,13 +378,6 @@ namespace RapidField.SolidInstruments.Core
         public UInt64 ToUInt64(IFormatProvider provider) => default;
 
         /// <summary>
-        /// Represents an ignored value.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [FieldOffset(0)]
-        private readonly Byte Value;
-
-        /// <summary>
         /// Represents a static <see cref="Nix" /> instance.
         /// </summary>
         public static readonly Nix Instance = new(0x00);
@@ -393,5 +386,12 @@ namespace RapidField.SolidInstruments.Core
         /// Represents a static reference to the <see cref="Nix" /> type.
         /// </summary>
         public static readonly Type Type = typeof(Nix);
+
+        /// <summary>
+        /// Represents an ignored value.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [FieldOffset(0)]
+        private readonly Byte Value;
     }
 }

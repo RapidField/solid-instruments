@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             MessagingEntityType.Queue => Connection.Transport.ConveyFailureToQueueAsync(lockToken, Path),
             MessagingEntityType.Topic => Connection.Transport.ConveyFailureToSubscriptionAsync(lockToken, Path),
-            _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+            _ => Task.FromException(new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported."))
         };
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         {
             MessagingEntityType.Queue => Connection.Transport.ConveySuccessToQueueAsync(lockToken, Path),
             MessagingEntityType.Topic => Connection.Transport.ConveySuccessToSubscriptionAsync(lockToken, Path),
-            _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+            _ => Task.FromException(new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported."))
         };
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 Connection.Transport.SendToTopicAsync(Path, message).Wait();
             }),
-            _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+            _ => Task.FromException(new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported."))
         };
 
         /// <summary>

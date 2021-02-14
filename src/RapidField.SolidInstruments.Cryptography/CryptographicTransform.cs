@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -180,14 +181,14 @@ namespace RapidField.SolidInstruments.Cryptography
                         blockAsByteList.Add(0x00);
                     }
 
-                    blockAsByteList.Add(Convert.ToByte(paddingLengthInBytes));
+                    blockAsByteList.Add(paddingLengthInBytes.ToByte());
                     break;
 
                 case PaddingModePkcs7:
 
                     while (blockAsByteList.Count < blockSizeInBytes)
                     {
-                        blockAsByteList.Add(Convert.ToByte(paddingLengthInBytes));
+                        blockAsByteList.Add(paddingLengthInBytes.ToByte());
                     }
 
                     break;

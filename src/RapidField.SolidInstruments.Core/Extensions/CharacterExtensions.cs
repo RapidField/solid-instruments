@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace RapidField.SolidInstruments.Core.Extensions
@@ -22,6 +23,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode alphabetic character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsAlphabetic(this Char target) => Char.IsLetter(target);
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode basic Latin character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsBasicLatin(this Char target) => Regex.IsMatch(new(target, 1), "[\x00-\x7f]");
 
         /// <summary>
@@ -46,6 +49,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode control character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsControlCharacter(this Char target) => Char.IsControl(target);
 
         /// <summary>
@@ -58,6 +62,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode lowercase alphabetic character,
         /// otherwise <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsLowercaseAlphabetic(this Char target) => Char.IsLower(target);
 
         /// <summary>
@@ -70,6 +75,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode numeric character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsNumeric(this Char target) => Char.IsDigit(target);
 
         /// <summary>
@@ -82,6 +88,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode punctuation character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsPunctuation(this Char target) => Char.IsPunctuation(target);
 
         /// <summary>
@@ -94,6 +101,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode symbolic character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsSymbolic(this Char target) => Char.IsSymbol(target);
 
         /// <summary>
@@ -106,6 +114,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode uppercase alphabetic character,
         /// otherwise <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsUppercaseAlphabetic(this Char target) => Char.IsUpper(target);
 
         /// <summary>
@@ -118,6 +127,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Char" /> represents a Unicode white space character, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsWhiteSpaceCharacter(this Char target) => Char.IsWhiteSpace(target);
 
         /// <summary>
@@ -129,6 +139,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// An array of bytes representing the current <see cref="Char" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Byte[] ToByteArray(this Char target) => BitConverter.GetBytes(target);
     }
 }

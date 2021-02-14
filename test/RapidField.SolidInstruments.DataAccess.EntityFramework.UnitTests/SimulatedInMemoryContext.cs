@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entities;
 using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Repositories;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using NumberEntity = RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entities.Number;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
 {
@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
             {
                 for (var i = 0; i <= 100; i++)
                 {
-                    var number = new Number()
+                    var number = new NumberEntity()
                     {
                         Identifier = Guid.NewGuid(),
                         Value = i

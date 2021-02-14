@@ -128,6 +128,9 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <returns>
         /// A task representing the asynchronous operation and containing the obscured, Base-64-encoded persisted state.
         /// </returns>
+        /// <exception cref="SecretStorePersistenceException">
+        /// The persistence file does not exist or the user does not have access to it.
+        /// </exception>
         protected sealed override Task<String> LoadPersistedStateAsync(String semanticIdentity, IConcurrencyControlToken controlToken)
         {
             if (File.Exists(FilePath))
@@ -135,7 +138,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 return File.ReadAllTextAsync(FilePath);
             }
 
-            throw new SecretStorePersistenceException($"The specified secret state persistence file, \"{FilePath}\", does not exist or the user does not have access to it.");
+            return Task.FromException<String>(new SecretStorePersistenceException($"The specified secret state persistence file, \"{FilePath}\", does not exist or the user does not have access to it."));
         }
 
         /// <summary>

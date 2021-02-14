@@ -13,6 +13,84 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
     public class DecimalExtensionsTests
     {
         [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForIntegralAndFractionalNumber()
+        {
+            // Arrange.
+            var target = 120.0345m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(7);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOne()
+        {
+            // Arrange.
+            var target = 1m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOneOneThousandth()
+        {
+            // Arrange.
+            var target = 0.001m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOneThird()
+        {
+            // Arrange.
+            var target = 1m / 3m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(28);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForOneThousand()
+        {
+            // Arrange.
+            var target = 1000m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void CountSignificantFigures_ShouldReturnValidResult_ForZero()
+        {
+            // Arrange.
+            var target = 0m;
+
+            // Act.
+            var result = target.CountSignificantFigures();
+
+            // Assert.
+            result.Should().Be(0);
+        }
+
+        [TestMethod]
         public void RoundedTo_ShouldReturnValidResult_ForAwayFromZeroRounding()
         {
             // Arrange.

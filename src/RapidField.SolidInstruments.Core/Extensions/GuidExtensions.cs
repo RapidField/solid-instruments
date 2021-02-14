@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -20,6 +21,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A serialized string representation of the current <see cref="Guid" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static String ToSerializedString(this Guid target) => target.ToString("N");
     }
 }

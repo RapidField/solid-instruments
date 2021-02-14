@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -22,6 +23,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the day of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisDay(this DateTime target) => new(target.Year, target.Month, target.Day, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the hour of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisHour(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, 0, 0, 0, target.Kind);
 
         /// <summary>
@@ -66,6 +69,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the minute of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisMinute(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, 0, 0, target.Kind);
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the month of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisMonth(this DateTime target) => new(target.Year, target.Month, 1, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
@@ -88,6 +93,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the second of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisSecond(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 0, target.Kind);
 
         /// <summary>
@@ -99,6 +105,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the start of the year of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime BeginningOfThisYear(this DateTime target) => new(target.Year, 1, 1, 0, 0, 0, 0, target.Kind);
 
         /// <summary>
@@ -171,6 +178,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="DateTime" /> represents the last day in the month, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsLastDayOfMonth(this DateTime target) => DateTime.DaysInMonth(target.Year, target.Month) == target.Day;
 
         /// <summary>
@@ -182,6 +190,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the day of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime MidpointOfThisDay(this DateTime target) => new(target.Year, target.Month, target.Day, 12, 0, 0, 0, target.Kind);
 
         /// <summary>
@@ -193,6 +202,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the hour of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime MidpointOfThisHour(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, 30, 0, 0, target.Kind);
 
         /// <summary>
@@ -204,6 +214,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the millisecond of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime MidpointOfThisMillisecond(this DateTime target) => target.BeginningOfThisMillisecond().AddTicks(5000);
 
         /// <summary>
@@ -215,6 +226,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the minute of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime MidpointOfThisMinute(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, 30, 0, target.Kind);
 
         /// <summary>
@@ -263,6 +275,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A <see cref="DateTime" /> representing the midpoint of the second of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime MidpointOfThisSecond(this DateTime target) => new(target.Year, target.Month, target.Day, target.Hour, target.Minute, target.Second, 500, target.Kind);
 
         /// <summary>
@@ -332,6 +345,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A serialized string representation of the current <see cref="DateTime" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static String ToSerializedString(this DateTime target) => target.ToString(SerializedDateTimeFormat);
 
         /// <summary>

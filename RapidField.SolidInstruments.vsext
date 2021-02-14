@@ -1,0 +1,72 @@
+// =================================================================================================================================
+// Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+// =================================================================================================================================
+
+{
+    "id": "514a0710-4d94-4686-8010-cb6663a59726",
+    "name": "Solid Instruments Team Extensions",
+    "description": "A collection of Visual Studio extensions that are used by the Solid Instruments team.",
+    "version": "1.0",
+    "extensions": [
+        {
+            "name": ".ignore",
+            "vsixId": "7ac24965-ea21-4108-9cac-6e46394aaaef"
+        },
+        {
+            "name": "Better Comments",
+            "vsixId": "BetterComments.Omar Rwemi.e985519f-8696-40b7-9400-807054b4ec76"
+        },
+        {
+            "name": "CodeMaid",
+            "vsixId": "4c82e17d-927e-42d2-8460-b473ac7df316"
+        },
+        {
+            "name": "CodeMaintainibility",
+            "vsixId": "CodeMaintainibility.570c23ad-f80c-4122-92cd-fcb21c8bd46e"
+        },
+        {
+            "name": "EditorConfig Language Service",
+            "vsixId": "1209461d-57f8-46a4-814a-dbe5fecef941"
+        },
+        {
+            "name": "Extended XML Doc Comments Completion Provider",
+            "vsixId": "ExtendedXmlDocCommentsCompletionProvider.631a0e78-19cf-4988-a089-303350a4f094"
+        },
+        {
+            "name": "File Icons",
+            "vsixId": "3a7b4930-a5fb-46ec-a9b8-9610c8f953b8"
+        },
+        {
+            "name": "GitHub Extension for Visual Studio",
+            "vsixId": "c3d3dc68-c977-411f-b3e8-03b0dccf7dfc"
+        },
+        {
+            "name": "Insert GUID Command",
+            "vsixId": "e36805fb-d4f0-4403-b0b1-241d88fa1cfa"
+        },
+        {
+            "name": "Markdown Editor",
+            "vsixId": "9ca64947-e9ca-4543-bfb8-6cce9be19fd6"
+        },
+        {
+            "name": "PowerShell Tools for Visual Studio",
+            "vsixId": "PowerShellTools.VS2017"
+        },
+        {
+            "name": "Pull Through Documentation",
+            "vsixId": "PullThroughDoc.85320641-1fcc-4f68-ad86-4b7046c2ec8d"
+        },
+        {
+            "name": "Sharpen",
+            "vsixId": "Ironcev.Sharpen"
+        },
+        {
+            "name": "Syntax Highlighting Pack",
+            "vsixId": "4773ce75-6f30-4269-9557-1f7c30a47be2"
+        },
+        {
+            "name": "Visual Studio Spell Checker (VS2017 and Later)",
+            "vsixId": "43EA967E-0DE2-4136-8E52-C6DCFB5C2748"
+        }
+    ]
+}

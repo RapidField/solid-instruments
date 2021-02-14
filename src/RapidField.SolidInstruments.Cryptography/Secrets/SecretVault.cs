@@ -1439,7 +1439,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         [DebuggerHidden]
         private void ProbabilisticallyRegenerateInMemoryKeys(IConcurrencyControlToken controlToken)
         {
-            if (Convert.ToDouble(HardenedRandomNumberGenerator.Instance.GetUInt16()) / Convert.ToDouble(UInt16.MaxValue) < InMemoryKeyRegenerationProbability)
+            if (HardenedRandomNumberGenerator.Instance.GetUInt16().ToDouble() / UInt16.MaxValue.ToDouble() < InMemoryKeyRegenerationProbability)
             {
                 RegenerateInMemoryKeys(controlToken);
             }

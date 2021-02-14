@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -20,6 +21,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// An array of bytes representing the current <see cref="DateTimeRangeGranularity" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Byte[] ToByteArray(this DateTimeRangeGranularity target) => BitConverter.GetBytes((Int32)target);
     }
 }

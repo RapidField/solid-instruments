@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// A temperature measurement expressed in degrees Celsius.
         /// </param>
         public Temperature(Double degreesCelsius)
-            : this(Convert.ToDecimal(degreesCelsius))
+            : this(degreesCelsius.ToDecimal())
         {
             return;
         }
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Fahrenheit.
         /// </summary>
-        public static Temperature FromDegreesFahrenheit(Double value) => FromDegreesFahrenheit(Convert.ToDecimal(value));
+        public static Temperature FromDegreesFahrenheit(Double value) => FromDegreesFahrenheit(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Fahrenheit.
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Celsius.
         /// </summary>
-        public static Temperature FromDegreesCelsius(Double value) => FromDegreesCelsius(Convert.ToDecimal(value));
+        public static Temperature FromDegreesCelsius(Double value) => FromDegreesCelsius(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of degrees Celsius.
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of kelvins.
         /// </summary>
-        public static Temperature FromKelvins(Double value) => FromKelvins(Convert.ToDecimal(value));
+        public static Temperature FromKelvins(Double value) => FromKelvins(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Temperature" /> that represents the specified number of kelvins.
@@ -80,7 +80,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// The second <see cref="Temperature" /> instance.
         /// </param>
         /// <returns>
-        /// The temperature between the specified <see cref="Temperature" /> instances.
+        /// The difference between the specified <see cref="Temperature" /> instances.
         /// </returns>
         public static Temperature operator -(Temperature subtrahend, Temperature minuend) => new(subtrahend.DegreesCelsius - minuend.DegreesCelsius);
 
@@ -121,7 +121,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Temperature" /> and the specified multiplier.
         /// </returns>
-        public static Temperature operator *(Temperature multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
+        public static Temperature operator *(Temperature multiplicand, Double multiplier) => multiplicand * multiplier.ToDecimal();
 
         /// <summary>
         /// Determines the product of a <see cref="Temperature" /> value and a multiplier.
@@ -149,7 +149,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Temperature" /> and the specified divisor.
         /// </returns>
-        public static Temperature operator /(Temperature dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
+        public static Temperature operator /(Temperature dividend, Double divisor) => dividend / divisor.ToDecimal();
 
         /// <summary>
         /// Determines the quotient of a <see cref="Temperature" /> value and a divisor.

@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{DD6DE5D2
 		psakefile.ps1 = psakefile.ps1
 		RapidField.Logo.Color.Black.Transparent.200w.png = RapidField.Logo.Color.Black.Transparent.200w.png
 		RapidField.SolidInstruments.sln.vsspell = RapidField.SolidInstruments.sln.vsspell
+		RapidField.SolidInstruments.vsext = RapidField.SolidInstruments.vsext
 		RapidFieldRevisionControlWorkflow.png = RapidFieldRevisionControlWorkflow.png
 		README.md = README.md
 		ROADMAP.md = ROADMAP.md

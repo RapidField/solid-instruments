@@ -4,8 +4,8 @@
 
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Mathematics.Physics;
-using System;
 using System.Linq;
 
 namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
@@ -164,7 +164,7 @@ namespace RapidField.SolidInstruments.Mathematics.UnitTests.Physics
 
             // Assert.
             target.TotalCubicMeters.Should().Be(parityValue);
-            target.TotalCubicMeters.Should().Be(Convert.ToDecimal(value));
+            target.TotalCubicMeters.Should().Be(value.ToDecimal());
         }
 
         [TestMethod]

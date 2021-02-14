@@ -57,8 +57,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static DescriptiveStatistics ComputeDescriptives(this IEnumerable<Int32> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var size = target.Count();
+            var size = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Count();
             var minimum = target.Min();
             var maximum = target.Max();
             var sum = target.Sum();
@@ -109,8 +108,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static DescriptiveStatistics ComputeDescriptives(this IEnumerable<Int64> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var size = target.Count();
+            var size = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Count();
             var minimum = target.Min();
             var maximum = target.Max();
             var sum = target.Sum();
@@ -161,8 +159,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static DescriptiveStatistics ComputeDescriptives(this IEnumerable<Single> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var size = target.Count();
+            var size = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Count();
             var minimum = target.Min();
             var maximum = target.Max();
             var sum = target.Sum();
@@ -213,8 +210,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static DescriptiveStatistics ComputeDescriptives(this IEnumerable<Double> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var size = target.Count();
+            var size = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Count();
             var minimum = target.Min();
             var maximum = target.Max();
             var sum = target.Sum();
@@ -265,8 +261,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static DescriptiveStatistics ComputeDescriptives(this IEnumerable<Decimal> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var size = target.Count();
+            var size = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Count();
             var minimum = target.Min();
             var maximum = target.Max();
             var sum = target.Sum();
@@ -295,11 +290,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Int32?> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Where(number => number.HasValue).Select(number => number.Value).Mean();
-        }
+        public static Double Mean(this IEnumerable<Int32?> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Where(number => number.HasValue).Select(number => number.Value).Mean();
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Int32" /> values in the current collection.
@@ -319,11 +310,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Int32> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Mean(target.Sum());
-        }
+        public static Double Mean(this IEnumerable<Int32> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Mean(target.Sum());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Int64" /> values in the current collection.
@@ -343,11 +330,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Int64?> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Where(number => number.HasValue).Select(number => number.Value).Mean();
-        }
+        public static Double Mean(this IEnumerable<Int64?> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Where(number => number.HasValue).Select(number => number.Value).Mean();
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Int64" /> values in the current collection.
@@ -367,11 +350,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Int64> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Mean(target.Sum());
-        }
+        public static Double Mean(this IEnumerable<Int64> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Mean(target.Sum());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Single" /> values in the current collection.
@@ -391,11 +370,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Single?> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Where(number => number.HasValue).Select(number => number.Value).Mean();
-        }
+        public static Double Mean(this IEnumerable<Single?> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Where(number => number.HasValue).Select(number => number.Value).Mean();
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Single" /> values in the current collection.
@@ -415,11 +390,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Single> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Mean(target.Sum());
-        }
+        public static Double Mean(this IEnumerable<Single> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Mean(target.Sum());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Double" /> values in the current collection.
@@ -439,11 +410,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Double?> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Where(number => number.HasValue).Select(number => number.Value).Mean();
-        }
+        public static Double Mean(this IEnumerable<Double?> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Where(number => number.HasValue).Select(number => number.Value).Mean();
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Double" /> values in the current collection.
@@ -463,11 +430,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Mean(this IEnumerable<Double> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Mean(target.Sum());
-        }
+        public static Double Mean(this IEnumerable<Double> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Mean(target.Sum());
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Decimal" /> values in the current collection.
@@ -487,11 +450,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Decimal Mean(this IEnumerable<Decimal?> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Where(number => number.HasValue).Select(number => number.Value).Mean();
-        }
+        public static Decimal Mean(this IEnumerable<Decimal?> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Where(number => number.HasValue).Select(number => number.Value).Mean();
 
         /// <summary>
         /// Calculate the arithmetic mean of the <see cref="Decimal" /> values in the current collection.
@@ -511,11 +470,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Decimal Mean(this IEnumerable<Decimal> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Mean(target.Sum());
-        }
+        public static Decimal Mean(this IEnumerable<Decimal> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Mean(target.Sum());
 
         /// <summary>
         /// Calculate the median of the <see cref="Int32" /> values in the current collection.
@@ -557,8 +512,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static Double Median(this IEnumerable<Int32> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var orderedCollection = target.OrderBy(number => number);
+            var orderedCollection = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.OrderBy(number => number);
             var medianIndices = DetermineMedianIndices(orderedCollection.Count());
 
             if (medianIndices.Length == 1)
@@ -611,8 +565,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static Double Median(this IEnumerable<Int64> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var orderedCollection = target.OrderBy(number => number);
+            var orderedCollection = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.OrderBy(number => number);
             var medianIndices = DetermineMedianIndices(orderedCollection.Count());
 
             if (medianIndices.Length == 1)
@@ -665,8 +618,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static Double Median(this IEnumerable<Single> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var orderedCollection = target.OrderBy(number => number);
+            var orderedCollection = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.OrderBy(number => number);
             var medianIndices = DetermineMedianIndices(orderedCollection.Count());
 
             if (medianIndices.Length == 1)
@@ -719,8 +671,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static Double Median(this IEnumerable<Double> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var orderedCollection = target.OrderBy(number => number);
+            var orderedCollection = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.OrderBy(number => number);
             var medianIndices = DetermineMedianIndices(orderedCollection.Count());
 
             if (medianIndices.Length == 1)
@@ -773,8 +724,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// </exception>
         public static Decimal Median(this IEnumerable<Decimal> target)
         {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            var orderedCollection = target.OrderBy(number => number);
+            var orderedCollection = target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.OrderBy(number => number);
             var medianIndices = DetermineMedianIndices(orderedCollection.Count());
 
             if (medianIndices.Length == 1)
@@ -825,11 +775,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Midrange(this IEnumerable<Int32> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
-        }
+        public static Double Midrange(this IEnumerable<Int32> target) => (Convert.ToDouble(target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Min()) + Convert.ToDouble(target.Max())) / 2d;
 
         /// <summary>
         /// Calculate the mid-range of the <see cref="Int64" /> values in the current collection.
@@ -869,11 +815,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Midrange(this IEnumerable<Int64> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
-        }
+        public static Double Midrange(this IEnumerable<Int64> target) => (Convert.ToDouble(target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Min()) + Convert.ToDouble(target.Max())) / 2d;
 
         /// <summary>
         /// Calculate the mid-range of the <see cref="Single" /> values in the current collection.
@@ -913,11 +855,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Midrange(this IEnumerable<Single> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (Convert.ToDouble(target.Min()) + Convert.ToDouble(target.Max())) / 2d;
-        }
+        public static Double Midrange(this IEnumerable<Single> target) => (Convert.ToDouble(target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Min()) + Convert.ToDouble(target.Max())) / 2d;
 
         /// <summary>
         /// Calculate the mid-range of the <see cref="Double" /> values in the current collection.
@@ -957,11 +895,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Midrange(this IEnumerable<Double> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Min() + target.Max()) / 2d;
-        }
+        public static Double Midrange(this IEnumerable<Double> target) => (target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Min() + target.Max()) / 2d;
 
         /// <summary>
         /// Calculate the mid-range of the <see cref="Decimal" /> values in the current collection.
@@ -1001,11 +935,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Decimal Midrange(this IEnumerable<Decimal> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return (target.Min() + target.Max()) / 2m;
-        }
+        public static Decimal Midrange(this IEnumerable<Decimal> target) => (target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Min() + target.Max()) / 2m;
 
         /// <summary>
         /// Calculate the range of the <see cref="Int32" /> values in the current collection.
@@ -1045,11 +975,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Int32 Range(this IEnumerable<Int32> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Max() - target.Min();
-        }
+        public static Int32 Range(this IEnumerable<Int32> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Max() - target.Min();
 
         /// <summary>
         /// Calculate the range of the <see cref="Int64" /> values in the current collection.
@@ -1089,11 +1015,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Int64 Range(this IEnumerable<Int64> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Max() - target.Min();
-        }
+        public static Int64 Range(this IEnumerable<Int64> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Max() - target.Min();
 
         /// <summary>
         /// Calculate the range of the <see cref="Single" /> values in the current collection.
@@ -1133,11 +1055,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Single Range(this IEnumerable<Single> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Max() - target.Min();
-        }
+        public static Single Range(this IEnumerable<Single> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Max() - target.Min();
 
         /// <summary>
         /// Calculate the range of the <see cref="Double" /> values in the current collection.
@@ -1177,11 +1095,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double Range(this IEnumerable<Double> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Max() - target.Min();
-        }
+        public static Double Range(this IEnumerable<Double> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Max() - target.Min();
 
         /// <summary>
         /// Calculate the range of the <see cref="Decimal" /> values in the current collection.
@@ -1221,11 +1135,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Decimal Range(this IEnumerable<Decimal> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.Max() - target.Min();
-        }
+        public static Decimal Range(this IEnumerable<Decimal> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.Max() - target.Min();
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Int32" /> values in the current collection.
@@ -1265,11 +1175,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double StandardDeviation(this IEnumerable<Int32> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.StandardDeviation(target.Variance());
-        }
+        public static Double StandardDeviation(this IEnumerable<Int32> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.StandardDeviation(target.Variance());
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Int64" /> values in the current collection.
@@ -1309,11 +1215,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double StandardDeviation(this IEnumerable<Int64> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.StandardDeviation(target.Variance());
-        }
+        public static Double StandardDeviation(this IEnumerable<Int64> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.StandardDeviation(target.Variance());
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Single" /> values in the current collection.
@@ -1353,11 +1255,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double StandardDeviation(this IEnumerable<Single> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.StandardDeviation(target.Variance());
-        }
+        public static Double StandardDeviation(this IEnumerable<Single> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.StandardDeviation(target.Variance());
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Double" /> values in the current collection.
@@ -1397,11 +1295,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Double StandardDeviation(this IEnumerable<Double> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.StandardDeviation(target.Variance());
-        }
+        public static Double StandardDeviation(this IEnumerable<Double> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.StandardDeviation(target.Variance());
 
         /// <summary>
         /// Calculate the standard deviation of the <see cref="Decimal" /> values in the current collection.
@@ -1441,11 +1335,7 @@ namespace RapidField.SolidInstruments.Mathematics.Statistics.Extensions
         /// <exception cref="OverflowException">
         /// A calculation produced a result that is outside the range of its data type.
         /// </exception>
-        public static Decimal StandardDeviation(this IEnumerable<Decimal> target)
-        {
-            target.RejectIf().IsNullOrEmpty(nameof(target));
-            return target.StandardDeviation(target.Variance());
-        }
+        public static Decimal StandardDeviation(this IEnumerable<Decimal> target) => target.RejectIf().IsNullOrEmpty(nameof(target)).TargetArgument.StandardDeviation(target.Variance());
 
         /// <summary>
         /// Calculate the variance of the <see cref="Int32" /> values in the current collection.

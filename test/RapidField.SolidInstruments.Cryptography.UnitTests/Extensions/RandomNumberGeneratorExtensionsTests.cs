@@ -167,7 +167,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(-5000).And.BeLessOrEqualTo(5000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(-5000).And.BeLessOrEqualTo(5000);
             }
         }
 
@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(-50000).And.BeLessOrEqualTo(50000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(-50000).And.BeLessOrEqualTo(50000);
             }
         }
 
@@ -243,7 +243,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(-50000).And.BeLessOrEqualTo(50000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(-50000).And.BeLessOrEqualTo(50000);
             }
         }
 
@@ -397,7 +397,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(15000).And.BeLessOrEqualTo(25000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(15000).And.BeLessOrEqualTo(25000);
             }
         }
 
@@ -435,7 +435,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(150000).And.BeLessOrEqualTo(250000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(150000).And.BeLessOrEqualTo(250000);
             }
         }
 
@@ -473,7 +473,7 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
 
                 // Assert.
                 array.Length.Should().Be(arrayLength);
-                array.Select(value => Convert.ToDouble(value)).Average().Should().BeGreaterOrEqualTo(150000).And.BeLessOrEqualTo(250000);
+                array.Select(value => value.ToDouble()).Average().Should().BeGreaterOrEqualTo(150000).And.BeLessOrEqualTo(250000);
             }
         }
 

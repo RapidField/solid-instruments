@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Mathematics.Extensions;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.DateTimeScale
         protected sealed override Single InterpolateLinear(DateTime xAxisValue, DateTime downwardXAxisValue, Single downwardYAxisValue, DateTime upwardXAxisValue, Single upwardYAxisValue)
         {
             var yAxisRange = upwardYAxisValue - downwardYAxisValue;
-            var positionInXAxisRange = Convert.ToSingle(xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue));
+            var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue).ToSingle();
             var adjustment = yAxisRange * positionInXAxisRange;
             return downwardYAxisValue + adjustment;
         }

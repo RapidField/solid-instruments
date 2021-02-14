@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// A distance measurement expressed in meters.
         /// </param>
         public Length(Double meters)
-            : this(Convert.ToDecimal(meters))
+            : this(meters.ToDecimal())
         {
             return;
         }
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of centimeters.
         /// </summary>
-        public static Length FromCentimeters(Double value) => FromCentimeters(Convert.ToDecimal(value));
+        public static Length FromCentimeters(Double value) => FromCentimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of centimeters.
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of feet.
         /// </summary>
-        public static Length FromFeet(Double value) => FromFeet(Convert.ToDecimal(value));
+        public static Length FromFeet(Double value) => FromFeet(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of feet.
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of inches.
         /// </summary>
-        public static Length FromInches(Double value) => FromInches(Convert.ToDecimal(value));
+        public static Length FromInches(Double value) => FromInches(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of inches.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of kilometers.
         /// </summary>
-        public static Length FromKilometers(Double value) => FromKilometers(Convert.ToDecimal(value));
+        public static Length FromKilometers(Double value) => FromKilometers(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of kilometers.
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of light-years.
         /// </summary>
-        public static Length FromLightYears(Double value) => FromLightYears(Convert.ToDecimal(value));
+        public static Length FromLightYears(Double value) => FromLightYears(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of light-years.
@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of meters.
         /// </summary>
-        public static Length FromMeters(Double value) => FromMeters(Convert.ToDecimal(value));
+        public static Length FromMeters(Double value) => FromMeters(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of meters.
@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of miles.
         /// </summary>
-        public static Length FromMiles(Double value) => FromMiles(Convert.ToDecimal(value));
+        public static Length FromMiles(Double value) => FromMiles(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of miles.
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of millimeters.
         /// </summary>
-        public static Length FromMillimeters(Double value) => FromMillimeters(Convert.ToDecimal(value));
+        public static Length FromMillimeters(Double value) => FromMillimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of millimeters.
@@ -123,7 +123,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of nanometers.
         /// </summary>
-        public static Length FromNanometers(Double value) => FromNanometers(Convert.ToDecimal(value));
+        public static Length FromNanometers(Double value) => FromNanometers(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of nanometers.
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of yards.
         /// </summary>
-        public static Length FromYards(Double value) => FromYards(Convert.ToDecimal(value));
+        public static Length FromYards(Double value) => FromYards(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Length" /> that represents the specified number of yards.
@@ -150,7 +150,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// The second <see cref="Length" /> instance.
         /// </param>
         /// <returns>
-        /// The distance between the specified <see cref="Length" /> instances.
+        /// The difference between the specified <see cref="Length" /> instances.
         /// </returns>
         public static Length operator -(Length subtrahend, Length minuend) => new(subtrahend.Meters - minuend.Meters);
 
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Length" /> and the specified multiplier.
         /// </returns>
-        public static Length operator *(Length multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
+        public static Length operator *(Length multiplicand, Double multiplier) => multiplicand * multiplier.ToDecimal();
 
         /// <summary>
         /// Determines the product of a <see cref="Length" /> value and a multiplier.
@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Length" /> and the specified divisor.
         /// </returns>
-        public static Length operator /(Length dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
+        public static Length operator /(Length dividend, Double divisor) => dividend / divisor.ToDecimal();
 
         /// <summary>
         /// Determines the quotient of a <see cref="Length" /> value and a divisor.

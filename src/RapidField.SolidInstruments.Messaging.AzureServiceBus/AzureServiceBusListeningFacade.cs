@@ -138,12 +138,16 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
                 return Task.CompletedTask;
             }
 
+#pragma warning disable PH_S032
+
             var receiverClient = entityType switch
             {
                 MessagingEntityType.Queue => ClientFactory.GetQueueReceiver<TMessage>(pathLabels),
                 MessagingEntityType.Topic => ClientFactory.GetTopicReceiver<TMessage>(Identifier, pathLabels),
                 _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
             };
+
+#pragma warning restore PH_S032
 
             var messageType = typeof(TMessage);
             return receiverClient.DeadLetterAsync(lockToken, $"The listener(s) exhausted the primary failure remediation steps for this message. Message type: {messageType.FullName}.");

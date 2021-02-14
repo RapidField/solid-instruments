@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// A volume measurement expressed in cubic meters.
         /// </param>
         public Volume(Double cubicMeters)
-            : this(Convert.ToDecimal(cubicMeters))
+            : this(cubicMeters.ToDecimal())
         {
             return;
         }
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic centimeters.
         /// </summary>
-        public static Volume FromCubicCentimeters(Double value) => FromCubicCentimeters(Convert.ToDecimal(value));
+        public static Volume FromCubicCentimeters(Double value) => FromCubicCentimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic centimeters.
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic feet.
         /// </summary>
-        public static Volume FromCubicFeet(Double value) => FromCubicFeet(Convert.ToDecimal(value));
+        public static Volume FromCubicFeet(Double value) => FromCubicFeet(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic feet.
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic inches.
         /// </summary>
-        public static Volume FromCubicInches(Double value) => FromCubicInches(Convert.ToDecimal(value));
+        public static Volume FromCubicInches(Double value) => FromCubicInches(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic inches.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic kilometers.
         /// </summary>
-        public static Volume FromCubicKilometers(Double value) => FromCubicKilometers(Convert.ToDecimal(value));
+        public static Volume FromCubicKilometers(Double value) => FromCubicKilometers(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic kilometers.
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic meters.
         /// </summary>
-        public static Volume FromCubicMeters(Double value) => FromCubicMeters(Convert.ToDecimal(value));
+        public static Volume FromCubicMeters(Double value) => FromCubicMeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic meters.
@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic miles.
         /// </summary>
-        public static Volume FromCubicMiles(Double value) => FromCubicMiles(Convert.ToDecimal(value));
+        public static Volume FromCubicMiles(Double value) => FromCubicMiles(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic miles.
@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic millimeters.
         /// </summary>
-        public static Volume FromCubicMillimeters(Double value) => FromCubicMillimeters(Convert.ToDecimal(value));
+        public static Volume FromCubicMillimeters(Double value) => FromCubicMillimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic millimeters.
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic yards.
         /// </summary>
-        public static Volume FromCubicYards(Double value) => FromCubicYards(Convert.ToDecimal(value));
+        public static Volume FromCubicYards(Double value) => FromCubicYards(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of cubic yards.
@@ -123,7 +123,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of gallons.
         /// </summary>
-        public static Volume FromGallons(Double value) => FromGallons(Convert.ToDecimal(value));
+        public static Volume FromGallons(Double value) => FromGallons(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of gallons.
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of liters.
         /// </summary>
-        public static Volume FromLiters(Double value) => FromLiters(Convert.ToDecimal(value));
+        public static Volume FromLiters(Double value) => FromLiters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of liters.
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of milliliters.
         /// </summary>
-        public static Volume FromMilliliters(Double value) => FromMilliliters(Convert.ToDecimal(value));
+        public static Volume FromMilliliters(Double value) => FromMilliliters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Volume" /> that represents the specified number of milliliters.
@@ -160,7 +160,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// The second <see cref="Volume" /> instance.
         /// </param>
         /// <returns>
-        /// The area between the specified <see cref="Volume" /> instances.
+        /// The difference between the specified <see cref="Volume" /> instances.
         /// </returns>
         public static Volume operator -(Volume subtrahend, Volume minuend) => new(subtrahend.CubicMeters - minuend.CubicMeters);
 
@@ -201,7 +201,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Volume" /> and the specified multiplier.
         /// </returns>
-        public static Volume operator *(Volume multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
+        public static Volume operator *(Volume multiplicand, Double multiplier) => multiplicand * multiplier.ToDecimal();
 
         /// <summary>
         /// Determines the product of an <see cref="Volume" /> value and a multiplier.
@@ -229,7 +229,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Volume" /> and the specified divisor.
         /// </returns>
-        public static Volume operator /(Volume dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
+        public static Volume operator /(Volume dividend, Double divisor) => dividend / divisor.ToDecimal();
 
         /// <summary>
         /// Determines the quotient of an <see cref="Volume" /> value and a divisor.
@@ -333,10 +333,10 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         public static Boolean operator >=(Volume a, Volume b) => a.CompareTo(b) >= 0;
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Volume" /> equivalent.
+        /// Converts the specified <see cref="String" /> representation of a volume value to its <see cref="Volume" /> equivalent.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing a volume value to convert.
         /// </param>
         /// <returns>
         /// A <see cref="Volume" /> that is equivalent to <paramref name="input" />.
@@ -348,7 +348,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <paramref name="input" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="FormatException">
-        /// <paramref name="input" /> does not contain a valid representation of a area value.
+        /// <paramref name="input" /> does not contain a valid representation of a volume value.
         /// </exception>
         public static Volume Parse(String input)
         {
@@ -361,11 +361,11 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         }
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Volume" /> equivalent. The
-        /// method returns a value that indicates whether the conversion succeeded.
+        /// Converts the specified <see cref="String" /> representation of a volume value to its <see cref="Volume" /> equivalent.
+        /// The method returns a value that indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing a volume value to convert.
         /// </param>
         /// <param name="result">
         /// The parsed result if the operation is successful, otherwise the default instance.
@@ -456,10 +456,10 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         public override String ToString() => $"{CubicMeters} {CubicMetersUnitOfMeasureSymbol}";
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Volume" /> equivalent.
+        /// Converts the specified <see cref="String" /> representation of a volume value to its <see cref="Volume" /> equivalent.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing a volume value to convert.
         /// </param>
         /// <param name="result">
         /// The resulting <see cref="Volume" /> value, or <see cref="Zero" /> if the operation is unsuccessful.
@@ -477,7 +477,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <paramref name="input" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="FormatException">
-        /// <paramref name="input" /> does not contain a valid representation of a area value.
+        /// <paramref name="input" /> does not contain a valid representation of a volume value.
         /// </exception>
         [DebuggerHidden]
         private static Boolean Parse(String input, out Volume result, Boolean raiseExceptionOnFail)

@@ -121,17 +121,17 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
             {
                 return target.ProcessAsync(createEventFunction.RejectIf().IsNull(nameof(createEventFunction)).TargetArgument(EventRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(exception);
+                return Task.FromException(new CommandHandlingException(exception));
             }
         }
 
@@ -166,17 +166,17 @@ namespace RapidField.SolidInstruments.EventAuthoring.Extensions
             {
                 return target.ProcessAsync(createEventFunction.RejectIf().IsNull(nameof(createEventFunction)).TargetArgument(EventRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TEvent), exception);
+                return Task.FromException(new CommandHandlingException(typeof(TEvent), exception));
             }
         }
     }

@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// An area measurement expressed in square meters.
         /// </param>
         public Area(Double squareMeters)
-            : this(Convert.ToDecimal(squareMeters))
+            : this(squareMeters.ToDecimal())
         {
             return;
         }
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of acres.
         /// </summary>
-        public static Area FromAcres(Double value) => FromAcres(Convert.ToDecimal(value));
+        public static Area FromAcres(Double value) => FromAcres(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of acres.
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of hectares.
         /// </summary>
-        public static Area FromHectares(Double value) => FromHectares(Convert.ToDecimal(value));
+        public static Area FromHectares(Double value) => FromHectares(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of hectares.
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square centimeters.
         /// </summary>
-        public static Area FromSquareCentimeters(Double value) => FromSquareCentimeters(Convert.ToDecimal(value));
+        public static Area FromSquareCentimeters(Double value) => FromSquareCentimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square centimeters.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square feet.
         /// </summary>
-        public static Area FromSquareFeet(Double value) => FromSquareFeet(Convert.ToDecimal(value));
+        public static Area FromSquareFeet(Double value) => FromSquareFeet(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square feet.
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square inches.
         /// </summary>
-        public static Area FromSquareInches(Double value) => FromSquareInches(Convert.ToDecimal(value));
+        public static Area FromSquareInches(Double value) => FromSquareInches(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square inches.
@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square kilometers.
         /// </summary>
-        public static Area FromSquareKilometers(Double value) => FromSquareKilometers(Convert.ToDecimal(value));
+        public static Area FromSquareKilometers(Double value) => FromSquareKilometers(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square kilometers.
@@ -103,7 +103,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square meters.
         /// </summary>
-        public static Area FromSquareMeters(Double value) => FromSquareMeters(Convert.ToDecimal(value));
+        public static Area FromSquareMeters(Double value) => FromSquareMeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square meters.
@@ -113,7 +113,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square miles.
         /// </summary>
-        public static Area FromSquareMiles(Double value) => FromSquareMiles(Convert.ToDecimal(value));
+        public static Area FromSquareMiles(Double value) => FromSquareMiles(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square miles.
@@ -123,7 +123,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square millimeters.
         /// </summary>
-        public static Area FromSquareMillimeters(Double value) => FromSquareMillimeters(Convert.ToDecimal(value));
+        public static Area FromSquareMillimeters(Double value) => FromSquareMillimeters(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square millimeters.
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square yards.
         /// </summary>
-        public static Area FromSquareYards(Double value) => FromSquareYards(Convert.ToDecimal(value));
+        public static Area FromSquareYards(Double value) => FromSquareYards(value.ToDecimal());
 
         /// <summary>
         /// Returns an <see cref="Area" /> that represents the specified number of square yards.
@@ -150,7 +150,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// The second <see cref="Area" /> instance.
         /// </param>
         /// <returns>
-        /// The area between the specified <see cref="Area" /> instances.
+        /// The difference between the specified <see cref="Area" /> instances.
         /// </returns>
         public static Area operator -(Area subtrahend, Area minuend) => new(subtrahend.SquareMeters - minuend.SquareMeters);
 
@@ -191,7 +191,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Area" /> and the specified multiplier.
         /// </returns>
-        public static Area operator *(Area multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
+        public static Area operator *(Area multiplicand, Double multiplier) => multiplicand * multiplier.ToDecimal();
 
         /// <summary>
         /// Determines the product of an <see cref="Area" /> value and a multiplier.
@@ -219,7 +219,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Area" /> and the specified divisor.
         /// </returns>
-        public static Area operator /(Area dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
+        public static Area operator /(Area dividend, Double divisor) => dividend / divisor.ToDecimal();
 
         /// <summary>
         /// Determines the quotient of an <see cref="Area" /> value and a divisor.
@@ -322,10 +322,10 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         public static Boolean operator >=(Area a, Area b) => a.CompareTo(b) >= 0;
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Area" /> equivalent.
+        /// Converts the specified <see cref="String" /> representation of an area value to its <see cref="Area" /> equivalent.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing an area value to convert.
         /// </param>
         /// <returns>
         /// A <see cref="Area" /> that is equivalent to <paramref name="input" />.
@@ -337,7 +337,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <paramref name="input" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="FormatException">
-        /// <paramref name="input" /> does not contain a valid representation of a area value.
+        /// <paramref name="input" /> does not contain a valid representation of an area value.
         /// </exception>
         public static Area Parse(String input)
         {
@@ -350,11 +350,11 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         }
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Area" /> equivalent. The
+        /// Converts the specified <see cref="String" /> representation of an area value to its <see cref="Area" /> equivalent. The
         /// method returns a value that indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing an area value to convert.
         /// </param>
         /// <param name="result">
         /// The parsed result if the operation is successful, otherwise the default instance.
@@ -445,10 +445,10 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         public override String ToString() => $"{SquareMeters} {SquareMetersUnitOfMeasureSymbol}";
 
         /// <summary>
-        /// Converts the specified <see cref="String" /> representation of a area value to its <see cref="Area" /> equivalent.
+        /// Converts the specified <see cref="String" /> representation of an area value to its <see cref="Area" /> equivalent.
         /// </summary>
         /// <param name="input">
-        /// A <see cref="String" /> containing a area value to convert.
+        /// A <see cref="String" /> containing an area value to convert.
         /// </param>
         /// <param name="result">
         /// The resulting <see cref="Area" /> value, or <see cref="Zero" /> if the operation is unsuccessful.
@@ -466,7 +466,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <paramref name="input" /> is <see langword="null" />.
         /// </exception>
         /// <exception cref="FormatException">
-        /// <paramref name="input" /> does not contain a valid representation of a area value.
+        /// <paramref name="input" /> does not contain a valid representation of an area value.
         /// </exception>
         [DebuggerHidden]
         private static Boolean Parse(String input, out Area result, Boolean raiseExceptionOnFail)

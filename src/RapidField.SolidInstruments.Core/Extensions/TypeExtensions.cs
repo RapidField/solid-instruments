@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace RapidField.SolidInstruments.Core.Extensions
@@ -47,6 +48,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="Type" /> implements <see cref="IDisposable" /> or is
         /// <see cref="IDisposable" />, otherwise <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsDisposable(this Type target) => DisposableType.IsAssignableFrom(target);
 
         /// <summary>

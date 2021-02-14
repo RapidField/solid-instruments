@@ -130,21 +130,21 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see cref="InMemoryCachingStrategy.Aggressive" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static Int64 SizeLimitForAggressiveStrategy => Convert.ToInt64(Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForAggressiveStrategy, 0));
+        private static Int64 SizeLimitForAggressiveStrategy => Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForAggressiveStrategy, 0).ToInt64();
 
         /// <summary>
         /// Gets the <see cref="MemoryCacheOptions.SizeLimit" /> setting associated with the strategy
         /// <see cref="InMemoryCachingStrategy.Conservative" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static Int64 SizeLimitForConservativeStrategy => Convert.ToInt64(Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForConservativeStrategy, 0));
+        private static Int64 SizeLimitForConservativeStrategy => Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForConservativeStrategy, 0).ToInt64();
 
         /// <summary>
         /// Gets the <see cref="MemoryCacheOptions.SizeLimit" /> setting associated with the strategy
         /// <see cref="InMemoryCachingStrategy.Moderate" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static Int64 SizeLimitForModerateStrategy => Convert.ToInt64(Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForModerateStrategy, 0));
+        private static Int64 SizeLimitForModerateStrategy => Math.Round(AvailableProcessMemoryInBytes * MemoryUsePercentageForModerateStrategy, 0).ToInt64();
 
         /// <summary>
         /// Represents the <see cref="MemoryCacheEntryOptions.AbsoluteExpirationRelativeToNow" /> setting, in minutes, associated

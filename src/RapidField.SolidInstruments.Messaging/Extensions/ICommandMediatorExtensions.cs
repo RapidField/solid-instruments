@@ -89,17 +89,17 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
             {
                 return target.ProcessAsync(createMessageFunction.RejectIf().IsNull(nameof(createMessageFunction)).TargetArgument(CommandMessageRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TCommandMessage), exception);
+                return Task.FromException(new CommandHandlingException(typeof(TCommandMessage), exception));
             }
         }
 
@@ -176,17 +176,17 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
             {
                 return target.ProcessAsync(createMessageFunction.RejectIf().IsNull(nameof(createMessageFunction)).TargetArgument(EventMessageRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TEventMessage), exception);
+                return Task.FromException(new CommandHandlingException(typeof(TEventMessage), exception));
             }
         }
 
@@ -272,17 +272,17 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
             {
                 return target.ProcessAsync(createMessageFunction.RejectIf().IsNull(nameof(createMessageFunction)).TargetArgument(MessageRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException<TResult>(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TMessage), exception);
+                return Task.FromException<TResult>(new CommandHandlingException(typeof(TMessage), exception));
             }
         }
 
@@ -412,17 +412,17 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
             {
                 return target.ProcessAsync(createMessageFunction.RejectIf().IsNull(nameof(createMessageFunction)).TargetArgument(RequestMessageRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException<TResponseMessage>(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException<TResponseMessage>(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(exception);
+                return Task.FromException<TResponseMessage>(new CommandHandlingException(exception));
             }
         }
 
@@ -462,17 +462,17 @@ namespace RapidField.SolidInstruments.Messaging.Extensions
             {
                 return target.ProcessAsync(createMessageFunction.RejectIf().IsNull(nameof(createMessageFunction)).TargetArgument(RequestMessageRegister.Instance));
             }
-            catch (CommandHandlingException)
+            catch (CommandHandlingException exception)
             {
-                throw;
+                return Task.FromException<TResponseMessage>(exception);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException exception)
             {
-                throw;
+                return Task.FromException<TResponseMessage>(exception);
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TRequestMessage), exception);
+                return Task.FromException<TResponseMessage>(new CommandHandlingException(typeof(TRequestMessage), exception));
             }
         }
     }

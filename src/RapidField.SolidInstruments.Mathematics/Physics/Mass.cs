@@ -24,7 +24,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// A mass measurement expressed in grams.
         /// </param>
         public Mass(Double grams)
-            : this(Convert.ToDecimal(grams))
+            : this(grams.ToDecimal())
         {
             return;
         }
@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of centigrams.
         /// </summary>
-        public static Mass FromCentigrams(Double value) => FromCentigrams(Convert.ToDecimal(value));
+        public static Mass FromCentigrams(Double value) => FromCentigrams(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of centigrams.
@@ -53,7 +53,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of grams.
         /// </summary>
-        public static Mass FromGrams(Double value) => FromGrams(Convert.ToDecimal(value));
+        public static Mass FromGrams(Double value) => FromGrams(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of grams.
@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of kilograms.
         /// </summary>
-        public static Mass FromKilograms(Double value) => FromKilograms(Convert.ToDecimal(value));
+        public static Mass FromKilograms(Double value) => FromKilograms(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of kilograms.
@@ -73,7 +73,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of micro-grams.
         /// </summary>
-        public static Mass FromMicrograms(Double value) => FromMicrograms(Convert.ToDecimal(value));
+        public static Mass FromMicrograms(Double value) => FromMicrograms(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of micro-grams.
@@ -83,7 +83,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of milligrams.
         /// </summary>
-        public static Mass FromMilligrams(Double value) => FromMilligrams(Convert.ToDecimal(value));
+        public static Mass FromMilligrams(Double value) => FromMilligrams(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of milligrams.
@@ -93,7 +93,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of nanograms.
         /// </summary>
-        public static Mass FromNanograms(Double value) => FromNanograms(Convert.ToDecimal(value));
+        public static Mass FromNanograms(Double value) => FromNanograms(value.ToDecimal());
 
         /// <summary>
         /// Returns a <see cref="Mass" /> that represents the specified number of nanograms.
@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// The second <see cref="Mass" /> instance.
         /// </param>
         /// <returns>
-        /// The mass between the specified <see cref="Mass" /> instances.
+        /// The difference between the specified <see cref="Mass" /> instances.
         /// </returns>
         public static Mass operator -(Mass subtrahend, Mass minuend) => new(subtrahend.Grams - minuend.Grams);
 
@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The product of the specified <see cref="Mass" /> and the specified multiplier.
         /// </returns>
-        public static Mass operator *(Mass multiplicand, Double multiplier) => multiplicand * Convert.ToDecimal(multiplier);
+        public static Mass operator *(Mass multiplicand, Double multiplier) => multiplicand * multiplier.ToDecimal();
 
         /// <summary>
         /// Determines the product of a <see cref="Mass" /> value and a multiplier.
@@ -179,7 +179,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// The quotient of the specified <see cref="Mass" /> and the specified divisor.
         /// </returns>
-        public static Mass operator /(Mass dividend, Double divisor) => dividend / Convert.ToDecimal(divisor);
+        public static Mass operator /(Mass dividend, Double divisor) => dividend / divisor.ToDecimal();
 
         /// <summary>
         /// Determines the quotient of a <see cref="Mass" /> value and a divisor.

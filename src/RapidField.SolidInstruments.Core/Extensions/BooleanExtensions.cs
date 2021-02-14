@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -20,6 +21,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// An array of bytes representing the current <see cref="Boolean" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Byte[] ToByteArray(this Boolean target) => BitConverter.GetBytes(target);
 
         /// <summary>
@@ -31,6 +33,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// A serialized string representation of the current <see cref="Boolean" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static String ToSerializedString(this Boolean target) => target ? "true" : "false";
     }
 }

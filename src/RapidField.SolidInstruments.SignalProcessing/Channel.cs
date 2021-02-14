@@ -192,20 +192,20 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 case ChannelStatus.Unavailable:
 
-                    throw new ChannelReadException(this);
+                    return Task.FromException<IDiscreteUnitOfOutput<T>>(new ChannelReadException(this));
 
                 default:
 
-                    throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
+                    return Task.FromException<IDiscreteUnitOfOutput<T>>(new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported."));
             }
 
             if (OutputLengthIsFixed && (index < 0 || index >= OutputLength))
             {
                 return InvalidReadBehavior switch
                 {
-                    InvalidReadBehavior.RaiseException => throw new ArgumentOutOfRangeException(nameof(index)),
+                    InvalidReadBehavior.RaiseException => Task.FromException<IDiscreteUnitOfOutput<T>>(new ArgumentOutOfRangeException(nameof(index))),
                     InvalidReadBehavior.ReadSilence => Task.FromResult(ReadSilence(index)),
-                    _ => throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.")
+                    _ => Task.FromException<IDiscreteUnitOfOutput<T>>(new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported."))
                 };
             }
 
@@ -218,19 +218,19 @@ namespace RapidField.SolidInstruments.SignalProcessing
                         return Task.FromResult<IDiscreteUnitOfOutput<T>>(new DiscreteUnitOfOutput<T>(outputValue, index));
                     }
                 }
-                catch (ChannelReadException)
+                catch (ChannelReadException exception)
                 {
                     Status = ChannelStatus.Unavailable;
-                    throw;
+                    return Task.FromException<IDiscreteUnitOfOutput<T>>(exception);
                 }
                 catch (Exception exception)
                 {
                     Status = ChannelStatus.Unavailable;
-                    throw new ChannelReadException(this, exception);
+                    return Task.FromException<IDiscreteUnitOfOutput<T>>(new ChannelReadException(this, exception));
                 }
 
                 Status = ChannelStatus.Unavailable;
-                throw new ChannelReadException(this);
+                return Task.FromException<IDiscreteUnitOfOutput<T>>(new ChannelReadException(this));
             }
         }
 
@@ -300,11 +300,11 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 case ChannelStatus.Unavailable:
 
-                    throw new ChannelReadException(this);
+                    return Task.FromException<ISignalSample<T>>(new ChannelReadException(this));
 
                 default:
 
-                    throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.");
+                    return Task.FromException<ISignalSample<T>>(new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported."));
             }
 
             if (OutputLengthIsFixed)
@@ -328,9 +328,9 @@ namespace RapidField.SolidInstruments.SignalProcessing
                 {
                     return InvalidReadBehavior switch
                     {
-                        InvalidReadBehavior.RaiseException => throw new ArgumentOutOfRangeException(argumentOutOfRangeExceptionParameterName),
+                        InvalidReadBehavior.RaiseException => Task.FromException<ISignalSample<T>>(new ArgumentOutOfRangeException(argumentOutOfRangeExceptionParameterName)),
                         InvalidReadBehavior.ReadSilence => Task.FromResult<ISignalSample<T>>(new SignalSample<T>(ReadSilence(index))),
-                        _ => throw new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported.")
+                        _ => Task.FromException<ISignalSample<T>>(new UnsupportedSpecificationException($"The specified invalid read behavior, {InvalidReadBehavior}, is not supported."))
                     };
                 }
             }
@@ -353,18 +353,18 @@ namespace RapidField.SolidInstruments.SignalProcessing
                     else
                     {
                         Status = ChannelStatus.Unavailable;
-                        throw new ChannelReadException(this);
+                        return Task.FromException<ISignalSample<T>>(new ChannelReadException(this));
                     }
                 }
-                catch (ChannelReadException)
+                catch (ChannelReadException exception)
                 {
                     Status = ChannelStatus.Unavailable;
-                    throw;
+                    return Task.FromException<ISignalSample<T>>(exception);
                 }
                 catch (Exception exception)
                 {
                     Status = ChannelStatus.Unavailable;
-                    throw new ChannelReadException(this, exception);
+                    return Task.FromException<ISignalSample<T>>(new ChannelReadException(this, exception));
                 }
             }
 

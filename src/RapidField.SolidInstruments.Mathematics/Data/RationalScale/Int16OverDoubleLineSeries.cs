@@ -62,7 +62,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.RationalScale
             var yAxisRange = Convert.ToDouble(upwardYAxisValue - downwardYAxisValue);
             var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue);
             var adjustment = yAxisRange * positionInXAxisRange;
-            return Convert.ToInt16((Convert.ToDouble(downwardYAxisValue) + adjustment).RoundedTo(0, MidpointRounding.AwayFromZero));
+            return Convert.ToInt16((downwardYAxisValue.ToDouble() + adjustment).RoundedTo(0, MidpointRounding.AwayFromZero));
         }
 
         /// <summary>

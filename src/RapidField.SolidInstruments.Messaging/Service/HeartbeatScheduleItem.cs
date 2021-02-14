@@ -308,16 +308,16 @@ namespace RapidField.SolidInstruments.Messaging.Service
                 {
                     MessagingEntityType.Queue => messageTransmittingFacade.TransmitToQueueAsync(message),
                     MessagingEntityType.Topic => messageTransmittingFacade.TransmitToTopicAsync(message),
-                    _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported.")
+                    _ => Task.FromException(new UnsupportedSpecificationException($"The specified messaging entity type, {EntityType}, is not supported."))
                 };
             }
-            catch (MessageTransmissionException)
+            catch (MessageTransmissionException exception)
             {
-                throw;
+                return Task.FromException(exception);
             }
             catch (Exception exception)
             {
-                throw new MessageTransmissionException(typeof(HeartbeatMessage), exception);
+                return Task.FromException(new MessageTransmissionException(typeof(HeartbeatMessage), exception));
             }
         }
 

@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return queue.ConveyFailureAsync(lockToken);
             }
 
-            throw new InvalidOperationException($"Failed to convey failure. The specified queue, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to convey failure. The specified queue, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return topic.ConveyFailureAsync(lockToken);
             }
 
-            throw new InvalidOperationException($"Failed to convey failure. The specified topic, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to convey failure. The specified topic, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return queue.ConveySuccessAsync(lockToken);
             }
 
-            throw new InvalidOperationException($"Failed to convey success. The specified queue, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to convey success. The specified queue, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return topic.ConveySuccessAsync(lockToken);
             }
 
-            throw new InvalidOperationException($"Failed to convey success. The specified topic, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to convey success. The specified topic, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return queue.DequeueAsync(count);
             }
 
-            throw new InvalidOperationException($"Failed to receive message(s). The specified queue, \"{path}\", does not exist.");
+            return Task.FromException<IEnumerable<PrimitiveMessage>>(new InvalidOperationException($"Failed to receive message(s). The specified queue, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -649,7 +649,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return topic.DequeueAsync(subscriptionName, count);
             }
 
-            throw new InvalidOperationException($"Failed to receive message(s). The specified topic, \"{path}\", does not exist.");
+            return Task.FromException<IEnumerable<PrimitiveMessage>>(new InvalidOperationException($"Failed to receive message(s). The specified topic, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -683,7 +683,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return queue.EnqueueAsync(message);
             }
 
-            throw new InvalidOperationException($"Failed to send message. The specified queue, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to send message. The specified queue, \"{path}\", does not exist."));
         }
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return topic.EnqueueAsync(message);
             }
 
-            throw new InvalidOperationException($"Failed to send message. The specified topic, \"{path}\", does not exist.");
+            return Task.FromException(new InvalidOperationException($"Failed to send message. The specified topic, \"{path}\", does not exist."));
         }
 
         /// <summary>

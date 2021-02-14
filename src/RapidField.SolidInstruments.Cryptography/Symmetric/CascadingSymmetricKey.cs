@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Collections;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Secrets;
 using System;
 using System.Collections.Generic;
@@ -408,7 +409,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                     }
 
                     // Append the depth as a 16-bit integer.
-                    Buffer.BlockCopy(BitConverter.GetBytes(Convert.ToUInt16(Depth)), 0, pinnedMemory, SerializedLength - sizeof(UInt16), sizeof(UInt16));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Depth.ToUInt16()), 0, pinnedMemory, SerializedLength - sizeof(UInt16), sizeof(UInt16));
                 });
 
                 return secureMemory;

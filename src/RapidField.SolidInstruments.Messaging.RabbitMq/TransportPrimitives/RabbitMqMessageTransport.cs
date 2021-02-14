@@ -786,7 +786,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count) => throw new NotImplementedException($"The RabbitMQ implementation does not use this abstraction.");
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromQueueAsync(IMessagingEntityPath path, Int32 count) => Task.FromException<IEnumerable<PrimitiveMessage>>(new NotImplementedException($"The RabbitMQ implementation does not use this abstraction."));
 
         /// <summary>
         /// Asynchronously requests the specified number of messages from the specified topic.
@@ -822,7 +822,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
         /// <exception cref="TimeoutException">
         /// The operation timed out.
         /// </exception>
-        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count) => throw new NotImplementedException($"The RabbitMQ implementation does not use this abstraction.");
+        public Task<IEnumerable<PrimitiveMessage>> ReceiveFromTopicAsync(IMessagingEntityPath path, String subscriptionName, Int32 count) => Task.FromException<IEnumerable<PrimitiveMessage>>(new NotImplementedException($"The RabbitMQ implementation does not use this abstraction."));
 
         /// <summary>
         /// Asynchronously sends the specified message to the specified queue.

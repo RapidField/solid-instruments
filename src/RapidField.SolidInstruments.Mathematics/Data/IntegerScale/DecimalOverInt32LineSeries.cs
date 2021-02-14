@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core;
+using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Mathematics.Extensions;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace RapidField.SolidInstruments.Mathematics.Data.IntegerScale
         protected sealed override Decimal InterpolateLinear(Int32 xAxisValue, Int32 downwardXAxisValue, Decimal downwardYAxisValue, Int32 upwardXAxisValue, Decimal upwardYAxisValue)
         {
             var yAxisRange = upwardYAxisValue - downwardYAxisValue;
-            var positionInXAxisRange = Convert.ToDecimal(xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue));
+            var positionInXAxisRange = xAxisValue.PositionInRange(downwardXAxisValue, upwardXAxisValue).ToDecimal();
             var adjustment = yAxisRange * positionInXAxisRange;
             return downwardYAxisValue + adjustment;
         }

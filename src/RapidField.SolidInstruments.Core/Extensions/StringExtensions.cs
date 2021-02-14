@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -34,6 +35,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// The target <see cref="String" /> is not a valid template, or the index of a format item is less than zero, or greater
         /// than or equal to the length of <paramref name="arguments" /> array.
         /// </exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static String ApplyFormat(this String target, params Object[] arguments) => String.Format(target, args: arguments);
 
         /// <summary>
@@ -184,10 +186,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <exception cref="EncoderFallbackException">
         /// The current <see cref="String" /> could not be decoded; a fallback occurred.
         /// </exception>
-        public static Byte[] ToByteArray(this String target, Encoding encoding)
-        {
-            encoding.RejectIf().IsNull(nameof(encoding));
-            return encoding.GetBytes(target);
-        }
+        public static Byte[] ToByteArray(this String target, Encoding encoding) => encoding.RejectIf().IsNull(nameof(encoding)).TargetArgument.GetBytes(target);
     }
 }

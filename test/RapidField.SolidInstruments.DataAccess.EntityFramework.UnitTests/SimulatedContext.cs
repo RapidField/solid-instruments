@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entities;
 using System;
 using System.Configuration;
+using NumberEntity = RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests.Entities.Number;
 
 namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
 {
@@ -151,9 +152,9 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework.UnitTests
         }
 
         /// <summary>
-        /// Gets or sets a persistent collection of <see cref="Number" /> records.
+        /// Gets or sets a persistent collection of <see cref="NumberEntity" /> records.
         /// </summary>
-        public DbSet<Number> Numbers
+        public DbSet<NumberEntity> Numbers
         {
             get;
             set;

@@ -209,6 +209,8 @@ namespace RapidField.SolidInstruments.Messaging
                 RejectIfDisposed();
                 var sendClient = default(TSender);
 
+#pragma warning disable PH_S032
+
                 sendClient = entityType switch
                 {
                     MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathLabels),
@@ -216,22 +218,24 @@ namespace RapidField.SolidInstruments.Messaging
                     _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
                 };
 
+#pragma warning restore PH_S032
+
                 try
                 {
                     var adaptedMessage = MessageAdapter.ConvertForward(message) as TAdaptedMessage;
                     return TransmitAsync(adaptedMessage, sendClient, controlToken);
                 }
-                catch (MessageTransmissionException)
+                catch (MessageTransmissionException exception)
                 {
-                    throw;
+                    return Task.FromException<TMessage>(exception);
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException exception)
                 {
-                    throw;
+                    return Task.FromException<TMessage>(exception);
                 }
                 catch (Exception exception)
                 {
-                    throw new MessageTransmissionException(typeof(TMessage), exception);
+                    return Task.FromException<TMessage>(new MessageTransmissionException(typeof(TMessage), exception));
                 }
             }
         }
