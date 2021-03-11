@@ -69,14 +69,14 @@ Before beginning work please read the [**Instructions for Contributing**](CONTRI
 
 The **Solid Instruments** constituent libraries are made available via [**NuGet**](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio). Supported releases are listed below.
 
-#### Stable
+### ☑️ Stable
 
 | Version | Notes                               | Source                                                                  | Release date | End of support |
 | :------ | :---------------------------------: | :---------------------------------------------------------------------: | :----------: | :------------: |
 | 1.0.26  | [Read](doc/releasenotes/v1.0.26.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.26) | 11 Aug 2020  | 31 Aug 2023    |
 | 1.0.25  | [Read](doc/releasenotes/v1.0.25.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.25) | 27 Jul 2020  | 31 Jul 2023    |
 
-#### Preview
+### ⏩ Preview
 
 | Version         | Notes                               | Source                                                                           | Release date | End of support |
 | :-------------- | :---------------------------------: | :------------------------------------------------------------------------------: | :----------: | :------------: |
@@ -85,7 +85,7 @@ The **Solid Instruments** constituent libraries are made available via [**NuGet*
 | 1.0.24-preview1 | [Read](doc/releasenotes/v1.0.24.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.24-preview1) | 21 Jul 2019  | 31 Jul 2020    |
 | 1.0.23-preview1 | [Read](doc/releasenotes/v1.0.23.md) | [Explore](https://github.com/RapidField/solid-instruments/tree/v1.0.23-preview1) | 20 Jul 2019  | 31 Jul 2020    |
 
-#### Future
+### 🔜 Future
 
 Check out the [**Product Roadmap**](ROADMAP.md) to see what's planned for future releases.
 
