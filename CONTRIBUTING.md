@@ -38,7 +38,7 @@ Contents of the repository are organized as follows.
 
 CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
 
-### ⬛ Command-line tools
+### 🛠️ Command-line tools
 
 - [**The .NET SDK**](https://docs.microsoft.com/en-us/dotnet/core/sdk) is the project's foundational build and test instrument.
 - [**codecov.exe**](https://github.com/codecov/codecov-exe) publishes test coverage reports.
@@ -72,39 +72,39 @@ The **Solid Instruments** team uses **RapidField Revision Control Workflow 1.1**
 
 The following patterns define the project's branch naming and usage conventions. Five-digit numeric tokens ("00000") represent an associated issue number.
 
-#### Master branch
+#### 🟡 Master branch
 
-`master` is the root branch and represents, at all times, the state of the latest production release. The team aims to maintain a 99.9% minimum build success rate for `master`.
+🟡`master` is the root branch and represents, at all times, the state of the latest production release. The team aims to maintain a 99.9% minimum build success rate for 🟡`master`.
 
-#### Hotfix branches
+#### 🟠 Hotfix branches
 
-Branches matching the pattern `hotfix/00000-{semantic-key}` are children of `master` and house active work associated with an urgent production defect. Pull requests to hotfix branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+Branches matching the pattern 🟠`hotfix/00000-{semantic-key}` are children of 🟡`master` and house active work associated with an urgent production defect. Pull requests to hotfix branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
 
-#### Release branches
+#### 🟣 Release branches
 
-Branches matching the pattern `release/v0.0.0` are children of `master` and house completed, tested and integrated work for a named release. Release branches should always be in a releasable state.
+Branches matching the pattern 🟣`release/v0.0.0` are children of 🟡`master` and house completed, tested and integrated work for a named release. Release branches should always be in a releasable state.
 
-#### Develop branch
+#### 🔵 Develop branch
 
-`develop` is a child of `master` and serves as an integration branch for completed and tested work sourced from defect, feature and maintenance branches. The team aims to maintain a 99.9% minimum build success rate for `develop`.
+🔵`develop` is a child of 🟡`master` and serves as an integration branch for completed and tested work sourced from defect, feature and maintenance branches. The team aims to maintain a 99.9% minimum build success rate for 🔵`develop`.
 
-#### Defect branches
+#### 🔴 Defect branches
 
-Branches matching the pattern `defect/00000-{semantic-key}` are children of `develop` and house active work associated with a non-urgent defect. Pull requests to defect branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+Branches matching the pattern 🔴`defect/00000-{semantic-key}` are children of 🔵`develop` and house active work associated with a non-urgent defect. Pull requests to defect branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
 
-#### Feature branches
+#### 🟢 Feature branches
 
-Branches matching the pattern `feature/00000-{semantic-key}` are children of `develop` and house active feature development work. Pull requests to feature branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+Branches matching the pattern 🟢`feature/00000-{semantic-key}` are children of 🔵`develop` and house active feature development work. Pull requests to feature branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
 
-#### Maintenance branches
+#### ⚫ Maintenance branches
 
-Branches matching the pattern `maintenance/00000-{semantic-key}` are children of `develop` and house active project maintenance work. Pull requests to maintenance branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
+Branches matching the pattern ⚫`maintenance/00000-{semantic-key}` are children of 🔵`develop` and house active project maintenance work. Pull requests to maintenance branches may be used to share unfinished work with other team members working on associated issues, but those pull requests should pass all status checks.
 
-#### User branches
+#### 🟤 User branches
 
-Branches matching the pattern `user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches. User branches may contain work-in-progress and there are no requirements for them with respect to status checks.
+Branches matching the pattern 🟤`user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting 🔴defect, 🟢feature and ⚫maintenance branches. User branches may contain work-in-progress and there are no requirements for them with respect to status checks.
 
-#### Workflow diagram
+#### 📑 Workflow diagram
 
 **RapidField Revision Control Workflow 1.1** diverges from  [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/) by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
