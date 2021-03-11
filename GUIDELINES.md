@@ -13,11 +13,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### File system
+### 🗃️ File system
 
 > **WIP.** This section is work-in-progress.
 
-### Visual Studio solutions and projects
+### 🟪 Visual Studio solutions and projects
 
 > **WIP.** This section is work-in-progress.
 
@@ -25,7 +25,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### Coding standards (.NET/C#)
+### ✔️ Coding standards (.NET/C#)
 
 > **WIP.** This section is work-in-progress.
 
@@ -33,11 +33,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### Starting work
+### ▶️ Starting work
 
 > **WIP.** This section is work-in-progress.
 
-### Finishing work
+### 🔃 Finishing work
 
 > **WIP.** This section is work-in-progress.
 
