@@ -13,11 +13,11 @@ The **Solid Instruments** product deliverables consist of a collection of [**.NE
 
 Our team is committed to seeking, adopting and maintaining best practices. Here are some philosophies that guide our decision making at a high level.
 
-### Transparency over flexibility
+### :book: Transparency over flexibility
 
 In most cases, the team should...
 
-**favor a design that**
+:heavy_check_mark: **favor a design that**
 
 - advertises its modes of failure
 - fails as advertised
@@ -49,7 +49,7 @@ public static Byte[] ToByteArray(this String target, Encoding encoding)
 }
 ```
 
-**over a design that**
+:x: **over a design that**
 
 - obscures important functional details
 - tolerates external faults
@@ -86,11 +86,11 @@ public static Byte[] ToByteArray(this String target, Encoding encoding)
 }
 ```
 
-### Consistency over novelty
+### :repeat: Consistency over novelty
 
 In most cases, the team should...
 
-**favor a design that**
+:heavy_check_mark: **favor a design that**
 
 - uses perennial technologies and/or patterns
 - establishes or adheres to meaningful conventions
@@ -123,7 +123,7 @@ public static Boolean TryParse(String input, out SemanticVersion result)
 }
 ```
 
-**over a design that**
+:x: **over a design that**
 
 - introduces new technologies and/or patterns
 - departs from established, meaningful conventions
@@ -155,11 +155,11 @@ public void SafeImport(String input)
 }
 ```
 
-### Clarity over brevity
+### :gem: Clarity over brevity
 
 In most cases, the team should...
 
-**favor a design that**
+:heavy_check_mark: **favor a design that**
 
 - employs unambiguous terminology and naming conventions
 - is thoroughly documented
@@ -176,7 +176,7 @@ public Boolean SupportsSymmetricKeyEncryption
 }
 ```
 
-**over a design that**
+:x: **over a design that**
 
 - was developed quickly
 - saves visual space on screen
@@ -189,7 +189,7 @@ public Boolean Encrypts
 }
 ```
 
-### Adherence to object oriented principles
+### 🏗️ Adherence to object oriented principles
 
 We are committed to engineering excellence. We welcome creative and pioneering approaches, but we also understand that the most straightforward paths toward success are those paved by professionals who traveled before us. We observe and find great value in the [**SOLID** principles](https://en.wikipedia.org/wiki/SOLID). Our oversimplified statements of expectation with respect to **SOLID** are as follows.
 
