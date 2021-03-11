@@ -13,7 +13,7 @@ The **Solid Instruments** product deliverables consist of a collection of [**.NE
 
 Our team is committed to seeking, adopting and maintaining best practices. Here are some philosophies that guide our decision making at a high level.
 
-### :book: Transparency over flexibility
+### 🔆 Transparency over flexibility
 
 In most cases, the team should...
 
