@@ -3,7 +3,7 @@
 // =================================================================================================================================
 
 {
-    "id": "514a0710-4d94-4686-8010-cb6663a59726",
+    "id": "f9e4b84c-8b1a-44da-a796-b0fa9336becc",
     "name": "Solid Instruments Team Extensions",
     "description": "A collection of Visual Studio extensions that are used by the Solid Instruments team.",
     "version": "1.0",
@@ -33,8 +33,16 @@
             "vsixId": "ExtendedXmlDocCommentsCompletionProvider.631a0e78-19cf-4988-a089-303350a4f094"
         },
         {
+            "name": "Extension Manager 2019",
+            "vsixId": "4a196712-2c3f-4730-ad1d-e7cda4185eb2"
+        },
+        {
             "name": "File Icons",
             "vsixId": "3a7b4930-a5fb-46ec-a9b8-9610c8f953b8"
+        },
+        {
+            "name": "Folder To Solution Folder",
+            "vsixId": "478d788e-8e9d-402a-ac64-e679658a0045"
         },
         {
             "name": "GitHub Extension for Visual Studio",

@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -149,6 +150,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// An XML serializer.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DataContractJsonSerializer InitializeJsonSerializer() => new(ContractType, JsonSerializerSettings);
 
         /// <summary>
@@ -158,6 +160,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// An XML serializer.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DataContractSerializer InitializeXmlSerializer() => new(ContractType, XmlSerializerSettings);
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace RapidField.SolidInstruments.Cryptography
     {
         /// <summary>
         /// Converts the current <see cref="ICryptographicKey{TAlgorithm}" /> to cryptographic key plaintext with correct bit-length
-        /// for the encryption mode specified by <see cref="Algorithm" />.
+        /// for the encryption mode specified by the algorithm.
         /// </summary>
         /// <returns>
         /// The derived key.

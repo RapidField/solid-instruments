@@ -10,6 +10,7 @@ using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AzureServiceBusMessage = Microsoft.Azure.ServiceBus.Message;
@@ -186,6 +187,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
         /// An exception was raised while trying to transmit an <see cref="ExceptionRaisedEventMessage" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Task HandleReceiverExceptionAsync(ExceptionReceivedEventArgs exceptionReceivedArguments) => Task.CompletedTask; // The message handling function (defined above) handles exceptions internally.
 
         /// <summary>

@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core
 {
@@ -67,6 +68,7 @@ namespace RapidField.SolidInstruments.Core
         /// Finalizes static members of the <see cref="TimeStamp" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => Instance.Dispose();
 
         /// <summary>

@@ -125,6 +125,6 @@ namespace RapidField.SolidInstruments.Core.Concurrency
         /// Represents the underlying concurrency control mechanism.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly SpinLock Spin = new SpinLock(false);
+        private readonly SpinLock Spin = new(false);
     }
 }

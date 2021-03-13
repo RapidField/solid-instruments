@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a measurement of the strength of gravitational attraction of a physical body.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct Mass : IComparable<Mass>, IEquatable<Mass>
+    public readonly struct Mass : IComparable<Mass>, IEquatable<Mass>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Mass" /> structure.
@@ -344,7 +344,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Mass other) => Grams.CompareTo(other.Grams);
+        public readonly Int32 CompareTo(Mass other) => Grams.CompareTo(other.Grams);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Mass" /> is equal to the specified <see cref="Object" />.
@@ -355,7 +355,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -378,7 +378,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Mass other) => Grams == other.Grams;
+        public readonly Boolean Equals(Mass other) => Grams == other.Grams;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -386,7 +386,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => Grams.GetHashCode();
+        public readonly override Int32 GetHashCode() => Grams.GetHashCode();
 
         /// <summary>
         /// Converts the current <see cref="Mass" /> to an array of bytes.
@@ -394,7 +394,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="Mass" />.
         /// </returns>
-        public Byte[] ToByteArray() => Grams.ToByteArray();
+        public readonly Byte[] ToByteArray() => Grams.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="Mass" /> to its equivalent string representation.
@@ -402,7 +402,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="Mass" />.
         /// </returns>
-        public override String ToString() => $"{Grams} {GramsUnitOfMeasureSymbol}";
+        public readonly override String ToString() => $"{Grams} {GramsUnitOfMeasureSymbol}";
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a mass value to its <see cref="Mass" /> equivalent.
@@ -575,32 +575,32 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in centigrams.
         /// </summary>
-        public Decimal TotalCentigrams => Grams * CentigramsPerGram;
+        public readonly Decimal TotalCentigrams => Grams * CentigramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in grams.
         /// </summary>
-        public Decimal TotalGrams => Grams;
+        public readonly Decimal TotalGrams => Grams;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in kilograms.
         /// </summary>
-        public Decimal TotalKilograms => Grams * KilogramsPerGram;
+        public readonly Decimal TotalKilograms => Grams * KilogramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in micro-grams.
         /// </summary>
-        public Decimal TotalMicrograms => Grams * MicrogramsPerGram;
+        public readonly Decimal TotalMicrograms => Grams * MicrogramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in milligrams.
         /// </summary>
-        public Decimal TotalMilligrams => Grams * MilligramsPerGram;
+        public readonly Decimal TotalMilligrams => Grams * MilligramsPerGram;
 
         /// <summary>
         /// Gets the value of the current <see cref="Mass" /> expressed in nanograms.
         /// </summary>
-        public Decimal TotalNanograms => Grams * NanogramsPerGram;
+        public readonly Decimal TotalNanograms => Grams * NanogramsPerGram;
 
         /// <summary>
         /// Represents the atomic mass unit constant.

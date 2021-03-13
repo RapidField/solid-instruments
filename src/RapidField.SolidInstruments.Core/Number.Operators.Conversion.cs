@@ -17,12 +17,102 @@ namespace RapidField.SolidInstruments.Core
     public readonly partial struct Number
     {
         /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="BigInteger" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
+        /// <see cref="BigInteger" />.
+        /// </exception>
+        public static implicit operator BigInteger(Number target) => target.ToBigInteger();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="BigRational" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
+        /// <see cref="BigRational" />.
+        /// </exception>
+        public static implicit operator BigRational(Number target) => target.ToBigRational();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Byte" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Byte" />.
+        /// </exception>
+        public static implicit operator Byte(Number target) => target.ToByte();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Decimal" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Decimal" />.
+        /// </exception>
+        public static implicit operator Decimal(Number target) => target.ToDecimal();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Double" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Double" />.
+        /// </exception>
+        public static implicit operator Double(Number target) => target.ToDouble();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Int16" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int16" />.
+        /// </exception>
+        public static implicit operator Int16(Number target) => target.ToInt16();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Int32" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int32" />.
+        /// </exception>
+        public static implicit operator Int32(Number target) => target.ToInt32();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Int64" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int64" />.
+        /// </exception>
+        public static implicit operator Int64(Number target) => target.ToInt64();
+
+        /// <summary>
         /// Facilitates implicit <see cref="Byte" /> to <see cref="Number" /> casting.
         /// </summary>
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator Number(Byte target) => new Number(target);
+        public static implicit operator Number(Byte target) => new(target);
 
         /// <summary>
         /// Facilitates implicit <see cref="SByte" /> to <see cref="Number" /> casting.
@@ -30,7 +120,7 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="target">
         /// The object to cast from.
         /// </param>
-        public static implicit operator Number(SByte target) => new Number(target);
+        public static implicit operator Number(SByte target) => new(target);
 
         /// <summary>
         /// Facilitates implicit <see cref="UInt16" /> to <see cref="Number" /> casting.
@@ -121,6 +211,61 @@ namespace RapidField.SolidInstruments.Core
         public static implicit operator Number(BigRational target) => new Number(target).Compress();
 
         /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="SByte" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="SByte" />.
+        /// </exception>
+        public static implicit operator SByte(Number target) => target.ToSByte();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="Single" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Single" />.
+        /// </exception>
+        public static implicit operator Single(Number target) => target.ToSingle();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt16" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt16" />.
+        /// </exception>
+        public static implicit operator UInt16(Number target) => target.ToUInt16();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt32" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt32" />.
+        /// </exception>
+        public static implicit operator UInt32(Number target) => target.ToUInt32();
+
+        /// <summary>
+        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt64" /> casting.
+        /// </summary>
+        /// <param name="target">
+        /// The object to cast from.
+        /// </param>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt64" />.
+        /// </exception>
+        public static implicit operator UInt64(Number target) => target.ToUInt64();
+
+        /// <summary>
         /// Converts the specified <see cref="String" /> representation of a numeric value to its <see cref="Number" /> equivalent.
         /// </summary>
         /// <param name="input">
@@ -179,7 +324,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// An array of bytes representing the current <see cref="Number" />.
         /// </returns>
-        public Byte[] ToByteArray()
+        public readonly Byte[] ToByteArray()
         {
             var formatLengthInBytes = sizeof(NumericDataFormat);
             var valueLengthInBytes = Value.Length;
@@ -195,7 +340,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="Number" />.
         /// </returns>
-        public override String ToString() => Format switch
+        public readonly override String ToString() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToString(),
             NumericDataFormat.SByte => ToSByte().ToString(),
@@ -274,7 +419,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting numeric value.
         /// </returns>
         [DebuggerHidden]
-        internal Number Compress() => Format switch
+        internal readonly Number Compress() => Format switch
         {
             NumericDataFormat.Byte => this,
             NumericDataFormat.SByte => this,
@@ -435,7 +580,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting numeric value.
         /// </returns>
         [DebuggerHidden]
-        private Number Compress(UInt32 permutationCount) => permutationCount <= 0 ? this : Format switch
+        private readonly Number Compress(UInt32 permutationCount) => permutationCount <= 0 ? this : Format switch
         {
             NumericDataFormat.Byte => this,
             NumericDataFormat.SByte => this,
@@ -464,7 +609,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see langword="false" />.
         /// </returns>
         [DebuggerHidden]
-        private Boolean IsValidAs(NumericDataFormat format) => Format == format ? true : format switch
+        private readonly Boolean IsValidAs(NumericDataFormat format) => Format == format ? true : format switch
         {
             NumericDataFormat.Byte => IsInteger && this >= MinValueOf(format) && this <= MaxValueOf(format),
             NumericDataFormat.SByte => IsInteger && this >= MinValueOf(format) && this <= MaxValueOf(format),
@@ -493,7 +638,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see cref="BigInteger" />.
         /// </exception>
         [DebuggerHidden]
-        private BigInteger ToBigInteger() => Format switch
+        private readonly BigInteger ToBigInteger() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToBigInteger(),
             NumericDataFormat.SByte => ToSByte().ToBigInteger(),
@@ -522,7 +667,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see cref="BigRational" />.
         /// </exception>
         [DebuggerHidden]
-        private BigRational ToBigRational() => Format switch
+        private readonly BigRational ToBigRational() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToBigRational(),
             NumericDataFormat.SByte => ToSByte().ToBigRational(),
@@ -550,7 +695,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Byte" />.
         /// </exception>
         [DebuggerHidden]
-        private Byte ToByte() => Format switch
+        private readonly Byte ToByte() => Format switch
         {
             NumericDataFormat.Byte => Value.Span[0],
             NumericDataFormat.SByte => ToSByte().ToByte(),
@@ -578,7 +723,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Decimal" />.
         /// </exception>
         [DebuggerHidden]
-        private Decimal ToDecimal() => Format switch
+        private readonly Decimal ToDecimal() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToDecimal(),
             NumericDataFormat.SByte => ToSByte().ToDecimal(),
@@ -606,7 +751,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Double" />.
         /// </exception>
         [DebuggerHidden]
-        private Double ToDouble() => Format switch
+        private readonly Double ToDouble() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToDouble(),
             NumericDataFormat.SByte => ToSByte().ToDouble(),
@@ -634,7 +779,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int16" />.
         /// </exception>
         [DebuggerHidden]
-        private Int16 ToInt16() => Format switch
+        private readonly Int16 ToInt16() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToInt16(),
             NumericDataFormat.SByte => ToSByte().ToInt16(),
@@ -662,7 +807,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int32" />.
         /// </exception>
         [DebuggerHidden]
-        private Int32 ToInt32() => Format switch
+        private readonly Int32 ToInt32() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToInt32(),
             NumericDataFormat.SByte => ToSByte().ToInt32(),
@@ -690,7 +835,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int64" />.
         /// </exception>
         [DebuggerHidden]
-        private Int64 ToInt64() => Format switch
+        private readonly Int64 ToInt64() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToInt64(),
             NumericDataFormat.SByte => ToSByte().ToInt64(),
@@ -718,7 +863,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for an <see cref="SByte" />.
         /// </exception>
         [DebuggerHidden]
-        private SByte ToSByte() => Format switch
+        private readonly SByte ToSByte() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToSByte(),
             NumericDataFormat.SByte => (SByte)Value.Span[0],
@@ -746,7 +891,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Single" />.
         /// </exception>
         [DebuggerHidden]
-        private Single ToSingle() => Format switch
+        private readonly Single ToSingle() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToSingle(),
             NumericDataFormat.SByte => ToSByte().ToSingle(),
@@ -774,7 +919,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt16" />.
         /// </exception>
         [DebuggerHidden]
-        private UInt16 ToUInt16() => Format switch
+        private readonly UInt16 ToUInt16() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToUInt16(),
             NumericDataFormat.SByte => ToSByte().ToUInt16(),
@@ -802,7 +947,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt32" />.
         /// </exception>
         [DebuggerHidden]
-        private UInt32 ToUInt32() => Format switch
+        private readonly UInt32 ToUInt32() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToUInt32(),
             NumericDataFormat.SByte => ToSByte().ToUInt32(),
@@ -830,7 +975,7 @@ namespace RapidField.SolidInstruments.Core
         /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt64" />.
         /// </exception>
         [DebuggerHidden]
-        private UInt64 ToUInt64() => Format switch
+        private readonly UInt64 ToUInt64() => Format switch
         {
             NumericDataFormat.Byte => ToByte().ToUInt64(),
             NumericDataFormat.SByte => ToSByte().ToUInt64(),
@@ -849,28 +994,28 @@ namespace RapidField.SolidInstruments.Core
         };
 
         /// <summary>
-        /// Gets an exception message that indicates that a numeric data format conversion failed.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String OverflowExceptionMessage = "A numeric data format conversion failed. The value was either too small or too large.";
-
-        /// <summary>
         /// Represents the upper allowable limit of significant figures for conversion to a <see cref="Decimal" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 SignificantFiguresLimitForDecimal = 28;
+        internal const Int32 SignificantFiguresLimitForDecimal = 28;
 
         /// <summary>
         /// Represents the upper allowable limit of significant figures for conversion to a <see cref="Double" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 SignificantFiguresLimitForDouble = 16;
+        internal const Int32 SignificantFiguresLimitForDouble = 16;
 
         /// <summary>
         /// Represents the upper allowable limit of significant figures for conversion to a <see cref="Single" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Int32 SignificantFiguresLimitForSingle = 8;
+        internal const Int32 SignificantFiguresLimitForSingle = 8;
+
+        /// <summary>
+        /// Gets an exception message that indicates that a numeric data format conversion failed.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String OverflowExceptionMessage = "A numeric data format conversion failed. The value was either too small or too large.";
 
         /// <summary>
         /// Represents the largest possible value of a <see cref="Byte" />.

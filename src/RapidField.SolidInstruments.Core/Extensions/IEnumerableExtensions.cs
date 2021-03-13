@@ -15,6 +15,33 @@ namespace RapidField.SolidInstruments.Core.Extensions
     public static class IEnumerableExtensions
     {
         /// <summary>
+        /// Returns a collection containing the combined elements of the current collection of collections.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The element type of the nested collections.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current collection of collections.
+        /// </param>
+        /// <returns>
+        /// A collection containing the combined elements of the current collection of collections.
+        /// </returns>
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> target)
+        {
+            var flattenedCollection = new List<T>();
+
+            foreach (var collection in target)
+            {
+                if (collection?.Any() ?? false)
+                {
+                    flattenedCollection.AddRange(collection);
+                }
+            }
+
+            return flattenedCollection;
+        }
+
+        /// <summary>
         /// Indicates whether or not the current <see cref="IEnumerable{T}" /> represents the same elements, in the same order, as
         /// the specified other collection.
         /// </summary>

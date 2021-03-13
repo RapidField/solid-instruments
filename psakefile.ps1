@@ -37,7 +37,7 @@ Task Build-Release -Alias br -Depends Clean-Release, Restore-Dependencies -Actio
 Task Clean-All -Alias ca -Depends Clean-Debug, Clean-Release;
 Task Clean-Debug -Alias cd -Action { CleanDebug; };
 Task Clean-Release -Alias cr -Action { CleanRelease; };
-Task List -Alias l -Action { psake -docs };
+Task List -Alias l -Action { psake -docs -nologo -notr };
 Task Restore-Dependencies -Alias rd -Action { RestoreDependencies; };
 Task Start-All-Debug -Alias sad -Depends Stop-All, Start-ExampleBeaconServiceApplication-Debug, Start-ExampleIdentityServiceApplication-Debug, Start-ExampleAccessControlServiceApplication-Debug, Start-ExampleAccessControlHttpApiApplication-Debug;
 Task Start-All-Release -Alias sar -Depends Stop-All, Start-ExampleBeaconServiceApplication-Release, Start-ExampleIdentityServiceApplication-Release, Start-ExampleAccessControlServiceApplication-Release, Start-ExampleAccessControlHttpApiApplication-Release;

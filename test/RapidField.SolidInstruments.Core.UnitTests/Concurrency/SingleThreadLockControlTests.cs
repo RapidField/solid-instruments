@@ -38,9 +38,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
             var syncRoot = new Object();
             perform((operation) =>
             {
-#pragma warning disable PH_P006
                 Monitor.Enter(syncRoot);
-#pragma warning restore PH_P006
 
                 try
                 {

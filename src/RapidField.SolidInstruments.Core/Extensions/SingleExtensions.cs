@@ -141,7 +141,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// A <see cref="BigRational" /> value that is equivalent to <paramref name="target" />.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BigRational ToBigRational(this Single target) => (BigRational)target;
+        public static BigRational ToBigRational(this Single target) => target.IsInteger() ? new(target.ToBigInteger()) : BigRational.Approximate(target, 13);
 
         /// <summary>
         /// Converts the specified <see cref="Single" /> to an equivalent <see cref="Byte" /> value.

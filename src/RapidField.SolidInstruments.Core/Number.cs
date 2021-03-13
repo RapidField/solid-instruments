@@ -6,7 +6,6 @@ using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using BigRational = Rationals.Rational;
 
 namespace RapidField.SolidInstruments.Core
@@ -14,7 +13,6 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Represents an immutable whole or fractional number of arbitrary size.
     /// </summary>
-    [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Pack = 1)]
     public readonly partial struct Number : IComparable<Number>, IEquatable<Number>
     {
         /// <summary>
@@ -208,7 +206,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// The number of significant figures in the value of the current <see cref="Number" />.
         /// </returns>
-        public Int32 CountSignificantFigures() => Format switch
+        public readonly Int32 CountSignificantFigures() => Format switch
         {
             NumericDataFormat.Byte => ToByte().CountSignificantFigures(),
             NumericDataFormat.SByte => ToSByte().CountSignificantFigures(),
@@ -227,13 +225,72 @@ namespace RapidField.SolidInstruments.Core
         };
 
         /// <summary>
+        /// Rounds the current <see cref="Number" /> to the specified number of fractional digits.
+        /// </summary>
+        /// <remarks>
+        /// This method rounds away from zero by default.
+        /// </remarks>
+        /// <param name="digits">
+        /// A number of fractional digits to round the current <see cref="Number" /> to.
+        /// </param>
+        /// <returns>
+        /// The current <see cref="Number" /> rounded to the specified number or digits.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="digits" /> is less than zero or greater than 15.
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// The result is outside the range of a <see cref="Number" />.
+        /// </exception>
+        public readonly Number RoundedTo(Int32 digits) => RoundedTo(digits, MidpointRounding.AwayFromZero);
+
+        /// <summary>
+        /// Rounds the current <see cref="Number" /> to the specified number of fractional digits.
+        /// </summary>
+        /// <param name="digits">
+        /// A number of fractional digits to round the current <see cref="Number" /> to.
+        /// </param>
+        /// <param name="midpointRoundingMode">
+        /// A specification for how to round if the current value is midway between two numbers.
+        /// </param>
+        /// <returns>
+        /// The current <see cref="Number" /> rounded to the specified number or digits.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="midpointRoundingMode" /> is invalid.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="digits" /> is less than zero or greater than 28.
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// The result is outside the range of a <see cref="Number" />.
+        /// </exception>
+        public readonly Number RoundedTo(Int32 digits, MidpointRounding midpointRoundingMode) => Format switch
+        {
+            NumericDataFormat.Byte => this,
+            NumericDataFormat.SByte => this,
+            NumericDataFormat.UInt16 => Compress(),
+            NumericDataFormat.Int16 => Compress(),
+            NumericDataFormat.UInt32 => Compress(),
+            NumericDataFormat.Int32 => Compress(),
+            NumericDataFormat.UInt64 => Compress(),
+            NumericDataFormat.Int64 => Compress(),
+            NumericDataFormat.Single => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
+            NumericDataFormat.Double => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
+            NumericDataFormat.Decimal => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
+            NumericDataFormat.BigInteger => Compress(),
+            NumericDataFormat.BigRational => IsInteger ? Compress() : new Number(ToBigRational().RoundedTo(digits, midpointRoundingMode)).Compress(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
         /// Gets a value indicating whether or not the current <see cref="Number" /> value is an integer (a number in the series {
         /// ..., -2, -1, 0, 1, 2, ... }).
         /// </summary>
         /// <returns>
         /// <see langword="true" /> if the current <see cref="Number" /> is an integer, otherwise <see langword="false" />.
         /// </returns>
-        public Boolean IsInteger => Format switch
+        public readonly Boolean IsInteger => Format switch
         {
             NumericDataFormat.Byte => true,
             NumericDataFormat.SByte => true,
@@ -257,7 +314,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the current <see cref="Number" /> is less than zero, otherwise <see langword="false" />.
         /// </returns>
-        public Boolean IsNegative => Format switch
+        public readonly Boolean IsNegative => Format switch
         {
             NumericDataFormat.Byte => false,
             NumericDataFormat.SByte => ToSByte() < 0,
@@ -281,7 +338,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the current <see cref="Number" /> is greater than zero, otherwise <see langword="false" />.
         /// </returns>
-        public Boolean IsPositive => Format switch
+        public readonly Boolean IsPositive => Format switch
         {
             NumericDataFormat.Byte => ToByte() > 0,
             NumericDataFormat.SByte => ToSByte() > 0,
@@ -305,85 +362,24 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// <see langword="true" /> if the current <see cref="Number" /> is a rational number, otherwise <see langword="false" />.
         /// </returns>
-        public Boolean IsRational => IsInteger is false;
-
-        /// <summary>
-        /// Rounds the current <see cref="Number" /> to the specified number of fractional digits.
-        /// </summary>
-        /// <remarks>
-        /// This method rounds away from zero by default.
-        /// </remarks>
-        /// <param name="digits">
-        /// A number of fractional digits to round the current <see cref="Number" /> to.
-        /// </param>
-        /// <returns>
-        /// The current <see cref="Number" /> rounded to the specified number or digits.
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="digits" /> is less than zero or greater than 15.
-        /// </exception>
-        /// <exception cref="OverflowException">
-        /// The result is outside the range of a <see cref="Number" />.
-        /// </exception>
-        public Number RoundedTo(Int32 digits) => RoundedTo(digits, MidpointRounding.AwayFromZero);
-
-        /// <summary>
-        /// Rounds the current <see cref="Number" /> to the specified number of fractional digits.
-        /// </summary>
-        /// <param name="digits">
-        /// A number of fractional digits to round the current <see cref="Number" /> to.
-        /// </param>
-        /// <param name="midpointRoundingMode">
-        /// A specification for how to round if the current value is midway between two numbers.
-        /// </param>
-        /// <returns>
-        /// The current <see cref="Number" /> rounded to the specified number or digits.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="midpointRoundingMode" /> is invalid.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="digits" /> is less than zero or greater than 28.
-        /// </exception>
-        /// <exception cref="OverflowException">
-        /// The result is outside the range of a <see cref="Number" />.
-        /// </exception>
-        public Number RoundedTo(Int32 digits, MidpointRounding midpointRoundingMode) => Format switch
-        {
-            NumericDataFormat.Byte => this,
-            NumericDataFormat.SByte => this,
-            NumericDataFormat.UInt16 => Compress(),
-            NumericDataFormat.Int16 => Compress(),
-            NumericDataFormat.UInt32 => Compress(),
-            NumericDataFormat.Int32 => Compress(),
-            NumericDataFormat.UInt64 => Compress(),
-            NumericDataFormat.Int64 => Compress(),
-            NumericDataFormat.Single => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
-            NumericDataFormat.Double => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
-            NumericDataFormat.Decimal => IsInteger ? Compress() : new Number(ToDecimal().RoundedTo(digits, midpointRoundingMode)).Compress(),
-            NumericDataFormat.BigInteger => Compress(),
-            NumericDataFormat.BigRational => IsInteger ? Compress() : new Number(ToBigRational().RoundedTo(digits, midpointRoundingMode)).Compress(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
+        public readonly Boolean IsRational => IsInteger is false;
 
         /// <summary>
         /// Gets an exception message that indicates that <see cref="Format" /> is an unsupported numeric data format.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal String UnsupportedFormatExceptionMessage => $"The specified numeric data format, {Format}, is not supported.";
+        public readonly String UnsupportedFormatExceptionMessage => $"The specified numeric data format, {Format}, is not supported.";
 
         /// <summary>
         /// Represents the numeric type represented by the bytes constituting <see cref="Value" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [FieldOffset(0)]
         internal readonly NumericDataFormat Format;
 
         /// <summary>
         /// Represents the bytes constituting the value of the current <see cref="Number" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [FieldOffset(1)]
         private readonly Memory<Byte> Value;
     }
 }

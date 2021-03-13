@@ -9,6 +9,7 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Core.Caching
@@ -183,6 +184,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// A new <see cref="MemoryCache" />.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private MemoryCache InitializeCache() => new(CacheOptions);
 
         /// <summary>
@@ -192,6 +194,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// A new <see cref="MemoryCache" />.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IOptions<MemoryCacheOptions> InitializeCacheOptions() => Strategy.ToCacheOptions();
 
         /// <summary>

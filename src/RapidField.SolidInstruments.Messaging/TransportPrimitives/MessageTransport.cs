@@ -11,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -1081,6 +1082,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// Finalizes static members of the <see cref="MessageTransport" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => LazyInstance.Dispose();
 
         /// <summary>
@@ -1090,6 +1092,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// A new in-memory <see cref="IMessageTransport" /> instance.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IMessageTransport InitializeInstance() => new MessageTransport();
 
         /// <summary>

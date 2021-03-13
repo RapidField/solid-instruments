@@ -11,6 +11,7 @@ using RapidField.SolidInstruments.Cryptography.Symmetric.Aes;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 
@@ -103,6 +104,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Finalizes static members of the <see cref="HardenedRandomNumberGenerator" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => Instance.Dispose();
 
         /// <summary>

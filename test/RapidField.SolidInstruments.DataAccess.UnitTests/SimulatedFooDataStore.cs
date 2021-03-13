@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A new data store containing the default contents.
         /// </returns>
-        public static SimulatedFooDataStore NewDefaultInstance() => new SimulatedFooDataStore(DefaultValues);
+        public static SimulatedFooDataStore NewDefaultInstance() => new(DefaultValues);
 
         /// <summary>
         /// Returns all entities that exist in the data store.

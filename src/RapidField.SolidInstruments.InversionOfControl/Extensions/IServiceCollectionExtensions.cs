@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.InversionOfControl.Extensions
 {
@@ -106,6 +107,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Extensions
         /// Finalizes static members of the <see cref="IServiceCollectionExtensions" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => ReferenceManager.Dispose();
 
         /// <summary>

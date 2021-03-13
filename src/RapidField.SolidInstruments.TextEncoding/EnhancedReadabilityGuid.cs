@@ -205,7 +205,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(EnhancedReadabilityGuid other) => Value.CompareTo(other.Value);
+        public readonly Int32 CompareTo(EnhancedReadabilityGuid other) => Value.CompareTo(other.Value);
 
         /// <summary>
         /// Determines whether or not the current <see cref="EnhancedReadabilityGuid" /> is equal to the specified
@@ -217,7 +217,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -240,7 +240,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(EnhancedReadabilityGuid other) => Value == other.Value;
+        public readonly Boolean Equals(EnhancedReadabilityGuid other) => Value == other.Value;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -248,7 +248,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => ToByteArray().ComputeThirtyTwoBitHash();
+        public readonly override Int32 GetHashCode() => ToByteArray().ComputeThirtyTwoBitHash();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnhancedReadabilityGuid" /> structure.
@@ -264,7 +264,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// An array of bytes representing the current <see cref="EnhancedReadabilityGuid" />.
         /// </returns>
-        public Byte[] ToByteArray() => Value.ToByteArray();
+        public readonly Byte[] ToByteArray() => Value.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="EnhancedReadabilityGuid" /> to its equivalent <see cref="Guid" />
@@ -273,7 +273,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A <see cref="Guid" /> representation of the current <see cref="EnhancedReadabilityGuid" />.
         /// </returns>
-        public Guid ToGuid() => new(Value.ToByteArray());
+        public readonly Guid ToGuid() => new(ToByteArray());
 
         /// <summary>
         /// Converts the value of the current <see cref="EnhancedReadabilityGuid" /> to its equivalent string representation.
@@ -281,7 +281,7 @@ namespace RapidField.SolidInstruments.TextEncoding
         /// <returns>
         /// A string representation of the current <see cref="EnhancedReadabilityGuid" />.
         /// </returns>
-        public override String ToString() => new(Encoding.GetChars(Value.ToByteArray()));
+        public readonly override String ToString() => new(Encoding.GetChars(Value.ToByteArray()));
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a time of day value to its

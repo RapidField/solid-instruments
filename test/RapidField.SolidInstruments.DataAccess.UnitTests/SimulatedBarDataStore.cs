@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.DataAccess.UnitTests
         /// <returns>
         /// A new data store containing the default contents.
         /// </returns>
-        public static SimulatedBarDataStore NewDefaultInstance() => new SimulatedBarDataStore(DefaultValues);
+        public static SimulatedBarDataStore NewDefaultInstance() => new(DefaultValues);
 
         /// <summary>
         /// Returns all entities that exist in the data store.

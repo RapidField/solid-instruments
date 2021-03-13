@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a measurement of the separation between two points in physical space.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct Length : IComparable<Length>, IEquatable<Length>
+    public readonly struct Length : IComparable<Length>, IEquatable<Length>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Length" /> structure.
@@ -385,7 +385,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Length other) => Meters.CompareTo(other.Meters);
+        public readonly Int32 CompareTo(Length other) => Meters.CompareTo(other.Meters);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Length" /> is equal to the specified <see cref="Object" />.
@@ -396,7 +396,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -419,7 +419,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Length other) => Meters == other.Meters;
+        public readonly Boolean Equals(Length other) => Meters == other.Meters;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -427,7 +427,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => Meters.GetHashCode();
+        public readonly override Int32 GetHashCode() => Meters.GetHashCode();
 
         /// <summary>
         /// Converts the current <see cref="Length" /> to an array of bytes.
@@ -435,7 +435,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="Length" />.
         /// </returns>
-        public Byte[] ToByteArray() => Meters.ToByteArray();
+        public readonly Byte[] ToByteArray() => Meters.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="Length" /> to its equivalent string representation.
@@ -443,7 +443,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="Length" />.
         /// </returns>
-        public override String ToString() => $"{Meters} {MetersUnitOfMeasureSymbol}";
+        public readonly override String ToString() => $"{Meters} {MetersUnitOfMeasureSymbol}";
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a distance value to its <see cref="Length" /> equivalent.
@@ -636,52 +636,52 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in centimeters.
         /// </summary>
-        public Decimal TotalCentimeters => Meters * CentimetersPerMeter;
+        public readonly Decimal TotalCentimeters => Meters * CentimetersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in feet.
         /// </summary>
-        public Decimal TotalFeet => Meters * FeetPerMeter;
+        public readonly Decimal TotalFeet => Meters * FeetPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in inches.
         /// </summary>
-        public Decimal TotalInches => Meters * InchesPerMeter;
+        public readonly Decimal TotalInches => Meters * InchesPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in kilometers.
         /// </summary>
-        public Decimal TotalKilometers => Meters * KilometersPerMeter;
+        public readonly Decimal TotalKilometers => Meters * KilometersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in light-years.
         /// </summary>
-        public Decimal TotalLightYears => Meters * LightYearsPerMeter;
+        public readonly Decimal TotalLightYears => Meters * LightYearsPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in meters.
         /// </summary>
-        public Decimal TotalMeters => Meters;
+        public readonly Decimal TotalMeters => Meters;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in miles.
         /// </summary>
-        public Decimal TotalMiles => Meters * MilesPerMeter;
+        public readonly Decimal TotalMiles => Meters * MilesPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in millimeters.
         /// </summary>
-        public Decimal TotalMillimeters => Meters * MillimetersPerMeter;
+        public readonly Decimal TotalMillimeters => Meters * MillimetersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in nanometers.
         /// </summary>
-        public Decimal TotalNanometers => Meters * NanometersPerMeter;
+        public readonly Decimal TotalNanometers => Meters * NanometersPerMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Length" /> expressed in yards.
         /// </summary>
-        public Decimal TotalYards => Meters * FeetPerMeter / FeetPerYard;
+        public readonly Decimal TotalYards => Meters * FeetPerMeter / FeetPerYard;
 
         /// <summary>
         /// Represents the zero <see cref="Length" /> value.

@@ -16,7 +16,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a location on Earth expressed as the intersection of latitude and longitude coordinates.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct GeographicCoordinates : IEquatable<GeographicCoordinates>
+    public readonly struct GeographicCoordinates : IEquatable<GeographicCoordinates>
     {
         /// <summary>
         /// Initialize a new instance of the <see cref="GeographicCoordinates" /> class.
@@ -104,7 +104,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -127,7 +127,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(GeographicCoordinates other)
+        public readonly Boolean Equals(GeographicCoordinates other)
         {
             if ((Object)other is null)
             {
@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => ToByteArray().ComputeThirtyTwoBitHash();
+        public readonly override Int32 GetHashCode() => ToByteArray().ComputeThirtyTwoBitHash();
 
         /// <summary>
         /// Converts the current <see cref="GeographicCoordinates" /> to an array of bytes.
@@ -159,7 +159,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="GeographicCoordinates" />.
         /// </returns>
-        public Byte[] ToByteArray()
+        public readonly Byte[] ToByteArray()
         {
             var bytes = new List<Byte>();
             bytes.AddRange(Latitude.ToByteArray());
@@ -173,7 +173,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="GeographicCoordinates" />.
         /// </returns>
-        public override String ToString() => $"{Latitude}{CoordinateStringDelimiter}{Longitude}";
+        public readonly override String ToString() => $"{Latitude}{CoordinateStringDelimiter}{Longitude}";
 
         /// <summary>
         /// Convert the string representation of latitude and longitude coordinates to its <see cref="GeographicCoordinates" />

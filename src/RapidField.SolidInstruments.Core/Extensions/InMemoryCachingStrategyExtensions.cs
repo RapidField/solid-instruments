@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -24,6 +25,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// Memory cache entry options representing the current <see cref="InMemoryCachingStrategy" />.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static MemoryCacheEntryOptions ToCacheEntryOptions(this InMemoryCachingStrategy target) => target switch
         {
             InMemoryCachingStrategy.Aggressive => CacheEntryOptionsForAggressiveStrategy,
@@ -42,6 +44,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// Memory cache options representing the current <see cref="InMemoryCachingStrategy" />.
         /// </returns>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IOptions<MemoryCacheOptions> ToCacheOptions(this InMemoryCachingStrategy target) => target switch
         {
             InMemoryCachingStrategy.Aggressive => CacheOptionsForAggressiveStrategy,
@@ -61,7 +64,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see cref="InMemoryCachingStrategy.Aggressive" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static MemoryCacheEntryOptions CacheEntryOptionsForAggressiveStrategy => new MemoryCacheEntryOptions()
+        private static MemoryCacheEntryOptions CacheEntryOptionsForAggressiveStrategy => new()
         {
             AbsoluteExpirationRelativeToNow = AbsoluteExpirationRelativeToNowForAggressiveStrategy,
             SlidingExpiration = SlidingExpirationForAggressiveStrategy
@@ -72,7 +75,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see cref="InMemoryCachingStrategy.Conservative" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static MemoryCacheEntryOptions CacheEntryOptionsForConservativeStrategy => new MemoryCacheEntryOptions()
+        private static MemoryCacheEntryOptions CacheEntryOptionsForConservativeStrategy => new()
         {
             AbsoluteExpirationRelativeToNow = AbsoluteExpirationRelativeToNowForConservativeStrategy,
             SlidingExpiration = SlidingExpirationForConservativeStrategy
@@ -83,7 +86,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see cref="InMemoryCachingStrategy.Moderate" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static MemoryCacheEntryOptions CacheEntryOptionsForModerateStrategy => new MemoryCacheEntryOptions()
+        private static MemoryCacheEntryOptions CacheEntryOptionsForModerateStrategy => new()
         {
             AbsoluteExpirationRelativeToNow = AbsoluteExpirationRelativeToNowForModerateStrategy,
             SlidingExpiration = SlidingExpirationForModerateStrategy

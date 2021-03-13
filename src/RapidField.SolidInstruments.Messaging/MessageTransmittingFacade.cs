@@ -198,7 +198,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        internal Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+        internal async Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
@@ -207,35 +207,29 @@ namespace RapidField.SolidInstruments.Messaging
             using (var controlToken = StateControl.Enter())
             {
                 RejectIfDisposed();
-                var sendClient = default(TSender);
-
-#pragma warning disable PH_S032
-
-                sendClient = entityType switch
+                var sendClient = entityType switch
                 {
                     MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathLabels),
                     MessagingEntityType.Topic => ClientFactory.GetTopicSender<TMessage>(pathLabels),
                     _ => throw new UnsupportedSpecificationException($"The specified messaging entity type, {entityType}, is not supported.")
                 };
 
-#pragma warning restore PH_S032
-
                 try
                 {
-                    var adaptedMessage = MessageAdapter.ConvertForward(message) as TAdaptedMessage;
-                    return TransmitAsync(adaptedMessage, sendClient, controlToken);
+                    var adaptedMessage = MessageAdapter.ConvertForward(message);
+                    await TransmitAsync(adaptedMessage, sendClient, controlToken);
                 }
                 catch (MessageTransmissionException exception)
                 {
-                    return Task.FromException<TMessage>(exception);
+                    await Task.FromException<TMessage>(exception);
                 }
                 catch (ObjectDisposedException exception)
                 {
-                    return Task.FromException<TMessage>(exception);
+                    await Task.FromException<TMessage>(exception);
                 }
                 catch (Exception exception)
                 {
-                    return Task.FromException<TMessage>(new MessageTransmissionException(typeof(TMessage), exception));
+                    await Task.FromException<TMessage>(new MessageTransmissionException(typeof(TMessage), exception));
                 }
             }
         }

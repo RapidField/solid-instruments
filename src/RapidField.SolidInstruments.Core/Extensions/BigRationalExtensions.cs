@@ -3,7 +3,6 @@
 // =================================================================================================================================
 
 using System;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using BigRational = Rationals.Rational;
@@ -24,7 +23,27 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// The number of significant figures in the value of the current <see cref="BigRational" />.
         /// </returns>
-        public static Int32 CountSignificantFigures(this BigRational target) => target.IsZero ? 0 : target.Digits.Count();
+        public static Int32 CountSignificantFigures(this BigRational target)
+        {
+            if (target.IsZero)
+            {
+                return 0;
+            }
+
+            var significantFigureCount = 0;
+
+            foreach (var digit in target.Digits)
+            {
+                significantFigureCount++;
+
+                if (significantFigureCount == Number.SignificantFiguresLimitForDecimal)
+                {
+                    break;
+                }
+            }
+
+            return significantFigureCount;
+        }
 
         /// <summary>
         /// Determines whether or not the current <see cref="BigRational" /> value is an integer (a number in the series { ..., -2,
@@ -100,7 +119,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// </exception>
         public static BigRational RoundedTo(this BigRational target, Int32 digits, MidpointRounding midpointRoundingMode)
         {
-            if (target.IsInteger() || target.FractionPart.Digits.Count() <= digits)
+            if (target.IsInteger() || target.FractionPart.CountSignificantFigures() <= digits)
             {
                 return target;
             }
@@ -110,7 +129,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
             try
             {
-                return BigRational.Parse($"{wholeNumberString}.{fractionalDigitString}");
+                return BigRational.Approximate(Decimal.Parse($"{wholeNumberString}.{fractionalDigitString}"), 13);
             }
             catch (Exception exception)
             {

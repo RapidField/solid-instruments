@@ -71,8 +71,6 @@ namespace RapidField.SolidInstruments.Core
             LazyStateControl = new(InitializeStateControl, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
-#pragma warning disable CA1063
-
         /// <summary>
         /// Finalizes the current <see cref="Instrument" />.
         /// </summary>
@@ -116,8 +114,6 @@ namespace RapidField.SolidInstruments.Core
                 }
             }
         }
-
-#pragma warning restore CA1063
 
         /// <summary>
         /// Asynchronously releases all resources consumed by the current <see cref="Instrument" />.

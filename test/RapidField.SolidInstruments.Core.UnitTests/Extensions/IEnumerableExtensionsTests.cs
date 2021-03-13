@@ -7,12 +7,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
 {
     [TestClass]
     public class IEnumerableExtensionsTests
     {
+        [TestMethod]
+        public void Flatten_ShouldProduceDesiredResults()
+        {
+            // Arrange.
+            var collectionOne = new Int32[] { 1, 2, 3 };
+            var collectionTwo = new Int32[] { 4, 5, 6 };
+            var collectionThree = new Int32[] { 7, 8, 9 };
+            var target = new List<Int32[]>() { collectionOne, collectionTwo, collectionThree };
+
+            // Act.
+            var result = target.Flatten();
+
+            // Assert.
+            result.Should().NotBeNullOrEmpty();
+            result.Count().Should().Be(target.Select(collection => collection.Length).Sum());
+            result.Should().ContainInOrder(collectionOne);
+            result.Should().ContainInOrder(collectionTwo);
+            result.Should().ContainInOrder(collectionThree);
+        }
+
         [TestMethod]
         public void IsEquivalentTo_ShouldReturnFalse_ForInequivalentCollections()
         {

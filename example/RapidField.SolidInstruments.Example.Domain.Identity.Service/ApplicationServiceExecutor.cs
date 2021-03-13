@@ -12,6 +12,7 @@ using RapidField.SolidInstruments.Messaging.Service;
 using RapidField.SolidInstruments.Service;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace RapidField.SolidInstruments.Example.Domain.Identity.Service
@@ -179,6 +180,7 @@ namespace RapidField.SolidInstruments.Example.Domain.Identity.Service
         /// Blocks the current thread for a short period to ensure synchronous execution of startup events.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Pause() => Thread.Sleep(PauseDurationInMilliseconds);
 
         /// <summary>

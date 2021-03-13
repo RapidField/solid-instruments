@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -230,6 +231,7 @@ namespace RapidField.SolidInstruments.Collections
         /// Initializes the lazily-initialized structure collection as a <see cref="Memory{T}" />.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Memory<T> InitializeFieldMemory() => new(Field);
 
         /// <summary>

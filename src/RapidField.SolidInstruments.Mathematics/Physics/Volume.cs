@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a quantitative measurement of three-dimensional space.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct Volume : IComparable<Volume>, IEquatable<Volume>
+    public readonly struct Volume : IComparable<Volume>, IEquatable<Volume>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Volume" /> structure.
@@ -395,7 +395,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Volume other) => CubicMeters.CompareTo(other.CubicMeters);
+        public readonly Int32 CompareTo(Volume other) => CubicMeters.CompareTo(other.CubicMeters);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Volume" /> is equal to the specified <see cref="Object" />.
@@ -406,7 +406,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -429,7 +429,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Volume other) => CubicMeters == other.CubicMeters;
+        public readonly Boolean Equals(Volume other) => CubicMeters == other.CubicMeters;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -437,7 +437,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => CubicMeters.GetHashCode();
+        public readonly override Int32 GetHashCode() => CubicMeters.GetHashCode();
 
         /// <summary>
         /// Converts the current <see cref="Volume" /> to an array of bytes.
@@ -445,7 +445,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="Volume" />.
         /// </returns>
-        public Byte[] ToByteArray() => CubicMeters.ToByteArray();
+        public readonly Byte[] ToByteArray() => CubicMeters.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="Volume" /> to its equivalent string representation.
@@ -453,7 +453,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="Volume" />.
         /// </returns>
-        public override String ToString() => $"{CubicMeters} {CubicMetersUnitOfMeasureSymbol}";
+        public readonly override String ToString() => $"{CubicMeters} {CubicMetersUnitOfMeasureSymbol}";
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a volume value to its <see cref="Volume" /> equivalent.
@@ -651,57 +651,57 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic centimeters.
         /// </summary>
-        public Decimal TotalCubicCentimeters => CubicMeters * CubicCentimetersPerCubicMeter;
+        public readonly Decimal TotalCubicCentimeters => CubicMeters * CubicCentimetersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic feet.
         /// </summary>
-        public Decimal TotalCubicFeet => CubicMeters * CubicFeetPerCubicMeter;
+        public readonly Decimal TotalCubicFeet => CubicMeters * CubicFeetPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic inches.
         /// </summary>
-        public Decimal TotalCubicInches => CubicMeters * CubicInchesPerCubicMeter;
+        public readonly Decimal TotalCubicInches => CubicMeters * CubicInchesPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic kilometers.
         /// </summary>
-        public Decimal TotalCubicKilometers => CubicMeters * CubicKilometersPerCubicMeter;
+        public readonly Decimal TotalCubicKilometers => CubicMeters * CubicKilometersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic meters.
         /// </summary>
-        public Decimal TotalCubicMeters => CubicMeters;
+        public readonly Decimal TotalCubicMeters => CubicMeters;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic miles.
         /// </summary>
-        public Decimal TotalCubicMiles => CubicMeters * CubicMilesPerCubicMeter;
+        public readonly Decimal TotalCubicMiles => CubicMeters * CubicMilesPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic millimeters.
         /// </summary>
-        public Decimal TotalCubicMillimeters => CubicMeters * CubicMillimetersPerCubicMeter;
+        public readonly Decimal TotalCubicMillimeters => CubicMeters * CubicMillimetersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in cubic yards.
         /// </summary>
-        public Decimal TotalCubicYards => CubicMeters * CubicYardsPerCubicMeter;
+        public readonly Decimal TotalCubicYards => CubicMeters * CubicYardsPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in gallons.
         /// </summary>
-        public Decimal TotalGallons => CubicMeters * GallonsPerCubicMeter;
+        public readonly Decimal TotalGallons => CubicMeters * GallonsPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in liters.
         /// </summary>
-        public Decimal TotalLiters => CubicMeters * LitersPerCubicMeter;
+        public readonly Decimal TotalLiters => CubicMeters * LitersPerCubicMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Volume" /> expressed in milliliters.
         /// </summary>
-        public Decimal TotalMilliliters => CubicMeters * MillilitersPerCubicMeter;
+        public readonly Decimal TotalMilliliters => CubicMeters * MillilitersPerCubicMeter;
 
         /// <summary>
         /// Represents the zero <see cref="Volume" /> value.

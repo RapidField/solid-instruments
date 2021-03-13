@@ -14,6 +14,7 @@ using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -79,7 +80,7 @@ namespace RapidField.SolidInstruments.Cryptography
 
         /// <summary>
         /// Converts the current <see cref="CryptographicKey{TAlgorithm}" /> to cryptographic key plaintext with correct bit-length
-        /// for the encryption mode specified by <see cref="Algorithm" />.
+        /// for the encryption mode specified by the algorithm.
         /// </summary>
         /// <returns>
         /// The derived key.
@@ -279,6 +280,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// Finalizes static members of the <see cref="CryptographicKey{TAlgorithm}" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => SecureMemoryEncryptionKey.Dispose();
 
         /// <summary>

@@ -107,14 +107,6 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// </exception>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValidationResult<TArgument> RejectIf<TArgument>(this TArgument target, Predicate<TArgument> predicate, String targetParameterName, String exceptionMessage)
-        {
-            if (predicate(target))
-            {
-                throw new ArgumentException(exceptionMessage, targetParameterName);
-            }
-
-            return new(new(target));
-        }
+        public static ValidationResult<TArgument> RejectIf<TArgument>(this TArgument target, Predicate<TArgument> predicate, String targetParameterName, String exceptionMessage) => predicate(target) ? throw new ArgumentException(exceptionMessage, targetParameterName) : new(new(target));
     }
 }

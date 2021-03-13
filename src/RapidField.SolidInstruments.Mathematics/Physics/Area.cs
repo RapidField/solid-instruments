@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a measurement of the extent of a two-dimensional figure in the plane.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct Area : IComparable<Area>, IEquatable<Area>
+    public readonly struct Area : IComparable<Area>, IEquatable<Area>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Area" /> structure.
@@ -384,7 +384,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Area other) => SquareMeters.CompareTo(other.SquareMeters);
+        public readonly Int32 CompareTo(Area other) => SquareMeters.CompareTo(other.SquareMeters);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Area" /> is equal to the specified <see cref="Object" />.
@@ -395,7 +395,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -418,7 +418,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Area other) => SquareMeters == other.SquareMeters;
+        public readonly Boolean Equals(Area other) => SquareMeters == other.SquareMeters;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -426,7 +426,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => SquareMeters.GetHashCode();
+        public readonly override Int32 GetHashCode() => SquareMeters.GetHashCode();
 
         /// <summary>
         /// Converts the current <see cref="Area" /> to an array of bytes.
@@ -434,7 +434,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="Area" />.
         /// </returns>
-        public Byte[] ToByteArray() => SquareMeters.ToByteArray();
+        public readonly Byte[] ToByteArray() => SquareMeters.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="Area" /> to its equivalent string representation.
@@ -442,7 +442,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="Area" />.
         /// </returns>
-        public override String ToString() => $"{SquareMeters} {SquareMetersUnitOfMeasureSymbol}";
+        public readonly override String ToString() => $"{SquareMeters} {SquareMetersUnitOfMeasureSymbol}";
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of an area value to its <see cref="Area" /> equivalent.
@@ -635,52 +635,52 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in acres.
         /// </summary>
-        public Decimal TotalAcres => SquareMeters * AcresPerSquareMeter;
+        public readonly Decimal TotalAcres => SquareMeters * AcresPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in hectares.
         /// </summary>
-        public Decimal TotalHectares => SquareMeters * HectaresPerSquareMeter;
+        public readonly Decimal TotalHectares => SquareMeters * HectaresPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square centimeters.
         /// </summary>
-        public Decimal TotalSquareCentimeters => SquareMeters * SquareCentimetersPerSquareMeter;
+        public readonly Decimal TotalSquareCentimeters => SquareMeters * SquareCentimetersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square feet.
         /// </summary>
-        public Decimal TotalSquareFeet => SquareMeters * SquareFeetPerSquareMeter;
+        public readonly Decimal TotalSquareFeet => SquareMeters * SquareFeetPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square inches.
         /// </summary>
-        public Decimal TotalSquareInches => SquareMeters * SquareInchesPerSquareMeter;
+        public readonly Decimal TotalSquareInches => SquareMeters * SquareInchesPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square kilometers.
         /// </summary>
-        public Decimal TotalSquareKilometers => SquareMeters * SquareKilometersPerSquareMeter;
+        public readonly Decimal TotalSquareKilometers => SquareMeters * SquareKilometersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square meters.
         /// </summary>
-        public Decimal TotalSquareMeters => SquareMeters;
+        public readonly Decimal TotalSquareMeters => SquareMeters;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square miles.
         /// </summary>
-        public Decimal TotalSquareMiles => SquareMeters * SquareMilesPerSquareMeter;
+        public readonly Decimal TotalSquareMiles => SquareMeters * SquareMilesPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square millimeters.
         /// </summary>
-        public Decimal TotalSquareMillimeters => SquareMeters * SquareMillimetersPerSquareMeter;
+        public readonly Decimal TotalSquareMillimeters => SquareMeters * SquareMillimetersPerSquareMeter;
 
         /// <summary>
         /// Gets the value of the current <see cref="Area" /> expressed in square yards.
         /// </summary>
-        public Decimal TotalSquareYards => SquareMeters * SquareYardsPerSquareMeter;
+        public readonly Decimal TotalSquareYards => SquareMeters * SquareYardsPerSquareMeter;
 
         /// <summary>
         /// Represents the zero <see cref="Area" /> value.

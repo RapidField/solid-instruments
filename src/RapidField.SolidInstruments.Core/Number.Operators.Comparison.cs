@@ -148,23 +148,28 @@ namespace RapidField.SolidInstruments.Core
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Number other) => other.Format switch
+        public readonly Int32 CompareTo(Number other)
         {
-            NumericDataFormat.Byte => CompareTo(other.ToByte()),
-            NumericDataFormat.SByte => CompareTo(other.ToSByte()),
-            NumericDataFormat.UInt16 => CompareTo(other.ToUInt16()),
-            NumericDataFormat.Int16 => CompareTo(other.ToInt16()),
-            NumericDataFormat.UInt32 => CompareTo(other.ToUInt32()),
-            NumericDataFormat.Int32 => CompareTo(other.ToInt32()),
-            NumericDataFormat.UInt64 => CompareTo(other.ToUInt64()),
-            NumericDataFormat.Int64 => CompareTo(other.ToInt64()),
-            NumericDataFormat.Single => CompareTo(other.ToSingle()),
-            NumericDataFormat.Double => CompareTo(other.ToDouble()),
-            NumericDataFormat.Decimal => CompareTo(other.ToDecimal()),
-            NumericDataFormat.BigInteger => CompareTo(other.ToBigInteger()),
-            NumericDataFormat.BigRational => CompareTo(other.ToBigRational()),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
+            var rawComparisonResult = other.Format switch
+            {
+                NumericDataFormat.Byte => CompareTo(other.ToByte()),
+                NumericDataFormat.SByte => CompareTo(other.ToSByte()),
+                NumericDataFormat.UInt16 => CompareTo(other.ToUInt16()),
+                NumericDataFormat.Int16 => CompareTo(other.ToInt16()),
+                NumericDataFormat.UInt32 => CompareTo(other.ToUInt32()),
+                NumericDataFormat.Int32 => CompareTo(other.ToInt32()),
+                NumericDataFormat.UInt64 => CompareTo(other.ToUInt64()),
+                NumericDataFormat.Int64 => CompareTo(other.ToInt64()),
+                NumericDataFormat.Single => CompareTo(other.ToSingle()),
+                NumericDataFormat.Double => CompareTo(other.ToDouble()),
+                NumericDataFormat.Decimal => CompareTo(other.ToDecimal()),
+                NumericDataFormat.BigInteger => CompareTo(other.ToBigInteger()),
+                NumericDataFormat.BigRational => CompareTo(other.ToBigRational()),
+                _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+            };
+
+            return rawComparisonResult < 0 ? -1 : (rawComparisonResult > 0 ? 1 : 0);
+        }
 
         /// <summary>
         /// Compares the current <see cref="Number" /> to the supplied <see cref="Byte" /> and returns an indication of their
@@ -178,7 +183,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Byte other) => Format switch
+        private readonly Int32 CompareTo(Byte other) => Format switch
         {
             NumericDataFormat.Byte => ToByte().CompareTo(other),
             NumericDataFormat.SByte => ToInt16().CompareTo(other.ToInt16()),
@@ -208,7 +213,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(SByte other) => Format switch
+        private readonly Int32 CompareTo(SByte other) => Format switch
         {
             NumericDataFormat.Byte => ToInt16().CompareTo(other.ToInt16()),
             NumericDataFormat.SByte => ToSByte().CompareTo(other),
@@ -238,7 +243,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(UInt16 other) => Format switch
+        private readonly Int32 CompareTo(UInt16 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt16().CompareTo(other),
             NumericDataFormat.SByte => ToInt32().CompareTo(other.ToInt32()),
@@ -268,7 +273,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Int16 other) => Format switch
+        private readonly Int32 CompareTo(Int16 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt16().CompareTo(other),
             NumericDataFormat.SByte => ToInt16().CompareTo(other),
@@ -298,7 +303,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(UInt32 other) => Format switch
+        private readonly Int32 CompareTo(UInt32 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt32().CompareTo(other),
             NumericDataFormat.SByte => ToInt64().CompareTo(other.ToInt64()),
@@ -328,7 +333,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Int32 other) => Format switch
+        private readonly Int32 CompareTo(Int32 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt32().CompareTo(other),
             NumericDataFormat.SByte => ToInt32().CompareTo(other),
@@ -358,7 +363,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(UInt64 other) => Format switch
+        private readonly Int32 CompareTo(UInt64 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt64().CompareTo(other),
             NumericDataFormat.SByte => ToBigInteger().CompareTo(other.ToBigInteger()),
@@ -388,7 +393,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Int64 other) => Format switch
+        private readonly Int32 CompareTo(Int64 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt64().CompareTo(other),
             NumericDataFormat.SByte => ToInt64().CompareTo(other),
@@ -418,7 +423,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Single other) => Format switch
+        private readonly Int32 CompareTo(Single other) => Format switch
         {
             NumericDataFormat.Byte => ToSingle().CompareTo(other),
             NumericDataFormat.SByte => ToSingle().CompareTo(other),
@@ -448,7 +453,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Double other) => Format switch
+        private readonly Int32 CompareTo(Double other) => Format switch
         {
             NumericDataFormat.Byte => ToDouble().CompareTo(other),
             NumericDataFormat.SByte => ToDouble().CompareTo(other),
@@ -478,7 +483,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(Decimal other) => Format switch
+        private readonly Int32 CompareTo(Decimal other) => Format switch
         {
             NumericDataFormat.Byte => ToDecimal().CompareTo(other),
             NumericDataFormat.SByte => ToDecimal().CompareTo(other),
@@ -508,7 +513,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(BigInteger other) => Format switch
+        private readonly Int32 CompareTo(BigInteger other) => Format switch
         {
             NumericDataFormat.Byte => ToBigInteger().CompareTo(other),
             NumericDataFormat.SByte => ToBigInteger().CompareTo(other),
@@ -538,7 +543,7 @@ namespace RapidField.SolidInstruments.Core
         /// instance; zero if they are equal.
         /// </returns>
         [DebuggerHidden]
-        private Int32 CompareTo(BigRational other) => Format switch
+        private readonly Int32 CompareTo(BigRational other) => Format switch
         {
             NumericDataFormat.Byte => ToBigRational().CompareTo(other),
             NumericDataFormat.SByte => ToBigRational().CompareTo(other),

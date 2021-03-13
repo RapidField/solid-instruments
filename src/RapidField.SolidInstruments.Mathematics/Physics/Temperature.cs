@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     /// Represents a measurement of heat intensity.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode, Size = 16)]
-    public struct Temperature : IComparable<Temperature>, IEquatable<Temperature>
+    public readonly struct Temperature : IComparable<Temperature>, IEquatable<Temperature>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Temperature" /> structure.
@@ -318,7 +318,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// Negative one if this instance is less than the supplied instance; one if this instance is greater than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Temperature other) => DegreesCelsius.CompareTo(other.DegreesCelsius);
+        public readonly Int32 CompareTo(Temperature other) => DegreesCelsius.CompareTo(other.DegreesCelsius);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Temperature" /> is equal to the specified <see cref="Object" />.
@@ -329,7 +329,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -352,7 +352,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Temperature other) => DegreesCelsius == other.DegreesCelsius;
+        public readonly Boolean Equals(Temperature other) => DegreesCelsius == other.DegreesCelsius;
 
         /// <summary>
         /// Returns the hash code for this instance.
@@ -360,7 +360,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => DegreesCelsius.GetHashCode();
+        public readonly override Int32 GetHashCode() => DegreesCelsius.GetHashCode();
 
         /// <summary>
         /// Converts the current <see cref="Temperature" /> to an array of bytes.
@@ -368,7 +368,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// An array of bytes representing the current <see cref="Temperature" />.
         /// </returns>
-        public Byte[] ToByteArray() => DegreesCelsius.ToByteArray();
+        public readonly Byte[] ToByteArray() => DegreesCelsius.ToByteArray();
 
         /// <summary>
         /// Converts the value of the current <see cref="Temperature" /> to its equivalent string representation.
@@ -376,7 +376,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <returns>
         /// A string representation of the current <see cref="Temperature" />.
         /// </returns>
-        public override String ToString() => $"{DegreesCelsius} {DegreesCelsiusUnitOfMeasureSymbol}";
+        public readonly override String ToString() => $"{DegreesCelsius} {DegreesCelsiusUnitOfMeasureSymbol}";
 
         /// <summary>
         /// Converts the specified <see cref="String" /> representation of a temperature value to its <see cref="Temperature" />
@@ -535,17 +535,17 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// <summary>
         /// Gets the value of the current <see cref="Temperature" /> expressed in degrees Celsius.
         /// </summary>
-        public Decimal TotalDegreesCelsius => DegreesCelsius;
+        public readonly Decimal TotalDegreesCelsius => DegreesCelsius;
 
         /// <summary>
         /// Gets the value of the current <see cref="Temperature" /> expressed in degrees Fahrenheit.
         /// </summary>
-        public Decimal TotalDegreesFahrenheit => (DegreesCelsius * (9m / 5m)) + 32m;
+        public readonly Decimal TotalDegreesFahrenheit => (DegreesCelsius * (9m / 5m)) + 32m;
 
         /// <summary>
         /// Gets the value of the current <see cref="Temperature" /> expressed in kelvins.
         /// </summary>
-        public Decimal TotalKelvins => DegreesCelsius + 273.15m;
+        public readonly Decimal TotalKelvins => DegreesCelsius + 273.15m;
 
         /// <summary>
         /// Represents the temperature at the lower limit of the thermodynamic temperature scale.

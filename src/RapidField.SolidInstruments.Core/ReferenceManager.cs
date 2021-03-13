@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Core
@@ -127,6 +128,7 @@ namespace RapidField.SolidInstruments.Core
         /// Finalizes static members of the <see cref="ReferenceManager" /> class.
         /// </summary>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void FinalizeStaticMembers() => Instance.Dispose();
 
         /// <summary>

@@ -136,7 +136,7 @@ Function Build
     $BuildVersionWithoutMetadata = GetBuildVersion;
     ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     ComposeNormal "Build version: $BuildVersionWithoutMetadata";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration  --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --nologo --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
@@ -254,7 +254,7 @@ Function Clean
     )
 
     ComposeStart "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile  --configuration $SolutionConfiguration --verbosity minimal";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile --configuration $SolutionConfiguration --nologo --verbosity minimal";
     ComposeStart "Destroying build artifacts.";
 
     Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
@@ -527,7 +527,7 @@ Restores dependencies for the current build.
 Function RestoreDependencies
 {
     ComposeStart "Restoring dependencies for $FilePathForSolutionFile.";
-    dotnet restore $FilePathForSolutionFile --verbosity minimal;
+    dotnet restore $FilePathForSolutionFile --nologo --verbosity minimal;
 
     If ($LASTEXITCODE -ne 0)
     {
@@ -628,7 +628,7 @@ Function StartExampleAccessControlHttpApiApplication
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
     Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
@@ -669,7 +669,7 @@ Function StartExampleAccessControlServiceApplication
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
     Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
@@ -710,7 +710,7 @@ Function StartExampleBeaconServiceApplication
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
     Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
@@ -751,7 +751,7 @@ Function StartExampleIdentityServiceApplication
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName" -FilePath "dotnet" -WindowStyle Minimized;
+    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
     Pop-Location;
     ComposeFinish "Finished starting the application.";
 }
@@ -781,7 +781,7 @@ Stops all running .NET applications.
 Function StopAllApplications
 {
     ComposeStart "Stopping all applications.";
-    Stop-Process -Name "dotnet" -ErrorAction SilentlyContinue -Force;
+    Stop-Process -Name "$CommandNameForDotNetCli" -ErrorAction SilentlyContinue -Force;
     ComposeFinish "Finished stopping all applications.";
 }
 
@@ -801,7 +801,7 @@ Function Test
     {
         $TestDirectoryPath = $_.FullName;
         ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -skipautoprops -target:"dotnet.exe" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build  --no-restore --verbosity minimal";
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -returntargetcode -skipautoprops -target:"$FileNameForDotNetCli" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --nologo --no-restore --verbosity minimal";
 
         If ($LASTEXITCODE -ne 0)
         {
@@ -926,7 +926,7 @@ Compiles the current build and executes the test suite against it.
 Function VerifyBuild
 {
     Push-Location "$DirectoryPathForProjectRoot";
-    psake Verify;
+    psake Verify -nologo;
     Pop-Location;
 }
 

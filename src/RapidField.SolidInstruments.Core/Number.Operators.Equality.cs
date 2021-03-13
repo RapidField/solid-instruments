@@ -68,7 +68,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public override Boolean Equals(Object obj)
+        public readonly override Boolean Equals(Object obj)
         {
             if (obj is null)
             {
@@ -143,7 +143,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public Boolean Equals(Number other) => Format switch
+        public readonly Boolean Equals(Number other) => Format switch
         {
             NumericDataFormat.Byte => other.Equals(ToByte()),
             NumericDataFormat.SByte => other.Equals(ToSByte()),
@@ -167,7 +167,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => Compress().ToByteArray().ComputeThirtyTwoBitHash();
+        public readonly override Int32 GetHashCode() => Compress().ToByteArray().ComputeThirtyTwoBitHash();
 
         /// <summary>
         /// Determines whether or not the current <see cref="Number" /> is equal to the specified <see cref="Byte" />.
@@ -179,7 +179,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Byte other) => Format switch
+        private readonly Boolean Equals(Byte other) => Format switch
         {
             NumericDataFormat.Byte => ToByte().Equals(other),
             NumericDataFormat.SByte => ToInt16().Equals(other.ToInt16()),
@@ -207,7 +207,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(SByte other) => Format switch
+        private readonly Boolean Equals(SByte other) => Format switch
         {
             NumericDataFormat.Byte => ToInt16().Equals(other.ToInt16()),
             NumericDataFormat.SByte => ToSByte().Equals(other),
@@ -235,7 +235,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(UInt16 other) => Format switch
+        private readonly Boolean Equals(UInt16 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt16().Equals(other),
             NumericDataFormat.SByte => ToInt32().Equals(other.ToInt32()),
@@ -263,7 +263,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Int16 other) => Format switch
+        private readonly Boolean Equals(Int16 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt16().Equals(other),
             NumericDataFormat.SByte => ToInt16().Equals(other),
@@ -291,7 +291,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(UInt32 other) => Format switch
+        private readonly Boolean Equals(UInt32 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt32().Equals(other),
             NumericDataFormat.SByte => ToInt64().Equals(other.ToInt64()),
@@ -319,7 +319,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Int32 other) => Format switch
+        private readonly Boolean Equals(Int32 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt32().Equals(other),
             NumericDataFormat.SByte => ToInt32().Equals(other),
@@ -347,7 +347,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(UInt64 other) => Format switch
+        private readonly Boolean Equals(UInt64 other) => Format switch
         {
             NumericDataFormat.Byte => ToUInt64().Equals(other),
             NumericDataFormat.SByte => ToBigInteger().Equals(other.ToBigInteger()),
@@ -375,7 +375,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Int64 other) => Format switch
+        private readonly Boolean Equals(Int64 other) => Format switch
         {
             NumericDataFormat.Byte => ToInt64().Equals(other),
             NumericDataFormat.SByte => ToInt64().Equals(other),
@@ -403,7 +403,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Single other) => Format switch
+        private readonly Boolean Equals(Single other) => Format switch
         {
             NumericDataFormat.Byte => ToSingle().Equals(other),
             NumericDataFormat.SByte => ToSingle().Equals(other),
@@ -431,7 +431,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Double other) => Format switch
+        private readonly Boolean Equals(Double other) => Format switch
         {
             NumericDataFormat.Byte => ToDouble().Equals(other),
             NumericDataFormat.SByte => ToDouble().Equals(other),
@@ -459,7 +459,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(Decimal other) => Format switch
+        private readonly Boolean Equals(Decimal other) => Format switch
         {
             NumericDataFormat.Byte => ToDecimal().Equals(other),
             NumericDataFormat.SByte => ToDecimal().Equals(other),
@@ -487,7 +487,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(BigInteger other) => Format switch
+        private readonly Boolean Equals(BigInteger other) => Format switch
         {
             NumericDataFormat.Byte => ToBigInteger().Equals(other),
             NumericDataFormat.SByte => ToBigInteger().Equals(other),
@@ -515,7 +515,7 @@ namespace RapidField.SolidInstruments.Core
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
         [DebuggerHidden]
-        private Boolean Equals(BigRational other) => Format switch
+        private readonly Boolean Equals(BigRational other) => Format switch
         {
             NumericDataFormat.Byte => ToBigRational().Equals(other),
             NumericDataFormat.SByte => ToBigRational().Equals(other),

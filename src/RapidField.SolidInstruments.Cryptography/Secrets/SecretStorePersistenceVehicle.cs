@@ -316,7 +316,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while retrieving persisted state or hydrating <see cref="InMemoryStore" />.
         /// </exception>
-        public Task LoadPersistedStateAsync()
+        public async Task LoadPersistedStateAsync()
         {
             using (var controlToken = StateControl.Enter())
             {
@@ -324,15 +324,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                 try
                 {
-                    return LoadPersistedStateAsync(InMemoryStore, controlToken);
+                    await LoadPersistedStateAsync(InMemoryStore, controlToken);
                 }
                 catch (SecretStorePersistenceException exception)
                 {
-                    return Task.FromException(exception);
+                    await Task.FromException(exception);
                 }
                 catch (Exception exception)
                 {
-                    return Task.FromException(new SecretStorePersistenceException(exception));
+                    await Task.FromException(new SecretStorePersistenceException(exception));
                 }
             }
         }
@@ -349,7 +349,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist <see cref="InMemoryStore" />.
         /// </exception>
-        public Task PersistInMemoryStoreAsync()
+        public async Task PersistInMemoryStoreAsync()
         {
             using (var controlToken = StateControl.Enter())
             {
@@ -357,15 +357,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
 
                 try
                 {
-                    return PersistInMemoryStoreAsync(InMemoryStore, controlToken);
+                    await PersistInMemoryStoreAsync(InMemoryStore, controlToken);
                 }
                 catch (SecretStorePersistenceException exception)
                 {
-                    return Task.FromException(exception);
+                    await Task.FromException(exception);
                 }
                 catch (Exception exception)
                 {
-                    return Task.FromException(new SecretStorePersistenceException(exception));
+                    await Task.FromException(new SecretStorePersistenceException(exception));
                 }
             }
         }
