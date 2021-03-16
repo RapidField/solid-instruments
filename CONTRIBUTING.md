@@ -48,7 +48,7 @@ CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](ci
 - [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
 - [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
 
-### 📥 Package managers
+### 📦 Package managers
 
 - [**Chocolatey**](https://chocolatey.org/about)
 - [**npm**](https://docs.npmjs.com/about-npm)
@@ -102,9 +102,9 @@ Branches matching the pattern ⚫`maintenance/00000-{semantic-key}` are children
 
 #### 🟤 User branches
 
-Branches matching the pattern 🟤`user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting 🔴defect, 🟢feature and ⚫maintenance branches. User branches may contain work-in-progress and there are no requirements for them with respect to status checks.
+Branches matching the pattern 🟤`user/{username}/00000-{semantic-key}` serve as source branches for pull requests targeting defect, feature and maintenance branches. User branches may contain work-in-progress and there are no requirements for them with respect to status checks.
 
-#### 📑 Workflow diagram
+#### 🔀 Workflow diagram
 
 **RapidField Revision Control Workflow 1.1** diverges from  [**GitFlow**](https://nvie.com/posts/a-successful-git-branching-model/) by introducing defect and maintenance branches, which are treated like feature branches from a process perspective but are used for different purposes. The workflow is diagrammed below.
 
