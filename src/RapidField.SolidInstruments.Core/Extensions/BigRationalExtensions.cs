@@ -124,12 +124,11 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 return target;
             }
 
-            var wholeNumberString = target.WholePart.ToString();
-            var fractionalDigitString = ((Decimal)target.FractionPart).RoundedTo(digits, midpointRoundingMode).ToString().TrimStart('0').TrimStart('.');
-
             try
             {
-                return BigRational.Approximate(Decimal.Parse($"{wholeNumberString}.{fractionalDigitString}"), 13);
+                var wholeNumberString = target.WholePart.ToString();
+                var fractionalDigitString = ((Decimal)target.FractionPart).RoundedTo(digits, midpointRoundingMode).ToString().TrimStart('0').TrimStart('.');
+                return Decimal.Parse($"{wholeNumberString}.{fractionalDigitString}").ToBigRational();
             }
             catch (Exception exception)
             {

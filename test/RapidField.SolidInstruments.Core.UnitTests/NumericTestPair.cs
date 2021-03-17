@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Numerics;
@@ -296,9 +297,26 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 var multiplicationResultsAreConsistent = multiplicationNumberResult.Equals(multiplicationValueResult);
                 var divisionResultsAreConsistent = divisionNumberResult.Equals(divisionValueResult);
 
-                if (additionResultsAreConsistent && subtractionResultsAreConsistent && multiplicationResultsAreConsistent && divisionResultsAreConsistent)
+                if (additionResultsAreConsistent && subtractionResultsAreConsistent && multiplicationResultsAreConsistent)
                 {
-                    return;
+                    if (divisionResultsAreConsistent)
+                    {
+                        return;
+                    }
+
+                    var divisionError = divisionNumberResult - divisionValueResult;
+
+                    if (divisionError == Number.Zero)
+                    {
+                        return;
+                    }
+
+                    var divisionErrorAbsoluteSignificand = Math.Abs((Decimal)divisionError).GetSignificand();
+
+                    if (divisionErrorAbsoluteSignificand == 1m)
+                    {
+                        return;
+                    }
                 }
 
                 throw new InvalidOperationException($"The test pairs produced incorrect or inconsistent arithmetic results. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");

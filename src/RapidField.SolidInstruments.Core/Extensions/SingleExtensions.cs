@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using BigRational = Rationals.Rational;
@@ -26,21 +25,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// The number of significant figures in the value of the current <see cref="Single" />.
         /// </returns>
-        public static Int32 CountSignificantFigures(this Single target)
-        {
-            if (target == 0f)
-            {
-                return 0;
-            }
+        public static Int32 CountSignificantFigures(this Single target) => target == 0f ? 0 : target.ToComponents().SignificantDigits.Length;
 
-            var absoluteValue = Math.Abs(target);
-            var absoluteValueIsLessThanOne = absoluteValue < 1f;
-            var targetIsRational = absoluteValue.IsRational();
-            var wholeAndFractionalFigures = absoluteValue.ToString(GeneralNumericStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter);
-            var wholeFigures = targetIsRational ? (absoluteValueIsLessThanOne ? String.Empty : wholeAndFractionalFigures[0].TrimStart(ZeroCharacter)) : wholeAndFractionalFigures[0].Trim(ZeroCharacter);
-            var fractionalFigures = targetIsRational ? (absoluteValueIsLessThanOne ? wholeAndFractionalFigures[1].Trim(ZeroCharacter) : wholeAndFractionalFigures[1].TrimEnd(ZeroCharacter)) : String.Empty;
-            return wholeFigures.Length + fractionalFigures.Length;
-        }
+        /// <summary>
+        /// Returns the significant digits for the current <see cref="Single" /> expressed as a whole number.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Single" />.
+        /// </param>
+        /// <returns>
+        /// The significand, or mantissa, for the current <see cref="Single" />.
+        /// </returns>
+        public static Single GetSignificand(this Single target) => target == 0f ? 0f : Single.Parse(target.ToComponents().Significand);
 
         /// <summary>
         /// Determines whether or not the current <see cref="Single" /> value is an integer (a number in the series { ..., -2, -1,
@@ -141,7 +137,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// A <see cref="BigRational" /> value that is equivalent to <paramref name="target" />.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BigRational ToBigRational(this Single target) => target.IsInteger() ? new(target.ToBigInteger()) : BigRational.Approximate(target, 13);
+        public static BigRational ToBigRational(this Single target) => target.IsInteger() ? new(target.ToBigInteger()) : BigRational.Approximate(target, RationalTolerance);
 
         /// <summary>
         /// Converts the specified <see cref="Single" /> to an equivalent <see cref="Byte" /> value.
@@ -303,27 +299,21 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static UInt64 ToUInt64(this Single target) => Convert.ToUInt64(target);
 
         /// <summary>
-        /// Represents the character ".".
+        /// Converts the specified <see cref="Single" /> to its constituent elements.
         /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Char DecimalPointCharacter = '.';
+        /// <param name="target">
+        /// The current instance of the <see cref="Single" />.
+        /// </param>
+        /// <returns>
+        /// The constituent elements of <paramref name="target" />.
+        /// </returns>
+        [DebuggerHidden]
+        internal static FloatingPointNumberComponents ToComponents(this Single target) => new(target);
 
         /// <summary>
-        /// Represents the character that prefixes exponential digits ("E").
+        /// Represents the maximum permissible tolerance for rational approximation during numeric conversion.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Char ExponentialPrefixCharacter = 'E';
-
-        /// <summary>
-        /// Represents the textual format specifier for a general numeric string.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const String GeneralNumericStringFormatSpecifier = "G8";
-
-        /// <summary>
-        /// Represents the character "0".
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Char ZeroCharacter = '0';
+        private const Single RationalTolerance = 0.0000001f;
     }
 }

@@ -207,7 +207,11 @@ namespace RapidField.SolidInstruments.Messaging.Service
                     {
                         if (RunsContinuously)
                         {
-                            Console.WriteLine("The service is running in continuous mode.");
+                            if (SupressStandardConsoleOutput is false)
+                            {
+                                Console.WriteLine("The service is running in continuous mode.");
+                            }
+
                             Console.CancelKeyPress += (sender, eventArguments) =>
                             {
                                 executionLifetime.End();

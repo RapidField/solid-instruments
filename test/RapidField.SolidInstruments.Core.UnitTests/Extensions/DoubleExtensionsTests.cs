@@ -91,6 +91,84 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         }
 
         [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForIntegralAndFractionalNumber()
+        {
+            // Arrange.
+            var target = 120.0345d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(1200345d);
+        }
+
+        [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForOne()
+        {
+            // Arrange.
+            var target = 1d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(1d);
+        }
+
+        [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForOneOneThousandth()
+        {
+            // Arrange.
+            var target = 0.001d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(1d);
+        }
+
+        [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForOneThird()
+        {
+            // Arrange.
+            var target = 1d / 3d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(3333333333333333d);
+        }
+
+        [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForOneThousand()
+        {
+            // Arrange.
+            var target = 1000d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(1d);
+        }
+
+        [TestMethod]
+        public void GetSignificand_ShouldReturnValidResult_ForZero()
+        {
+            // Arrange.
+            var target = 0d;
+
+            // Act.
+            var result = target.GetSignificand();
+
+            // Assert.
+            result.Should().Be(0d);
+        }
+
+        [TestMethod]
         public void RoundedTo_ShouldReturnValidResult_ForAwayFromZeroRounding()
         {
             // Arrange.

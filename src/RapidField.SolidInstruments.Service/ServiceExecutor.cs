@@ -84,26 +84,29 @@ namespace RapidField.SolidInstruments.Service
 
             try
             {
-                var productName = ProductName?.Trim();
-                var serviceName = ServiceName?.Trim();
-                var copyrightNotice = CopyrightNotice?.Trim();
-
-                if (productName.IsNullOrEmpty() is false)
+                if (SupressStandardConsoleOutput is false)
                 {
-                    Console.WriteLine(productName);
-                }
+                    var productName = ProductName?.Trim();
+                    var serviceName = ServiceName?.Trim();
+                    var copyrightNotice = CopyrightNotice?.Trim();
 
-                if (serviceName.IsNullOrEmpty() is false)
-                {
-                    Console.WriteLine(serviceName);
-                }
+                    if (productName.IsNullOrEmpty() is false)
+                    {
+                        Console.WriteLine(productName);
+                    }
 
-                if (copyrightNotice.IsNullOrEmpty() is false)
-                {
-                    Console.WriteLine(copyrightNotice);
-                }
+                    if (serviceName.IsNullOrEmpty() is false)
+                    {
+                        Console.WriteLine(serviceName);
+                    }
 
-                Console.WriteLine($"{Environment.NewLine}Service execution starting.");
+                    if (copyrightNotice.IsNullOrEmpty() is false)
+                    {
+                        Console.WriteLine(copyrightNotice);
+                    }
+
+                    Console.WriteLine($"{Environment.NewLine}Service execution starting.");
+                }
 
                 try
                 {
@@ -123,19 +126,26 @@ namespace RapidField.SolidInstruments.Service
                 }
                 catch (Exception exception)
                 {
-                    throw new ServiceExectuionException($"An exception was raised during execution of the service: \"{ServiceName}\". See inner exception.", exception);
+                    throw new ServiceExectuionException($"An exception was raised during execution of \"{ServiceName}\". See inner exception.", exception);
                 }
             }
             catch (ServiceExectuionException exception)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{exception.Message} : {exception.StackTrace}{Environment.NewLine}");
-                Console.ResetColor();
+                if (SupressStandardConsoleOutput is false)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{exception.Message} : {exception.StackTrace}{Environment.NewLine}");
+                    Console.ResetColor();
+                }
+
                 throw;
             }
             finally
             {
-                Console.WriteLine("Service execution finished.");
+                if (SupressStandardConsoleOutput is false)
+                {
+                    Console.WriteLine("Service execution finished.");
+                }
             }
         }
 
@@ -278,6 +288,13 @@ namespace RapidField.SolidInstruments.Service
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not to suppress the console output that lists the product name, service name and
+        /// copyright notice; as well as the startup, finalization and exception notifications.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        internal virtual Boolean SupressStandardConsoleOutput => false;
 
         /// <summary>
         /// Gets configuration information for the service.
