@@ -13,7 +13,7 @@ The **Solid Instruments** product deliverables consist of a collection of [**.NE
 
 Our team is committed to seeking, adopting and maintaining best practices. Here are some philosophies that guide our decision making at a high level.
 
-### 🔆 Transparency over flexibility
+### :high_brightness: Transparency over flexibility
 
 In most cases, the team should...
 
@@ -189,7 +189,7 @@ public Boolean Encrypts
 }
 ```
 
-### 🏗️ Adherence to object oriented principles
+### :building_construction: Adherence to object oriented principles
 
 We are committed to engineering excellence. We welcome creative and pioneering approaches, but we also understand that the most straightforward paths toward success are those paved by professionals who traveled before us. We observe and find great value in the [**SOLID** principles](https://en.wikipedia.org/wiki/SOLID). Our oversimplified statements of expectation with respect to **SOLID** are as follows.
 
