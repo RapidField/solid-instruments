@@ -36,7 +36,7 @@ Contents of the repository are organized as follows.
 - [**CodeMaid**](http://www.codemaid.net) is used to maintain standard document formatting throughout the project.
 - [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker) is used to uncover spelling errors.
 
-CI/CD tooling is managed and defined by [:page_facing_up:`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [:page_facing_up:`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
+CI/CD tooling is managed and defined by [:page_facing_up:`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process -- which is initiated by [:page_facing_up:`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1) -- installs the following tools.
 
 ### :hammer_and_wrench: Command-line tools
 
