@@ -13,7 +13,7 @@ This issue represents a request for the production release of a new version of *
 
 > **MODIFY.** Replace the version number below with the appropriate version number.
 
-Issue a production software release for :label:`v0.0.0`.
+Issue a production software release for :bookmark:`v0.0.0`.
 
 ## Statement of work
 
