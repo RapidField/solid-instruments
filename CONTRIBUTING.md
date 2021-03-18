@@ -36,7 +36,7 @@ Contents of the repository are organized as follows.
 - [**CodeMaid**](http://www.codemaid.net) is used to maintain standard document formatting throughout the project.
 - [**Visual Studio Spell Checker**](https://ewsoftware.github.io/VSSpellChecker) is used to uncover spelling errors.
 
-CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
+CI/CD tooling is managed and defined by [:page_facing_up:`cicd/modules/AutomationTools.psm1`](cicd/modules/AutomationTools.psm1). The build environment setup process (initiated by [:page_facing_up:`cicd/scripts/ResetEnvironment.ps1`](cicd/scripts/ResetEnvironment.ps1)) installs the following tools.
 
 ### :hammer_and_wrench: Command-line tools
 
@@ -46,7 +46,7 @@ CI/CD tooling is managed and defined by [`cicd/modules/AutomationTools.psm1`](ci
 - [**HTMLMinifier**](https://www.npmjs.com/package/html-minifier) minifies the project website.
 - [**OpenCover**](https://github.com/OpenCover/opencover) executes the project tests and produces test coverage reports.
 - [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.
-- [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [`psakefile.ps1`](psakefile.ps1)).
+- [**psake**](https://github.com/psake/psake) organizes and groups CI/CD operations (see [:page_facing_up:`psakefile.ps1`](psakefile.ps1)).
 
 ### :package: Package managers
 
