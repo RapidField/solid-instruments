@@ -46,7 +46,7 @@ There are multiple ways to find help.
 - Check out the [**API Reference**](https://www.solidinstruments.com/api) for usage examples and reference documentation.
 - Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
 - Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose) to request a feature or report a defect.
-- Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+- Email the core team at [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## Contributing
 
@@ -57,8 +57,8 @@ There are multiple ways to find help.
 
 The **Solid Instruments** team strives to maintain high standards as defined by our key quality metrics.
 
-- 99.9% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the `master` and `develop` branches
-- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the `master` and `develop` branches
+- 99.9% [build and test reliability](https://ci.appveyor.com/project/rapidfield/solid-instruments/history) for the :yellow_circle:`master` and :large_blue_circle:`develop` branches
+- A [**CodeFactor** code quality score](https://www.codefactor.io/repository/github/rapidfield/solid-instruments/branches) of "A" for the :yellow_circle:`master` and :large_blue_circle:`develop` branches
 - [**Core Infrastructure Initiative Best Practices**](https://www.coreinfrastructure.org/programs/badge-program/) passing status.
 
 Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).
