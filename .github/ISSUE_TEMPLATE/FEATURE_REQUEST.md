@@ -37,8 +37,8 @@ Replace this with additional information.
 
 **Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
 
-- `master` is the pull request target for
-- `release/v0.0.0`, which is the pull request target for
-- `develop`, which is the pull request target for
-- `feature/00000-xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
-- `user/{username}/00000-xxxxx`
+- :yellow_circle:`master` is the pull request target for
+- :purple_circle:`release/v0.0.0`, which is the pull request target for
+- :large_blue_circle:`develop`, which is the pull request target for
+- :green_circle:`feature/00000-xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
+- :brown_circle:`user/{username}/00000-xxxxx`
