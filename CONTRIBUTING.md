@@ -112,7 +112,7 @@ Branches matching the pattern :brown_circle:`user/{username}/00000-{semantic-key
 
 ### :label: Release versioning
 
-**Solid Instruments** releases are versioned using the [**Semantic Versioning 2.0.0**](https://semver.org/spec/v2.0.0.html) specification. Release versioning is controlled via the [:page_facing_up:`appveyor.yml`](appveyor.yml) file. Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
+**Solid Instruments** releases are versioned using the [**Semantic Versioning 2.0.0**](https://semver.org/spec/v2.0.0.html) specification. Release versioning for the libraries is controlled via the [:page_facing_up:`appveyor.yml`](appveyor.yml) file. Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
 
 ## Get started
 
