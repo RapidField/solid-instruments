@@ -9,7 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 **Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Your contributions must be your own work. Review the [license terms](LICENSE.txt) and the [**Code of Conduct**](CODE_OF_CONDUCT.md) before contributing.
 
-For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+For questions, contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ## License
 
@@ -60,11 +60,11 @@ The **Solid Instruments** team adheres to a variety of design and workflow conve
 
 ### :triangular_ruler: Architecture
 
-New contributors should familiarize themselves with basic architectural conventions by reviewing the [**Architectural Guide**](ARCHITECTURE.md). The existing body of source can often be used as a reliable authority when making design decisions but, when in doubt, ask for advice from experienced contributors or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+New contributors should familiarize themselves with basic architectural conventions by reviewing the [**Architectural Guide**](ARCHITECTURE.md). The existing body of source can often be used as a reliable authority when making design decisions but, when in doubt, ask for advice from experienced contributors or contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 ### :black_nib: Design and style
 
-The [:page_facing_up:`.editorconfig`](.editorconfig) and [:page_facing_up:`CodeMaid.config`](CodeMaid.config) files, in combination, define most of the project's styling guidelines. More information can be found by reading the [**Development Guidelines**](GUIDELINES.md). When in doubt, look to examples within the source for styling guidance, or contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
+The [:page_facing_up:`.editorconfig`](.editorconfig) and [:page_facing_up:`CodeMaid.config`](CodeMaid.config) files, in combination, define most of the project's styling guidelines. More information can be found by reading the [**Development Guidelines**](GUIDELINES.md). When in doubt, look to examples within the source for styling guidance, or contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
 
 ### :arrows_clockwise: Revision control workflow
 
@@ -112,7 +112,7 @@ Branches matching the pattern :brown_circle:`user/{username}/00000-{semantic-key
 
 ### :label: Release versioning
 
-**Solid Instruments** releases are versioned using the [**Semantic Versioning 2.0.0**](https://semver.org/spec/v2.0.0.html) specification. Release versioning is controlled via [`appveyor.yml`](appveyor.yml). Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
+**Solid Instruments** releases are versioned using the [**Semantic Versioning 2.0.0**](https://semver.org/spec/v2.0.0.html) specification. Release versioning is controlled via the [:page_facing_up:`appveyor.yml`](appveyor.yml) file. Please do not submit pull requests that modify the build version. The maintainers manage release versioning.
 
 ## Get started
 
@@ -124,7 +124,7 @@ git clone https://github.com/RapidField/solid-instruments.git
 
 ### 💻 Environment setup
 
-After cloning the repository, navigate to the root directory in an administrative [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) session and execute [`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
+After cloning the repository, navigate to the root directory in an administrative [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) session and execute [:page_facing_up:`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
 
 ###### PowerShell
 
@@ -144,7 +144,7 @@ psake verify
 
 ### :star2: Your first issue
 
-First-time contributors are welcome to start with any open, unassigned issues labeled [**Tag-GoodFirstIssue**](https://github.com/RapidField/solid-instruments/issues?q=is%3Aopen+is%3Aissue+label%3AStage-2-Accepted+no%3Aassignee). After picking one, leave a comment on the issue so that we can assign it to you and promote its status.
+First-time contributors are welcome to start with any open, unassigned issues labeled [:label:**Tag-GoodFirstIssue**](https://github.com/RapidField/solid-instruments/issues?q=is%3Aopen+is%3Aissue+label%3AStage-2-Accepted+no%3Aassignee). After picking one, leave a comment on the issue so that we can assign it to you and promote its status.
 
 Revision control plans are provided with the descriptions of all accepted issues. Please review carefully before starting.
 
@@ -155,7 +155,7 @@ If you encounter problems or if questions arise, there are several options avail
 - Check out the [**API Reference**](https://www.solidinstruments.com/api).
 - Ask the community for [help via **Gitter**](https://gitter.im/RapidField/solid-instruments).
 - Open a [new issue](https://github.com/RapidField/solid-instruments/issues/new/choose).
-- Email the core team at [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+- Email the core team at [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
