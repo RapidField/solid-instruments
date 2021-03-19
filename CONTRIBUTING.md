@@ -64,7 +64,7 @@ New contributors should familiarize themselves with basic architectural conventi
 
 ### :black_nib: Design and style
 
-The [:page_facing_up:`.editorconfig`](.editorconfig) and [:page_facing_up:`CodeMaid.config`](CodeMaid.config) files, in combination, define most of the project's styling guidelines. More information can be found by reading the [**Development Guidelines**](GUIDELINES.md). When in doubt, look to examples within the source for styling guidance, or contact us at [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com) with questions.
+The [:page_facing_up:`.editorconfig`](.editorconfig) and [:page_facing_up:`CodeMaid.config`](CodeMaid.config) files, in combination, define most of the project's styling guidelines. More information can be found by reading the [**Development Guidelines**](GUIDELINES.md). When in doubt, look to examples within the source for styling guidance or ask an experienced contributor.
 
 ### :arrows_clockwise: Revision control workflow
 
@@ -132,7 +132,7 @@ After cloning the repository, navigate to the root directory in an administrativ
 .\build.ps1 -interactive
 ```
 
-### :heavy_check_mark: Build verification
+### :vertical_traffic_light: Build verification
 
 During development it is good practice to ensure that your build remains in a passing state. Before pushing commits upstream, open a [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) console and execute the `verify` task in the project root.
 
