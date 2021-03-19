@@ -11,16 +11,17 @@ This document lists the **Solid Instruments** maintainers and contributors. For 
 
 ## Maintainers
 
-* [Adam Stone](https://github.com/adamjstone) | Architect, Project Administrator
-* [your name here] :wink:
+* :man_technologist: [Adam Stone](https://github.com/adamjstone) | Architect, Project Administrator
 
 ## Contributors
 
-* [your name here] :wink:
+* :bust_in_silhouette: [your name here] :wink:
 
 ## Aspiring contributors
 
-Interested in adding your name to this list? Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+Interested in adding your name to this list? Before beginning work please read the [**Instructions for Contributing**](CONTRIBUTING.md).
+
+For questions, contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
