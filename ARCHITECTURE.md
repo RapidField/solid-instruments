@@ -205,20 +205,22 @@ There are good reasons to deviate from these guidelines and we do. Start a conve
 
 The maintainers of **Solid Instruments** make every effort to minimize the inclusion of third-party dependencies. Several of the constituent libraries expose implementations of first-party abstractions for competing third-party product libraries. Those first-party abstractions are listed below with their accompanying implementations.
 
-- [`RapidField.SolidInstruments.DataAccess`](src/RapidField.SolidInstruments.DataAccess/README.md)
-  - [`RapidField.SolidInstruments.DataAccess.EntityFramework`](src/RapidField.SolidInstruments.DataAccess.EntityFramework/README.md)
-- [`RapidField.SolidInstruments.InversionOfControl`](src/RapidField.SolidInstruments.InversionOfControl/README.md)
-  - [`RapidField.SolidInstruments.InversionOfControl.Autofac`](src/RapidField.SolidInstruments.InversionOfControl.Autofac/README.md)
-  - [`RapidField.SolidInstruments.InversionOfControl.DotNetNative`](src/RapidField.SolidInstruments.InversionOfControl.DotNetNative/README.md)
-- [`RapidField.SolidInstruments.Messaging`](src/RapidField.SolidInstruments.Messaging/README.md)
-  - [`RapidField.SolidInstruments.Messaging.AzureServiceBus`](src/RapidField.SolidInstruments.Messaging.AzureServiceBus/README.md)
-  - [`RapidField.SolidInstruments.Messaging.RabbitMq`](src/RapidField.SolidInstruments.Messaging.RabbitMq/README.md)
+- [:books:`RapidField.SolidInstruments.DataAccess`](src/RapidField.SolidInstruments.DataAccess/README.md)
+  - [:books:`RapidField.SolidInstruments.DataAccess.EntityFramework`](src/RapidField.SolidInstruments.DataAccess.EntityFramework/README.md)
+- [:books:`RapidField.SolidInstruments.InversionOfControl`](src/RapidField.SolidInstruments.InversionOfControl/README.md)
+  - [:books:`RapidField.SolidInstruments.InversionOfControl.Autofac`](src/RapidField.SolidInstruments.InversionOfControl.Autofac/README.md)
+  - [:books:`RapidField.SolidInstruments.InversionOfControl.DotNetNative`](src/RapidField.SolidInstruments.InversionOfControl.DotNetNative/README.md)
+- [:books:`RapidField.SolidInstruments.Messaging`](src/RapidField.SolidInstruments.Messaging/README.md)
+  - [:books:`RapidField.SolidInstruments.Messaging.AzureServiceBus`](src/RapidField.SolidInstruments.Messaging.AzureServiceBus/README.md)
+  - [:books:`RapidField.SolidInstruments.Messaging.RabbitMq`](src/RapidField.SolidInstruments.Messaging.RabbitMq/README.md)
 
 To review the constituent library dependencies, navigate to any library from [this page](https://www.nuget.org/packages?q=title%3ARapidField.SolidInstruments) and expand the "Dependencies" section.
 
 ## More information
 
-If you haven't already, please review the [**Instructions for Contributing**](CONTRIBUTING.md), where you will find guidance on other topics such as support and revision control. For a thorough treatment on coding standards review the [**Development Guidelines**](GUIDELINES.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+If you haven't already, please review the [**Instructions for Contributing**](CONTRIBUTING.md), where you will find guidance on other topics such as support and revision control. For a thorough treatment on coding standards review the [**Development Guidelines**](GUIDELINES.md).
+
+For questions, contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 
