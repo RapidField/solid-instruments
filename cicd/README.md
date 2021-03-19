@@ -7,15 +7,15 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd
 
-This document describes the purpose of the [`cicd`]() directory.
+This document describes the purpose of the [:file_folder:`/cicd`]() directory.
 
 ## Purpose
 
 This path houses source objects which define the behavior of the **Solid Instruments** CI/CD pipeline and which are divided into sub-directories as follows.
 
-- [`assets`](/cicd/assets) contains resource files that are utilized by CI/CD operations.
-- [`modules`](/cicd/modules) contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) module files that expose functions which define the core CI/CD pipeline.
-- [`scripts`](/cicd/scripts) contains scripts that serve as entry points for pipeline invocation.
+- [:file_folder:`/assets`](/cicd/assets) contains resource files that are utilized by CI/CD operations.
+- [:file_folder:`/modules`](/cicd/modules) contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) module files that expose functions which define the core CI/CD pipeline.
+- [:file_folder:`/scripts`](/cicd/scripts) contains scripts that serve as entry points for pipeline invocation.
 
 ## License
 
