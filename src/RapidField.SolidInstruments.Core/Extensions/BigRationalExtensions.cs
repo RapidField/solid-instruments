@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
             {
                 significantFigureCount++;
 
-                if (significantFigureCount == Number.SignificantFiguresLimitForDecimal)
+                if (significantFigureCount > Number.SignificantFiguresLimitForDecimal)
                 {
                     break;
                 }
@@ -44,6 +44,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
             return significantFigureCount;
         }
+
+        /// <summary>
+        /// Determines whether or not the current <see cref="BigRational" /> value is a fractional number (not an integer).
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="BigRational" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if <paramref name="target" /> is a fractional number, otherwise <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsFractional(this BigRational target) => target.IsInteger() is false;
 
         /// <summary>
         /// Determines whether or not the current <see cref="BigRational" /> value is an integer (a number in the series { ..., -2,
@@ -57,18 +69,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsInteger(this BigRational target) => target.FractionPart.IsZero;
-
-        /// <summary>
-        /// Determines whether or not the current <see cref="BigRational" /> value is a rational number (not an integer).
-        /// </summary>
-        /// <param name="target">
-        /// The current instance of the <see cref="BigRational" />.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if <paramref name="target" /> is a rational number, otherwise <see langword="false" />.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Boolean IsRational(this BigRational target) => target.IsInteger() is false;
 
         /// <summary>
         /// Rounds the current <see cref="BigRational" /> to the specified number of fractional digits.

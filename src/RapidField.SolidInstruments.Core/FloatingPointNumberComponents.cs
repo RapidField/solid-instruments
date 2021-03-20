@@ -70,7 +70,7 @@ namespace RapidField.SolidInstruments.Core
         /// </exception>
         [DebuggerHidden]
         private FloatingPointNumberComponents(SByte sign, Decimal absoluteValue)
-            : this(sign, absoluteValue < 1m, absoluteValue.IsRational(), absoluteValue.ToString(GeneralDecimalStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
+            : this(sign, absoluteValue < 1m, absoluteValue.IsFractional(), absoluteValue.ToString(GeneralDecimalStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
         {
             return;
         }
@@ -90,7 +90,7 @@ namespace RapidField.SolidInstruments.Core
         /// </exception>
         [DebuggerHidden]
         private FloatingPointNumberComponents(SByte sign, Double absoluteValue)
-            : this(sign, absoluteValue < 1d, absoluteValue.IsRational(), absoluteValue.ToString(GeneralDoubleStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
+            : this(sign, absoluteValue < 1d, absoluteValue.IsFractional(), absoluteValue.ToString(GeneralDoubleStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
         {
             return;
         }
@@ -110,7 +110,7 @@ namespace RapidField.SolidInstruments.Core
         /// </exception>
         [DebuggerHidden]
         private FloatingPointNumberComponents(SByte sign, Single absoluteValue)
-            : this(sign, absoluteValue < 1f, absoluteValue.IsRational(), absoluteValue.ToString(GeneralSingleStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
+            : this(sign, absoluteValue < 1f, absoluteValue.IsFractional(), absoluteValue.ToString(GeneralSingleStringFormatSpecifier, CultureInfo.InvariantCulture).Split(ExponentialPrefixCharacter)[0].Split(DecimalPointCharacter))
         {
             return;
         }
@@ -125,8 +125,8 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="absoluteValueIsLessThanOne">
         /// A value indicating whether or not the associated number's absolute value is less than one (1).
         /// </param>
-        /// <param name="isRational">
-        /// A value indicating whether or not the associated number is a rational number.
+        /// <param name="isFractional">
+        /// A value indicating whether or not the associated number is a fractional number.
         /// </param>
         /// <param name="wholeAndFractionalFigures">
         /// An array of strings containing numeric representations of the whole figures [0] and fractional figures [1] for the
@@ -142,8 +142,8 @@ namespace RapidField.SolidInstruments.Core
         /// <paramref name="sign" /> is less than negative one (-1) or greater than one (1).
         /// </exception>
         [DebuggerHidden]
-        private FloatingPointNumberComponents(SByte sign, Boolean absoluteValueIsLessThanOne, Boolean isRational, String[] wholeAndFractionalFigures)
-            : this(sign, isRational ? (absoluteValueIsLessThanOne ? String.Empty : wholeAndFractionalFigures.RejectIf().IsNullOrEmpty(nameof(wholeAndFractionalFigures)).TargetArgument[0].TrimStart(ZeroCharacter)) : wholeAndFractionalFigures.RejectIf().IsNullOrEmpty(nameof(wholeAndFractionalFigures)).TargetArgument[0].Trim(ZeroCharacter), isRational ? (absoluteValueIsLessThanOne ? wholeAndFractionalFigures[1].Trim(ZeroCharacter) : wholeAndFractionalFigures[1].TrimEnd(ZeroCharacter)) : String.Empty)
+        private FloatingPointNumberComponents(SByte sign, Boolean absoluteValueIsLessThanOne, Boolean isFractional, String[] wholeAndFractionalFigures)
+            : this(sign, isFractional ? (absoluteValueIsLessThanOne ? String.Empty : wholeAndFractionalFigures.RejectIf().IsNullOrEmpty(nameof(wholeAndFractionalFigures)).TargetArgument[0].TrimStart(ZeroCharacter)) : wholeAndFractionalFigures.RejectIf().IsNullOrEmpty(nameof(wholeAndFractionalFigures)).TargetArgument[0].Trim(ZeroCharacter), isFractional ? (absoluteValueIsLessThanOne ? wholeAndFractionalFigures[1].Trim(ZeroCharacter) : wholeAndFractionalFigures[1].TrimEnd(ZeroCharacter)) : String.Empty)
         {
             return;
         }

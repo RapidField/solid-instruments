@@ -336,6 +336,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(2);
+            BitConverter.ToInt16(result).Should().Be(target);
         }
 
         [TestMethod]
@@ -350,6 +351,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(4);
+            BitConverter.ToInt32(result).Should().Be(target);
         }
 
         [TestMethod]
@@ -364,6 +366,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(8);
+            BitConverter.ToInt64(result).Should().Be(target);
         }
 
         [TestMethod]
@@ -378,6 +381,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(2);
+            BitConverter.ToUInt16(result).Should().Be(target);
         }
 
         [TestMethod]
@@ -392,6 +396,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(4);
+            BitConverter.ToUInt32(result).Should().Be(target);
         }
 
         [TestMethod]
@@ -406,6 +411,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(8);
+            BitConverter.ToUInt64(result).Should().Be(target);
         }
     }
 }

@@ -3,10 +3,10 @@
 // =================================================================================================================================
 
 using RapidField.SolidInstruments.Core.Extensions;
-using Rationals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using BigRational = Rationals.Rational;
 
 namespace RapidField.SolidInstruments.Core.UnitTests
 {
@@ -38,7 +38,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <returns>
         /// The <see cref="BigRational" /> equivalent of the specified numeric value.
         /// </returns>
-        protected sealed override Rational ConvertValueToBigRational(SByte value) => value.ToBigRational();
+        protected sealed override BigRational ConvertValueToBigRational(SByte value) => value.ToBigRational();
 
         /// <summary>
         /// Returns a value indicating whether or not the primitive numeric value for the current
@@ -69,7 +69,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             new(-3),
             new(-2),
             new(-1),
-            new(0),
+            new(default),
             new(1),
             new(2),
             new(3),

@@ -38,6 +38,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Double GetSignificand(this Double target) => target == 0d ? 0d : Double.Parse(target.ToComponents().Significand);
 
         /// <summary>
+        /// Determines whether or not the current <see cref="Double" /> value is a fractional number (not an integer).
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Double" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if <paramref name="target" /> is a fractional number, otherwise <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsFractional(this Double target) => target.IsInteger() is false;
+
+        /// <summary>
         /// Determines whether or not the current <see cref="Double" /> value is an integer (a number in the series { ..., -2, -1,
         /// 0, 1, 2, ... }).
         /// </summary>
@@ -49,18 +61,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsInteger(this Double target) => Math.Abs(target % 1d) <= Double.Epsilon;
-
-        /// <summary>
-        /// Determines whether or not the current <see cref="Double" /> value is a rational number (not an integer).
-        /// </summary>
-        /// <param name="target">
-        /// The current instance of the <see cref="Double" />.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if <paramref name="target" /> is a rational number, otherwise <see langword="false" />.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Boolean IsRational(this Double target) => target.IsInteger() is false;
 
         /// <summary>
         /// Rounds the current <see cref="Double" /> to the specified number of fractional digits.

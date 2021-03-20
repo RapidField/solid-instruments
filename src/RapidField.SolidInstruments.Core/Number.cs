@@ -36,7 +36,7 @@ namespace RapidField.SolidInstruments.Core
         /// </param>
         [DebuggerHidden]
         private Number(SByte value)
-             : this((Byte[])(Array)(new[] { value }), NumericDataFormat.SByte)
+             : this(new[] { unchecked((Byte)value) }, NumericDataFormat.SByte)
         {
             return;
         }
@@ -284,6 +284,14 @@ namespace RapidField.SolidInstruments.Core
         };
 
         /// <summary>
+        /// Gets a value indicating whether or not the current <see cref="Number" /> value is a fractional number (not an integer).
+        /// </summary>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="Number" /> is a fractional number, otherwise <see langword="false" />.
+        /// </returns>
+        public readonly Boolean IsFractional => IsInteger is false;
+
+        /// <summary>
         /// Gets a value indicating whether or not the current <see cref="Number" /> value is an integer (a number in the series {
         /// ..., -2, -1, 0, 1, 2, ... }).
         /// </summary>
@@ -355,14 +363,6 @@ namespace RapidField.SolidInstruments.Core
             NumericDataFormat.BigRational => ToBigRational() > BigRational.Zero,
             _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
         };
-
-        /// <summary>
-        /// Gets a value indicating whether or not the current <see cref="Number" /> value is a rational number (not an integer).
-        /// </summary>
-        /// <returns>
-        /// <see langword="true" /> if the current <see cref="Number" /> is a rational number, otherwise <see langword="false" />.
-        /// </returns>
-        public readonly Boolean IsRational => IsInteger is false;
 
         /// <summary>
         /// Gets an exception message that indicates that <see cref="Format" /> is an unsupported numeric data format.

@@ -2,8 +2,8 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
-using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Numerics;
@@ -52,7 +52,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <param name="otherTestPair">
         /// The other test pair against which to evaluate relative state consistency.
         /// </param>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="AssertFailedException">
         /// The test pair states are internally or relatively inconsistent.
         /// </exception>
         public sealed override void VerifyRelativeStateConsistency(NumericTestPair otherTestPair)
@@ -63,30 +63,30 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             var otherValue = otherTestPair.ValueAsBigRational;
             var thisNumber = Number;
             var otherNumber = otherTestPair.Number;
-            Boolean thisValueIsEqualToOtherValue;
-            Int32 thisValueToOtherValueComparisonResult;
-            Boolean thisNumberIsEqualToOtherNumber;
-            Int32 thisNumberToOtherNumberComparisonResult;
 
             try
             {
-                thisValueIsEqualToOtherValue = thisValue == otherValue;
-                thisValueToOtherValueComparisonResult = thisValue.CompareTo(otherValue);
-                thisNumberIsEqualToOtherNumber = thisNumber == otherNumber;
-                thisNumberToOtherNumberComparisonResult = thisNumber.CompareTo(otherNumber);
+                var thisValueIsEqualToOtherValue = thisValue == otherValue;
+                var thisValueToOtherValueComparisonResult = thisValue.CompareTo(otherValue);
+                var thisNumberIsEqualToOtherNumber = thisNumber == otherNumber;
+                var thisNumberToOtherNumberComparisonResult = thisNumber.CompareTo(otherNumber);
+
+                if (thisValueIsEqualToOtherValue != thisNumberIsEqualToOtherNumber)
+                {
+                    throw new AssertFailedException($"The test pair states are relatively inconsistent per equality operations. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");
+                }
+                else if (thisValueToOtherValueComparisonResult != thisNumberToOtherNumberComparisonResult)
+                {
+                    throw new AssertFailedException($"The test pair states are relatively inconsistent per comparison operations. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");
+                }
+            }
+            catch (AssertFailedException)
+            {
+                throw;
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException($"The test pair states are relatively inconsistent. See inner exception. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}", exception);
-            }
-
-            if (thisValueIsEqualToOtherValue != thisNumberIsEqualToOtherNumber)
-            {
-                throw new InvalidOperationException($"The test pair states are relatively inconsistent per equality operations. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");
-            }
-            else if (thisValueToOtherValueComparisonResult != thisNumberToOtherNumberComparisonResult)
-            {
-                throw new InvalidOperationException($"The test pair states are relatively inconsistent per comparison operations. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");
+                throw new AssertFailedException($"The test pair states are relatively inconsistent. See inner exception. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}", exception);
             }
         }
 
@@ -94,28 +94,30 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// Raises an exception if the primitive numeric value for the current <see cref="NumericTestPair{TValue}" /> is not equal
         /// to and comparatively equivalent to its own <see cref="Core.Number" />.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="AssertFailedException">
         /// The test pair state is internally inconsistent.
         /// </exception>
         protected internal sealed override void VerifyInternalStateConsistency()
         {
-            Boolean internalStateIsConsistent;
-
             try
             {
-                internalStateIsConsistent = VerifyStateConsistency(Value, Number);
+                var internalStateIsConsistent = VerifyStateConsistency(Value, Number);
+
+                if (internalStateIsConsistent)
+                {
+                    return;
+                }
+
+                throw new AssertFailedException($"The test pair state is internally inconsistent. {this}");
+            }
+            catch (AssertFailedException)
+            {
+                throw;
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException($"The test pair state is internally inconsistent. See inner exception. {this}", exception);
+                throw new AssertFailedException($"The test pair state is internally inconsistent. See inner exception. {this}", exception);
             }
-
-            if (internalStateIsConsistent)
-            {
-                return;
-            }
-
-            throw new InvalidOperationException($"The test pair state is internally inconsistent. {this}");
         }
 
         /// <summary>
@@ -272,7 +274,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <param name="otherTestPair">
         /// The other test pair against which to evaluate arithmetic operational correctness.
         /// </param>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="AssertFailedException">
         /// The test pairs produce incorrect or inconsistent arithmetic results.
         /// </exception>
         public void VerifyArithmeticOperationalCorrectness(NumericTestPair otherTestPair)
@@ -286,48 +288,53 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             {
                 var additionValueResult = thisValue + otherValue;
                 var additionNumberResult = thisNumber + otherNumber;
-                var subtractionValueResult = thisValue - otherValue;
-                var subtractionNumberResult = thisNumber - otherNumber;
-                var multiplicationValueResult = thisValue * otherValue;
-                var multiplicationNumberResult = thisNumber * otherNumber;
-                var divisionValueResult = otherValue == BigRational.Zero ? otherValue : thisValue / otherValue;
-                var divisionNumberResult = otherNumber == Number.Zero ? otherNumber : thisNumber / otherNumber;
-                var additionResultsAreConsistent = additionNumberResult.Equals(additionValueResult);
-                var subtractionResultsAreConsistent = subtractionNumberResult.Equals(subtractionValueResult);
-                var multiplicationResultsAreConsistent = multiplicationNumberResult.Equals(multiplicationValueResult);
-                var divisionResultsAreConsistent = divisionNumberResult.Equals(divisionValueResult);
+                var additionError = Math.Abs((additionNumberResult - additionValueResult).ToDecimal());
+                var additionResultsAreConsistent = additionError == 0m;
 
-                if (additionResultsAreConsistent && subtractionResultsAreConsistent && multiplicationResultsAreConsistent)
+                if (additionResultsAreConsistent)
                 {
-                    if (divisionResultsAreConsistent)
+                    var subtractionValueResult = thisValue - otherValue;
+                    var subtractionNumberResult = thisNumber - otherNumber;
+                    var subtractionError = Math.Abs((subtractionNumberResult - subtractionValueResult).ToDecimal());
+                    var subtractionResultsAreConsistent = subtractionError == 0m;
+
+                    if (subtractionResultsAreConsistent)
                     {
-                        return;
+                        var multiplicationValueResult = thisValue * otherValue;
+                        var multiplicationNumberResult = thisNumber * otherNumber;
+                        var multiplicationError = Math.Abs((multiplicationNumberResult - multiplicationValueResult).ToDecimal());
+                        var multiplicationResultsAreConsistent = multiplicationError == 0m;
+
+                        if (multiplicationResultsAreConsistent)
+                        {
+                            var divisionValueResult = otherValue == BigRational.Zero ? otherValue : thisValue / otherValue;
+                            var divisionNumberResult = otherNumber == Number.Zero ? otherNumber : thisNumber / otherNumber;
+                            var divisionError = Math.Abs((divisionNumberResult - divisionValueResult).ToDecimal());
+                            var divisionResultsAreConsistent = divisionError <= 1m;
+
+                            if (divisionResultsAreConsistent)
+                            {
+                                return;
+                            }
+
+                            throw new AssertFailedException($"The test pairs produced incorrect or inconsistent arithmetic results (division). {{ \"TestPairs\": [ {this}, {otherTestPair} ], \"NumberResult\": {divisionNumberResult}, \"ValueResult\": {divisionValueResult} }}");
+                        }
+
+                        throw new AssertFailedException($"The test pairs produced incorrect or inconsistent arithmetic results (multiplication). {{ \"TestPairs\": [ {this}, {otherTestPair} ], \"NumberResult\": {multiplicationNumberResult}, \"ValueResult\": {multiplicationValueResult} }}");
                     }
 
-                    var divisionError = divisionNumberResult - divisionValueResult;
-
-                    if (divisionError == Number.Zero)
-                    {
-                        return;
-                    }
-
-                    var divisionErrorAbsoluteSignificand = Math.Abs((Decimal)divisionError).GetSignificand();
-
-                    if (divisionErrorAbsoluteSignificand == 1m)
-                    {
-                        return;
-                    }
+                    throw new AssertFailedException($"The test pairs produced incorrect or inconsistent arithmetic results (subtraction). {{ \"TestPairs\": [ {this}, {otherTestPair} ], \"NumberResult\": {subtractionNumberResult}, \"ValueResult\": {subtractionValueResult} }}");
                 }
 
-                throw new InvalidOperationException($"The test pairs produced incorrect or inconsistent arithmetic results. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}");
+                throw new AssertFailedException($"The test pairs produced incorrect or inconsistent arithmetic results (addition). {{ \"TestPairs\": [ {this}, {otherTestPair} ], \"NumberResult\": {additionNumberResult}, \"ValueResult\": {additionValueResult} }}");
             }
-            catch (InvalidOperationException)
+            catch (AssertFailedException)
             {
                 throw;
             }
             catch (Exception exception)
             {
-                throw new InvalidOperationException($"The test pairs produced incorrect or inconsistent arithmetic results. See inner exception. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}", exception);
+                throw new AssertFailedException($"The test pairs produced incorrect or inconsistent arithmetic results. See inner exception. {{ \"TestPairs\": [ {this}, {otherTestPair} ] }}", exception);
             }
         }
 
@@ -338,7 +345,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <param name="otherTestPair">
         /// The other test pair against which to evaluate relative state consistency.
         /// </param>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="AssertFailedException">
         /// The test pair states are internally or relatively inconsistent.
         /// </exception>
         public abstract void VerifyRelativeStateConsistency(NumericTestPair otherTestPair);
@@ -347,7 +354,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// Raises an exception if the primitive numeric value for the current <see cref="NumericTestPair" /> is not equal to and
         /// comparatively equivalent to its own <see cref="Core.Number" />.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="AssertFailedException">
         /// The test pair state is internally inconsistent.
         /// </exception>
         protected internal abstract void VerifyInternalStateConsistency();

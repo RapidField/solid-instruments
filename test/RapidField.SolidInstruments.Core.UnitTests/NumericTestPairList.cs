@@ -53,7 +53,13 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         public static readonly NumericTestPairList Instance = new(new IEnumerable<NumericTestPair>[]
         {
             ByteNumericTestPair.Cases,
-            SByteNumericTestPair.Cases
+            SByteNumericTestPair.Cases,
+            UInt16NumericTestPair.Cases,
+            Int16NumericTestPair.Cases,
+            UInt32NumericTestPair.Cases,
+            Int32NumericTestPair.Cases,
+            UInt64NumericTestPair.Cases,
+            Int64NumericTestPair.Cases
         });
     }
 }

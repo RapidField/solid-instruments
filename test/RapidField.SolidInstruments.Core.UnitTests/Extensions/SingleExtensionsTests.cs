@@ -132,6 +132,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(4);
+            BitConverter.ToSingle(result).Should().Be(target);
         }
     }
 }

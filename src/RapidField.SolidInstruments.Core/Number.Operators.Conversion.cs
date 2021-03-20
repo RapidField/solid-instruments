@@ -5,8 +5,8 @@
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
+using System.Text;
 using BigRational = Rationals.Rational;
 
 namespace RapidField.SolidInstruments.Core
@@ -16,96 +16,6 @@ namespace RapidField.SolidInstruments.Core
     /// </summary>
     public readonly partial struct Number
     {
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="BigInteger" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
-        /// <see cref="BigInteger" />.
-        /// </exception>
-        public static implicit operator BigInteger(Number target) => target.ToBigInteger();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="BigRational" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
-        /// <see cref="BigRational" />.
-        /// </exception>
-        public static implicit operator BigRational(Number target) => target.ToBigRational();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Byte" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Byte" />.
-        /// </exception>
-        public static implicit operator Byte(Number target) => target.ToByte();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Decimal" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Decimal" />.
-        /// </exception>
-        public static implicit operator Decimal(Number target) => target.ToDecimal();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Double" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Double" />.
-        /// </exception>
-        public static implicit operator Double(Number target) => target.ToDouble();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Int16" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int16" />.
-        /// </exception>
-        public static implicit operator Int16(Number target) => target.ToInt16();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Int32" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int32" />.
-        /// </exception>
-        public static implicit operator Int32(Number target) => target.ToInt32();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Int64" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int64" />.
-        /// </exception>
-        public static implicit operator Int64(Number target) => target.ToInt64();
-
         /// <summary>
         /// Facilitates implicit <see cref="Byte" /> to <see cref="Number" /> casting.
         /// </summary>
@@ -211,61 +121,6 @@ namespace RapidField.SolidInstruments.Core
         public static implicit operator Number(BigRational target) => new Number(target).Compress();
 
         /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="SByte" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="SByte" />.
-        /// </exception>
-        public static implicit operator SByte(Number target) => target.ToSByte();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="Single" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Single" />.
-        /// </exception>
-        public static implicit operator Single(Number target) => target.ToSingle();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt16" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt16" />.
-        /// </exception>
-        public static implicit operator UInt16(Number target) => target.ToUInt16();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt32" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt32" />.
-        /// </exception>
-        public static implicit operator UInt32(Number target) => target.ToUInt32();
-
-        /// <summary>
-        /// Facilitates implicit <see cref="Number" /> to <see cref="UInt64" /> casting.
-        /// </summary>
-        /// <param name="target">
-        /// The object to cast from.
-        /// </param>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt64" />.
-        /// </exception>
-        public static implicit operator UInt64(Number target) => target.ToUInt64();
-
-        /// <summary>
         /// Converts the specified <see cref="String" /> representation of a numeric value to its <see cref="Number" /> equivalent.
         /// </summary>
         /// <param name="input">
@@ -319,6 +174,89 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="BigInteger" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="BigInteger" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
+        /// <see cref="BigInteger" />.
+        /// </exception>
+        public readonly BigInteger ToBigInteger() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToBigInteger(),
+            NumericDataFormat.SByte => ToSByte().ToBigInteger(),
+            NumericDataFormat.UInt16 => ToUInt16().ToBigInteger(),
+            NumericDataFormat.Int16 => ToInt16().ToBigInteger(),
+            NumericDataFormat.UInt32 => ToUInt32().ToBigInteger(),
+            NumericDataFormat.Int32 => ToInt32().ToBigInteger(),
+            NumericDataFormat.UInt64 => ToUInt64().ToBigInteger(),
+            NumericDataFormat.Int64 => ToInt64().ToBigInteger(),
+            NumericDataFormat.Single => IsInteger ? ToSingle().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
+            NumericDataFormat.Double => IsInteger ? ToDouble().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
+            NumericDataFormat.Decimal => IsInteger ? ToDecimal().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
+            NumericDataFormat.BigInteger => new BigInteger(Value.Span),
+            NumericDataFormat.BigRational => IsInteger ? ToBigRational().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="BigRational" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="BigRational" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
+        /// <see cref="BigRational" />.
+        /// </exception>
+        public readonly BigRational ToBigRational() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToBigRational(),
+            NumericDataFormat.SByte => ToSByte().ToBigRational(),
+            NumericDataFormat.UInt16 => ToUInt16().ToBigRational(),
+            NumericDataFormat.Int16 => ToInt16().ToBigRational(),
+            NumericDataFormat.UInt32 => ToUInt32().ToBigRational(),
+            NumericDataFormat.Int32 => ToInt32().ToBigRational(),
+            NumericDataFormat.UInt64 => ToUInt64().ToBigRational(),
+            NumericDataFormat.Int64 => ToInt64().ToBigRational(),
+            NumericDataFormat.Single => ToSingle().ToBigRational(),
+            NumericDataFormat.Double => ToDouble().ToBigRational(),
+            NumericDataFormat.Decimal => ToDecimal().ToBigRational(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToBigRational(),
+            NumericDataFormat.BigRational => BigRationalFromByteArray(Value.ToArray()),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Byte" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Byte" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Byte" />.
+        /// </exception>
+        public readonly Byte ToByte() => Format switch
+        {
+            NumericDataFormat.Byte => Value.Span[0],
+            NumericDataFormat.SByte => ToSByte().ToByte(),
+            NumericDataFormat.UInt16 => ToUInt16().ToByte(),
+            NumericDataFormat.Int16 => ToInt16().ToByte(),
+            NumericDataFormat.UInt32 => ToUInt32().ToByte(),
+            NumericDataFormat.Int32 => ToInt32().ToByte(),
+            NumericDataFormat.UInt64 => ToUInt64().ToByte(),
+            NumericDataFormat.Int64 => ToInt64().ToByte(),
+            NumericDataFormat.Single => ToSingle().ToByte(),
+            NumericDataFormat.Double => ToDouble().ToByte(),
+            NumericDataFormat.Decimal => ToDecimal().ToByte(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToByte(),
+            NumericDataFormat.BigRational => ToBigRational().ToByte(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
         /// Converts the current <see cref="Number" /> to an array of bytes.
         /// </summary>
         /// <returns>
@@ -333,6 +271,195 @@ namespace RapidField.SolidInstruments.Core
             Buffer.BlockCopy(Value.ToArray(), 0, byteArray, formatLengthInBytes, valueLengthInBytes);
             return byteArray;
         }
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Decimal" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Decimal" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Decimal" />.
+        /// </exception>
+        public readonly Decimal ToDecimal() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToDecimal(),
+            NumericDataFormat.SByte => ToSByte().ToDecimal(),
+            NumericDataFormat.UInt16 => ToUInt16().ToDecimal(),
+            NumericDataFormat.Int16 => ToInt16().ToDecimal(),
+            NumericDataFormat.UInt32 => ToUInt32().ToDecimal(),
+            NumericDataFormat.Int32 => ToInt32().ToDecimal(),
+            NumericDataFormat.UInt64 => ToUInt64().ToDecimal(),
+            NumericDataFormat.Int64 => ToInt64().ToDecimal(),
+            NumericDataFormat.Single => ToSingle().ToDecimal(),
+            NumericDataFormat.Double => ToDouble().ToDecimal(),
+            NumericDataFormat.Decimal => new Decimal(new[] { BitConverter.ToInt32(Value.Slice(0, 4).Span), BitConverter.ToInt32(Value.Slice(4, 4).Span), BitConverter.ToInt32(Value.Slice(8, 4).Span), BitConverter.ToInt32(Value.Slice(12, 4).Span) }),
+            NumericDataFormat.BigInteger => ToBigInteger().ToDecimal(),
+            NumericDataFormat.BigRational => ToBigRational().ToDecimal(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Double" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Double" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Double" />.
+        /// </exception>
+        public readonly Double ToDouble() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToDouble(),
+            NumericDataFormat.SByte => ToSByte().ToDouble(),
+            NumericDataFormat.UInt16 => ToUInt16().ToDouble(),
+            NumericDataFormat.Int16 => ToInt16().ToDouble(),
+            NumericDataFormat.UInt32 => ToUInt32().ToDouble(),
+            NumericDataFormat.Int32 => ToInt32().ToDouble(),
+            NumericDataFormat.UInt64 => ToUInt64().ToDouble(),
+            NumericDataFormat.Int64 => ToInt64().ToDouble(),
+            NumericDataFormat.Single => ToSingle().ToDouble(),
+            NumericDataFormat.Double => BitConverter.ToDouble(Value.Span),
+            NumericDataFormat.Decimal => ToDecimal().ToDouble(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToDouble(),
+            NumericDataFormat.BigRational => ToBigRational().ToDouble(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int16" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Int16" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int16" />.
+        /// </exception>
+        public readonly Int16 ToInt16() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToInt16(),
+            NumericDataFormat.SByte => ToSByte().ToInt16(),
+            NumericDataFormat.UInt16 => ToUInt16().ToInt16(),
+            NumericDataFormat.Int16 => BitConverter.ToInt16(Value.Span),
+            NumericDataFormat.UInt32 => ToUInt32().ToInt16(),
+            NumericDataFormat.Int32 => ToInt32().ToInt16(),
+            NumericDataFormat.UInt64 => ToUInt64().ToInt16(),
+            NumericDataFormat.Int64 => ToInt64().ToInt16(),
+            NumericDataFormat.Single => ToSingle().ToInt16(),
+            NumericDataFormat.Double => ToDouble().ToInt16(),
+            NumericDataFormat.Decimal => ToDecimal().ToInt16(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToInt16(),
+            NumericDataFormat.BigRational => ToBigRational().ToInt16(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int32" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Int32" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int32" />.
+        /// </exception>
+        public readonly Int32 ToInt32() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToInt32(),
+            NumericDataFormat.SByte => ToSByte().ToInt32(),
+            NumericDataFormat.UInt16 => ToUInt16().ToInt32(),
+            NumericDataFormat.Int16 => ToInt16().ToInt32(),
+            NumericDataFormat.UInt32 => ToUInt32().ToInt32(),
+            NumericDataFormat.Int32 => BitConverter.ToInt32(Value.Span),
+            NumericDataFormat.UInt64 => ToUInt64().ToInt32(),
+            NumericDataFormat.Int64 => ToInt64().ToInt32(),
+            NumericDataFormat.Single => ToSingle().ToInt32(),
+            NumericDataFormat.Double => ToDouble().ToInt32(),
+            NumericDataFormat.Decimal => ToDecimal().ToInt32(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToInt32(),
+            NumericDataFormat.BigRational => ToBigRational().ToInt32(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int64" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Int64" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int64" />.
+        /// </exception>
+        public readonly Int64 ToInt64() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToInt64(),
+            NumericDataFormat.SByte => ToSByte().ToInt64(),
+            NumericDataFormat.UInt16 => ToUInt16().ToInt64(),
+            NumericDataFormat.Int16 => ToInt16().ToInt64(),
+            NumericDataFormat.UInt32 => ToUInt32().ToInt64(),
+            NumericDataFormat.Int32 => ToInt32().ToInt64(),
+            NumericDataFormat.UInt64 => ToUInt64().ToInt64(),
+            NumericDataFormat.Int64 => BitConverter.ToInt64(Value.Span),
+            NumericDataFormat.Single => ToSingle().ToInt64(),
+            NumericDataFormat.Double => ToDouble().ToInt64(),
+            NumericDataFormat.Decimal => ToDecimal().ToInt64(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToInt64(),
+            NumericDataFormat.BigRational => ToBigRational().ToInt64(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="SByte" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="SByte" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for an <see cref="SByte" />.
+        /// </exception>
+        public readonly SByte ToSByte() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToSByte(),
+            NumericDataFormat.SByte => unchecked((SByte)Value.Span[0]),
+            NumericDataFormat.UInt16 => ToUInt16().ToSByte(),
+            NumericDataFormat.Int16 => ToInt16().ToSByte(),
+            NumericDataFormat.UInt32 => ToUInt32().ToSByte(),
+            NumericDataFormat.Int32 => ToInt32().ToSByte(),
+            NumericDataFormat.UInt64 => ToUInt64().ToSByte(),
+            NumericDataFormat.Int64 => ToInt64().ToSByte(),
+            NumericDataFormat.Single => ToSingle().ToSByte(),
+            NumericDataFormat.Double => ToDouble().ToSByte(),
+            NumericDataFormat.Decimal => ToDecimal().ToSByte(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToSByte(),
+            NumericDataFormat.BigRational => ToBigRational().ToSByte(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Single" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="Single" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Single" />.
+        /// </exception>
+        public readonly Single ToSingle() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToSingle(),
+            NumericDataFormat.SByte => ToSByte().ToSingle(),
+            NumericDataFormat.UInt16 => ToUInt16().ToSingle(),
+            NumericDataFormat.Int16 => ToInt16().ToSingle(),
+            NumericDataFormat.UInt32 => ToUInt32().ToSingle(),
+            NumericDataFormat.Int32 => ToInt32().ToSingle(),
+            NumericDataFormat.UInt64 => ToUInt64().ToSingle(),
+            NumericDataFormat.Int64 => ToInt64().ToSingle(),
+            NumericDataFormat.Single => BitConverter.ToSingle(Value.Span),
+            NumericDataFormat.Double => ToDouble().ToSingle(),
+            NumericDataFormat.Decimal => ToDecimal().ToSingle(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToSingle(),
+            NumericDataFormat.BigRational => ToBigRational().ToSingle(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
 
         /// <summary>
         /// Converts the value of the current <see cref="Number" /> to its equivalent string representation.
@@ -359,6 +486,87 @@ namespace RapidField.SolidInstruments.Core
         };
 
         /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt16" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="UInt16" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt16" />.
+        /// </exception>
+        public readonly UInt16 ToUInt16() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToUInt16(),
+            NumericDataFormat.SByte => ToSByte().ToUInt16(),
+            NumericDataFormat.UInt16 => BitConverter.ToUInt16(Value.Span),
+            NumericDataFormat.Int16 => ToInt16().ToUInt16(),
+            NumericDataFormat.UInt32 => ToUInt32().ToUInt16(),
+            NumericDataFormat.Int32 => ToInt32().ToUInt16(),
+            NumericDataFormat.UInt64 => ToUInt64().ToUInt16(),
+            NumericDataFormat.Int64 => ToInt64().ToUInt16(),
+            NumericDataFormat.Single => ToSingle().ToUInt16(),
+            NumericDataFormat.Double => ToDouble().ToUInt16(),
+            NumericDataFormat.Decimal => ToDecimal().ToUInt16(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToUInt16(),
+            NumericDataFormat.BigRational => ToBigRational().ToUInt16(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt32" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="UInt32" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt32" />.
+        /// </exception>
+        public readonly UInt32 ToUInt32() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToUInt32(),
+            NumericDataFormat.SByte => ToSByte().ToUInt32(),
+            NumericDataFormat.UInt16 => ToUInt16().ToUInt32(),
+            NumericDataFormat.Int16 => ToInt16().ToUInt32(),
+            NumericDataFormat.UInt32 => BitConverter.ToUInt32(Value.Span),
+            NumericDataFormat.Int32 => ToInt32().ToUInt32(),
+            NumericDataFormat.UInt64 => ToUInt64().ToUInt32(),
+            NumericDataFormat.Int64 => ToInt64().ToUInt32(),
+            NumericDataFormat.Single => ToSingle().ToUInt32(),
+            NumericDataFormat.Double => ToDouble().ToUInt32(),
+            NumericDataFormat.Decimal => ToDecimal().ToUInt32(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToUInt32(),
+            NumericDataFormat.BigRational => ToBigRational().ToUInt32(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
+        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt64" /> value.
+        /// </summary>
+        /// <returns>
+        /// The resulting <see cref="UInt64" /> value.
+        /// </returns>
+        /// <exception cref="OverflowException">
+        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt64" />.
+        /// </exception>
+        public readonly UInt64 ToUInt64() => Format switch
+        {
+            NumericDataFormat.Byte => ToByte().ToUInt64(),
+            NumericDataFormat.SByte => ToSByte().ToUInt64(),
+            NumericDataFormat.UInt16 => ToUInt16().ToUInt64(),
+            NumericDataFormat.Int16 => ToInt16().ToUInt64(),
+            NumericDataFormat.UInt32 => ToUInt32().ToUInt64(),
+            NumericDataFormat.Int32 => ToInt32().ToUInt64(),
+            NumericDataFormat.UInt64 => BitConverter.ToUInt64(Value.Span),
+            NumericDataFormat.Int64 => ToInt64().ToUInt64(),
+            NumericDataFormat.Single => ToSingle().ToUInt64(),
+            NumericDataFormat.Double => ToDouble().ToUInt64(),
+            NumericDataFormat.Decimal => ToDecimal().ToUInt64(),
+            NumericDataFormat.BigInteger => ToBigInteger().ToUInt64(),
+            NumericDataFormat.BigRational => ToBigRational().ToUInt64(),
+            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
+        };
+
+        /// <summary>
         /// Converts the specified array of bytes to a <see cref="BigRational" />.
         /// </summary>
         /// <param name="value">
@@ -368,19 +576,7 @@ namespace RapidField.SolidInstruments.Core
         /// The resulting <see cref="BigRational" />.
         /// </returns>
         [DebuggerHidden]
-        internal static BigRational BigRationalFromByteArray(Byte[] value)
-        {
-            var valueLength = value.Length;
-            var numeratorLengthIndicatorLengthInBytes = sizeof(Int32);
-            var numeratorLengthIndicator = value.Take(numeratorLengthIndicatorLengthInBytes).ToArray();
-            var numeratorLengthInBytes = BitConverter.ToInt32(numeratorLengthIndicator);
-            var numeratorBytesIndex = numeratorLengthIndicatorLengthInBytes;
-            var numeratorBytes = value.Skip(numeratorBytesIndex).Take(numeratorLengthInBytes).ToArray();
-            var denominatorLengthInBytes = valueLength - numeratorLengthIndicatorLengthInBytes - numeratorLengthInBytes;
-            var denominatorBytesIndex = numeratorLengthIndicatorLengthInBytes + numeratorLengthInBytes;
-            var denominatorBytes = value.Skip(denominatorBytesIndex).Take(denominatorLengthInBytes).ToArray();
-            return new(new(numeratorBytes), new(denominatorBytes));
-        }
+        internal static BigRational BigRationalFromByteArray(Byte[] value) => BigRational.Parse(BigRationalFormatEncoding.GetString(value));
 
         /// <summary>
         /// Converts the specified <see cref="BigRational" /> to an array of bytes.
@@ -392,24 +588,7 @@ namespace RapidField.SolidInstruments.Core
         /// An array of bytes representing <paramref name="value" />.
         /// </returns>
         [DebuggerHidden]
-        internal static Byte[] BigRationalToByteArray(BigRational value)
-        {
-            var numeratorBytes = value.Numerator.ToByteArray();
-            var numeratorLengthInBytes = numeratorBytes.Length;
-            var denominatorBytes = value.Denominator.ToByteArray();
-            var denominatorLengthInBytes = denominatorBytes.Length;
-            var numeratorLengthIndicator = numeratorLengthInBytes.ToByteArray();
-            var numeratorLengthIndicatorLengthInBytes = numeratorLengthIndicator.Length;
-            var numeratorLengthIndicatorIndex = 0;
-            var numeratorBytesIndex = numeratorLengthIndicatorLengthInBytes;
-            var denominatorBytesIndex = numeratorLengthIndicatorLengthInBytes + numeratorLengthInBytes;
-            var resultLength = numeratorLengthIndicatorLengthInBytes + numeratorLengthInBytes + denominatorLengthInBytes;
-            var result = new Byte[resultLength];
-            Array.Copy(numeratorLengthIndicator, 0, result, numeratorLengthIndicatorIndex, numeratorLengthIndicatorLengthInBytes);
-            Array.Copy(numeratorBytes, 0, result, numeratorBytesIndex, numeratorLengthInBytes);
-            Array.Copy(denominatorBytes, 0, result, denominatorBytesIndex, denominatorLengthInBytes);
-            return result;
-        }
+        internal static Byte[] BigRationalToByteArray(BigRational value) => BigRationalFormatEncoding.GetBytes(value.ToString());
 
         /// <summary>
         /// Attempts to reduce the memory footprint of the current <see cref="Number" /> by converting its underlying value to a
@@ -433,7 +612,7 @@ namespace RapidField.SolidInstruments.Core
             NumericDataFormat.Double => Compress(2),
             NumericDataFormat.Decimal => Compress(3),
             NumericDataFormat.BigInteger => Compress(3),
-            NumericDataFormat.BigRational => Compress(3),
+            NumericDataFormat.BigRational => Compress(4),
             _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
         };
 
@@ -594,7 +773,7 @@ namespace RapidField.SolidInstruments.Core
             NumericDataFormat.Double => IsValidAs(NumericDataFormat.Single) ? new Number(ToSingle()).Compress(permutationCount - 1) : this,
             NumericDataFormat.Decimal => IsValidAs(NumericDataFormat.Double) ? new Number(ToDouble()).Compress(permutationCount - 1) : this,
             NumericDataFormat.BigInteger => IsValidAs(NumericDataFormat.Int64) ? new Number(ToInt64()).Compress(permutationCount - 1) : this,
-            NumericDataFormat.BigRational => IsValidAs(NumericDataFormat.Decimal) ? new Number(ToDecimal()).Compress(permutationCount - 1) : this,
+            NumericDataFormat.BigRational => IsInteger ? new Number(ToBigInteger()).Compress(permutationCount - 1) : (IsValidAs(NumericDataFormat.Decimal) ? new Number(ToDecimal()).Compress(permutationCount - 1) : this),
             _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
         };
 
@@ -628,372 +807,6 @@ namespace RapidField.SolidInstruments.Core
         };
 
         /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="BigInteger" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="BigInteger" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
-        /// <see cref="BigInteger" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly BigInteger ToBigInteger() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToBigInteger(),
-            NumericDataFormat.SByte => ToSByte().ToBigInteger(),
-            NumericDataFormat.UInt16 => ToUInt16().ToBigInteger(),
-            NumericDataFormat.Int16 => ToInt16().ToBigInteger(),
-            NumericDataFormat.UInt32 => ToUInt32().ToBigInteger(),
-            NumericDataFormat.Int32 => ToInt32().ToBigInteger(),
-            NumericDataFormat.UInt64 => ToUInt64().ToBigInteger(),
-            NumericDataFormat.Int64 => ToInt64().ToBigInteger(),
-            NumericDataFormat.Single => IsInteger ? ToSingle().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
-            NumericDataFormat.Double => IsInteger ? ToDouble().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
-            NumericDataFormat.Decimal => IsInteger ? ToDecimal().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
-            NumericDataFormat.BigInteger => new BigInteger(Value.Span),
-            NumericDataFormat.BigRational => IsInteger ? ToBigRational().ToBigInteger() : throw new OverflowException(OverflowExceptionMessage),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="BigRational" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="BigRational" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a
-        /// <see cref="BigRational" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly BigRational ToBigRational() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToBigRational(),
-            NumericDataFormat.SByte => ToSByte().ToBigRational(),
-            NumericDataFormat.UInt16 => ToUInt16().ToBigRational(),
-            NumericDataFormat.Int16 => ToInt16().ToBigRational(),
-            NumericDataFormat.UInt32 => ToUInt32().ToBigRational(),
-            NumericDataFormat.Int32 => ToInt32().ToBigRational(),
-            NumericDataFormat.UInt64 => ToUInt64().ToBigRational(),
-            NumericDataFormat.Int64 => ToInt64().ToBigRational(),
-            NumericDataFormat.Single => ToSingle().ToBigRational(),
-            NumericDataFormat.Double => ToDouble().ToBigRational(),
-            NumericDataFormat.Decimal => ToDecimal().ToBigRational(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToBigRational(),
-            NumericDataFormat.BigRational => BigRationalFromByteArray(Value.ToArray()),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Byte" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Byte" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Byte" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Byte ToByte() => Format switch
-        {
-            NumericDataFormat.Byte => Value.Span[0],
-            NumericDataFormat.SByte => ToSByte().ToByte(),
-            NumericDataFormat.UInt16 => ToUInt16().ToByte(),
-            NumericDataFormat.Int16 => ToInt16().ToByte(),
-            NumericDataFormat.UInt32 => ToUInt32().ToByte(),
-            NumericDataFormat.Int32 => ToInt32().ToByte(),
-            NumericDataFormat.UInt64 => ToUInt64().ToByte(),
-            NumericDataFormat.Int64 => ToInt64().ToByte(),
-            NumericDataFormat.Single => ToSingle().ToByte(),
-            NumericDataFormat.Double => ToDouble().ToByte(),
-            NumericDataFormat.Decimal => ToDecimal().ToByte(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToByte(),
-            NumericDataFormat.BigRational => ToBigRational().ToByte(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Decimal" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Decimal" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Decimal" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Decimal ToDecimal() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToDecimal(),
-            NumericDataFormat.SByte => ToSByte().ToDecimal(),
-            NumericDataFormat.UInt16 => ToUInt16().ToDecimal(),
-            NumericDataFormat.Int16 => ToInt16().ToDecimal(),
-            NumericDataFormat.UInt32 => ToUInt32().ToDecimal(),
-            NumericDataFormat.Int32 => ToInt32().ToDecimal(),
-            NumericDataFormat.UInt64 => ToUInt64().ToDecimal(),
-            NumericDataFormat.Int64 => ToInt64().ToDecimal(),
-            NumericDataFormat.Single => ToSingle().ToDecimal(),
-            NumericDataFormat.Double => ToDouble().ToDecimal(),
-            NumericDataFormat.Decimal => new Decimal(new[] { BitConverter.ToInt32(Value.Slice(0, 4).Span), BitConverter.ToInt32(Value.Slice(4, 4).Span), BitConverter.ToInt32(Value.Slice(8, 4).Span), BitConverter.ToInt32(Value.Slice(12, 4).Span) }),
-            NumericDataFormat.BigInteger => ToBigInteger().ToDecimal(),
-            NumericDataFormat.BigRational => ToBigRational().ToDecimal(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Double" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Double" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Double" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Double ToDouble() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToDouble(),
-            NumericDataFormat.SByte => ToSByte().ToDouble(),
-            NumericDataFormat.UInt16 => ToUInt16().ToDouble(),
-            NumericDataFormat.Int16 => ToInt16().ToDouble(),
-            NumericDataFormat.UInt32 => ToUInt32().ToDouble(),
-            NumericDataFormat.Int32 => ToInt32().ToDouble(),
-            NumericDataFormat.UInt64 => ToUInt64().ToDouble(),
-            NumericDataFormat.Int64 => ToInt64().ToDouble(),
-            NumericDataFormat.Single => ToSingle().ToDouble(),
-            NumericDataFormat.Double => BitConverter.ToDouble(Value.Span),
-            NumericDataFormat.Decimal => ToDecimal().ToDouble(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToDouble(),
-            NumericDataFormat.BigRational => ToBigRational().ToDouble(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int16" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Int16" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int16" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Int16 ToInt16() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToInt16(),
-            NumericDataFormat.SByte => ToSByte().ToInt16(),
-            NumericDataFormat.UInt16 => ToUInt16().ToInt16(),
-            NumericDataFormat.Int16 => BitConverter.ToInt16(Value.Span),
-            NumericDataFormat.UInt32 => ToUInt32().ToInt16(),
-            NumericDataFormat.Int32 => ToInt32().ToInt16(),
-            NumericDataFormat.UInt64 => ToUInt64().ToInt16(),
-            NumericDataFormat.Int64 => ToInt64().ToInt16(),
-            NumericDataFormat.Single => ToSingle().ToInt16(),
-            NumericDataFormat.Double => ToDouble().ToInt16(),
-            NumericDataFormat.Decimal => ToDecimal().ToInt16(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToInt16(),
-            NumericDataFormat.BigRational => ToBigRational().ToInt16(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int32" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Int32" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int32" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Int32 ToInt32() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToInt32(),
-            NumericDataFormat.SByte => ToSByte().ToInt32(),
-            NumericDataFormat.UInt16 => ToUInt16().ToInt32(),
-            NumericDataFormat.Int16 => ToInt16().ToInt32(),
-            NumericDataFormat.UInt32 => ToUInt32().ToInt32(),
-            NumericDataFormat.Int32 => BitConverter.ToInt32(Value.Span),
-            NumericDataFormat.UInt64 => ToUInt64().ToInt32(),
-            NumericDataFormat.Int64 => ToInt64().ToInt32(),
-            NumericDataFormat.Single => ToSingle().ToInt32(),
-            NumericDataFormat.Double => ToDouble().ToInt32(),
-            NumericDataFormat.Decimal => ToDecimal().ToInt32(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToInt32(),
-            NumericDataFormat.BigRational => ToBigRational().ToInt32(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Int64" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Int64" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Int64" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Int64 ToInt64() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToInt64(),
-            NumericDataFormat.SByte => ToSByte().ToInt64(),
-            NumericDataFormat.UInt16 => ToUInt16().ToInt64(),
-            NumericDataFormat.Int16 => ToInt16().ToInt64(),
-            NumericDataFormat.UInt32 => ToUInt32().ToInt64(),
-            NumericDataFormat.Int32 => ToInt32().ToInt64(),
-            NumericDataFormat.UInt64 => ToUInt64().ToInt64(),
-            NumericDataFormat.Int64 => BitConverter.ToInt64(Value.Span),
-            NumericDataFormat.Single => ToSingle().ToInt64(),
-            NumericDataFormat.Double => ToDouble().ToInt64(),
-            NumericDataFormat.Decimal => ToDecimal().ToInt64(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToInt64(),
-            NumericDataFormat.BigRational => ToBigRational().ToInt64(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="SByte" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="SByte" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for an <see cref="SByte" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly SByte ToSByte() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToSByte(),
-            NumericDataFormat.SByte => (SByte)Value.Span[0],
-            NumericDataFormat.UInt16 => ToUInt16().ToSByte(),
-            NumericDataFormat.Int16 => ToInt16().ToSByte(),
-            NumericDataFormat.UInt32 => ToUInt32().ToSByte(),
-            NumericDataFormat.Int32 => ToInt32().ToSByte(),
-            NumericDataFormat.UInt64 => ToUInt64().ToSByte(),
-            NumericDataFormat.Int64 => ToInt64().ToSByte(),
-            NumericDataFormat.Single => ToSingle().ToSByte(),
-            NumericDataFormat.Double => ToDouble().ToSByte(),
-            NumericDataFormat.Decimal => ToDecimal().ToSByte(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToSByte(),
-            NumericDataFormat.BigRational => ToBigRational().ToSByte(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="Single" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="Single" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="Single" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly Single ToSingle() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToSingle(),
-            NumericDataFormat.SByte => ToSByte().ToSingle(),
-            NumericDataFormat.UInt16 => ToUInt16().ToSingle(),
-            NumericDataFormat.Int16 => ToInt16().ToSingle(),
-            NumericDataFormat.UInt32 => ToUInt32().ToSingle(),
-            NumericDataFormat.Int32 => ToInt32().ToSingle(),
-            NumericDataFormat.UInt64 => ToUInt64().ToSingle(),
-            NumericDataFormat.Int64 => ToInt64().ToSingle(),
-            NumericDataFormat.Single => BitConverter.ToSingle(Value.Span),
-            NumericDataFormat.Double => ToDouble().ToSingle(),
-            NumericDataFormat.Decimal => ToDecimal().ToSingle(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToSingle(),
-            NumericDataFormat.BigRational => ToBigRational().ToSingle(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt16" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="UInt16" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt16" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly UInt16 ToUInt16() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToUInt16(),
-            NumericDataFormat.SByte => ToSByte().ToUInt16(),
-            NumericDataFormat.UInt16 => BitConverter.ToUInt16(Value.Span),
-            NumericDataFormat.Int16 => ToInt16().ToUInt16(),
-            NumericDataFormat.UInt32 => ToUInt32().ToUInt16(),
-            NumericDataFormat.Int32 => ToInt32().ToUInt16(),
-            NumericDataFormat.UInt64 => ToUInt64().ToUInt16(),
-            NumericDataFormat.Int64 => ToInt64().ToUInt16(),
-            NumericDataFormat.Single => ToSingle().ToUInt16(),
-            NumericDataFormat.Double => ToDouble().ToUInt16(),
-            NumericDataFormat.Decimal => ToDecimal().ToUInt16(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToUInt16(),
-            NumericDataFormat.BigRational => ToBigRational().ToUInt16(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt32" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="UInt32" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt32" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly UInt32 ToUInt32() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToUInt32(),
-            NumericDataFormat.SByte => ToSByte().ToUInt32(),
-            NumericDataFormat.UInt16 => ToUInt16().ToUInt32(),
-            NumericDataFormat.Int16 => ToInt16().ToUInt32(),
-            NumericDataFormat.UInt32 => BitConverter.ToUInt32(Value.Span),
-            NumericDataFormat.Int32 => ToInt32().ToUInt32(),
-            NumericDataFormat.UInt64 => ToUInt64().ToUInt32(),
-            NumericDataFormat.Int64 => ToInt64().ToUInt32(),
-            NumericDataFormat.Single => ToSingle().ToUInt32(),
-            NumericDataFormat.Double => ToDouble().ToUInt32(),
-            NumericDataFormat.Decimal => ToDecimal().ToUInt32(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToUInt32(),
-            NumericDataFormat.BigRational => ToBigRational().ToUInt32(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
-        /// Converts the current <see cref="Number" /> to its equivalent <see cref="UInt64" /> value.
-        /// </summary>
-        /// <returns>
-        /// The resulting <see cref="UInt64" /> value.
-        /// </returns>
-        /// <exception cref="OverflowException">
-        /// The value of the current <see cref="Number" /> is outside of the allowable range of values for a <see cref="UInt64" />.
-        /// </exception>
-        [DebuggerHidden]
-        private readonly UInt64 ToUInt64() => Format switch
-        {
-            NumericDataFormat.Byte => ToByte().ToUInt64(),
-            NumericDataFormat.SByte => ToSByte().ToUInt64(),
-            NumericDataFormat.UInt16 => ToUInt16().ToUInt64(),
-            NumericDataFormat.Int16 => ToInt16().ToUInt64(),
-            NumericDataFormat.UInt32 => ToUInt32().ToUInt64(),
-            NumericDataFormat.Int32 => ToInt32().ToUInt64(),
-            NumericDataFormat.UInt64 => BitConverter.ToUInt64(Value.Span),
-            NumericDataFormat.Int64 => ToInt64().ToUInt64(),
-            NumericDataFormat.Single => ToSingle().ToUInt64(),
-            NumericDataFormat.Double => ToDouble().ToUInt64(),
-            NumericDataFormat.Decimal => ToDecimal().ToUInt64(),
-            NumericDataFormat.BigInteger => ToBigInteger().ToUInt64(),
-            NumericDataFormat.BigRational => ToBigRational().ToUInt64(),
-            _ => throw new UnsupportedSpecificationException(UnsupportedFormatExceptionMessage)
-        };
-
-        /// <summary>
         /// Represents the upper allowable limit of significant figures for conversion to a <see cref="Decimal" />.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1012,10 +825,16 @@ namespace RapidField.SolidInstruments.Core
         internal const Int32 SignificantFiguresLimitForSingle = 8;
 
         /// <summary>
-        /// Gets an exception message that indicates that a numeric data format conversion failed.
+        /// Represents an exception message that indicates that a numeric data format conversion failed.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String OverflowExceptionMessage = "A numeric data format conversion failed. The value was either too small or too large.";
+
+        /// <summary>
+        /// Represents the encoding that is used to format binary representations of <see cref="BigRational" /> values.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Encoding BigRationalFormatEncoding = Encoding.UTF8;
 
         /// <summary>
         /// Represents the largest possible value of a <see cref="Byte" />.

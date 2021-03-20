@@ -39,6 +39,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Decimal GetSignificand(this Decimal target) => target == 0m ? 0m : Decimal.Parse(target.ToComponents().Significand);
 
         /// <summary>
+        /// Determines whether or not the current <see cref="Decimal" /> value is a fractional number (not an integer).
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Decimal" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if <paramref name="target" /> is a fractional number, otherwise <see langword="false" />.
+        /// </returns>
+        public static Boolean IsFractional(this Decimal target) => target.IsInteger() is false;
+
+        /// <summary>
         /// Determines whether or not the current <see cref="Decimal" /> value is an integer (a number in the series { ..., -2, -1,
         /// 0, 1, 2, ... }).
         /// </summary>
@@ -49,17 +60,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if <paramref name="target" /> is an integer, otherwise <see langword="false" />.
         /// </returns>
         public static Boolean IsInteger(this Decimal target) => Math.Abs(target % 1m) <= Double.Epsilon.ToDecimal();
-
-        /// <summary>
-        /// Determines whether or not the current <see cref="Decimal" /> value is a rational number (not an integer).
-        /// </summary>
-        /// <param name="target">
-        /// The current instance of the <see cref="Decimal" />.
-        /// </param>
-        /// <returns>
-        /// <see langword="true" /> if <paramref name="target" /> is a rational number, otherwise <see langword="false" />.
-        /// </returns>
-        public static Boolean IsRational(this Decimal target) => target.IsInteger() is false;
 
         /// <summary>
         /// Rounds the current <see cref="Decimal" /> to the specified number of fractional digits.

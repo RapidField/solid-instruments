@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.Extensions;
+using System;
 
 namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
 {
@@ -23,6 +24,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
             // Assert.
             result.Should().NotBeNull();
             result.Length.Should().Be(1);
+            BitConverter.ToBoolean(result).Should().Be(target);
         }
 
         [TestMethod]
