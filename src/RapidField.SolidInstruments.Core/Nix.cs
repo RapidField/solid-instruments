@@ -43,7 +43,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are not equal.
         /// </returns>
-        public static Boolean operator !=(Nix a, Nix b) => (a == b) is false;
+        public static Boolean operator !=(Nix a, Nix b) => false;
 
         /// <summary>
         /// Determines whether or not a specified <see cref="Nix" /> instance is less than another specified instance.
@@ -123,7 +123,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A new object that is a copy of the current <see cref="Nix" />.
         /// </returns>
-        public readonly Object Clone() => new Nix(0x00);
+        public readonly Object Clone() => default;
 
         /// <summary>
         /// Compares the current <see cref="Nix" /> to the specified object and returns an indication of their relative values.
@@ -147,7 +147,7 @@ namespace RapidField.SolidInstruments.Core
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public readonly Int32 CompareTo(Object obj) => obj is Nix nix ? CompareTo(nix) : GetType().FullName.CompareTo(obj.GetType().FullName);
+        public readonly Int32 CompareTo(Object obj) => obj is Nix nix ? CompareTo(nix) : Type.ToString().CompareTo(obj.GetType().ToString());
 
         /// <summary>
         /// Determines whether or not the current <see cref="Nix" /> is equal to the specified <see cref="Object" />.
@@ -158,7 +158,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A value indicating whether or not the specified instances are equal.
         /// </returns>
-        public readonly override Boolean Equals(Object obj) => obj.GetType() == typeof(Nix);
+        public readonly override Boolean Equals(Object obj) => obj.GetType() == Type;
 
         /// <summary>
         /// Determines whether or not two specified <see cref="Nix" /> instances are equal.
@@ -177,7 +177,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public readonly override Int32 GetHashCode() => 0;
+        public readonly override Int32 GetHashCode() => default;
 
         /// <summary>
         /// Returns the <see cref="TypeCode" /> for the current <see cref="Nix" /> instance.
@@ -327,7 +327,7 @@ namespace RapidField.SolidInstruments.Core
         /// <returns>
         /// A string representation of the current <see cref="Nix" />.
         /// </returns>
-        public readonly String ToString(IFormatProvider provider) => String.Empty;
+        public readonly String ToString(IFormatProvider provider) => ToString();
 
         /// <summary>
         /// Converts the value of the current <see cref="Nix" /> to the specified type with an equivalent value.
@@ -380,7 +380,7 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Represents a static <see cref="Nix" /> instance.
         /// </summary>
-        public static readonly Nix Instance = new(0x00);
+        public static readonly Nix Instance = default;
 
         /// <summary>
         /// Represents a static reference to the <see cref="Nix" /> type.

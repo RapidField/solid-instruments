@@ -1491,7 +1491,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                         return;
                     }
 
-                    throw new SecretAccessException($"The secret vault does not contain a valid secret of the specified type, \"{typeof(T).FullName}\".");
+                    throw new SecretAccessException($"The secret vault does not contain a valid secret of the specified type, \"{typeof(T)}\".");
                 }
 
                 throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));

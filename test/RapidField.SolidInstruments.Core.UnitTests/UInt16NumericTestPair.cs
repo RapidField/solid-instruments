@@ -54,7 +54,17 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <see langword="true" /> if the primitive numeric value for the current <see cref="UInt16NumericTestPair" /> is equal to
         /// and comparatively equivalent to its <see cref="Number" />, otherwise <see langword="false" />.
         /// </returns>
-        protected sealed override Boolean VerifyStateConsistency(UInt16 value, Number number) => number == value && number.Equals(ConvertValueToBigRational(value)) && number < value is false && number > value is false;
+        protected sealed override Boolean VerifyStateConsistency(UInt16 value, Number number) =>
+            number == value &&
+            number.Equals(ConvertValueToBigRational(value)) &&
+            number < value is false &&
+            number > value is false &&
+            number.IsFractional is false &&
+            number.IsInteger is true &&
+            number.IsNegative is false &&
+            number.IsPositive == (value > 0) &&
+            number.AbsoluteValue() == number &&
+            number.CountSignificantFigures() == value.CountSignificantFigures();
 
         /// <summary>
         /// Represents a static collection of <see cref="UInt16NumericTestPair" /> objects that are used for testing.

@@ -244,7 +244,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A string representation of the current <see cref="ObjectContainerDefinition" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(RequestType)}\": \"{RequestType.FullName}\", {nameof(ProductType)}\": \"{ProductType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(RequestType)}\": \"{RequestType}\", {nameof(ProductType)}\": \"{ProductType}\" }}";
 
         /// <summary>
         /// Gets the type that is produced as a result of a request for <see cref="RequestType" />.

@@ -445,14 +445,14 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public static Number operator -(Number value) => value.Format switch
         {
-            NumericDataFormat.Byte => new(-value.ToInt16()),
-            NumericDataFormat.SByte => new(-value.ToSByte()),
+            NumericDataFormat.Byte => new Number(-value.ToInt16()).Compress(),
+            NumericDataFormat.SByte => new Number(-value.ToInt16()).Compress(),
             NumericDataFormat.UInt16 => new Number(-value.ToInt32()).Compress(),
-            NumericDataFormat.Int16 => new Number(-value.ToInt16()).Compress(),
+            NumericDataFormat.Int16 => new Number(-value.ToInt32()).Compress(),
             NumericDataFormat.UInt32 => new Number(-value.ToInt64()).Compress(),
-            NumericDataFormat.Int32 => new Number(-value.ToInt32()).Compress(),
+            NumericDataFormat.Int32 => new Number(-value.ToInt64()).Compress(),
             NumericDataFormat.UInt64 => new Number(-value.ToBigInteger()).Compress(),
-            NumericDataFormat.Int64 => new Number(-value.ToInt64()).Compress(),
+            NumericDataFormat.Int64 => new Number(-value.ToBigInteger()).Compress(),
             NumericDataFormat.Single => new Number(-value.ToSingle()).Compress(),
             NumericDataFormat.Double => new Number(-value.ToDouble()).Compress(),
             NumericDataFormat.Decimal => new Number(-value.ToDecimal()).Compress(),

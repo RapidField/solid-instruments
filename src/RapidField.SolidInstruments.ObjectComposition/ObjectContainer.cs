@@ -144,7 +144,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 {
                     if (Registrations.ContainsKey(requestType) is false)
                     {
-                        throw new ArgumentException($"{requestType.FullName} is not a registered request type.", nameof(T));
+                        throw new ArgumentException($"{requestType} is not a registered request type.", nameof(T));
                     }
                 }
                 catch (ObjectConfigurationException exception)
@@ -156,7 +156,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
 
                 if (Factory.SupportedProductTypes.Contains(productType) is false)
                 {
-                    throw new ArgumentException($"{productType.FullName} is not a registered product type.", nameof(T));
+                    throw new ArgumentException($"{productType} is not a registered product type.", nameof(T));
                 }
 
                 T lazyProduct;
@@ -213,7 +213,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
             {
                 if (Registrations.ContainsKey(requestType) is false)
                 {
-                    throw new ArgumentException($"{requestType.FullName} is not a registered request type.", nameof(T));
+                    throw new ArgumentException($"{requestType} is not a registered request type.", nameof(T));
                 }
 
                 var productType = Registrations[requestType].ProductType;

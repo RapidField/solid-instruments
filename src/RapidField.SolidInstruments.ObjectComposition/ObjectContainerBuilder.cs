@@ -120,12 +120,12 @@ namespace RapidField.SolidInstruments.ObjectComposition
             {
                 if (DefinitionConfigurationActions.Keys.Any(key => key.RequestType == requestType))
                 {
-                    throw new ArgumentException($"The builder is already configured for the request type {requestType.FullName}.", nameof(TRequest));
+                    throw new ArgumentException($"The builder is already configured for the request type {requestType}.", nameof(TRequest));
                 }
 
                 if (FunctionConfigurationActions.ContainsKey(definitionKey))
                 {
-                    throw new ArgumentException($"The builder is already configured for the request-product type pair: {requestType.FullName}, {productType.FullName}.", nameof(TProduct));
+                    throw new ArgumentException($"The builder is already configured for the request-product type pair: {requestType}, {productType}.", nameof(TProduct));
                 }
 
                 DefinitionConfigurationActions.Add(definitionKey, new((definitions) =>

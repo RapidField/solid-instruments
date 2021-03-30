@@ -67,7 +67,7 @@ namespace RapidField.SolidInstruments.Command
         /// The exception that is the cause of the current exception.
         /// </param>
         public CommandHandlingException(Type commandType, Exception innerException)
-            : this(commandType is null ? "An exception was raised while processing a command." : $"An exception was raised while processing a command instance of type {commandType.FullName}.", innerException)
+            : this(commandType is null ? "An exception was raised while processing a command." : $"An exception was raised while processing a command instance of type {commandType}.", innerException)
         {
             CommandType = commandType;
         }

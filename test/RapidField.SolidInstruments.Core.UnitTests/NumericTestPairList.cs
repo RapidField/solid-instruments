@@ -59,7 +59,10 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             UInt32NumericTestPair.Cases,
             Int32NumericTestPair.Cases,
             UInt64NumericTestPair.Cases,
-            Int64NumericTestPair.Cases
+            Int64NumericTestPair.Cases,
+            SingleNumericTestPair.Cases,
+            DoubleNumericTestPair.Cases,
+            DecimalNumericTestPair.Cases
         });
     }
 }

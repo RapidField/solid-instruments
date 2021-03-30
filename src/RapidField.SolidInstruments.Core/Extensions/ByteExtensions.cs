@@ -124,6 +124,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Int64 ToInt64(this Byte target) => Convert.ToInt64(target);
 
         /// <summary>
+        /// Converts the specified <see cref="Byte" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Byte" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this Byte target) => target;
+
+        /// <summary>
         /// Converts the specified <see cref="Byte" /> to an equivalent <see cref="SByte" /> value.
         /// </summary>
         /// <param name="target">

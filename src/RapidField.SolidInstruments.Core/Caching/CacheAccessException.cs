@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// The exception that is the cause of the current exception.
         /// </param>
         public CacheAccessException(Type cacheValueType, Exception innerException)
-            : this(cacheValueType is null ? "An exception was raised while accessing the cache or processing the cached object." : $"An exception was raised while processing a cached instance of type {cacheValueType.FullName}.", innerException)
+            : this(cacheValueType is null ? "An exception was raised while accessing the cache or processing the cached object." : $"An exception was raised while processing a cached instance of type {cacheValueType}.", innerException)
         {
             CacheValueType = cacheValueType;
         }

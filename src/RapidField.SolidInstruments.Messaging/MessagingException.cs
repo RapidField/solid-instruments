@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// The exception that is the cause of the current exception.
         /// </param>
         public MessagingException(Type messageType, Exception innerException)
-            : this(messageType is null ? "An exception was raised while processing a message." : $"An exception was raised while processing a message instance of type {messageType.FullName}.", innerException)
+            : this(messageType is null ? "An exception was raised while processing a message." : $"An exception was raised while processing a message instance of type {messageType}.", innerException)
         {
             MessageType = messageType;
         }

@@ -203,7 +203,7 @@ namespace RapidField.SolidInstruments.Messaging
                 {
                     if (WaitForResponse(requestMessageIdentifier) is not TResponseMessage responseMessage)
                     {
-                        throw new MessageListeningException($"The response message is not a valid {typeof(TResponseMessage).FullName}.");
+                        throw new MessageListeningException($"The response message is not a valid {typeof(TResponseMessage)}.");
                     }
 
                     return responseMessage;

@@ -18,9 +18,20 @@ namespace RapidField.SolidInstruments.Core
         public static readonly Number E = new(Math.E);
 
         /// <summary>
+        /// Represents a <see cref="Number" /> with the value negative one (-1).
+        /// </summary>
+        public static readonly Number NegativeOne = new(-1d);
+
+        /// <summary>
         /// Represents a <see cref="Number" /> with the value one (1).
         /// </summary>
         public static readonly Number One = new(1d);
+
+        /// <summary>
+        /// Represents a <see cref="Number" /> with a value approximately equal to the mathematical constant ϕ -- or phi -- or the
+        /// golden ratio (~1.61803).
+        /// </summary>
+        public static readonly Number Phi = new((Math.Sqrt(5d) + 1d) / 2d);
 
         /// <summary>
         /// Represents a <see cref="Number" /> with a value approximately equal to the mathematical constant π -- or pi -- the ratio

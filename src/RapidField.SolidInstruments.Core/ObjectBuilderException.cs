@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Core
         /// The exception that is the cause of the current exception.
         /// </param>
         public ObjectBuilderException(Type builderType, Exception innerException)
-            : this(builderType is null ? "An exception was raised during configuration finalization of an instance." : $"An exception was raised during configuration or finalization of an instance of type {builderType.FullName}.", innerException)
+            : this(builderType is null ? "An exception was raised during configuration finalization of an instance." : $"An exception was raised during configuration or finalization of an instance of type {builderType}.", innerException)
         {
             BuilderType = builderType;
         }

@@ -162,7 +162,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 throw new ObjectProductionException(type, exception);
             }
 
-            throw new ArgumentException($"The specified product type, {type.FullName}, is not supported by the object factory type {GetType().FullName}.", nameof(type));
+            throw new ArgumentException($"The specified product type, {type}, is not supported by the object factory type {GetType()}.", nameof(type));
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A string representation of the current <see cref="ObjectFactory{TProductBase}" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(ProductBaseType)}\": \"{ProductBaseType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(ProductBaseType)}\": \"{ProductBaseType}\" }}";
 
         /// <summary>
         /// Returns a collection of supported product types paired with functions to create them.

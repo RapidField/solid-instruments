@@ -129,7 +129,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
 
             if (SupportedMessageTypesReference.Contains(requestMessageType))
             {
-                throw new InvalidOperationException($"Support for the type {requestMessageType.FullName} was already added.");
+                throw new InvalidOperationException($"Support for the type {requestMessageType} was already added.");
             }
 
             SupportedMessageTypesReference.Add(requestMessageType);
@@ -171,7 +171,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
 
             if (SupportedMessageTypesReference.Contains(messageType))
             {
-                throw new InvalidOperationException($"Support for the type {messageType.FullName} was already added.");
+                throw new InvalidOperationException($"Support for the type {messageType} was already added.");
             }
 
             SupportedMessageTypesReference.Add(messageType);

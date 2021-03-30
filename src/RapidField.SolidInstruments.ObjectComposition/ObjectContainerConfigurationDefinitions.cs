@@ -51,7 +51,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 return this;
             }
 
-            throw new ArgumentException($"A definition already exists for the specified request type, {requestType.FullName}.", nameof(TRequest));
+            throw new ArgumentException($"A definition already exists for the specified request type, {requestType}.", nameof(TRequest));
         }
 
         /// <summary>

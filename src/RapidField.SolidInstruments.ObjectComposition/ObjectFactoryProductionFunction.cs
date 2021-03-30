@@ -107,7 +107,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <returns>
         /// A string representation of the current <see cref="ObjectFactoryProductionFunction" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(ProductType)}\": \"{ProductType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(ProductType)}\": \"{ProductType}\" }}";
 
         /// <summary>
         /// Gets the type of the object produced by the function.

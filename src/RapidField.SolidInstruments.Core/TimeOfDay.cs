@@ -353,7 +353,7 @@ namespace RapidField.SolidInstruments.Core
         /// Negative one if this instance is earlier than the specified instance; one if this instance is later than the supplied
         /// instance; zero if they are equal.
         /// </returns>
-        public Int32 CompareTo(Object obj) => obj is TimeOfDay timeOfDay ? CompareTo(timeOfDay) : GetType().FullName.CompareTo(obj.GetType().FullName);
+        public Int32 CompareTo(Object obj) => obj is TimeOfDay timeOfDay ? CompareTo(timeOfDay) : GetType().ToString().CompareTo(obj.GetType().ToString());
 
         /// <summary>
         /// Determines whether or not the current <see cref="TimeOfDay" /> is equal to the specified <see cref="Object" />.

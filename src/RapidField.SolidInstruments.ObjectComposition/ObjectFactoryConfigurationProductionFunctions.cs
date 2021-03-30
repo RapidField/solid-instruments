@@ -105,7 +105,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 return this;
             }
 
-            throw new ArgumentException($"A function is already defined for the specified type, {productType.FullName}.", nameof(function));
+            throw new ArgumentException($"A function is already defined for the specified type, {productType}.", nameof(function));
         }
 
         /// <summary>

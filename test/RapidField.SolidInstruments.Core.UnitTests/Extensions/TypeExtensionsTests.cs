@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
 {
@@ -110,14 +111,19 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Extensions
         public void ToByteArray_ShouldReturnValidResult()
         {
             // Arrange.
-            var target = typeof(Boolean);
+            var encoding = Encoding.UTF8;
+            var target = typeof(IEnumerable<IEnumerable<Action<Object, Object>>>);
+            var expectedResult = "System.Collections.Generic.IEnumerable`1[System.Collections.Generic.IEnumerable`1[System.Action`2[System.Object,System.Object]]]";
 
             // Act.
-            var result = target.ToByteArray();
+            var resultOne = target.ToByteArray();
+            var resultTwo = encoding.GetString(resultOne);
 
             // Assert.
-            result.Should().NotBeNull();
-            result.Length.Should().Be(14);
+            resultOne.Should().NotBeNull();
+            resultOne.Length.Should().Be(expectedResult.Length);
+            resultTwo.Should().NotBeNullOrEmpty();
+            resultTwo.Should().Be(expectedResult);
         }
     }
 }

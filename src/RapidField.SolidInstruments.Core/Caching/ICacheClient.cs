@@ -106,7 +106,7 @@ namespace RapidField.SolidInstruments.Core.Caching
 
             try
             {
-                var keyMaterial = new StringBuilder($"{valueType.FullName}{CompositeKeyElementDelimitingCharacter}");
+                var keyMaterial = new StringBuilder($"{valueType}{CompositeKeyElementDelimitingCharacter}");
 
                 foreach (var keyElement in compositeKey)
                 {

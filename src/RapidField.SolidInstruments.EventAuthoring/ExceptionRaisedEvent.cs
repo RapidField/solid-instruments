@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public ExceptionRaisedEvent(String applicationIdentity, Exception exception, EventVerbosity verbosity, DateTime timeStamp)
             : base(applicationIdentity, exception.RejectIf().IsNull(nameof(exception)).TargetArgument.StackTrace, verbosity, exception.Message, timeStamp)
         {
-            ExceptionTypeFullName = exception?.GetType().FullName;
+            ExceptionTypeFullName = exception?.GetType().ToString();
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         public ExceptionRaisedEvent(String applicationIdentity, Exception exception, EventVerbosity verbosity, DateTime timeStamp, Guid correlationIdentifier)
             : base(applicationIdentity, exception.RejectIf().IsNull(nameof(exception)).TargetArgument.StackTrace, verbosity, exception.Message, timeStamp, correlationIdentifier)
         {
-            ExceptionTypeFullName = exception?.GetType().FullName;
+            ExceptionTypeFullName = exception?.GetType().ToString();
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Core.Caching;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace RapidField.SolidInstruments.Core.UnitTests.Caching
@@ -62,13 +63,61 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Caching
         }
 
         [TestMethod]
-        public void Process_ShouldProduceDesiredResults()
+        public void Process_ShouldProduceDesiredResults_ForIndividualModels()
         {
             // Arrange.
             var keyOne = "foo";
             var keyTwo = "bar";
             using var randomnessProvider = RandomNumberGenerator.Create();
             var produceValueFunction = new Func<SimulatedModel>(() => SimulatedModel.Random(randomnessProvider));
+            var remoteCache = new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions()));
+            using var target = new DualLayerCacheClient(remoteCache);
+
+            // Act.
+            var targetIsOperative = target.IsOperative;
+            var resultOne = target.Process(keyOne, produceValueFunction);
+            var resultTwo = target.Process(keyTwo, produceValueFunction);
+            var resultThree = target.Process(keyOne, produceValueFunction);
+            var resultFour = target.Process(keyTwo, produceValueFunction);
+            var resultOneHashCode = resultOne.GetImpliedHashCode();
+            var resultTwoHashCode = resultTwo.GetImpliedHashCode();
+            var resultThreeHashCode = resultThree.GetImpliedHashCode();
+            var resultFourHashCode = resultFour.GetImpliedHashCode();
+            var resultsOneAndTwoAreEqual = resultOneHashCode == resultTwoHashCode;
+            var resultsOneAndThreeAreEqual = resultOneHashCode == resultThreeHashCode;
+            var resultsOneAndFourAreEqual = resultOneHashCode == resultFourHashCode;
+            var resultsTwoAndThreeAreEqual = resultTwoHashCode == resultThreeHashCode;
+            var resultsTwoAndFourAreEqual = resultTwoHashCode == resultFourHashCode;
+            var resultsThreeAndFourAreEqual = resultThreeHashCode == resultFourHashCode;
+
+            // Assert.
+            targetIsOperative.Should().BeTrue();
+            resultsOneAndTwoAreEqual.Should().BeFalse();
+            resultsOneAndThreeAreEqual.Should().BeTrue();
+            resultsOneAndFourAreEqual.Should().BeFalse();
+            resultsTwoAndThreeAreEqual.Should().BeFalse();
+            resultsTwoAndFourAreEqual.Should().BeTrue();
+            resultsThreeAndFourAreEqual.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Process_ShouldProduceDesiredResults_ForModelCollections()
+        {
+            // Arrange.
+            var keyOne = "foo";
+            var keyTwo = "bar";
+            using var randomnessProvider = RandomNumberGenerator.Create();
+            var produceValueFunction = new Func<ICollection<SimulatedModel>>(() =>
+            {
+                var models = new List<SimulatedModel>
+                {
+                    SimulatedModel.Random(randomnessProvider),
+                    SimulatedModel.Random(randomnessProvider),
+                    SimulatedModel.Random(randomnessProvider)
+                };
+
+                return models;
+            });
             var remoteCache = new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions()));
             using var target = new DualLayerCacheClient(remoteCache);
 

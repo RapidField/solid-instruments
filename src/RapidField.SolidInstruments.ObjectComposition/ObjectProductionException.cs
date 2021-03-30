@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// The exception that is the cause of the current exception.
         /// </param>
         public ObjectProductionException(Type objectType, Exception innerException)
-            : this(objectType is null ? "An exception was raised during production of an instance." : $"An exception was raised during production of an instance of type {objectType.FullName}.", innerException)
+            : this(objectType is null ? "An exception was raised during production of an instance." : $"An exception was raised during production of an instance of type {objectType}.", innerException)
         {
             ObjectType = objectType;
         }

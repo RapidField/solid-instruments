@@ -472,7 +472,7 @@ namespace RapidField.SolidInstruments.Messaging
             }
             catch (Exception exception)
             {
-                throw new ArgumentException($"An exception was raised while evaluating the data contract information for {messageType.FullName}. See inner exception.", nameof(messageType), exception);
+                throw new ArgumentException($"An exception was raised while evaluating the data contract information for {messageType}. See inner exception.", nameof(messageType), exception);
             }
 
             return messageType.Name;

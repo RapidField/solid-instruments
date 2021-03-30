@@ -180,7 +180,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageListenerType in messageListenerTypes)
             {
-                var typeName = messageListenerType.FullName;
+                var typeName = messageListenerType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -216,7 +216,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageTransmitterType in messageTransmitterTypes)
             {
-                var typeName = messageTransmitterType.FullName;
+                var typeName = messageTransmitterType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -252,7 +252,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageListenerType in messageListenerTypes)
             {
-                var typeName = messageListenerType.FullName;
+                var typeName = messageListenerType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -288,7 +288,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageTransmitterType in messageTransmitterTypes)
             {
-                var typeName = messageTransmitterType.FullName;
+                var typeName = messageTransmitterType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -324,7 +324,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageListenerType in messageListenerTypes)
             {
-                var typeName = messageListenerType.FullName;
+                var typeName = messageListenerType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -360,7 +360,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageTransmitterType in messageTransmitterTypes)
             {
-                var typeName = messageTransmitterType.FullName;
+                var typeName = messageTransmitterType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -396,7 +396,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageListenerType in messageListenerTypes)
             {
-                var typeName = messageListenerType.FullName;
+                var typeName = messageListenerType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {
@@ -433,7 +433,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         {
             foreach (var messageTransmitterType in messageTransmitterTypes)
             {
-                var typeName = messageTransmitterType.FullName;
+                var typeName = messageTransmitterType.ToString();
 
                 if (registeredTypeNames.Contains(typeName))
                 {

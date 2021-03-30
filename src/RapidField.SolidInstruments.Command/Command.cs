@@ -50,7 +50,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// A string representation of the current <see cref="Command{TResult}" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType}\" }}";
 
         /// <summary>
         /// Gets or sets a unique identifier that is assigned to related commands.
@@ -133,7 +133,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// A string representation of the current <see cref="Command" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(ResultType)}\": \"{ResultType}\" }}";
 
         /// <summary>
         /// Gets or sets a unique identifier that is assigned to related commands.

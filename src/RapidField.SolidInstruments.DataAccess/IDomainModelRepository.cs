@@ -283,7 +283,7 @@ namespace RapidField.SolidInstruments.DataAccess
             catch (Exception exception)
             {
                 var domainModelType = typeof(TDomainModel);
-                throw new TypeInitializationException(domainModelType.FullName, exception);
+                throw new TypeInitializationException(domainModelType.ToString(), exception);
             }
         }
     }

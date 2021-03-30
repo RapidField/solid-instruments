@@ -232,6 +232,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Int64 ToInt64(this Decimal target) => Convert.ToInt64(target);
 
         /// <summary>
+        /// Converts the specified <see cref="Decimal" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Decimal" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this Decimal target) => target;
+
+        /// <summary>
         /// Converts the specified <see cref="Decimal" /> to an equivalent <see cref="SByte" /> value.
         /// </summary>
         /// <param name="target">
@@ -319,6 +330,6 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// Represents the maximum permissible tolerance for rational approximation during numeric conversion.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Decimal RationalTolerance = 0.0000001m;
+        private const Decimal RationalTolerance = (Decimal)(Double.Epsilon * 21d);
     }
 }

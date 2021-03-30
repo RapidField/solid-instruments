@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// The exception that is the cause of the current exception.
         /// </param>
         public DependencyResolutionException(Type dependencyType, Exception innerException)
-            : this(dependencyType is null ? "An exception was raised while resolving a dependency." : $"An exception was raised while resolving a dependency of type {dependencyType.FullName}.", innerException)
+            : this(dependencyType is null ? "An exception was raised while resolving a dependency." : $"An exception was raised while resolving a dependency of type {dependencyType}.", innerException)
         {
             DependencyType = dependencyType;
         }

@@ -253,6 +253,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Int64 ToInt64(this BigRational target) => Convert.ToInt64(target.ToDecimal());
 
         /// <summary>
+        /// Converts the specified <see cref="BigRational" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="BigRational" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this BigRational target) => target;
+
+        /// <summary>
         /// Converts the specified <see cref="BigRational" /> to an equivalent <see cref="SByte" /> value.
         /// </summary>
         /// <param name="target">

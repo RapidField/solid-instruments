@@ -3,7 +3,6 @@
 // =================================================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -60,26 +59,18 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <returns>
         /// An array of bytes representing the current <see cref="Type" />.
         /// </returns>
-        public static Byte[] ToByteArray(this Type target)
-        {
-            var bytes = new List<Byte>();
-            bytes.AddRange(target.FullName.ToByteArray(Encoding.UTF8));
-
-            if (target.ContainsGenericParameters)
-            {
-                foreach (var genericTypeArgument in target.GenericTypeArguments)
-                {
-                    bytes.AddRange(genericTypeArgument.ToByteArray());
-                }
-            }
-
-            return bytes.ToArray();
-        }
+        public static Byte[] ToByteArray(this Type target) => target.ToString().ToByteArray(ToByteArrayEncoding);
 
         /// <summary>
         /// Represents the <see cref="IDisposable" /> type.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Type DisposableType = typeof(IDisposable);
+
+        /// <summary>
+        /// Represents the text encoding that is used to convert a type to a byte array.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Encoding ToByteArrayEncoding = Encoding.UTF8;
     }
 }

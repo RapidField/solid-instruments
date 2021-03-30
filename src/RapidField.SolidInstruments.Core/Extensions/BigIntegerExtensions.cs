@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// A <see cref="Decimal" /> value that is equivalent to <paramref name="target" />.
         /// </returns>
         /// <exception cref="OverflowException">
-        /// The value of <paramref name="target" /> is outside of the allowable range of values for an <see cref="Decimal" />.
+        /// The value of <paramref name="target" /> is outside of the allowable range of values for a <see cref="Decimal" />.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Decimal ToDecimal(this BigInteger target) => target.ToInt64().ToDecimal();
@@ -79,7 +79,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// A <see cref="Double" /> value that is equivalent to <paramref name="target" />.
         /// </returns>
         /// <exception cref="OverflowException">
-        /// The value of <paramref name="target" /> is outside of the allowable range of values for an <see cref="Double" />.
+        /// The value of <paramref name="target" /> is outside of the allowable range of values for a <see cref="Double" />.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Double ToDouble(this BigInteger target) => target.ToInt64().ToDouble();
@@ -141,6 +141,17 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 throw new OverflowException($"The value {target} is outside of the allowable range of values for a 64-bit integer.", exception);
             }
         }
+
+        /// <summary>
+        /// Converts the specified <see cref="BigInteger" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="BigInteger" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this BigInteger target) => target;
 
         /// <summary>
         /// Converts the specified <see cref="BigInteger" /> to an equivalent <see cref="SByte" /> value.

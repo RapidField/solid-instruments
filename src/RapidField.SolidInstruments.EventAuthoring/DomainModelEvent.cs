@@ -294,7 +294,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
                 return null;
             }
 
-            var modelTypeName = model.GetType().FullName;
+            var modelTypeName = model.GetType().ToString();
 
             return classification switch
             {

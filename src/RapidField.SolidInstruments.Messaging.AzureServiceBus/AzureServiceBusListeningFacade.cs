@@ -151,7 +151,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
 #pragma warning restore PH_S032
 
             var messageType = typeof(TMessage);
-            return receiverClient.DeadLetterAsync(lockToken, $"The listener(s) exhausted the primary failure remediation steps for this message. Message type: {messageType.FullName}.");
+            return receiverClient.DeadLetterAsync(lockToken, $"The listener(s) exhausted the primary failure remediation steps for this message. Message type: {messageType}.");
         }
 
         /// <summary>

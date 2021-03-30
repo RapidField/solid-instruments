@@ -723,6 +723,72 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static Int64 ToInt64(this UInt64 target) => Convert.ToInt64(target);
 
         /// <summary>
+        /// Converts the specified <see cref="Int16" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Int16" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this Int16 target) => target;
+
+        /// <summary>
+        /// Converts the specified <see cref="Int32" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Int32" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this Int32 target) => target;
+
+        /// <summary>
+        /// Converts the specified <see cref="Int64" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="Int64" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this Int64 target) => target;
+
+        /// <summary>
+        /// Converts the specified <see cref="UInt16" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="UInt16" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this UInt16 target) => target;
+
+        /// <summary>
+        /// Converts the specified <see cref="UInt32" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="UInt32" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this UInt32 target) => target;
+
+        /// <summary>
+        /// Converts the specified <see cref="UInt64" /> to an equivalent <see cref="Number" /> value.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="UInt64" />.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Number" /> value that is equivalent to <paramref name="target" />.
+        /// </returns>
+        public static Number ToNumber(this UInt64 target) => target;
+
+        /// <summary>
         /// Converts the specified <see cref="Int16" /> to an equivalent <see cref="SByte" /> value.
         /// </summary>
         /// <param name="target">

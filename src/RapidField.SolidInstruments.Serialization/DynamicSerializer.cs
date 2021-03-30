@@ -91,7 +91,7 @@ namespace RapidField.SolidInstruments.Serialization
         /// <returns>
         /// A string representation of the current <see cref="DynamicSerializer{T}" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\", {nameof(ContractType)}\": \"{ContractType.FullName}\" }}";
+        public override String ToString() => $"{{ \"{nameof(Format)}\": \"{Format}\", {nameof(ContractType)}\": \"{ContractType}\" }}";
 
         /// <summary>
         /// Converts the specified bit field to its typed equivalent.

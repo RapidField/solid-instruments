@@ -289,28 +289,28 @@ namespace RapidField.SolidInstruments.Core.UnitTests
                 var additionValueResult = thisValue + otherValue;
                 var additionNumberResult = thisNumber + otherNumber;
                 var additionError = Math.Abs((additionNumberResult - additionValueResult).ToDecimal());
-                var additionResultsAreConsistent = additionError == 0m;
+                var additionResultsAreConsistent = additionError <= RationalApproximationErrorTolerance;
 
                 if (additionResultsAreConsistent)
                 {
                     var subtractionValueResult = thisValue - otherValue;
                     var subtractionNumberResult = thisNumber - otherNumber;
                     var subtractionError = Math.Abs((subtractionNumberResult - subtractionValueResult).ToDecimal());
-                    var subtractionResultsAreConsistent = subtractionError == 0m;
+                    var subtractionResultsAreConsistent = subtractionError <= RationalApproximationErrorTolerance;
 
                     if (subtractionResultsAreConsistent)
                     {
                         var multiplicationValueResult = thisValue * otherValue;
                         var multiplicationNumberResult = thisNumber * otherNumber;
                         var multiplicationError = Math.Abs((multiplicationNumberResult - multiplicationValueResult).ToDecimal());
-                        var multiplicationResultsAreConsistent = multiplicationError == 0m;
+                        var multiplicationResultsAreConsistent = multiplicationError <= RationalApproximationErrorTolerance;
 
                         if (multiplicationResultsAreConsistent)
                         {
                             var divisionValueResult = otherValue == BigRational.Zero ? otherValue : thisValue / otherValue;
                             var divisionNumberResult = otherNumber == Number.Zero ? otherNumber : thisNumber / otherNumber;
                             var divisionError = Math.Abs((divisionNumberResult - divisionValueResult).ToDecimal());
-                            var divisionResultsAreConsistent = divisionError <= 1m;
+                            var divisionResultsAreConsistent = divisionError <= RationalApproximationErrorTolerance;
 
                             if (divisionResultsAreConsistent)
                             {
@@ -413,6 +413,12 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// Represents the primitive numeric data value defining the current <see cref="NumericTestPair" />.
         /// </summary>
         protected readonly Object NumericValue;
+
+        /// <summary>
+        /// Represents a value that defines the tolerance for compounding rational approximation errors during arithmetic tests.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Decimal RationalApproximationErrorTolerance = 1m;
 
         /// <summary>
         /// Represents the lazily-initialized <see cref="Core.Number" /> value for the current <see cref="NumericTestPair" />.

@@ -71,7 +71,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
             }
             catch (Exception exception)
             {
-                throw new ArgumentException($"Failed to hydrate a data access model (type: {GetType().FullName}) from the specified domain model (type: {typeof(TDomainModel).FullName}). See inner exception.", nameof(domainModel), exception);
+                throw new ArgumentException($"Failed to hydrate a data access model (type: {GetType()}) from the specified domain model (type: {typeof(TDomainModel)}). See inner exception.", nameof(domainModel), exception);
             }
         }
 
@@ -95,7 +95,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
             }
             catch (Exception exception)
             {
-                throw new TypeInitializationException(typeof(TDomainModel).FullName, exception);
+                throw new TypeInitializationException(typeof(TDomainModel).ToString(), exception);
             }
         }
     }

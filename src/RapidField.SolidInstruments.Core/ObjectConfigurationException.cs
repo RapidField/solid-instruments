@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.Core
         /// The exception that is the cause of the current exception.
         /// </param>
         public ObjectConfigurationException(Type instrumentType, Exception innerException)
-            : this(instrumentType is null ? "An exception was raised during configuration of an instance." : $"An exception was raised during configuration of an instance of type {instrumentType.FullName}.", innerException)
+            : this(instrumentType is null ? "An exception was raised during configuration of an instance." : $"An exception was raised during configuration of an instance of type {instrumentType}.", innerException)
         {
             InstrumentType = instrumentType;
         }

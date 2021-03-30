@@ -63,7 +63,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         internal PrimitiveMessage(IMessageBase body, MessageLockToken lockToken, SerializationFormat bodySerializationFormat)
         {
             Body = body;
-            BodyTypeName = body?.GetType().FullName;
+            BodyTypeName = body?.GetType().ToString();
             BodySerializationFormat = bodySerializationFormat;
             LockToken = lockToken;
         }

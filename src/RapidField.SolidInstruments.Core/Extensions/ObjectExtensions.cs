@@ -75,7 +75,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         internal static Int32 GetImpliedHashCode(this Object target)
         {
             var objectType = target.GetType();
-            var typeFullName = objectType.FullName;
+            var typeFullName = objectType.ToString();
             var hashCode = typeFullName.GetHashCode();
 
             try
@@ -108,7 +108,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         internal static Object GetSerializedClone(this Object target)
         {
             var objectType = target.GetType();
-            var typeFullName = objectType.FullName;
+            var typeFullName = objectType.ToString();
 
             try
             {

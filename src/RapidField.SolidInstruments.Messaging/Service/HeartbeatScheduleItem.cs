@@ -200,7 +200,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// </returns>
         public Int32 CompareTo(IHeartbeatScheduleItem other)
         {
-            var messageTypeComparisonResult = MessageType.FullName.CompareTo(other.MessageType.FullName);
+            var messageTypeComparisonResult = MessageType.ToString().CompareTo(other.MessageType.ToString());
 
             if (messageTypeComparisonResult != 0)
             {
@@ -265,7 +265,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A 32-bit signed integer hash code.
         /// </returns>
-        public override Int32 GetHashCode() => IntervalInSeconds ^ (Int32)EntityType ^ (Label is null ? 0 : Label.GetHashCode()) ^ MessageType.FullName.GetHashCode();
+        public override Int32 GetHashCode() => IntervalInSeconds ^ (Int32)EntityType ^ (Label is null ? 0 : Label.GetHashCode()) ^ MessageType.ToString().GetHashCode();
 
         /// <summary>
         /// Converts the value of the current <see cref="HeartbeatScheduleItem{TMessage}" /> to its equivalent string
@@ -274,7 +274,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <returns>
         /// A string representation of the current <see cref="HeartbeatScheduleItem{TMessage}" />.
         /// </returns>
-        public override String ToString() => $"{{ \"{nameof(EntityType)}\": \"{EntityType}\", {nameof(MessageType)}\": \"{MessageType.FullName}\", {nameof(IntervalInSeconds)}\": {IntervalInSeconds}, \"{nameof(Label)}\": \"{Label}\" }}";
+        public override String ToString() => $"{{ \"{nameof(EntityType)}\": \"{EntityType}\", {nameof(MessageType)}\": \"{MessageType}\", {nameof(IntervalInSeconds)}\": {IntervalInSeconds}, \"{nameof(Label)}\": \"{Label}\" }}";
 
         /// <summary>
         /// Asynchronously transmits a single heartbeat message with characteristics defined by the current

@@ -217,7 +217,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 return SymmetricProcessor.ForType<TModel>().Decrypt(CiphertextBytes, key.RejectIf().IsNull(nameof(key)).TargetArgument);
             }
 
-            throw new ArgumentException($"The specified type, {modelType.FullName}, does not match the model type of the encrypted model, {ModelType?.FullName ?? "[unknown]"}.", nameof(TModel));
+            throw new ArgumentException($"The specified type, {modelType}, does not match the model type of the encrypted model, {ModelType?.ToString() ?? "[unknown]"}.", nameof(TModel));
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
                 return SymmetricProcessor.ForType<TModel>().Decrypt(CiphertextBytes, key.RejectIf().IsNull(nameof(key)).TargetArgument);
             }
 
-            throw new ArgumentException($"The specified type, {modelType.FullName}, does not match the model type of the encrypted model, {ModelType?.FullName ?? "[unknown]"}.", nameof(TModel));
+            throw new ArgumentException($"The specified type, {modelType}, does not match the model type of the encrypted model, {ModelType?.ToString() ?? "[unknown]"}.", nameof(TModel));
         }
 
         /// <summary>

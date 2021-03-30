@@ -54,7 +54,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// The exception that is the cause of the current exception.
         /// </param>
         public EventAuthoringException(Type eventType, Exception innerException)
-            : this(eventType is null ? "An exception was raised while composing an event." : $"An exception was raised while composing an event instance of type {eventType.FullName}.", innerException)
+            : this(eventType is null ? "An exception was raised while composing an event." : $"An exception was raised while composing an event instance of type {eventType}.", innerException)
         {
             EventType = eventType;
         }

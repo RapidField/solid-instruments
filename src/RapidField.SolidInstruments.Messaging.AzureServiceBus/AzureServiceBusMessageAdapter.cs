@@ -60,7 +60,7 @@ namespace RapidField.SolidInstruments.Messaging.AzureServiceBus
             Body = serializer.Serialize(message),
             ContentType = MessageSerializationFormat.ToMimeMediaType(),
             CorrelationId = message.CorrelationIdentifier.ToSerializedString(),
-            Label = typeof(TMessage).FullName,
+            Label = typeof(TMessage).ToString(),
             MessageId = message.Identifier.ToSerializedString()
         };
 

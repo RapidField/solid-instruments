@@ -399,7 +399,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
                 return result;
             }
 
-            throw new FormatException($"The specified value, {dateTimeString}, could not be parsed as a {typeof(DateTime).FullName}.");
+            throw new FormatException($"The specified value, {dateTimeString}, could not be parsed as a {typeof(DateTime)}.");
         }
 
         /// <summary>
