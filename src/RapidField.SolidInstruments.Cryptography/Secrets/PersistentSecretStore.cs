@@ -343,15 +343,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, Byte[] secret)
+        public void AddOrUpdate(String name, Byte[] secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -376,15 +372,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, String secret)
+        public void AddOrUpdate(String name, String secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -409,15 +401,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, Guid secret)
+        public void AddOrUpdate(String name, Guid secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -442,15 +430,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, Double secret)
+        public void AddOrUpdate(String name, Double secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -475,15 +459,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, SymmetricKey secret)
+        public void AddOrUpdate(String name, SymmetricKey secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -508,15 +488,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, CascadingSymmetricKey secret)
+        public void AddOrUpdate(String name, CascadingSymmetricKey secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current
@@ -541,15 +517,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void AddOrUpdate(String name, X509Certificate2 secret)
+        public void AddOrUpdate(String name, X509Certificate2 secret) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-                PersistInMemoryStore();
-            }
-        }
+            AddOrUpdate(name, secret, controlToken);
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Removes and safely disposes of all secrets that are stored by the current <see cref="ISecretStore" />.
@@ -560,15 +532,11 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public void Clear()
+        public void Clear() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                InMemoryStore.Clear();
-                PersistInMemoryStore();
-            }
-        }
+            InMemoryStore.Clear();
+            PersistInMemoryStore();
+        });
 
         /// <summary>
         /// Attempts to remove a secret with the specified name.
@@ -591,21 +559,16 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretStorePersistenceException">
         /// An exception was raised while attempting to persist the state of the in-memory store.
         /// </exception>
-        public Boolean TryRemove(String name)
+        public Boolean TryRemove(String name) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (InMemoryStore.TryRemove(name))
             {
-                RejectIfDisposed();
-
-                if (InMemoryStore.TryRemove(name))
-                {
-                    PersistInMemoryStore();
-                    return true;
-                }
-
-                return false;
+                PersistInMemoryStore();
+                return true;
             }
-        }
+
+            return false;
+        });
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current

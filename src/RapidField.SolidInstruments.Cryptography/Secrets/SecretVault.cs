@@ -262,32 +262,27 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Clear()
+        public void Clear() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            try
             {
-                RejectIfDisposed();
-
-                try
+                foreach (var secret in Secrets.Values)
                 {
-                    foreach (var secret in Secrets.Values)
+                    try
                     {
-                        try
-                        {
-                            secret?.Dispose();
-                        }
-                        catch
-                        {
-                            continue;
-                        }
+                        secret?.Dispose();
+                    }
+                    catch
+                    {
+                        continue;
                     }
                 }
-                finally
-                {
-                    Secrets.Clear();
-                }
             }
-        }
+            finally
+            {
+                Secrets.Clear();
+            }
+        });
 
         /// <summary>
         /// Asynchronously exports the current <see cref="ISecretVault" /> and encrypts it using the vault's master key.
@@ -464,14 +459,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
                 return ExportSecretAsync(MasterKeyName);
             }
 
-            return Task.Factory.StartNew(() =>
-            {
-                using (var controlToken = StateControl.Enter())
-                {
-                    RejectIfDisposed();
-                    return new ExportedSecret(CreateMasterKey());
-                }
-            });
+            return Task.Factory.StartNew(() => WithStateControl(() => new ExportedSecret(CreateMasterKey())));
         }
 
         /// <summary>
@@ -495,10 +483,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task<ExportedSecret> ExportSecretAsync(String name) => Task.Factory.StartNew(() =>
-        {
-            return ExportSecret(name);
-        });
+        public Task<ExportedSecret> ExportSecretAsync(String name) => Task.Factory.StartNew(() => ExportSecret(name));
 
         /// <summary>
         /// Decrypts the specified secret using the master key of the current <see cref="SecretVault" /> and imports it.
@@ -712,14 +697,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void ImportSecret(IExportedSecret secret)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                ImportSecret(secret, controlToken);
-            }
-        }
+        public void ImportSecret(IExportedSecret secret) => WithStateControl(controlToken => ImportSecret(secret, controlToken));
 
         /// <summary>
         /// Imports all valid certificates from the current user's personal certificate store.
@@ -1296,14 +1274,7 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        private void AddOrUpdate(String name, IReadOnlySecret secret)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                AddOrUpdate(name, secret, controlToken);
-            }
-        }
+        private void AddOrUpdate(String name, IReadOnlySecret secret) => WithStateControl(controlToken => AddOrUpdate(name, secret, controlToken));
 
         /// <summary>
         /// Adds the specified secret using the specified name to the current <see cref="SecretVault" />, or updates it if a secret
@@ -1396,20 +1367,15 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        private ExportedSecret ExportSecret(String name)
+        private ExportedSecret ExportSecret(String name) => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
             {
-                RejectIfDisposed();
-
-                if (Secrets.ContainsKey(name.RejectIf().IsNullOrEmpty(nameof(name))))
-                {
-                    return new ExportedSecret(Secrets[name]);
-                }
-
-                throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
+                return new ExportedSecret(Secrets[name]);
             }
-        }
+
+            throw new ArgumentException($"The secret vault does not contain a secret with the specified name, \"{name}\".", nameof(name));
+        });
 
         /// <summary>
         /// Imports the specified secret in plaintext form.

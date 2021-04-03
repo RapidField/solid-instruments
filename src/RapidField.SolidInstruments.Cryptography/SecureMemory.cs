@@ -91,12 +91,9 @@ namespace RapidField.SolidInstruments.Cryptography
         /// </exception>
         public void Access(Action<PinnedMemory> action)
         {
-            action = action.RejectIf().IsNull(nameof(action));
-
-            using (var controlToken = StateControl.Enter())
+            _ = action.RejectIf().IsNull(nameof(action));
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 using var plaintext = new PinnedMemory(LengthInBytes, true);
                 DecryptField(plaintext);
 
@@ -108,7 +105,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 {
                     EncryptField(plaintext);
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -152,7 +149,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 return;
             }
 
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -174,7 +171,7 @@ namespace RapidField.SolidInstruments.Cryptography
                         EncryptField(plaintext);
                     }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -435,7 +432,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     return;
                 }
 
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(() =>
                 {
                     if (IsDisposedOrDisposing)
                     {
@@ -448,7 +445,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     {
                         RandomnessProvider.GetBytes(field);
                     }
-                }
+                });
             }
 
             /// <summary>
@@ -490,23 +487,10 @@ namespace RapidField.SolidInstruments.Cryptography
             /// </returns>
             [DebuggerHidden]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            private PinnedMemory GetTargetField()
+            private PinnedMemory GetTargetField() => IsDisposed ? null : WithStateControl(() =>
             {
-                if (IsDisposed)
-                {
-                    return null;
-                }
-
-                using (var controlToken = StateControl.Enter())
-                {
-                    if (IsDisposed)
-                    {
-                        return null;
-                    }
-
-                    return Fields[TargetFieldIndex];
-                }
-            }
+                return IsDisposed ? null : Fields[TargetFieldIndex];
+            });
 
             /// <summary>
             /// Gets the target field.

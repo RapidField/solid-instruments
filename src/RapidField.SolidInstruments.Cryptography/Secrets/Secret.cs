@@ -185,14 +185,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction)
+        public void Read(Action<IReadOnlyPinnedMemory<Byte>> readAction) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
-            }
-        }
+            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+        });
 
         /// <summary>
         /// Decrypts the secret value, pins a copy of it in memory and performs the specified read operation against it as a
@@ -214,14 +210,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="readAction" /> raised an exception.
         /// </exception>
-        public void Read(Action<TValue> readAction)
+        public void Read(Action<TValue> readAction) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
-            }
-        }
+            Read(readAction.RejectIf().IsNull(nameof(readAction)), controlToken);
+        });
 
         /// <summary>
         /// Asynchronously decrypts the secret value, pins it in memory and performs the specified read operation against the
@@ -280,22 +272,17 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        void IReadOnlySecret.RegenerateInMemoryKey()
+        void IReadOnlySecret.RegenerateInMemoryKey() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            try
             {
-                RejectIfDisposed();
-
-                try
-                {
-                    SecureValueMemory.RegeneratePrivateKey();
-                }
-                finally
-                {
-                    InMemoryKeyTimeStampValue = TimeStamp.Current;
-                }
+                SecureValueMemory.RegeneratePrivateKey();
             }
-        }
+            finally
+            {
+                InMemoryKeyTimeStampValue = TimeStamp.Current;
+            }
+        });
 
         /// <summary>
         /// Converts the value of the current <see cref="Secret{TValue}" /> to its equivalent string representation.
@@ -320,14 +307,10 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// <exception cref="SecretAccessException">
         /// <paramref name="writeFunction" /> raised an exception or returned an invalid <typeparamref name="TValue" />.
         /// </exception>
-        public void Write(Func<TValue> writeFunction)
+        public void Write(Func<TValue> writeFunction) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
-            }
-        }
+            Write(writeFunction.RejectIf().IsNull(nameof(writeFunction)), controlToken);
+        });
 
         /// <summary>
         /// Asynchronously performs the specified write operation and encrypts the resulting value as a thread-safe, atomic

@@ -379,11 +379,8 @@ namespace RapidField.SolidInstruments.Cryptography
             where TModel : class, IModel
         {
             _ = model.RejectIf().IsNull(nameof(model));
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (InMemoryStore.Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
                 {
                     var plaintextModel = (TModel)null;
@@ -423,7 +420,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 }
 
                 throw new ArgumentException($"The secret store does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
-            }
+            });
         }
 
         /// <summary>
@@ -483,11 +480,8 @@ namespace RapidField.SolidInstruments.Cryptography
         public String Decrypt(String ciphertext, String keyName)
         {
             _ = ciphertext.RejectIf().IsNullOrEmpty(nameof(ciphertext));
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (InMemoryStore.Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
                 {
                     var plaintext = (String)null;
@@ -527,7 +521,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 }
 
                 throw new ArgumentException($"The secret store does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
-            }
+            });
         }
 
         /// <summary>
@@ -592,11 +586,8 @@ namespace RapidField.SolidInstruments.Cryptography
             where TModel : class, IModel
         {
             _ = model.RejectIf().IsNull(nameof(model));
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (InMemoryStore.Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
                 {
                     var encryptedModel = (IEncryptedModel<TModel>)null;
@@ -636,7 +627,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 }
 
                 throw new ArgumentException($"The secret store does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
-            }
+            });
         }
 
         /// <summary>
@@ -696,11 +687,8 @@ namespace RapidField.SolidInstruments.Cryptography
         public String Encrypt(String plaintext, String keyName)
         {
             _ = plaintext.RejectIf().IsNullOrEmpty(nameof(plaintext));
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (InMemoryStore.Secrets.ContainsKey(keyName.RejectIf().IsNullOrEmpty(nameof(keyName))))
                 {
                     var ciphertext = (String)null;
@@ -740,7 +728,7 @@ namespace RapidField.SolidInstruments.Cryptography
                 }
 
                 throw new ArgumentException($"The secret store does not contain a key with the specified name, \"{keyName}\".", nameof(keyName));
-            }
+            });
         }
 
         /// <summary>
