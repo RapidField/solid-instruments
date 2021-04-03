@@ -13,11 +13,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### 🗃️ File system
+### :card_file_box: File system
 
 > **WIP.** This section is work-in-progress.
 
-### 🟪 Visual Studio solutions and projects
+### :infinity: Visual Studio solutions and projects
 
 > **WIP.** This section is work-in-progress.
 
@@ -25,7 +25,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### ✔️ Coding standards (.NET/C#)
+### :straight_ruler: Coding standards (.NET/C#)
 
 > **WIP.** This section is work-in-progress.
 
@@ -33,17 +33,17 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 > **WIP.** This section is work-in-progress.
 
-### ▶️ Starting work
+### :arrow_forward: Starting work
 
 > **WIP.** This section is work-in-progress.
 
-### 🔃 Finishing work
+### :stop_button: Finishing work
 
 > **WIP.** This section is work-in-progress.
 
 ## More information
 
-If you haven't already, please review the [**Instructions for Contributing**](CONTRIBUTING.md), where you will find guidance on other topics. For a high-level, architectural introduction review the [**Architectural Guide**](ARCHITECTURE.md). For questions, contact [solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
+If you haven't already, please review the [**Instructions for Contributing**](CONTRIBUTING.md), where you will find guidance on other topics. For a high-level, architectural introduction review the [**Architectural Guide**](ARCHITECTURE.md). For questions, contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 
 <br />
 

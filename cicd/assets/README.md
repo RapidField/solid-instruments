@@ -7,13 +7,13 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd/assets
 
-This document describes the purpose of the [`cicd/assets`]() directory.
+This document describes the purpose of the [:file_folder:`/cicd/assets`]() directory.
 
 ## Purpose
 
 This path contains resource files that are utilized by CI/CD operations.
 
-- [`CodeSigningCertificate.pfx.enc`](CodeSigningCertificate.pfx.enc) is an encrypted copy of the **Solid Instruments** code signing certificate.
+- [:page_facing_up:`CodeSigningCertificate.pfx.enc`](CodeSigningCertificate.pfx.enc) is an encrypted copy of the **Solid Instruments** code signing certificate.
 
 ## License
 

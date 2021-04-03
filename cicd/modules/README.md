@@ -7,15 +7,15 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd/modules
 
-This document describes the purpose of the [`cicd/modules`]() directory.
+This document describes the purpose of the [:file_folder:`/cicd/modules`]() directory.
 
 ## Purpose
 
 This path contains [**PowerShell**](https://en.wikipedia.org/wiki/PowerShell) module files that expose functions which define the core CI/CD pipeline.
 
-- [`AutomationTools.psm1`](AutomationTools.psm1) defines CI/CD automation tooling for the project.
-- [`BuildAndDeployment.psm1`](BuildAndDeployment.psm1) exposes the build and deployment functions that are used by the CI/CD pipeline.
-- [`Core.psm1`](Core.psm1) exposes shared utility functions for the CI/CD pipeline.
+- [:page_facing_up:`AutomationTools.psm1`](AutomationTools.psm1) defines CI/CD automation tooling for the project.
+- [:page_facing_up:`BuildAndDeployment.psm1`](BuildAndDeployment.psm1) exposes the build and deployment functions that are used by the CI/CD pipeline.
+- [:page_facing_up:`Core.psm1`](Core.psm1) exposes shared utility functions for the CI/CD pipeline.
 
 ## License
 

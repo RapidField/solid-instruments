@@ -7,17 +7,17 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /cicd/scripts
 
-This document describes the purpose of the [`cicd/scripts`]() directory.
+This document describes the purpose of the [:file_folder:`/cicd/scripts`]() directory.
 
 ## Purpose
 
 This path contains scripts that serve as entry points for pipeline invocation.
 
-- [`EncryptCodeSigningCertificate.ps1`](EncryptCodeSigningCertificate.ps1) scripts the encryption of the **Solid Instruments** code signing certificate.
-- [`ExecuteCicdBuild.ps1`](ExecuteCicdBuild.ps1) scripts the standard CI/CD build process.
-- [`ExecuteCicdDeployment.ps1`](ExecuteCicdDeployment.ps1) scripts the deployment process for successful CI/CD master builds.
-- [`GenerateTestCertificates.ps1`](GenerateTestCertificates.ps1) scripts generation of self-signed X509 certificates that are used for testing.
-- [`ResetEnvironment.ps1`](ResetEnvironment.ps1) scripts the build environment setup/reset process.
+- [:page_facing_up:`EncryptCodeSigningCertificate.ps1`](EncryptCodeSigningCertificate.ps1) scripts the encryption of the **Solid Instruments** code signing certificate.
+- [:page_facing_up:`ExecuteCicdBuild.ps1`](ExecuteCicdBuild.ps1) scripts the standard CI/CD build process.
+- [:page_facing_up:`ExecuteCicdDeployment.ps1`](ExecuteCicdDeployment.ps1) scripts the deployment process for successful CI/CD master builds.
+- [:page_facing_up:`GenerateTestCertificates.ps1`](GenerateTestCertificates.ps1) scripts generation of self-signed X509 certificates that are used for testing.
+- [:page_facing_up:`ResetEnvironment.ps1`](ResetEnvironment.ps1) scripts the build environment setup/reset process.
 
 ## License
 
