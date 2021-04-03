@@ -19,7 +19,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.Core.128w.png</PackageIcon>
-        <PackageTags>solid-instruments;core;concurrency;thread-safety;fluent-validation;fluent-guard;object-lifetime</PackageTags>
+        <PackageTags>solid-instruments;core;caching;concurrency;thread-safety;fluent-validation;fluent-guard;object-lifetime</PackageTags>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
@@ -42,6 +42,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-        <PackageReference Include="Rationals" Version="1.3.3" />
+        <PackageReference Include="Rationals" Version="1.4.0" />
     </ItemGroup>
 </Project>

@@ -447,7 +447,7 @@ Function PublishPackages
         Return;
     }
 
-    If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq ""))
+    If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq [String]::Empty))
     {
         ComposeWarning "Packages will not be published. The NuGet API key is unavailable.";
         Return;
@@ -496,13 +496,13 @@ Function PublishWebDocumentation
         Return;
     }
 
-    If (($DocumentationWebsiteFtpUserName -eq $null) -or ($DocumentationWebsiteFtpUserName -eq ""))
+    If (($DocumentationWebsiteFtpUserName -eq $null) -or ($DocumentationWebsiteFtpUserName -eq [String]::Empty))
     {
         ComposeWarning "The documentation website artifacts will not be published. The FTP account username is unavailable.";
         Return;
     }
 
-    If (($DocumentationWebsiteFtpPassword -eq $null) -or ($DocumentationWebsiteFtpPassword -eq ""))
+    If (($DocumentationWebsiteFtpPassword -eq $null) -or ($DocumentationWebsiteFtpPassword -eq [String]::Empty))
     {
         ComposeWarning "The documentation website artifacts will not be published. The FTP account password is unavailable.";
         Return;
@@ -554,19 +554,19 @@ Function SignPackages
         Return;
     }
 
-    If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq ""))
+    If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq [String]::Empty))
     {
         ComposeWarning "Packages will not be signed. The code signing certificate key is unavailable.";
         Return;
     }
 
-    If (($CodeSigningCertificateKeySalt -eq $null) -or ($CodeSigningCertificateKeySalt -eq ""))
+    If (($CodeSigningCertificateKeySalt -eq $null) -or ($CodeSigningCertificateKeySalt -eq [String]::Empty))
     {
         ComposeWarning "Packages will not be signed. The code signing certificate key salt is unavailable.";
         Return;
     }
 
-    If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq ""))
+    If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq [String]::Empty))
     {
         ComposeWarning "Packages will not be signed. The code signing certificate password is unavailable.";
         Return;
@@ -808,7 +808,7 @@ Function Test
             Throw "One or more tests failed for $TestDirectoryPath using $SolutionConfiguration configuration.";
         }
 
-        If (($CodecovToken -eq $null) -or ($CodecovToken -eq ""))
+        If (($CodecovToken -eq $null) -or ($CodecovToken -eq [String]::Empty))
         {
             ComposeWarning "A code coverage report will not be published. The Codecov token is unavailable.";
         }
@@ -936,7 +936,7 @@ Validates the commit message, if any, against a regular expression pattern.
 #>
 Function ValidateCommitMessageFormat
 {
-    If (($CommitMessage -eq $null) -or ($CommitMessage -eq ""))
+    If (($CommitMessage -eq $null) -or ($CommitMessage -eq [String]::Empty))
     {
         ComposeVerbose "Commit message validation will not be performed. No commit message is available.";
         Return;
@@ -962,7 +962,7 @@ Validates the pull request title, if any, against a regular expression pattern.
 #>
 Function ValidatePullRequestTitleFormat
 {
-    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq ""))
+    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq [String]::Empty))
     {
         ComposeVerbose "Pull request title validation will not be performed. No pull request title is available.";
         Return;
@@ -1005,7 +1005,7 @@ Writes the build version.
 #>
 Function WriteBuildVersion
 {
-    If (($BuildVersion -eq $null) -or ($BuildVersion -eq ""))
+    If (($BuildVersion -eq $null) -or ($BuildVersion -eq [String]::Empty))
     {
         Return;
     }
@@ -1019,7 +1019,7 @@ Writes the commit author's email address for the build.
 #>
 Function WriteCommitAuthorEmail
 {
-    If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq ""))
+    If (($CommitAuthorEmail -eq $null) -or ($CommitAuthorEmail -eq [String]::Empty))
     {
         Return;
     }
@@ -1033,7 +1033,8 @@ Writes the commit author's name for the build.
 #>
 Function WriteCommitAuthorName
 {
-    If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq "")) {
+    If (($CommitAuthorName -eq $null) -or ($CommitAuthorName -eq [String]::Empty))
+    {
         Return;
     }
 
@@ -1046,7 +1047,7 @@ Writes the commit ID for the build.
 #>
 Function WriteCommitId
 {
-    If (($CommitId -eq $null) -or ($CommitId -eq ""))
+    If (($CommitId -eq $null) -or ($CommitId -eq [String]::Empty))
     {
         Return;
     }
@@ -1060,7 +1061,7 @@ Writes the commit message for the build.
 #>
 Function WriteCommitMessage
 {
-    If (($CommitMessage -eq $null) -or ($CommitMessage -eq ""))
+    If (($CommitMessage -eq $null) -or ($CommitMessage -eq [String]::Empty))
     {
         Return;
     }
@@ -1074,7 +1075,7 @@ Writes the commit time stamp for the build.
 #>
 Function WriteCommitTimeStamp
 {
-    If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq ""))
+    If (($CommitTimeStamp -eq $null) -or ($CommitTimeStamp -eq [String]::Empty))
     {
         Return;
     }
@@ -1088,7 +1089,7 @@ Writes the pull request title for the build.
 #>
 Function WritePullRequestTitle
 {
-    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq ""))
+    If (($PullRequestTitle -eq $null) -or ($PullRequestTitle -eq [String]::Empty))
     {
         Return;
     }
@@ -1102,7 +1103,7 @@ Writes the repository name for the build.
 #>
 Function WriteRepositoryName
 {
-    If (($RepositoryName -eq $null) -or ($RepositoryName -eq ""))
+    If (($RepositoryName -eq $null) -or ($RepositoryName -eq [String]::Empty))
     {
         Return;
     }
@@ -1116,7 +1117,7 @@ Writes the tag name for the build.
 #>
 Function WriteTagName
 {
-    If (($TagName -eq $null) -or ($TagName -eq ""))
+    If (($TagName -eq $null) -or ($TagName -eq [String]::Empty))
     {
         Return;
     }

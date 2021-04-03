@@ -66,7 +66,7 @@ Function EnterScript
         ComposeNormal "The following process will perform a standard Solid Instruments build.";
         $UserInput = PromptUser -QuestionText "Would you like to continue?" -PromptText "[Y] Yes [N] No";
 
-        If (($UserInput -eq $null) -or ($UserInput -eq ""))
+        If (($UserInput -eq $null) -or ($UserInput -eq [String]::Empty))
         {
             ComposeNormal "Exiting.";
             Exit;

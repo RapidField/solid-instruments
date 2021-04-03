@@ -19,10 +19,10 @@ Function ComposeError
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -39,10 +39,10 @@ Function ComposeFinish
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -59,10 +59,10 @@ Function ComposeHeader
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -80,10 +80,10 @@ Function ComposeNormal
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -100,10 +100,10 @@ Function ComposeStart
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -120,10 +120,10 @@ Function ComposeSuccess
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -140,10 +140,10 @@ Function ComposeVerbose
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -160,10 +160,10 @@ Function ComposeWarning
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
-        [String] $Text = ""
+        [String] $Text = [String]::Empty
     )
 
-    If (($Text -eq $null) -or ($Text -eq ""))
+    If (($Text -eq $null) -or ($Text -eq [String]::Empty))
     {
         Return;
     }
@@ -182,7 +182,7 @@ Function ExecuteProcess
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Path,
         [Parameter(Mandatory = $false, Position = 1)]
-        [String] $Arguments = ""
+        [String] $Arguments = [String]::Empty
     )
 
     $ProcessDefinition = "$Path $Arguments";
@@ -213,12 +213,12 @@ Function PromptUser
     Param
     (
         [Parameter(Mandatory = $true, Position = 0)]
-        [String] $QuestionText = "",
+        [String] $QuestionText = [String]::Empty,
         [Parameter(Mandatory = $true, Position = 1)]
-        [String] $PromptText = ""
+        [String] $PromptText = [String]::Empty
     )
 
-    If (($QuestionText -ne $null) -and ($QuestionText -ne ""))
+    If (($QuestionText -ne $null) -and ($QuestionText -ne [String]::Empty))
     {
         Write-Host -ForegroundColor White "`n$QuestionText";
     }

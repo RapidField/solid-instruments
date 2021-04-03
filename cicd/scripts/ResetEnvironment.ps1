@@ -66,7 +66,7 @@ Function EnterScript
         ComposeNormal "For more information, see https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#tooling";
         $UserInput = PromptUser -QuestionText "Would you like to continue?" -PromptText "[Y] Yes [N] No";
 
-        If (($UserInput -eq $null) -or ($UserInput -eq ""))
+        If (($UserInput -eq $null) -or ($UserInput -eq [String]::Empty))
         {
             ComposeNormal "Exiting.";
             Exit;
