@@ -230,17 +230,15 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
             {
                 try
                 {
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             channel.ConfirmSelect();
                             channel.BasicReject(lockToken.DeliveryTag, true);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -283,17 +281,15 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
             {
                 try
                 {
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             channel.ConfirmSelect();
                             channel.BasicReject(lockToken.DeliveryTag, true);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -333,17 +329,15 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
             {
                 try
                 {
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             channel.ConfirmSelect();
                             channel.BasicAck(lockToken.DeliveryTag, false);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -383,17 +377,15 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
             {
                 try
                 {
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             channel.ConfirmSelect();
                             channel.BasicAck(lockToken.DeliveryTag, false);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -860,11 +852,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 {
                     var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
                     var body = new ReadOnlyMemory<Byte>(serializer.Serialize(message));
-
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             var basicProperties = channel.CreateBasicProperties();
@@ -873,7 +862,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                             channel.BasicPublish(exchangeName, queueName, true, basicProperties, body);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -918,11 +907,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                 {
                     var serializer = new DynamicSerializer<PrimitiveMessage>(MessageBodySerializationFormat);
                     var body = new ReadOnlyMemory<Byte>(serializer.Serialize(message));
-
-                    using (var controlToken = StateControl.Enter())
+                    WithStateControl(() =>
                     {
-                        RejectIfDisposed();
-
                         using (var channel = SharedConnection.CreateModel())
                         {
                             var basicProperties = channel.CreateBasicProperties();
@@ -931,7 +917,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                             channel.BasicPublish(exchangeName, topicName, true, basicProperties, body);
                             channel.WaitForConfirmsOrDie();
                         }
-                    }
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -1143,11 +1129,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             var queueName = path.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{queueName}";
-
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 using (var channel = SharedConnection.CreateModel())
                 {
                     channel.ConfirmSelect();
@@ -1156,7 +1139,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                     channel.ExchangeDelete(exchangeName);
                     channel.WaitForConfirmsOrDie();
                 }
-            }
+            });
 
             return true;
         }
@@ -1184,11 +1167,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
             var topicName = path.ToString();
             var queueName = subscriptionName;
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
-
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 using (var channel = SharedConnection.CreateModel())
                 {
                     channel.ConfirmSelect();
@@ -1196,7 +1176,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                     channel.QueueDelete(queueName);
                     channel.WaitForConfirmsOrDie();
                 }
-            }
+            });
 
             return true;
         }
@@ -1219,18 +1199,15 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             var topicName = path.ToString();
             var exchangeName = $"{EntityPathExchangePrefix}{DelimitingCharacterForExchangePrefix}{topicName}";
-
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 using (var channel = SharedConnection.CreateModel())
                 {
                     channel.ConfirmSelect();
                     channel.ExchangeDelete(exchangeName);
                     channel.WaitForConfirmsOrDie();
                 }
-            }
+            });
 
             return true;
         }
@@ -1336,9 +1313,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             try
             {
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(() =>
                 {
-                    RejectIfDisposed();
                     var channel = SharedConnection.CreateModel();
 
                     try
@@ -1357,7 +1333,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                         channel.Dispose();
                         throw;
                     }
-                }
+                });
             }
             catch (Exception exception)
             {
@@ -1394,9 +1370,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             try
             {
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(() =>
                 {
-                    RejectIfDisposed();
                     var channel = SharedConnection.CreateModel();
 
                     try
@@ -1414,7 +1389,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                         channel.Dispose();
                         throw;
                     }
-                }
+                });
             }
             catch (Exception exception)
             {
@@ -1442,9 +1417,8 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
 
             try
             {
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(() =>
                 {
-                    RejectIfDisposed();
                     var channel = SharedConnection.CreateModel();
 
                     try
@@ -1461,7 +1435,7 @@ namespace RapidField.SolidInstruments.Messaging.RabbitMq.TransportPrimitives
                         channel.Dispose();
                         throw;
                     }
-                }
+                });
             }
             catch (Exception exception)
             {

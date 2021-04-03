@@ -461,19 +461,13 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         public override Int32 GetHashCode()
         {
-            var hashCode = (433494437 ^ (MajorVersion * 514229) ^ (MinorVersion * 28657) ^ (PatchVersion * 1597) ^ 233).GetHashCode();
-
-            if (PreReleaseLabel.IsNullOrEmpty() is false)
-            {
-                hashCode ^= PreReleaseLabel.GetHashCode();
-            }
-
-            if (BuildMetadata.IsNullOrEmpty() is false)
-            {
-                hashCode ^= BuildMetadata.GetHashCode();
-            }
-
-            return hashCode;
+            var sourceBytes = new List<Byte>();
+            sourceBytes.AddRange((BuildMetadata.IsNullOrEmpty() ? 0x59955995 : BuildMetadata.GetHashCode()).ToByteArray());
+            sourceBytes.AddRange((PreReleaseLabel.IsNullOrEmpty() ? 0x60f66f06 : PreReleaseLabel.GetHashCode()).ToByteArray());
+            sourceBytes.AddRange(((PatchVersion + 1) * 1597).ToByteArray());
+            sourceBytes.AddRange(((MinorVersion + 1) * 28657).ToByteArray());
+            sourceBytes.AddRange(((MajorVersion + 1) * 514229).ToByteArray());
+            return sourceBytes.ComputeThirtyTwoBitHash();
         }
 
         /// <summary>

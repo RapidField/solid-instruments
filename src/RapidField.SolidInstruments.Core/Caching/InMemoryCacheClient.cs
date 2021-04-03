@@ -58,25 +58,20 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Clear()
+        public void Clear() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            try
             {
-                RejectIfDisposed();
-
-                try
+                if (IsOperative)
                 {
-                    if (IsOperative)
-                    {
-                        Cache?.Compact(1d);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    throw new CacheAccessException("An exception was raised while clearing the cache.", exception);
+                    Cache?.Compact(1d);
                 }
             }
-        }
+            catch (Exception exception)
+            {
+                throw new CacheAccessException("An exception was raised while clearing the cache.", exception);
+            }
+        });
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="InMemoryCacheClient" />.

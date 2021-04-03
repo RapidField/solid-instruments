@@ -95,10 +95,8 @@ namespace RapidField.SolidInstruments.Cryptography
 
             try
             {
-                using (var controlToken = StateControl.Enter())
+                return WithStateControl(() =>
                 {
-                    RejectIfDisposed();
-
                     if (DerivationMode == CryptographicKeyDerivationMode.Pbkdf2)
                     {
                         try
@@ -185,7 +183,7 @@ namespace RapidField.SolidInstruments.Cryptography
                     }
 
                     return result;
-                }
+                });
             }
             catch
             {
@@ -550,14 +548,7 @@ namespace RapidField.SolidInstruments.Cryptography
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        public ISecureMemory ToSecureMemory()
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return ToSecureMemory(controlToken);
-            }
-        }
+        public ISecureMemory ToSecureMemory() => WithStateControl(controlToken => ToSecureMemory(controlToken));
 
         /// <summary>
         /// Generates private key source bytes using the specified, arbitrary length bit field.
@@ -620,11 +611,8 @@ namespace RapidField.SolidInstruments.Cryptography
         internal static PinnedMemory DeriveKeySourceBytesFromPassword(IPassword password, Int32 keySourceLengthInBytes)
         {
             _ = password.RejectIf().IsNull(nameof(password)).OrIf(argument => argument.GetCharacterLength() < MinimumPasswordLength, nameof(password), $"The specified password is shorter than {MinimumPasswordLength} characters.");
-
-            using (var passwordBytes = new ReadOnlyPinnedMemory(Password.GetPasswordPlaintextBytes(password)))
-            {
-                return DeriveKeySourceBytesFromKeyMaterial(passwordBytes, keySourceLengthInBytes);
-            }
+            using var passwordBytes = new ReadOnlyPinnedMemory(Password.GetPasswordPlaintextBytes(password));
+            return DeriveKeySourceBytesFromKeyMaterial(passwordBytes, keySourceLengthInBytes);
         }
 
         /// <summary>

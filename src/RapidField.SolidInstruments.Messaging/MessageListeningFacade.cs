@@ -84,7 +84,7 @@ namespace RapidField.SolidInstruments.Messaging
 
             try
             {
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(controlToken =>
                 {
                     RejectIfDisposed();
 
@@ -131,7 +131,7 @@ namespace RapidField.SolidInstruments.Messaging
                     });
 
                     RegisterMessageHandler(messageHandler, requestReceiveClient, controlToken);
-                }
+                });
             }
             catch (MessageListeningException)
             {
@@ -449,7 +449,7 @@ namespace RapidField.SolidInstruments.Messaging
         {
             messageHandler = messageHandler.RejectIf().IsNull(nameof(messageHandler)).TargetArgument;
 
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(controlToken =>
             {
                 RejectIfDisposed();
 
@@ -509,7 +509,7 @@ namespace RapidField.SolidInstruments.Messaging
                 {
                     throw new MessageListeningException(typeof(TMessage), exception);
                 }
-            }
+            });
         }
 
         /// <summary>

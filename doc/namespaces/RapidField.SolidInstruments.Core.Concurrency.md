@@ -68,7 +68,7 @@ public class ExampleClass : IDisposable
 
             foreach (var action in actions)
             {
-                controlToken.AttachTask(Task.Run(action));
+                controlToken.AttachTask(Task.Factory.StartNew(action));
             }
 
             // Disposal of controlToken waits for all attached

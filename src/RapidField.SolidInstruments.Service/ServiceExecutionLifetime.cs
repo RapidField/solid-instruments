@@ -33,19 +33,14 @@ namespace RapidField.SolidInstruments.Service
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void End()
+        public void End() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (IsAlive)
             {
-                RejectIfDisposed();
-
-                if (IsAlive)
-                {
-                    EndOfLifeEvent.Set();
-                    IsAlive = false;
-                }
+                EndOfLifeEvent.Set();
+                IsAlive = false;
             }
-        }
+        });
 
         /// <summary>
         /// Blocks the current thread until <see cref="End" /> or <see cref="Dispose" /> is invoked.
@@ -58,15 +53,13 @@ namespace RapidField.SolidInstruments.Service
         /// </exception>
         public void KeepAlive()
         {
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (IsAlive is false)
                 {
                     throw new InvalidOperationException("The service execution lifetime has ended.");
                 }
-            }
+            });
 
             EndOfLifeEvent.WaitOne();
         }

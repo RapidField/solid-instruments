@@ -135,11 +135,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
             where T : class
         {
             var requestType = typeof(T);
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 try
                 {
                     if (Registrations.ContainsKey(requestType) is false)
@@ -178,7 +175,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 }
 
                 return lazyProduct;
-            }
+            });
         }
 
         /// <summary>

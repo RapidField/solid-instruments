@@ -97,10 +97,7 @@ namespace RapidField.SolidInstruments.Core
                     return;
                 }
 
-                using (var controlToken = StateControl.Enter())
-                {
-                    IsDisposing = true;
-                }
+                WithStateControl(() => { IsDisposing = true; });
 
                 try
                 {
@@ -155,6 +152,245 @@ namespace RapidField.SolidInstruments.Core
             {
                 throw new ObjectDisposedException(ToString());
             }
+        }
+
+        /// <summary>
+        /// Enqueues the specified operation for state controlled execution and waits for it to complete.
+        /// </summary>
+        /// <param name="action">
+        /// An action to execute.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="action" />.
+        /// </exception>
+        protected void WithStateControl(Action action)
+        {
+            _ = action.RejectIf().IsNull(nameof(action));
+            RejectIfDisposed();
+            StateControl.EnqueueAndWait(() =>
+            {
+                RejectIfDisposed();
+                action();
+            });
+        }
+
+        /// <summary>
+        /// Enqueues the specified operation for state controlled execution and waits for it to complete.
+        /// </summary>
+        /// <param name="action">
+        /// An action to execute.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="action" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected void WithStateControl(Action<IConcurrencyControlToken> action)
+        {
+            _ = action.RejectIf().IsNull(nameof(action));
+            RejectIfDisposed();
+            StateControl.EnqueueAndWait(controlToken =>
+            {
+                RejectIfDisposed();
+                action(controlToken);
+            });
+        }
+
+        /// <summary>
+        /// Enqueues the specified operation for state controlled execution and waits for it to complete.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the result that is returned by <paramref name="function" />.
+        /// </typeparam>
+        /// <param name="function">
+        /// A function to execute.
+        /// </param>
+        /// <returns>
+        /// The result of <paramref name="function" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="function" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="function" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected T WithStateControl<T>(Func<T> function)
+        {
+            _ = function.RejectIf().IsNull(nameof(function));
+            RejectIfDisposed();
+            return StateControl.EnqueueAndWait(() =>
+            {
+                RejectIfDisposed();
+                return function();
+            });
+        }
+
+        /// <summary>
+        /// Enqueues the specified operation for state controlled execution and waits for it to complete.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the result that is returned by <paramref name="function" />.
+        /// </typeparam>
+        /// <param name="function">
+        /// A function to execute.
+        /// </param>
+        /// <returns>
+        /// The result of <paramref name="function" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="function" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="function" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected T WithStateControl<T>(Func<IConcurrencyControlToken, T> function)
+        {
+            _ = function.RejectIf().IsNull(nameof(function));
+            RejectIfDisposed();
+            return StateControl.EnqueueAndWait(controlToken =>
+            {
+                RejectIfDisposed();
+                return function(controlToken);
+            });
+        }
+
+        /// <summary>
+        /// Asynchronously enqueues the specified operation for state controlled execution and returns a task that completes when
+        /// the action is finished running.
+        /// </summary>
+        /// <param name="action">
+        /// An action to execute asynchronously.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="action" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected Task WithStateControlAsync(Action action)
+        {
+            _ = action.RejectIf().IsNull(nameof(action));
+            RejectIfDisposed();
+            return StateControl.EnqueueAsync(() =>
+            {
+                RejectIfDisposed();
+                action();
+            });
+        }
+
+        /// <summary>
+        /// Asynchronously enqueues the specified operation for state controlled execution and returns a task that completes when
+        /// the action is finished running.
+        /// </summary>
+        /// <param name="action">
+        /// An action to execute asynchronously.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="action" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="action" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected Task WithStateControlAsync(Action<IConcurrencyControlToken> action)
+        {
+            _ = action.RejectIf().IsNull(nameof(action));
+            RejectIfDisposed();
+            return StateControl.EnqueueAsync(controlToken =>
+            {
+                RejectIfDisposed();
+                action(controlToken);
+            });
+        }
+
+        /// <summary>
+        /// Asynchronously enqueues the specified operation for state controlled execution and returns a task that completes when
+        /// the function is finished running.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the result that is returned by <paramref name="function" />.
+        /// </typeparam>
+        /// <param name="function">
+        /// A function to execute asynchronously.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the result of <paramref name="function" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="function" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="function" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected Task<T> WithStateControlAsync<T>(Func<T> function)
+        {
+            _ = function.RejectIf().IsNull(nameof(function));
+            RejectIfDisposed();
+            return StateControl.EnqueueAsync(() =>
+            {
+                RejectIfDisposed();
+                return function();
+            });
+        }
+
+        /// <summary>
+        /// Asynchronously enqueues the specified operation for state controlled execution and returns a task that completes when
+        /// the function is finished running.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the result that is returned by <paramref name="function" />.
+        /// </typeparam>
+        /// <param name="function">
+        /// A function to execute asynchronously.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation and containing the result of <paramref name="function" />.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="function" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="Exception">
+        /// An exception was raised while executing <paramref name="function" />.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
+        /// </exception>
+        protected Task<T> WithStateControlAsync<T>(Func<IConcurrencyControlToken, T> function)
+        {
+            _ = function.RejectIf().IsNull(nameof(function));
+            RejectIfDisposed();
+            return StateControl.EnqueueAsync(controlToken =>
+            {
+                RejectIfDisposed();
+                return function(controlToken);
+            });
         }
 
         /// <summary>

@@ -42,14 +42,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public IQueryable<TEntity> All()
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return All(controlToken);
-            }
-        }
+        public IQueryable<TEntity> All() => WithStateControl(controlToken => All(controlToken));
 
         /// <summary>
         /// Determines whether or not any entities exist in the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.
@@ -80,14 +73,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Boolean Contains(TEntity entity)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return Contains(entity.RejectIf().IsNull(nameof(entity)), controlToken);
-            }
-        }
+        public Boolean Contains(TEntity entity) => WithStateControl(controlToken => Contains(entity.RejectIf().IsNull(nameof(entity)), controlToken));
 
         /// <summary>
         /// Determines whether or not any entities matching the specified predicate exist in the current
@@ -117,14 +103,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Int64 Count()
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return Count(controlToken);
-            }
-        }
+        public Int64 Count() => WithStateControl(controlToken => Count(controlToken));
 
         /// <summary>
         /// Returns the number of entities matching the specified predicate in the current
@@ -143,14 +122,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return CountWhere(predicate.RejectIf().IsNull(nameof(predicate)), controlToken);
-            }
-        }
+        public Int64 CountWhere(Expression<Func<TEntity, Boolean>> predicate) => WithStateControl(controlToken => CountWhere(predicate.RejectIf().IsNull(nameof(predicate)), controlToken));
 
         /// <summary>
         /// Returns all entities matching the specified predicate from the current
@@ -168,14 +140,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return FindWhere(predicate.RejectIf().IsNull(nameof(predicate)), controlToken);
-            }
-        }
+        public IQueryable<TEntity> FindWhere(Expression<Func<TEntity, Boolean>> predicate) => WithStateControl(controlToken => FindWhere(predicate.RejectIf().IsNull(nameof(predicate)), controlToken));
 
         /// <summary>
         /// Returns all entities from the current <see cref="ReadOnlyDataAccessRepository{TEntity}" />.

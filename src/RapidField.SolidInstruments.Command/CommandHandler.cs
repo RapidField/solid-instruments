@@ -51,16 +51,11 @@ namespace RapidField.SolidInstruments.Command
         /// </exception>
         public Nix Process(TCommand command)
         {
-            command = command.RejectIf().IsNull(nameof(command));
+            _ = command.RejectIf().IsNull(nameof(command));
 
             try
             {
-                using (var controlToken = StateControl.Enter())
-                {
-                    RejectIfDisposed();
-                    Process(command, Mediator, controlToken);
-                }
-
+                WithStateControl(controlToken => Process(command, Mediator, controlToken));
                 return Nix.Instance;
             }
             catch (CommandHandlingException)
@@ -155,15 +150,11 @@ namespace RapidField.SolidInstruments.Command
         /// </exception>
         public TResult Process(TCommand command)
         {
-            command = command.RejectIf().IsNull(nameof(command));
+            _ = command.RejectIf().IsNull(nameof(command));
 
             try
             {
-                using (var controlToken = StateControl.Enter())
-                {
-                    RejectIfDisposed();
-                    return Process(command, Mediator, controlToken);
-                }
+                return WithStateControl(controlToken => Process(command, Mediator, controlToken));
             }
             catch (CommandHandlingException)
             {

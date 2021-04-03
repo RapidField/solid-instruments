@@ -35,23 +35,18 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Begin()
+        public void Begin() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (State == DataAccessTransactionState.Ready)
             {
-                RejectIfDisposed();
-
-                if (State == DataAccessTransactionState.Ready)
-                {
-                    State = DataAccessTransactionState.InProgress;
-                    Begin(controlToken);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"{nameof(Begin)} cannot be invoked when the transaction state is {State}.");
-                }
+                State = DataAccessTransactionState.InProgress;
+                Begin(controlToken);
             }
-        }
+            else
+            {
+                throw new InvalidOperationException($"{nameof(Begin)} cannot be invoked when the transaction state is {State}.");
+            }
+        });
 
         /// <summary>
         /// Asynchronously initiates the current <see cref="IDataAccessTransaction" />.
@@ -76,11 +71,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 if (State == DataAccessTransactionState.Ready)
                 {
                     State = DataAccessTransactionState.InProgress;
-
-                    return BeginAsync(controlToken).ContinueWith(beginTask =>
-                    {
-                        controlToken.Dispose();
-                    });
+                    return BeginAsync(controlToken).ContinueWith(beginTask => controlToken.Dispose());
                 }
                 else
                 {
@@ -104,23 +95,18 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Commit()
+        public void Commit() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (State == DataAccessTransactionState.InProgress)
             {
-                RejectIfDisposed();
-
-                if (State == DataAccessTransactionState.InProgress)
-                {
-                    State = DataAccessTransactionState.Committed;
-                    Commit(controlToken);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State}.");
-                }
+                State = DataAccessTransactionState.Committed;
+                Commit(controlToken);
             }
-        }
+            else
+            {
+                throw new InvalidOperationException($"{nameof(Commit)} cannot be invoked when the transaction state is {State}.");
+            }
+        });
 
         /// <summary>
         /// Asynchronously commits all changes made within the scope of the current <see cref="DataAccessTransaction" />.
@@ -145,11 +131,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 if (State == DataAccessTransactionState.InProgress)
                 {
                     State = DataAccessTransactionState.Committed;
-
-                    return CommitAsync(controlToken).ContinueWith(commitTask =>
-                    {
-                        controlToken.Dispose();
-                    });
+                    return CommitAsync(controlToken).ContinueWith(commitTask => controlToken.Dispose());
                 }
                 else
                 {
@@ -173,23 +155,18 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Reject()
+        public void Reject() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (State == DataAccessTransactionState.InProgress)
             {
-                RejectIfDisposed();
-
-                if (State == DataAccessTransactionState.InProgress)
-                {
-                    State = DataAccessTransactionState.Rejected;
-                    Reject(controlToken);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"{nameof(Reject)} cannot be invoked when the transaction state is {State}.");
-                }
+                State = DataAccessTransactionState.Rejected;
+                Reject(controlToken);
             }
-        }
+            else
+            {
+                throw new InvalidOperationException($"{nameof(Reject)} cannot be invoked when the transaction state is {State}.");
+            }
+        });
 
         /// <summary>
         /// Asynchronously rejects all changes made within the scope of the current <see cref="DataAccessTransaction" />.
@@ -214,11 +191,7 @@ namespace RapidField.SolidInstruments.DataAccess
                 if (State == DataAccessTransactionState.InProgress)
                 {
                     State = DataAccessTransactionState.Rejected;
-
-                    return RejectAsync(controlToken).ContinueWith(rejectTask =>
-                    {
-                        controlToken.Dispose();
-                    });
+                    return RejectAsync(controlToken).ContinueWith(rejectTask => controlToken.Dispose());
                 }
                 else
                 {

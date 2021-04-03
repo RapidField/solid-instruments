@@ -466,11 +466,8 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class
         {
             var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)), pathLabels);
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (MessageReceivers.TryGetValue(entityPath.ToString(), out var receiver))
                 {
                     return receiver;
@@ -488,7 +485,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 MessageReceivers.Add(entityPath.ToString(), receiver);
                 return receiver;
-            }
+            });
         }
 
         /// <summary>
@@ -522,11 +519,8 @@ namespace RapidField.SolidInstruments.Messaging
             where TMessage : class
         {
             var entityPath = GetEntityPath<TMessage>(entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType)), pathLabels);
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
-                RejectIfDisposed();
-
                 if (MessageSenders.TryGetValue(entityPath.ToString(), out var sender))
                 {
                     return sender;
@@ -543,7 +537,7 @@ namespace RapidField.SolidInstruments.Messaging
 
                 MessageSenders.Add(entityPath.ToString(), sender);
                 return sender;
-            }
+            });
         }
 
         /// <summary>

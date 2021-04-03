@@ -52,17 +52,11 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="IndexOutOfRangeException">
         /// The specified index is out of range.
         /// </exception>
-        public T this[Int32 index]
+        public T this[Int32 index] => WithStateControl(() =>
         {
-            get
-            {
-                using (var controlToken = StateControl.Enter())
-                {
-                    var adjustedIndex = ReadIndex + index;
-                    return (adjustedIndex < Capacity) ? ElementArray[adjustedIndex] : ElementArray[adjustedIndex - Capacity];
-                }
-            }
-        }
+            var adjustedIndex = ReadIndex + index;
+            return (adjustedIndex < Capacity) ? ElementArray[adjustedIndex] : ElementArray[adjustedIndex - Capacity];
+        });
 
         /// <summary>
         /// Returns an enumerator that iterates through the elements of the current <see cref="CircularBuffer{T}" />.
@@ -95,26 +89,23 @@ namespace RapidField.SolidInstruments.Collections
         /// <exception cref="InvalidOperationException">
         /// The buffer is empty.
         /// </exception>
-        public T Read()
+        public T Read() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (--Length < 0)
             {
-                if (--Length < 0)
-                {
-                    Length = 0;
-                    throw new InvalidOperationException("A read operation failed because the buffer is empty.");
-                }
-
-                var element = ElementArray[ReadIndex];
-
-                if (++ReadIndex == Capacity)
-                {
-                    ReadIndex = 0;
-                }
-
-                return element;
+                Length = 0;
+                throw new InvalidOperationException("A read operation failed because the buffer is empty.");
             }
-        }
+
+            var element = ElementArray[ReadIndex];
+
+            if (++ReadIndex == Capacity)
+            {
+                ReadIndex = 0;
+            }
+
+            return element;
+        });
 
         /// <summary>
         /// Converts the value of the current <see cref="CircularBuffer{T}" /> to its equivalent string representation.
@@ -130,23 +121,20 @@ namespace RapidField.SolidInstruments.Collections
         /// <param name="element">
         /// The element to write to the buffer.
         /// </param>
-        public void Write(T element)
+        public void Write(T element) => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            ElementArray[WriteIndex] = element;
+
+            if (Length < Capacity)
             {
-                ElementArray[WriteIndex] = element;
-
-                if (Length < Capacity)
-                {
-                    Length++;
-                }
-
-                if (++WriteIndex == Capacity)
-                {
-                    WriteIndex = 0;
-                }
+                Length++;
             }
-        }
+
+            if (++WriteIndex == Capacity)
+            {
+                WriteIndex = 0;
+            }
+        });
 
         /// <summary>
         /// Writes an element at the tail of the current <see cref="CircularBuffer{T}" />.

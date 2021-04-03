@@ -67,13 +67,17 @@ namespace RapidField.SolidInstruments.Core
             where T : class
         {
             RejectIfDisposed();
-
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
-                RejectIfDisposed();
-                Prune();
-                References?.Add(new ManagedReference<T>(reference, strongReferenceMinimumLifeSpan));
-            }
+                try
+                {
+                    Prune();
+                }
+                finally
+                {
+                    References?.Add(new ManagedReference<T>(reference, strongReferenceMinimumLifeSpan));
+                }
+            });
         }
 
         /// <summary>
@@ -94,28 +98,37 @@ namespace RapidField.SolidInstruments.Core
         {
             try
             {
-                while (References?.Any() ?? false)
-                {
-                    try
-                    {
-                        var disposeTasks = new List<Task>();
-                        var referenceArray = References?.ToArray() ?? Array.Empty<IManagedReference>();
+                var disposeTasks = new List<Task>();
 
-                        foreach (var reference in referenceArray)
+                try
+                {
+                    while (References?.Any() ?? false)
+                    {
+                        var references = References?.ToArray() ?? Array.Empty<IManagedReference>();
+                        References?.Clear();
+
+                        foreach (var reference in references)
                         {
                             disposeTasks.Add(reference?.DisposeAsync().AsTask() ?? Task.CompletedTask);
                         }
 
                         if (disposeTasks.Any())
                         {
-                            Task.WaitAll(disposeTasks.ToArray());
+                            try
+                            {
+                                Task.WaitAll(disposeTasks.ToArray());
+                            }
+                            finally
+                            {
+                                disposeTasks.Clear();
+                            }
                         }
                     }
-                    finally
-                    {
-                        References?.Clear();
-                        References = null;
-                    }
+                }
+                finally
+                {
+                    References?.Clear();
+                    References = null;
                 }
             }
             finally
@@ -139,14 +152,14 @@ namespace RapidField.SolidInstruments.Core
         {
             if (References?.Any() ?? false)
             {
-                var referenceArray = References?.ToArray() ?? Array.Empty<IManagedReference>();
+                var references = References?.ToArray() ?? Array.Empty<IManagedReference>();
 
-                foreach (var reference in References)
+                foreach (var reference in references)
                 {
                     reference?.Poll();
                 }
 
-                References = new List<IManagedReference>(References?.Where(reference => reference.IsDead is false) ?? Array.Empty<IManagedReference>());
+                References = new List<IManagedReference>(references.Where(reference => reference.IsDead is false) ?? Array.Empty<IManagedReference>());
             }
         }
 
@@ -332,7 +345,7 @@ namespace RapidField.SolidInstruments.Core
             /// <returns>
             /// A 32-bit signed integer hash code.
             /// </returns>
-            public override Int32 GetHashCode() => Target?.GetHashCode() ?? 0;
+            public override Int32 GetHashCode() => (Target?.GetHashCode() ?? 0) ^ 0x539aa935;
 
             /// <summary>
             /// Destroys the strong reference to the managed object if its lifespan is expired.

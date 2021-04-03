@@ -44,14 +44,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Add(TEntity entity)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Add(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken);
-            }
-        }
+        public void Add(TEntity entity) => WithStateControl(controlToken => Add(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken));
 
         /// <summary>
         /// Updates the specified entity in the current <see cref="DataAccessRepository{TEntity}" />, or adds it if it doesn't
@@ -66,21 +59,16 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void AddOrUpdate(TEntity entity)
+        public void AddOrUpdate(TEntity entity) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (Contains(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken))
             {
-                RejectIfDisposed();
-
-                if (Contains(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken))
-                {
-                    Update(entity, controlToken);
-                    return;
-                }
-
-                Add(entity, controlToken);
+                Update(entity, controlToken);
+                return;
             }
-        }
+
+            Add(entity, controlToken);
+        });
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="DataAccessRepository{TEntity}" />, or adds them if they don't
@@ -98,29 +86,24 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void AddOrUpdateRange(IEnumerable<TEntity> entities)
+        public void AddOrUpdateRange(IEnumerable<TEntity> entities) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
             {
-                RejectIfDisposed();
-
-                if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
-                {
-                    throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
-                }
-
-                foreach (var entity in entities)
-                {
-                    if (Contains(entity, controlToken))
-                    {
-                        Update(entity, controlToken);
-                        continue;
-                    }
-
-                    Add(entity, controlToken);
-                }
+                throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
             }
-        }
+
+            foreach (var entity in entities)
+            {
+                if (Contains(entity, controlToken))
+                {
+                    Update(entity, controlToken);
+                    continue;
+                }
+
+                Add(entity, controlToken);
+            }
+        });
 
         /// <summary>
         /// Adds the specified entities to the current <see cref="DataAccessRepository{TEntity}" />.
@@ -137,20 +120,15 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void AddRange(IEnumerable<TEntity> entities)
+        public void AddRange(IEnumerable<TEntity> entities) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
             {
-                RejectIfDisposed();
-
-                if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
-                {
-                    throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
-                }
-
-                AddRange(entities, controlToken);
+                throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
             }
-        }
+
+            AddRange(entities, controlToken);
+        });
 
         /// <summary>
         /// Removes the specified entity from the current <see cref="DataAccessRepository{TEntity}" />.
@@ -164,14 +142,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Remove(TEntity entity)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Remove(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken);
-            }
-        }
+        public void Remove(TEntity entity) => WithStateControl(controlToken => Remove(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken));
 
         /// <summary>
         /// Removes the specified entities from the current <see cref="DataAccessRepository{TEntity}" />.
@@ -188,20 +159,15 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public void RemoveRange(IEnumerable<TEntity> entities) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
             {
-                RejectIfDisposed();
-
-                if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
-                {
-                    throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
-                }
-
-                RemoveRange(entities, controlToken);
+                throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
             }
-        }
+
+            RemoveRange(entities, controlToken);
+        });
 
         /// <summary>
         /// Removes the entities matching the specified predicate from the current <see cref="DataAccessRepository{TEntity}" />.
@@ -229,14 +195,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void Update(TEntity entity)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                Update(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken);
-            }
-        }
+        public void Update(TEntity entity) => WithStateControl(controlToken => Update(entity.RejectIf().IsNull(nameof(entity)).TargetArgument, controlToken));
 
         /// <summary>
         /// Updates the specified entities in the current <see cref="DataAccessRepository{TEntity}" />.
@@ -253,20 +212,15 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public void UpdateRange(IEnumerable<TEntity> entities)
+        public void UpdateRange(IEnumerable<TEntity> entities) => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
             {
-                RejectIfDisposed();
-
-                if (entities.RejectIf().IsNull(nameof(entities)).TargetArgument.Any(entity => entity is null))
-                {
-                    throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
-                }
-
-                UpdateRange(entities, controlToken);
+                throw new ArgumentException("The specified entity collection contains one or more null entities.", nameof(entities));
             }
-        }
+
+            UpdateRange(entities, controlToken);
+        });
 
         /// <summary>
         /// Adds the specified entity to the current <see cref="DataAccessRepository{TEntity}" />.

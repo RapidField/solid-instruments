@@ -127,7 +127,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
                 return;
             }
 
-            using (var controlToken = StateControl.Enter())
+            WithStateControl(() =>
             {
                 var newNodes = blocks.RejectIf().IsNull(nameof(blocks)).TargetArgument.Select(block => CalculateHash(block.RejectIf().IsNull(nameof(blocks)).TargetArgument)).Select(hashValue => new HashTreeNode(hashValue));
 
@@ -137,7 +137,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing
                 }
 
                 PermuteRow(LeafNodes);
-            }
+            });
         }
 
         /// <summary>

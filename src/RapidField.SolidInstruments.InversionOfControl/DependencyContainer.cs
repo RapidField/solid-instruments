@@ -87,28 +87,23 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public IDependencyScope CreateScope()
+        public IDependencyScope CreateScope() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            try
             {
-                RejectIfDisposed();
-
-                try
-                {
-                    var scope = RootScope.CreateChildScope();
-                    ReferenceManager.AddObject(scope);
-                    return scope;
-                }
-                catch (CreateDependencyScopeException)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    throw new CreateDependencyScopeException(exception);
-                }
+                var scope = RootScope.CreateChildScope();
+                ReferenceManager.AddObject(scope);
+                return scope;
             }
-        }
+            catch (CreateDependencyScopeException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new CreateDependencyScopeException(exception);
+            }
+        });
 
         /// <summary>
         /// Requests an object of specified type from the current <see cref="DependencyContainer{TContainer, TConfigurator}" />.

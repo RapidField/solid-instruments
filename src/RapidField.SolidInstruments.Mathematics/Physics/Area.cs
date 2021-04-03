@@ -511,7 +511,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
                 {
                     if (numericSubstringIsComplete is false)
                     {
-                        if (character.IsNumeric() || character == '.')
+                        if (character.IsNumeric() || character == DecimalPointCharacter)
                         {
                             numericSubstringBuilder.Append(character);
                             continue;
@@ -698,6 +698,12 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String AcresUnitOfMeasureCymbol = "ac";
+
+        /// <summary>
+        /// Represents the character ".".
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Char DecimalPointCharacter = '.';
 
         /// <summary>
         /// Represents the number of hectares in a square meter.

@@ -183,10 +183,10 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
         /// A <see cref="String" /> containing latitude and longitude coordinates separated by a comma.
         /// </param>
         /// <param name="latitude">
-        /// A reference to the latitude <see cref="Decimal" /> component of the resulting <see cref="GeographicCoordinates" />.
+        /// A reference to the latitude <see cref="Double" /> component of the resulting <see cref="GeographicCoordinates" />.
         /// </param>
         /// <param name="longitude">
-        /// A reference to the longitude <see cref="Decimal" /> component of the resulting <see cref="GeographicCoordinates" />.
+        /// A reference to the longitude <see cref="Double" /> component of the resulting <see cref="GeographicCoordinates" />.
         /// </param>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="input" /> is empty.

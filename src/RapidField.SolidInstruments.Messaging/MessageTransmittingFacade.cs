@@ -198,15 +198,13 @@ namespace RapidField.SolidInstruments.Messaging
         /// The object is disposed.
         /// </exception>
         [DebuggerHidden]
-        internal async Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
+        internal Task TransmitAsync<TMessage>(TMessage message, IEnumerable<String> pathLabels, MessagingEntityType entityType)
             where TMessage : class, IMessageBase
         {
             message = message.RejectIf().IsNull(nameof(message)).TargetArgument;
             entityType = entityType.RejectIf().IsEqualToValue(MessagingEntityType.Unspecified, nameof(entityType));
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(controlToken =>
             {
-                RejectIfDisposed();
                 var sendClient = entityType switch
                 {
                     MessagingEntityType.Queue => ClientFactory.GetQueueSender<TMessage>(pathLabels),
@@ -217,21 +215,21 @@ namespace RapidField.SolidInstruments.Messaging
                 try
                 {
                     var adaptedMessage = MessageAdapter.ConvertForward(message);
-                    await TransmitAsync(adaptedMessage, sendClient, controlToken);
+                    return TransmitAsync(adaptedMessage, sendClient, controlToken);
                 }
                 catch (MessageTransmissionException exception)
                 {
-                    await Task.FromException<TMessage>(exception);
+                    return Task.FromException<TMessage>(exception);
                 }
                 catch (ObjectDisposedException exception)
                 {
-                    await Task.FromException<TMessage>(exception);
+                    return Task.FromException<TMessage>(exception);
                 }
                 catch (Exception exception)
                 {
-                    await Task.FromException<TMessage>(new MessageTransmissionException(typeof(TMessage), exception));
+                    return Task.FromException<TMessage>(new MessageTransmissionException(typeof(TMessage), exception));
                 }
-            }
+            });
         }
 
         /// <summary>

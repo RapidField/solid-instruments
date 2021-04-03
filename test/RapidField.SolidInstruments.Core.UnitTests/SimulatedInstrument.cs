@@ -32,23 +32,20 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         /// <summary>
         /// Simulates a thread-safe operation.
         /// </summary>
-        public void SimulateThreadSafeOperation()
+        public void SimulateThreadSafeOperation() => WithStateControl(() =>
         {
-            using (var controlToken = StateControl.Enter())
+            lock (SyncRoot)
             {
-                lock (SyncRoot)
-                {
-                    ConcurrencyCount++;
-                }
-
-                Thread.Sleep(ThreadSafeOperationDelayDuration);
-
-                lock (SyncRoot)
-                {
-                    ConcurrencyCount--;
-                }
+                ConcurrencyCount++;
             }
-        }
+
+            Thread.Sleep(ThreadSafeOperationDelayDuration);
+
+            lock (SyncRoot)
+            {
+                ConcurrencyCount--;
+            }
+        });
 
         /// <summary>
         /// Sets the value of <see cref="NullableIntegerValue" /> equal to the specified value.
@@ -100,14 +97,13 @@ namespace RapidField.SolidInstruments.Core.UnitTests
             get
             {
                 var result = false;
-
-                using (var controlToken = StateControl.Enter())
+                WithStateControl(() =>
                 {
                     lock (SyncRoot)
                     {
                         result = ConcurrencyCount != 0;
                     }
-                }
+                });
 
                 return result;
             }

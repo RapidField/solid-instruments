@@ -342,7 +342,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -373,7 +373,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                         return false;
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -391,7 +391,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -422,7 +422,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                         return false;
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -471,7 +471,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                         return false;
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -488,7 +488,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
                 return false;
             }
 
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
                 if (IsDisposedOrDisposing)
                 {
@@ -520,7 +520,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
 
                         return false;
                 }
-            }
+            });
         }
 
         /// <summary>

@@ -62,11 +62,9 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// </exception>
         public void Invalidate(String key)
         {
-            using (var controlToken = StateControl.Enter())
+            _ = key.RejectIf().IsNullOrEmpty(nameof(key));
+            WithStateControl(controlToken =>
             {
-                RejectIfDisposed();
-                _ = key.RejectIf().IsNullOrEmpty(nameof(key));
-
                 try
                 {
                     Invalidate(key, controlToken);
@@ -79,7 +77,7 @@ namespace RapidField.SolidInstruments.Core.Caching
                 {
                     throw new CacheAccessException("An exception was raised while invalidating the cached object.", exception);
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -251,12 +249,10 @@ namespace RapidField.SolidInstruments.Core.Caching
         public void Write<TValue>(String key, TValue value)
             where TValue : class
         {
-            using (var controlToken = StateControl.Enter())
+            _ = key.RejectIf().IsNullOrEmpty(nameof(key));
+            _ = value.RejectIf().IsNull(nameof(value));
+            WithStateControl(controlToken =>
             {
-                RejectIfDisposed();
-                _ = key.RejectIf().IsNullOrEmpty(nameof(key));
-                _ = value.RejectIf().IsNull(nameof(value));
-
                 try
                 {
                     Write(key, value, controlToken);
@@ -269,7 +265,7 @@ namespace RapidField.SolidInstruments.Core.Caching
                 {
                     throw new CacheAccessException(typeof(TValue), exception);
                 }
-            }
+            });
         }
 
         /// <summary>

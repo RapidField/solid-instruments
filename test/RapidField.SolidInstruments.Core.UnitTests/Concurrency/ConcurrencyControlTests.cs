@@ -148,13 +148,13 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
                         var operation = operations[i];
                         tasks[i] = Task.Factory.StartNew(() =>
                         {
-                            using (var controlToken = target.Enter())
+                            target.EnqueueAndWait(controlToken =>
                             {
                                 controlToken.IsActive.Should().BeTrue();
                                 operation();
                                 ((ConcurrencyControlToken)controlToken).Release();
                                 controlToken.IsActive.Should().BeFalse();
-                            }
+                            });
                         });
                     }
 

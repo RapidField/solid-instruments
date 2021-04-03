@@ -16,6 +16,11 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Asymmetric\**" />
+      <EmbeddedResource Remove="Asymmetric\**" />
+      <None Remove="Asymmetric\**" />
+    </ItemGroup>
+    <ItemGroup>
       <None Remove="TestRootOne.testcert" />
       <None Remove="TestRootThree.testcert" />
       <None Remove="TestRootTwo.testcert" />
@@ -43,8 +48,5 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
     </ItemGroup>
     <ItemGroup>
         <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Asymmetric\" />
     </ItemGroup>
 </Project>

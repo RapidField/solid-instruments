@@ -134,7 +134,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
                     };
                 }
 
-                using (var controlToken = StateControl.Enter())
+                return WithStateControl(() =>
                 {
                     try
                     {
@@ -156,7 +156,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                     Status = ChannelStatus.Unavailable;
                     throw new ChannelReadException(this);
-                }
+                });
             }
         }
 
@@ -209,7 +209,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
                 };
             }
 
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(() =>
             {
                 try
                 {
@@ -231,7 +231,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
 
                 Status = ChannelStatus.Unavailable;
                 return Task.FromException<IDiscreteUnitOfOutput<T>>(new ChannelReadException(this));
-            }
+            });
         }
 
         /// <summary>
@@ -417,19 +417,13 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <exception cref="InvalidOperationException">
         /// The channel's status is equal to <see cref="ChannelStatus.Unavailable" />.
         /// </exception>
-        public void Toggle()
+        public void Toggle() => WithStateControl(() => Status = Status switch
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                Status = Status switch
-                {
-                    ChannelStatus.Live => ChannelStatus.Silent,
-                    ChannelStatus.Silent => ChannelStatus.Live,
-                    ChannelStatus.Unavailable => throw new InvalidOperationException("The channel is unavailable."),
-                    _ => throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.")
-                };
-            }
-        }
+            ChannelStatus.Live => ChannelStatus.Silent,
+            ChannelStatus.Silent => ChannelStatus.Live,
+            ChannelStatus.Unavailable => throw new InvalidOperationException("The channel is unavailable."),
+            _ => throw new UnsupportedSpecificationException($"The specified channel status, {Status}, is not supported.")
+        });
 
         /// <summary>
         /// Converts the value of the current <see cref="Channel{T}" /> to its equivalent string representation.

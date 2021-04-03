@@ -58,11 +58,8 @@ namespace RapidField.SolidInstruments.ObjectComposition
             where T : class
         {
             var instanceType = typeof(T);
-
-            using (var controlToken = StateControl.Enter())
+            return WithStateControl(controlToken =>
             {
-                RejectIfDisposed();
-
                 if (Instances.TryGetValue(instanceType, out var extantInstance))
                 {
                     return extantInstance as T;
@@ -71,7 +68,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
                 var newInstance = GetNew<T>(controlToken);
                 Instances.Add(instanceType, newInstance);
                 return newInstance;
-            }
+            });
         }
 
         /// <summary>
@@ -118,14 +115,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// An exception was raised during object production.
         /// </exception>
         public T GetNew<T>()
-            where T : class
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
-                return GetNew<T>(controlToken);
-            }
-        }
+            where T : class => WithStateControl(controlToken => GetNew<T>(controlToken));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="FactoryProducedInstanceGroup" />.

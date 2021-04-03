@@ -37,24 +37,21 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised during finalization of the builder.
         /// </exception>
-        public TResult ToResult()
+        public TResult ToResult() => WithStateControl(controlToken =>
         {
-            using (var controlToken = StateControl.Enter())
+            try
             {
-                try
-                {
-                    return ToResult(controlToken);
-                }
-                catch (ObjectBuilderException)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    throw new ObjectBuilderException(GetType(), exception);
-                }
+                return ToResult(controlToken);
             }
-        }
+            catch (ObjectBuilderException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new ObjectBuilderException(GetType(), exception);
+            }
+        });
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectBuilder{TResult}" />.

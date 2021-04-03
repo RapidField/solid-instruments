@@ -48,13 +48,7 @@ namespace RapidField.SolidInstruments.Core
         /// <paramref name="kind" /> is equal to <see cref="DateTimeKind.Unspecified" />.
         /// </exception>
         [DebuggerHidden]
-        internal void UseKind(DateTimeKind kind)
-        {
-            using (var controlToken = StateControl.Enter())
-            {
-                Kind = kind.RejectIf().IsEqualToValue(DateTimeKind.Unspecified, nameof(kind));
-            }
-        }
+        internal void UseKind(DateTimeKind kind) => WithStateControl(() => { Kind = kind.RejectIf().IsEqualToValue(DateTimeKind.Unspecified, nameof(kind)); });
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="TimeStamp" />.

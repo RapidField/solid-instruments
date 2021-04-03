@@ -67,13 +67,12 @@ namespace RapidField.SolidInstruments.Command
                 var processMethod = implementedHandlerType.GetMethod(CommandHandlerProcessMethodName);
                 var processMethodArguments = new Object[1] { command };
 
-                using (var controlToken = StateControl.Enter())
+                return WithStateControl(() =>
                 {
-                    RejectIfDisposed();
                     var commandHandler = Scope.Resolve(registeredHandlerType);
                     var result = processMethod.Invoke(commandHandler, processMethodArguments);
                     return (TResult)result;
-                }
+                });
             }
             catch (CommandHandlingException)
             {
@@ -110,7 +109,7 @@ namespace RapidField.SolidInstruments.Command
         /// <exception cref="ObjectDisposedException">
         /// The object is disposed.
         /// </exception>
-        public Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command) => Task.FromResult(Process(command));
+        public Task<TResult> ProcessAsync<TResult>(ICommand<TResult> command) => Task.Factory.StartNew(() => Process(command));
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="CommandMediator" />.
