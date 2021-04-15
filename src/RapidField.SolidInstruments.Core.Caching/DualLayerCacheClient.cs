@@ -120,12 +120,30 @@ namespace RapidField.SolidInstruments.Core.Caching
         protected override TValue TryRead<TValue>(String key)
             where TValue : class
         {
-            if (LocalCache.TryRead<TValue>(key, out var localValue))
+            if (IsDisposedOrDisposing)
+            {
+                return null;
+            }
+            else if (LocalCache.TryRead<TValue>(key, out var localValue))
             {
                 return localValue;
             }
             else if (RemoteCache.TryRead<TValue>(key, out var remoteValue))
             {
+                if (IsDisposedOrDisposing)
+                {
+                    return remoteValue;
+                }
+
+                try
+                {
+                    LocalCache.Write(key, remoteValue);
+                }
+                catch
+                {
+                    return remoteValue;
+                }
+
                 return remoteValue;
             }
 

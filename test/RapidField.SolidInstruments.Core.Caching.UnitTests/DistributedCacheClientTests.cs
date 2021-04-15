@@ -3,50 +3,41 @@
 // =================================================================================================================================
 
 using FluentAssertions;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RapidField.SolidInstruments.Core.Caching;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Security.Cryptography;
 
-namespace RapidField.SolidInstruments.Core.UnitTests.Caching
+namespace RapidField.SolidInstruments.Core.Caching.UnitTests
 {
     [TestClass]
-    public class InMemoryCacheClientTests
+    public class DistributedCacheClientTests
     {
         [TestMethod]
-        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForAggressiveStrategy() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(InMemoryCachingStrategy.Aggressive, true);
+        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForNonOperativeCache() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(null);
 
         [TestMethod]
-        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForConservativeStrategy() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(InMemoryCachingStrategy.Conservative, true);
+        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForOperativeCache() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions())));
 
         [TestMethod]
-        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForModerateStrategy() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(InMemoryCachingStrategy.Moderate, true);
+        public void Process_ShouldProduceDesiredResults_ForNonOperativeCache() => Process_ShouldProduceDesiredResults(null);
 
         [TestMethod]
-        public void FunctionalLifeSpanTest_ShouldProduceDesiredResults_ForNoCachingStrategy() => FunctionalLifeSpanTest_ShouldProduceDesiredResults(InMemoryCachingStrategy.NoCaching, false);
+        public void Process_ShouldProduceDesiredResults_ForOperativeCache() => Process_ShouldProduceDesiredResults(new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions())));
 
-        [TestMethod]
-        public void Process_ShouldProduceDesiredResults_ForAggressiveStrategy() => Process_ShouldProduceDesiredResults(InMemoryCachingStrategy.Aggressive, true);
-
-        [TestMethod]
-        public void Process_ShouldProduceDesiredResults_ForConservativeStrategy() => Process_ShouldProduceDesiredResults(InMemoryCachingStrategy.Conservative, true);
-
-        [TestMethod]
-        public void Process_ShouldProduceDesiredResults_ForModerateStrategy() => Process_ShouldProduceDesiredResults(InMemoryCachingStrategy.Moderate, true);
-
-        [TestMethod]
-        public void Process_ShouldProduceDesiredResults_ForNoCachingStrategy() => Process_ShouldProduceDesiredResults(InMemoryCachingStrategy.NoCaching, false);
-
-        private static void FunctionalLifeSpanTest_ShouldProduceDesiredResults(InMemoryCachingStrategy strategy, Boolean cacheShouldBeOperative)
+        private static void FunctionalLifeSpanTest_ShouldProduceDesiredResults(IDistributedCache cache)
         {
             // Arrange.
+            var cacheShouldBeOperative = cache is not null;
             var keyOne = "foo";
             var keyTwo = "bar";
             using var randomnessProvider = RandomNumberGenerator.Create();
             var valueOne = SimulatedModel.Random(randomnessProvider);
             var valueTwo = SimulatedModel.Random(randomnessProvider);
-            using var target = new InMemoryCacheClient(strategy);
+            using var target = new DistributedCacheClient(cache);
 
             // Act.
             target.Write(keyOne, valueOne);
@@ -60,7 +51,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Caching
             target.Invalidate(keyOne);
             var resultSeven = target.TryRead<SimulatedModel>(keyOne, out var resultValueSeven);
             var resultEight = target.TryRead<SimulatedModel>(keyTwo, out var resultValueEight);
-            target.Clear();
+            target.Refresh(keyTwo);
             var resultNine = target.TryRead<SimulatedModel>(keyTwo, out var resultValueNine);
 
             if (cacheShouldBeOperative)
@@ -74,16 +65,16 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Caching
                 resultSix.Should().BeTrue();
                 resultSeven.Should().BeFalse();
                 resultEight.Should().BeTrue();
-                resultNine.Should().BeFalse();
-                resultValueOne.Should().BeSameAs(valueOne);
+                resultNine.Should().BeTrue();
+                resultValueOne.Should().Be(valueOne);
                 resultValueTwo.Should().BeNull();
                 resultValueThree.Should().BeNull();
-                resultValueFour.Should().BeSameAs(valueOne);
+                resultValueFour.Should().Be(valueOne);
                 resultValueFive.Should().BeNull();
-                resultValueSix.Should().BeSameAs(valueTwo);
+                resultValueSix.Should().Be(valueTwo);
                 resultValueSeven.Should().BeNull();
-                resultValueEight.Should().BeSameAs(valueTwo);
-                resultValueNine.Should().BeNull();
+                resultValueEight.Should().Be(valueTwo);
+                resultValueNine.Should().Be(valueTwo);
             }
             else
             {
@@ -109,14 +100,15 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Caching
             }
         }
 
-        private static void Process_ShouldProduceDesiredResults(InMemoryCachingStrategy strategy, Boolean cacheShouldBeOperative)
+        private static void Process_ShouldProduceDesiredResults(IDistributedCache cache)
         {
             // Arrange.
+            var cacheShouldBeOperative = cache is not null;
             var keyOne = "foo";
             var keyTwo = "bar";
             using var randomnessProvider = RandomNumberGenerator.Create();
             var produceValueFunction = new Func<SimulatedModel>(() => SimulatedModel.Random(randomnessProvider));
-            using var target = new InMemoryCacheClient(strategy);
+            using var target = new DistributedCacheClient(cache);
 
             // Act.
             var targetIsOperative = target.IsOperative;

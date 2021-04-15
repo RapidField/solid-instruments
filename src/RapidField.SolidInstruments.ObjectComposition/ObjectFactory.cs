@@ -59,7 +59,17 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <param name="configuration">
         /// Configuration information for the current <see cref="ObjectFactory" />.
         /// </param>
-        protected sealed override void Configure(ObjectFactoryConfiguration<Object> configuration) => Configure(new ObjectFactoryConfiguration(configuration));
+        protected sealed override void Configure(ObjectFactoryConfiguration<Object> configuration)
+        {
+            try
+            {
+                Configure(new ObjectFactoryConfiguration(configuration));
+            }
+            finally
+            {
+                base.Configure(configuration);
+            }
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectFactory" />.
@@ -85,7 +95,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// Initializes a new instance of the <see cref="ObjectFactory{TProductBase}" /> class.
         /// </summary>
         protected ObjectFactory()
-            : this(DefaultConfiguration)
+            : this(DefaultApplicationConfiguration)
         {
             return;
         }

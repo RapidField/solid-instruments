@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.ArgumentValidation
 {
@@ -35,6 +36,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target object is equal to <paramref name="otherObject" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<TArgument> IsEqualTo<TArgument>(this ValidationTarget<TArgument> target, TArgument otherObject)
             where TArgument : class, IEquatable<TArgument> => target.IsEqualTo(otherObject, null);
 
@@ -63,6 +65,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target object is equal to <paramref name="otherObject" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<TArgument> IsEqualTo<TArgument>(this ValidationTarget<TArgument> target, TArgument otherObject, String targetParameterName)
             where TArgument : class, IEquatable<TArgument> => target.IsEqualTo(otherObject, targetParameterName, null);
 
@@ -94,6 +97,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target object is equal to <paramref name="otherArgument" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<TArgument> IsEqualTo<TArgument>(this ValidationTarget<TArgument> target, TArgument otherArgument, String targetParameterName, String otherParameterName)
             where TArgument : class, IEquatable<TArgument>
         {

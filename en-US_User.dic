@@ -21,6 +21,7 @@ bcrypt
 boolean
 bp
 brainpool
+buildable
 buildmetadata
 carte
 cbcm

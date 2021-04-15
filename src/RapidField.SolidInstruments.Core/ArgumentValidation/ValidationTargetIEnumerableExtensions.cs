@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.ArgumentValidation
 {
@@ -37,6 +38,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<IEnumerable<T>> IsNullOrEmpty<T>(this ValidationTarget<IEnumerable<T>> target) => target.IsNullOrEmpty(null);
 
         /// <summary>
@@ -64,6 +66,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<IEnumerable<T>> IsNullOrEmpty<T>(this ValidationTarget<IEnumerable<T>> target, String targetParameterName) => target.RejectIfIsNullOrEmpty<IEnumerable<T>, T>(targetParameterName);
 
         /// <summary>
@@ -94,6 +97,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ValidationResult<TArgument> RejectIfIsNullOrEmpty<TArgument, T>(this ValidationTarget<TArgument> target, String targetParameterName)
             where TArgument : IEnumerable<T>
         {

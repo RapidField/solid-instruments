@@ -37,7 +37,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see langword="null" />.
         /// </exception>
         public ObjectContainer(Action<IObjectFactoryConfigurationProductionFunctions> factoryConfigurator, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator)
-            : this(InitializeFactory(DefaultConfiguration, factoryConfigurator.RejectIf().IsNull()), definitionConfigurator)
+            : this(InitializeFactory(DefaultApplicationConfiguration, factoryConfigurator.RejectIf().IsNull()), definitionConfigurator)
         {
             return;
         }
@@ -56,7 +56,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <see langword="null" />.
         /// </exception>
         public ObjectContainer(IObjectFactory factory, Action<IObjectContainerConfigurationDefinitions> definitionConfigurator)
-            : this(DefaultConfiguration, factory, definitionConfigurator, false)
+            : this(DefaultApplicationConfiguration, factory, definitionConfigurator, false)
         {
             return;
         }
@@ -243,7 +243,17 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <param name="configuration">
         /// Configuration information for the current <see cref="ObjectContainer" />.
         /// </param>
-        protected sealed override void Configure(ObjectContainerConfiguration configuration) => DefinitionConfigurator(configuration.Definitions);
+        protected sealed override void Configure(ObjectContainerConfiguration configuration)
+        {
+            try
+            {
+                DefinitionConfigurator(configuration.Definitions);
+            }
+            finally
+            {
+                base.Configure(configuration);
+            }
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ObjectContainer" />.

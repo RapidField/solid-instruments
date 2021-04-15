@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.ArgumentValidation
 {
@@ -34,6 +35,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<T[]> IsNullOrEmpty<T>(this ValidationTarget<T[]> target) => target.IsNullOrEmpty(null);
 
         /// <summary>
@@ -61,6 +63,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<T[]> IsNullOrEmpty<T>(this ValidationTarget<T[]> target, String targetParameterName) => target.RejectIfIsNullOrEmpty<T[], T>(targetParameterName);
     }
 }

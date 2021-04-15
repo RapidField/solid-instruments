@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.ArgumentValidation
 {
@@ -39,6 +40,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Dictionary<TKey, TValue>> IsNullOrEmpty<TKey, TValue>(this ValidationTarget<Dictionary<TKey, TValue>> target) => target.IsNullOrEmpty(null);
 
         /// <summary>
@@ -69,6 +71,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is <see langword="null" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Dictionary<TKey, TValue>> IsNullOrEmpty<TKey, TValue>(this ValidationTarget<Dictionary<TKey, TValue>> target, String targetParameterName) => target.RejectIfIsNullOrEmpty<Dictionary<TKey, TValue>, KeyValuePair<TKey, TValue>>(targetParameterName);
     }
 }

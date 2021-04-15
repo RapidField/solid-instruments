@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.Core
 {
@@ -16,7 +17,7 @@ namespace RapidField.SolidInstruments.Core
     /// <typeparam name="TResult">
     /// The output type that results from the invocation of <see cref="ObjectBuilder{TResult}.ToResult()" />.
     /// </typeparam>
-    public abstract class ObjectBuilder<TResult> : Instrument, IObjectBuilder<TResult>
+    public abstract class ObjectBuilder<TResult> : ObjectBuilder, IObjectBuilder<TResult>
         where TResult : class
     {
         /// <summary>
@@ -36,6 +37,9 @@ namespace RapidField.SolidInstruments.Core
         /// </returns>
         /// <exception cref="ObjectBuilderException">
         /// An exception was raised during finalization of the builder.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The object is disposed.
         /// </exception>
         public TResult ToResult() => WithStateControl(controlToken =>
         {
@@ -71,5 +75,50 @@ namespace RapidField.SolidInstruments.Core
         /// The configured <typeparamref name="TResult" /> instance.
         /// </returns>
         protected abstract TResult ToResult(IConcurrencyControlToken controlToken);
+
+        /// <summary>
+        /// Gets the type of the object that the builder composes and configures.
+        /// </summary>
+        public sealed override Type ResultType => ResultTypeValue;
+
+        /// <summary>
+        /// Represents the type of the object that the builder composes and configures.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type ResultTypeValue = typeof(TResult);
+    }
+
+    /// <summary>
+    /// Represents an object that configures and produces new object instances.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="ObjectBuilder" /> is the default implementation of <see cref="IObjectBuilder" />.
+    /// </remarks>
+    public abstract class ObjectBuilder : Instrument, IObjectBuilder
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectBuilder" /> class.
+        /// </summary>
+        protected ObjectBuilder()
+            : base()
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Releases all resources consumed by the current <see cref="ObjectBuilder" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not disposal was invoked by user code.
+        /// </param>
+        protected override void Dispose(Boolean disposing) => base.Dispose(disposing);
+
+        /// <summary>
+        /// Gets the type of the object that the builder composes and configures.
+        /// </summary>
+        public abstract Type ResultType
+        {
+            get;
+        }
     }
 }

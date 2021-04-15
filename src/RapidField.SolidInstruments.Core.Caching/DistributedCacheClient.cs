@@ -132,6 +132,11 @@ namespace RapidField.SolidInstruments.Core.Caching
         {
             if (IsOperative)
             {
+                if (IsDisposedOrDisposing)
+                {
+                    return null;
+                }
+
                 var serializer = new DataContractJsonSerializer(typeof(TValue), SerializerSettings);
                 var serializedValue = Cache?.Get(key);
 

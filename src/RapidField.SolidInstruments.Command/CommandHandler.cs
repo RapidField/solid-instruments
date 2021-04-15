@@ -64,7 +64,7 @@ namespace RapidField.SolidInstruments.Command
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TCommand), exception);
+                throw new CommandHandlingException(CommandType, exception);
             }
         }
 
@@ -94,6 +94,23 @@ namespace RapidField.SolidInstruments.Command
         /// A token that represents and manages contextual thread safety.
         /// </param>
         protected abstract void Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken);
+
+        /// <summary>
+        /// Gets the type of the command that is processed by the handler.
+        /// </summary>
+        public Type CommandType => CommandTypeValue;
+
+        /// <summary>
+        /// Gets the type of the result that is emitted by the handler when processing a command, or the <see cref="Nix" /> type if
+        /// the handler does not emit a result.
+        /// </summary>
+        public Type ResultType => Nix.Type;
+
+        /// <summary>
+        /// Represents the type of the command that is processed by the handler.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type CommandTypeValue = typeof(TCommand);
 
         /// <summary>
         /// Represents processing intermediary that is used to process sub-commands.
@@ -162,7 +179,7 @@ namespace RapidField.SolidInstruments.Command
             }
             catch (Exception exception)
             {
-                throw new CommandHandlingException(typeof(TCommand), exception);
+                throw new CommandHandlingException(CommandType, exception);
             }
         }
 
@@ -195,6 +212,30 @@ namespace RapidField.SolidInstruments.Command
         /// The result that is emitted when processing the command.
         /// </returns>
         protected abstract TResult Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken);
+
+        /// <summary>
+        /// Gets the type of the command that is processed by the handler.
+        /// </summary>
+        public Type CommandType => CommandTypeValue;
+
+        /// <summary>
+        /// Gets the type of the result that is emitted by the handler when processing a command, or the <see cref="Nix" /> type if
+        /// the handler does not emit a result.
+        /// </summary>
+        public Type ResultType => ResultTypeValue;
+
+        /// <summary>
+        /// Represents the type of the command that is processed by the handler.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type CommandTypeValue = typeof(TCommand);
+
+        /// <summary>
+        /// Represents the type of the result that is emitted by the handler when processing a command, or the <see cref="Nix" />
+        /// type if the handler does not emit a result.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type ResultTypeValue = typeof(TResult);
 
         /// <summary>
         /// Represents processing intermediary that is used to process sub-commands.

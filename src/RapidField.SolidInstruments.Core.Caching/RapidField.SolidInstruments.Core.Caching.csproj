@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
@@ -8,7 +8,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Company>RapidField</Company>
         <Copyright>Copyright (c) RapidField LLC. All rights reserved.</Copyright>
         <Product>Solid Instruments</Product>
-        <Description>This library exposes foundational, general-purpose features, including: concurrency control abstractions, configurable types, fluent argument validation and object lifetime management.</Description>
+        <Description>This library exposes configurable clients for accessing cached data.</Description>
         <Version>$(BuildVersion)</Version>
         <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -19,18 +19,17 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.Core.128w.png</PackageIcon>
-        <PackageTags>solid-instruments;core;concurrency;thread-safety;fluent-validation;fluent-guard;object-lifetime</PackageTags>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <PackageTags>solid-instruments;core;caching</PackageTags>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\net5.0\RapidField.SolidInstruments.Core.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net5.0\RapidField.SolidInstruments.Core.Caching.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
-        <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\net5.0\RapidField.SolidInstruments.Core.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net5.0\RapidField.SolidInstruments.Core.Caching.xml</DocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
@@ -40,8 +39,6 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <Content Include="..\..\LICENSE.txt" Link="LICENSE.txt" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-        <PackageReference Include="Rationals" Version="1.4.0" />
+        <ProjectReference Include="..\RapidField.SolidInstruments.Core\RapidField.SolidInstruments.Core.csproj" Version="$(BuildVersion)" />
     </ItemGroup>
 </Project>

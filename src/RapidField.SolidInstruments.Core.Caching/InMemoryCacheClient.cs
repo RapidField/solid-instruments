@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
+using RapidField.SolidInstruments.Core.Caching.Extensions;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
@@ -136,15 +137,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// The object retrieved from the cache, or <see langword="null" /> if the object was not successfully retrieved.
         /// </returns>
         protected override TValue TryRead<TValue>(String key)
-            where TValue : class
-        {
-            if (IsOperative)
-            {
-                return Cache.TryGetValue(key, out var value) ? value as TValue : null;
-            }
-
-            return null;
-        }
+            where TValue : class => IsOperative ? (IsDisposedOrDisposing ? null : (Cache.TryGetValue(key, out var value) ? value as TValue : null)) : null;
 
         /// <summary>
         /// Adds or updates the specified object using the specified key.

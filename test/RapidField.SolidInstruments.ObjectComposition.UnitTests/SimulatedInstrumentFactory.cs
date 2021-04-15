@@ -47,11 +47,18 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// </param>
         protected override void Configure(ObjectFactoryConfiguration<Instrument> configuration)
         {
-            configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
-            configuration.ProductionFunctions
-                .Add(() => new SimulatedInstrument(configuration.StateControlMode))
-                .Add(() => new PinnedMemory<Int16>(3))
-                .Add(() => new CircularBuffer<Int32>(5));
+            try
+            {
+                configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
+                configuration.ProductionFunctions
+                    .Add(() => new SimulatedInstrument(configuration.StateControlMode))
+                    .Add(() => new PinnedMemory<Int16>(3))
+                    .Add(() => new CircularBuffer<Int32>(5));
+            }
+            finally
+            {
+                base.Configure(configuration);
+            }
         }
 
         /// <summary>

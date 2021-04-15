@@ -47,10 +47,17 @@ namespace RapidField.SolidInstruments.ObjectComposition.UnitTests
         /// </param>
         protected override void Configure(ObjectFactoryConfiguration<Encoding> configuration)
         {
-            configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
-            configuration.ProductionFunctions
-                .Add(() => Base32Encoding.Default)
-                .Add(() => Base32Encoding.ZBase32 as ZBase32Encoding);
+            try
+            {
+                configuration.StateControlMode = ConcurrencyControlMode.SingleThreadSpinLock;
+                configuration.ProductionFunctions
+                    .Add(() => Base32Encoding.Default)
+                    .Add(() => Base32Encoding.ZBase32 as ZBase32Encoding);
+            }
+            finally
+            {
+                base.Configure(configuration);
+            }
         }
 
         /// <summary>

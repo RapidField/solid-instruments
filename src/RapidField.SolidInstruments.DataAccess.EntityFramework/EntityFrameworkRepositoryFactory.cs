@@ -63,7 +63,17 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="configuration">
         /// Configuration information for the current <see cref="EntityFrameworkRepositoryFactory{TContext}" />.
         /// </param>
-        protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration) => Configure(configuration, Context);
+        protected override void Configure(ObjectFactoryConfiguration<IDataAccessRepository> configuration)
+        {
+            try
+            {
+                Configure(configuration, Context);
+            }
+            finally
+            {
+                base.Configure(configuration);
+            }
+        }
 
         /// <summary>
         /// Configures the current <see cref="EntityFrameworkRepositoryFactory{TContext}" />.

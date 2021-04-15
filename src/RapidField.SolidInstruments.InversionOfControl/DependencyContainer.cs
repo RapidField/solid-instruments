@@ -165,6 +165,10 @@ namespace RapidField.SolidInstruments.InversionOfControl
             {
                 throw new ContainerConfigurationException(exception);
             }
+            finally
+            {
+                base.Configure(configuration);
+            }
         }
 
         /// <summary>

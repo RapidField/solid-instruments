@@ -4,11 +4,12 @@
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace RapidField.SolidInstruments.Core.Extensions
+namespace RapidField.SolidInstruments.Core.Caching.Extensions
 {
     /// <summary>
     /// Extends the <see cref="InMemoryCachingStrategy" /> enumeration with general purpose features.

@@ -19,7 +19,7 @@ namespace RapidField.SolidInstruments.Mathematics.Physics
     public readonly struct GeographicCoordinates : IEquatable<GeographicCoordinates>
     {
         /// <summary>
-        /// Initialize a new instance of the <see cref="GeographicCoordinates" /> class.
+        /// Initialize a new instance of the <see cref="GeographicCoordinates" /> structure.
         /// </summary>
         /// <param name="latitude">
         /// A latitude coordinate within the range 0 to (+/-)90.

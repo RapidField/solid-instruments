@@ -7,13 +7,12 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RapidField.SolidInstruments.Core.Caching;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace RapidField.SolidInstruments.Core.UnitTests.Caching
+namespace RapidField.SolidInstruments.Core.Caching.UnitTests
 {
     [TestClass]
     public class DualLayerCacheClientTests

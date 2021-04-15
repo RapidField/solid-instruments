@@ -24,8 +24,22 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.
         /// </summary>
+        /// <param name="isBuildable">
+        /// A value indicating whether or not the instrument is a buildable instrument. The default value is
+        /// <see langword="false" />.
+        /// </param>
+        [DebuggerHidden]
+        internal ConfigurableInstrument(Boolean isBuildable)
+            : this(isBuildable ? null : DefaultApplicationConfiguration, isBuildable)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.
+        /// </summary>
         protected ConfigurableInstrument()
-            : this(DefaultConfiguration)
+            : this(DefaultApplicationConfiguration)
         {
             return;
         }
@@ -40,9 +54,31 @@ namespace RapidField.SolidInstruments.Core
         /// <paramref name="applicationConfiguration" /> is <see langword="null" />.
         /// </exception>
         protected ConfigurableInstrument(IConfiguration applicationConfiguration)
+            : this(applicationConfiguration, DefaultIsBuildableValue)
+        {
+            return;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurableInstrument{TConfiguration}" /> class.
+        /// </summary>
+        /// <param name="applicationConfiguration">
+        /// Configuration information for the application.
+        /// </param>
+        /// <param name="isBuildable">
+        /// A value indicating whether or not the instrument is a buildable instrument. The default value is
+        /// <see langword="false" />.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="isBuildable" /> is <see langword="false" /> and <paramref name="applicationConfiguration" /> is
+        /// <see langword="null" />.
+        /// </exception>
+        [DebuggerHidden]
+        private ConfigurableInstrument(IConfiguration applicationConfiguration, Boolean isBuildable)
             : base()
         {
-            ApplicationConfiguration = applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument;
+            ApplicationConfiguration = isBuildable ? null : applicationConfiguration.RejectIf().IsNull(nameof(applicationConfiguration)).TargetArgument;
+            IsBuildable = isBuildable;
             LazyConfiguration = new(Configure, LazyThreadSafetyMode.PublicationOnly);
         }
 
@@ -69,7 +105,10 @@ namespace RapidField.SolidInstruments.Core
         /// <param name="configuration">
         /// Configuration information for the current <see cref="ConfigurableInstrument{TConfiguration}" />.
         /// </param>
-        protected abstract void Configure(TConfiguration configuration);
+        protected virtual void Configure(TConfiguration configuration)
+        {
+            return;
+        }
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="ConfigurableInstrument{TConfiguration}" />.
@@ -86,7 +125,7 @@ namespace RapidField.SolidInstruments.Core
         /// A default <see cref="IConfiguration" /> instance.
         /// </returns>
         [DebuggerHidden]
-        private static IConfiguration InitializeDefaultConfiguration() => new ConfigurationBuilder().Build();
+        private static IConfiguration InitializeDefaultApplicationConfiguration() => new ConfigurationBuilder().Build();
 
         /// <summary>
         /// Configures the current <see cref="ConfigurableInstrument{TConfiguration}" />.
@@ -102,7 +141,7 @@ namespace RapidField.SolidInstruments.Core
         {
             try
             {
-                var configuration = new TConfiguration()
+                var configuration = new TConfiguration
                 {
                     Application = ApplicationConfiguration
                 };
@@ -120,7 +159,7 @@ namespace RapidField.SolidInstruments.Core
         /// Gets a default <see cref="IConfiguration" /> instance.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal static IConfiguration DefaultConfiguration => LazyDefaultConfiguration.Value;
+        internal static IConfiguration DefaultApplicationConfiguration => LazyDefaultApplicationConfiguration.Value;
 
         /// <summary>
         /// Gets configuration information for the current <see cref="ConfigurableInstrument{TConfiguration}" />.
@@ -131,16 +170,28 @@ namespace RapidField.SolidInstruments.Core
         protected TConfiguration Configuration => LazyConfiguration.Value;
 
         /// <summary>
-        /// Represents a lazily-initialized default <see cref="IConfiguration" /> instance.
+        /// Represents a value indicating whether or not the current instrument is a buildable instrument.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private static readonly Lazy<IConfiguration> LazyDefaultConfiguration = new(InitializeDefaultConfiguration, LazyThreadSafetyMode.PublicationOnly);
+        internal readonly Boolean IsBuildable;
 
         /// <summary>
         /// Represents configuration information for the application.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly IConfiguration ApplicationConfiguration;
+        internal IConfiguration ApplicationConfiguration;
+
+        /// <summary>
+        /// Represents the default value indicating whether or not the current instrument is a buildable instrument.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Boolean DefaultIsBuildableValue = false;
+
+        /// <summary>
+        /// Represents a lazily-initialized default <see cref="IConfiguration" /> instance.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Lazy<IConfiguration> LazyDefaultApplicationConfiguration = new(InitializeDefaultApplicationConfiguration, LazyThreadSafetyMode.PublicationOnly);
 
         /// <summary>
         /// Represents lazily-initialized configuration information for the current

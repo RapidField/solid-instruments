@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: DisablePrivateReflection()]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Collections.UnitTests")]
+[assembly: InternalsVisibleTo("RapidField.SolidInstruments.Core.Caching.UnitTests")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Core.UnitTests")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.Cryptography")]
 [assembly: InternalsVisibleTo("RapidField.SolidInstruments.DataAccess")]

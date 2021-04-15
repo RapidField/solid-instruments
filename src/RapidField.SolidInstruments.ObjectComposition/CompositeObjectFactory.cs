@@ -55,7 +55,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="factories" /> is <see langword="null" />.
         /// </exception>
         public CompositeObjectFactory(IList<ObjectFactory> factories)
-            : this(DefaultConfiguration, factories)
+            : this(DefaultApplicationConfiguration, factories)
         {
             return;
         }
@@ -165,7 +165,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <paramref name="factories" /> is <see langword="null" />.
         /// </exception>
         public CompositeObjectFactory(IList<ObjectFactory<TProductBase>> factories)
-            : this(DefaultConfiguration, factories)
+            : this(DefaultApplicationConfiguration, factories)
         {
             return;
         }
@@ -248,10 +248,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <param name="configuration">
         /// Configuration information for the current <see cref="CompositeObjectFactory{TProductBase}" />.
         /// </param>
-        protected sealed override void Configure(ObjectFactoryConfiguration<TProductBase> configuration)
-        {
-            return;
-        }
+        protected sealed override void Configure(ObjectFactoryConfiguration<TProductBase> configuration) => base.Configure(configuration);
 
         /// <summary>
         /// Releases all resources consumed by the current <see cref="CompositeObjectFactory{TProductBase}" />.

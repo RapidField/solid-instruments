@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.ArgumentValidation
 {
@@ -38,6 +39,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is not a subclass of <paramref name="supportedBaseType" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Type> IsNotSupportedType(this ValidationTarget<Type> target, Type supportedBaseType) => target.IsNotSupportedType(supportedBaseType, null);
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is not contained within <paramref name="supportedTypes" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Type> IsNotSupportedType(this ValidationTarget<Type> target, IEnumerable<Type> supportedTypes) => target.IsNotSupportedType(supportedTypes, null);
 
         /// <summary>
@@ -94,11 +97,10 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is not a subclass of <paramref name="supportedBaseType" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Type> IsNotSupportedType(this ValidationTarget<Type> target, Type supportedBaseType, String targetParameterName)
         {
-            supportedBaseType.RejectIf().IsNull(nameof(supportedBaseType));
-
-            if (supportedBaseType.GetTypeInfo().IsAssignableFrom(target.Argument))
+            if (supportedBaseType.RejectIf().IsNull(nameof(supportedBaseType)).TargetArgument.GetTypeInfo().IsAssignableFrom(target.Argument))
             {
                 return target.Result;
             }
@@ -135,11 +137,10 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// The target argument is not contained within <paramref name="supportedTypes" />.
         /// </exception>
         [DebuggerHidden]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValidationResult<Type> IsNotSupportedType(this ValidationTarget<Type> target, IEnumerable<Type> supportedTypes, String targetParameterName)
         {
-            supportedTypes.RejectIf().IsNullOrEmpty(nameof(supportedTypes));
-
-            if (supportedTypes.Contains(target.Argument))
+            if (supportedTypes.RejectIf().IsNullOrEmpty(nameof(supportedTypes)).TargetArgument.Contains(target.Argument))
             {
                 return target.Result;
             }

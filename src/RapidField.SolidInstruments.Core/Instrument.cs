@@ -97,17 +97,27 @@ namespace RapidField.SolidInstruments.Core
                     return;
                 }
 
-                WithStateControl(() => { IsDisposing = true; });
-
                 try
                 {
-                    Dispose(true);
-                    GC.SuppressFinalize(this);
+                    WithStateControl(() => { IsDisposing = true; });
+                }
+                catch
+                {
+                    IsDisposing = true;
+                    throw;
                 }
                 finally
                 {
-                    IsDisposed = true;
-                    IsDisposing = false;
+                    try
+                    {
+                        Dispose(true);
+                    }
+                    finally
+                    {
+                        GC.SuppressFinalize(this);
+                        IsDisposed = true;
+                        IsDisposing = false;
+                    }
                 }
             }
         }

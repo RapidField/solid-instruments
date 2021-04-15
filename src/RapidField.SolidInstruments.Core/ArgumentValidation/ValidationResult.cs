@@ -104,15 +104,7 @@ namespace RapidField.SolidInstruments.Core.ArgumentValidation
         /// </exception>
         [DebuggerHidden]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ValidationResult<TArgument> OrIf(Predicate<TArgument> predicate, String targetParameterName, String exceptionMessage)
-        {
-            if (predicate(TargetArgument))
-            {
-                throw new ArgumentException(exceptionMessage, targetParameterName);
-            }
-
-            return new(Target);
-        }
+        public ValidationResult<TArgument> OrIf(Predicate<TArgument> predicate, String targetParameterName, String exceptionMessage) => predicate(TargetArgument) ? throw new ArgumentException(exceptionMessage, targetParameterName) : new(Target);
 
         /// <summary>
         /// Gets the target argument.

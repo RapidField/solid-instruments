@@ -263,7 +263,7 @@ namespace RapidField.SolidInstruments.Core.UnitTests
         protected NumericTestPair(Object numericValue, NumericDataFormat format)
         {
             Format = format.RejectIf().IsEqualToValue(NumericDataFormat.Unspecified, nameof(format));
-            LazyNumber = new Lazy<Number>(InitializeNumber, LazyThreadSafetyMode.ExecutionAndPublication);
+            LazyNumber = new(InitializeNumber, LazyThreadSafetyMode.ExecutionAndPublication);
             NumericValue = numericValue.RejectIf().IsNull(nameof(numericValue)).TargetArgument;
         }
 

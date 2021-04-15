@@ -54,6 +54,14 @@ namespace RapidField.SolidInstruments.Command
     public interface ICommandHandler<in TCommand> : ICommandHandler
         where TCommand : class, ICommandBase
     {
+        /// <summary>
+        /// Gets the type of the result that is emitted by the handler when processing a command, or the <see cref="Nix" /> type if
+        /// the handler does not emit a result.
+        /// </summary>
+        public Type ResultType
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -61,5 +69,12 @@ namespace RapidField.SolidInstruments.Command
     /// </summary>
     public interface ICommandHandler : IInstrument
     {
+        /// <summary>
+        /// Gets the type of the command that is processed by the handler.
+        /// </summary>
+        public Type CommandType
+        {
+            get;
+        }
     }
 }
