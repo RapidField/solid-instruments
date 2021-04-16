@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.Messaging.Service
 {
@@ -50,6 +51,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Process(HeartbeatMessage command, ICommandMediator mediator, IConcurrencyControlToken controlToken)
         {
             if (command.Label.IsNullOrEmpty())

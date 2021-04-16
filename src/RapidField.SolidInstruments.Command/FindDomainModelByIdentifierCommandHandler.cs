@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.Command
 {
@@ -94,6 +95,7 @@ namespace RapidField.SolidInstruments.Command
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override TModel Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => FindDomainModel(command.ModelIdentifier, command.Labels, command.CorrelationIdentifier, mediator, controlToken);
     }
 }

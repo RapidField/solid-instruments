@@ -11,6 +11,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.InversionOfControl;
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data.Common;
 using System.Diagnostics;
@@ -239,6 +240,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="optionsBuilder">
         /// A builder used to create or modify options for this context.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             try
@@ -308,6 +310,7 @@ namespace RapidField.SolidInstruments.DataAccess.EntityFramework
         /// <param name="modelBuilder">
         /// A builder that is used to configure the model.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void OnModelCreating(ModelBuilder modelBuilder)
         {
             try

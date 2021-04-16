@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
 {
@@ -40,6 +41,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="package" /> is
         /// <see langword="null" /> -or- <paramref name="serviceDescriptors" /> is <see langword="null" /> .
         /// </exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override DotNetNativeDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ServiceCollection> package) => new(applicationConfiguration, package, serviceDescriptors);
     }
 }

@@ -10,6 +10,7 @@ using RapidField.SolidInstruments.InversionOfControl.Autofac;
 using RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -110,6 +111,7 @@ namespace RapidField.SolidInstruments.Command.Autofac
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(ContainerBuilder configurator, IConfiguration applicationConfiguration)
         {
             configurator.RegisterApplicationConfiguration(applicationConfiguration);

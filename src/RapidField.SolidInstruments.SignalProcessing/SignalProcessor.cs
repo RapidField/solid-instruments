@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.SignalProcessing
@@ -126,6 +127,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// <see langword="true" /> if the read operation was performed, otherwise <see langword="false" />.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override Boolean TryRead(Int32 index, out TOutput outputValue) => TryRead(InputChannelsReference, Settings, index, out outputValue);
 
         /// <summary>
@@ -143,6 +145,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// <see langword="true" /> if the read operation was performed, otherwise <see langword="false" />.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override Boolean TryRead(Int32 startIndex, Int32 count, TOutput[] outputRange)
         {
             for (var i = 0; i < count; i++)

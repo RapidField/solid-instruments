@@ -13,6 +13,7 @@ using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.InversionOfControl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -90,6 +91,7 @@ namespace RapidField.SolidInstruments.Web
         /// <param name="applicationConfiguration">
         /// Configuration information for the web application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void ConfigureApplication(IApplicationBuilder application, IConfiguration applicationConfiguration) => base.ConfigureApplication(application, applicationConfiguration);
 
         /// <summary>

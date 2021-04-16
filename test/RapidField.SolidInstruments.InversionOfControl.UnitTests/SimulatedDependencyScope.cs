@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
 {
@@ -90,6 +91,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.UnitTests
         /// Gets a value indicating whether or not the current <see cref="SimulatedDependecyContainer" /> manages and disposes of
         /// resolved references on behalf of the scope.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected override sealed Boolean ManagesReferencesForSourceScope => true;
     }
 }

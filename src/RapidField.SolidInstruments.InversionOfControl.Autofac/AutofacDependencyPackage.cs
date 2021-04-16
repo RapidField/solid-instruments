@@ -6,6 +6,7 @@ using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.InversionOfControl.Autofac
 {
@@ -41,6 +42,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         /// <paramref name="applicationConfiguration" /> is <see langword="null" /> -or- <paramref name="package" /> is
         /// <see langword="null" /> -or- <paramref name="serviceDescriptors" /> is <see langword="null" /> .
         /// </exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override AutofacDependencyEngine CreateEngine(IConfiguration applicationConfiguration, IServiceCollection serviceDescriptors, IDependencyPackage<ContainerBuilder> package) => new(applicationConfiguration, package, serviceDescriptors);
     }
 }

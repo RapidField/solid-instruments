@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace RapidField.SolidInstruments.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionRepeater" /> class.
         /// </summary>
+        [DebuggerHidden]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ActionRepeater()
             : base()
         {
@@ -80,6 +83,24 @@ namespace RapidField.SolidInstruments.Core
         public Task RunAsync() => Task.Factory.StartNew(Run);
 
         /// <summary>
+        /// Releases all resources consumed by the current <see cref="ActionRepeater" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not disposal was invoked by user code.
+        /// </param>
+        protected override void Dispose(Boolean disposing)
+        {
+            try
+            {
+                Reset();
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
         /// Suspends the current thread for <see cref="DelayDuration" /> and records new values for
         /// <see cref="DelayDurationNMinusOne" /> and <see cref="DelayDurationNMinusTwo" />.
         /// </summary>
@@ -87,7 +108,12 @@ namespace RapidField.SolidInstruments.Core
         private void Delay()
         {
             var delayDuration = DelayDuration;
-            Thread.Sleep(delayDuration);
+
+            if (delayDuration > TimeSpan.Zero)
+            {
+                Thread.Sleep(delayDuration);
+            }
+
             DelayDurationNMinusTwo = DelayDurationNMinusOne;
             DelayDurationNMinusOne = delayDuration;
         }

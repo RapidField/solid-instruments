@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 
@@ -89,6 +90,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <returns>
         /// A new service provider.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override IServiceProvider CreateProvider() => ProviderFactory.CreateServiceProvider(Nix.Instance);
 
         /// <summary>
@@ -97,6 +99,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <returns>
         /// A new service injector.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override IServiceInjector<TConfigurator> CreateServiceInjector() => CreateServiceInjector(ServiceDescriptors);
 
         /// <summary>
@@ -224,6 +227,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while configuring the container.
         /// </exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override IDependencyContainer CreateContainer()
         {
             try

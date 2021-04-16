@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -59,6 +60,7 @@ namespace RapidField.SolidInstruments.ObjectComposition
         /// <param name="configuration">
         /// Configuration information for the current <see cref="ObjectFactory" />.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(ObjectFactoryConfiguration<Object> configuration)
         {
             try

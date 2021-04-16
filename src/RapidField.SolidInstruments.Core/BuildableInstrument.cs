@@ -50,6 +50,24 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Releases all resources consumed by the current <see cref="BuildableInstrument{TConfiguration}" />.
+        /// </summary>
+        /// <param name="disposing">
+        /// A value indicating whether or not disposal was invoked by user code.
+        /// </param>
+        protected override void Dispose(Boolean disposing)
+        {
+            try
+            {
+                ConfigurationActions.Clear();
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
         /// Represents an ordered collection of actions that modify the instrument configuration.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

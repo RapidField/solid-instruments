@@ -12,6 +12,7 @@ using RapidField.SolidInstruments.Messaging.DotNetNative.Extensions;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -157,6 +158,7 @@ namespace RapidField.SolidInstruments.Messaging.DotNetNative
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             RegisterMessageListenerTypes(configurator);

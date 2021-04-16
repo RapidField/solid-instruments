@@ -173,7 +173,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange
         /// <summary>
         /// Gets a value specifying the valid purposes and uses of the current <see cref="KeyExchangePrivateKey" />.
         /// </summary>
-        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.KeyExchange;
+        public sealed override CryptographicComponentUsage Usage => CryptographicComponentUsage.KeyExchange;
 
         /// <summary>
         /// Represents an elliptic curve matching <see cref="CryptographicKey{TAlgorithm}.Algorithm" />.

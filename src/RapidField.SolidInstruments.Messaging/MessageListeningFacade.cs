@@ -12,6 +12,7 @@ using RapidField.SolidInstruments.Mathematics.Sequences;
 using RapidField.SolidInstruments.Messaging.EventMessages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -168,6 +169,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override Task TransmitReceiverExceptionAsync(ExceptionRaisedEventMessage exceptionRaisedMessage, MessagingEntityType messagingEntityType) => TransmittingFacade.TransmitAsync(exceptionRaisedMessage, null, messagingEntityType);
 
         /// <summary>

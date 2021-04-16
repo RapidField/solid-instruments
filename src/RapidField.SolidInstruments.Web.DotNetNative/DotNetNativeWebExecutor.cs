@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.Web.DotNetNative
 {
@@ -54,6 +55,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <param name="applicationConfiguration">
         /// Configuration information for the web application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void ConfigureServices(IServiceCollection services, TDependencyPackage dependencyPackage, IConfiguration applicationConfiguration) => _ = services.AddDependencyPackage(dependencyPackage, applicationConfiguration);
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>
@@ -115,6 +118,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <param name="applicationConfiguration">
         /// Configuration information for the web application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void ConfigureServices(IServiceCollection services, TDependencyPackage dependencyPackage, IConfiguration applicationConfiguration) => _ = services.AddDependencyPackage(dependencyPackage, applicationConfiguration);
 
         /// <summary>
@@ -126,6 +130,7 @@ namespace RapidField.SolidInstruments.Web.DotNetNative
         /// <returns>
         /// The service provider factory.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override DotNetNativeServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>

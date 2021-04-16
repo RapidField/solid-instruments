@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.Extensions;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.InversionOfControl.DotNetNative.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
 {
@@ -69,6 +70,7 @@ namespace RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(ServiceCollection configurator, IConfiguration applicationConfiguration)
         {
             configurator.AddApplicationConfiguration(applicationConfiguration);

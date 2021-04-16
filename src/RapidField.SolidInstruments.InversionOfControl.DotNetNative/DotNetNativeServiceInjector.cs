@@ -5,6 +5,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
@@ -39,6 +40,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.DotNetNative
         /// <param name="serviceDescriptors">
         /// A collection of service descriptors that are added to the configurator.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Inject(ServiceCollection configurator, IServiceCollection serviceDescriptors)
         {
             foreach (var serviceDescriptor in serviceDescriptors)

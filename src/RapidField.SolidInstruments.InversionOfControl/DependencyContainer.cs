@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 
@@ -149,6 +150,7 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <exception cref="ContainerConfigurationException">
         /// An exception was raised while attempting to configure the container.
         /// </exception>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(DependencyContainerConfiguration<TConfigurator> configuration)
         {
             try

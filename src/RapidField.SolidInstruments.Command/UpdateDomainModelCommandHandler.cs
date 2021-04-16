@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.Command
 {
@@ -58,6 +59,7 @@ namespace RapidField.SolidInstruments.Command
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => UpdateDomainModel(command.Model, command.Labels, command.CorrelationIdentifier, mediator, controlToken);
 
         /// <summary>

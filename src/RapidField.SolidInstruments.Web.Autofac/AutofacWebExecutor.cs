@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.InversionOfControl.Autofac;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.Web.Autofac
 {
@@ -50,6 +51,7 @@ namespace RapidField.SolidInstruments.Web.Autofac
         /// <returns>
         /// The service provider factory.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>
@@ -97,6 +99,7 @@ namespace RapidField.SolidInstruments.Web.Autofac
         /// <returns>
         /// The service provider factory.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override AutofacServiceProviderFactory<TDependencyPackage> CreateServiceProviderFactory(IConfiguration applicationConfiguration) => new(applicationConfiguration);
 
         /// <summary>

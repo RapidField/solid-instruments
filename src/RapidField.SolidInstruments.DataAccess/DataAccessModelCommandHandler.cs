@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.ObjectComposition;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.DataAccess
 {
@@ -85,6 +86,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken) => Process(command, mediator, repositories.Get<TRepository>(), controlToken);
 
         /// <summary>
@@ -192,6 +194,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override TResult Process(TCommand command, ICommandMediator mediator, IFactoryProducedInstanceGroup repositories, IConcurrencyControlToken controlToken) => Process(command, mediator, repositories.Get<TRepository>(), controlToken);
 
         /// <summary>

@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.Command.Configuration
@@ -81,6 +82,7 @@ namespace RapidField.SolidInstruments.Command.Configuration
         /// <returns>
         /// The result that is emitted when processing the command.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override TResult Process(TCommand command, ICommandMediator mediator, IConcurrencyControlToken controlToken) => command.Target switch
         {
             GetConfigurationObjectCommandTarget.ConnectionString => ConvertConfigurationObject(ApplicationConfiguration.GetConnectionString(command.Key)),

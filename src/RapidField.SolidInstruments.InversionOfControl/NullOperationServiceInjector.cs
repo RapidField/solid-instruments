@@ -3,7 +3,9 @@
 // =================================================================================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.InversionOfControl
 {
@@ -35,6 +37,9 @@ namespace RapidField.SolidInstruments.InversionOfControl
         /// <param name="serviceDescriptors">
         /// a collection of service descriptors that are added to the configurator.
         /// </param>
+        [DebuggerHidden]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected sealed override void Inject(TConfigurator configurator, IServiceCollection serviceDescriptors)
         {
             return;

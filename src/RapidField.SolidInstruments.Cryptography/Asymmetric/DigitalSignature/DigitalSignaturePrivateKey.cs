@@ -175,7 +175,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.DigitalSignature
         /// <summary>
         /// Gets a value specifying the valid purposes and uses of the current <see cref="DigitalSignaturePrivateKey" />.
         /// </summary>
-        public override sealed CryptographicComponentUsage Usage => CryptographicComponentUsage.DigitalSignature;
+        public sealed override CryptographicComponentUsage Usage => CryptographicComponentUsage.DigitalSignature;
 
         /// <summary>
         /// Represents an elliptic curve matching <see cref="CryptographicKey{TAlgorithm}.Algorithm" />.

@@ -49,7 +49,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing.Pbkdf2
         /// <returns>
         /// The resulting digest bytes.
         /// </returns>
-        protected override sealed Byte[] ComputeHash(PinnedMemory plaintext, PinnedMemory salt, Int32 digestLengthInBytes)
+        protected sealed override Byte[] ComputeHash(PinnedMemory plaintext, PinnedMemory salt, Int32 digestLengthInBytes)
         {
             using var keyDerivationFunction = new Rfc2898DeriveBytes(plaintext, salt, IterationCount, KeyDerivationHashAlgorithm.ToHashAlgorithmName());
             return keyDerivationFunction.GetBytes(digestLengthInBytes);

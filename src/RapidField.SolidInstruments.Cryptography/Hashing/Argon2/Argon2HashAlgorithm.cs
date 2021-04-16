@@ -106,7 +106,7 @@ namespace RapidField.SolidInstruments.Cryptography.Hashing.Argon2
         /// <returns>
         /// The resulting digest bytes.
         /// </returns>
-        protected override sealed Byte[] ComputeHash(PinnedMemory plaintext, PinnedMemory salt, Int32 digestLengthInBytes)
+        protected sealed override Byte[] ComputeHash(PinnedMemory plaintext, PinnedMemory salt, Int32 digestLengthInBytes)
         {
             var keyDerivationFunction = new Argon2id(plaintext)
             {

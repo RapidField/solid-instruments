@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace RapidField.SolidInstruments.SignalProcessing
@@ -119,7 +120,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// <see langword="true" /> if the read operation was performed, otherwise <see langword="false" />.
         /// </returns>
-        protected override sealed Boolean TryRead(Int32 index, out T outputValue)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected sealed override Boolean TryRead(Int32 index, out T outputValue)
         {
             outputValue = Collection[index];
             return true;
@@ -140,7 +142,8 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <returns>
         /// <see langword="true" /> if the read operation was performed, otherwise <see langword="false" />.
         /// </returns>
-        protected override sealed Boolean TryRead(Int32 startIndex, Int32 count, T[] outputRange)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected sealed override Boolean TryRead(Int32 startIndex, Int32 count, T[] outputRange)
         {
             for (var i = 0; i < count; i++)
             {
@@ -153,7 +156,7 @@ namespace RapidField.SolidInstruments.SignalProcessing
         /// <summary>
         /// Gets the number of discrete units in the output stream for the current <see cref="ObjectCollectionChannel{T}" />.
         /// </summary>
-        public override sealed Int32 OutputLength
+        public sealed override Int32 OutputLength
         {
             get;
         }

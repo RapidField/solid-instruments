@@ -8,6 +8,7 @@ using RapidField.SolidInstruments.DataAccess.Autofac.Ef.Extensions;
 using RapidField.SolidInstruments.DataAccess.EntityFramework;
 using RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions;
 using System;
+using System.ComponentModel;
 
 namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef
 {
@@ -69,6 +70,7 @@ namespace RapidField.SolidInstruments.DataAccess.Autofac.Ef
         /// <param name="applicationConfiguration">
         /// Configuration information for the application.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Configure(ContainerBuilder configurator, IConfiguration applicationConfiguration)
         {
             configurator.RegisterApplicationConfiguration(applicationConfiguration);

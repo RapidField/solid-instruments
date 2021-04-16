@@ -7,6 +7,7 @@ using Autofac.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using RapidField.SolidInstruments.InversionOfControl.Autofac.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -42,6 +43,7 @@ namespace RapidField.SolidInstruments.InversionOfControl.Autofac
         /// <param name="serviceDescriptors">
         /// A collection of service descriptors that are added to the configurator.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Inject(ContainerBuilder configurator, IServiceCollection serviceDescriptors)
         {
             configurator.RegisterType<ServiceProvider>().As<IServiceProvider>();

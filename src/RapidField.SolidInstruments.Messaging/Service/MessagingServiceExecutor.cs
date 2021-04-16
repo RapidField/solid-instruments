@@ -11,6 +11,7 @@ using RapidField.SolidInstruments.Messaging.EventMessages;
 using RapidField.SolidInstruments.Service;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -184,6 +185,7 @@ namespace RapidField.SolidInstruments.Messaging.Service
         /// <param name="executionLifetime">
         /// An object that provides control over execution lifetime.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void Execute(IDependencyScope dependencyScope, IConfiguration applicationConfiguration, String[] commandLineArguments, IServiceExecutionLifetime executionLifetime)
         {
             try

@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core.Concurrency;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,6 +79,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <param name="controlToken">
         /// A token that represents and manages contextual thread safety.
         /// </param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override void RegisterResponseHandler<TResponseMessage>(Action<TResponseMessage> responseHandler, IConcurrencyControlToken controlToken) => ListeningFacade.RegisterTopicMessageHandler(responseHandler);
 
         /// <summary>
@@ -95,6 +97,7 @@ namespace RapidField.SolidInstruments.Messaging
         /// <returns>
         /// A task representing the asynchronous operation.
         /// </returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected sealed override Task TransmitRequestMessageAsync<TRequestMessage, TResponseMessage>(TRequestMessage requestMessage) => TransmittingFacade.TransmitAsync(requestMessage, null, Message.RequestEntityType);
 
         /// <summary>
