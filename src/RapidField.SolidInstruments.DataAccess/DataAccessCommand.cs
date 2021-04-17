@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using SolidInstrumentsCommand = RapidField.SolidInstruments.Command.Command;
@@ -34,6 +35,8 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Gets the type of the result that is produced by handling the data access command.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public sealed override Type ResultType => ResultTypeReference;
 
@@ -65,6 +68,8 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Gets the type of the result that is produced by processing the data access command.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public override Type ResultType => Nix.Type;
     }

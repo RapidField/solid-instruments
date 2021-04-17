@@ -5,6 +5,8 @@
 using RapidField.SolidInstruments.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Cryptography.Secrets
@@ -142,6 +144,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Represents an ordered collection of the 20 most common lowercase passwords that appeared in breached password lists in
         /// 2019, per the National Cyber Security Centre (NCSC).
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public static readonly IEnumerable<String> CommonBreachedPasswords = new[]
         {

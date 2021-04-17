@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -118,6 +119,8 @@ namespace RapidField.SolidInstruments.DataAccess
         /// <summary>
         /// Gets the type of the associated data access model.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public Type ModelType => ModelTypeReference;
 

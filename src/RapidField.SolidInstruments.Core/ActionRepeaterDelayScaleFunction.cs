@@ -9,7 +9,7 @@ namespace RapidField.SolidInstruments.Core
     /// <summary>
     /// Specifies the function that is used to scale successive delay durations during <see cref="IActionRepeater" /> operation.
     /// </summary>
-    internal enum ActionRepeaterDelayScaleFunction : Int32
+    public enum ActionRepeaterDelayScaleFunction : Int32
     {
         /// <summary>
         /// The delay scale function is not specified.

@@ -2,6 +2,7 @@
 // Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 // =================================================================================================================================
 
+using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -35,6 +36,30 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Configures and runs an <see cref="ActionRepeater" />.
+        /// </summary>
+        /// <param name="buildAction">
+        /// An action that configures the <see cref="ActionRepeater" />.
+        /// </param>
+        /// <exception cref="Exception">
+        /// The configured predicate or action raised an exception.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The builder was disposed during configuration.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The maximum repetition count and/or timeout threshold were exceeded.
+        /// </exception>
+        public static void BuildAndRun(Action<IActionRepeaterBuilder> buildAction)
+        {
+            _ = buildAction.RejectIf().IsNull(nameof(buildAction));
+            using var actionRepeaterBuilder = new ActionRepeaterBuilder();
+            buildAction(actionRepeaterBuilder);
+            using var actionRepeater = actionRepeaterBuilder.ToResult();
+            actionRepeater.Run();
+        }
+
+        /// <summary>
         /// Executes a configured action repeatedly until the specified predicate returns <see langword="false" /> or until the
         /// specified terminal conditions are met.
         /// </summary>
@@ -55,6 +80,7 @@ namespace RapidField.SolidInstruments.Core
 
                 while (TerminalConditionsAreNotMet)
                 {
+                    RejectIfDisposed();
                     PerformAction();
                 }
             }
@@ -109,13 +135,22 @@ namespace RapidField.SolidInstruments.Core
         {
             var delayDuration = DelayDuration;
 
-            if (delayDuration > TimeSpan.Zero)
+            try
             {
-                Thread.Sleep(delayDuration);
+                if (delayDuration > TimeSpan.Zero)
+                {
+                    Thread.Sleep(delayDuration);
+                }
             }
-
-            DelayDurationNMinusTwo = DelayDurationNMinusOne;
-            DelayDurationNMinusOne = delayDuration;
+            catch (ArgumentOutOfRangeException exception)
+            {
+                throw new UnsupportedSpecificationException(delayDuration, $"The resulting delay duration is too long: {delayDuration}", exception);
+            }
+            finally
+            {
+                DelayDurationNMinusTwo = DelayDurationNMinusOne;
+                DelayDurationNMinusOne = delayDuration;
+            }
         }
 
         /// <summary>
@@ -139,12 +174,23 @@ namespace RapidField.SolidInstruments.Core
         /// <exception cref="Exception">
         /// <see cref="RepeatedAction" /> raised an exception.
         /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The action repeater configuration resulted in very long delay durations.
+        /// </exception>
         [DebuggerHidden]
         private void PerformAction()
         {
             try
             {
-                Delay();
+                try
+                {
+                    Delay();
+                }
+                catch (UnsupportedSpecificationException exception)
+                {
+                    throw new TimeoutException("The action repeater configuration resulted in very long delay durations.", exception);
+                }
+
                 RepeatedAction();
             }
             finally

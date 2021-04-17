@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Command;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -194,6 +195,8 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets the type of the event that describes the current <see cref="CreateDomainModelReportableCommand{TModel, TEvent}" />.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public Type EventType => EventTypeReference;
 

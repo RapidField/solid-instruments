@@ -15,7 +15,7 @@ namespace RapidField.SolidInstruments.Core
     /// <remarks>
     /// <see cref="ActionRepeaterBehavior" /> is the default implementation of <see cref="IActionRepeaterBehavior" />.
     /// </remarks>
-    internal sealed class ActionRepeaterBehavior : IActionRepeaterBehavior
+    public sealed class ActionRepeaterBehavior : IActionRepeaterBehavior
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionRepeaterBehavior" /> class.
@@ -282,52 +282,78 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
-        /// Gets the constant length of time that serves as the functional input for scaling of successive delays during
+        /// Gets or sets the constant length of time that serves as the functional input for scaling of successive delays during
         /// <see cref="IActionRepeater" /> operation.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="DelayScaleConstant" /> is less than <see cref="TimeSpan.Zero" />.
+        /// </exception>
         public TimeSpan DelayScaleConstant
         {
+            [DebuggerHidden]
             get => DelayScaleConstantValue;
-            private set => DelayScaleConstantValue = value.RejectIf().IsLessThan(TimeSpan.Zero, nameof(DelayScaleConstant));
+            [DebuggerHidden]
+            set => DelayScaleConstantValue = value.RejectIf().IsLessThan(TimeSpan.Zero, nameof(DelayScaleConstant));
         }
 
         /// <summary>
-        /// Gets the function that is used to scale successive delays during <see cref="IActionRepeater" /> operation.
+        /// Gets or sets the function that is used to scale successive delays during <see cref="IActionRepeater" /> operation.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="DelayScaleFunction" /> is equal to <see cref="ActionRepeaterDelayScaleFunction.Unspecified" />.
+        /// </exception>
         public ActionRepeaterDelayScaleFunction DelayScaleFunction
         {
+            [DebuggerHidden]
             get => DelayScaleFunctionValue;
-            private set => DelayScaleFunctionValue = DelayScaleConstant == TimeSpan.Zero ? ActionRepeaterDelayScaleFunction.Constant : value.RejectIf().IsEqualToValue(ActionRepeaterDelayScaleFunction.Unspecified, nameof(DelayScaleFunction));
+            [DebuggerHidden]
+            set => DelayScaleFunctionValue = DelayScaleConstant == TimeSpan.Zero ? ActionRepeaterDelayScaleFunction.Constant : value.RejectIf().IsEqualToValue(ActionRepeaterDelayScaleFunction.Unspecified, nameof(DelayScaleFunction));
         }
 
         /// <summary>
-        /// Gets the maximum number of times that the associated <see cref="IActionRepeater" /> will perform an action, or negative
-        /// one (-1) if repetition count is unlimited.
+        /// Gets or sets the maximum number of times that the associated <see cref="IActionRepeater" /> will perform an action, or
+        /// negative one (-1) if repetition count is unlimited.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="MaximumRepititionCount" /> is less than <see cref="InfiniteRepititionCount" /> (negative one).
+        /// </exception>
         public Int32 MaximumRepititionCount
         {
+            [DebuggerHidden]
             get => MaximumRepititionCountValue;
-            private set => MaximumRepititionCountValue = value.RejectIf().IsLessThan(InfiniteRepititionCount, nameof(MaximumRepititionCount));
+            [DebuggerHidden]
+            set => MaximumRepititionCountValue = value.RejectIf().IsLessThan(InfiniteRepititionCount, nameof(MaximumRepititionCount));
         }
 
         /// <summary>
-        /// Gets the behavior of the associated <see cref="IActionRepeater" /> after it has exhausted its timeout threshold or
-        /// maximum repetition count.
+        /// Gets or sets the behavior of the associated <see cref="IActionRepeater" /> after it has exhausted its timeout threshold
+        /// or maximum repetition count.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="TerminalBehavior" /> is equal to <see cref="ActionRepeaterTerminalBehavior.Unspecified" />.
+        /// </exception>
         public ActionRepeaterTerminalBehavior TerminalBehavior
         {
+            [DebuggerHidden]
             get => TerminalBehaviorValue;
-            private set => TerminalBehaviorValue = TimeoutThreshold == InfiniteTimeoutThreshold && MaximumRepititionCount == InfiniteRepititionCount ? ActionRepeaterTerminalBehavior.Desist : value.RejectIf().IsEqualToValue(ActionRepeaterTerminalBehavior.Unspecified, nameof(TerminalBehavior));
+            [DebuggerHidden]
+            set => TerminalBehaviorValue = TimeoutThreshold == InfiniteTimeoutThreshold && MaximumRepititionCount == InfiniteRepititionCount ? ActionRepeaterTerminalBehavior.Desist : value.RejectIf().IsEqualToValue(ActionRepeaterTerminalBehavior.Unspecified, nameof(TerminalBehavior));
         }
 
         /// <summary>
-        /// Gets the maximum length of time that the associated <see cref="IActionRepeater" /> will repeat an action, or
+        /// Gets or sets the maximum length of time that the associated <see cref="IActionRepeater" /> will repeat an action, or
         /// <see cref="Timeout.InfiniteTimeSpan" /> if repetition duration is unlimited.
         /// </summary>
+        /// <exception cref="ArgumentException">
+        /// <see cref="TimeoutThreshold" /> is less than <see cref="TimeSpan.Zero" /> and not equal to
+        /// <see cref="InfiniteTimeoutThreshold" />.
+        /// </exception>
         public TimeSpan TimeoutThreshold
         {
+            [DebuggerHidden]
             get => TimeoutThresholdValue;
-            private set => TimeoutThresholdValue = value.RejectIf(argument => argument < TimeSpan.Zero && argument != InfiniteTimeoutThreshold, nameof(TimeoutThreshold), "The specified timeout threshold is invalid.");
+            [DebuggerHidden]
+            set => TimeoutThresholdValue = value.RejectIf(argument => argument < TimeSpan.Zero && argument != InfiniteTimeoutThreshold, nameof(TimeoutThreshold), "The specified timeout threshold is invalid.");
         }
 
         /// <summary>

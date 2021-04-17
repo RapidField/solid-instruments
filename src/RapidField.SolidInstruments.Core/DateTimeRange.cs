@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -832,6 +833,8 @@ namespace RapidField.SolidInstruments.Core
         /// Gets or sets a serialized representation of the current <see cref="DateTimeRange" />.
         /// </summary>
         [DataMember(EmitDefaultValue = true, IsRequired = true, Name = "Value")]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private String SerializationValue
         {
             [DebuggerHidden]

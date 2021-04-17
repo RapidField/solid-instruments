@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
@@ -273,9 +274,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The specified string is not a valid Base64 string.
         /// </exception>
         [DataMember]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public String Ciphertext
         {
+            [DebuggerHidden]
             get => CiphertextBytes.IsNullOrEmpty() ? null : Convert.ToBase64String(CiphertextBytes);
+            [DebuggerHidden]
             set => CiphertextBytes = Convert.FromBase64String(value.RejectIf().IsNullOrEmpty(nameof(Ciphertext)));
         }
 
@@ -302,9 +307,13 @@ namespace RapidField.SolidInstruments.Cryptography.Symmetric
         /// The specified string is <see langword="null" />.
         /// </exception>
         [DataMember]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public String ModelTypeAssemblyQualifiedName
         {
+            [DebuggerHidden]
             get => ModelTypeAssemblyQualifiedNameReference;
+            [DebuggerHidden]
             set => ModelTypeAssemblyQualifiedNameReference = value.RejectIf().IsNullOrEmpty(nameof(ModelTypeAssemblyQualifiedName));
         }
 

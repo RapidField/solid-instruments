@@ -4,6 +4,7 @@
 
 using RapidField.SolidInstruments.Core;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -39,6 +40,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// Initializes a new instance of the <see cref="DeleteDataAccessModelCommand{TIdentifier, TDataAccessModel}" /> class.
         /// </summary>
         [DebuggerHidden]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected internal DeleteDataAccessModelCommand()
             : base()
         {

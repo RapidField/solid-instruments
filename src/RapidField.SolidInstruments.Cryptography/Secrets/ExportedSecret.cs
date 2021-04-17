@@ -7,6 +7,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using RapidField.SolidInstruments.Cryptography.Symmetric;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
@@ -201,9 +202,13 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// The specified string is <see langword="null" />.
         /// </exception>
         [DataMember]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public String ValueTypeAssemblyQualifiedName
         {
+            [DebuggerHidden]
             get => ValueTypeAssemblyQualifiedNameReference;
+            [DebuggerHidden]
             set => ValueTypeAssemblyQualifiedNameReference = value.RejectIf().IsNullOrEmpty(nameof(ValueTypeAssemblyQualifiedName));
         }
 

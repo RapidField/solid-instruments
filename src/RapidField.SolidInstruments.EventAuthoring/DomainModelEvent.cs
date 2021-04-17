@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -330,6 +331,8 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// <summary>
         /// Gets the type of the associated domain model.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public Type ModelType => typeof(TModel);
     }

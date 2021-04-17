@@ -10,7 +10,7 @@ namespace RapidField.SolidInstruments.Core
     /// Specifies the behavior of an <see cref="IActionRepeater" /> after it has exhausted its timeout threshold or maximum
     /// repetition count.
     /// </summary>
-    internal enum ActionRepeaterTerminalBehavior : Int32
+    public enum ActionRepeaterTerminalBehavior : Int32
     {
         /// <summary>
         /// The terminal behavior is not specified.

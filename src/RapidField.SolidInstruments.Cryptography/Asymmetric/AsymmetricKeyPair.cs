@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Security;
 using System.Security.Cryptography;
@@ -356,6 +357,7 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric
         /// <summary>
         /// Gets the length of time for which the paired keys are valid.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected internal TimeSpan KeyLifespanDuration
         {
             get;

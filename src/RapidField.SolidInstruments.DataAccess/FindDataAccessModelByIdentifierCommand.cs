@@ -3,6 +3,7 @@
 // =================================================================================================================================
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -40,6 +41,7 @@ namespace RapidField.SolidInstruments.DataAccess
         /// class.
         /// </summary>
         [DebuggerHidden]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected internal FindDataAccessModelByIdentifierCommand()
             : base()
         {

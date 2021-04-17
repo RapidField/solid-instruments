@@ -197,6 +197,7 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// <see langword="null" /> if the message is not locked.
         /// </summary>
         [DataMember(Order = 4)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal MessageLockToken LockToken
         {
             get;
@@ -210,9 +211,12 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
         /// An error occurred during serialization or deserialization.
         /// </exception>
         [DataMember(Name = SerializedBodyDataMemberName, Order = 3)]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal String SerializedBody
         {
+            [DebuggerHidden]
             get => SerializeBody();
+            [DebuggerHidden]
             set => DeserializeBody(value);
         }
 

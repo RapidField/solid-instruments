@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -73,6 +74,7 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public Type ResultType => ResultTypeReference;
 
@@ -156,6 +158,7 @@ namespace RapidField.SolidInstruments.Command
         /// <summary>
         /// Gets the type of the result that is emitted when processing the command.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public virtual Type ResultType => Nix.Type;
 

@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -69,6 +70,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the type of the result that is produced by handling the message.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public sealed override Type ResultType => ResultTypeReference;
 
@@ -200,6 +203,8 @@ namespace RapidField.SolidInstruments.Messaging
         /// <summary>
         /// Gets the type of the result that is produced by processing the message.
         /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnoreDataMember]
         public virtual Type ResultType => Nix.Type;
 

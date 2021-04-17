@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core;
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -82,6 +83,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// Gets or sets the secrets that were exported from the associated <see cref="ISecretVault" />.
         /// </summary>
         [DataMember]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<ExportedSecret> Secrets
         {
             get;
