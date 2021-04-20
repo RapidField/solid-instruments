@@ -448,12 +448,11 @@ namespace RapidField.SolidInstruments.InversionOfControl
                     throw new InvalidOperationException("The dependency engine is in a corrupt state. The container is a null reference.");
                 }
 
-                using (var scope = Container.CreateScope())
+                using var scope = Container.CreateScope();
+
+                if (scope is null)
                 {
-                    if (scope is null)
-                    {
-                        throw new InvalidOperationException("The dependency engine is in a corrupt state. The container produced a null reference scope.");
-                    }
+                    throw new InvalidOperationException("The dependency engine is in a corrupt state. The container produced a null reference scope.");
                 }
             }
             catch (InvalidOperationException)

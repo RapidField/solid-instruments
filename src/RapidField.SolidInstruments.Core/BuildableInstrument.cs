@@ -39,7 +39,7 @@ namespace RapidField.SolidInstruments.Core
             {
                 foreach (var configurationAction in ConfigurationActions)
                 {
-                    configurationAction(Configuration);
+                    configurationAction(configuration);
                 }
             }
             finally

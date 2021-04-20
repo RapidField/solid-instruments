@@ -108,20 +108,19 @@ namespace RapidField.SolidInstruments.ObjectComposition
         [DebuggerHidden]
         private IObjectContainer InitializeContainer()
         {
-            using (var containerBuilder = new ObjectContainerBuilder())
+            using var containerBuilder = new ObjectContainerBuilder();
+
+            try
             {
-                try
-                {
-                    return BuildContainer(containerBuilder);
-                }
-                catch (ObjectBuilderException)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    throw new ObjectBuilderException(containerBuilder.GetType(), exception);
-                }
+                return BuildContainer(containerBuilder);
+            }
+            catch (ObjectBuilderException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new ObjectBuilderException(containerBuilder.GetType(), exception);
             }
         }
 

@@ -19,25 +19,23 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Extensions
             // Arrange.
             var elementCount = 1800;
             var target = new Single[elementCount];
+            using var randomnessProvider = RandomNumberGenerator.Create();
 
-            using (var randomnessProvider = RandomNumberGenerator.Create())
+            // Arrange.
+            randomnessProvider.FillSingleArray(target);
+
+            // Act.
+            var results = new Single[]
             {
-                // Arrange.
-                randomnessProvider.FillSingleArray(target);
+                target.SelectRandom(randomnessProvider),
+                target.SelectRandom(randomnessProvider),
+                target.SelectRandom(randomnessProvider)
+            };
 
-                // Act.
-                var results = new Single[]
-                {
-                    target.SelectRandom(randomnessProvider),
-                    target.SelectRandom(randomnessProvider),
-                    target.SelectRandom(randomnessProvider)
-                };
-
-                // Assert.
-                target.Should().Contain(results[0]);
-                target.Should().Contain(results[1]);
-                target.Should().Contain(results[2]);
-            }
+            // Assert.
+            target.Should().Contain(results[0]);
+            target.Should().Contain(results[1]);
+            target.Should().Contain(results[2]);
         }
 
         [TestMethod]

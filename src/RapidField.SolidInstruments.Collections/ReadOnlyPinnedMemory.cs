@@ -182,11 +182,8 @@ namespace RapidField.SolidInstruments.Collections
             foreach (var element in this)
             {
                 hashCode ^= element.GetHashCode() ^ 0x66666666;
-
-                using (var memory = new ReadOnlyPinnedMemory(hashCode.ToByteArray()))
-                {
-                    hashCode = memory.ComputeThirtyTwoBitHash() ^ 0x33333333;
-                }
+                using var memory = new ReadOnlyPinnedMemory(hashCode.ToByteArray());
+                hashCode = memory.ComputeThirtyTwoBitHash() ^ 0x33333333;
             }
 
             return hashCode ^ 0x55555555;

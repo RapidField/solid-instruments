@@ -60,6 +60,26 @@ namespace RapidField.SolidInstruments.Core
         }
 
         /// <summary>
+        /// Asynchronously configures and runs an <see cref="ActionRepeater" />.
+        /// </summary>
+        /// <param name="buildAction">
+        /// An action that configures the <see cref="ActionRepeater" />.
+        /// </param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// The configured predicate or action raised an exception.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The builder was disposed during configuration.
+        /// </exception>
+        /// <exception cref="TimeoutException">
+        /// The maximum repetition count and/or timeout threshold were exceeded.
+        /// </exception>
+        public static Task BuildAndRunAsync(Action<IActionRepeaterBuilder> buildAction) => Task.Factory.StartNew(() => BuildAndRun(buildAction));
+
+        /// <summary>
         /// Executes a configured action repeatedly until the specified predicate returns <see langword="false" /> or until the
         /// specified terminal conditions are met.
         /// </summary>
@@ -332,7 +352,7 @@ namespace RapidField.SolidInstruments.Core
         /// <see cref="ActionRepeaterTerminalBehavior.RaiseException" />.
         /// </exception>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Boolean TerminalConditionsAreNotMet => MaximumRepititionCountIsExceeded is false && TimeoutThresholdIsExceeded is false && Predicate();
+        private Boolean TerminalConditionsAreNotMet => Predicate() && MaximumRepititionCountIsExceeded is false && TimeoutThresholdIsExceeded is false;
 
         /// <summary>
         /// Gets the maximum length of time that the current <see cref="ActionRepeater" /> will repeat an action.

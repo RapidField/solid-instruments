@@ -208,13 +208,9 @@ namespace RapidField.SolidInstruments.Messaging.TransportPrimitives
             {
                 try
                 {
-                    using (var pollQueuesTask = PollQueuesAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Queue).ToArray()))
-                    {
-                        using (var pollTopicsTask = PollTopicsAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Topic).ToArray()))
-                        {
-                            Task.WaitAll(pollQueuesTask, pollTopicsTask);
-                        }
-                    }
+                    using var pollQueuesTask = PollQueuesAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Queue).ToArray());
+                    using var pollTopicsTask = PollTopicsAsync(handlers.Where(handler => handler.EntityType == MessagingEntityType.Topic).ToArray());
+                    Task.WaitAll(pollQueuesTask, pollTopicsTask);
                 }
                 catch (AggregateException exception)
                 {

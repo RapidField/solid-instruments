@@ -222,11 +222,8 @@ namespace RapidField.SolidInstruments.Web
                 try
                 {
                     ApplicationConfiguration = CreateApplicationConfiguration();
-
-                    using (var host = CreateHost())
-                    {
-                        host.Run();
-                    }
+                    using var host = CreateHost();
+                    host.Run();
                 }
                 catch (WebExectuionException)
                 {

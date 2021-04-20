@@ -135,25 +135,14 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void PermuteBuffer()
         {
-            using (var sourceBytes = new PinnedMemory(BufferPermutationSourceLengthInBytes, true))
-            {
-                SourceRandomnessProvider.GetBytes(sourceBytes);
-
-                using (var privateKey = new PinnedMemory(CipherKeyLengthInBytes, true))
-                {
-                    SourceRandomnessProvider.GetBytes(privateKey);
-
-                    using (var initializationVector = new PinnedMemory(CipherBlockLengthInBytes, true))
-                    {
-                        SourceRandomnessProvider.GetBytes(initializationVector);
-
-                        using (var encryptedBytes = Cipher.Encrypt(sourceBytes, privateKey, initializationVector))
-                        {
-                            Buffer.PushRange(encryptedBytes);
-                        }
-                    }
-                }
-            }
+            using var sourceBytes = new PinnedMemory(BufferPermutationSourceLengthInBytes, true);
+            SourceRandomnessProvider.GetBytes(sourceBytes);
+            using var privateKey = new PinnedMemory(CipherKeyLengthInBytes, true);
+            SourceRandomnessProvider.GetBytes(privateKey);
+            using var initializationVector = new PinnedMemory(CipherBlockLengthInBytes, true);
+            SourceRandomnessProvider.GetBytes(initializationVector);
+            using var encryptedBytes = Cipher.Encrypt(sourceBytes, privateKey, initializationVector);
+            Buffer.PushRange(encryptedBytes);
         }
 
         /// <summary>

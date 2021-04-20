@@ -70,26 +70,24 @@ namespace RapidField.SolidInstruments.Cryptography.UnitTests.Hashing
 
         private static void Constructor_ShouldProduceDesiredResults(Int32 blockCount, HashingAlgorithmSpecification algorithm)
         {
-            using (var randomnessProvider = RandomNumberGenerator.Create())
-            {
-                // Arrange.
-                var hashingProcessor = new HashingStringProcessor(randomnessProvider);
-                var blocks = new String[blockCount];
-                randomnessProvider.FillStringArray(blocks, 1, 8, false, true, true, true, false, false, false);
+            // Arrange.
+            using var randomnessProvider = RandomNumberGenerator.Create();
+            var hashingProcessor = new HashingStringProcessor(randomnessProvider);
+            var blocks = new String[blockCount];
+            randomnessProvider.FillStringArray(blocks, 1, 8, false, true, true, true, false, false, false);
 
-                // Act.
-                var target = new HashTree<String>(hashingProcessor, algorithm, blocks);
-                var duplicate = new HashTree<String>(hashingProcessor, algorithm, blocks);
+            // Act.
+            var target = new HashTree<String>(hashingProcessor, algorithm, blocks);
+            var duplicate = new HashTree<String>(hashingProcessor, algorithm, blocks);
 
-                // Assert.
-                target.LeafCount.Should().Be(blockCount);
-                target.RootNode.Should().NotBeNull();
-                target.RootNode.Value.Should().NotBeNull();
-                target.RootNode.Value.ComputeThirtyTwoBitHash().Should().Be(duplicate.RootNode.Value.ComputeThirtyTwoBitHash());
-                target.RootNode.ToString().Should().Be(Convert.ToBase64String(target.RootNode.Value));
-                ValidateDigestLength(blockCount, target.RootNode.Value, algorithm);
-                ValidateTreeHeight(blockCount, target.RootNode.Height);
-            }
+            // Assert.
+            target.LeafCount.Should().Be(blockCount);
+            target.RootNode.Should().NotBeNull();
+            target.RootNode.Value.Should().NotBeNull();
+            target.RootNode.Value.ComputeThirtyTwoBitHash().Should().Be(duplicate.RootNode.Value.ComputeThirtyTwoBitHash());
+            target.RootNode.ToString().Should().Be(Convert.ToBase64String(target.RootNode.Value));
+            ValidateDigestLength(blockCount, target.RootNode.Value, algorithm);
+            ValidateTreeHeight(blockCount, target.RootNode.Height);
         }
 
         private static void ValidateDigestLength(Int32 blockCount, Byte[] rootHashValue, HashingAlgorithmSpecification algorithm)

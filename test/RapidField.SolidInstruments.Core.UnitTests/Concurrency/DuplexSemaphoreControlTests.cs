@@ -35,22 +35,20 @@ namespace RapidField.SolidInstruments.Core.UnitTests.Concurrency
 
         private static void PerformUsingPrimitive(Action<Action<Action>> perform)
         {
-            using (var control = new SemaphoreSlim(2))
+            using var control = new SemaphoreSlim(2);
+            perform((operation) =>
             {
-                perform((operation) =>
-                {
-                    control.Wait();
+                control.Wait();
 
-                    try
-                    {
-                        operation();
-                    }
-                    finally
-                    {
-                        control.Release();
-                    }
-                });
-            }
+                try
+                {
+                    operation();
+                }
+                finally
+                {
+                    control.Release();
+                }
+            });
         }
     }
 }

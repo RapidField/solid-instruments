@@ -248,21 +248,14 @@ namespace RapidField.SolidInstruments.Cryptography
                     plaintextMemory[AlgorithmSecureMemoryIndex] = Convert.ToByte(Algorithm);
                     plaintextMemory[DerivationModeSecureMemoryIndex] = Convert.ToByte(DerivationMode);
 
-                    using (var cipher = SecureMemoryEncryptionAlgorithm.ToCipher(RandomnessProvider))
+                    using var cipher = SecureMemoryEncryptionAlgorithm.ToCipher(RandomnessProvider);
+                    using var initializationVector = new PinnedMemory(cipher.BlockSizeInBytes, true);
+                    RandomnessProvider.GetBytes(initializationVector);
+                    secureMemory.Access(pinnedMemory =>
                     {
-                        using (var initializationVector = new PinnedMemory(cipher.BlockSizeInBytes, true))
-                        {
-                            RandomnessProvider.GetBytes(initializationVector);
-
-                            secureMemory.Access(pinnedMemory =>
-                            {
-                                using (var ciphertext = cipher.Encrypt(plaintextMemory, SecureMemoryEncryptionKey, initializationVector))
-                                {
-                                    Array.Copy(ciphertext, 0, pinnedMemory, 0, SerializedLength);
-                                }
-                            });
-                        }
-                    }
+                        using var ciphertext = cipher.Encrypt(plaintextMemory, SecureMemoryEncryptionKey, initializationVector);
+                        Array.Copy(ciphertext, 0, pinnedMemory, 0, SerializedLength);
+                    });
                 }
 
                 return secureMemory;
@@ -575,12 +568,9 @@ namespace RapidField.SolidInstruments.Cryptography
         internal static PinnedMemory DeriveKeySourceBytesFromKeyMaterial(Byte[] keyMaterial, Int32 keySourceLengthInBytes)
         {
             var hashingProcessor = new HashingProcessor(RandomnessProvider);
-
-            using (var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(keyMaterial, PasswordSaltHashingAlgorithm)))
-            {
-                var pbkdf2Provider = new Rfc2898DeriveBytes(keyMaterial, saltBytes, Pbkdf2MinimumIterationCount);
-                return new(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
-            }
+            using var saltBytes = new ReadOnlyPinnedMemory(hashingProcessor.CalculateHash(keyMaterial, PasswordSaltHashingAlgorithm));
+            var pbkdf2Provider = new Rfc2898DeriveBytes(keyMaterial, saltBytes, Pbkdf2MinimumIterationCount);
+            return new(pbkdf2Provider.GetBytes(keySourceLengthInBytes.RejectIf().IsLessThanOrEqualTo(0, nameof(keySourceLengthInBytes))));
         }
 
         /// <summary>

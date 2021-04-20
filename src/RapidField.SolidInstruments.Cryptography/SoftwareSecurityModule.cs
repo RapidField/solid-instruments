@@ -897,15 +897,13 @@ namespace RapidField.SolidInstruments.Cryptography
         [DebuggerHidden]
         private void EnsureExistenceOfMasterKey()
         {
-            using (var controlToken = StateControl.Enter())
-            {
-                RejectIfDisposed();
+            using var controlToken = StateControl.Enter();
+            RejectIfDisposed();
 
-                if (InMemoryStore.Secrets.ContainsKey(InMemoryStore.MasterKeyName) is false)
-                {
-                    _ = InMemoryStore.CreateMasterKey();
-                    PersistInMemoryStore();
-                }
+            if (InMemoryStore.Secrets.ContainsKey(InMemoryStore.MasterKeyName) is false)
+            {
+                _ = InMemoryStore.CreateMasterKey();
+                PersistInMemoryStore();
             }
         }
 

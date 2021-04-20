@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RapidField.SolidInstruments.Command;
+using RapidField.SolidInstruments.Core;
 using System;
 using System.Linq;
 using System.Threading;
@@ -42,25 +43,26 @@ namespace RapidField.SolidInstruments.Messaging.InMemory.UnitTests
         {
             // Arrange.
             var customers = SimulatedServiceState.Customers;
-            Thread.Sleep(2584);
             var acmeCoCustomer = CustomerModel.Named.AcmeCo;
             var smithIndustriesCustomer = CustomerModel.Named.SmithIndustries;
+            var newAcmeCoCustomerName = "New Acme Corporation";
 
             // Act.
+            Thread.Sleep(2584);
             mediator.Process(new CreateCustomerCommandMessage(new CreateCustomerCommand(acmeCoCustomer)));
             mediator.Process(new CreateCustomerCommandMessage(new CreateCustomerCommand(smithIndustriesCustomer)));
 
             // Assert.
-            Thread.Sleep(28657);
-            customers.Should().HaveCount(2);
+            ActionRepeater.BuildAndRun(builder => builder.WithConstantDelay(987).WithTimeoutThreshold(46368).While(() => customers.Count < 2));
+            customers.Count.Should().Be(2);
 
             // Act.
-            acmeCoCustomer.Name = "New Acme Corporation";
+            acmeCoCustomer.Name = newAcmeCoCustomerName;
             mediator.Process(new UpdateCustomerCommandMessage(new UpdateCustomerCommand(acmeCoCustomer)));
 
             // Assert.
-            Thread.Sleep(6765);
-            customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name.Should().Be(acmeCoCustomer.Name);
+            ActionRepeater.BuildAndRun(builder => builder.WithConstantDelay(987).WithTimeoutThreshold(46368).While(() => customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name != newAcmeCoCustomerName));
+            customers.Where(entity => entity.Identifier == acmeCoCustomer.Identifier).Single().Name.Should().Be(newAcmeCoCustomerName);
 
             // Act.
             var pingCorrelationIdentifier = Guid.NewGuid();

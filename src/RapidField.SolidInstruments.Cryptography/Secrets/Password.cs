@@ -209,10 +209,8 @@ namespace RapidField.SolidInstruments.Cryptography.Secrets
         /// </exception>
         public String CalculateSecureHashString()
         {
-            using (var hashValue = CalculateSecureHashValue())
-            {
-                return hashValue.ToBase64String();
-            }
+            using var hashValue = CalculateSecureHashValue();
+            return hashValue.ToBase64String();
         }
 
         /// <summary>

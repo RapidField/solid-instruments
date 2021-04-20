@@ -52,17 +52,10 @@ namespace RapidField.SolidInstruments.Cryptography.Asymmetric.KeyExchange.Ecdh
         /// </returns>
         protected sealed override ISecureMemory DeriveSymmetricKeyMaterial(ECDiffieHellman provider, EcdhPrivateKey firstPartyPrivateKey, Span<Byte> secondPartyPublicKey)
         {
-            using (var keyMaterialMemory = new PinnedMemory(provider.DeriveKeyMaterial(new SecondPartyEcdhPublicKey(secondPartyPublicKey.ToArray())), true))
-            {
-                var keyMaterial = new SecureMemory(keyMaterialMemory.LengthInBytes);
-
-                keyMaterial.Access(memory =>
-                {
-                    keyMaterialMemory.ReadOnlySpan.CopyTo(memory.Span);
-                });
-
-                return keyMaterial;
-            }
+            using var keyMaterialMemory = new PinnedMemory(provider.DeriveKeyMaterial(new SecondPartyEcdhPublicKey(secondPartyPublicKey.ToArray())), true);
+            var keyMaterial = new SecureMemory(keyMaterialMemory.LengthInBytes);
+            keyMaterial.Access(memory => keyMaterialMemory.ReadOnlySpan.CopyTo(memory.Span));
+            return keyMaterial;
         }
 
         /// <summary>

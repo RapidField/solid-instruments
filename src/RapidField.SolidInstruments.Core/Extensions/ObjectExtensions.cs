@@ -140,20 +140,19 @@ namespace RapidField.SolidInstruments.Core.Extensions
         [DebuggerHidden]
         private static Object Deserialize(DataContractJsonSerializer serializer, Byte[] serializedObject)
         {
-            using (var stream = new MemoryStream(serializedObject))
+            using var stream = new MemoryStream(serializedObject);
+
+            try
             {
-                try
-                {
-                    return serializer.ReadObject(stream) ?? throw new SerializationException("The specified serialized object is invalid.");
-                }
-                catch (SerializationException)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    throw new SerializationException("An error occurred during deserialization. See inner exception.", exception);
-                }
+                return serializer.ReadObject(stream) ?? throw new SerializationException("The specified serialized object is invalid.");
+            }
+            catch (SerializationException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new SerializationException("An error occurred during deserialization. See inner exception.", exception);
             }
         }
 
@@ -306,23 +305,22 @@ namespace RapidField.SolidInstruments.Core.Extensions
         [DebuggerHidden]
         private static Byte[] Serialize(DataContractJsonSerializer serializer, Object target)
         {
-            using (var stream = new MemoryStream())
-            {
-                try
-                {
-                    serializer.WriteObject(stream, target);
-                }
-                catch (SerializationException)
-                {
-                    throw;
-                }
-                catch (Exception exception)
-                {
-                    throw new SerializationException("An error occurred during serialization. See inner exception.", exception);
-                }
+            using var stream = new MemoryStream();
 
-                return stream.ToArray();
+            try
+            {
+                serializer.WriteObject(stream, target);
             }
+            catch (SerializationException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new SerializationException("An error occurred during serialization. See inner exception.", exception);
+            }
+
+            return stream.ToArray();
         }
 
         /// <summary>
