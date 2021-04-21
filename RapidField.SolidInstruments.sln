@@ -197,6 +197,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.Command.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Command.md = doc\namespaces\RapidField.SolidInstruments.Command.md
 		doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md = doc\namespaces\RapidField.SolidInstruments.Core.ArgumentValidation.md
+		doc\namespaces\RapidField.SolidInstruments.Core.Caching.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Core.Caching.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Core.Caching.md = doc\namespaces\RapidField.SolidInstruments.Core.Caching.md
 		doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md = doc\namespaces\RapidField.SolidInstruments.Core.Concurrency.md
 		doc\namespaces\RapidField.SolidInstruments.Core.Domain.md = doc\namespaces\RapidField.SolidInstruments.Core.Domain.md
@@ -428,9 +429,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Web.DotNetNative", "src\RapidField.SolidInstruments.Web.DotNetNative\RapidField.SolidInstruments.Web.DotNetNative.csproj", "{6A53C072-71C8-42F1-90D9-9AE64F2848B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Core.Caching", "src\RapidField.SolidInstruments.Core.Caching\RapidField.SolidInstruments.Core.Caching.csproj", "{47D02163-44AA-4FB6-AACD-E20D8D4CCAAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core.Caching", "src\RapidField.SolidInstruments.Core.Caching\RapidField.SolidInstruments.Core.Caching.csproj", "{47D02163-44AA-4FB6-AACD-E20D8D4CCAAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Core.Caching.UnitTests", "test\RapidField.SolidInstruments.Core.Caching.UnitTests\RapidField.SolidInstruments.Core.Caching.UnitTests.csproj", "{0DA99B21-BA75-459C-AFB4-91ED73FE055F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core.Caching.UnitTests", "test\RapidField.SolidInstruments.Core.Caching.UnitTests\RapidField.SolidInstruments.Core.Caching.UnitTests.csproj", "{0DA99B21-BA75-459C-AFB4-91ED73FE055F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

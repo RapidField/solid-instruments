@@ -1,5 +1,5 @@
 ---
-uid: RapidField.SolidInstruments.Core.Caching
+uid: RapidField.SolidInstruments.Core.Caching.Extensions
 summary: *content
 ---
 
@@ -7,7 +7,7 @@ summary: *content
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-Exposes configurable clients for accessing cached data.
+Exposes caching extensions.
 
 <br />
 
@@ -29,11 +29,3 @@ dotnet add package RapidField.SolidInstruments.Core.Caching
 ```shell
 Install-Package RapidField.SolidInstruments.Core.Caching
 ```
-
-### Namespaces
-
-#### [RapidField.SolidInstruments.Core.Caching.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.Caching.Extensions.html)
-
-<section>
-Exposes caching extensions.
-</section>
