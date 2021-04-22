@@ -106,16 +106,17 @@ namespace RapidField.SolidInstruments.Core.Caching
 
             try
             {
-                var keyMaterial = new StringBuilder($"{valueType}{CompositeKeyElementDelimitingCharacter}");
+                var keyMaterial = new StringBuilder($"{CompositeKeyTypePrefixCharacters}{valueType}{CompositeKeyTypePostfixCharacters}{CompositeKeyElementDelimitingCharacters}");
 
                 foreach (var keyElement in compositeKey)
                 {
-                    var keyElementString = keyElement?.ToString() ?? CompositeKeyNullElementValue;
-                    keyMaterial.Append($"{keyElementString}{CompositeKeyElementDelimitingCharacter}");
+                    var keyElementTypeString = keyElement?.GetType().ToString() ?? String.Empty;
+                    var keyElementValueString = keyElement?.ToString() ?? CompositeKeyNullElementValue;
+                    keyMaterial.Append($"{CompositeKeyTypePrefixCharacters}{keyElementTypeString}{CompositeKeyTypePostfixCharacters}{keyElementValueString}{CompositeKeyElementDelimitingCharacters}");
                 }
 
                 var key = Encoding.Unicode.GetBytes(keyMaterial.ToString()).GenerateChecksumIdentity().ToSerializedString();
-                return Process($"{CompositeKeyPrependedCharacter}{key}", produceValueFunction);
+                return Process($"{CompositeKeyPrependedCharacters}{key}", produceValueFunction);
             }
             catch (CacheAccessException)
             {
@@ -157,7 +158,7 @@ namespace RapidField.SolidInstruments.Core.Caching
         /// The object is disposed.
         /// </exception>
         public Task<TValue> ProcessAsync<TValue>(String key, Func<TValue> produceValueFunction)
-            where TValue : class;
+            where TValue : class => Task.Factory.StartNew(() => Process(key, produceValueFunction));
 
         /// <summary>
         /// Asynchronously attempts to retrieve the cached object using the specified textual key and, failing that, invokes the
@@ -200,10 +201,10 @@ namespace RapidField.SolidInstruments.Core.Caching
         }
 
         /// <summary>
-        /// Represents a character that is used as a delimiter between composite key element strings.
+        /// Represents characters that are used as a delimiter between composite key element strings.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Char CompositeKeyElementDelimitingCharacter = ':';
+        private const String CompositeKeyElementDelimitingCharacters = "::";
 
         /// <summary>
         /// Represents a textual representation of <see langword="null" /> composite key elements.
@@ -212,9 +213,21 @@ namespace RapidField.SolidInstruments.Core.Caching
         private const String CompositeKeyNullElementValue = "_null_";
 
         /// <summary>
-        /// Represents a character that is prepended to textual composite keys.
+        /// Represents characters that are prepended to textual composite keys.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private const Char CompositeKeyPrependedCharacter = '_';
+        private const String CompositeKeyPrependedCharacters = "_ck_";
+
+        /// <summary>
+        /// Represents characters that postfix type names in composite key element strings.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String CompositeKeyTypePostfixCharacters = "]#";
+
+        /// <summary>
+        /// Represents characters that prefix type names in composite key element strings.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String CompositeKeyTypePrefixCharacters = "#[";
     }
 }

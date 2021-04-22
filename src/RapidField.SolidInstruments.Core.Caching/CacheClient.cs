@@ -5,7 +5,6 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using RapidField.SolidInstruments.Core.Concurrency;
 using System;
-using System.Threading.Tasks;
 
 namespace RapidField.SolidInstruments.Core.Caching
 {
@@ -139,38 +138,6 @@ namespace RapidField.SolidInstruments.Core.Caching
                 throw new CacheAccessException(typeof(TValue), exception);
             }
         }
-
-        /// <summary>
-        /// Asynchronously attempts to retrieve the cached object using the specified textual key and, failing that, invokes the
-        /// specified function to produce the object and adds it to the cache.
-        /// </summary>
-        /// <typeparam name="TValue">
-        /// The type of the cached object.
-        /// </typeparam>
-        /// <param name="key">
-        /// A textual key which uniquely identifies the object in the cache.
-        /// </param>
-        /// <param name="produceValueFunction">
-        /// A function that produces the object if it is not found in the cache.
-        /// </param>
-        /// <returns>
-        /// A task representing the asynchronous operation and containing the resulting cached object.
-        /// </returns>
-        /// <exception cref="ArgumentEmptyException">
-        /// <paramref name="key" /> is empty.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="key" /> is <see langword="null" /> -or- <paramref name="produceValueFunction" /> is
-        /// <see langword="null" />.
-        /// </exception>
-        /// <exception cref="CacheAccessException">
-        /// An exception was raised while attempting to access the cache or produce the value.
-        /// </exception>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public Task<TValue> ProcessAsync<TValue>(String key, Func<TValue> produceValueFunction)
-            where TValue : class => Task.Factory.StartNew(() => Process(key, produceValueFunction));
 
         /// <summary>
         /// Attempts to retrieve the cached object using the specified textual key.
