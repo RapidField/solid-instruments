@@ -33,19 +33,50 @@ $FilePathForNuGetExe = Join-Path -Path "$DirectoryPathForCicdTools" -ChildPath "
 $InstallScriptUriForChocolatey = "https://chocolatey.org/install.ps1";
 $InstallScriptUriForNuGet = "https://dist.nuget.org/win-x86-commandline/v5.1.0/$FileNameForNugetExe";
 
+# Environment targets
+$EnvironemtnTargetForMachine = "Machine";
+$EnvironmentTargetForProcess = "Process";
+$EnvironmentTargetForUser = "User";
+
+# Environment variables
+$EnvironmentVariableNameForPath = "Path";
+
+# Product names
+$ProductNameForChocolatey = "Chocolatey";
+$ProductNameForCodecov = "Codecov";
+$ProductNameForDocFx = "DocFX";
+$ProductNameForDotNet5Sdk = ".NET 5 SDK";
+$ProductNameForDotNetCoreSdk = ".NET Core SDK";
+$ProductNameForHtmlMinifier = "HTMLMinifier";
+$ProductNameForHub = "hub";
+$ProductNameForLeanify = "Leanify";
+$ProductNameForNodeJs = "Node.js";
+$ProductNameForNSwagStudio = "NSwagStudio";
+$ProductNameForNuGet = "NuGet";
+$ProductNameForOpenCover = "OpenCover";
+$ProductNameForOpenSsl = "OpenSSL";
+$ProductNameForPoshGit = "posh-git";
+$ProductNameForPowershellYaml = "powershell-yaml";
+$ProductNameForPsake = "psake";
+$ProductNameForRabbitMq = "RabbitMQ";
+
+# Product group names
+$ProductGroupNameForAllAutomationTools = "all automation tools";
+$ProductGroupNameForPackageManagers = "package managers";
+
 # Chocolatey package names
-$ChoclateyPackageNameForCodecov = "codecov";
-$ChoclateyPackageNameForDocFx = "docfx";
-$ChoclateyPackageNameForDotNet5Sdk = "dotnet-5.0-sdk";
-$ChoclateyPackageNameForDotNetCoreSdk = "dotnetcore-sdk";
-$ChoclateyPackageNameForHub = "hub";
-$ChoclateyPackageNameForLeanify = "leanify";
-$ChoclateyPackageNameForNodeJs = "nodejs";
-$ChoclateyPackageNameForNSwagStudio = "nswagstudio";
-$ChoclateyPackageNameForOpenCover = "opencover.portable";
-$ChoclateyPackageNameForOpenSsl = "openssl.light";
-$ChoclateyPackageNameForPsake = "psake";
-$ChoclateyPackageNameForRabbitMq = "rabbitmq";
+$ChocolateyPackageNameForCodecov = "codecov";
+$ChocolateyPackageNameForDocFx = "docfx";
+$ChocolateyPackageNameForDotNet5Sdk = "dotnet-5.0-sdk";
+$ChocolateyPackageNameForDotNetCoreSdk = "dotnetcore-sdk";
+$ChocolateyPackageNameForHub = "hub";
+$ChocolateyPackageNameForLeanify = "leanify";
+$ChocolateyPackageNameForNodeJs = "nodejs";
+$ChocolateyPackageNameForNSwagStudio = "nswagstudio";
+$ChocolateyPackageNameForOpenCover = "opencover.portable";
+$ChocolateyPackageNameForOpenSsl = "openssl.light";
+$ChocolateyPackageNameForPsake = "psake";
+$ChocolateyPackageNameForRabbitMq = "rabbitmq";
 
 # NPM package names
 $NpmPackageNameForHtmlMinifier = "html-minifier";
@@ -98,11 +129,26 @@ Function GetChocolateyInstallationStatus
 
 <#
 .Synopsis
+Returns a boolean value indicating whether or not the specified Chocolatey package is installed in the current environment.
+#>
+Function GetChocolateyPackageInstallationStatus
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $PackageName
+    )
+
+    Return (GetChocolateyInstallationStatus) -and (choco list --id-only --local-only | Where-Object { $_ -eq "$PackageName" });
+}
+
+<#
+.Synopsis
 Returns a boolean value indicating whether or not Codecov is installed in the current environment.
 #>
 Function GetCodecovInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForCodecov") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForCodecov";
 }
 
 <#
@@ -111,7 +157,7 @@ Returns a boolean value indicating whether or not DocFX is installed in the curr
 #>
 Function GetDocFxInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDocFx") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForDocFx";
 }
 
 <#
@@ -120,7 +166,7 @@ Returns a boolean value indicating whether or not the .NET 5 SDK is installed in
 #>
 Function GetDotNet5SdkInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNet5Sdk") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForDotNet5Sdk";
 }
 
 <#
@@ -129,7 +175,7 @@ Returns a boolean value indicating whether or not the .NET Core SDK is installed
 #>
 Function GetDotNetCoreSdkInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForDotNetCoreSdk") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForDotNetCoreSdk";
 }
 
 <#
@@ -147,7 +193,7 @@ Returns a boolean value indicating whether or not hub is installed in the curren
 #>
 Function GetHubInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForHub") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForHub";
 }
 
 <#
@@ -156,7 +202,7 @@ Returns a boolean value indicating whether or not Leanify is installed in the cu
 #>
 Function GetLeanifyInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForLeanify") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForLeanify";
 }
 
 <#
@@ -165,7 +211,7 @@ Returns a boolean value indicating whether or not Node.js is installed in the cu
 #>
 Function GetNodeJsInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNodeJs") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForNodeJs";
 }
 
 <#
@@ -174,7 +220,7 @@ Returns a boolean value indicating whether or not NSwagStudio is installed in th
 #>
 Function GetNSwagStudioInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForNSwagStudio") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForNSwagStudio";
 }
 
 <#
@@ -192,7 +238,7 @@ Returns a boolean value indicating whether or not OpenCover is installed in the 
 #>
 Function GetOpenCoverInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenCover") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForOpenCover";
 }
 
 <#
@@ -201,7 +247,7 @@ Returns a boolean value indicating whether or not OpenSSL is installed in the cu
 #>
 Function GetOpenSslInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForOpenSsl") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForOpenSsl";
 }
 
 <#
@@ -210,7 +256,22 @@ Returns a boolean value indicating whether or not posh-git is installed in the c
 #>
 Function GetPoshGitInstallationStatus
 {
-    Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPoshGit";
+    Return GetPowerShellModuleInstallationStatus -ModuleName "$PowershellModuleNameForPoshGit";
+}
+
+<#
+.Synopsis
+Returns a boolean value indicating whether or not the specified PowerShell module is installed in the current environment.
+#>
+Function GetPowerShellModuleInstallationStatus
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $ModuleName
+    )
+
+    Return Get-Module -ListAvailable -Name "$ModuleName";
 }
 
 <#
@@ -219,7 +280,7 @@ Returns a boolean value indicating whether or not powershell-yaml is installed i
 #>
 Function GetPowershellYamlInstallationStatus
 {
-    Return Get-Module -ListAvailable -Name "$PowershellModuleNameForPowershellYaml";
+    Return GetPowerShellModuleInstallationStatus -ModuleName "$PowershellModuleNameForPowershellYaml";
 }
 
 <#
@@ -228,7 +289,7 @@ Returns a boolean value indicating whether or not psake is installed in the curr
 #>
 Function GetPsakeInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForPsake") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForPsake";
 }
 
 <#
@@ -237,7 +298,7 @@ Returns a boolean value indicating whether or not RabbitMQ is installed in the c
 #>
 Function GetRabbitMqInstallationStatus
 {
-    Return (GetChocolateyInstallationStatus) -and (choco list -lo | Where-Object { $_.ToLower().StartsWith("$ChoclateyPackageNameForRabbitMq") });
+    Return GetChocolateyPackageInstallationStatus -PackageName "$ChocolateyPackageNameForRabbitMq";
 }
 
 <#
@@ -246,7 +307,7 @@ Installs all of the available automation tools in the current environment.
 #>
 Function InstallAllAutomationTools
 {
-    ComposeStart "Installing all automation tools.";
+    ComposeStart "Installing $ProductGroupNameForAllAutomationTools.";
     InstallPackageManagers;
     InstallCodecov;
     InstallDocFx;
@@ -262,7 +323,7 @@ Function InstallAllAutomationTools
     InstallPowershellYaml;
     InstallPsake;
     InstallRabbitMq;
-    ComposeFinish "Finished installing all automation tools.";
+    ComposeFinish "Finished installing $ProductGroupNameForAllAutomationTools.";
 }
 
 <#
@@ -271,23 +332,23 @@ Installs Chocolatey in the current environment.
 #>
 Function InstallChocolatey
 {
-    If ($SuppressChoclatey -eq $true)
+    If ($SuppressChocolatey -eq $true)
     {
-        ComposeNormal "Suppressing installation of Chocolatey.";
+        ComposeNormal "Suppressing installation of $ProductNameForChocolatey.";
         Return;
     }
     ElseIf (GetChocolateyInstallationStatus)
     {
-        ComposeNormal "Chocolatey is already installed.";
+        ComposeNormal "$ProductNameForChocolatey is already installed.";
         Return;
     }
 
-    ComposeStart "Installing Chocolatey.";
+    ComposeStart "Installing $ProductNameForChocolatey.";
     Stop-Process -Name "$FileNameForChocoExe" -Force -ErrorAction Ignore;
     Set-ExecutionPolicy Bypass -Scope Process -Force;
     iex ((New-Object System.Net.WebClient).DownloadString($InstallScriptUriForChocolatey));
     choco feature enable -n allowGlobalConfirmation;
-    ComposeFinish "Finished installing Chocolatey.";
+    ComposeFinish "Finished installing $ProductNameForChocolatey.";
 }
 
 <#
@@ -298,19 +359,19 @@ Function InstallCodecov
 {
     If ($SuppressCodecov -eq $true)
     {
-        ComposeNormal "Suppressing installation of Codecov.";
+        ComposeNormal "Suppressing installation of $PackageProductNameForCodecov.";
         Return;
     }
     ElseIf (GetCodecovInstallationStatus)
     {
-        ComposeNormal "Codecov is already installed.";
+        ComposeNormal "$ProductNameForCodecov is already installed.";
         Return;
     }
 
-    ComposeStart "Installing Codecov.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForCodecov";
+    ComposeStart "Installing $ProductNameForCodecov.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForCodecov";
     MakeCommandPathAvailableAll -Command $CommandNameForCodecov;
-    ComposeFinish "Finished installing Codecov.";
+    ComposeFinish "Finished installing $ProductNameForCodecov.";
 }
 
 <#
@@ -321,18 +382,18 @@ Function InstallDocFx
 {
     If ($SuppressDocFx -eq $true)
     {
-        ComposeNormal "Suppressing installation of DocFX.";
+        ComposeNormal "Suppressing installation of $ProductNameForDocFx.";
         Return;
     }
     ElseIf (GetDocFxInstallationStatus)
     {
-        ComposeNormal "DocFX is already installed.";
+        ComposeNormal "$ProductNameForDocFx is already installed.";
         Return;
     }
 
-    ComposeStart "Installing DocFX.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDocFx";
-    ComposeFinish "Finished installing DocFX.";
+    ComposeStart "Installing $ProductNameForDocFx.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForDocFx";
+    ComposeFinish "Finished installing $ProductNameForDocFx.";
 }
 
 <#
@@ -343,18 +404,18 @@ Function InstallDotNet5Sdk
 {
     If ($SuppressDotNet5Sdk -eq $true)
     {
-        ComposeNormal "Suppressing installation of the .NET 5 SDK.";
+        ComposeNormal "Suppressing installation of $ProductNameForDotNet5Sdk.";
         Return;
     }
     ElseIf (GetDotNet5SdkInstallationStatus)
     {
-        ComposeNormal "The .NET 5 SDK is already installed.";
+        ComposeNormal "$ProductNameForDotNet5Sdk is already installed.";
         Return;
     }
 
-    ComposeStart "Installing the .NET 5 SDK.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDotNet5Sdk";
-    ComposeFinish "Finished installing the .NET 5 SDK.";
+    ComposeStart "Installing $ProductNameForDotNet5Sdk.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForDotNet5Sdk";
+    ComposeFinish "Finished installing $ProductNameForDotNet5Sdk.";
 }
 
 <#
@@ -365,18 +426,18 @@ Function InstallDotNetCoreSdk
 {
     If ($SuppressDotNetCoreSdk -eq $true)
     {
-        ComposeNormal "Suppressing installation of the .NET Core SDK.";
+        ComposeNormal "Suppressing installation of $ProductNameForDotNetCoreSdk.";
         Return;
     }
     ElseIf (GetDotNetCoreSdkInstallationStatus)
     {
-        ComposeNormal "The .NET Core SDK is already installed.";
+        ComposeNormal "$ProductNameForDotNetCoreSdk is already installed.";
         Return;
     }
 
-    ComposeStart "Installing the .NET Core SDK.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForDotNetCoreSdk";
-    ComposeFinish "Finished installing the .NET Core SDK.";
+    ComposeStart "Installing $ProductNameForDotNetCoreSdk.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForDotNetCoreSdk";
+    ComposeFinish "Finished installing $ProductNameForDotNetCoreSdk.";
 }
 
 <#
@@ -387,19 +448,19 @@ Function InstallHtmlMinifier
 {
     If ($SuppressHtmlMinifier -eq $true)
     {
-        ComposeNormal "Suppressing installation of HTMLMinifier.";
+        ComposeNormal "Suppressing installation of $ProductNameForHtmlMinifier.";
         Return;
     }
     ElseIf (GetHtmlMinifierInstallationStatus)
     {
-        ComposeNormal "HTMLMinifier is already installed.";
+        ComposeNormal "$ProductNameForHtmlMinifier is already installed.";
         Return;
     }
 
-    ComposeStart "Installing HTMLMinifier.";
+    ComposeStart "Installing $ProductNameForHtmlMinifier.";
     UseNpmToInstall -PackageName "$NpmPackageNameForHtmlMinifier";
     MakeCommandPathAvailableAll -Command $CommandNameForHtmlMinifier;
-    ComposeFinish "Finished installing HTMLMinifier.";
+    ComposeFinish "Finished installing $ProductNameForHtmlMinifier.";
 }
 
 <#
@@ -410,19 +471,19 @@ Function InstallHub
 {
     If ($SuppressHub -eq $true)
     {
-        ComposeNormal "Suppressing installation of hub.";
+        ComposeNormal "Suppressing installation of $ProductNameForHub.";
         Return;
     }
     ElseIf (GetHubInstallationStatus)
     {
-        ComposeNormal "hub is already installed.";
+        ComposeNormal "$ProductNameForHub is already installed.";
         Return;
     }
 
-    ComposeStart "Installing hub.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForHub";
+    ComposeStart "Installing $ProductNameForHub.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForHub";
     MakeCommandPathAvailableAll -Command $CommandNameForHub;
-    ComposeFinish "Finished installing hub.";
+    ComposeFinish "Finished installing $ProductNameForHub.";
 }
 
 <#
@@ -433,18 +494,18 @@ Function InstallLeanify
 {
     If ($SuppressLeanify -eq $true)
     {
-        ComposeNormal "Suppressing installation of Leanify.";
+        ComposeNormal "Suppressing installation of $ProductNameForLeanify.";
         Return;
     }
     ElseIf (GetLeanifyInstallationStatus)
     {
-        ComposeNormal "Leanify is already installed.";
+        ComposeNormal "$ProductNameForLeanify is already installed.";
         Return;
     }
 
-    ComposeStart "Installing Leanify.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForLeanify";
-    ComposeFinish "Finished installing Leanify.";
+    ComposeStart "Installing $ProductNameForLeanify.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForLeanify";
+    ComposeFinish "Finished installing $ProductNameForLeanify.";
 }
 
 <#
@@ -455,19 +516,19 @@ Function InstallNodeJs
 {
     If ($SuppressNodeJs -eq $true)
     {
-        ComposeNormal "Suppressing installation of Node.js.";
+        ComposeNormal "Suppressing installation of $ProductNameForNodeJs.";
         Return;
     }
     ElseIf (GetNodeJsInstallationStatus)
     {
-        ComposeNormal "Node.js is already installed.";
+        ComposeNormal "$ProductNameForNodeJs is already installed.";
         Return;
     }
 
-    ComposeStart "Installing Node.js.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForNodeJs";
+    ComposeStart "Installing $ProductNameForNodeJs.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForNodeJs";
     MakeCommandPathAvailableAll -Command $CommandNameForNpm;
-    ComposeFinish "Finished installing Node.js.";
+    ComposeFinish "Finished installing $ProductNameForNodeJs.";
 }
 
 <#
@@ -478,18 +539,18 @@ Function InstallNSwagStudio
 {
     If ($SuppressNSwagStudio -eq $true)
     {
-        ComposeNormal "Suppressing installation of NSwagStudio.";
+        ComposeNormal "Suppressing installation of $ProductNameForNSwagStudio.";
         Return;
     }
     ElseIf (GetNSwagStudioInstallationStatus)
     {
-        ComposeNormal "NSwagStudio is already installed.";
+        ComposeNormal "$ProductNameForNSwagStudio is already installed.";
         Return;
     }
 
-    ComposeStart "Installing NSwagStudio.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForNSwagStudio";
-    ComposeFinish "Finished installing NSwagStudio.";
+    ComposeStart "Installing $ProductNameForNSwagStudio.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForNSwagStudio";
+    ComposeFinish "Finished installing $ProductNameForNSwagStudio.";
 }
 
 <#
@@ -500,12 +561,12 @@ Function InstallNuGet
 {
     If ($SuppressNuGet -eq $true)
     {
-        ComposeNormal "Suppressing installation of NuGet.";
+        ComposeNormal "Suppressing installation of $ProductNameForNuGet.";
         Return;
     }
     ElseIf (GetNuGetInstallationStatus)
     {
-        ComposeNormal "NuGet is already installed.";
+        ComposeNormal "$ProductNameForNuGet is already installed.";
         Return;
     }
 
@@ -514,9 +575,9 @@ Function InstallNuGet
         New-Item -ItemType Directory -Path "$DirectoryPathForCicdTools" -Force | Out-Null;
     }
 
-    ComposeStart "Installing NuGet.";
+    ComposeStart "Installing $ProductNameForNuGet.";
     Invoke-WebRequest -Uri $InstallScriptUriForNuGet -OutFile "$FilePathForNuGetExe";
-    ComposeFinish "Finished installing NuGet.";
+    ComposeFinish "Finished installing $ProductNameForNuGet.";
 }
 
 <#
@@ -527,19 +588,19 @@ Function InstallOpenCover
 {
     If ($SuppressOpenCover -eq $true)
     {
-        ComposeNormal "Suppressing installation of OpenCover.";
+        ComposeNormal "Suppressing installation of $ProductNameForOpenCover.";
         Return;
     }
     ElseIf (GetOpenCoverInstallationStatus)
     {
-        ComposeNormal "OpenCover is already installed.";
+        ComposeNormal "$ProductNameForOpenCover is already installed.";
         Return;
     }
 
-    ComposeStart "Installing OpenCover.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForOpenCover";
+    ComposeStart "Installing $ProductNameForOpenCover.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForOpenCover";
     MakeCommandPathAvailableAll -Command $CommandNameForOpenCover;
-    ComposeFinish "Finished installing OpenCover.";
+    ComposeFinish "Finished installing $ProductNameForOpenCover.";
 }
 
 <#
@@ -550,19 +611,19 @@ Function InstallOpenSsl
 {
     If ($SuppressOpenSsl -eq $true)
     {
-        ComposeNormal "Suppressing installation of OpenSSL.";
+        ComposeNormal "Suppressing installation of $ProductNameForOpenSsl.";
         Return;
     }
     ElseIf (GetOpenSslInstallationStatus)
     {
-        ComposeNormal "OpenSSL is already installed.";
+        ComposeNormal "$ProductNameForOpenSsl is already installed.";
         Return;
     }
 
-    ComposeStart "Installing OpenSSL.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForOpenSsl";
+    ComposeStart "Installing $ProductNameForOpenSsl.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForOpenSsl";
     MakeCommandPathAvailableAll -Command $CommandNameForOpenSsl;
-    ComposeFinish "Finished installing OpenSSL.";
+    ComposeFinish "Finished installing $ProductNameForOpenSsl.";
 }
 
 <#
@@ -573,15 +634,15 @@ Function InstallPackageManagers
 {
     If ($SuppressPackageManagers -eq $true)
     {
-        ComposeNormal "Suppressing installation of package managers.";
+        ComposeNormal "Suppressing installation of $ProductGroupNameForPackageManagers.";
         Return;
     }
 
-    ComposeStart "Installing package managers.";
+    ComposeStart "Installing $ProductGroupNameForPackageManagers.";
     InstallChocolatey;
     InstallNodeJs;
     InstallNuGet;
-    ComposeFinish "Finished installing package managers.";
+    ComposeFinish "Finished installing $ProductGroupNameForPackageManagers.";
 }
 
 <#
@@ -592,18 +653,18 @@ Function InstallPoshGit
 {
     If ($SuppressPoshGit -eq $true)
     {
-        ComposeNormal "Suppressing installation of posh-git.";
+        ComposeNormal "Suppressing installation of $ProductNameForPoshGit.";
         Return;
     }
     ElseIf (GetPoshGitInstallationStatus)
     {
-        ComposeNormal "posh-git is already installed.";
+        ComposeNormal "$ProductNameForPoshGit is already installed.";
         Return;
     }
 
-    ComposeStart "Installing posh-git.";
+    ComposeStart "Installing $ProductNameForPoshGit.";
     UsePowerShellGalleryToInstall -ModuleName "$PowershellModuleNameForPoshGit";
-    ComposeFinish "Finished installing posh-git.";
+    ComposeFinish "Finished installing $ProductNameForPoshGit.";
 }
 
 <#
@@ -614,18 +675,18 @@ Function InstallPowershellYaml
 {
     If ($SuppressPowershellYaml -eq $true)
     {
-        ComposeNormal "Suppressing installation of powershell-yaml.";
+        ComposeNormal "Suppressing installation of $ProductNameForPowershellYaml.";
         Return;
     }
     ElseIf (GetPowershellYamlInstallationStatus)
     {
-        ComposeNormal "powershell-yaml is already installed.";
+        ComposeNormal "$ProductNameForPowershellYaml is already installed.";
         Return;
     }
 
-    ComposeStart "Installing powershell-yaml.";
+    ComposeStart "Installing $ProductNameForPowershellYaml.";
     UsePowerShellGalleryToInstall -ModuleName "$PowershellModuleNameForPowershellYaml";
-    ComposeFinish "Finished installing powershell-yaml.";
+    ComposeFinish "Finished installing $ProductNameForPowershellYaml.";
 }
 
 <#
@@ -636,18 +697,18 @@ Function InstallPsake
 {
     If ($SuppressPsake -eq $true)
     {
-        ComposeNormal "Suppressing installation of psake.";
+        ComposeNormal "Suppressing installation of $ProductNameForPsake.";
         Return;
     }
     ElseIf (GetPsakeInstallationStatus)
     {
-        ComposeNormal "psake is already installed.";
+        ComposeNormal "$ProductNameForPsake is already installed.";
         Return;
     }
 
-    ComposeStart "Installing psake.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForPsake";
-    ComposeFinish "Finished installing psake.";
+    ComposeStart "Installing $ProductNameForPsake.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForPsake";
+    ComposeFinish "Finished installing $ProductNameForPsake.";
 }
 
 <#
@@ -658,18 +719,18 @@ Function InstallRabbitMq
 {
     If ($SuppressRabbitMq -eq $true)
     {
-        ComposeNormal "Suppressing installation of RabbitMQ.";
+        ComposeNormal "Suppressing installation of $ProductNameForRabbitMq.";
         Return;
     }
     ElseIf (GetRabbitMqInstallationStatus)
     {
-        ComposeNormal "RabbitMQ is already installed.";
+        ComposeNormal "$ProductNameForRabbitMq is already installed.";
         Return;
     }
 
-    ComposeStart "Installing RabbitMQ.";
-    UseChocolateyToInstall -PackageName "$ChoclateyPackageNameForRabbitMq";
-    ComposeFinish "Finished installing RabbitMQ.";
+    ComposeStart "Installing $ProductNameForRabbitMq.";
+    UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForRabbitMq";
+    ComposeFinish "Finished installing $ProductNameForRabbitMq.";
 }
 
 <#
@@ -689,7 +750,7 @@ Function MakeCommandPathAvailable
     Get-Command "$Command" | ForEach-Object `
     {
         $CommandDirectoryPath = Split-Path $_.Source;
-        $PathVariable = [System.Environment]::GetEnvironmentVariable("Path", $EnvironmentTarget);
+        $PathVariable = [System.Environment]::GetEnvironmentVariable("$EnvironmentVariableNameForPath", $EnvironmentTarget);
 
         If ($PathVariable -like "*$CommandDirectoryPath*")
         {
@@ -698,7 +759,7 @@ Function MakeCommandPathAvailable
         }
 
         $PathVariable = $PathVariable + ";$CommandDirectoryPath";
-        [System.Environment]::SetEnvironmentVariable("Path", "$PathVariable", $EnvironmentTarget);
+        [System.Environment]::SetEnvironmentVariable("$EnvironmentVariableNameForPath", "$PathVariable", $EnvironmentTarget);
         RefreshSession;
         ComposeVerbose "Added command path for $EnvironmentTarget target: $CommandDirectoryPath";
         Return;
@@ -734,7 +795,7 @@ Function MakeCommandPathAvailableMachine
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Machine";
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironemtnTargetForMachine";
 }
 
 <#
@@ -749,7 +810,7 @@ Function MakeCommandPathAvailableProcess
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "Process";
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironmentTargetForProcess";
 }
 
 <#
@@ -764,7 +825,7 @@ Function MakeCommandPathAvailableUser
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "User";
+    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironmentTargetForUser";
 }
 
 <#
@@ -783,11 +844,11 @@ Uninstalls, if necessary, and installs all available automation tools in the cur
 #>
 Function RestoreAllAutomationTools
 {
-    ComposeStart "Restoring all automation tools.";
+    ComposeStart "Restoring $ProductGroupNameForAllAutomationTools.";
     InstallPackageManagers;
     UninstallAllAutomationTools;
     InstallAllAutomationTools;
-    ComposeFinish "Finished restoring all automation tools.";
+    ComposeFinish "Finished restoring $ProductGroupNameForAllAutomationTools.";
 }
 
 <#
@@ -796,10 +857,10 @@ Uninstalls, if necessary, and installs Codecov in the current environment.
 #>
 Function RestoreCodecov
 {
-    ComposeStart "Restoring Codecov.";
+    ComposeStart "Restoring $ProductNameForCodecov.";
     UninstallCodecov;
     InstallCodecov;
-    ComposeFinish "Finished restoring Codecov.";
+    ComposeFinish "Finished restoring $ProductNameForCodecov.";
 }
 
 <#
@@ -808,10 +869,10 @@ Uninstalls, if necessary, and installs DocFX in the current environment.
 #>
 Function RestoreDocFx
 {
-    ComposeStart "Restoring DocFX.";
+    ComposeStart "Restoring $ProductNameForDocFx.";
     UninstallDocFx;
     InstallDocFx;
-    ComposeFinish "Finished restoring DocFX.";
+    ComposeFinish "Finished restoring $ProductNameForDocFx.";
 }
 
 <#
@@ -820,10 +881,10 @@ Uninstalls, if necessary, and installs the .NET 5 SDK in the current environment
 #>
 Function RestoreDotNet5Sdk
 {
-    ComposeStart "Restoring the .NET 5 SDK.";
+    ComposeStart "Restoring $ProductNameForDotNet5Sdk.";
     UninstallDotNet5Sdk;
     InstallDotNet5Sdk;
-    ComposeFinish "Finished restoring the .NET 5 SDK.";
+    ComposeFinish "Finished restoring $ProductNameForDotNet5Sdk.";
 }
 
 <#
@@ -832,10 +893,10 @@ Uninstalls, if necessary, and installs the .NET Core SDK in the current environm
 #>
 Function RestoreDotNetCoreSdk
 {
-    ComposeStart "Restoring the .NET Core SDK.";
+    ComposeStart "Restoring $ProductNameForDotNetCoreSdk.";
     UninstallDotNetCoreSdk;
     InstallDotNetCoreSdk;
-    ComposeFinish "Finished restoring the .NET Core SDK.";
+    ComposeFinish "Finished restoring $ProductNameForDotNetCoreSdk.";
 }
 
 <#
@@ -844,10 +905,10 @@ Uninstalls, if necessary, and installs HTMLMinifier in the current environment.
 #>
 Function RestoreHtmlMinifier
 {
-    ComposeStart "Restoring HTMLMinifier.";
+    ComposeStart "Restoring $ProductNameForHtmlMinifier.";
     UninstallHtmlMinifier;
     InstallHtmlMinifier;
-    ComposeFinish "Finished restoring HTMLMinifier.";
+    ComposeFinish "Finished restoring $ProductNameForHtmlMinifier.";
 }
 
 <#
@@ -856,10 +917,10 @@ Uninstalls, if necessary, and installs hub in the current environment.
 #>
 Function RestoreHtmlMinifier
 {
-    ComposeStart "Restoring hub.";
+    ComposeStart "Restoring $ProductNameForHub.";
     UninstallHub;
     InstallHub;
-    ComposeFinish "Finished restoring hub.";
+    ComposeFinish "Finished restoring $ProductNameForHub.";
 }
 
 <#
@@ -868,10 +929,10 @@ Uninstalls, if necessary, and installs Leanify in the current environment.
 #>
 Function RestoreLeanify
 {
-    ComposeStart "Restoring Leanify.";
+    ComposeStart "Restoring $ProductNameForLeanify.";
     UninstallLeanify;
     InstallLeanify;
-    ComposeFinish "Finished restoring Leanify.";
+    ComposeFinish "Finished restoring $ProductNameForLeanify.";
 }
 
 <#
@@ -880,10 +941,10 @@ Uninstalls, if necessary, and installs Node.js in the current environment.
 #>
 Function RestoreNodeJs
 {
-    ComposeStart "Restoring Node.js.";
+    ComposeStart "Restoring $ProductNameForNodeJs.";
     UninstallNodeJs;
     InstallNodeJs;
-    ComposeFinish "Finished restoring Node.js.";
+    ComposeFinish "Finished restoring $ProductNameForNodeJs.";
 }
 
 <#
@@ -892,10 +953,10 @@ Uninstalls, if necessary, and installs NSwagStudio in the current environment.
 #>
 Function RestoreNSwagStudio
 {
-    ComposeStart "Restoring NSwagStudio.";
+    ComposeStart "Restoring $ProductNameForNSwagStudio.";
     UninstallNSwagStudio;
     InstallNSwagStudio;
-    ComposeFinish "Finished restoring NSwagStudio.";
+    ComposeFinish "Finished restoring $ProductNameForNSwagStudio.";
 }
 
 <#
@@ -904,10 +965,10 @@ Uninstalls, if necessary, and installs NuGet in the current environment.
 #>
 Function RestoreNuGet
 {
-    ComposeStart "Restoring NuGet.";
+    ComposeStart "Restoring $ProductNameForNuGet.";
     UninstallNuGet;
     InstallNuGet;
-    ComposeFinish "Finished restoring NuGet.";
+    ComposeFinish "Finished restoring $ProductNameForNuGet.";
 }
 
 <#
@@ -916,10 +977,10 @@ Uninstalls, if necessary, and installs OpenCover in the current environment.
 #>
 Function RestoreOpenCover
 {
-    ComposeStart "Restoring OpenCover.";
+    ComposeStart "Restoring $ProductNameForOpenCover.";
     UninstallOpenCover;
     InstallOpenCover;
-    ComposeFinish "Finished restoring OpenCover.";
+    ComposeFinish "Finished restoring $ProductNameForOpenCover.";
 }
 
 <#
@@ -928,10 +989,10 @@ Uninstalls, if necessary, and installs OpenSSL in the current environment.
 #>
 Function RestoreOpenSsl
 {
-    ComposeStart "Restoring OpenSSL.";
+    ComposeStart "Restoring $ProductNameForOpenSsl.";
     UninstallOpenSsl;
     InstallOpenSsl;
-    ComposeFinish "Finished restoring OpenSSL.";
+    ComposeFinish "Finished restoring $ProductNameForOpenSsl.";
 }
 
 <#
@@ -940,10 +1001,10 @@ Uninstalls, if necessary, and installs posh-git in the current environment.
 #>
 Function RestorePoshGit
 {
-    ComposeStart "Restoring posh-git.";
+    ComposeStart "Restoring $ProductNameForPoshGit.";
     UninstallPoshGit;
     InstallPoshGit;
-    ComposeFinish "Finished restoring posh-git.";
+    ComposeFinish "Finished restoring $ProductNameForPoshGit.";
 }
 
 <#
@@ -952,10 +1013,10 @@ Uninstalls, if necessary, and installs powershell-yaml in the current environmen
 #>
 Function RestorePowershellYaml
 {
-    ComposeStart "Restoring powershell-yaml.";
+    ComposeStart "Restoring $ProductNameForPowershellYaml.";
     UninstallPowershellYaml;
     InstallPowershellYaml;
-    ComposeFinish "Finished restoring powershell-yaml.";
+    ComposeFinish "Finished restoring $ProductNameForPowershellYaml.";
 }
 
 <#
@@ -964,10 +1025,10 @@ Uninstalls, if necessary, and installs psake in the current environment.
 #>
 Function RestorePsake
 {
-    ComposeStart "Restoring psake.";
+    ComposeStart "Restoring $ProductNameForPsake.";
     UninstallPsake;
     InstallPsake;
-    ComposeFinish "Finished restoring psake.";
+    ComposeFinish "Finished restoring $ProductNameForPsake.";
 }
 
 <#
@@ -976,10 +1037,10 @@ Uninstalls, if necessary, and installs RabbitMQ in the current environment.
 #>
 Function RestoreRabbitMq
 {
-    ComposeStart "Restoring RabbitMQ.";
+    ComposeStart "Restoring $ProductNameForRabbitMq.";
     UninstallRabbitMq;
     InstallRabbitMq;
-    ComposeFinish "Finished restoring RabbitMQ.";
+    ComposeFinish "Finished restoring $ProductNameForRabbitMq.";
 }
 
 <#
@@ -988,7 +1049,7 @@ Uninstalls all available automation tools in the current environment.
 #>
 Function UninstallAllAutomationTools
 {
-    ComposeStart "Uninstalling all automation tools.";
+    ComposeStart "Uninstalling $ProductGroupNameForAllAutomationTools.";
     UninstallCodecov;
     UninstallDocFx;
     UninstallDotNet5Sdk;
@@ -1003,7 +1064,7 @@ Function UninstallAllAutomationTools
     UninstallPowershellYaml;
     UninstallPsake;
     UninstallRabbitMq;
-    ComposeFinish "Finished uninstalling all automation tools.";
+    ComposeFinish "Finished uninstalling $ProductGroupNameForAllAutomationTools.";
 }
 
 <#
@@ -1014,14 +1075,14 @@ Function UninstallCodecov
 {
     If ($SuppressCodecov -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of Codecov.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForCodecov.";
         Return;
     }
     ElseIf (GetCodecovInstallationStatus)
     {
-        ComposeStart "Uninstalling Codecov.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForCodecov";
-        ComposeFinish "Finished uninstalling Codecov.";
+        ComposeStart "Uninstalling $ProductNameForCodecov.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForCodecov";
+        ComposeFinish "Finished uninstalling $ProductNameForCodecov.";
     }
 }
 
@@ -1033,14 +1094,14 @@ Function UninstallDocFx
 {
     If ($SuppressDocFx -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of DocFX.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForDocFx.";
         Return;
     }
     ElseIf (GetDocFxInstallationStatus)
     {
-        ComposeStart "Uninstalling DocFX.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDocFx";
-        ComposeFinish "Finished uninstalling DocFX.";
+        ComposeStart "Uninstalling $ProductNameForDocFx.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForDocFx";
+        ComposeFinish "Finished uninstalling $ProductNameForDocFx.";
     }
 }
 
@@ -1052,14 +1113,14 @@ Function UninstallDotNet5Sdk
 {
     If ($SuppressDotNet5Sdk -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of the .NET 5 SDK.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForDotNet5Sdk.";
         Return;
     }
     ElseIf (GetDotNet5SdkInstallationStatus)
     {
-        ComposeStart "Uninstalling the .NET 5 SDK.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDotNet5Sdk";
-        ComposeFinish "Finished uninstalling the .NET 5 SDK.";
+        ComposeStart "Uninstalling $ProductNameForDotNet5Sdk.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForDotNet5Sdk";
+        ComposeFinish "Finished uninstalling $ProductNameForDotNet5Sdk.";
     }
 }
 
@@ -1071,14 +1132,14 @@ Function UninstallDotNetCoreSdk
 {
     If ($SuppressDotNetCoreSdk -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of the .NET Core SDK.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForDotNetCoreSdk.";
         Return;
     }
     ElseIf (GetDotNetCoreSdkInstallationStatus)
     {
-        ComposeStart "Uninstalling the .NET Core SDK.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForDotNetCoreSdk";
-        ComposeFinish "Finished uninstalling the .NET Core SDK.";
+        ComposeStart "Uninstalling $ProductNameForDotNetCoreSdk.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForDotNetCoreSdk";
+        ComposeFinish "Finished uninstalling $ProductNameForDotNetCoreSdk.";
     }
 }
 
@@ -1090,14 +1151,14 @@ Function UninstallHtmlMinifier
 {
     If ($SuppressHtmlMinifier -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of HTMLMinifier.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForHtmlMinifier.";
         Return;
     }
     ElseIf (GetHtmlMinifierInstallationStatus)
     {
-        ComposeStart "Uninstalling HTMLMinifier.";
+        ComposeStart "Uninstalling $ProductNameForHtmlMinifier.";
         UseNpmToUninstall -PackageName "$NpmPackageNameForHtmlMinifier";
-        ComposeFinish "Finished uninstalling HTMLMinifier.";
+        ComposeFinish "Finished uninstalling $ProductNameForHtmlMinifier.";
     }
 }
 
@@ -1109,14 +1170,14 @@ Function UninstallHub
 {
     If ($SuppressHub -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of hub.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForHub.";
         Return;
     }
-    ElseIf (GetLeanifyInstallationStatus)
+    ElseIf (GetHubInstallationStatus)
     {
-        ComposeStart "Uninstalling hub.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForHub";
-        ComposeFinish "Finished uninstalling hub.";
+        ComposeStart "Uninstalling $ProductNameForHub.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForHub";
+        ComposeFinish "Finished uninstalling $ProductNameForHub.";
     }
 }
 
@@ -1128,14 +1189,14 @@ Function UninstallLeanify
 {
     If ($SuppressLeanify -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of Leanify.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForLeanify.";
         Return;
     }
     ElseIf (GetLeanifyInstallationStatus)
     {
-        ComposeStart "Uninstalling Leanify.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForLeanify";
-        ComposeFinish "Finished uninstalling Leanify.";
+        ComposeStart "Uninstalling $ProductNameForLeanify.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForLeanify";
+        ComposeFinish "Finished uninstalling $ProductNameForLeanify.";
     }
 }
 
@@ -1147,14 +1208,14 @@ Function UninstallNodeJs
 {
     If ($SuppressNodeJs -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of Node.js.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForNodeJs.";
         Return;
     }
     ElseIf (GetNodeJsInstallationStatus)
     {
-        ComposeStart "Uninstalling Node.js.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForNodeJs";
-        ComposeFinish "Finished uninstalling Node.js.";
+        ComposeStart "Uninstalling $ProductNameForNodeJs.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForNodeJs";
+        ComposeFinish "Finished uninstalling $ProductNameForNodeJs.";
     }
 }
 
@@ -1166,14 +1227,14 @@ Function UninstallNSwagStudio
 {
     If ($SuppressNSwagStudio -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of NSwagStudio.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForNSwagStudio.";
         Return;
     }
     ElseIf (GetNSwagStudioInstallationStatus)
     {
-        ComposeStart "Uninstalling NSwagStudio.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForNSwagStudio";
-        ComposeFinish "Finished uninstalling NSwagStudio.";
+        ComposeStart "Uninstalling $ProductNameForNSwagStudio.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForNSwagStudio";
+        ComposeFinish "Finished uninstalling $ProductNameForNSwagStudio.";
     }
 }
 
@@ -1185,14 +1246,14 @@ Function UninstallNuGet
 {
     If ($SuppressNuGet -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of NuGet.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForNuGet.";
         Return;
     }
     ElseIf (GetNuGetInstallationStatus)
     {
-        ComposeStart "Uninstalling NuGet.";
+        ComposeStart "Uninstalling $ProductNameForNuGet.";
         Remove-Item -Path "$FilePathForNuGetExe" -Confirm:$false -Force;
-        ComposeFinish "Finished uninstalling NuGet.";
+        ComposeFinish "Finished uninstalling $ProductNameForNuGet.";
     }
 }
 
@@ -1204,14 +1265,14 @@ Function UninstallOpenCover
 {
     If ($SuppressOpenCover -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of OpenCover.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForOpenCover.";
         Return;
     }
     ElseIf (GetOpenCoverInstallationStatus)
     {
-        ComposeStart "Uninstalling OpenCover.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForOpenCover";
-        ComposeFinish "Finished uninstalling OpenCover.";
+        ComposeStart "Uninstalling $ProductNameForOpenCover.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForOpenCover";
+        ComposeFinish "Finished uninstalling $ProductNameForOpenCover.";
     }
 }
 
@@ -1223,14 +1284,14 @@ Function UninstallOpenSsl
 {
     If ($SuppressOpenSsl -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of OpenSSL.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForOpenSsl.";
         Return;
     }
     ElseIf (GetOpenSslInstallationStatus)
     {
-        ComposeStart "Uninstalling OpenSSL.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForOpenSsl";
-        ComposeFinish "Finished uninstalling OpenSSL.";
+        ComposeStart "Uninstalling $ProductNameForOpenSsl.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForOpenSsl";
+        ComposeFinish "Finished uninstalling $ProductNameForOpenSsl.";
     }
 }
 
@@ -1242,14 +1303,14 @@ Function UninstallPoshGit
 {
     If ($SuppressPoshGit -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of posh-git.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForPoshGit.";
         Return;
     }
     ElseIf (GetPoshGitInstallationStatus)
     {
-        ComposeStart "Uninstalling posh-git.";
+        ComposeStart "Uninstalling $ProductNameForPoshGit.";
         UsePowerShellGalleryToUninstall -ModuleName "$PowershellModuleNameForPoshGit";
-        ComposeFinish "Finished uninstalling posh-git.";
+        ComposeFinish "Finished uninstalling $ProductNameForPoshGit.";
     }
 }
 
@@ -1261,14 +1322,14 @@ Function UninstallPowershellYaml
 {
     If ($SuppressPowershellYaml -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of powershell-yaml.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForPowershellYaml.";
         Return;
     }
     ElseIf (GetPowershellYamlInstallationStatus)
     {
-        ComposeStart "Uninstalling powershell-yaml.";
+        ComposeStart "Uninstalling $ProductNameForPowershellYaml.";
         UsePowerShellGalleryToUninstall -ModuleName "$PowershellModuleNameForPowershellYaml";
-        ComposeFinish "Finished uninstalling powershell-yaml.";
+        ComposeFinish "Finished uninstalling $ProductNameForPowershellYaml.";
     }
 }
 
@@ -1280,14 +1341,14 @@ Function UninstallPsake
 {
     If ($SuppressPsake -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of psake.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForPsake.";
         Return;
     }
     ElseIf (GetPsakeInstallationStatus)
     {
-        ComposeStart "Uninstalling psake.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForPsake";
-        ComposeFinish "Finished uninstalling psake.";
+        ComposeStart "Uninstalling $ProductNameForPsake.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForPsake";
+        ComposeFinish "Finished uninstalling $ProductNameForPsake.";
     }
 }
 
@@ -1299,14 +1360,14 @@ Function UninstallRabbitMq
 {
     If ($SuppressRabbitMq -eq $true)
     {
-        ComposeNormal "Suppressing uninstallation of RabbitMQ.";
+        ComposeNormal "Suppressing uninstallation of $ProductNameForRabbitMq.";
         Return;
     }
     ElseIf (GetRabbitMqInstallationStatus)
     {
-        ComposeStart "Uninstalling RabbitMQ.";
-        UseChocolateyToUninstall -PackageName "$ChoclateyPackageNameForRabbitMq";
-        ComposeFinish "Finished uninstalling RabbitMQ.";
+        ComposeStart "Uninstalling $ProductNameForRabbitMq.";
+        UseChocolateyToUninstall -PackageName "$ChocolateyPackageNameForRabbitMq";
+        ComposeFinish "Finished uninstalling $ProductNameForRabbitMq.";
     }
 }
 
@@ -1322,7 +1383,7 @@ Function UseChocolateyToInstall
         [String] $PackageName
     )
 
-    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "install $PackageName -y --accept-license --confirm --limit-output --no-progress";
+    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "install $PackageName --accept-license --confirm --limit-output --no-progress";
 }
 
 <#
@@ -1337,7 +1398,10 @@ Function UseChocolateyToUninstall
         [String] $PackageName
     )
 
-    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "uninstall $PackageName -y --confirm --limit-output";
+    If ((GetChocolateyPackageInstallationStatus -PackageName "$PackageName") -eq $true)
+    {
+        ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "uninstall $PackageName --skip-autouninstaller --skip-scripts --limit-output";
+    }
 }
 
 <#
@@ -1397,5 +1461,8 @@ Function UsePowerShellGalleryToUninstall
         [String] $ModuleName
     )
 
-    Uninstall-Module -Confirm:$false -ErrorAction Stop -Force -Name "$ModuleName";
+    If ((GetPowerShellModuleInstallationStatus -ModuleName "$ModuleName") -eq $true)
+    {
+        Uninstall-Module -Confirm:$false -ErrorAction Stop -Force -Name "$ModuleName";
+    }
 }

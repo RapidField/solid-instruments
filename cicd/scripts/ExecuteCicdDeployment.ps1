@@ -42,6 +42,7 @@ $BranchNameForMaster = "master";
 
 # Environment variables
 $BranchName = $env:APPVEYOR_REPO_BRANCH;
+$RepositoryName = $env:APPVEYOR_REPO_NAME;
 
 # Other configuration values
 $ContextIsInteractive = $Interactive.IsPresent;
@@ -96,7 +97,12 @@ Function EnterScript
         }
     }
 
-    If ($BranchName -ne $BranchNameForMaster)
+    If (($RepositoryName -eq $null) -or ($RepositoryName -eq [String]::Empty))
+    {
+        ComposeNormal "Suppressing deployment. The execution context is invalid.";
+        Exit;
+    }
+    ElseIf ($BranchName -ne $BranchNameForMaster)
     {
         ComposeNormal "Suppressing deployment. The branch is not $BranchNameForMaster.";
         Exit;

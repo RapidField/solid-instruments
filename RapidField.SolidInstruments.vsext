@@ -3,9 +3,9 @@
 // =================================================================================================================================
 
 {
-    "id": "f9e4b84c-8b1a-44da-a796-b0fa9336becc",
-    "name": "Solid Instruments Team Extensions",
-    "description": "A collection of Visual Studio extensions that are used by the Solid Instruments team.",
+    "id": "9ce3644b-d042-4fa4-8deb-27334c772a3b",
+    "name": "My Visual Studio extensions",
+    "description": "A collection of my Visual Studio extensions",
     "version": "1.0",
     "extensions": [
         {
@@ -13,11 +13,15 @@
             "vsixId": "7ac24965-ea21-4108-9cac-6e46394aaaef"
         },
         {
+            "name": "AsyncFixer for Visual Studio 2019",
+            "vsixId": "AsyncFixer.Vsix..edab5fce-e3aa-4fea-9d60-a07bc11d493b"
+        },
+        {
             "name": "CodeMaid",
             "vsixId": "4c82e17d-927e-42d2-8460-b473ac7df316"
         },
         {
-            "name": "CodeMaintainibility",
+            "name": "CodeMaintainability",
             "vsixId": "CodeMaintainibility.570c23ad-f80c-4122-92cd-fcb21c8bd46e"
         },
         {
@@ -37,6 +41,10 @@
             "vsixId": "3a7b4930-a5fb-46ec-a9b8-9610c8f953b8"
         },
         {
+            "name": "Fix Mixed Tabs",
+            "vsixId": "FixMixedTabs.9f1d3050-b986-4b10-ae36-97c6efc5e968"
+        },
+        {
             "name": "Folder To Solution Folder",
             "vsixId": "478d788e-8e9d-402a-ac64-e679658a0045"
         },
@@ -53,12 +61,20 @@
             "vsixId": "9ca64947-e9ca-4543-bfb8-6cce9be19fd6"
         },
         {
+            "name": "ParallelHelper",
+            "vsixId": "ParallelHelper.f833642b-cd24-49ac-addc-e5328ce8fe88"
+        },
+        {
             "name": "PowerShell Tools for Visual Studio",
             "vsixId": "PowerShellTools.VS2017"
         },
         {
             "name": "Pull Through Documentation",
             "vsixId": "PullThroughDoc.85320641-1fcc-4f68-ad86-4b7046c2ec8d"
+        },
+        {
+            "name": "Security IntelliSense",
+            "vsixId": "SecurityIntelliSense"
         },
         {
             "name": "Sharpen",

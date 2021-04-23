@@ -7,8 +7,13 @@
 This module exposes the build and deployment functions that are used by the CI/CD pipeline.
 #>
 
+# Namespace fragments
+$NamespaceFragmentForOrganization = "RapidField";
+$NamespaceFragmentForProduct = "SolidInstruments";
+
 # Directory names
 $DirectoryNameForArtifacts = "artifacts";
+$DirectoryNameForBin = "bin";
 $DirectoryNameForCicd = "cicd";
 $DirectoryNameForCicdAssets = "assets";
 $DirectoryNameForCicdModules = "modules";
@@ -20,6 +25,7 @@ $DirectoryNameForDocumentationObjects = "obj";
 $DirectoryNameForDocumentationWebsite = "_DocumentationWebsite";
 $DirectoryNameForDocumentationWebsiteManifestSnapshots = "manifest-snapshots";
 $DirectoryNameForExample = "example";
+$DirectoryNameForObj = "obj";
 $DirectoryNameForSource = "src";
 $DirectoryNameForTests = "test";
 
@@ -31,7 +37,7 @@ $FileNameForCoreModule = "Core.psm1";
 $FileNameForDocumentationWebsiteManifest = "manifest.json";
 $FileNameForDotNetCli = "dotnet.exe";
 $FileNameForNugetExe = "nuget.exe";
-$FileNameForSolutionFile = "RapidField.SolidInstruments.sln";
+$FileNameForSolutionFile = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.sln";
 
 # Directory paths
 $DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
@@ -63,10 +69,24 @@ $FilePathForSolutionFile = Join-Path -Path "$DirectoryPathForProjectRoot" -Child
 
 # Command names
 $CommandNameForCodecov = "codecov";
+$CommandNameForDocFX = "docfx";
 $CommandNameForDotNetCli = "dotnet";
 $CommandNameForHtmlMinifier = "html-minifier";
 $CommandNameForNuGet = "nuget";
 $CommandNameForOpenCover = "opencover.console.exe";
+
+# Sub-command names
+$SubCommandNameForDotNetCliBuild = "build";
+$SubCommandNameForDotNetCliClean = "clean";
+$SubCommandNameForDotNetCliRestore = "restore";
+$SubCommandNameForDotNetCliTest = "test";
+
+# Command arguments
+$CommandArgumentForDotNetCliConfiguration = "--configuration";
+$CommandArgumentForDotNetCliNoBuild = "--no-build";
+$CommandArgumentForDotNetCliNoLogo = "--nologo";
+$CommandArgumentForDotNetCliNoRestore = "--no-restore";
+$CommandArgumentForDotNetCliVerbosityMinimal = "--verbosity minimal";
 
 # Install script URIs
 $InstallScriptUriForAppVeyorSecureFileUtility = "https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1";
@@ -87,10 +107,10 @@ $SolutionConfigurationDebug = "Debug";
 $SolutionConfigurationRelease = "Release";
 
 # Namespaces
-$ExampleAccessControlHttpApiApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.AccessControl.HttpApi";
-$ExampleAccessControlServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.AccessControl.Service";
-$ExampleBeaconServiceApplicationNamespace = "RapidField.SolidInstruments.Example.BeaconService";
-$ExampleIdentityServiceApplicationNamespace = "RapidField.SolidInstruments.Example.Domain.Identity.Service";
+$ExampleAccessControlHttpApiApplicationNamespace = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.Example.Domain.AccessControl.HttpApi";
+$ExampleAccessControlServiceApplicationNamespace = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.Example.Domain.AccessControl.Service";
+$ExampleBeaconServiceApplicationNamespace = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.Example.BeaconService";
+$ExampleIdentityServiceApplicationNamespace = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.Example.Domain.Identity.Service";
 
 # Regular expressions
 $ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
@@ -114,9 +134,19 @@ $PullRequestTitle = $env:APPVEYOR_PULL_REQUEST_TITLE;
 $RepositoryName = $env:APPVEYOR_REPO_NAME;
 $TagName = $env:APPVEYOR_REPO_TAG_NAME;
 
-# Other configuration values
-$TargetFrameworkForExampleHttpApiApplications = "net5.0";
-$TargetFrameworkForExampleServiceApplications = "net5.0";
+# Powershell package names
+$PowershellModuleNameForPowershellYaml = "powershell-yaml";
+
+# Target frameworks
+$TargetFrameworkForDotNet5 = "net5.0";
+$TargetFrameworkForExampleHttpApiApplications = "$TargetFrameworkForDotNet5";
+$TargetFrameworkForExampleServiceApplications = "$TargetFrameworkForDotNet5";
+
+# File match expressions
+$FileMatchExpressionForNuGetPackage = "*.nupkg";
+
+# User messages and message fragments
+$UserMessageBuildServerWarningAddendum = "This is normal in local development scenarios but abnormal in build server scenarios.";
 
 # Modules
 Import-Module $FilePathForCoreModule -Force;
@@ -136,7 +166,7 @@ Function Build
     $BuildVersionWithoutMetadata = GetBuildVersion;
     ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     ComposeNormal "Build version: $BuildVersionWithoutMetadata";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "build $FilePathForSolutionFile --configuration $SolutionConfiguration --nologo --no-restore --verbosity minimal /p:BuildVersion=$BuildVersionWithoutMetadata";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "$SubCommandNameForDotNetCliBuild $FilePathForSolutionFile $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal /p:BuildVersion=$BuildVersionWithoutMetadata";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
@@ -148,7 +178,7 @@ Function Build
 
     Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
     {
-        $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
+        $ProjectOutputPath = Join-Path -Path $_.FullName -ChildPath "$DirectoryNameForBin\$SolutionConfiguration";
 
         If (Test-Path "$ProjectOutputPath")
         {
@@ -206,38 +236,46 @@ Function BuildWebDocumentation
 
     ComposeStart "Compiling web documentation metadata.";
     Push-Location "$DirectoryPathForDocumentation";
-    docfx metadata;
-    ComposeFinish "Finished compiling web documentation metadata.";
-    ComposeStart "Compiling documentation website.";
-    docfx build --loglevel "Error";
-    ComposeFinish "Finished compiling documentation website.";
-    ComposeStart "Creating manifest snapshot for documentation website.";
 
-    If (-not (Test-Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots"))
+    Try
     {
-        New-Item -ItemType Directory -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -Force | Out-Null;
+        docfx metadata --loglevel "Error";
+        ComposeFinish "Finished compiling web documentation metadata.";
+        ComposeStart "Compiling documentation website.";
+        docfx build --loglevel "Error";
+        ComposeFinish "Finished compiling documentation website.";
+        ComposeStart "Creating manifest snapshot for documentation website.";
+
+        If (-not (Test-Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots"))
+        {
+            New-Item -ItemType Directory -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -Force | Out-Null;
+        }
+
+        $ManifestHash = Get-FileHash -Algorithm MD5 -Path "$FilePathForDocumentationWebsiteManifest";
+        $ManifestHashValue = $ManifestHash.Hash;
+        $ManifestSnapshotIdentity = "$ManifestHashValue$CommitId".ToLower();
+        ComposeVerbose "Using manifest snapshot identity: $ManifestSnapshotIdentity";
+        $ManifestSnapshotFilePath = Join-Path -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -ChildPath "$ManifestSnapshotIdentity";
+        $ManifestSnapshotFileContent = "$ManifestSnapshotIdentity $BuildVersion[$CommitTimeStamp] $CommitMessage";
+        New-Item -ItemType File -Path "$ManifestSnapshotFilePath" -Force | Out-Null;
+        Set-Content -Path "$ManifestSnapshotFilePath" -Value "$ManifestSnapshotFileContent" -Force | Out-Null;
+        ComposeFinish "Finished creating manifest snapshot for documentation website.";
+        ComposeStart "Minifying documentation website.";
+
+        Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object `
+        {
+            $ThisFilePath = $_.FullName;
+            ComposeVerbose "Minifying file: $ThisFilePath";
+            html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath";
+        }
+
+        ComposeFinish "Finished minifying documentation website.";
+    }
+    Finally
+    {
+        Pop-Location;
     }
 
-    $ManifestHash = Get-FileHash -Algorithm MD5 -Path "$FilePathForDocumentationWebsiteManifest";
-    $ManifestHashValue = $ManifestHash.Hash;
-    $ManifestSnapshotIdentity = "$ManifestHashValue$CommitId".ToLower();
-    ComposeVerbose "Using manifest snapshot identity: $ManifestSnapshotIdentity";
-    $ManifestSnapshotFilePath = Join-Path -Path "$DirectoryPathForDocumentationWebsiteManifestSnapshots" -ChildPath "$ManifestSnapshotIdentity";
-    $ManifestSnapshotFileContent = "$ManifestSnapshotIdentity $BuildVersion[$CommitTimeStamp] $CommitMessage";
-    New-Item -ItemType File -Path "$ManifestSnapshotFilePath" -Force | Out-Null;
-    Set-Content -Path "$ManifestSnapshotFilePath" -Value "$ManifestSnapshotFileContent" -Force | Out-Null;
-    ComposeFinish "Finished creating manifest snapshot for documentation website.";
-    ComposeStart "Minifying documentation website.";
-
-    Get-ChildItem "$DirectoryPathForDocumentationWebsite" -Include *.html, *.css -Recurse | ForEach-Object `
-    {
-        $ThisFilePath = $_.FullName;
-        ComposeVerbose "Minifying file: $ThisFilePath";
-        html-minifier --collapse-whitespace --minify-css --minify-js --remove-comments "$ThisFilePath" -o "$ThisFilePath";
-    }
-
-    ComposeFinish "Finished minifying documentation website.";
-    Pop-Location;
     ComposeFinish "Finished building web documentation.";
 }
 
@@ -254,13 +292,43 @@ Function Clean
     )
 
     ComposeStart "Cleaning $FilePathForSolutionFile using $SolutionConfiguration configuration.";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "clean $FilePathForSolutionFile --configuration $SolutionConfiguration --nologo --verbosity minimal";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "$SubCommandNameForDotNetCliClean $FilePathForSolutionFile $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliVerbosityMinimal";
     ComposeStart "Destroying build artifacts.";
+    CleanBinaries -ParentDirectoryPath "$DirectoryPathForSource" -SolutionConfiguration "$SolutionConfiguration";
+    CleanBinaries -ParentDirectoryPath "$DirectoryPathForTests" -SolutionConfiguration "$SolutionConfiguration";
+    CleanBinaries -ParentDirectoryPath "$DirectoryPathForExample" -SolutionConfiguration "$SolutionConfiguration";
+    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
-    Get-ChildItem -Path "$DirectoryPathForSource" -Directory | ForEach-Object `
+    If (Test-Path "$BuildArtifactsDirectoryPath")
     {
-        $ProjectBinPath = Join-Path -Path $_.FullName -ChildPath "bin\$SolutionConfiguration";
-        $ProjectObjPath = Join-Path -Path $_.FullName -ChildPath "obj";
+        ComposeNormal "Removing artifacts from $BuildArtifactsDirectoryPath.";
+        Remove-Item -Path "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
+    }
+
+    CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
+    ComposeFinish "Finished cleaning.";
+}
+
+<#
+.Synopsis
+Cleans the binary project artifacts for all projects within a specified parent directory.
+#>
+Function CleanBinaries
+{
+    Param
+    (
+        [Parameter(Mandatory = $true, Position = 0)]
+        [String] $ParentDirectoryPath,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [String] $SolutionConfiguration
+    )
+
+    ComposeNormal "Cleaning compilation artifacts for $ParentDirectoryPath using $SolutionConfiguration configuration.";
+
+    Get-ChildItem -Path "$ParentDirectoryPath" -Directory | ForEach-Object `
+    {
+        $ProjectBinPath = Join-Path -Path $_.FullName -ChildPath "$DirectoryNameForBin\$SolutionConfiguration";
+        $ProjectObjPath = Join-Path -Path $_.FullName -ChildPath "$DirectoryNameForObj";
 
         If (Test-Path "$ProjectBinPath")
         {
@@ -274,17 +342,6 @@ Function Clean
             Remove-Item -Path "$ProjectObjPath" -Recurse -Confirm:$false -Force;
         }
     }
-
-    $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
-
-    If (Test-Path "$BuildArtifactsDirectoryPath")
-    {
-        ComposeVerbose "Removing artifacts from $BuildArtifactsDirectoryPath.";
-        Remove-Item -Path "$BuildArtifactsDirectoryPath" -Recurse -Confirm:$false -Force;
-    }
-
-    CleanWebDocumentation -SolutionConfiguration $SolutionConfiguration;
-    ComposeFinish "Finished cleaning.";
 }
 
 <#
@@ -355,7 +412,7 @@ Function DecryptCodeSigningCertificate
 
     If (-not (Test-Path "$FilePathForEncryptedCodeSigningCertificate"))
     {
-        ComposeWarning "The encrypted code signing certificate is not available at path $FilePathForEncryptedCodeSigningCertificate.";
+        ComposeError "The encrypted code signing certificate is not available at path $FilePathForEncryptedCodeSigningCertificate.";
         Return;
     }
 
@@ -366,12 +423,27 @@ Function DecryptCodeSigningCertificate
 
     ComposeStart "Decrypting the code signing certificate.";
     Push-Location "$DirectoryPathForCicdTools";
-    iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
-    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
-    .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret "$Key" -salt "$Salt";
-    Pop-Location;
-    Remove-Item "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
-    Pop-Location;
+
+    Try
+    {
+        iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
+        Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
+
+        Try
+        {
+            .\secure-file -decrypt "$FilePathForEncryptedCodeSigningCertificate" -secret "$Key" -salt "$Salt";
+        }
+        Finally
+        {
+            Pop-Location;
+            Remove-Item "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
+        }
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished decrypting the code signing certificate.";
 }
 
@@ -389,7 +461,7 @@ Function EncryptCodeSigningCertificate
 
     If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
     {
-        ComposeWarning "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
+        ComposeError "The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
         Return;
     }
 
@@ -400,13 +472,28 @@ Function EncryptCodeSigningCertificate
 
     ComposeStart "Encrypting the code signing certificate.";
     Push-Location "$DirectoryPathForCicdTools";
-    iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
-    Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
-    .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret "$Key";
-    Pop-Location;
-    Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
-    Remove-Item -Path "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
-    Pop-Location;
+
+    Try
+    {
+        iex ((New-Object Net.WebClient).DownloadString($InstallScriptUriForAppVeyorSecureFileUtility));
+        Push-Location "$DirectoryPathForCicdToolsAppVeyorTools";
+
+        Try
+        {
+            .\secure-file -encrypt "$FilePathForCodeSigningCertificate" -secret "$Key";
+        }
+        Finally
+        {
+            Pop-Location;
+            Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
+            Remove-Item -Path "$DirectoryPathForCicdToolsAppVeyorTools" -Recurse -Confirm:$false -Force;
+        }
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished encrypting the code signing certificate.";
 }
 
@@ -416,7 +503,7 @@ Gets the contents of appveyor.yml.
 #>
 Function GetAppVeyorConfiguration
 {
-    Import-Module "powershell-yaml" -Force;
+    Import-Module "$PowershellModuleNameForPowershellYaml" -Force;
     Return Get-Content -Path "$FilePathForAppVeyorYamlConfigurlation" | ConvertFrom-Yaml;
 }
 
@@ -427,7 +514,7 @@ Extracts the build version from appveyor.yml.
 Function GetBuildVersion
 {
     $AppVeyorConfiguration = GetAppVeyorConfiguration;
-    Return $AppVeyorConfiguration.version.trimend("+{build}");
+    Return $AppVeyorConfiguration.version.Split('+')[0];
 }
 
 <#
@@ -449,7 +536,7 @@ Function PublishPackages
 
     If (($NuGetApiKey -eq $null) -or ($NuGetApiKey -eq [String]::Empty))
     {
-        ComposeWarning "Packages will not be published. The NuGet API key is unavailable.";
+        ComposeWarning "Packages will not be published. The NuGet API key is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
@@ -457,25 +544,37 @@ Function PublishPackages
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
     {
-        ComposeWarning "No packages are available to publish. The path does not exist: $BuildArtifactsDirectoryPath.";
-        Return;
+        $ErrorMessage = "No packages are available to publish. The path does not exist: $BuildArtifactsDirectoryPath.";
+        ComposeError "$ErrorMessage";
+        Throw "$ErrorMessage";
     }
 
     ComposeStart "Publishing packages in the directory: $BuildArtifactsDirectoryPath.";
     Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
+    Try
     {
-        $PackageFilePath = $_.FullName;
-
-        If ($PackageFilePath -like "*.nupkg")
+        Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
         {
-            ComposeNormal "Publishing package $PackageFilePath.";
-            .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri" -SkipDuplicate;
+            $PackageFilePath = $_.FullName;
+
+            If ($PackageFilePath -like "$FileMatchExpressionForNuGetPackage")
+            {
+                ComposeNormal "Publishing package $PackageFilePath.";
+                .\nuget.exe push $PackageFilePath -ApiKey "$NuGetApiKey" -Source "$NuGetOrgPackageSourceUri" -SkipDuplicate;
+            }
         }
     }
+    Catch
+    {
+        ComposeError "One or more packages could not be published.";
+        Throw;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
 
-    Pop-Location;
     ComposeFinish "Finished publishing packages.";
 }
 
@@ -498,20 +597,21 @@ Function PublishWebDocumentation
 
     If (($DocumentationWebsiteFtpUserName -eq $null) -or ($DocumentationWebsiteFtpUserName -eq [String]::Empty))
     {
-        ComposeWarning "The documentation website artifacts will not be published. The FTP account username is unavailable.";
+        ComposeWarning "The documentation website artifacts will not be published. The FTP account username is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
     If (($DocumentationWebsiteFtpPassword -eq $null) -or ($DocumentationWebsiteFtpPassword -eq [String]::Empty))
     {
-        ComposeWarning "The documentation website artifacts will not be published. The FTP account password is unavailable.";
+        ComposeWarning "The documentation website artifacts will not be published. The FTP account password is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
     If (-not (Test-Path "$DirectoryPathForDocumentationWebsiteArtifacts"))
     {
-        ComposeWarning "No documentation website artifacts are available to publish. The path does not exist: $DirectoryPathForDocumentationWebsiteArtifacts.";
-        Return;
+        $ErrorMessage = "No documentation website artifacts are available to publish. The path does not exist: $DirectoryPathForDocumentationWebsiteArtifacts.";
+        ComposeError "$ErrorMessage";
+        Throw "$ErrorMessage";
     }
 
     ComposeStart "Publishing documentation website artifacts in the directory: $DirectoryPathForDocumentationWebsiteArtifacts.";
@@ -527,13 +627,7 @@ Restores dependencies for the current build.
 Function RestoreDependencies
 {
     ComposeStart "Restoring dependencies for $FilePathForSolutionFile.";
-    dotnet restore $FilePathForSolutionFile --nologo --verbosity minimal;
-
-    If ($LASTEXITCODE -ne 0)
-    {
-        Throw "One or more dependencies could not be restored for $FilePathForSolutionFile.";
-    }
-
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "$SubCommandNameForDotNetCliRestore $FilePathForSolutionFile $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliVerbosityMinimal";
     ComposeFinish "Finished restoring dependencies for $FilePathForSolutionFile.";
 }
 
@@ -556,19 +650,19 @@ Function SignPackages
 
     If (($CodeSigningCertificateKey -eq $null) -or ($CodeSigningCertificateKey -eq [String]::Empty))
     {
-        ComposeWarning "Packages will not be signed. The code signing certificate key is unavailable.";
+        ComposeWarning "Packages will not be signed. The code signing certificate key is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
     If (($CodeSigningCertificateKeySalt -eq $null) -or ($CodeSigningCertificateKeySalt -eq [String]::Empty))
     {
-        ComposeWarning "Packages will not be signed. The code signing certificate key salt is unavailable.";
+        ComposeWarning "Packages will not be signed. The code signing certificate key salt is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
     If (($CodeSigningCertificatePassword -eq $null) -or ($CodeSigningCertificatePassword -eq [String]::Empty))
     {
-        ComposeWarning "Packages will not be signed. The code signing certificate password is unavailable.";
+        ComposeWarning "Packages will not be signed. The code signing certificate password is unavailable. $UserMessageBuildServerWarningAddendum";
         Return;
     }
 
@@ -576,8 +670,9 @@ Function SignPackages
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))
     {
-        ComposeWarning "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
-        Return;
+        $ErrorMessage = "No packages are available to sign. The path does not exist: $BuildArtifactsDirectoryPath.";
+        ComposeError "$ErrorMessage";
+        Throw "$ErrorMessage";
     }
 
     If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
@@ -587,26 +682,38 @@ Function SignPackages
 
     If (-not (Test-Path "$FilePathForCodeSigningCertificate"))
     {
-        ComposeWarning "Packages will not be signed. The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
-        Return;
+        $ErrorMessage = "Packages will not be signed. The code signing certificate is not available at path $FilePathForCodeSigningCertificate.";
+        ComposeError "$ErrorMessage";
+        Throw "$ErrorMessage";
     }
 
     ComposeStart "Signing packages in the directory: $BuildArtifactsDirectoryPath.";
     Push-Location "$DirectoryPathForCicdTools";
 
-    Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
+    Try
     {
-        $PackageFilePath = $_.FullName;
-
-        If ($PackageFilePath -like "*.nupkg")
+        Get-ChildItem -Path "$BuildArtifactsDirectoryPath" -File | ForEach-Object `
         {
-            ComposeStart "Signing package $PackageFilePath.";
-            .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -Timestamper "$CodeSigningCertificateTimestampServiceUri" -CertificatePassword "$CodeSigningCertificatePassword";
+            $PackageFilePath = $_.FullName;
+
+            If ($PackageFilePath -like "$FileMatchExpressionForNuGetPackage")
+            {
+                ComposeStart "Signing package $PackageFilePath.";
+                .\nuget.exe sign "$PackageFilePath" -CertificatePath "$FilePathForCodeSigningCertificate" -Timestamper "$CodeSigningCertificateTimestampServiceUri" -CertificatePassword "$CodeSigningCertificatePassword";
+            }
         }
     }
+    Catch
+    {
+        ComposeError "One or more packages could not be signed.";
+        Throw;
+    }
+    Finally
+    {
+        Pop-Location;
+        Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
+    }
 
-    Pop-Location;
-    Remove-Item -Path "$FilePathForCodeSigningCertificate" -Confirm:$false -Force;
     ComposeFinish "Finished signing packages.";
 }
 
@@ -623,13 +730,21 @@ Function StartExampleAccessControlHttpApiApplication
     )
 
     ComposeStart "Starting the example AccessControl domain HTTP API application using $SolutionConfiguration configuration.";
-    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlHttpApiApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleHttpApiApplications";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlHttpApiApplicationNamespace\$DirectoryNameForBin\$SolutionConfiguration\$TargetFrameworkForExampleHttpApiApplications";
     $BinaryFileName = "$ExampleAccessControlHttpApiApplicationNamespace.dll";
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
-    Pop-Location;
+
+    Try
+    {
+        Start-Process -ArgumentList "$BinaryFileName $CommandArgumentForDotNetCliNoLogo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished starting the application.";
 }
 
@@ -664,13 +779,21 @@ Function StartExampleAccessControlServiceApplication
     )
 
     ComposeStart "Starting the example AccessControl domain service application using $SolutionConfiguration configuration.";
-    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleAccessControlServiceApplicationNamespace\$DirectoryNameForBin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
     $BinaryFileName = "$ExampleAccessControlServiceApplicationNamespace.dll";
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
-    Pop-Location;
+
+    Try
+    {
+        Start-Process -ArgumentList "$BinaryFileName $CommandArgumentForDotNetCliNoLogo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished starting the application.";
 }
 
@@ -705,13 +828,21 @@ Function StartExampleBeaconServiceApplication
     )
 
     ComposeStart "Starting the example beacon service application using $SolutionConfiguration configuration.";
-    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleBeaconServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleBeaconServiceApplicationNamespace\$DirectoryNameForBin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
     $BinaryFileName = "$ExampleBeaconServiceApplicationNamespace.dll";
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
-    Pop-Location;
+
+    Try
+    {
+        Start-Process -ArgumentList "$BinaryFileName $CommandArgumentForDotNetCliNoLogo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished starting the application.";
 }
 
@@ -746,13 +877,21 @@ Function StartExampleIdentityServiceApplication
     )
 
     ComposeStart "Starting the example Identity domain service application using $SolutionConfiguration configuration.";
-    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleIdentityServiceApplicationNamespace\bin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
+    $BinaryDirectoryPath = Join-Path -Path "$DirectoryPathForExample" -ChildPath "$ExampleIdentityServiceApplicationNamespace\$DirectoryNameForBin\$SolutionConfiguration\$TargetFrameworkForExampleServiceApplications";
     $BinaryFileName = "$ExampleIdentityServiceApplicationNamespace.dll";
     $BinaryFilePath = Join-Path -Path "$BinaryDirectoryPath" -ChildPath "$BinaryFileName";
     ComposeNormal "Using binary path: $BinaryFilePath";
     Push-Location "$BinaryDirectoryPath";
-    Start-Process -ArgumentList "$BinaryFileName --nologo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
-    Pop-Location;
+
+    Try
+    {
+        Start-Process -ArgumentList "$BinaryFileName $CommandArgumentForDotNetCliNoLogo" -FilePath "$CommandNameForDotNetCli" -WindowStyle Minimized;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
+
     ComposeFinish "Finished starting the application.";
 }
 
@@ -801,7 +940,7 @@ Function Test
     {
         $TestDirectoryPath = $_.FullName;
         ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -returntargetcode -skipautoprops -target:"$FileNameForDotNetCli" -targetargs:"test $TestDirectoryPath --configuration $SolutionConfiguration --no-build --nologo --no-restore --verbosity minimal";
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -returntargetcode -skipautoprops -target:"$FileNameForDotNetCli" -targetargs:"$SubCommandNameForDotNetCliTest $TestDirectoryPath $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoBuild $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal";
 
         If ($LASTEXITCODE -ne 0)
         {
@@ -810,7 +949,7 @@ Function Test
 
         If (($CodecovToken -eq $null) -or ($CodecovToken -eq [String]::Empty))
         {
-            ComposeWarning "A code coverage report will not be published. The Codecov token is unavailable.";
+            ComposeWarning "A code coverage report will not be published. The Codecov token is unavailable. $UserMessageBuildServerWarningAddendum";
         }
         Else
         {
@@ -926,8 +1065,15 @@ Compiles the current build and executes the test suite against it.
 Function VerifyBuild
 {
     Push-Location "$DirectoryPathForProjectRoot";
-    psake Verify -nologo;
-    Pop-Location;
+
+    Try
+    {
+        psake Verify -nologo;
+    }
+    Finally
+    {
+        Pop-Location;
+    }
 }
 
 <#

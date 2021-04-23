@@ -223,7 +223,7 @@ Function PromptUser
         Write-Host -ForegroundColor White "`n$QuestionText";
     }
 
-    If (($PromptText -ne $null) -and ($PromptText -ne ""))
+    If (($PromptText -ne $null) -and ($PromptText -ne [String]::Empty))
     {
         Return Read-Host -Prompt "$PromptText";
     }
