@@ -56,7 +56,7 @@ $CertificateSubjectThree = "CN=TestRootThree";
 $CertificateType = "Custom";
 
 # Modules
-Import-Module $FilePathForCoreModule -Force;
+Import-Module "$FilePathForCoreModule" -Force;
 
 <#
 .Synopsis

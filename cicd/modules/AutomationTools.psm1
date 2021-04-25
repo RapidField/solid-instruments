@@ -95,6 +95,22 @@ $CommandNameForNuGet = "nuget";
 $CommandNameForOpenCover = "opencover.console.exe";
 $CommandNameForOpenSsl = "openssl";
 
+# Sub-command names
+$SubCommandNameForChocolateyInstall = "install";
+$SubCommandNameForChocolateyUninstall = "uninstall";
+$SubCommandNameForNpmInstall = "install";
+$SubCommandNameForNpmUninstall = "uninstall";
+
+# Command arguments
+$CommandArgumentForChocolateyAcceptLicense = "--accept-license";
+$CommandArgumentForChocolateyConfirm = "--confirm";
+$CommandArgumentForChocolateyLimitOutput = "--limit-output";
+$CommandArgumentForChocolateyNoProgress = "--no-progress";
+$CommandArgumentForChocolateySkipAutouninstaller = "--skip-autouninstaller";
+$CommandArgumentForChocolateySkipScripts = "--skip-scripts";
+$CommandArgumentForNpmGlobal = "-g";
+$CommandArgumentForNpmLogLevelError = "--loglevel error";
+
 # Installation/uninstallation suppression flags
 $SuppressChocolatey = $false;
 $SuppressCodecov = $false;
@@ -116,7 +132,7 @@ $SuppressPsake = $false;
 $SuppressRabbitMq = $true;
 
 # Modules
-Import-Module $FilePathForCoreModule -Force;
+Import-Module "$FilePathForCoreModule" -Force;
 
 <#
 .Synopsis
@@ -1383,7 +1399,7 @@ Function UseChocolateyToInstall
         [String] $PackageName
     )
 
-    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "install $PackageName --accept-license --confirm --limit-output --no-progress";
+    ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "$SubCommandNameForChocolateyInstall $PackageName $CommandArgumentForChocolateyAcceptLicense $CommandArgumentForChocolateyConfirm $CommandArgumentForChocolateyLimitOutput $CommandArgumentForChocolateyNoProgress";
 }
 
 <#
@@ -1400,7 +1416,7 @@ Function UseChocolateyToUninstall
 
     If ((GetChocolateyPackageInstallationStatus -PackageName "$PackageName") -eq $true)
     {
-        ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "uninstall $PackageName --skip-autouninstaller --skip-scripts --limit-output";
+        ExecuteProcess -Path "$CommandNameForChocolatey" -Arguments "$SubCommandNameForChocolateyUninstall $PackageName $CommandArgumentForChocolateyLimitOutput $CommandArgumentForChocolateySkipAutouninstaller $CommandArgumentForChocolateySkipScripts";
     }
 }
 
@@ -1416,7 +1432,7 @@ Function UseNpmToInstall
         [String] $PackageName
     )
 
-    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "install $PackageName -g --loglevel error";
+    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "$SubCommandNameForNpmInstall $PackageName $CommandArgumentForNpmGlobal $CommandArgumentForNpmLogLevelError";
 }
 
 <#
@@ -1431,7 +1447,7 @@ Function UseNpmToUninstall
         [String] $PackageName
     )
 
-    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "uninstall $PackageName -g --loglevel error";
+    ExecuteProcess -Path "$CommandNameForNpm" -Arguments "$SubCommandNameForNpmUninstall $PackageName $CommandArgumentForNpmGlobal $CommandArgumentForNpmLogLevelError";
 }
 
 <#

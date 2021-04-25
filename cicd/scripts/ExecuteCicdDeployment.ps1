@@ -48,9 +48,9 @@ $RepositoryName = $env:APPVEYOR_REPO_NAME;
 $ContextIsInteractive = $Interactive.IsPresent;
 
 # Modules
-Import-Module $FilePathForAutomationToolsModule -Force;
-Import-Module $FilePathForBuildAndDeploymentModule -Force;
-Import-Module $FilePathForCoreModule -Force;
+Import-Module "$FilePathForAutomationToolsModule" -Force;
+Import-Module "$FilePathForBuildAndDeploymentModule" -Force;
+Import-Module "$FilePathForCoreModule" -Force;
 
 <#
 .Synopsis

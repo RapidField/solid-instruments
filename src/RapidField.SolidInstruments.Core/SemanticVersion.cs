@@ -23,7 +23,7 @@ namespace RapidField.SolidInstruments.Core
     /// <see cref="SemanticVersion" /> is the default implementation of <see cref="ISemanticVersion" />.
     /// </remarks>
     [DataContract]
-    public sealed class SemanticVersion : ISemanticVersion
+    public class SemanticVersion : ISemanticVersion
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SemanticVersion" /> class.

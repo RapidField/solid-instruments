@@ -149,7 +149,7 @@ $FileMatchExpressionForNuGetPackage = "*.nupkg";
 $UserMessageBuildServerWarningAddendum = "This is normal in local development scenarios but abnormal in build server scenarios.";
 
 # Modules
-Import-Module $FilePathForCoreModule -Force;
+Import-Module "$FilePathForCoreModule" -Force;
 
 <#
 .Synopsis
@@ -940,7 +940,8 @@ Function Test
     {
         $TestDirectoryPath = $_.FullName;
         ComposeStart "Running tests for $TestDirectoryPath using $SolutionConfiguration configuration.";
-        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -returntargetcode -skipautoprops -target:"$FileNameForDotNetCli" -targetargs:"$SubCommandNameForDotNetCliTest $TestDirectoryPath $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoBuild $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal";
+        $OpenCoverTargetArguments = "$SubCommandNameForDotNetCliTest ""$TestDirectoryPath"" $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoBuild $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal";
+        OpenCover.Console.exe -excludebyattribute:*.Debugger* -log:Error -mergeoutput -oldstyle -output:"$FilePathForCoverageReport" -register:user -returntargetcode -skipautoprops -target:"$FileNameForDotNetCli" -targetargs:"$OpenCoverTargetArguments";
 
         If ($LASTEXITCODE -ne 0)
         {
