@@ -140,7 +140,7 @@ Returns a boolean value indicating whether or not Chocolatey is installed in the
 #>
 Function GetChocolateyInstallationStatus
 {
-    Return (Get-Command $CommandNameForChocolatey -ErrorAction SilentlyContinue);
+    Return (Get-Command "$CommandNameForChocolatey" -ErrorAction SilentlyContinue);
 }
 
 <#
@@ -200,7 +200,7 @@ Returns a boolean value indicating whether or not HTMLMinifier is installed in t
 #>
 Function GetHtmlMinifierInstallationStatus
 {
-    Return (Get-Command $CommandNameForHtmlMinifier -ErrorAction SilentlyContinue);
+    Return (Get-Command "$CommandNameForHtmlMinifier" -ErrorAction SilentlyContinue);
 }
 
 <#
@@ -386,7 +386,7 @@ Function InstallCodecov
 
     ComposeStart "Installing $ProductNameForCodecov.";
     UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForCodecov";
-    MakeCommandPathAvailableAll -Command $CommandNameForCodecov;
+    MakeCommandPathAvailableAll -Command "$CommandNameForCodecov";
     ComposeFinish "Finished installing $ProductNameForCodecov.";
 }
 
@@ -475,7 +475,7 @@ Function InstallHtmlMinifier
 
     ComposeStart "Installing $ProductNameForHtmlMinifier.";
     UseNpmToInstall -PackageName "$NpmPackageNameForHtmlMinifier";
-    MakeCommandPathAvailableAll -Command $CommandNameForHtmlMinifier;
+    MakeCommandPathAvailableAll -Command "$CommandNameForHtmlMinifier";
     ComposeFinish "Finished installing $ProductNameForHtmlMinifier.";
 }
 
@@ -498,7 +498,7 @@ Function InstallHub
 
     ComposeStart "Installing $ProductNameForHub.";
     UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForHub";
-    MakeCommandPathAvailableAll -Command $CommandNameForHub;
+    MakeCommandPathAvailableAll -Command "$CommandNameForHub";
     ComposeFinish "Finished installing $ProductNameForHub.";
 }
 
@@ -543,7 +543,7 @@ Function InstallNodeJs
 
     ComposeStart "Installing $ProductNameForNodeJs.";
     UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForNodeJs";
-    MakeCommandPathAvailableAll -Command $CommandNameForNpm;
+    MakeCommandPathAvailableAll -Command "$CommandNameForNpm";
     ComposeFinish "Finished installing $ProductNameForNodeJs.";
 }
 
@@ -615,7 +615,7 @@ Function InstallOpenCover
 
     ComposeStart "Installing $ProductNameForOpenCover.";
     UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForOpenCover";
-    MakeCommandPathAvailableAll -Command $CommandNameForOpenCover;
+    MakeCommandPathAvailableAll -Command "$CommandNameForOpenCover";
     ComposeFinish "Finished installing $ProductNameForOpenCover.";
 }
 
@@ -638,7 +638,7 @@ Function InstallOpenSsl
 
     ComposeStart "Installing $ProductNameForOpenSsl.";
     UseChocolateyToInstall -PackageName "$ChocolateyPackageNameForOpenSsl";
-    MakeCommandPathAvailableAll -Command $CommandNameForOpenSsl;
+    MakeCommandPathAvailableAll -Command "$CommandNameForOpenSsl";
     ComposeFinish "Finished installing $ProductNameForOpenSsl.";
 }
 
@@ -766,7 +766,7 @@ Function MakeCommandPathAvailable
     Get-Command "$Command" | ForEach-Object `
     {
         $CommandDirectoryPath = Split-Path $_.Source;
-        $PathVariable = [System.Environment]::GetEnvironmentVariable("$EnvironmentVariableNameForPath", $EnvironmentTarget);
+        $PathVariable = [System.Environment]::GetEnvironmentVariable("$EnvironmentVariableNameForPath", "$EnvironmentTarget");
 
         If ($PathVariable -like "*$CommandDirectoryPath*")
         {
@@ -774,8 +774,8 @@ Function MakeCommandPathAvailable
             Return;
         }
 
-        $PathVariable = $PathVariable + ";$CommandDirectoryPath";
-        [System.Environment]::SetEnvironmentVariable("$EnvironmentVariableNameForPath", "$PathVariable", $EnvironmentTarget);
+        $PathVariable = "$PathVariable;$CommandDirectoryPath";
+        [System.Environment]::SetEnvironmentVariable("$EnvironmentVariableNameForPath", "$PathVariable", "$EnvironmentTarget");
         RefreshSession;
         ComposeVerbose "Added command path for $EnvironmentTarget target: $CommandDirectoryPath";
         Return;
@@ -794,9 +794,9 @@ Function MakeCommandPathAvailableAll
         [String] $Command
     )
 
-    MakeCommandPathAvailableMachine -Command $Command;
-    MakeCommandPathAvailableProcess -Command $Command;
-    MakeCommandPathAvailableUser -Command $Command;
+    MakeCommandPathAvailableMachine -Command "$Command";
+    MakeCommandPathAvailableProcess -Command "$Command";
+    MakeCommandPathAvailableUser -Command "$Command";
 }
 
 <#
@@ -811,7 +811,7 @@ Function MakeCommandPathAvailableMachine
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironemtnTargetForMachine";
+    MakeCommandPathAvailable -Command "$Command" -EnvironmentTarget "$EnvironemtnTargetForMachine";
 }
 
 <#
@@ -826,7 +826,7 @@ Function MakeCommandPathAvailableProcess
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironmentTargetForProcess";
+    MakeCommandPathAvailable -Command "$Command" -EnvironmentTarget "$EnvironmentTargetForProcess";
 }
 
 <#
@@ -841,7 +841,7 @@ Function MakeCommandPathAvailableUser
         [String] $Command
     )
 
-    MakeCommandPathAvailable -Command $Command -EnvironmentTarget "$EnvironmentTargetForUser";
+    MakeCommandPathAvailable -Command "$Command" -EnvironmentTarget "$EnvironmentTargetForUser";
 }
 
 <#

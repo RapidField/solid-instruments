@@ -234,11 +234,12 @@ Function BuildWebDocumentation
         Return;
     }
 
-    ComposeStart "Compiling web documentation metadata.";
     Push-Location "$DirectoryPathForDocumentation";
 
     Try
     {
+        ComposeStart "Compiling web documentation metadata.";
+        ComposeVerbose "This process takes a few minutes. Please wait.";
         docfx metadata --loglevel "Error";
         ComposeFinish "Finished compiling web documentation metadata.";
         ComposeStart "Compiling documentation website.";

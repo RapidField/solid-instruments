@@ -10,7 +10,7 @@ This script encrypts the Solid Instruments code signing certificate.
 Param
 (
     [Parameter(Mandatory = $false, Position = 0)]
-    [String] $PrivateKey = "",
+    [String] $PrivateKey = [String]::Empty,
     [Parameter(Mandatory = $false, Position = 1)]
     [Switch] $Interactive
 )
@@ -87,7 +87,7 @@ Function EnterScript
         }
     }
 
-    If (($PrivateKey -eq $null) -or ($PrivateKey -eq ""))
+    If (($PrivateKey -eq $null) -or ($PrivateKey -eq [String]::Empty))
     {
         Throw "The code signing certificate will not be encrypted. No private key was specified.";
     }

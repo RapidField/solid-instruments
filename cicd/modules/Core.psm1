@@ -182,11 +182,11 @@ Function ExecuteProcess
         [Parameter(Mandatory = $true, Position = 0)]
         [String] $Path,
         [Parameter(Mandatory = $false, Position = 1)]
-        [String] $Arguments = [String]::Empty
+        [String] $Arguments = [String]::Empty,
+        [Parameter(Mandatory = $false, Position = 2)]
+        [Int32] $SuccessExitCode = 0
     )
 
-    $ProcessDefinition = "$Path $Arguments";
-    ComposeStart "Starting process: $ProcessDefinition";
     $Process = Start-Process -FilePath "$Path" -ArgumentList "$Arguments" -NoNewWindow -PassThru;
     Wait-Process -ErrorAction Stop -InputObject $Process;
 
@@ -194,13 +194,12 @@ Function ExecuteProcess
     {
         $ProcessExitCode = $Process.ExitCode;
 
-        If ($ProcessExitCode -eq 0)
+        If ($ProcessExitCode -eq $SuccessExitCode)
         {
-            ComposeFinish "Process completed: $ProcessDefinition";
             Return;
         }
 
-        Throw "Process failed (exit code $ProcessExitCode): $ProcessDefinition";
+        Throw "Process failed (exit code $ProcessExitCode).";
     }
 }
 
