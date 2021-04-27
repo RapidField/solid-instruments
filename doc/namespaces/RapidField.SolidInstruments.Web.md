@@ -29,3 +29,17 @@ dotnet add package RapidField.SolidInstruments.Web
 ```shell
 Install-Package RapidField.SolidInstruments.Web
 ```
+
+### Namespaces
+
+#### [RapidField.SolidInstruments.Web.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Web.Autofac.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments web application abstractions.
+</section>
+
+#### [RapidField.SolidInstruments.Web.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Web.DotNetNative.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments web application abstractions.
+</section>

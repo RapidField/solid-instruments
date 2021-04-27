@@ -26,7 +26,7 @@ $FileNameForCicdLog = "cicd.log";
 $FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = $PSScriptRoot;
+$DirectoryPathForProjectRoot = "$PSScriptRoot";
 $DirectoryPathForArtifacts = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForArtifacts";
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
@@ -42,9 +42,9 @@ $FilePathForCoreModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPa
 $ContextIsInteractive = $Interactive.IsPresent;
 
 # Modules
-Import-Module $FilePathForAutomationToolsModule -Force;
-Import-Module $FilePathForBuildAndDeploymentModule -Force;
-Import-Module $FilePathForCoreModule -Force;
+Import-Module "$FilePathForAutomationToolsModule" -Force;
+Import-Module "$FilePathForBuildAndDeploymentModule" -Force;
+Import-Module "$FilePathForCoreModule" -Force;
 
 <#
 .Synopsis

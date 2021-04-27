@@ -30,6 +30,7 @@ Getting started with **Solid Instruments** is easy. This guide will help you inc
 [![Service](../images/Label.Service.300w.png)](#service)
 [![Signal Processing](../images/Label.SignalProcessing.300w.png)](#signal-processing)
 [![Text Encoding](../images/Label.TextEncoding.300w.png)](#text-encoding)
+[![Web](../images/Label.Web.300w.png)](#web)
 
 <br />
 
@@ -713,4 +714,29 @@ dotnet add package RapidField.SolidInstruments.TextEncoding
 
 ```shell
 Install-Package RapidField.SolidInstruments.TextEncoding
+```
+
+<br />
+
+### ![Web](../images/Label.Web.300w.png)
+- - -
+
+#### [RapidField.SolidInstruments.Web](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Web.html)
+
+<section>
+Exposes types that simplify web application design.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Web
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Web
 ```

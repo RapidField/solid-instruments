@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{DD6DE5D2-E17E-4985-AD23-29F83799CAFC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{DD6DE5D2-E17E-4985-AD23-29F83799CAFC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
@@ -192,6 +192,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.Collections.md = doc\namespaces\RapidField.SolidInstruments.Collections.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.Autofac.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Autofac.md = doc\namespaces\RapidField.SolidInstruments.Command.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.Command.Cli.md = doc\namespaces\RapidField.SolidInstruments.Command.Cli.md
+		doc\namespaces\RapidField.SolidInstruments.Command.Configuration.md = doc\namespaces\RapidField.SolidInstruments.Command.Configuration.md
 		doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.md = doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.Extensions.md
@@ -432,6 +434,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core.Caching", "src\RapidField.SolidInstruments.Core.Caching\RapidField.SolidInstruments.Core.Caching.csproj", "{47D02163-44AA-4FB6-AACD-E20D8D4CCAAB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core.Caching.UnitTests", "test\RapidField.SolidInstruments.Core.Caching.UnitTests\RapidField.SolidInstruments.Core.Caching.UnitTests.csproj", "{0DA99B21-BA75-459C-AFB4-91ED73FE055F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Command.Cli", "src\RapidField.SolidInstruments.Command.Cli\RapidField.SolidInstruments.Command.Cli.csproj", "{131B4030-C18D-4CE7-9C86-3D0A29F703CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -691,6 +695,10 @@ Global
 		{0DA99B21-BA75-459C-AFB4-91ED73FE055F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DA99B21-BA75-459C-AFB4-91ED73FE055F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DA99B21-BA75-459C-AFB4-91ED73FE055F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131B4030-C18D-4CE7-9C86-3D0A29F703CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131B4030-C18D-4CE7-9C86-3D0A29F703CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131B4030-C18D-4CE7-9C86-3D0A29F703CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131B4030-C18D-4CE7-9C86-3D0A29F703CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -775,6 +783,7 @@ Global
 		{6A53C072-71C8-42F1-90D9-9AE64F2848B2} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{47D02163-44AA-4FB6-AACD-E20D8D4CCAAB} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 		{0DA99B21-BA75-459C-AFB4-91ED73FE055F} = {5DAD6C24-954B-43EC-B7D9-62BC08CF7AC6}
+		{131B4030-C18D-4CE7-9C86-3D0A29F703CD} = {F58E05BE-9DC6-41B4-8324-C006F6CE7CC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834FCFB0-DA00-4ABD-9424-6FE1398A9F6E}

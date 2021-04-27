@@ -104,6 +104,18 @@ public class Subtractor
 Exposes the Autofac integration for the Solid Instruments implementations of the command and mediator patterns.
 </section>
 
+#### [RapidField.SolidInstruments.Command.Cli](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Cli.html)
+
+<section>
+Defines a command line application development pattern using the command and mediator patterns.
+</section>
+
+#### [RapidField.SolidInstruments.Command.Configuration](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Configuration.html)
+
+<section>
+Exposes commands and command handlers for accessing application configuration information.
+</section>
+
 #### [RapidField.SolidInstruments.Command.DotNetNative](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.DotNetNative.html)
 
 <section>

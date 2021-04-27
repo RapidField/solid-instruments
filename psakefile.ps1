@@ -17,7 +17,7 @@ $FileNameForAutomationToolsModule = "AutomationTools.psm1";
 $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = $PSScriptRoot;
+$DirectoryPathForProjectRoot = "$PSScriptRoot";
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";
@@ -27,8 +27,8 @@ $FilePathForAutomationToolsModule = Join-Path -Path "$DirectoryPathForCicdModule
 $FilePathForBuildAndDeploymentModule = Join-Path -Path "$DirectoryPathForCicdModules" -ChildPath "$FileNameForBuildAndDeploymentModule";
 
 # Modules
-Import-Module $FilePathForAutomationToolsModule -Force;
-Import-Module $FilePathForBuildAndDeploymentModule -Force;
+Import-Module "$FilePathForAutomationToolsModule" -Force;
+Import-Module "$FilePathForBuildAndDeploymentModule" -Force;
 
 # Tasks
 Task Build-All -Alias ba -Depends Clean-All, Restore-Dependencies, Build-Debug, Build-Release;

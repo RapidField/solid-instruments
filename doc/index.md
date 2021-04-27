@@ -29,6 +29,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 [![Service](images/Label.Service.300w.png)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Service.html)
 [![Signal Processing](images/Label.SignalProcessing.300w.png)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.SignalProcessing.html)
 [![Text Encoding](images/Label.TextEncoding.300w.png)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.TextEncoding.html)
+[![Web](images/Label.Web.300w.png)](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Web.html)
 
 ### Releases
 - - -
