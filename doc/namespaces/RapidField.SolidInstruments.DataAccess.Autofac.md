@@ -32,6 +32,12 @@ Install-Package RapidField.SolidInstruments.DataAccess.Autofac
 
 ### Namespaces
 
+#### [RapidField.SolidInstruments.DataAccess.Autofac.Ef](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.Ef.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments Entity Framework data access abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.DataAccess.Autofac.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.Extensions.html)
 
 <section>

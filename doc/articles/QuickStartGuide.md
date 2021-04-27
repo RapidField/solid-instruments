@@ -91,7 +91,7 @@ Install-Package RapidField.SolidInstruments.Command
 #### [RapidField.SolidInstruments.Command.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Autofac.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments implementations of the command and mediator patterns.
+Exposes the Autofac integration for the Solid Instruments implementations of the command and mediator patterns.
 </section>
 
 <br />
@@ -106,6 +106,28 @@ dotnet add package RapidField.SolidInstruments.Command.Autofac
 
 ```shell
 Install-Package RapidField.SolidInstruments.Command.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.Command.Cli](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Cli.html)
+
+<section>
+Defines a command line application development pattern using the command and mediator patterns.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Command.Cli
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Command.Cli
 ```
 
 <br />
@@ -157,6 +179,28 @@ Install-Package RapidField.SolidInstruments.Core
 
 <br />
 
+#### [RapidField.SolidInstruments.Core.Caching](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Core.Caching.html)
+
+<section>
+Exposes configurable clients for accessing cached data.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.Core.Caching
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.Core.Caching
+```
+
+<br />
+
 ### ![Cryptography](../images/Label.Cryptography.300w.png)
 - - -
 
@@ -188,7 +232,7 @@ Install-Package RapidField.SolidInstruments.Cryptography
 #### [RapidField.SolidInstruments.DataAccess.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
+Exposes the Autofac integration for the Solid Instruments implementations of abstractions for the repository and unit-of-work patterns.
 </section>
 
 <br />
@@ -203,6 +247,28 @@ dotnet add package RapidField.SolidInstruments.DataAccess.Autofac
 
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess.Autofac
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.DataAccess.Autofac.Ef](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.Autofac.Ef.html)
+
+<section>
+Exposes the Autofac integration for the Solid Instruments Entity Framework data access abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.DataAccess.Autofac.Ef
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.DataAccess.Autofac.Ef
 ```
 
 <br />
@@ -225,6 +291,28 @@ dotnet add package RapidField.SolidInstruments.DataAccess.DotNetNative
 
 ```shell
 Install-Package RapidField.SolidInstruments.DataAccess.DotNetNative
+```
+
+<br />
+
+#### [RapidField.SolidInstruments.DataAccess.DotNetNative.Ef](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments Entity Framework data access abstractions.
+</section>
+
+<br />
+
+###### .NET CLI
+
+```shell
+dotnet add package RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
+```
+
+###### NuGet Package Manager
+
+```shell
+Install-Package RapidField.SolidInstruments.DataAccess.DotNetNative.Ef
 ```
 
 <br />
@@ -279,7 +367,7 @@ Install-Package RapidField.SolidInstruments.EventAuthoring
 #### [RapidField.SolidInstruments.EventAuthoring.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.EventAuthoring.Autofac.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments event authoring abstractions.
+Exposes the Autofac integration for the Solid Instruments event authoring abstractions.
 </section>
 
 <br />
@@ -398,7 +486,7 @@ Install-Package RapidField.SolidInstruments.Mathematics
 #### [RapidField.SolidInstruments.Messaging.Autofac](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments messaging abstractions.
+Exposes the Autofac integration for the Solid Instruments messaging abstractions.
 </section>
 
 <br />
@@ -420,7 +508,7 @@ Install-Package RapidField.SolidInstruments.Messaging.Autofac
 #### [RapidField.SolidInstruments.Messaging.Autofac.Asb](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Asb.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments Azure Service Bus messaging abstractions.
+Exposes the Autofac integration for the Solid Instruments Azure Service Bus messaging abstractions.
 </section>
 
 <br />
@@ -442,7 +530,7 @@ Install-Package RapidField.SolidInstruments.Messaging.Autofac.Asb
 #### [RapidField.SolidInstruments.Messaging.Autofac.Rmq](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Messaging.Autofac.Rmq.html)
 
 <section>
-Exposes the Autofac IoC integration for the Solid Instruments RabbitMQ messaging abstractions.
+Exposes the Autofac integration for the Solid Instruments RabbitMQ messaging abstractions.
 </section>
 
 <br />

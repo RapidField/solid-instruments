@@ -17,7 +17,7 @@ This project houses unit tests for the **Solid Instruments** [**Entity Framework
 
 [![License](https://img.shields.io/github/license/rapidfield/solid-instruments?style=flat&color=lightseagreen&label=license&logo=open-access&logoColor=lightgrey)](../../LICENSE.txt)
 
-**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [license terms](../../LICENSE.txt) for more information.
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Review the [**License Terms**](../../LICENSE.txt) for more information.
 
 <br />
 

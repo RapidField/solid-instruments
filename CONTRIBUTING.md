@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Instructions for Contributing
 
-**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Your contributions must be your own work. Review the [license terms](LICENSE.txt) and the [**Code of Conduct**](CODE_OF_CONDUCT.md) before contributing.
+**Solid Instruments** is [MIT-licensed](https://en.wikipedia.org/wiki/MIT_License). Your contributions must be your own work. Review the [**License Terms**](LICENSE.txt) and the [**Code of Conduct**](CODE_OF_CONDUCT.md) before contributing.
 
 For questions, contact [:email:solidinstruments@rapidfield.com](mailto:solidinstruments@rapidfield.com).
 

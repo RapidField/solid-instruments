@@ -32,6 +32,12 @@ Install-Package RapidField.SolidInstruments.DataAccess.DotNetNative
 
 ### Namespaces
 
+#### [RapidField.SolidInstruments.DataAccess.DotNetNative.Ef](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.Ef.html)
+
+<section>
+Exposes the native .NET IoC integration for the Solid Instruments Entity Framework data access abstractions.
+</section>
+
 #### [RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.DataAccess.DotNetNative.Extensions.html)
 
 <section>
