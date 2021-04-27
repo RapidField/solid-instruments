@@ -24,7 +24,7 @@ $FileNameForBuildAndDeploymentModule = "BuildAndDeployment.psm1";
 $FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
+$DirectoryPathForProjectRoot = (Get-Item "$PSScriptRoot").Parent.Parent.FullName;
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";
 $DirectoryPathForCicdScripts = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdScripts";

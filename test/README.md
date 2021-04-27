@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # /test
 
-This document describes the purpose of the [`test`]() directory.
+This document describes the purpose of the [:file_folder:`test`]() directory.
 
 ## Purpose
 

@@ -11,7 +11,7 @@ This issue represents a request for documentation, testing, refactoring or other
 
 ## Overview
 
-> **MODIFY.** Replace the text in this section with a clear, concise description of the maintenance work. Place reference details and media in the "additional information" section, as needed.
+> :pencil2: **MODIFY.** Replace the text in this section with a clear, concise description of the maintenance work. Place reference details and media in the "additional information" section, as needed.
 
 Replace this with a summary of the requested work.
 
@@ -19,7 +19,7 @@ Replace this with a summary of the requested work.
 
 The following list describes the work to be done.
 
-> **MODIFY.** Replace the list below with a complete list of work items.
+> :pencil2: **MODIFY.** Replace the list below with a complete list of work items.
 
 - [ ] Briefly describe the first work item.
 - [ ] And the second work item.
@@ -27,13 +27,13 @@ The following list describes the work to be done.
 
 ## Additional information
 
-> **MODIFY OR REMOVE.** Place any other information that might be relevant within this section, or remove it.
+> :pencil2: **MODIFY OR REMOVE.** Place any other information that might be relevant within this section, or remove it.
 
 Replace this with additional information.
 
 ## Revision control plan
 
-> **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
+> :no_entry: **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
 
 **Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
 

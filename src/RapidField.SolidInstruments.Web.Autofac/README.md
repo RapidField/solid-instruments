@@ -9,7 +9,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # RapidField.SolidInstruments.Web.Autofac
 
-This document describes the purpose of the [`RapidField.SolidInstruments.Web`]() library and offers guidance with respect to licensing, installation and usage.
+This document describes the purpose of the [`RapidField.SolidInstruments.Web.Autofac`]() library and offers guidance with respect to licensing, installation and usage.
 
 ## Features
 

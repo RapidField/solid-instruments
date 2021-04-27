@@ -11,7 +11,7 @@ This issue represents a request for the production release of a new version of *
 
 ## Overview
 
-> **MODIFY.** Replace the version number below with the appropriate version number.
+> :pencil2: **MODIFY.** Replace the version number below with the appropriate version number.
 
 Issue a production software release for :bookmark:`v0.0.0`.
 
@@ -28,8 +28,8 @@ The following list describes the work to be done.
 
 ## Revision control plan
 
-> **MODIFY.** Replace the version number below with the appropriate version number.
->
+> :pencil2: **MODIFY.** Replace the version number below with the appropriate version number.
+
 **Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
 
 - :yellow_circle:`master` is the pull request target for

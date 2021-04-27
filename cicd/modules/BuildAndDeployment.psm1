@@ -40,7 +40,7 @@ $FileNameForNugetExe = "nuget.exe";
 $FileNameForSolutionFile = "$NamespaceFragmentForOrganization.$NamespaceFragmentForProduct.sln";
 
 # Directory paths
-$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
+$DirectoryPathForProjectRoot = (Get-Item "$PSScriptRoot").Parent.Parent.FullName;
 $DirectoryPathForArtifacts = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForArtifacts";
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdAssets = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdAssets";
@@ -114,7 +114,7 @@ $ExampleIdentityServiceApplicationNamespace = "$NamespaceFragmentForOrganization
 
 # Regular expressions
 $ValidCommitMessageRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'\""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
-$ValidPullRequestTitleRegularExpressionPattern = "^(#[1-9][0-9]{0,4} )?[A-Z][A-Za-z0-9\,\.\!\;\:\'""\@\#\$\%\^\&\*\-\+\=_\(\)\[\]\{\}\|\\\/\s]{8,144}$";
+$ValidPullRequestTitleRegularExpressionPattern = $ValidCommitMessageRegularExpressionPattern;
 
 # Environment variables
 $BuildVersion = $env:APPVEYOR_BUILD_VERSION;
@@ -166,7 +166,8 @@ Function Build
     $BuildVersionWithoutMetadata = GetBuildVersion;
     ComposeStart "Building $FilePathForSolutionFile using $SolutionConfiguration configuration.";
     ComposeNormal "Build version: $BuildVersionWithoutMetadata";
-    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "$SubCommandNameForDotNetCliBuild $FilePathForSolutionFile $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal /p:BuildVersion=$BuildVersionWithoutMetadata";
+    $CommandArgumentForDotNetCliBuildVersion = "/p:BuildVersion=$BuildVersionWithoutMetadata";
+    ExecuteProcess -Path "$CommandNameForDotNetCli" -Arguments "$SubCommandNameForDotNetCliBuild $FilePathForSolutionFile $CommandArgumentForDotNetCliConfiguration $SolutionConfiguration $CommandArgumentForDotNetCliNoLogo $CommandArgumentForDotNetCliNoRestore $CommandArgumentForDotNetCliVerbosityMinimal $CommandArgumentForDotNetCliBuildVersion";
     $BuildArtifactsDirectoryPath = Join-Path -Path "$DirectoryPathForArtifacts" -ChildPath "$SolutionConfiguration";
 
     If (-not (Test-Path "$BuildArtifactsDirectoryPath"))

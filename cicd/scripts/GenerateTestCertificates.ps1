@@ -26,7 +26,7 @@ $FileNameForCertificateThree = "TestRootThree.testcert";
 $FileNameForCoreModule = "Core.psm1";
 
 # Directory paths
-$DirectoryPathForProjectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName;
+$DirectoryPathForProjectRoot = (Get-Item "$PSScriptRoot").Parent.Parent.FullName;
 $DirectoryPathForCicd = Join-Path -Path "$DirectoryPathForProjectRoot" -ChildPath "$DirectoryNameForCicd";
 $DirectoryPathForCicdAssets = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdAssets";
 $DirectoryPathForCicdModules = Join-Path -Path "$DirectoryPathForCicd" -ChildPath "$DirectoryNameForCicdModules";

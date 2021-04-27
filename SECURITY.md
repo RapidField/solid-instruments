@@ -19,7 +19,7 @@ The versions listed below are currently supported with security updates. We stro
 
 ## Reporting a vulnerability
 
-To report a suspected or known vulnerability, contact [security@rapidfield.com](mailto:security@rapidfield.com). Do not open an issue to report a vulnerability. When in doubt, contact [security@rapidfield.com](mailto:security@rapidfield.com).
+To report a suspected or known vulnerability, contact [:email:security@rapidfield.com](mailto:security@rapidfield.com). Do not open an issue to report a vulnerability. When in doubt, contact [:email:security@rapidfield.com](mailto:security@rapidfield.com).
 
 <br />
 

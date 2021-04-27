@@ -122,7 +122,7 @@ Ready to start contributing? You know what to do.
 git clone https://github.com/RapidField/solid-instruments.git
 ```
 
-### 💻 Environment setup
+### :computer: Environment setup
 
 After cloning the repository, navigate to the root directory in an administrative [**PowerShell**](https://github.com/PowerShell/PowerShell#get-powershell) session and execute [:page_facing_up:`Build.ps1`](Build.ps1) to install the command-line tools and verify the status of your build.
 

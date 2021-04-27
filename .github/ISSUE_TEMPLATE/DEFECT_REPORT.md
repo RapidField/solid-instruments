@@ -11,7 +11,7 @@ This issue represents an unresolved problem that a user is experiencing while us
 
 ## Overview
 
-> **MODIFY.** Replace the text in this section with a clear, concise description of the problem. Place reference details and media in the "additional information" section, as needed.
+> :pencil2: **MODIFY.** Replace the text in this section with a clear, concise description of the problem. Place reference details and media in the "additional information" section, as needed.
 
 Replace this with a summary of the problem.
 
@@ -19,7 +19,7 @@ Replace this with a summary of the problem.
 
 Follow the instructions below, in order, to reproduce the observed behavior.
 
-> **MODIFY.** Replace the list below with a complete list of reproduction steps.
+> :pencil2: **MODIFY.** Replace the list below with a complete list of reproduction steps.
 
 1. Briefly state the first step.
 2. And the second step.
@@ -27,19 +27,19 @@ Follow the instructions below, in order, to reproduce the observed behavior.
 
 ## Observed (defective) behavior
 
-> **MODIFY.** Replace the text in this section with an explanation of what went wrong.
+> :pencil2: **MODIFY.** Replace the text in this section with an explanation of what went wrong.
 
 Replace this with details about the observed result.
 
 ## Expected (correct) behavior
 
-> **MODIFY.** Replace the text in this section with a description of what should have happened.
+> :pencil2: **MODIFY.** Replace the text in this section with a description of what should have happened.
 
 Replace this with details about the expected result.
 
 ## System information
 
-> **MODIFY.** Replace the bracketed values below with information about the environment on which the problem was observed.
+> :pencil2: **MODIFY.** Replace the bracketed values below with information about the environment on which the problem was observed.
 
 - Solid Instruments version: [eg. v1.0.0]
 - Processor architecture: [eg. x64]
@@ -47,13 +47,13 @@ Replace this with details about the expected result.
 
 ## Additional information
 
-> **MODIFY OR REMOVE.** Place any other information that might be relevant within this section, or remove it.
+> :pencil2: **MODIFY OR REMOVE.** Place any other information that might be relevant within this section, or remove it.
 
 Replace this with additional information.
 
 ## Revision control plan
 
-> **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
+> :no_entry: **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
 
 **Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
 
