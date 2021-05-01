@@ -44,5 +44,5 @@ This work was or will be included as part of the [**:bookmark:v0.0.0**](https://
 - :yellow_circle:`master` is the pull request target for
   - :purple_circle:`release/v0.0.0`, which is the pull request target for
     - :large_blue_circle:`develop`, which is the pull request target for
-      - :black_circle:`maintenance/00000-xxxxx`, which is the pull request target for [user branches](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#brown_circle-user-branches):
+      - :black_circle:`maintenance/00000-xxxxx`, which is the pull request target for the following [user branch(es)](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#brown_circle-user-branches):
         - :brown_circle:`user/{username}/00000-xxxxx`
