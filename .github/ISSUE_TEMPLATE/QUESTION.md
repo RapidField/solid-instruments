@@ -17,12 +17,14 @@ Replace this with your question.
 
 ## Additional information
 
-> **:pencil2: MODIFY OR :wastebasket: REMOVE.** Place any other information that might be relevant within this section, or remove it. Delete this line.
+> **:pencil2: MODIFY OR :wastebasket: REMOVE.** Place any other information within this section, or remove it. Delete this line.
 
-Replace this with additional information, hyperlinks and/or media.
+Replace this with additional details, hyperlinks and/or media.
 
-## Answer(s)
+## Answer
 
 > **:no_entry: LEAVE UNMODIFIED.** This section will be completed by the project maintainers once the question is addressed.
+>
+> **:information_source: PROJECT TEAM:** Use this section to document the resolution to this question. Delete these lines.
 
 Replace this with relevant facts, statements, hyperlinks and/or conversation notes.

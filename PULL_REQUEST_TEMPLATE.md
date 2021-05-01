@@ -4,7 +4,7 @@ This represents a request to incorporate the associated changes to the **Solid I
 
 ## Overview
 
-> **:pencil2: MODIFY OR :wastebasket: REMOVE.** Replace the issue numbers below (#000000) with one or more relevant [issue number(s)](https://github.com/RapidField/solid-instruments/issues).
+> **:pencil2: MODIFY OR :wastebasket: REMOVE.** Replace the issue numbers below (#000000) with one or more relevant [issue number(s)](https://github.com/RapidField/solid-instruments/issues). Delete this line.
 
 This pull request addresses the following issue(s):
 

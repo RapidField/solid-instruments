@@ -30,10 +30,11 @@ The following list describes the work to be done.
 
 ## Revision control plan
 
-> **:pencil2: MODIFY.** Replace the version number below (v0.0.0) with the appropriate version number. Delete this line.
+> **:information_source: PROJECT TEAM:** Update the branch names below to reflect the final plan. Delete this line.
 
 **Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#arrows_clockwise-revision-control-workflow). Individual contributors should follow the branching plan below when working on this issue.
 
 - :yellow_circle:`master` is the pull request target for
+  - :orange_circle:`hotfix/v0.0.0` -or-
   - :purple_circle:`release/v0.0.0`, which is the pull request target for
     - :large_blue_circle:`develop`
