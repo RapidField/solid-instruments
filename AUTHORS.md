@@ -15,7 +15,7 @@ This document lists the **Solid Instruments** maintainers and contributors. For 
 
 ## Contributors
 
-* :bust_in_silhouette: [your name here] :wink:
+* :bust_in_silhouette: [your name here]
 
 ## Aspiring contributors
 

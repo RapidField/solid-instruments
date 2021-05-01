@@ -13,7 +13,7 @@ New contributors should read the [**Instructions for Contributing**](CONTRIBUTIN
 
 ## Conflict resolution
 
-When contributors disagree on design or direction, the conflict should be resolved by direct, honest communication. While ideal solutions address the concerns of all involved parties, it is expected that reasonable compromises will sometimes be made. When contributors cannot reach an agreement they should ask for advice from [more senior members](AUTHORS.md) of the team.
+When contributors disagree on design or direction, the conflict should be resolved by direct, honest communication. While ideal solutions address the concerns of all involved parties, it is expected that reasonable compromises will sometimes be made. When contributors cannot reach an agreement they should ask for advice from [senior members](AUTHORS.md) of the team.
 
 <br />
 

@@ -11,7 +11,7 @@ This issue represents a request for documentation, testing, refactoring or other
 
 ## Overview
 
-> :pencil2: **MODIFY.** Replace the text in this section with a clear, concise description of the maintenance work. Place reference details and media in the "additional information" section, as needed.
+> **:pencil2: MODIFY.** Replace the text in this section with a clear, concise description of the maintenance work. Place reference details and media in the **Additional information** section, as needed. Delete this line.
 
 Replace this with a summary of the requested work.
 
@@ -19,7 +19,7 @@ Replace this with a summary of the requested work.
 
 The following list describes the work to be done.
 
-> :pencil2: **MODIFY.** Replace the list below with a complete list of work items.
+> **:pencil2: MODIFY.** Replace the list below with a complete list of work items. Delete this line.
 
 - [ ] Briefly describe the first work item.
 - [ ] And the second work item.
@@ -27,18 +27,17 @@ The following list describes the work to be done.
 
 ## Additional information
 
-> :pencil2: **MODIFY OR REMOVE.** Place any other information that might be relevant within this section, or remove it.
+> **:pencil2: MODIFY OR :wastebasket: REMOVE.** Place any other information that might be relevant within this section, or remove it. Delete this line.
 
-Replace this with additional information.
+Replace this with additional information, hyperlinks and/or media.
 
 ## Revision control plan
 
-> :no_entry: **LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
+> **:no_entry: LEAVE UNMODIFIED.** This section will be completed by the project maintainers after the issue is accepted.
 
-**Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#revision-control-strategy). Individual contributors should follow the branching plan below when working on this issue.
+**Solid Instruments** uses the [**RapidField Revision Control Workflow**](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#arrows_clockwise-revision-control-workflow). Individual contributors should follow the branching plan below when working on this issue.
 
 - :yellow_circle:`master` is the pull request target for
-- :purple_circle:`release/v0.0.0`, which is the pull request target for
-- :large_blue_circle:`develop`, which is the pull request target for
-- :black_circle:`maintenance/00000-xxxxx`, which is the pull request target for contributing user branches, which should be named using the pattern
-- :brown_circle:`user/{username}/00000-xxxxx`
+  - :purple_circle:`release/v0.0.0`, which is the pull request target for
+    - :black_circle:`maintenance/00000-xxxxx`, which is the pull request target for [user branches](https://github.com/RapidField/solid-instruments/blob/master/CONTRIBUTING.md#brown_circle-user-branches):
+      - :brown_circle:`user/{username}/00000-xxxxx`

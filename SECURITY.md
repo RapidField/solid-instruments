@@ -13,9 +13,9 @@ The **Solid Instruments** maintainers actively address security issues. All supp
 
 The versions listed below are currently supported with security updates. We strongly encourage users of older versions to upgrade to a supported version as soon as possible.
 
-| Version | End of support |
-| ------- | :------------: |
-| 1.0.x   | 31 Jul 2023    |
+| :bookmark: Version | :warning: End of support |
+| ------------------ | :----------------------: |
+| 1.0.x              | 31 Jul 2023              |
 
 ## Reporting a vulnerability
 

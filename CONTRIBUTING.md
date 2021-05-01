@@ -24,7 +24,7 @@ By contributing to **Solid Instruments** you assert and agree that:
 Contents of the repository are organized as follows.
 
 - [:file_folder:`/cicd`](/cicd) houses source objects which define the behavior of the CI/CD pipeline
-- [:file_folder:`/doc`](/doc) contains content and configuration files that serve as the source for the [project website](https://www.solidinstruments.com).
+- [:file_folder:`/doc`](/doc) contains content and configuration files that serve as the source for the [documentation website](https://www.solidinstruments.com).
 - [:file_folder:`/example`](/example) contains sample projects that utilize the product libraries.
 - [:file_folder:`/src`](/src) houses the source for the product libraries.
 - [:file_folder:`/test`](/test) houses the test projects for the product libraries.
@@ -42,7 +42,7 @@ CI/CD tooling is managed and defined by [:page_facing_up:`cicd/modules/Automatio
 
 - [**The .NET SDK**](https://docs.microsoft.com/en-us/dotnet/core/sdk) is the project's foundational build and test instrument.
 - [**codecov.exe**](https://github.com/codecov/codecov-exe) publishes test coverage reports.
-- [**DocFx**](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html) produces the [project website](https://www.solidinstruments.com).
+- [**DocFx**](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html) produces the [documentation website](https://www.solidinstruments.com).
 - [**HTMLMinifier**](https://www.npmjs.com/package/html-minifier) minifies the project website.
 - [**OpenCover**](https://github.com/OpenCover/opencover) executes the project tests and produces test coverage reports.
 - [**powershell-yaml**](https://github.com/cloudbase/powershell-yaml) extracts configuration information during the build process.

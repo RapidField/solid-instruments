@@ -58,7 +58,7 @@ namespace RapidField.SolidInstruments.Service
             LazyDependencyEngine = new(CreateDependencyEngine, LazyThreadSafetyMode.ExecutionAndPublication);
             LazyRootDependencyScope = new(DependencyEngine.Container.CreateScope, LazyThreadSafetyMode.ExecutionAndPublication);
             ReferenceManager = new ReferenceManager();
-            ServiceName = serviceName.Trim().RejectIf().IsNullOrEmpty(nameof(serviceName));
+            ServiceName = serviceName.RejectIf().IsNullOrEmpty(nameof(serviceName)).TargetArgument.Trim();
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace RapidField.SolidInstruments.Service
                 _ = configurationBuilder.AddCommandLine(CommandLineArguments);
             }
 
-            _ = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(DefaultAppSettingsJsonFileName);
+            _ = configurationBuilder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(DefaultAppSettingsJsonFileName, true, true);
         }
 
         /// <summary>
@@ -290,13 +290,6 @@ namespace RapidField.SolidInstruments.Service
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not to suppress the console output that lists the product name, service name and
-        /// copyright notice; as well as the startup, finalization and exception notifications.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        internal virtual Boolean SupressStandardConsoleOutput => false;
-
-        /// <summary>
         /// Gets configuration information for the service.
         /// </summary>
         protected IConfiguration ApplicationConfiguration => LazyApplicationConfiguration.Value;
@@ -328,6 +321,12 @@ namespace RapidField.SolidInstruments.Service
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not to suppress the console output that lists the product name, service name and
+        /// copyright notice; as well as the startup, finalization and exception notifications.
+        /// </summary>
+        protected virtual Boolean SupressStandardConsoleOutput => false;
 
         /// <summary>
         /// Gets the dependency engine for the service.

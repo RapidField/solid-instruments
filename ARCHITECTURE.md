@@ -189,7 +189,7 @@ public Boolean Encrypts
 }
 ```
 
-### :building_construction: Adherence to object oriented principles
+### :closed_book: Adherence to object oriented principles
 
 We are committed to engineering excellence. We welcome creative and pioneering approaches, but we also understand that the most straightforward paths toward success are those paved by professionals who traveled before us. We observe and find great value in the [**SOLID** principles](https://en.wikipedia.org/wiki/SOLID). Our oversimplified statements of expectation with respect to **SOLID** are as follows.
 

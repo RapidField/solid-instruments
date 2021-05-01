@@ -7,39 +7,39 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Development Guidelines
 
-> :construction: **WIP.** This document is work-in-progress.
+> **:construction: WIP.** This document is work-in-progress.
 
 ## Organization
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ### :card_file_box: File system
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ### :infinity: Visual Studio solutions and projects
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ## Design and styling
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ### :straight_ruler: Coding standards (.NET/C#)
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ## Workflow
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ### :arrow_forward: Starting work
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ### :stop_button: Finishing work
 
-> :construction: **WIP.** This section is work-in-progress.
+> **:construction: WIP.** This section is work-in-progress.
 
 ## More information
 

@@ -13,7 +13,7 @@ namespace RapidField.SolidInstruments.Command.Cli
     /// <summary>
     /// Represents an attribute that maps a CLI command parameter to a <see cref="CliCommand" /> field or property.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public sealed class CliCommandParameterAttribute : Attribute
     {
         /// <summary>

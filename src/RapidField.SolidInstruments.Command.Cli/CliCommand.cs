@@ -5,6 +5,7 @@
 using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace RapidField.SolidInstruments.Command.Cli
@@ -22,7 +23,7 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// Initializes a new instance of the <see cref="CliCommand" /> class.
         /// </summary>
         public CliCommand()
-            : this(Array.Empty<String>())
+            : this(DefaultArguments)
         {
             return;
         }
@@ -37,7 +38,7 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// <paramref name="correlationIdentifier" /> is equal to <see cref="Guid.Empty" />.
         /// </exception>
         public CliCommand(Guid correlationIdentifier)
-            : this(Array.Empty<String>(), correlationIdentifier)
+            : this(DefaultArguments, correlationIdentifier)
         {
             return;
         }
@@ -79,7 +80,7 @@ namespace RapidField.SolidInstruments.Command.Cli
         }
 
         /// <summary>
-        /// Interrogates <see cref="Arguments" /> and hydrates the derived properties of the current <see cref="ICliCommand" />.
+        /// Interrogates <see cref="Arguments" /> and hydrates the derived properties of the current <see cref="CliCommand" />.
         /// </summary>
         /// <exception cref="CommandHandlingException">
         /// An exception was raised while processing the command line arguments.
@@ -88,7 +89,7 @@ namespace RapidField.SolidInstruments.Command.Cli
         {
             try
             {
-                Hydrate(Arguments ?? Array.Empty<String>());
+                Hydrate(Arguments ?? DefaultArguments);
             }
             catch (CommandHandlingException)
             {
@@ -101,7 +102,7 @@ namespace RapidField.SolidInstruments.Command.Cli
         }
 
         /// <summary>
-        /// Interrogates <see cref="Arguments" /> and hydrates the derived properties of the current <see cref="ICliCommand" />.
+        /// Interrogates <see cref="Arguments" /> and hydrates the derived properties of the current <see cref="CliCommand" />.
         /// </summary>
         /// <param name="arguments">
         /// A collection of textual command line arguments constituting the command.
@@ -120,5 +121,11 @@ namespace RapidField.SolidInstruments.Command.Cli
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets a default collection of command line arguments.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static IEnumerable<String> DefaultArguments => Array.Empty<String>();
     }
 }

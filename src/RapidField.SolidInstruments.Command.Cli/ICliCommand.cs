@@ -13,6 +13,44 @@ namespace RapidField.SolidInstruments.Command.Cli
     public interface ICliCommand : ICommand
     {
         /// <summary>
+        /// Converts the current <see cref="ICliCommand" /> to the specified concrete implementation.
+        /// </summary>
+        /// <typeparam name="TCliCommand">
+        /// The type of the resulting <see cref="ICliCommand" />.
+        /// </typeparam>
+        /// <returns>
+        /// The resulting command.
+        /// </returns>
+        /// <exception cref="CommandHandlingException">
+        /// An exception was raised while initializing the command or processing the command line arguments.
+        /// </exception>
+        public TCliCommand As<TCliCommand>()
+            where TCliCommand : class, ICliCommand, new()
+        {
+            try
+            {
+                var command = new TCliCommand();
+
+                foreach (var argument in Arguments)
+                {
+                    command.Arguments.Add(argument);
+                }
+
+                command.Hydrate();
+                command.CorrelationIdentifier = CorrelationIdentifier;
+                return command;
+            }
+            catch (CommandHandlingException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new CommandHandlingException(typeof(TCliCommand), exception);
+            }
+        }
+
+        /// <summary>
         /// Interrogates <see cref="Arguments" /> and hydrates the derived properties of the current <see cref="ICliCommand" />.
         /// </summary>
         /// <exception cref="CommandHandlingException">

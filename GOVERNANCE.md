@@ -7,7 +7,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
 
 # Governance Model
 
-> :construction: **WIP.** This document is work-in-progress.
+> **:construction: WIP.** This document is work-in-progress.
 
 <br />
 
