@@ -178,7 +178,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="applicationIdentity" /> is empty.
@@ -199,7 +199,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="correlationIdentifier">
         /// A unique identifier that is assigned to related events.
@@ -226,7 +226,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
@@ -253,7 +253,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
@@ -284,7 +284,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
@@ -314,7 +314,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
@@ -348,7 +348,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />
@@ -382,7 +382,7 @@ namespace RapidField.SolidInstruments.EventAuthoring
         /// A name or value that uniquely identifies the application in which the associated error occurred.
         /// </param>
         /// <param name="diagnosticDetails">
-        /// Textual diagnostic information about the associated error. This value can be <see langword="null" />.
+        /// Textual diagnostic information about the associated error. This argument can be <see langword="null" />.
         /// </param>
         /// <param name="verbosity">
         /// The verbosity level of the event. The default value is <see cref="EventVerbosity.Normal" />

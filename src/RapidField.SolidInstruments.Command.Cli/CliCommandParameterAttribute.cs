@@ -14,7 +14,7 @@ namespace RapidField.SolidInstruments.Command.Cli
     /// Represents an attribute that maps a CLI command parameter to a <see cref="CliCommand" /> field or property.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public sealed class CliCommandParameterAttribute : Attribute
+    public sealed class CliCommandParameterAttribute : Attribute, ICliCommandParameter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CliCommandParameterAttribute" /> class.
@@ -25,6 +25,8 @@ namespace RapidField.SolidInstruments.Command.Cli
             Alias = DefaultAlias;
             IsRequired = DefaultIsRequiredValue;
             Kind = DefaultKind;
+            MemberName = DefaultMemberName;
+            MemberType = DefaultMemberType;
             Name = DefaultName;
             Position = DefaultPosition;
         }
@@ -72,8 +74,8 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// The alphanumeric name of the command line parameter.
         /// </param>
         /// <param name="alias">
-        /// An abbreviated alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter does not
-        /// have an abbreviated form. The default value is <see langword="null" />.
+        /// An abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter
+        /// does not have an abbreviated or alternate form. The default value is <see langword="null" />.
         /// </param>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="name" /> is empty.
@@ -146,8 +148,8 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// The alphanumeric name of the command line parameter.
         /// </param>
         /// <param name="alias">
-        /// An abbreviated alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter does not
-        /// have an abbreviated form. The default value is <see langword="null" />.
+        /// An abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter
+        /// does not have an abbreviated or alternate form. The default value is <see langword="null" />.
         /// </param>
         /// <exception cref="ArgumentEmptyException">
         /// <paramref name="name" /> is empty.
@@ -230,8 +232,8 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// The alphanumeric name of the command line parameter.
         /// </param>
         /// <param name="alias">
-        /// An abbreviated alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter does not
-        /// have an abbreviated form. The default value is <see langword="null" />.
+        /// An abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter
+        /// does not have an abbreviated or alternate form. The default value is <see langword="null" />.
         /// </param>
         /// <param name="isRequired">
         /// A value indicating whether or not the command line parameter is required. The default value is <see langword="false" />.
@@ -290,8 +292,8 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// unnamed. The default value is <see langword="null" />.
         /// </param>
         /// <param name="alias">
-        /// An abbreviated alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter does not
-        /// have an abbreviated form. The default value is <see langword="null" />.
+        /// An abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter
+        /// does not have an abbreviated or alternate form. The default value is <see langword="null" />.
         /// </param>
         /// <param name="position">
         /// The zero-based index of the position of the command line parameter, or <see langword="null" /> if the parameter is named
@@ -329,6 +331,8 @@ namespace RapidField.SolidInstruments.Command.Cli
             }, nameof(alias), $"The specified CLI command parameter alias \"{processedAlias}\" contains non-alphanumeric characters.");
             IsRequired = isRequired;
             Kind = kind.RejectIf().IsEqualToValue(CliCommandParameterKind.Unspecified, nameof(kind));
+            MemberName = DefaultMemberName;
+            MemberType = DefaultMemberType;
             Name = processedName.IsNullOrEmpty() ? null : processedName.RejectIf(argument =>
             {
                 foreach (var character in argument)
@@ -345,7 +349,7 @@ namespace RapidField.SolidInstruments.Command.Cli
             }, nameof(name), $"The specified CLI command parameter name \"{processedName}\" contains non-alphanumeric characters.");
             Position = position.RejectIf(argument =>
             {
-                return Name is null && argument is null;
+                return NameReference is null && AliasReference is null && argument is null;
             }, nameof(position), "The specified command line parameter is neither named nor positional.").OrIf(argument =>
             {
                 return argument.HasValue && argument.Value < 0;
@@ -353,12 +357,15 @@ namespace RapidField.SolidInstruments.Command.Cli
         }
 
         /// <summary>
-        /// Gets an abbreviated alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter does
-        /// not have an abbreviated form.
+        /// Gets an abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if the
+        /// parameter does not have an abbreviated or alternate form.
         /// </summary>
         public String Alias
         {
-            get;
+            [DebuggerHidden]
+            get => AliasReference ?? (MemberName.IsNullOrEmpty() ? DefaultAlias : (Name == MemberName ? DefaultAlias : MemberName));
+            [DebuggerHidden]
+            private set => AliasReference = value;
         }
 
         /// <summary>
@@ -366,7 +373,10 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// </summary>
         public Boolean IsRequired
         {
-            get;
+            [DebuggerHidden]
+            get => IsRequiredValue;
+            [DebuggerHidden]
+            private set => IsRequiredValue = value;
         }
 
         /// <summary>
@@ -374,7 +384,30 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// </summary>
         public CliCommandParameterKind Kind
         {
+            [DebuggerHidden]
+            get => MemberTypeIsBoolean ? CliCommandParameterKind.Switch : (KindValue == CliCommandParameterKind.Unspecified ? DefaultKind : KindValue);
+            [DebuggerHidden]
+            private set => KindValue = value;
+        }
+
+        /// <summary>
+        /// Gets the name of a <see cref="CliCommand" /> field or property to which the parameter's argument is assigned, or
+        /// <see langword="null" /> if the parameter is not matched with a member.
+        /// </summary>
+        public String MemberName
+        {
             get;
+            internal set;
+        }
+
+        /// <summary>
+        /// Gets the type of a <see cref="CliCommand" /> field or property to which the parameter's argument is assigned, or
+        /// <see langword="null" /> if the parameter is not matched with a member.
+        /// </summary>
+        public Type MemberType
+        {
+            get;
+            internal set;
         }
 
         /// <summary>
@@ -383,7 +416,10 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// </summary>
         public String Name
         {
-            get;
+            [DebuggerHidden]
+            get => NameReference ?? (MemberName.IsNullOrEmpty() ? DefaultName : MemberName);
+            [DebuggerHidden]
+            private set => NameReference = value;
         }
 
         /// <summary>
@@ -392,11 +428,20 @@ namespace RapidField.SolidInstruments.Command.Cli
         /// </summary>
         public Int32? Position
         {
-            get;
+            [DebuggerHidden]
+            get => Kind == CliCommandParameterKind.Switch ? DefaultPosition : PositionValue;
+            [DebuggerHidden]
+            private set => PositionValue = value;
         }
 
         /// <summary>
-        /// Represents the default abbreviated alphanumeric name of the command line parameter.
+        /// Gets a value indicating whether or not <see cref="MemberType" /> is a boolean or nullable boolean type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Boolean MemberTypeIsBoolean => MemberType is null ? false : (MemberType == BooleanType || MemberType == NullableBooleanType);
+
+        /// <summary>
+        /// Represents the default abbreviated or alternate alphanumeric name of the command line parameter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DefaultAlias = null;
@@ -414,15 +459,73 @@ namespace RapidField.SolidInstruments.Command.Cli
         private const CliCommandParameterKind DefaultKind = CliCommandParameterKind.Value;
 
         /// <summary>
+        /// Represents the default name of a <see cref="CliCommand" /> field or property to which the parameter's argument is
+        /// assigned.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const String DefaultMemberName = null;
+
+        /// <summary>
+        /// Represents the default type of a <see cref="CliCommand" /> field or property to which the parameter's argument is
+        /// assigned.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private const Type DefaultMemberType = null;
+
+        /// <summary>
         /// Represents the default alphanumeric name of the command line parameter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private const String DefaultName = null;
 
         /// <summary>
+        /// Represents the <see cref="Boolean" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type BooleanType = typeof(Boolean);
+
+        /// <summary>
         /// Represents the default zero-based index of the position of the command line parameter.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private static readonly Int32? DefaultPosition = null;
+
+        /// <summary>
+        /// Represents the nullable <see cref="Boolean" /> type.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private static readonly Type NullableBooleanType = typeof(Boolean?);
+
+        /// <summary>
+        /// Represents an abbreviated or alternate alphanumeric name of the command line parameter, or <see langword="null" /> if
+        /// the parameter does not have an abbreviated or alternate form.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private String AliasReference;
+
+        /// <summary>
+        /// Represents a value indicating whether or not the command line parameter is required.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Boolean IsRequiredValue;
+
+        /// <summary>
+        /// Represents a value specifying whether the command line parameter is a boolean switch or defines a value.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private CliCommandParameterKind KindValue;
+
+        /// <summary>
+        /// Represents the alphanumeric name of the command line parameter, or <see langword="null" /> if the parameter is
+        /// positional and unnamed.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private String NameReference;
+
+        /// <summary>
+        /// Represents the zero-based index of the position of the command line parameter, or <see langword="null" /> if the
+        /// parameter is named and non-positional.
+        /// </summary>
+        private Int32? PositionValue;
     }
 }

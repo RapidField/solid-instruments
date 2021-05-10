@@ -6,6 +6,7 @@ using RapidField.SolidInstruments.Core.ArgumentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace RapidField.SolidInstruments.Core.Extensions
 {
@@ -40,6 +41,21 @@ namespace RapidField.SolidInstruments.Core.Extensions
 
             return flattenedCollection;
         }
+
+        /// <summary>
+        /// Indicates whether or not the current <see cref="IEnumerable{T}" /> is empty.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The element type of the <see cref="IEnumerable{T}" />.
+        /// </typeparam>
+        /// <param name="target">
+        /// The current instance of the <see cref="IEnumerable{T}" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="IEnumerable{T}" /> is empty, otherwise <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsEmpty<T>(this IEnumerable<T> target) => target.Any() is false;
 
         /// <summary>
         /// Indicates whether or not the current <see cref="IEnumerable{T}" /> represents the same elements, in the same order, as
@@ -111,6 +127,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="IEnumerable{T}" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.Any() is false;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsNullOrEmpty<T>(this IEnumerable<T> target) => target is null || target.IsEmpty();
     }
 }

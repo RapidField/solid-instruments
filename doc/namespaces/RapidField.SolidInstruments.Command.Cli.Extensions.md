@@ -1,5 +1,5 @@
 ---
-uid: RapidField.SolidInstruments.Command.Cli
+uid: RapidField.SolidInstruments.Command.Cli.Extensions
 summary: *content
 ---
 
@@ -7,7 +7,7 @@ summary: *content
 Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 -->
 
-Defines a command line application development pattern using the command and mediator patterns.
+Exposes extensions that support command line application development.
 
 <br />
 
@@ -29,11 +29,3 @@ dotnet add package RapidField.SolidInstruments.Command.Cli
 ```shell
 Install-Package RapidField.SolidInstruments.Command.Cli
 ```
-
-### Namespaces
-
-#### [RapidField.SolidInstruments.Command.Cli.Extensions](https://www.solidinstruments.com/api/RapidField.SolidInstruments.Command.Cli.Extensions.html)
-
-<section>
-Exposes extensions that support command line application development.
-</section>

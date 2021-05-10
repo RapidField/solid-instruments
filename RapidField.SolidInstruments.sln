@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
@@ -192,6 +191,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", 
 		doc\namespaces\RapidField.SolidInstruments.Collections.md = doc\namespaces\RapidField.SolidInstruments.Collections.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Autofac.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.Autofac.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Autofac.md = doc\namespaces\RapidField.SolidInstruments.Command.Autofac.md
+		doc\namespaces\RapidField.SolidInstruments.Command.Cli.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.Cli.Extensions.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Cli.md = doc\namespaces\RapidField.SolidInstruments.Command.Cli.md
 		doc\namespaces\RapidField.SolidInstruments.Command.Configuration.md = doc\namespaces\RapidField.SolidInstruments.Command.Configuration.md
 		doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.Extensions.md = doc\namespaces\RapidField.SolidInstruments.Command.DotNetNative.Extensions.md
@@ -435,7 +435,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Core.Caching.UnitTests", "test\RapidField.SolidInstruments.Core.Caching.UnitTests\RapidField.SolidInstruments.Core.Caching.UnitTests.csproj", "{0DA99B21-BA75-459C-AFB4-91ED73FE055F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidField.SolidInstruments.Command.Cli", "src\RapidField.SolidInstruments.Command.Cli\RapidField.SolidInstruments.Command.Cli.csproj", "{131B4030-C18D-4CE7-9C86-3D0A29F703CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RapidField.SolidInstruments.Command.Cli", "src\RapidField.SolidInstruments.Command.Cli\RapidField.SolidInstruments.Command.Cli.csproj", "{131B4030-C18D-4CE7-9C86-3D0A29F703CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

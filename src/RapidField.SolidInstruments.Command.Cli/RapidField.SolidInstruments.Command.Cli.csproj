@@ -19,7 +19,7 @@ Copyright (c) RapidField LLC. Licensed under the MIT License. See LICENSE.txt in
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageProjectUrl>https://www.solidinstruments.com</PackageProjectUrl>
         <PackageIcon>Icon.Command.128w.png</PackageIcon>
-        <PackageTags>solid-instruments;command;cli</PackageTags>
+        <PackageTags>solid-instruments;command;cli;console</PackageTags>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
     </PropertyGroup>

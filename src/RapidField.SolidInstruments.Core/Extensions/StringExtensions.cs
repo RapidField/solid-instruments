@@ -85,6 +85,19 @@ namespace RapidField.SolidInstruments.Core.Extensions
         public static String Crop(this String target, Int32 maxLength) => target.Trim().Substring(0, Math.Min(target.Length, maxLength.RejectIf().IsLessThan(0))).TrimEnd();
 
         /// <summary>
+        /// Indicates whether or not the current <see cref="String" /> is equal to <see cref="String.Empty" />.
+        /// </summary>
+        /// <param name="target">
+        /// The current instance of the <see cref="String" />.
+        /// </param>
+        /// <returns>
+        /// <see langword="true" /> if the current <see cref="String" /> is equal to <see cref="String.Empty" />, otherwise
+        /// <see langword="false" />.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsEmpty(this String target) => target.Length == 0;
+
+        /// <summary>
         /// Indicates whether or not the current <see cref="String" /> is <see langword="null" /> or empty.
         /// </summary>
         /// <param name="target">
@@ -94,7 +107,8 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="String" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
-        public static Boolean IsNullOrEmpty(this String target) => target is null || target.Length == 0;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Boolean IsNullOrEmpty(this String target) => target is null || target.IsEmpty();
 
         /// <summary>
         /// Indicates whether or not the current <see cref="String" /> is <see langword="null" />, empty or consists only of
@@ -107,6 +121,7 @@ namespace RapidField.SolidInstruments.Core.Extensions
         /// <see langword="true" /> if the current <see cref="String" /> is <see langword="null" /> or empty, otherwise
         /// <see langword="false" />.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Boolean IsNullOrWhiteSpace(this String target) => String.IsNullOrWhiteSpace(target);
 
         /// <summary>
